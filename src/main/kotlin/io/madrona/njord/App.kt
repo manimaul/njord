@@ -1,12 +1,8 @@
 package io.madrona.njord
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello world."
-        }
-}
+import io.madrona.njord.di.injector
 
-fun main(args: Array<String>) {
-    println(App().greeting)
+
+fun main() {
+    injector.nmeaServer.listenAndServeBlocking()
 }

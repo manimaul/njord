@@ -2,7 +2,7 @@
 Description=Njord - NMEA0183 Over TCP
 
 [Service]
-ExecStart=/opt/njord/bin/njord_exec.sh
+ExecStart=njord_exec.sh
 Restart=always
 StandardOutput=syslog
 StandardError=syslog

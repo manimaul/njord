@@ -1,8 +1,8 @@
 plugins {
     id("java")
-    kotlin("jvm") version "1.3.61"
-    id("nebula.ospackage-application") version "8.0.3"
-    kotlin("kapt") version "1.3.70"
+    kotlin("jvm") version "1.3.71"
+    id("nebula.ospackage-application") version "8.2.0"
+    kotlin("kapt") version "1.3.71"
     application
 }
 
@@ -67,15 +67,14 @@ ospackage {
     packageName = "njord"
     version = "${project.version}"
     release = "1"
-
-    from("debpkg/njord.service", closureOf<Any> {
+    from("debpkg/njord.service", closureOf<CopySpec> {
         into("/etc/systemd/system/")
     })
-    from("debpkg/njord_exec.sh", closureOf<Any> {
-        into("/opt/njord/bin/")
+    from("debpkg/njord_exec.sh", closureOf<CopySpec> {
+        into("/usr/bin/")
     })
-    from("debpkg/njord.conf", closureOf<Any> {
-        into("/opt/njord/etc/")
+    from("debpkg/njord.conf", closureOf<CopySpec> {
+        into("/etc/")
     })
     preDepends("systemd")
     requires("openjdk-11-jre-headless")

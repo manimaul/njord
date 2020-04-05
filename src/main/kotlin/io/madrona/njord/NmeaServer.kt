@@ -5,8 +5,6 @@ import io.netty.channel.Channel
 import io.netty.channel.ChannelFuture
 import io.netty.channel.ChannelOption
 import io.netty.channel.WriteBufferWaterMark
-import io.netty.util.concurrent.Future
-import io.netty.util.concurrent.GenericFutureListener
 import org.slf4j.LoggerFactory
 import java.io.Closeable
 import java.io.IOException
@@ -19,7 +17,7 @@ import javax.inject.Inject
 class NmeaServer @Inject constructor(
         private val njordConfig: NjordConfig,
         private val serverChannelConfig: ServerChannelConfig,
-        private val channelInitializer: NnsChannelInitializer) : Closeable {
+        private val channelInitializer: NjordChannelInitializer) : Closeable {
     private val log = LoggerFactory.getLogger(NmeaServer::class.java)
     private var channelFuture: ChannelFuture? = null
     fun listenAndServeBlocking() {

@@ -5,7 +5,7 @@ import io.netty.channel.socket.SocketChannel
 import javax.inject.Inject
 import javax.inject.Provider
 
-class NnsChannelInitializer @Inject constructor(
+class NjordChannelInitializer @Inject constructor(
         private val channelHandlerProvider: Provider<NssChannelHandler>
 ) : ChannelInitializer<SocketChannel>() {
     override fun initChannel(ch: SocketChannel) {

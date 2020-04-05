@@ -34,7 +34,7 @@ class AppModule {
     @Provides
     @Singleton
     @Named("njord")
-    fun provideNnsConfig(@Named("root") config: Config): Config {
+    fun provideNjordConfig(@Named("root") config: Config): Config {
         return config.getConfig("njord")
     }
 }

@@ -14,6 +14,6 @@ class NjordConfig @Inject constructor(@Named("njord") config: Config) {
     val connTimeout = config.getInt("connTimeout")
     val writeBufferQueueSizeBytesLow = config.getInt("writeBufferQueueSizeBytesLow")
     val writeBufferQueueSizeBytesHigh = config.getInt("writeBufferQueueSizeBytesHigh")
-    val commPorts = config.getStringList("commPorts")
-    val bauds = HashSet(config.getIntList("commBauds"))
+    val commPorts: List<String> = Collections.unmodifiableList(config.getStringList("commPorts"))
+    val bauds: Set<Int> = Collections.unmodifiableSet(HashSet(config.getIntList("commBauds")))
 }

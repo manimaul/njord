@@ -3,20 +3,46 @@ package io.madrona.njord
 import gnu.io.CommPortIdentifier
 import gnu.io.SerialPort
 import gnu.io.SerialPortEvent
+import io.madrona.njord.di.injector
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableSource
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.RuntimeException
+import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class NmeaSource(
-        private val name: String,
-        private val baud: Int,
-        private val nmeaChecksum: NmeaChecksum) {
+        private val name: String
+) {
+
+    @Inject lateinit var nmeaChecksum: NmeaChecksum
+    @Inject lateinit var njordConfig: NjordConfig
+
+    init {
+        injector.inject(this)
+    }
+
     private val log = logger()
-    fun output(): Observable<String> {
+
+    fun output(tryBauds: Queue<Int>): Observable<String> {
+        return if (tryBauds.isNotEmpty()) {
+            output(tryBauds.poll()).onErrorResumeNext(Function<Throwable, ObservableSource<String>> {
+                output(tryBauds)
+            })
+        } else {
+            log.info("exhausted all configured bauds for source=${name}")
+            Observable.error(RuntimeException())
+        }
+    }
+
+    private fun output(baud: Int): Observable<String> {
         val meta = Meta()
+        log.info("attempting to read nmea data from port name=${name} at baud=${baud}")
         return Observable.create { emitter: ObservableEmitter<String> ->
                     try {
                         val portId = findPort(name)
@@ -28,7 +54,7 @@ class NmeaSource(
                             if (event.eventType == SerialPortEvent.DATA_AVAILABLE) {
                                 try {
                                     if (input.ready() && !emitter.isDisposed) {
-                                        val line = input.readLine().strip()
+                                        val line = input.readLine().trim()
                                         if (nmeaChecksum.isValid(line)) {
                                             emitter.onNext(line)
                                         } else {
@@ -63,6 +89,10 @@ class NmeaSource(
             print("examining port name = ${it.name}")
             it.name == name
         }
+    }
+
+    override fun toString(): String {
+        return "NmeaSource(name='$name')"
     }
 
     private data class Meta(

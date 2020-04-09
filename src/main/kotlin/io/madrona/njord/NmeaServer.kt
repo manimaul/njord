@@ -5,7 +5,6 @@ import io.netty.channel.Channel
 import io.netty.channel.ChannelFuture
 import io.netty.channel.ChannelOption
 import io.netty.channel.WriteBufferWaterMark
-import org.slf4j.LoggerFactory
 import java.io.Closeable
 import java.io.IOException
 import java.net.InetAddress
@@ -18,7 +17,7 @@ class NmeaServer @Inject constructor(
         private val njordConfig: NjordConfig,
         private val serverChannelConfig: ServerChannelConfig,
         private val channelInitializer: NjordChannelInitializer) : Closeable {
-    private val log = LoggerFactory.getLogger(NmeaServer::class.java)
+    private val log = logger()
     private var channelFuture: ChannelFuture? = null
     fun listenAndServeBlocking() {
         serve(null)
@@ -86,7 +85,7 @@ class NmeaServer @Inject constructor(
     }
 
     class NonBlockingResult internal constructor(private val closeable: Closeable, private val channel: Channel) : Closeable {
-        private val log = LoggerFactory.getLogger(NonBlockingResult::class.java)
+        private val log = logger()
         override fun close() {
             try {
                 closeable.close()

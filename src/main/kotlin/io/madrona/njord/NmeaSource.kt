@@ -6,7 +6,6 @@ import gnu.io.SerialPortEvent
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.schedulers.Schedulers
-import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
@@ -15,7 +14,7 @@ class NmeaSource(
         private val name: String,
         private val baud: Int,
         private val nmeaChecksum: NmeaChecksum) {
-    private val log = LoggerFactory.getLogger(NmeaSource::class.java)
+    private val log = logger()
     fun output(): Observable<String> {
         val meta = Meta()
         return Observable.create { emitter: ObservableEmitter<String> ->

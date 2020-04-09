@@ -59,9 +59,9 @@ application {
     applicationName = "njord"
 }
 
-tasks.named<JavaExec>("run") {
-    jvmArgs = listOf("-Djava.library.path=/Users/willard/Downloads/rxtx-2.1-7r2/i686-apple-darwin19.3.0")
-}
+//tasks.named<JavaExec>("run") {
+//    jvmArgs = listOf("-Djava.library.path=${RXTX}/rxtx-2.1-7r2/i686-apple-darwin19.3.0")
+//}
 
 ospackage {
     packageName = "njord"

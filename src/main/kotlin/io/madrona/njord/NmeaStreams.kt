@@ -2,7 +2,6 @@ package io.madrona.njord
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import org.slf4j.LoggerFactory
 import java.lang.Integer.min
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -13,7 +12,7 @@ class NmeaStreams @Inject constructor(
         njordConfig: NjordConfig,
         private val nmeaChecksum: NmeaChecksum
 ) {
-    private val log = LoggerFactory.getLogger(NmeaStreams::class.java)
+    private val log = logger()
     private val nmeaSubject = PublishSubject.create<ByteArray>()
 
     fun nmeaData(): Observable<ByteArray> {

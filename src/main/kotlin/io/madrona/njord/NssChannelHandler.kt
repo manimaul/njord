@@ -3,13 +3,12 @@ package io.madrona.njord
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.reactivex.disposables.CompositeDisposable
-import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class NssChannelHandler @Inject constructor(
         private val nmeaStreams: NmeaStreams
 ) : ChannelInboundHandlerAdapter() {
-    private val log = LoggerFactory.getLogger(NssChannelHandler::class.java)
+    private val log = logger()
     private val compositeDisposable = CompositeDisposable()
 
     @Throws(Exception::class)

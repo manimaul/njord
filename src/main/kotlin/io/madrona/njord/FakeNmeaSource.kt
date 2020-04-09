@@ -3,14 +3,13 @@ package io.madrona.njord
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.schedulers.Schedulers
-import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import javax.inject.Inject
 
 class FakeNmeaSource @Inject constructor() {
-    private val log = LoggerFactory.getLogger(FakeNmeaSource::class.java)
+    private val log = logger()
 
     fun fakeNmeaData(): Observable<String> {
         return Observable.create { emitter: ObservableEmitter<String> ->

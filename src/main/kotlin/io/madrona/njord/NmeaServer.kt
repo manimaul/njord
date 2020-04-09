@@ -32,8 +32,8 @@ class NmeaServer @Inject constructor(
     private fun serve(future: CompletableFuture<NonBlockingResult>?) {
         val bootstrap = ServerBootstrap()
         try {
-            val address = InetAddress.getByName("0.0.0.0")
-            val socketAddress = InetSocketAddress(address, 10110)
+            val address = InetAddress.getByName(njordConfig.address)
+            val socketAddress = InetSocketAddress(address, njordConfig.port)
             bootstrap
                     .group(
                             serverChannelConfig.bossEventLoopGroup, serverChannelConfig.eventLoopGroup)

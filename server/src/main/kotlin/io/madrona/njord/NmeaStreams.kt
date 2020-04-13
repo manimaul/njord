@@ -3,10 +3,11 @@ package io.madrona.njord
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.lang.Integer.min
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private const val resPrefix = "resource/"
 
 @Singleton
 class NmeaStreams @Inject constructor(
@@ -24,7 +25,7 @@ class NmeaStreams @Inject constructor(
         log.info("connecting to nmea source {} in {} seconds", source, sec)
         Observable.timer(sec.toLong(), TimeUnit.SECONDS)
                 .flatMap {
-                    source.output(LinkedList(njordConfig.bauds))
+                    source.output()
                 }
                 .subscribe({
                     nmeaSubject.onNext(it.toByteArray())
@@ -40,7 +41,11 @@ class NmeaStreams @Inject constructor(
         njordConfig.commPorts
                 .stream()
                 .map { port: String ->
-                    NmeaSource(port)
+                    if (port.startsWith(resPrefix)) {
+                        FakeNmeaSource(port.substring(resPrefix.length))
+                    } else {
+                        NmeaSerialSource(port)
+                    }
                 }
                 .forEach { source: NmeaSource ->
                     connect(source, 1)

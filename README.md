@@ -5,12 +5,12 @@ Njord can be used to serve GPS and other ship data over a network to other softw
 
 Build a Debian package (Raspberry Pi Compatible)
 ```sh
- ./gradlew buildDeb
+ ./gradlew :server:buildDeb
 ``` 
 
 Send package to pi where (192.168.86.31) is your pi ip address
 ```sh
-scp ./build/distributions/njord_1.0~SNAPSHOT-1_all.deb  pi@192.168.86.31:/home/pi/njord.deb 
+scp ./server/build/distributions/njord_1.0~SNAPSHOT-1_all.deb  pi@192.168.86.31:/home/pi/njord.deb 
 ```
 
 Watch Logs

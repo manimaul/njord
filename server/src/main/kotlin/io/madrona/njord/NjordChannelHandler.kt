@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class NssChannelHandler @Inject constructor(
+class NjordChannelHandler @Inject constructor(
         private val nmeaStreams: NmeaStreams
 ) : ChannelInboundHandlerAdapter() {
     private val log = logger()

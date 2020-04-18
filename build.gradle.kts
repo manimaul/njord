@@ -18,6 +18,11 @@ allprojects {
 
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-kapt")
+
+    repositories {
+        jcenter()
+    }
+
     dependencies {
         /* Kotlin */
         implementation(platform("org.jetbrains.kotlin:kotlin-bom"))

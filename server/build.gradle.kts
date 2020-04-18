@@ -3,10 +3,6 @@ plugins {
     application
 }
 
-repositories {
-    jcenter()
-}
-
 val nettyVersion = "4.1.36.Final"
 val nettyBoringSslVersion = "2.0.25.Final"
 
@@ -18,6 +14,9 @@ dependencies {
 
     /* Serial port IO */
     implementation("org.rxtx:rxtx:2.1.7")
+
+    /* Project */
+    implementation(project(":common"))
 }
 
 application {

@@ -1,25 +1,31 @@
 package io.madrona.njord
 
+import io.madrona.njord.NmeaConst.maxNmeaLength
+import io.madrona.njord.NmeaConst.nmeaBeginDollar
+import io.madrona.njord.NmeaConst.nmeaBeginExclam
+import io.madrona.njord.NmeaConst.nmeaRangeEnd
+import io.madrona.njord.NmeaConst.nmeaRangeStart
 import java.io.DataInputStream
+import java.lang.NumberFormatException
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 
-// Messages have a maximum length of 82 characters, including the $ or ! starting
-// All transmitted data are printable ASCII characters between 0x20 (space) to 0x7e (~)
-// https://en.wikipedia.org/wiki/NMEA_0183
-private const val maxNmeaLength = 82
-private const val nmeaBeginDollar = '$'.toByte() //0x/24
-private const val nmeaBeginExclam = '!'.toByte() // 0x21
-private const val nmeaRangeStart = ' '.toByte() // 0x20
-private const val nmeaRangeEnd = '~'.toByte() // 0x7e
 
-
-fun main() {
+fun main(args: Array<String>) {
     Thread().run {
         val socket = Socket()
         socket.tcpNoDelay = false
-        socket.connect(InetSocketAddress("192.168.86.31", 10110))
+        val host = args.firstOrNull() ?: "127.0.0.1"
+        val port = args.lastOrNull()?.let {
+            try {
+                it.toInt()
+            } catch (e : NumberFormatException) {
+                null
+            }
+        } ?: 10110
+        println("connecting to $host:$port")
+        socket.connect(InetSocketAddress(host, port))
         socket.getOutputStream()
         val checksum = NmeaChecksum()
         val buffer = SentenceBuffer()
@@ -58,7 +64,6 @@ class SentenceBuffer {
         } else {
             println("\uD83D\uDC7E received invalid byte <${byte}>")
         }
-
     }
 
     fun clear() {

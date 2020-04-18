@@ -8,6 +8,27 @@ class NmeaChecksumTest {
     private val subject = NmeaChecksum()
 
     @Test
+    fun testCreateVendorMessage() {
+        val msgSentence = subject.createVendorMessage("foo bar")
+        assertTrue(subject.isValid(msgSentence))
+        assertEquals("\$PNJM,foo bar*02", msgSentence)
+    }
+
+    @Test
+    fun testCreateVendorMessageFiltered() {
+        val msgSentence = subject.createVendorMessage("foo bar\uD83D\uDE00", filter = true)
+        assertTrue(subject.isValid(msgSentence))
+        assertEquals("\$PNJM,foo bar*02", msgSentence)
+    }
+
+    @Test
+    fun testCreateVendorMessageUnFiltered() {
+        val msgSentence = subject.createVendorMessage("foo bar\uD83D\uDE00", filter = false)
+        assertFalse(subject.isValid(msgSentence))
+        assertNull(msgSentence)
+    }
+
+    @Test
     fun isValid() {
         val valid = listOf(
                 "\$GPHDT,142.56,T*01",

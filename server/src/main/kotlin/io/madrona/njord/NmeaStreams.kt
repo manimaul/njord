@@ -11,12 +11,12 @@ private const val resPrefix = "resource/"
 
 @Singleton
 class NmeaStreams @Inject constructor(
-        val njordConfig: NjordConfig
+        njordConfig: NjordConfig
 ) {
     private val log = logger()
-    private val nmeaSubject = PublishSubject.create<ByteArray>()
+    private val nmeaSubject = PublishSubject.create<String>()
 
-    fun nmeaData(): Observable<ByteArray> {
+    fun nmeaData(): Observable<String> {
         return nmeaSubject.hide()
     }
 
@@ -28,7 +28,7 @@ class NmeaStreams @Inject constructor(
                     source.output()
                 }
                 .subscribe({
-                    nmeaSubject.onNext(it.toByteArray())
+                    nmeaSubject.onNext(it)
                 }, {
                     log.error("nmea source error {}", source)
                     connect(source, sec * 2)

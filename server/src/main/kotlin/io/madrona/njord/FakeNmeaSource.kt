@@ -7,7 +7,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedReader
-import java.io.FileReader
+import java.io.InputStreamReader
 import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 
@@ -19,12 +19,13 @@ class FakeNmeaSource(
 
     override fun output(): Observable<String> {
         return Observable.create { emitter: ObservableEmitter<String> ->
-            javaClass.classLoader.getResource(name)?.file?.let { nmeaTxt ->
+            log.info("connecting to fake nmea resource: $name")
+            javaClass.classLoader.getResourceAsStream(name)?.let { nmeaTxt ->
                 try {
-                    BufferedReader(FileReader(nmeaTxt)).use { reader ->
+                    BufferedReader(InputStreamReader(nmeaTxt)).use { reader ->
                         var line = reader.readLine()
                         while (line != null && !emitter.isDisposed) {
-                            Thread.sleep(200)
+                            Thread.sleep(90)
                             log.info("nmea line = {}", line)
                             emitter.onNext(line)
                             line = reader.readLine()
@@ -41,6 +42,7 @@ class FakeNmeaSource(
             }
         }.subscribeOn(Schedulers.io())
                 .onErrorResumeNext(Function<Throwable, ObservableSource<String>> {
+                    log.error("error connecting to fake nmea resoure: $name", it)
                     Completable.timer(3, TimeUnit.SECONDS).andThen(output())
                 })
     }

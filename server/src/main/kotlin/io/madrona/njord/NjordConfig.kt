@@ -4,7 +4,9 @@ import com.typesafe.config.Config
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
+@Singleton
 class NjordConfig @Inject constructor(@Named("njord") config: Config) {
     val address: String = config.getString("address")
     val port: Int = config.getInt("port")

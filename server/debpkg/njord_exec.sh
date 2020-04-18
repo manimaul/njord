@@ -3,7 +3,8 @@
 TOTAL_MEM=$(free -m | awk '/Mem:/ {print $4}')
 APP_MEM=$((TOTAL_MEM * 85 / 100 ))
 
-export NNS_OPTS="$(printf %s \
+export NJORD_OPTS="$(printf %s \
+"-Dconfig.trace=loads " \
 "-Dconfig.file=/etc/njord.conf " \
 "-Dlog_level=INFO " \
 "-XX:+UseG1GC " \

@@ -42,7 +42,7 @@ class FakeNmeaSource(
             }
         }.subscribeOn(Schedulers.io())
                 .onErrorResumeNext(Function<Throwable, ObservableSource<String>> {
-                    log.error("error connecting to fake nmea resoure: $name", it)
+                    //log.error("error connecting to fake nmea resoure: $name", it)
                     Completable.timer(3, TimeUnit.SECONDS).andThen(output())
                 })
     }

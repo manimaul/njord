@@ -3,7 +3,7 @@ plugins {
 }
 
 application {
-    mainClassName = "io.madrona.njord.ClientKt"
+    mainClassName = "io.madrona.njord.AppKt"
     applicationName = "njord-client"
 }
 

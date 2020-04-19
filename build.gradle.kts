@@ -48,3 +48,14 @@ allprojects {
         kaptTest("com.google.dagger:dagger-compiler:${daggerVersion}")
     }
 }
+
+task("verifyBintrayConfig") {
+    val bintray_user: String? by project
+    val bintray_key: String? by project
+    doLast {
+        println("bintray_user: ${if (bintray_user.isNullOrBlank()) "missing!" else bintray_user}")
+        println("bintray_key: ${if (bintray_key.isNullOrBlank()) "missing!" else "*****"}")
+        println("version: ${project.version}")
+        println("group: ${project.group}")
+    }
+}

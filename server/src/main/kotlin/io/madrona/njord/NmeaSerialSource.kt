@@ -65,7 +65,7 @@ class NmeaSerialSource(
                             if (input.ready() && !emitter.isDisposed) {
                                 val line = input.readLine().trim()
                                 if (nmeaChecksum.isValid(line)) {
-                                    emitter.onNext(line)
+                                    emitter.safeOnNext(line)
                                 } else {
                                     log.warn("invalid line checksum read from {}:{}", name, baud)
                                     log.warn("invalid line: {}", line)

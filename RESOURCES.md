@@ -1,0 +1,1 @@
+[NMEA-0183 Revealed](https://gpsd.gitlab.io/gpsd/NMEA.html)

@@ -27,18 +27,14 @@ class FakeNmeaSource(
                         while (line != null && !emitter.isDisposed) {
                             Thread.sleep(90)
                             log.info("nmea line = {}", line)
-                            emitter.onNext(line)
+                            emitter.safeOnNext(line)
                             line = reader.readLine()
                         }
                     }
                 } catch (e: Exception) {
-                    if (!emitter.isDisposed) {
-                        emitter.onError(e)
-                    }
+                    emitter.safeOnError(e)
                 }
-                if (!emitter.isDisposed) {
-                    emitter.onError(RuntimeException("error flow control"))
-                }
+                emitter.safeOnError(RuntimeException("error flow control"))
             }
         }.subscribeOn(Schedulers.io())
                 .onErrorResumeNext(Function<Throwable, ObservableSource<String>> {

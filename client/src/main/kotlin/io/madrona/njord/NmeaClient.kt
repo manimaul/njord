@@ -4,7 +4,6 @@ import io.madrona.njord.NmeaConst.nmeaBeginDollar
 import io.madrona.njord.NmeaConst.nmeaBeginExclam
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
@@ -65,18 +64,6 @@ class NmeaClient @Inject constructor(
                     Completable.timer(3, TimeUnit.SECONDS).andThen(nmeaOverTcp(host, port))
                 }
         ).subscribeOn(Schedulers.io())
-    }
-
-    private fun <T> ObservableEmitter<T>.safeOnNext(value: T) {
-        if (!isDisposed) {
-            onNext(value)
-        }
-    }
-
-    private fun <T> ObservableEmitter<T>.safeOnError(err: Throwable) {
-        if (!isDisposed) {
-            onError(err)
-        }
     }
 }
 

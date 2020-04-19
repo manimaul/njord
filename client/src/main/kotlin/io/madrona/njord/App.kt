@@ -10,11 +10,11 @@ fun main(args: Array<String>) {
     val port = args.lastOrNull()?.let {
         try {
             it.toInt()
-        } catch (e : NumberFormatException) {
+        } catch (e: NumberFormatException) {
             null
         }
     } ?: 10110
-    client.nmeaOverTcp(host, port, validateChecksum = false).subscribe {line ->
+    client.nmeaOverTcp(host, port, validateChecksum = false).subscribe { line ->
         if (checksum.isValid(line)) {
             println("\uD83D\uDE00 $line \uD83D\uDE00")
         } else {

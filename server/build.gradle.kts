@@ -5,6 +5,9 @@ plugins {
 
 val nettyVersion = "4.1.36.Final"
 val nettyBoringSslVersion = "2.0.25.Final"
+val logbackVersion = "1.2.3"
+val typesafeConfigVersion = "1.3.3"
+val groovyVersion = "2.5.6"
 
 dependencies {
     /* Netty */
@@ -14,6 +17,15 @@ dependencies {
 
     /* Serial port IO */
     implementation("org.rxtx:rxtx:2.1.7")
+
+    /* Config */
+    implementation("com.typesafe:config:${typesafeConfigVersion}")
+
+    /* Logging */
+    implementation("ch.qos.logback:logback-classic:${logbackVersion}")
+    implementation("ch.qos.logback:logback-core:${logbackVersion}")
+    implementation("org.codehaus.groovy:groovy-all:${groovyVersion}")
+
 
     /* Project */
     implementation(project(":common"))

@@ -8,11 +8,8 @@ repositories {
 }
 
 val rxJavaVersion = "2.2.12"
-val slf4jVersion = "1.7.25"
-val logbackVersion = "1.2.3"
-val typesafeConfigVersion = "1.3.3"
-val groovyVersion = "2.5.6"
 val daggerVersion = "2.24"
+val slf4jVersion = "1.7.25"
 
 allprojects {
 
@@ -33,14 +30,8 @@ allprojects {
         /* RxJava */
         implementation("io.reactivex.rxjava2:rxjava:${rxJavaVersion}")
 
-        /* Config */
-        implementation("com.typesafe:config:${typesafeConfigVersion}")
-
         /* Logging */
         implementation("org.slf4j:slf4j-api:${slf4jVersion}")
-        implementation("ch.qos.logback:logback-classic:${logbackVersion}")
-        implementation("ch.qos.logback:logback-core:${logbackVersion}")
-        implementation("org.codehaus.groovy:groovy-all:${groovyVersion}")
 
         /* Dagger 2*/
         implementation("com.google.dagger:dagger:${daggerVersion}")

@@ -12,7 +12,8 @@ private const val resPrefix = "resource/"
 
 @Singleton
 class NmeaStreams @Inject constructor(
-        njordConfig: NjordConfig
+        njordConfig: NjordConfig,
+        localMachineIps: LocalMachineIps
 ) {
     private val log = logger()
     private val nmeaSubject = PublishSubject.create<String>()
@@ -54,6 +55,9 @@ class NmeaStreams @Inject constructor(
 
         njordConfig.tcpNmeaRelay
                 .stream()
+                .filter {
+                    !localMachineIps.localSockets.contains(it)
+                }
                 .map { address: InetSocketAddress ->
                     NmeaTcpSource(address)
                 }.forEach { source: NmeaSource ->

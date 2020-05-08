@@ -8,6 +8,7 @@ import dagger.Provides
 import io.madrona.njord.NmeaSerialSource
 import io.madrona.njord.NmeaServer
 import io.madrona.njord.NmeaTcpSource
+import io.madrona.njord.ServerApp
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ internal interface AppComponent {
 
     fun inject(nmeaSource: NmeaSerialSource)
     fun inject(nmeaSource: NmeaTcpSource)
+    fun inject(serverApp: ServerApp)
 
     val nmeaServer: NmeaServer
 

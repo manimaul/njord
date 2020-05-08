@@ -8,7 +8,6 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.io.DataInputStream
-import java.lang.Exception
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.nio.charset.StandardCharsets

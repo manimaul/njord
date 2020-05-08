@@ -8,7 +8,6 @@ import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 
 

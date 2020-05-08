@@ -5,8 +5,8 @@ import com.typesafe.config.ConfigFactory
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.madrona.njord.NmeaServer
 import io.madrona.njord.NmeaSerialSource
+import io.madrona.njord.NmeaServer
 import io.madrona.njord.NmeaTcpSource
 import javax.inject.Named
 import javax.inject.Singleton

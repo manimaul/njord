@@ -2,7 +2,6 @@ package io.madrona.njord
 
 import com.typesafe.config.Config
 import java.net.InetSocketAddress
-import java.net.SocketAddress
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named

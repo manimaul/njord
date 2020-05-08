@@ -29,10 +29,11 @@ dependencies {
 
     /* Project */
     implementation(project(":common"))
+    implementation(project(":client"))
 }
 
 application {
-    mainClassName = "io.madrona.njord.AppKt"
+    mainClassName = "io.madrona.njord.ServerAppKt"
     applicationName = "njord"
 }
 

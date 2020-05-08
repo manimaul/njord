@@ -1,11 +1,8 @@
 package io.madrona.njord
 
-import io.madrona.njord.di.injector
-
-
 fun main(args: Array<String>) {
-    val client = injector.nmeaClient()
-    val checksum = injector.checksum()
+    val checksum = NmeaChecksum()
+    val client = NmeaClient(checksum)
     val host = args.firstOrNull() ?: "127.0.0.1"
     val port = args.lastOrNull()?.let {
         try {

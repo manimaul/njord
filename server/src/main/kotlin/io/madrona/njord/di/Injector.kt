@@ -7,16 +7,19 @@ import dagger.Module
 import dagger.Provides
 import io.madrona.njord.NmeaServer
 import io.madrona.njord.NmeaSerialSource
+import io.madrona.njord.NmeaTcpSource
 import javax.inject.Named
 import javax.inject.Singleton
 
 internal val injector: AppComponent = DaggerAppComponent.builder().build()
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [ServerAppModule::class])
 internal interface AppComponent {
 
     fun inject(nmeaSource: NmeaSerialSource)
+    fun inject(nmeaSource: NmeaTcpSource)
+
     val nmeaServer: NmeaServer
 
     @Component.Builder
@@ -26,7 +29,7 @@ internal interface AppComponent {
 }
 
 @Module
-internal class AppModule {
+internal class ServerAppModule {
     @Provides
     @Singleton
     @Named("root")

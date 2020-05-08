@@ -18,16 +18,21 @@ import javax.inject.Inject
 class NmeaClient @Inject constructor(
         private val checksum: NmeaChecksum
 ) {
+    fun nmeaOverTcp(socketAddress: InetSocketAddress,
+                    validateChecksum: Boolean = false): Observable<String> {
+        return nmeaOverTcp(socketAddress.hostName, socketAddress.port, validateChecksum)
+    }
+
     private val log = logger()
 
     fun nmeaOverTcp(host: String,
-                    port: Int,
-                    validateChecksum: Boolean = false): Observable<String> {
+                            port: Int,
+                            validateChecksum: Boolean = false): Observable<String> {
         val socket = Socket()
         return Observable.create<String> { emitter ->
             val buffer = SentenceBuff()
             try {
-                log.debug("connecting to <$host:$port>")
+                log.info("connecting to <$host:$port>")
                 socket.connect(InetSocketAddress(host, port))
                 socket.tcpNoDelay = false
                 DataInputStream(socket.inputStream).use { dataStream ->
@@ -46,40 +51,42 @@ class NmeaClient @Inject constructor(
             } catch (e: Exception) {
                 emitter.safeOnError(e)
             }
-        }
-        .doOnDispose {
-            log.debug("dispose - closing socket <$host:$port>")
-            socket.close()
-        }
-        .doOnComplete {
-            log.debug("complete - closing socket <$host:$port>")
-            socket.close()
-        }
-        .timeout(5, TimeUnit.SECONDS)
-        .onErrorResumeNext(
-                Function<Throwable, ObservableSource<String>> {
-                    log.debug("error - closing socket <$host:$port>")
+        }.subscribeOn(Schedulers.io())
+                .doOnDispose {
+                    log.info("dispose - closing socket <$host:$port>")
                     socket.close()
-                    log.debug("error - reconnecting to <$host:$port> in 3 seconds")
-                    Completable.timer(3, TimeUnit.SECONDS).andThen(nmeaOverTcp(host, port))
                 }
-        ).subscribeOn(Schedulers.io())
+                .doOnComplete {
+                    log.info("complete - closing socket <$host:$port>")
+                    socket.close()
+                }
+                .timeout(5, TimeUnit.SECONDS)
+                .onErrorResumeNext(
+                        Function<Throwable, ObservableSource<String>> {
+                            log.info("error - closing socket <$host:$port>")
+                            socket.close()
+                            log.info("error - reconnecting to <$host:$port> in 3 seconds")
+                            Completable.timer(3, TimeUnit.SECONDS).andThen(nmeaOverTcp(host, port))
+                        }
+                )
     }
 }
 
 private class SentenceBuff {
     private val sentenceBuffer = ByteArray(NmeaConst.maxNmeaLength)
     private var pos = 0
+    private val log = logger()
+
     fun append(byte: Byte) {
         if (byte in NmeaConst.nmeaRangeStart..NmeaConst.nmeaRangeEnd) {
             sentenceBuffer[pos] = byte
             pos++
             if (pos >= NmeaConst.maxNmeaLength) {
-                println("\uD83D\uDC7A OVERFLOW - resetting buffer")
+                log.info("\uD83D\uDC7A OVERFLOW - resetting buffer")
                 pos = 0
             }
         } else {
-            println("\uD83D\uDC7E received invalid byte <${byte}>")
+            log.info("\uD83D\uDC7E received invalid byte <${byte}>")
         }
     }
 

@@ -3,6 +3,7 @@ package io.madrona.njord
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.lang.Integer.min
+import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,6 +49,14 @@ class NmeaStreams @Inject constructor(
                     }
                 }
                 .forEach { source: NmeaSource ->
+                    connect(source, 1)
+                }
+
+        njordConfig.tcpNmeaRelay
+                .stream()
+                .map { address: InetSocketAddress ->
+                    NmeaTcpSource(address)
+                }.forEach { source: NmeaSource ->
                     connect(source, 1)
                 }
     }

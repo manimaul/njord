@@ -26,7 +26,7 @@ class FakeNmeaSource(
                         var line = reader.readLine()
                         while (line != null && !emitter.isDisposed) {
                             Thread.sleep(90)
-                            log.info("nmea line = {}", line)
+                            log.debug("nmea line = {}", line)
                             emitter.safeOnNext(line)
                             line = reader.readLine()
                         }

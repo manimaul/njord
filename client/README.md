@@ -6,6 +6,12 @@ Run:
 ./client/build/install/njord-client/bin/njord-client 192.168.86.31 10110
 ```
 
+or
+
+```bash
+./gradlew :client:run
+```
+
 
 Publish:
 ```bash

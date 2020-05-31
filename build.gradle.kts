@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.3.71"
     kotlin("kapt") version "1.3.71"
@@ -18,6 +20,12 @@ allprojects {
 
     repositories {
         jcenter()
+    }
+
+    //https://kotlinlang.org/docs/reference/using-gradle.html#compiler-options
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.apiVersion = "1.3"
     }
 
     dependencies {

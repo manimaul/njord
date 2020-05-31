@@ -1,5 +1,5 @@
 plugins {
-    id("nebula.ospackage-application") version "8.2.0"
+    id("nebula.ospackage-application") version "8.3.0"
     application
 }
 

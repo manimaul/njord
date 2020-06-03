@@ -29,7 +29,7 @@ dependencies {
 
     /* Project */
     implementation(project(":common"))
-    implementation(project(":client"))
+    implementation(project(":nmea_client"))
 }
 
 application {

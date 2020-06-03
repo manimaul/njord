@@ -1,15 +1,15 @@
-# Client
+# Njord NMEA Client
 
 Run:
 ```bash
-./gradlew clean :client:installDist
-./client/build/install/njord-client/bin/njord-client 192.168.86.31 10110
+./gradlew clean :nmea_client:installDist
+./nmea_client/build/install/njord-client/bin/njord-client 192.168.86.31 10110
 ```
 
 or
 
 ```bash
-./gradlew :client:run
+./gradlew :nmea_client:run
 ```
 
 

@@ -1,6 +1,6 @@
 rootProject.name = "njord"
 
-include("server")
-include("client")
-include("common")
 include("chart_server")
+include("nmea_server")
+include("nmea_client")
+include("common")

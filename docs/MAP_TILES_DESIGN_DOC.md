@@ -7,11 +7,24 @@ We will start by using [GDAL](https://gdal.org/) to read the s57 file geometries
 
 Steps:
 - calculate the optimal z-index based on the S57 published scale
-- iterate s57 features, layers and save wgs84 transformed geometry [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) to database using the schema below
 - as s57 files are added to the system only the `files` table will be populated. 
-- `features` and `feature_geometries` will be lazily evaluated. 
+- `features` and `feature_geometries` will be lazily evaluated.
+    - iterate s57 features, layers and save wgs84 transformed geometry [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) to database using the schema below 
 
-Life of a tile query:
+Life of a tile query option 1:
+- stage 1
+    - `tile_cache` is queried first for MVT blob and returns early with render if it exists
+- stage 2
+    - `files` table is queried for ids containing tile coords
+    - files are opened via gdal 
+        - each layer is clipped to tile bounds
+        - geometry coordinates are transformed to wgs84 if needed
+        - wkt or wkb is extracted 
+        - layer name and feature attributes needed for theming are extracted
+        - tile meta data can point to s57 file , layer and feature index
+        - tile is rendered and cached
+    
+Life of a tile query option 2:
 - stage 1
     - `tile_cache` is queried first for MVT blob and returns early with render if it exists
 - stage 2
@@ -23,6 +36,11 @@ Life of a tile query:
     - if tile is empty search up quad tree 1 and then down up to 6 levels clipping geometries to suit
     - construct MVT in layer prioritized order from resulting geometries and cache tile render
 
+Questions:
+- Can we extract the geometries straight from the s57 files and still be performant?
+    - This would allow us to skip having `features` and `feature_geometry` tables altogether.
+- Do we want to use and [R*Tree enabled sqlite](https://www.sqlite.org/rtree.html)?
+
 Todo:
 - document s57 files added / removed from system
 - document s57 mapbox theme and sources
@@ -33,7 +51,9 @@ Todo:
 CREATE TABLE files (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT,
-    file        TEXT, -- local path to file
+    file        TEXT,    -- local path to file
+                         -- http://www.naturalearthdata.com/downloads/10m-physical-vectors/
+    type        INTEGER, -- 0 (s57), 1 (future), 2 (shp coastline), 3 (shp islands), 4 (shp reefs), 5 (shp ocean)
     md5sum      TEXT,
     depths      TEXT,
     soundings   TEXT,
@@ -49,6 +69,7 @@ CREATE TABLE files (
     outline_wkt TEXT,    -- chart outline geometry LineString as WKT
     full_eval   INTEGER  -- 
 );
+CREATE INDEX idx_features ON files (z, min_x, max_x, min_y, max_y);
 
 CREATE TABLE features (
     id     INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,6 +83,7 @@ CREATE TABLE features (
     name   TEXT,    -- s57 acronym eg. BOYSPP (gdal layer name)
     attrs  TEXT     -- s57 attributes as json - http://www.s-57.com/
 );
+CREATE INDEX idx_features ON features (z, min_x, max_x, min_y, max_y);
 
 CREATE TABLE feature_geometries (
     fid    INTEGER, -- feature id 
@@ -71,7 +93,7 @@ CREATE TABLE feature_geometries (
     y      INTEGER,
     wkt    TEXT     -- geometry WKT (exceptions: `f` and `e` for full and empty tiles respectively)
 );
-CREATE INDEX idx_tile_cache ON feature_geometries (z, x, y);
+CREATE INDEX idx_feature_geometries ON feature_geometries (z, x, y);
 ```
 
 ```sqlite

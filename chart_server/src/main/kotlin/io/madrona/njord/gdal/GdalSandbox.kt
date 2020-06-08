@@ -14,6 +14,7 @@ class App {
 
     init {
         AllRegister()
+        SetConfigOption("OGR_S57_OPTIONS", "LNAM_REFS:ON,UPDATES:ON,SPLIT_MULTIPOINT:ON,PRESERVE_EMPTY_NUMBERS:ON,RETURN_LINKAGES:ON")
     }
 
     private val path = "${System.getenv("HOME")}/Charts/ENC/US_REGION15/US5WA22M/US5WA22M.000"

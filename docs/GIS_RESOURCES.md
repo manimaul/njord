@@ -1,0 +1,4 @@
+- [Spatial Reference / EPSG](https://spatialreference.org/ref/epsg/)
+- [Gdal API Docs](https://gdal.org/api/index.html#id3)
+- [s52 standard](./s52-standard-ed6.1.1.pdf)
+- [s57 appendix b](./20ApB1.pdf)

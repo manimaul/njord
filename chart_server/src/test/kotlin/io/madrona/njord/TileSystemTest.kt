@@ -1,5 +1,6 @@
 package io.madrona.njord
 
+import io.madrona.njord.gis.tilesystem.TileSystem
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

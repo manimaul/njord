@@ -1,4 +1,4 @@
-package io.madrona.njord.gdal
+package io.madrona.njord.gis
 
 import org.gdal.ogr.Feature
 import java.util.*

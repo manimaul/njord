@@ -2,3 +2,4 @@
 - [Gdal API Docs](https://gdal.org/api/index.html#id3)
 - [s52 standard](./s52-standard-ed6.1.1.pdf)
 - [s57 appendix b](./20ApB1.pdf)
+- [Wicket Online WKT Visualizer](http://arthur-e.github.io/Wicket/sandbox-gmaps3.html)

@@ -13,6 +13,7 @@ dependencies {
     implementation("org.gdal:gdal:3.1.0")
     implementation("org.locationtech.jts:jts-core:1.16.1")
     implementation("com.google.guava:guava:29.0-jre")
+    implementation("org.locationtech.proj4j:proj4j:1.1.1")
 }
 
 tasks.named<JavaExec>("run") {

@@ -47,18 +47,18 @@ fun Feature.printFields() {
     println("field count = ${GetFieldCount()}")
     for (i in 0 until GetFieldCount()) {
         val ref = GetFieldDefnRef(i)
-        println("name = ${ref.GetName()}")
-        when(val ft = getFieldType(i)) {
-            OgrFieldType.OFTInteger -> println("${ft.name} = ${GetFieldAsInteger(i)}")
-            OgrFieldType.OFTIntegerList -> println("${ft.name} = ${Arrays.toString(GetFieldAsIntegerList(i))}")
-            OgrFieldType.OFTReal -> println("${ft.name} = ${GetFieldAsDouble(i)}")
-            OgrFieldType.OFTRealList -> println("${ft.name} = ${Arrays.toString(GetFieldAsDoubleList(i))}")
-            OgrFieldType.OFTString, OgrFieldType.OFTWideString -> println("${ft.name} = ${GetFieldAsString(i)}")
-            OgrFieldType.OFTStringList, OgrFieldType.OFTWideStringList  -> println("${ft.name} = ${Arrays.toString(GetFieldAsStringList(i))}")
-            OgrFieldType.OFTBinary -> println("${ft.name} = ${GetFieldAsBinary(i)}")
-            OgrFieldType.OFTDate, OgrFieldType.OFTTime, OgrFieldType.OFTDateTime -> println("${ft.name} = TODO - JNI date") //${GetFieldAsDateTime(i)}
-            OgrFieldType.OFTInteger64 -> println("${ft.name} = ${GetFieldAsInteger64(i)}")
-            OgrFieldType.OFTInteger64List -> println("${ft.name} = ${Arrays.toString(GetFieldAsIntegerList(i))}")
+        val name = ref.GetName()
+        when(getFieldType(i)) {
+            OgrFieldType.OFTInteger -> println("$name = ${GetFieldAsInteger(i)}")
+            OgrFieldType.OFTIntegerList -> println("$name = ${Arrays.toString(GetFieldAsIntegerList(i))}")
+            OgrFieldType.OFTReal -> println("$name = ${GetFieldAsDouble(i)}")
+            OgrFieldType.OFTRealList -> println("$name = ${Arrays.toString(GetFieldAsDoubleList(i))}")
+            OgrFieldType.OFTString, OgrFieldType.OFTWideString -> println("$name = ${GetFieldAsString(i)}")
+            OgrFieldType.OFTStringList, OgrFieldType.OFTWideStringList  -> println("$name = ${Arrays.toString(GetFieldAsStringList(i))}")
+            OgrFieldType.OFTBinary -> println("$name = ${GetFieldAsBinary(i)}")
+            OgrFieldType.OFTDate, OgrFieldType.OFTTime, OgrFieldType.OFTDateTime -> println("$name = TODO - JNI date") //${GetFieldAsDateTime(i)}
+            OgrFieldType.OFTInteger64 -> println("$name = ${GetFieldAsInteger64(i)}")
+            OgrFieldType.OFTInteger64List -> println("$name = ${Arrays.toString(GetFieldAsIntegerList(i))}")
         }
     }
 }

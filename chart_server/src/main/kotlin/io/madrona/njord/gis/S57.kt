@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing
 import com.google.common.io.Files
 import io.madrona.njord.ds.FileEntry
 import io.madrona.njord.ds.FileType
+import io.madrona.njord.gis.tilesystem.GeoExtent
 import org.gdal.gdal.gdal
 import org.gdal.ogr.Feature
 import java.io.File
@@ -45,7 +46,10 @@ class S57(srcFile: File) : FileEntry {
     }
 
     override val datum: String? by lazy {
-        ds.GetLayer("M_COVR")?.GetSpatialRef()?.GetName()
+        ds.GetLayer("M_COVR")?.let {
+            it.ResetReading()
+            it.GetSpatialRef()?.GetName()
+        }
     }
 
     override val updated: String? by lazy {
@@ -56,14 +60,63 @@ class S57(srcFile: File) : FileEntry {
         dsIdFeature?.GetFieldAsInteger("DSPM_CSCL") ?: 0
     }
 
-    override val z: Int? = null
-    override val min_x: Int? = null
-    override val max_x: Int? = null
-    override val min_y: Int? = null
-    override val max_y: Int? = null
-    override val outline_wkt: String? by lazy {
-        ds.GetLayer("M_COVR")?.GetNextFeature()?.GetGeometryRef()?.wgs84Wkt()
+    override val z: Int? by lazy {
+        ds.GetLayer("M_COVR")?.let {
+            it.ResetReading()
+            it.GetNextFeature()?.GetGeometryRef()?.wgs84Centroid()?.let { point ->
+                getZoom(scale, point.latitude)
+            }
+        }
     }
+
+    override val min_x: Int? by lazy {
+        z?.let { z ->
+            extent?.let { extent ->
+                vactorTileSystem.latLngToTileXy(extent.south, extent.west, z).x
+            }
+        }
+    }
+
+    override val max_x: Int? by lazy {
+        z?.let { z ->
+            extent?.let { extent ->
+                vactorTileSystem.latLngToTileXy(extent.north, extent.east, z).x
+            }
+        }
+    }
+
+    override val min_y: Int? by lazy {
+        z?.let { z ->
+            extent?.let { extent ->
+                // note tile coordinate system is top, left 0,0
+                vactorTileSystem.latLngToTileXy(extent.north, extent.east, z).y
+            }
+        }
+    }
+
+    override val max_y: Int? by lazy {
+        z?.let { z ->
+            extent?.let { extent ->
+                // note tile coordinate system is top, left 0,0
+                vactorTileSystem.latLngToTileXy(extent.south, extent.west, z).y
+            }
+        }
+    }
+
+    override val outline_wkt: String? by lazy {
+        ds.GetLayer("M_COVR")?.let {
+            it.ResetReading()
+            it.GetNextFeature()?.GetGeometryRef()?.wgs84Wkt()
+        }
+    }
+
+    private val extent: GeoExtent? by lazy {
+        ds.GetLayer("M_COVR")?.let {
+            it.ResetReading()
+            it.GetNextFeature()?.GetGeometryRef()?.wgs84Extent()
+        }
+    }
+
     override val full_eval: Boolean? = null
 
     val layers: Set<String> by lazy {
@@ -71,4 +124,24 @@ class S57(srcFile: File) : FileEntry {
             ds.GetLayer(it)?.GetName()
         }.toSet()
     }
+
+//    fun printCoverGeoms() {
+//        ds.GetLayer("M_COVR")?.let {
+//            it.ResetReading()
+//            do {
+//                val feature = it.GetNextFeature()
+//                feature?.printFields()
+////                println(feature.GetGeometryRef().ExportToJson())
+//                println(feature?.GetGeometryRef()?.ExportToWkt())
+//            } while (feature != null) // y is visible here!
+//        }
+//    }
 }
+
+//fun main() {
+//    val s57 = S57(File("${System.getenv("HOME")}/Charts/ENC/US_REGION15/US5WA22M/US5WA22M.000"))
+//    val miny = s57.min_y
+//    val maxy = s57.max_y
+//    print("miny=$miny maxy=$maxy")
+//    s57.printCoverGeoms()
+//}

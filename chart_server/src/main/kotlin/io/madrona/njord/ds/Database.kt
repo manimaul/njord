@@ -84,7 +84,7 @@ class Database(
     }
 }
 
-
+//todo: (delete/ clean me up)
 //fun main() {
 //    val s57 = S57(File("${System.getenv("HOME")}/Charts/ENC/US_REGION15/US5WA22M/US5WA22M.000"))
 //    s57.layers.forEach {
@@ -96,7 +96,7 @@ class Database(
 //
 //    val numInserted = database.insert(s57)
 //    print("inserted $numInserted")
-//    database.query("foo").forEach {
+//    database.query("US5WA22M.000").forEach {
 //        println(it)
 //    }
 //}

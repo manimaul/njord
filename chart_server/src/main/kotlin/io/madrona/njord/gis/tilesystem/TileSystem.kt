@@ -1,5 +1,6 @@
 package io.madrona.njord.gis.tilesystem
 
+import io.madrona.njord.gis.vactorTileSystem
 import org.locationtech.jts.geom.Polygon
 import kotlin.math.*
 
@@ -79,7 +80,7 @@ class TileSystem(
 
         var x: Double = (longitude + 180.0) / 360.0
         val sinLat: Double = sin(latitude * PI / 180.0)
-        var y: Double = .5 - log10((1.0 + sinLat) / (1.0 - sinLat)) / (4.0 * PI)
+        var y: Double = .5 - ln((1.0 + sinLat) / (1.0 - sinLat)) / (4.0 * PI)
 
         val mSize = mapSize(levelOfDetail)
         x = clip(x * mSize + .5, 0.0, mSize - 1.0)
@@ -323,6 +324,10 @@ class TileSystem(
     #
     #     return pixelWest, pixelNorth, pixelEast, pixelSouth, resX, resY
      */
+}
+
+fun main() {
+    vactorTileSystem.latLngToTileXy(47.2356521, -122.5480844, 16)
 }
 
 

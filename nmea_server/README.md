@@ -19,7 +19,7 @@ Build a Debian package (Raspberry Pi Compatible)
 
 Send package to pi where (192.168.86.31) is your pi ip address
 ```sh
-scp ./server/build/distributions/njord_1.0~SNAPSHOT-1_all.deb  pi@192.168.86.31:/home/pi/njord.deb 
+scp ./nmea_server/build/distributions/njord_1.0~SNAPSHOT-1_all.deb  pi@192.168.86.44:/home/pi/njord.deb 
 ```
 
 Watch Logs

@@ -6,7 +6,6 @@ import io.madrona.njord.ds.FileEntry
 import io.madrona.njord.ds.FileType
 import io.madrona.njord.gis.tilesystem.GeoExtent
 import org.gdal.gdal.gdal
-import org.gdal.ogr.Feature
 import java.io.File
 
 class S57(srcFile: File) : FileEntry {
@@ -19,9 +18,7 @@ class S57(srcFile: File) : FileEntry {
     }
 
     private val ds = gdal.OpenEx(srcFile.absolutePath)
-    private val dsIdFeature: Feature? by lazy {
-        ds.GetLayer("DSID")?.GetNextFeature()
-    }
+    private val dsidLayer = S57LayerDSID.fromDs(ds)
 
     override var id: Int? = null
     override val name: String? = srcFile.name
@@ -41,24 +38,20 @@ class S57(srcFile: File) : FileEntry {
      * - Distance : nautical miles and decimal miles, or metres as defined in the IHO Object Catalogue (see
      * S-57, Appendix A ).
      */
-    override val depths: String? by lazy {
-        dsIdFeature?.GetFieldAsString("DSPM_DUNI")
-    }
+    override val depths: String? = dsidLayer.depths
 
     override val datum: String? by lazy {
         ds.GetLayer("M_COVR")?.let {
             it.ResetReading()
-            it.GetSpatialRef()?.GetName()
+            it.GetSpatialRef()?.ExportToProj4()
         }
     }
 
-    override val updated: String? by lazy {
-        dsIdFeature?.GetFieldAsString("DSID_UADT")
-    }
+    override val updated: String? = dsidLayer.updated
 
-    override val scale: Int by lazy {
-        dsIdFeature?.GetFieldAsInteger("DSPM_CSCL") ?: 0
-    }
+    override val issue_date: String? = dsidLayer.issueDate
+
+    override val scale: Int = dsidLayer.scale?.toInt() ?: 0
 
     override val z: Int? by lazy {
         ds.GetLayer("M_COVR")?.let {
@@ -110,7 +103,14 @@ class S57(srcFile: File) : FileEntry {
         }
     }
 
-    private val extent: GeoExtent? by lazy {
+    val outline_json: String? by lazy {
+        ds.GetLayer("M_COVR")?.let {
+            it.ResetReading()
+            it.GetNextFeature()?.GetGeometryRef()?.geoJson()
+        }
+    }
+
+    val extent: GeoExtent? by lazy {
         ds.GetLayer("M_COVR")?.let {
             it.ResetReading()
             it.GetNextFeature()?.GetGeometryRef()?.wgs84Extent()
@@ -119,29 +119,51 @@ class S57(srcFile: File) : FileEntry {
 
     override val full_eval: Boolean? = null
 
-    val layers: Set<String> by lazy {
+    val layers: List<S57Layer> by lazy {
         IntRange(0, ds.GetLayerCount()).mapNotNull {
-            ds.GetLayer(it)?.GetName()
-        }.toSet()
+            ds.GetLayer(it)?.let { S57Layer(it) }
+        }.toList()
     }
 
-//    fun printCoverGeoms() {
-//        ds.GetLayer("M_COVR")?.let {
-//            it.ResetReading()
-//            do {
-//                val feature = it.GetNextFeature()
-//                feature?.printFields()
-////                println(feature.GetGeometryRef().ExportToJson())
-//                println(feature?.GetGeometryRef()?.ExportToWkt())
-//            } while (feature != null) // y is visible here!
-//        }
-//    }
+    fun layer(name: String) : S57Layer? {
+        return ds.GetLayer(name)?.let {
+            S57Layer(it)
+        }
+    }
 }
 
-//fun main() {
-//    val s57 = S57(File("${System.getenv("HOME")}/Charts/ENC/US_REGION15/US5WA22M/US5WA22M.000"))
-//    val miny = s57.min_y
-//    val maxy = s57.max_y
-//    print("miny=$miny maxy=$maxy")
-//    s57.printCoverGeoms()
-//}
+
+fun main() {
+    val s57 = S57(File("${System.getenv("HOME")}/charts/ENC_ROOT/US5WA44M/US5WA44M.000"))
+//    s57.layer("DEPARE")?.metaData()
+//    s57.layer("DSID")?.features?.forEachIndexed { i, feat ->
+//        println("feature num: ${i+1}")
+//        feat.fieldNames.forEach {
+//            println(it)
+//        }
+//    }
+//    println(s57.outline_json)
+//    println("checksum: ${s57.checksum}")
+//    s57.layers.forEach {
+//        println("layer: ${it.name}")
+//        println("feature count geometry: ${it.features.filter { !it.hasGeometry }.size}")
+//        println("feature count zero geometry: ${it.features.filter { it.hasGeometry }.size}")
+////        it.features.forEach {
+////            println("wkt: ${it.wkt}")
+////        }
+//    }
+//
+//    println("datum: ${s57.datum}")
+    println("depths: ${s57.depths}")
+    println("updated: ${s57.updated}")
+    println("issue date: ${s57.issue_date}")
+    println("scale: ${s57.scale}")
+//    println("outline wkt: ${s57.outline_wkt}")
+    println("outline json: ${s57.outline_json}")
+//    println("outline extent: ${s57.extent}")
+    println("z : ${s57.z}")
+    println("min y : ${s57.min_y}")
+    println("max y : ${s57.max_y}")
+    println("min x : ${s57.min_x}")
+    println("max x : ${s57.max_x}")
+}

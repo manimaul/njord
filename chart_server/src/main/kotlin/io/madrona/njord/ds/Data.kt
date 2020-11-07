@@ -10,6 +10,7 @@ interface FileEntry {
     val depths: String?
     val datum: String?
     val updated: String?
+    val issue_date: String?
     val scale: Int?
     val z: Int?
     val min_x: Int?
@@ -47,6 +48,7 @@ data class FileRecord(
         override val depths: String? = null,
         override val datum: String? = null,
         override val updated: String? = null,
+        override val issue_date: String? = null,
         override val scale: Int? = null,
         override val z: Int? = null,
         override val min_x: Int? = null,

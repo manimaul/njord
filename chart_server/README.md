@@ -46,4 +46,6 @@ version installed by brew `org.gdal:gdal:3.1.0`
 
 #### Dev Setup Linux
 
-Todo:
+```bash
+sudo apt install libgdal-java
+```

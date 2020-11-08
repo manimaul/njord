@@ -27,6 +27,14 @@ open class S57Feature(
         }
     }
 
+    val properties: Map<String, String> by lazy {
+       mutableMapOf<String, String>().also { map ->
+           fields.forEach {
+               map[it.name] = it.valueString ?: ""
+           }
+       }
+    }
+
     val fieldNames: List<String>
         get() = fields.mapNotNull { it.name }
 }
@@ -36,7 +44,7 @@ class S57Field(
         private val dsFeature: Feature
 ) {
 
-    val name: String?
+    val name: String
         get() = dsField.GetName()
 
     //todo: check field type ... maybe use sealed class

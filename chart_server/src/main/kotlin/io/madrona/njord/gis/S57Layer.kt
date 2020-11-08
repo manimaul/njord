@@ -5,6 +5,7 @@ import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.gdal.Dataset
 import org.gdal.ogr.Layer
 import java.lang.IllegalStateException
+import java.util.AbstractMap
 
 open class S57Layer(
         private val dsLayer: Layer
@@ -29,6 +30,7 @@ open class S57Layer(
                         s57Feature.geoJson?.let { geoJsonStr ->
                             mil.nga.sf.geojson.Feature().also { feature ->
                                 feature.geometry = FeatureConverter.toGeometry(geoJsonStr)
+                                feature.properties = s57Feature.properties
                             }
                         }
                     }

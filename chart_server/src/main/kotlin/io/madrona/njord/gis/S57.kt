@@ -135,7 +135,14 @@ class S57(srcFile: File) : FileEntry {
 
 fun main() {
     val s57 = S57(File("${System.getenv("HOME")}/charts/ENC_ROOT/US5WA44M/US5WA44M.000"))
-//    s57.layer("DEPARE")?.metaData()
+    val outDir = "${System.getenv("HOME")}/geojson"
+    s57.layers.forEach {
+        File("$outDir/${it.name}.json").writeText(it.geoJsonStr)
+    }
+
+//    println(s57.layer("DEPARE")?.geoJsonStr)
+//    println(s57.layer("LNDARE")?.geoJsonStr)
+    println(s57.layer("M_COVR")?.geoJsonStr)
 //    s57.layer("DSID")?.features?.forEachIndexed { i, feat ->
 //        println("feature num: ${i+1}")
 //        feat.fieldNames.forEach {
@@ -154,16 +161,16 @@ fun main() {
 //    }
 //
 //    println("datum: ${s57.datum}")
-    println("depths: ${s57.depths}")
-    println("updated: ${s57.updated}")
-    println("issue date: ${s57.issue_date}")
-    println("scale: ${s57.scale}")
+//    println("depths: ${s57.depths}")
+//    println("updated: ${s57.updated}")
+//    println("issue date: ${s57.issue_date}")
+//    println("scale: ${s57.scale}")
 //    println("outline wkt: ${s57.outline_wkt}")
-    println("outline json: ${s57.outline_json}")
+//    println("outline json: ${s57.outline_json}")
 //    println("outline extent: ${s57.extent}")
-    println("z : ${s57.z}")
-    println("min y : ${s57.min_y}")
-    println("max y : ${s57.max_y}")
-    println("min x : ${s57.min_x}")
-    println("max x : ${s57.max_x}")
+//    println("z : ${s57.z}")
+//    println("min y : ${s57.min_y}")
+//    println("max y : ${s57.max_y}")
+//    println("min x : ${s57.min_x}")
+//    println("max x : ${s57.max_x}")
 }

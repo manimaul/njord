@@ -1,5 +1,7 @@
 package io.madrona.njord.gis
 
+import mil.nga.sf.geojson.FeatureCollection
+import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.gdal.Dataset
 import org.gdal.ogr.Layer
 import java.lang.IllegalStateException
@@ -19,11 +21,25 @@ open class S57Layer(
         } while (feature != null)
         retVal
     }
+
+    val geoJson: FeatureCollection
+        get() = FeatureCollection().also { collection ->
+            collection.addFeatures(
+                    features.mapNotNull { s57Feature ->
+                        s57Feature.geoJson?.let { geoJsonStr ->
+                            mil.nga.sf.geojson.Feature().also { feature ->
+                                feature.geometry = FeatureConverter.toGeometry(geoJsonStr)
+                            }
+                        }
+                    }
+            )
+        }
+
+    val geoJsonStr : String
+        get() = FeatureConverter.toStringValue(geoJson)
 }
 
-class S57LayerDSID(
-        private val dsLayer: Layer
-) : S57Layer(dsLayer) {
+class S57LayerDSID(dsLayer: Layer) : S57Layer(dsLayer) {
 
     /**
      * 4.4 Units

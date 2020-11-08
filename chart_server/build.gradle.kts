@@ -14,6 +14,7 @@ dependencies {
     implementation("org.locationtech.jts:jts-core:1.16.1")
     implementation("com.google.guava:guava:29.0-jre")
     implementation("org.locationtech.proj4j:proj4j:1.1.1")
+    implementation("mil.nga.sf:sf-geojson:2.0.4")
 }
 
 tasks.named<JavaExec>("run") {

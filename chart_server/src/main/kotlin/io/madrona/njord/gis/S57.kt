@@ -134,15 +134,16 @@ class S57(srcFile: File) : FileEntry {
 
 
 fun main() {
+    val outDir = File("chart_server/src/main/resources/geojson")
+    outDir.mkdirs()
     val s57 = S57(File("${System.getenv("HOME")}/charts/ENC_ROOT/US5WA44M/US5WA44M.000"))
-    val outDir = "${System.getenv("HOME")}/geojson"
     s57.layers.forEach {
         File("$outDir/${it.name}.json").writeText(it.geoJsonStr)
     }
 
 //    println(s57.layer("DEPARE")?.geoJsonStr)
 //    println(s57.layer("LNDARE")?.geoJsonStr)
-    println(s57.layer("M_COVR")?.geoJsonStr)
+//    println(s57.layer("M_COVR")?.geoJsonStr)
 //    s57.layer("DSID")?.features?.forEachIndexed { i, feat ->
 //        println("feature num: ${i+1}")
 //        feat.fieldNames.forEach {

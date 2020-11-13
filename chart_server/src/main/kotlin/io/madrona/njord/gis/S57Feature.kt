@@ -36,7 +36,7 @@ open class S57Feature(
     }
 
     val fieldNames: List<String>
-        get() = fields.mapNotNull { it.name }
+        get() = fields.map { it.name }
 }
 
 class S57Field(

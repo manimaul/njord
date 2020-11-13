@@ -5,7 +5,6 @@ import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.gdal.Dataset
 import org.gdal.ogr.Layer
 import java.lang.IllegalStateException
-import java.util.AbstractMap
 
 open class S57Layer(
         private val dsLayer: Layer

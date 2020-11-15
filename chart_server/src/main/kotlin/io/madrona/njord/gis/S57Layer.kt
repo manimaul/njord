@@ -40,6 +40,8 @@ open class S57Layer(
         get() = FeatureConverter.toStringValue(geoJson)
 }
 
+//SOUNDG needs to be treated special
+
 class S57LayerDSID(dsLayer: Layer) : S57Layer(dsLayer) {
 
     /**

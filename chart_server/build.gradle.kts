@@ -19,5 +19,5 @@ dependencies {
 
 tasks.named<JavaExec>("run") {
 //    jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/osgeo-gdal/3.1.0_1/lib/")
-    jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/osgeo-gdal/3.1.0_1/lib/")
+//    jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/osgeo-gdal/3.1.0_1/lib/")
 }

@@ -14,3 +14,29 @@ sudo make install
  sudo mv rtl_ais /usr/local/bin
  sudo rtl_ais -P 10111 -n
 ```
+
+sudo vim /etc/modprobe.d/sdr-blacklist.conf
+"blacklist dvb_usb_rtl28xxu"
+
+/etc/systemd/system/rtlais.service
+```
+[Unit]
+Description=RTL AIS
+
+[Service]
+ExecStart=rtl_ais -T -n
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=rtlais
+Group=dialout
+
+[Install]
+WantedBy=default.target
+```
+
+check logs
+`journalctl -u rtlais -f`
+
+enable the service on boot
+`systemctl enable rtlais`

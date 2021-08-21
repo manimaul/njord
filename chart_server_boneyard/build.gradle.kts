@@ -12,8 +12,12 @@ application {
 
 dependencies {
     implementation(Deps.vial)
+    implementation(Deps.sqliteJdbc)
     implementation(Deps.gdal)
-    implementation(Deps.jacksonKotlin)
+    implementation(Deps.jtsCore)
+    implementation(Deps.guava)
+    implementation(Deps.proj4)
+    implementation(Deps.geojson)
 }
 
 tasks.named<JavaExec>("run") {

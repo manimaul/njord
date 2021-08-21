@@ -2,12 +2,13 @@ package io.madrona.njord.di
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import com.willkamp.vial.api.ServerInitializer
+import com.willkamp.vial.api.VialConfig
+import com.willkamp.vial.api.VialServer
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.madrona.njord.NmeaSerialSource
-import io.madrona.njord.NmeaServer
-import io.madrona.njord.NmeaTcpSource
+import io.madrona.njord.*
 import io.madrona.njord.ServerApp
 import javax.inject.Named
 import javax.inject.Singleton
@@ -21,8 +22,6 @@ internal interface AppComponent {
     fun inject(nmeaSource: NmeaSerialSource)
     fun inject(nmeaSource: NmeaTcpSource)
     fun inject(serverApp: ServerApp)
-
-    val nmeaServer: NmeaServer
 
     @Component.Builder
     interface Builder {
@@ -44,5 +43,15 @@ internal class ServerAppModule {
     @Named("njord")
     fun provideNjordConfig(@Named("root") config: Config): Config {
         return config.getConfig("njord")
+    }
+
+    @Provides
+    fun provideServer(channelInitializer: NjordChannelInitializer) : ServerInitializer {
+        return VialServer.customServer(channelInitializer)
+    }
+
+    @Provides
+    fun provideVialConfig() : VialConfig {
+        return VialConfig()
     }
 }

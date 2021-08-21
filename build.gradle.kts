@@ -1,17 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.71"
-    kotlin("kapt") version "1.3.71"
+    id("org.jetbrains.kotlin.jvm") version "1.5.21"
+    id("org.jetbrains.kotlin.kapt") version "1.5.21"
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
-
-val rxJavaVersion = "2.2.12"
-val daggerVersion = "2.24"
-val slf4jVersion = "1.7.25"
 
 allprojects {
 
@@ -19,7 +15,15 @@ allprojects {
     apply(plugin = "kotlin-kapt")
 
     repositories {
-        jcenter()
+        mavenLocal()
+        maven {
+            url = uri("https://maven.pkg.github.com/manimaul/vial")
+            credentials {
+                username = "${project.findProperty("github_user")}"
+                password = "${project.findProperty("github_token")}"
+            }
+        }
+        mavenCentral()
     }
 
     //https://kotlinlang.org/docs/reference/using-gradle.html#compiler-options
@@ -35,25 +39,16 @@ allprojects {
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
-        /* RxJava */
-        implementation("io.reactivex.rxjava2:rxjava:${rxJavaVersion}")
 
-        /* Logging */
-        implementation("org.slf4j:slf4j-api:${slf4jVersion}")
-
-        /* Dagger 2*/
-        implementation("com.google.dagger:dagger:${daggerVersion}")
-        kapt("com.google.dagger:dagger-compiler:${daggerVersion}")
-        kaptTest("com.google.dagger:dagger-compiler:${daggerVersion}")
     }
 }
 
-task("verifyBintrayConfig") {
-    val bintray_user: String? by project
-    val bintray_key: String? by project
+task("verifyConfig") {
+    val githubUser = project.findProperty("github_user")?.toString()
+    val githubToken = project.findProperty("github_token")?.toString()
     doLast {
-        println("bintray_user: ${if (bintray_user.isNullOrBlank()) "missing!" else bintray_user}")
-        println("bintray_key: ${if (bintray_key.isNullOrBlank()) "missing!" else "*****"}")
+        println("bintray_user: ${if (githubUser.isNullOrBlank()) "missing!" else githubUser}")
+        println("bintray_key: ${if (githubToken.isNullOrBlank()) "missing!" else "*****"}")
         println("version: ${project.version}")
         println("group: ${project.group}")
     }

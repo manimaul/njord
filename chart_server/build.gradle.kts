@@ -13,7 +13,6 @@ application {
 dependencies {
     implementation(Deps.vial)
     implementation(Deps.gdal)
-    implementation(Deps.jacksonKotlin)
 }
 
 tasks.named<JavaExec>("run") {

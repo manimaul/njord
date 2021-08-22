@@ -10,7 +10,7 @@ import org.gdal.gdal.gdal
 class TileJsonHandler(
         private val vialConfig: VialConfig
 ) : EndPointHandler {
-    override val route = "/v1/tileJson"
+    override val route = "/v1/tile_json"
 
     override fun handle(request: Request) {
         request.respondWith {

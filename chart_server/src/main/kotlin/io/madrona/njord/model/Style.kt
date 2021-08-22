@@ -11,7 +11,7 @@ data class Style(
        val sources: Map<String, Source> = mapOf(
                "src_senc" to Source()
        ),
-       val sprite: String = "http://localhost:9000/res/sprites/rastersymbols-day",
+        @JsonProperty("sprite") val spriteUrl: String, // "http://localhost:9000/res/sprites/rastersymbols-day"
        val version: Int = 8,
 )
 

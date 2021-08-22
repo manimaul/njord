@@ -5,18 +5,22 @@ import com.willkamp.vial.api.Request
 import io.madrona.njord.resourceBytes
 import io.netty.handler.codec.http.HttpResponseStatus
 
-private const val fontStack = "fontstack"
-private const val range = "range"
+private const val sprite = "sprite"
 
-class FontHandler : EndPointHandler {
-    override val route = "/v1/font/:$fontStack/:$range"
+class SpriteHandler : EndPointHandler {
+
+    override val route = "/v1/sprite/:$sprite"
 
     override fun handle(request: Request) {
-        request.pathParam(fontStack)?.let { fs ->
-            request.pathParam(range)?.let { rng ->
-                resourceBytes("/fonts/$fs/$rng")?.let {
+        request.pathParam(sprite)?.let { spriteName ->
+            resourceBytes("/sprites/$spriteName")?.let {
+                if (spriteName.endsWith(".json")) {
                     request.respondWith { builder ->
-                        builder.setBodyData("application/x-protobuf", it)
+                        builder.setBodyData("application/json", it)
+                    }
+                } else if (spriteName.endsWith(".png")) {
+                    request.respondWith { builder ->
+                        builder.setBodyData("image/png", it)
                     }
                 }
             }

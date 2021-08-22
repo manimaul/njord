@@ -14,14 +14,5 @@ data class TileJson(
         val minzoom: Float = 0F,
         val scheme: String = "xyz",
         val tilejson: String = "2.2.0",
-        val tiles: List<String> = listOf(
-                "http://localhost:9000/v1/tile/{z}/{x}/{y}"
-        )
+        val tiles: List<String> = emptyList() // "http://localhost:9000/v1/tile/{z}/{x}/{y}"
 )
-
-fun tileJson(vararg hosts: String) = TileJson(
-        tiles = hosts.map {
-            "https://${it}/v1/tile/{z}/{x}/{y}"
-        }
-)
-

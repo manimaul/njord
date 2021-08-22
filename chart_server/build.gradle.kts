@@ -11,6 +11,7 @@ application {
 }
 
 dependencies {
+    implementation(project(":common"))
     implementation(Deps.vial)
     implementation(Deps.gdal)
 }

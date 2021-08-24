@@ -4,6 +4,8 @@ import com.willkamp.vial.api.EndPointHandler
 import com.willkamp.vial.api.Request
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.ext.letFromStrings
+import io.madrona.njord.layers.Background
+import io.madrona.njord.layers.Seaare
 import io.madrona.njord.model.*
 import io.netty.handler.codec.http.HttpResponseStatus
 
@@ -19,15 +21,30 @@ class StyleHandler(
         letFromStrings(request.pathParam(color), request.pathParam(depth)) { color: StyleColor, depth: Depth ->
             val name = "${color.name.toLowerCase()}-${depth.name.toLowerCase()}"
             request.respondWith {
-                it.setBodyJson(Style(
+                it.setBodyJson(
+                    Style(
                         name = name,
                         glyphsUrl = "${config.externalBaseUrl}/v1/font/{fontstack}/{range}.pbf",
-                        spriteUrl = "${config.externalBaseUrl}/sprites/rastersymbols-${color.name.toLowerCase()}"
-                ))
+                        spriteUrl = "${config.externalBaseUrl}/sprites/rastersymbols-${color.name.toLowerCase()}",
+                        sources = mapOf(
+                            "src_senc" to Source(
+                                type = SourceType.VECTOR,
+                                tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
+                            )
+                        ),
+
+                        layers = sequenceOf(
+                                Background.layers(),
+                                Seaare.layers(color)
+                        ).flatten().toList(),
+                        version = 8
+                    )
+                )
             }
         } ?: request.respondWith {
-            it.setStatus(HttpResponseStatus.NOT_FOUND)
-                    .setBodyText("not found")
+            it.setStatus(HttpResponseStatus.NOT_FOUND).setBodyText("not found")
         }
     }
+
+
 }

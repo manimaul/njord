@@ -17,8 +17,8 @@ dependencies {
     api(Deps.rxJava)
     api(Deps.slf4j)
     api(Deps.dagger)
-    kapt(Deps.daggerCompiler)
-    kaptTest(Deps.daggerCompiler)
+    //kapt(Deps.daggerCompiler)
+    //kaptTest(Deps.daggerCompiler)
 }
 
 publishing {

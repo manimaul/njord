@@ -5,6 +5,8 @@ import com.willkamp.vial.api.Request
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.ext.letFromStrings
 import io.madrona.njord.layers.Background
+import io.madrona.njord.layers.Depare
+import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.layers.Seaare
 import io.madrona.njord.model.*
 import io.netty.handler.codec.http.HttpResponseStatus
@@ -13,7 +15,8 @@ private const val color = "color"
 private const val depth = "depth"
 
 class StyleHandler(
-        private val config: ChartsConfig
+        private val config: ChartsConfig,
+        private val layerFactory: LayerFactory = LayerFactory()
 ) : EndPointHandler {
     override val route = "/v1/style/:$color/:$depth"
 
@@ -33,10 +36,7 @@ class StyleHandler(
                             )
                         ),
 
-                        layers = sequenceOf(
-                                Background.layers(),
-                                Seaare.layers(color)
-                        ).flatten().toList(),
+                        layers = layerFactory.layers(color),
                         version = 8
                     )
                 )

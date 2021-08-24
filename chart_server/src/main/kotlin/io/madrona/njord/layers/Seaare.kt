@@ -8,7 +8,7 @@ object Seaare {
                 Layer(
                         id = "SEAARE_fill",
                         paint = Paint(
-                                fillColor = ColorLibrary.colorMap.legendFrom(color)["CHWHT"]
+                                fillColor = color.from("CHWHT")
                         ),
                         source = "src_senc",
                         sourceLayer = "SEAARE",

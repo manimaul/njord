@@ -24,3 +24,5 @@ data class Colors(
         StyleColor.DARK -> library["NIGHT"]!!
     }
 }
+
+fun StyleColor.from(key: String) = ColorLibrary.colorMap.legendFrom(this).get(key)

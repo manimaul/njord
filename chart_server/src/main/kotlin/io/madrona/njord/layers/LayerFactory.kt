@@ -2,11 +2,15 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.StyleColor
 
-class LayerFactory {
+class LayerFactory(
+        private val layerables: Sequence<Layerable> = sequenceOf(
+                Background(),
+                Seaare(),
+                Depare(),
+        )
+) {
 
-    fun layers(color: StyleColor) = sequenceOf(
-            Background.layers(),
-            Seaare.layers(color),
-            Depare.layers(color)
-    ).flatten().toList()
+    fun layers(color: StyleColor) = layerables.map {
+        it.layers(color)
+    }.flatten().toList()
 }

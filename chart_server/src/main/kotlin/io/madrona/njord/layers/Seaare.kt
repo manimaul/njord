@@ -2,11 +2,12 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-object Seaare {
-    fun layers(color: StyleColor): Sequence<Layer> {
+class Seaare : Layerable {
+    override val key = "SEAARE"
+    override fun layers(color: StyleColor): Sequence<Layer> {
         return sequenceOf(
                 Layer(
-                        id = "SEAARE_fill",
+                        id = "${key}_fill",
                         paint = Paint(
                                 fillColor = color.from("CHWHT")
                         ),
@@ -15,7 +16,7 @@ object Seaare {
                         type = LayerType.FILL
                 ),
 //                Layer(
-//                        id = "SEAARE_point",
+//                        id = "${key}_point",
 //                        type = LayerType.SYMBOL,
 //                        source = "src_senc",
 //                        sourceLayer = "SEAARE",

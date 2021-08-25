@@ -4,10 +4,7 @@ import com.willkamp.vial.api.EndPointHandler
 import com.willkamp.vial.api.Request
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.ext.letFromStrings
-import io.madrona.njord.layers.Background
-import io.madrona.njord.layers.Depare
-import io.madrona.njord.layers.LayerFactory
-import io.madrona.njord.layers.Seaare
+import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
 import io.netty.handler.codec.http.HttpResponseStatus
 
@@ -30,13 +27,13 @@ class StyleHandler(
                         glyphsUrl = "${config.externalBaseUrl}/v1/font/{fontstack}/{range}.pbf",
                         spriteUrl = "${config.externalBaseUrl}/sprites/rastersymbols-${color.name.toLowerCase()}",
                         sources = mapOf(
-                            "src_senc" to Source(
+                            Source.SENC to Source(
                                 type = SourceType.VECTOR,
                                 tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
                             )
                         ),
 
-                        layers = layerFactory.layers(color),
+                        layers = layerFactory.layers(LayerableOptions(color, depth)),
                         version = 8
                     )
                 )

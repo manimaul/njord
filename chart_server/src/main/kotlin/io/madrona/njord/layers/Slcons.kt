@@ -2,10 +2,21 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Slcons {
-    fun layers(color: StyleColor): Sequence<Layer> {
-        return sequenceOf(
+class Slcons : Layerable {
+    override val key = "SLCONS"
 
+    override fun layers(options: LayerableOptions): Sequence<Layer> {
+        return sequenceOf(
+                Layer(
+                        id = "${key}_line",
+                        type = LayerType.LINE,
+                        sourceLayer = key,
+                        filter = listOf(Filters.all),
+                        paint = Paint(
+                                lineColor = options.color.from("CSTLN"),
+                                lineWidth = 1f
+                        )
+                )
         )
     }
 }

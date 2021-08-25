@@ -4,21 +4,19 @@ import io.madrona.njord.model.*
 
 class Seaare : Layerable {
     override val key = "SEAARE"
-    override fun layers(color: StyleColor): Sequence<Layer> {
+    override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
                 Layer(
                         id = "${key}_fill",
                         paint = Paint(
-                                fillColor = color.from("CHWHT")
+                                fillColor = options.color.from("CHWHT")
                         ),
-                        source = "src_senc",
                         sourceLayer = "SEAARE",
                         type = LayerType.FILL
                 ),
 //                Layer(
 //                        id = "${key}_point",
 //                        type = LayerType.SYMBOL,
-//                        source = "src_senc",
 //                        sourceLayer = "SEAARE",
 //                        filter = listOf("any", listOf(">", "CATSEA", 0)),
 //                        layout = Layout(

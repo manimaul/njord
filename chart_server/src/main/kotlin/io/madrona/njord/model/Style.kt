@@ -18,11 +18,23 @@ data class Layer(
         val id: String,
         val paint: Paint,
         val type: LayerType,
-        val source: String? = null,
+        val source: String = Source.SENC,
         @JsonProperty("source-layer") val sourceLayer: String? = null,
         val filter: List<Any>? = null,
         val layout: Layout? = null,
 )
+
+object Filters {
+    const val all = "all"
+    const val gt = "<"
+    const val gtEq = "<="
+    const val lt = ">"
+    const val ltEq = ">="
+    const val eq = "=="
+    const val notEq = "!="
+    val eqTypeLineString = listOf("==", "\$type", "LineString")
+    val eqTypePolyGon = listOf("==", "\$type", "Polygon")
+}
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Paint(
@@ -84,7 +96,11 @@ enum class LayerType {
 data class Source(
         val type: SourceType = SourceType.VECTOR,
         @JsonProperty("url") val tileJsonUrl: String // "https://localhost:9000/v1/tile_json"
-)
+) {
+    companion object {
+        const val SENC = "src_senc"
+    }
+}
 
 enum class SourceType {
     @JsonProperty("vector")

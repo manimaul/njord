@@ -7,10 +7,15 @@ class LayerFactory(
                 Background(),
                 Seaare(),
                 Depare(),
+                Depcnt(),
+                Slcons(),
+                Ponton(),
+                Hulkes(),
+                Lndare()
         )
 ) {
 
-    fun layers(color: StyleColor) = layerables.map {
-        it.layers(color)
+    fun layers(options: LayerableOptions) = layerables.map {
+        it.layers(options)
     }.flatten().toList()
 }

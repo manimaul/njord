@@ -25,4 +25,5 @@ data class Colors(
     }
 }
 
-fun StyleColor.from(key: String) = ColorLibrary.colorMap.legendFrom(this).get(key)
+fun StyleColor.from(key: String): String = ColorLibrary.colorMap.legendFrom(this)[key]
+        ?: throw RuntimeException("color key not found $key")

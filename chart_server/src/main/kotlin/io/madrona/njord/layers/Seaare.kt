@@ -2,6 +2,24 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * Sea Area, SEAARE
+ * Geometric primitives: Point, Area
+ *
+ * Set Attribute_A: 	(!?)CATSEA; NOBJNM; (!?)OBJNAM;
+ * Set Attribute_B: 	INFORM; NINFOM; NTXTDS; SCAMAX; SCAMIN; TXTDSC;
+ * Set Attribute_C: 	RECDAT; RECIND; SORDAT; SORIND;
+ *
+ * Definition:
+ * A geographically defined part of the sea or other navigable waters. It may be specified within its limits by its proper name.
+ * References
+ * INT 1:	not specified;
+ * S-4:	not specified;
+ * Remarks:
+ * Each sea area is defined independent of any other. Smaller sea areas may be located within larger sea areas.
+ * Distinction:
+ * depth area; seabed area;
+ */
 class Seaare : Layerable {
     override val key = "SEAARE"
     override fun layers(options: LayerableOptions): Sequence<Layer> {

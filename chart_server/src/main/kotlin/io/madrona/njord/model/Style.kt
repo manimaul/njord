@@ -34,11 +34,12 @@ object Filters {
     const val notEq = "!="
     val eqTypeLineString = listOf("==", "\$type", "LineString")
     val eqTypePolyGon = listOf("==", "\$type", "Polygon")
+    val eqTypePoint = listOf("==", "\$type", "Point")
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Paint(
-        @JsonProperty("text-color") val textColor: String? = null,
+        @JsonProperty("text-color") val textColor: List<Any>? = null,
         @JsonProperty("text-halo-color") val textHaloColor: String? = null,
         @JsonProperty("text-halo-width") val textHaloWidth: Float? = null,
         @JsonProperty("background-color") val backgroundColor: String? = null,
@@ -54,6 +55,7 @@ data class Layout(
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
         @JsonProperty("text-justify") val textJustify: Anchor? = null,
         @JsonProperty("text-field") val textField: List<Any>? = null,
+        @JsonProperty("text-offset") val textOffset: List<Float>? = null,
         @JsonProperty("text-allow-overlap") val textAllowOverlap: Boolean? = null,
         @JsonProperty("text-ignore-placement") val textIgnorePlacement: Boolean? = null,
         @JsonProperty("text-max-width") val textMaxWidthEms: Float? = null,
@@ -68,6 +70,8 @@ enum class Placement {
 
 enum class Anchor {
     @JsonProperty("center") CENTER,
+    @JsonProperty("bottom-right") BOTTOM_RIGHT,
+    @JsonProperty("top-left") TOP_LEFT,
 }
 
 enum class Font {

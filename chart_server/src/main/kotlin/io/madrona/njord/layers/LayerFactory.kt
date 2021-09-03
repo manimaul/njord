@@ -11,7 +11,10 @@ class LayerFactory(
                 Slcons(),
                 Ponton(),
                 Hulkes(),
-                Lndare()
+                Lndare(),
+                Soundg(),
+                Boyspp(),
+                Lights()
         )
 ) {
 

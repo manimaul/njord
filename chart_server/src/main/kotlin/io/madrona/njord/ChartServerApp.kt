@@ -21,12 +21,11 @@ class ChartServerApp {
             // curl http://localhost:9000/v1/style/day/meters | jq
             addHandler(StyleHandler(config))
 
-            // curl -v "http://localhost:9000/v1/font/Roboto Bold/0-255.pbf"
-            addHandler(FontHandler())
-
-            // curl http://localhost:9000/v1/sprite/rastersymbols-day.json | jq
-            // curl http://localhost:9000/v1/sprite/rastersymbols-day.png
-            addHandler(SpriteHandler())
+            // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"
+            // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.json | jq
+            // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.png
+            // http://localhost:9000/v1/content/upload.html
+            addHandler(StaticContentHandler())
         }.listenAndServeBlocking()
     }
 }

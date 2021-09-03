@@ -24,8 +24,8 @@ class StyleHandler(
                 it.setBodyJson(
                     Style(
                         name = name,
-                        glyphsUrl = "${config.externalBaseUrl}/v1/font/{fontstack}/{range}.pbf",
-                        spriteUrl = "${config.externalBaseUrl}/sprites/rastersymbols-${color.name.toLowerCase()}",
+                        glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
+                        spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/rastersymbols-${color.name.toLowerCase()}",
                         sources = mapOf(
                             Source.SENC to Source(
                                 type = SourceType.VECTOR,

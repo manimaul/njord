@@ -36,7 +36,7 @@ class Soundg : Layerable {
                     type = LayerType.SYMBOL,
                     sourceLayer = key,
                     filter = listOf(
-                            "any", Filters.eqTypePoint
+                            Filters.any, Filters.eqTypePoint
                     ),
                     layout = Layout(
                             textFont = listOf(Font.ROBOTO_BOLD),
@@ -50,7 +50,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf("<=", listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
                                     color.from("SNDG2"),
                                     color.from("SNDG1")
                             ),
@@ -63,9 +63,9 @@ class Soundg : Layerable {
                     type = LayerType.SYMBOL,
                     sourceLayer = key,
                     filter = listOf(
-                            "any",
+                            Filters.any,
                             Filters.eqTypePoint,
-                            listOf("!=", "FATHOMS_FT", 0)
+                            listOf(Filters.notEq, "FATHOMS_FT", 0)
                     ),
                     layout = Layout(
                             textFont = listOf(Font.ROBOTO_BOLD),
@@ -80,7 +80,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf("<=", listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
                                     color.from("SNDG2"),
                                     color.from("SNDG1")
                             )
@@ -108,7 +108,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf("<=", listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
                                     color.from("SNDG2"),
                                     color.from("SNDG1")
                             ),

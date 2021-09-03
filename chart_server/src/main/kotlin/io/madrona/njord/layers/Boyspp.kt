@@ -1,6 +1,30 @@
 package io.madrona.njord.layers
 
+import com.fasterxml.jackson.annotation.JsonValue
 import io.madrona.njord.model.*
+
+/**
+ * BOYSHP
+ * ID	Meaning	INT 1	S-4
+ * 1	conical (nun, ogival)	IQ 20;	462.2
+ * 2	can (cylindrical)	IQ 21;	462.3
+ * 3	spherical	IQ 22;	462.4
+ * 4	pillar	IQ 23;	462.5
+ * 5	spar (spindle)	IQ 24;	462.6
+ * 6	barrel (tun)	IQ 25;	462.7
+ * 7	super-buoy	IQ 26;	462.9
+ * 8	ice buoy
+ */
+enum class Boyshp(@get:JsonValue val code: Int) {
+    Conical(1),
+    Can(2),
+    Spherical(3),
+    Pillar(4),
+    Spar(5),
+    Barrel(6),
+    SuperBuoy(7),
+    IceBuoy(8),
+}
 
 /**
  * BOYSPP, Buoy Special Purpose / General
@@ -25,7 +49,19 @@ import io.madrona.njord.model.*
 class Boyspp : Layerable {
     override val key = "BOYSPP"
 
-    override fun layers(options: LayerableOptions) = sequenceOf<Layer>(
-
+    override fun layers(options: LayerableOptions) = sequenceOf(
+            Layer(
+                    id = "${key}_point",
+                    type = LayerType.SYMBOL,
+                    sourceLayer = key,
+                    filter = listOf(Filters.any, Filters.eqTypePoint),
+                    layout = Layout(
+                            symbolPlacement = Placement.POINT,
+                            iconImage = listOf("GET", "SY"),
+                            iconAnchor = Anchor.BOTTOM,
+                            iconAllowOverlap = true,
+                            iconKeepUpright = true,
+                    )
+            )
     )
 }

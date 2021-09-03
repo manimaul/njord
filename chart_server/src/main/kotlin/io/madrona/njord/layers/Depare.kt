@@ -38,7 +38,7 @@ class Depare : Layerable {
                         filter = listOf(
                                 Filters.all,
                                 Filters.eqTypePolyGon,
-                                listOf("<=", "DRVAL1", 9)
+                                listOf(Filters.gtEq, "DRVAL1", 9)
                         )
                 ),
                 Layer(
@@ -51,7 +51,7 @@ class Depare : Layerable {
                         filter = listOf(
                                 Filters.all,
                                 Filters.eqTypePolyGon,
-                                listOf("<=", "DRVAL1", 3.0)
+                                listOf(Filters.gtEq, "DRVAL1", 3.0)
                         )
                 ),
                 Layer(
@@ -64,8 +64,8 @@ class Depare : Layerable {
                         filter = listOf(
                                 Filters.all,
                                 Filters.eqTypePolyGon,
-                                listOf("<", "DRVAL1", 0.0),
-                                listOf("<=", "DRVAL2", 0.0),
+                                listOf(Filters.gt, "DRVAL1", 0.0),
+                                listOf(Filters.gtEq, "DRVAL2", 0.0),
                         )
                 ),
                 Layer(

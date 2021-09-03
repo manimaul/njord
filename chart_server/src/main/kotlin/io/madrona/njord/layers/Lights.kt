@@ -23,7 +23,19 @@ import io.madrona.njord.model.*
 class Lights : Layerable {
     override val key = "LIGHTS"
 
-    override fun layers(options: LayerableOptions) = sequenceOf<Layer>(
-
+    override fun layers(options: LayerableOptions) = sequenceOf(
+            Layer(
+                    id = "lights",
+                    type = LayerType.SYMBOL,
+                    sourceLayer = key,
+                    filter = listOf(Filters.any, Filters.eqTypePoint),
+                    layout = Layout(
+                            iconImage = listOf("get", "SY"),
+                            iconKeepUpright = true,
+                            iconAnchor = Anchor.TOP_LEFT,
+                            iconAllowOverlap = true,
+                            symbolPlacement = Placement.POINT
+                    )
+            )
     )
 }

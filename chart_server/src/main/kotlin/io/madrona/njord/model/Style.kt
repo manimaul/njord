@@ -16,7 +16,7 @@ data class Style(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Layer(
         val id: String,
-        val paint: Paint,
+        val paint: Paint? = null,
         val type: LayerType,
         val source: String = Source.SENC,
         @JsonProperty("source-layer") val sourceLayer: String? = null,
@@ -25,6 +25,7 @@ data class Layer(
 )
 
 object Filters {
+    const val any = "any"
     const val all = "all"
     const val gt = "<"
     const val gtEq = "<="
@@ -51,6 +52,10 @@ data class Paint(
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Layout(
+        @JsonProperty("icon-image") val iconImage: List<Any>? = null,
+        @JsonProperty("icon-anchor") val iconAnchor: Anchor? = null,
+        @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean =  true,
+        @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean =  true,
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
         @JsonProperty("text-justify") val textJustify: Anchor? = null,
@@ -70,8 +75,11 @@ enum class Placement {
 
 enum class Anchor {
     @JsonProperty("center") CENTER,
+    @JsonProperty("bottom-left") BOTTOM_LEFT,
     @JsonProperty("bottom-right") BOTTOM_RIGHT,
+    @JsonProperty("bottom") BOTTOM,
     @JsonProperty("top-left") TOP_LEFT,
+    @JsonProperty("top-right") TOP_RIGHT,
 }
 
 enum class Font {

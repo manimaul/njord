@@ -26,6 +26,11 @@ class ChartServerApp {
             // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.png
             // http://localhost:9000/v1/content/upload.html
             addHandler(StaticContentHandler())
+
+            // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
+            addHandler(EncSaveHandler(config))
+
+            addHandler(ChartWebSocketHandler())
         }.listenAndServeBlocking()
     }
 }

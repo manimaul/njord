@@ -6,13 +6,16 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.madrona.njord.ChartsConfig
+import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.logger
 import io.madrona.njord.model.EncUpload
 import java.io.File
 import java.util.*
 
-class EncSaveHandler(config: ChartsConfig) : KtorHandler {
+class EncSaveHandler(
+    config: ChartsConfig = Singletons.config
+) : KtorHandler {
     override val route = "/v1/enc_save"
     private val log = logger()
     private val charDir = config.chartTempData
@@ -35,13 +38,16 @@ class EncSaveHandler(config: ChartsConfig) : KtorHandler {
                         files.add(fileName)
                         File(tempDir, fileName).writeBytes(fileBytes)
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
-            call.respond(EncUpload(
-                files = files,
-                uuid = uuid
-            ))
+            call.respond(
+                EncUpload(
+                    files = files,
+                    uuid = uuid
+                )
+            )
         } else {
             call.respond(HttpStatusCode.InternalServerError)
         }

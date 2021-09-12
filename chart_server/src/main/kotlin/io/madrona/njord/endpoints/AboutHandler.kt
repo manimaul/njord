@@ -6,7 +6,6 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.About
 import org.gdal.gdal.gdal
 
-
 class AboutHandler : KtorHandler {
     override val route = "/v1/about"
 

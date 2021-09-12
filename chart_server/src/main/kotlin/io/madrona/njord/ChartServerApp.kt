@@ -13,28 +13,19 @@ import io.ktor.websocket.*
 import io.madrona.njord.endpoints.*
 import org.gdal.gdal.gdal
 import io.madrona.njord.ext.addHandlers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import java.time.Duration
 
-val objectMapper: JsonMapper by lazy {
-    jsonMapper {
-        addModule(kotlinModule())
-    }
-}
 
 class ChartServerApp {
     fun serve() {
         gdal.AllRegister()
         gdal.SetConfigOption("OGR_S57_OPTIONS", "LNAM_REFS:ON,UPDATES:ON,SPLIT_MULTIPOINT:ON,PRESERVE_EMPTY_NUMBERS:ON,RETURN_LINKAGES:ON")
 
-        val config = ChartsConfig()
-        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
         embeddedServer(Netty, port = 9000, host = "0.0.0.0") {
             install(ContentNegotiation) {
                 jackson {
-                    objectMapper
+                    Singletons.objectMapper
                 }
             }
             install(WebSockets) {
@@ -48,10 +39,10 @@ class ChartServerApp {
                 AboutHandler(),
 
                 // curl http://localhost:9000/v1/tile_json | jq
-                TileJsonHandler(config),
+                TileJsonHandler(),
 
                 // curl http://localhost:9000/v1/style/day/meters | jq
-                StyleHandler(config),
+                StyleHandler(),
 
                 // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"
                 // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.json | jq
@@ -60,9 +51,9 @@ class ChartServerApp {
                 StaticContentHandler(),
 
                 // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
-                EncSaveHandler(config),
+                EncSaveHandler(),
 
-                ChartWebSocketHandler(scope),
+                ChartWebSocketHandler(),
             )
         }.start(wait = true)
     }

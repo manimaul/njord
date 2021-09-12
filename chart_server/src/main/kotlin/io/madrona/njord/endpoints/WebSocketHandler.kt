@@ -3,14 +3,18 @@ package io.madrona.njord.endpoints
 import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
 import io.ktor.websocket.*
+import io.madrona.njord.ChartsConfig
+import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.logger
 import kotlinx.coroutines.*
 
 class ChartWebSocketHandler(
-    private val scope: CoroutineScope
+    config: ChartsConfig = Singletons.config,
+    private val scope: CoroutineScope = Singletons.ioScope
 ) : KtorWebsocket {
     private val log = logger()
+    private val charDir = config.chartTempData
     override val route = "/v1/ws/enc_process"
 
     override suspend fun handle(ws: DefaultWebSocketServerSession) {

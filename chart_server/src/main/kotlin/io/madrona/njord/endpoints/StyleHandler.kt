@@ -4,14 +4,15 @@ import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.madrona.njord.ChartsConfig
+import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.letFromStrings
 import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
 
 class StyleHandler(
-        private val config: ChartsConfig,
-        private val layerFactory: LayerFactory = LayerFactory()
+    private val config: ChartsConfig = Singletons.config,
+    private val layerFactory: LayerFactory = LayerFactory()
 ) : KtorHandler {
     override val route = "/v1/style/{color}/{depth}"
 

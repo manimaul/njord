@@ -10,10 +10,22 @@ application {
     mainClass.set("io.madrona.njord.ChartServerAppKt")
 }
 
+
 dependencies {
     implementation(project(":common"))
-    implementation(Deps.vial)
+    implementation(Deps.ktorNetty)
+    implementation(Deps.ktorCore)
+    implementation(Deps.ktorLocations)
+    implementation(Deps.ktorWebsockets)
+    implementation(Deps.ktorHostCommon)
+    implementation(Deps.ktorJackson)
+    implementation(Deps.logBack)
     implementation(Deps.gdal)
+
+    testImplementation(platform(Deps.jupiterBom))
+    testImplementation(Deps.jupiter)
+    testImplementation(Deps.mockito)
+    testImplementation(Deps.hamcrest)
 }
 
 tasks.named<JavaExec>("run") {

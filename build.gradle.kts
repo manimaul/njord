@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.5.21"
-    id("org.jetbrains.kotlin.kapt") version "1.5.21"
+    kotlin("jvm") version "1.5.30"
+    kotlin("kapt") version "1.5.30"
 }
 
 repositories {

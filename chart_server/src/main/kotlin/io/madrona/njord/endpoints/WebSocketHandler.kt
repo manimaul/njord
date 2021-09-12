@@ -1,21 +1,38 @@
 package io.madrona.njord.endpoints
 
-import com.willkamp.vial.api.WebSocket
-import com.willkamp.vial.api.WebSocketHandler
+import io.ktor.http.cio.websocket.*
+import io.ktor.util.*
+import io.ktor.websocket.*
+import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.logger
+import kotlinx.coroutines.*
 
-class ChartWebSocketHandler : WebSocketHandler {
-    val log = logger()
+class ChartWebSocketHandler(
+    private val scope: CoroutineScope
+) : KtorWebsocket {
+    private val log = logger()
     override val route = "/v1/ws/enc_process"
 
-    override fun handle(ws: WebSocket) {
-        log.info("ws uri = ${ws.uri}")
-        log.info("ws query keys = ${ws.queryKeys()}")
-        ws.receiveText {
-            log.info("ws received $it")
+    override suspend fun handle(ws: DefaultWebSocketServerSession) {
+        log.info("ws uri = ${ws.call.url()}")
+        log.info("ws query keys = ${ws.call.request.queryParameters.names()}")
+        ws.send("1")
+        ws.send("2")
+
+        scope.launch {
+            delay(5000)
+            ws.close()
         }
-        ws.sendText("1")
-        ws.sendText("2")
-        ws.sendText("3")
+
+        ws.send("3")
+
+        for (frame in ws.incoming) {
+            when (frame) {
+                is Frame.Text -> {
+                    log.info("ws received ${frame.readText()}")
+                }
+                else -> {}
+            }
+        }
     }
 }

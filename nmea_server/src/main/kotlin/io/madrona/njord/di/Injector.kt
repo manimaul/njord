@@ -13,7 +13,7 @@ import io.madrona.njord.ServerApp
 import javax.inject.Named
 import javax.inject.Singleton
 
-internal val injector: AppComponent = DaggerAppComponent.builder().build()
+internal val injector: AppComponent = TODO() //DaggerAppComponent.builder().build()
 
 @Singleton
 @Component(modules = [ServerAppModule::class])

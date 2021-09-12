@@ -1,21 +1,21 @@
 package io.madrona.njord.endpoints
 
-import com.willkamp.vial.api.EndPointHandler
-import com.willkamp.vial.api.Request
+import io.ktor.application.*
+import io.ktor.response.*
+import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.About
 import org.gdal.gdal.gdal
 
-class AboutHandler : EndPointHandler {
+
+class AboutHandler : KtorHandler {
     override val route = "/v1/about"
 
-    override fun handle(request: Request) {
-        request.respondWith {
-            it.setBodyJson(
-                About(
-                    version = "1.0",
-                    gdalVersion = gdal.VersionInfo() ?: "NONE"
-                )
+    override suspend fun handle(call: ApplicationCall) {
+        call.respond(
+            About(
+                version = "1.0",
+                gdalVersion = gdal.VersionInfo() ?: "NONE"
             )
-        }
+        )
     }
 }

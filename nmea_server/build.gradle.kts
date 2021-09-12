@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(Deps.vial)
+    implementation(Deps.dagger)
     implementation(Deps.rxtx)
     implementation(project(":common"))
     implementation(project(":nmea_client"))

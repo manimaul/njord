@@ -3,11 +3,11 @@ package io.madrona.njord.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.MapSerializer
-import com.willkamp.vial.api.VialServer
+import io.madrona.njord.objectMapper
 
 object ColorLibrary {
-    val colorMap by lazy {
-        VialServer.jsonMapper.readValue(javaClass.getResourceAsStream("/colors.json"), Colors::class.java)
+    val colorMap: Colors by lazy {
+        objectMapper.readValue(javaClass.getResourceAsStream("/colors.json"), Colors::class.java)
     }
 
     const val black = "#000"

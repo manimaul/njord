@@ -1,8 +1,5 @@
 package io.madrona.njord
 
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.module.kotlin.jsonMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.cio.websocket.*

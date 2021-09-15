@@ -21,6 +21,7 @@ dependencies {
     implementation(Deps.ktorJackson)
     implementation(Deps.logBack)
     implementation(Deps.gdal)
+    implementation(Deps.geojson)
 
     testImplementation(platform(Deps.jupiterBom))
     testImplementation(Deps.jupiter)

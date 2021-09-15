@@ -7,6 +7,7 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.ext.letTwo
+import io.madrona.njord.geo.S57
 import io.madrona.njord.logger
 import io.madrona.njord.model.EncUpload
 import kotlinx.coroutines.*
@@ -47,12 +48,20 @@ class ChartWebSocketHandler(
     }
 
     private suspend fun DefaultWebSocketServerSession.processFiles(encUpload: EncUpload) {
-        unzipFiles(encUpload)
-        // todo: process with gdal
+        encUpload.uuidDir()?.let { dir ->
+            unzipFiles(encUpload).filter {
+                it.name.endsWith(".000")
+            }.map {
+                S57(it)
+            }.forEach {
+                it.renderGeoJson(dir)
+            }
+        }
         close()
     }
 
-    private suspend fun DefaultWebSocketServerSession.unzipFiles(encUpload: EncUpload) {
+    private suspend fun DefaultWebSocketServerSession.unzipFiles(encUpload: EncUpload) : List<File> {
+        val retVal = mutableListOf<File>()
         letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
             files.forEach { zipFile ->
                 ZipFile(zipFile).use { zip ->
@@ -72,6 +81,7 @@ class ChartWebSocketHandler(
                                     outFile.outputStream().use { output ->
                                         input.copyTo(output)
                                     }
+                                    retVal.add(outFile)
                                 }
                             }
                         }
@@ -79,6 +89,7 @@ class ChartWebSocketHandler(
                 }
             }
         }
+        return retVal
     }
 
     private fun EncUpload.cacheFiles()  : List<File> {

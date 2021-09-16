@@ -8,17 +8,12 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.websocket.*
 import io.madrona.njord.endpoints.*
-import org.gdal.gdal.gdal
 import io.madrona.njord.ext.addHandlers
 import java.time.Duration
 
 
 class ChartServerApp {
     fun serve() {
-        gdal.AllRegister()
-        gdal.SetConfigOption("OGR_S57_OPTIONS", "LNAM_REFS:ON,UPDATES:ON,SPLIT_MULTIPOINT:ON,PRESERVE_EMPTY_NUMBERS:ON,RETURN_LINKAGES:ON")
-
-
         embeddedServer(Netty, port = 9000, host = "0.0.0.0") {
             install(ContentNegotiation) {
                 jackson {

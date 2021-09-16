@@ -20,32 +20,31 @@ class S57(
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
 ) {
-
     private val dataSet: Dataset
 
     init {
         dataSet = gdal.OpenEx(file.absolutePath)
     }
 
-    val layerNames: Set<String> by lazy {
-        layerGeoJson.keys
-    }
-
-    val layerGeoJson: Map<String, FeatureCollection> by lazy {
-        dataSet.layers().fold(mutableMapOf()) { acc, layer ->
+    private fun layerGeoJsonSequence() : Sequence<Pair<String, FeatureCollection>> {
+        return dataSet.layers().mapNotNull { layer ->
             val name = layer.GetName()
             if (inLayers == null || inLayers.contains(name)) {
-                acc[layer.GetName()] = layer.featureCollection()
+                name to layer.featureCollection()
+            } else {
+                null
             }
-            acc
         }
     }
 
     fun renderGeoJson(
-        outDir: File
+        outDir: File,
+        msg: (String) -> Unit
     ) {
-        layerGeoJson.forEach {
-            objectMapper.writeValue(File(outDir, "${it.key}.json"), it.value)
+        layerGeoJsonSequence().forEach {
+            val name = "${it.first}.json"
+            msg(name)
+            objectMapper.writeValue(File(outDir, name), it.second)
         }
     }
 
@@ -116,9 +115,15 @@ class S57(
         }
     }
 
-    fun Geometry.geoJson(): String? {
+    private fun Geometry.geoJson(): String? {
         wgs84()
         return ExportToJson()
     }
-}
 
+    companion object {
+        init {
+            gdal.AllRegister()
+            gdal.SetConfigOption("OGR_S57_OPTIONS", "LNAM_REFS:ON,UPDATES:ON,SPLIT_MULTIPOINT:ON,PRESERVE_EMPTY_NUMBERS:ON,RETURN_LINKAGES:ON")
+        }
+    }
+}

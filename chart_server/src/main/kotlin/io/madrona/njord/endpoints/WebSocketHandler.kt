@@ -52,9 +52,14 @@ class ChartWebSocketHandler(
             unzipFiles(encUpload).filter {
                 it.name.endsWith(".000")
             }.map {
+                send("reading ${it.name}")
                 S57(it)
             }.forEach {
-                it.renderGeoJson(dir)
+                it.renderGeoJson(dir){
+                    scope.launch {
+                        send("creating $it")
+                    }
+                }
             }
         }
         close()
@@ -68,10 +73,8 @@ class ChartWebSocketHandler(
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
                             if (!entry.name.startsWith("__MACOSX")) {
-                                send("file: ${entry.name}")
-                                val outFile = File(dir, entry.name).apply {
-                                    log.info("file = $absolutePath")
-                                }
+                                send("extracting file: ${entry.name}")
+                                val outFile = File(dir, entry.name)
                                 outFile.parentFile?.let {
                                     if (!it.exists()) {
                                         it.mkdirs()

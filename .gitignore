@@ -2,5 +2,4 @@
 build/
 out/
 .DS_Store
-data/charts/
-data/enc/
+data/

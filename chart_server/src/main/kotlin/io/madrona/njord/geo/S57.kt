@@ -10,6 +10,7 @@ import org.gdal.ogr.Geometry
 import org.gdal.ogr.Layer
 import org.gdal.osr.SpatialReference
 import mil.nga.sf.geojson.FeatureConverter
+import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.ogrConstants.*
 import java.io.File
 import java.lang.RuntimeException
@@ -26,7 +27,11 @@ class S57(
         dataSet = gdal.OpenEx(file.absolutePath)
     }
 
-    private fun layerGeoJsonSequence() : Sequence<Pair<String, FeatureCollection>> {
+    val layerGeoJson: Map<String, FeatureCollection> by lazy {
+        layerGeoJsonSequence().toMap()
+    }
+
+    fun layerGeoJsonSequence(): Sequence<Pair<String, FeatureCollection>> {
         return dataSet.layers().mapNotNull { layer ->
             val name = layer.GetName()
             if (inLayers == null || inLayers.contains(name)) {
@@ -37,6 +42,11 @@ class S57(
         }
     }
 
+    /**
+     * export OGR_S57_OPTIONS="RETURN_PRIMITIVES=ON,RETURN_LINKAGES=ON,LNAM_REFS=ON:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_SOUNDG.json $(pwd)/US5WA22M.000 SOUNDG
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_DSID.json $(pwd)/US5WA22M.000 DSID
+     */
     fun renderGeoJson(
         outDir: File,
         msg: (String) -> Unit
@@ -54,29 +64,39 @@ class S57(
                 it.geometry = FeatureConverter.toGeometry(geoJson)
                 it.properties = fields()
             }
+        } ?: run {
+            fields().takeIf { it.isNotEmpty() }?.let { fields ->
+                mil.nga.sf.geojson.Feature().also {
+                    it.geometry = null
+                    it.properties = fields
+                }
+            }
         }
     }
 
     private fun Feature.fields(): Map<String, Any?> {
-        return (0 until GetFieldCount()).asSequence().map {
-            GetFieldDefnRef(it).GetName() to value(it)
+        return (0 until GetFieldCount()).asSequence().map { id ->
+            GetFieldDefnRef(id).let {
+                val name = it.GetName()
+                name to value(it.GetFieldType(), id)
+            }
         }.toMap()
     }
 
-    private fun Feature.value(id: Int): Any? {
-        return when (GetFieldType(id)) {
+    private fun Feature.value(type: Int, id: Int): Any? {
+        return when (type) {
             OFTInteger -> GetFieldAsInteger(id)
             OFTIntegerList -> GetFieldAsIntegerList(id)
             OFTReal -> GetFieldAsDouble(id)
             OFTRealList -> GetFieldAsDoubleList(id)
+            OFTDate,
+            OFTTime,
+            OFTDateTime,
             OFTWideString,
             OFTString -> GetFieldAsString(id)
             OFTStringList,
             OFTWideStringList -> GetFieldAsStringList(id)
             OFTBinary -> GetFieldAsBinary(id)
-            OFTDate,
-            OFTTime,
-            OFTDateTime,
             OFTInteger64 -> GetFieldAsInteger64(id)
             OFTInteger64List -> GetFieldAsStringList(id)
             else -> null
@@ -121,9 +141,22 @@ class S57(
     }
 
     companion object {
+        /**
+         * https://gdal.org/drivers/vector/s57.html
+         */
+        private const val OGR_S57_OPTIONS_K = "OGR_S57_OPTIONS"
+
+        /**
+         * https://gdal.org/drivers/vector/s57.html#s-57-export
+         */
+        private const val OGR_S57_EXPORT_MIN = "RETURN_PRIMITIVES=ON,RETURN_LINKAGES=ON,LNAM_REFS=ON"
+
+        private const val OGR_S57_OPTIONS_V =
+            "${OGR_S57_EXPORT_MIN}:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
+
         init {
             gdal.AllRegister()
-            gdal.SetConfigOption("OGR_S57_OPTIONS", "LNAM_REFS:ON,UPDATES:ON,SPLIT_MULTIPOINT:ON,PRESERVE_EMPTY_NUMBERS:ON,RETURN_LINKAGES:ON")
+            gdal.SetConfigOption(OGR_S57_OPTIONS_K, OGR_S57_OPTIONS_V)
         }
     }
 }

@@ -1,0 +1,36 @@
+package io.madrona.njord.build
+
+const val daggerVersion = "2.24"
+const val vialVersion = "2.0.3-SNAPSHOT"
+const val ktorVersion = "1.6.3"
+const val logbackVersion = "1.2.3"
+const val junitVersion="5.7.1"
+const val hamcrestVersion="1.3"
+const val mockitoVersion="2.18.3"
+
+object Deps {
+    const val dagger = "com.google.dagger:dagger:${daggerVersion}"
+    const val daggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
+    const val vial = "com.willkamp:vial-server:${vialVersion}"
+    const val gdal = "org.gdal:gdal:3.3.0"
+    const val proj4 = "org.osgeo:proj4j:0.1.0"
+    const val jtsCore = "org.locationtech.jts:jts-core:1.16.1"
+    const val guava = "com.google.guava:guava:29.0-jre"
+//    const val proj4 = "org.locationtech.proj4j:proj4j:1.1.1"
+    const val geojson = "mil.nga.sf:sf-geojson:2.0.4"
+    const val rxJava = "io.reactivex.rxjava2:rxjava:2.2.12"
+    const val slf4j = "org.slf4j:slf4j-api:1.7.25"
+    const val rxtx = "org.rxtx:rxtx:2.1.7"
+    const val ktorWebsockets = "io.ktor:ktor-websockets:$ktorVersion"
+    const val ktorCore = "io.ktor:ktor-server-core:$ktorVersion"
+    const val ktorHostCommon = "io.ktor:ktor-server-host-common:$ktorVersion"
+    const val ktorLocations = "io.ktor:ktor-locations:$ktorVersion"
+    const val ktorNetty = "io.ktor:ktor-server-netty:$ktorVersion"
+    const val logBack = "ch.qos.logback:logback-classic:$logbackVersion"
+    const val ktorJackson = "io.ktor:ktor-jackson:$ktorVersion"
+
+    const val jupiterBom = "org.junit:junit-bom:$junitVersion"
+    const val jupiter = "org.junit.jupiter:junit-jupiter"
+    const val mockito = "org.mockito:mockito-core:$mockitoVersion"
+    const val hamcrest = "org.hamcrest:hamcrest-all:$hamcrestVersion"
+}

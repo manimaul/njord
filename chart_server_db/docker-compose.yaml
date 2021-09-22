@@ -1,0 +1,68 @@
+# Local development
+version: '3.8'
+services:
+
+  # Comment out "s57server" run  & developer iteratively
+#  s57server:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    networks:
+#      - overlay
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      DB_USER: admin
+#      DB_PASS: mysecretpassword
+#      DB_HOST: postgres
+#      DB_NAME: s57server
+#      SERVE_ROOT: /var/www/web
+#      ENC_UPLOAD: /tmp/enc
+#      BIND_ADDR: 0.0.0.0
+#      BIND_PORT: 8080
+#      EXT_HOSTNAME: localhost
+#      EXT_PORT: 8080
+#      EXT_SCHEME: http
+#
+#    depends_on:
+#      - postgres
+  # End "s57server"
+
+  postgres:
+    image: 'postgis/postgis:13-3.1'
+    networks:
+      - overlay
+    ports:
+      - "5432:5432"
+      # We only expose the port here for local dev purposes
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: s57server
+
+  postgressetup:
+    build:
+      context: .
+      dockerfile: Dockerfile_dbinit
+    depends_on:
+      - postgres
+    networks:
+      - overlay
+    restart: "no"
+    environment:
+      PGUSER: admin
+      PGPASSWORD: mysecretpassword
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: s57server
+
+    entrypoint: [ "/postgres_init/postgres_init.sh" ]
+
+
+networks:
+  overlay:

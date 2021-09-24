@@ -16,7 +16,7 @@ class StyleHandler(
 ) : KtorHandler {
     override val route = "/v1/style/{color}/{depth}"
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handleGet(call: ApplicationCall) {
         letFromStrings(call.parameters["color"], call.parameters["depth"]) { color: StyleColor, depth: Depth ->
             val name = "${color.name.toLowerCase()}-${depth.name.toLowerCase()}"
             call.respond(

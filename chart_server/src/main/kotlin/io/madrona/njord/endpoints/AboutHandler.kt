@@ -9,7 +9,7 @@ import org.gdal.gdal.gdal
 class AboutHandler : KtorHandler {
     override val route = "/v1/about"
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handleGet(call: ApplicationCall) {
         call.respond(
             About(
                 version = "1.0",

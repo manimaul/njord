@@ -19,9 +19,8 @@ class EncSaveHandler(
     override val route = "/v1/enc_save"
     private val log = logger()
     private val charDir = config.chartTempData
-    override fun method() = HttpMethod.Post
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handlePost(call: ApplicationCall) {
         val multipartData = call.receiveMultipart()
         val uuid = UUID.randomUUID().toString()
         val tempDir = File(charDir, uuid)

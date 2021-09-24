@@ -12,7 +12,7 @@ import java.net.URLDecoder
 class StaticContentHandler : KtorHandler {
     override val route = "/v1/content/{content...}"
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handleGet(call: ApplicationCall) {
         call.parameters.getAll("content")?.fold(StringBuilder()) { acc, s ->
             acc.append('/').append(s)
         }?.let {

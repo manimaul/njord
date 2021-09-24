@@ -12,7 +12,7 @@ class TileJsonHandler(
 ) : KtorHandler {
     override val route = "/v1/tile_json"
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handleGet(call: ApplicationCall) {
         call.respond(
             TileJson(
                 tiles = listOf(

@@ -13,9 +13,8 @@ class ChartHandler(
     private val dao: ChartDao = Singletons.chartDao
 ) : KtorHandler {
     override val route = "/v1/chart"
-    override fun method() = HttpMethod.Post
 
-    override suspend fun handle(call: ApplicationCall) {
+    override suspend fun handlePost(call: ApplicationCall) {
         val chart = call.receive<ChartInsert>()
         dao.insertAsync(chart).await()?.let {
             call.respond(it)

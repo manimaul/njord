@@ -14,7 +14,7 @@ import java.time.Duration
 
 class ChartServerApp {
     fun serve() {
-        embeddedServer(Netty, port = 9000, host = "0.0.0.0") {
+        embeddedServer(Netty, port = Singletons.config.port, host = Singletons.config.host) {
             install(ContentNegotiation) {
                 jackson {
                     Singletons.objectMapper
@@ -46,6 +46,9 @@ class ChartServerApp {
                 EncSaveHandler(),
 
                 ChartWebSocketHandler(),
+
+                //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' http://localhost:9000/v1/chart
+                ChartHandler()
             )
         }.start(wait = true)
     }

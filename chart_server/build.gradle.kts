@@ -10,6 +10,15 @@ application {
     mainClass.set("io.madrona.njord.ChartServerAppKt")
 }
 
+//val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+//val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+//
+//compileKotlin.kotlinOptions {
+//    jvmTarget = "11"
+//}
+//compileTestKotlin.kotlinOptions {
+//    jvmTarget = "11"
+//}
 
 dependencies {
     implementation(project(":common"))
@@ -22,6 +31,8 @@ dependencies {
     implementation(Deps.logBack)
     implementation(Deps.gdal)
     implementation(Deps.geojson)
+    implementation(Deps.postgres)
+    implementation(Deps.HikariCP)
 
     testImplementation(platform(Deps.jupiterBom))
     testImplementation(Deps.jupiter)

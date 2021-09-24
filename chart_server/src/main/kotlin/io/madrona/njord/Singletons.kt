@@ -1,22 +1,40 @@
 package io.madrona.njord
 
+import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
+import io.madrona.njord.db.ChartDao
 import io.madrona.njord.model.ColorLibrary
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
+import javax.sql.DataSource
 
 object Singletons {
 
-    val objectMapper = jsonMapper {
+    val objectMapper: JsonMapper = jsonMapper {
         addModule(kotlinModule())
     }
 
     val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val config = ChartsConfig()
+
+    val ds: DataSource by lazy {
+        val hc = HikariConfig()
+        hc.jdbcUrl = "jdbc:postgresql://${config.pgHost}:${config.pgPort}/${config.pgDatabase}"
+        hc.username = config.pgUser
+        hc.password = config.pgPassword
+        hc.addDataSourceProperty("cachePrepStmts", "true")
+        hc.addDataSourceProperty("prepStmtCacheSize", "250")
+        hc.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
+        HikariDataSource(hc)
+    }
+
+    val chartDao = ChartDao()
 
     val colorLibrary: ColorLibrary = ColorLibrary()
 

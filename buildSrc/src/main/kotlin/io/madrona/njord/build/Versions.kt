@@ -28,6 +28,8 @@ object Deps {
     const val ktorNetty = "io.ktor:ktor-server-netty:$ktorVersion"
     const val logBack = "ch.qos.logback:logback-classic:$logbackVersion"
     const val ktorJackson = "io.ktor:ktor-jackson:$ktorVersion"
+    const val postgres = "org.postgresql:postgresql:42.2.23.jre7"
+    const val HikariCP = "com.zaxxer:HikariCP:5.0.0"
 
     const val jupiterBom = "org.junit:junit-bom:$junitVersion"
     const val jupiter = "org.junit.jupiter:junit-jupiter"

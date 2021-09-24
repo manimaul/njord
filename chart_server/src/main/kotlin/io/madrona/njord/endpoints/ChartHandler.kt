@@ -20,4 +20,16 @@ class ChartHandler(
             call.respond(it)
         } ?: call.respond(HttpStatusCode.BadRequest)
     }
+
+    override suspend fun handleDelete(call: ApplicationCall) {
+        when (
+            call.request.queryParameters["id"]?.toLongOrNull()?.let {
+                dao.deleteAsync(it).await()
+            }
+        ) {
+            true -> call.respond(HttpStatusCode.Accepted)
+            false -> call.respond(HttpStatusCode.NoContent)
+            null -> call.respond(HttpStatusCode.BadRequest)
+        }
+    }
 }

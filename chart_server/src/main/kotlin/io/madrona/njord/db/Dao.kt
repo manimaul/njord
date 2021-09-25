@@ -1,5 +1,6 @@
 package io.madrona.njord.db
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.logger
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +11,7 @@ import java.sql.SQLException
 import javax.sql.DataSource
 
 abstract class Dao(
+    protected val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val ds: DataSource = Singletons.ds,
     private val scope: CoroutineScope = Singletons.ioScope
 ) {

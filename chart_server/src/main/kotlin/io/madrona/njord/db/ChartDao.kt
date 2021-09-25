@@ -1,7 +1,6 @@
 package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.madrona.njord.Singletons
 import io.madrona.njord.model.Chart
 import io.madrona.njord.model.ChartInsert
 import java.sql.*
@@ -17,8 +16,8 @@ class ChartDao : Dao() {
             updated = getString(5),
             issued = getString(6),
             zoom = getInt(7),
-            dsidProps = Singletons.objectMapper.readValue(getString(8)),
-            chartTxt = Singletons.objectMapper.readValue(getString(9))
+            dsidProps = objectMapper.readValue(getString(8)),
+            chartTxt = objectMapper.readValue(getString(9))
         )
     } else {
         null
@@ -42,7 +41,10 @@ class ChartDao : Dao() {
 
     fun insertAsync(chartInsert: ChartInsert) = sqlOpAsync { conn ->
         val stmt = conn.prepareStatement(
-            "INSERT INTO charts (name, scale, file_name, updated, issued, zoom, dsid_props, chart_txt) VALUES (?,?,?,?,?,?,?::json,?::json)",
+            """
+                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, dsid_props, chart_txt) 
+                VALUES (?,?,?,?,?,?,?::json,?::json)
+                """.trimIndent(),
             Statement.RETURN_GENERATED_KEYS
         ).apply {
             setString(1, chartInsert.name)
@@ -51,8 +53,8 @@ class ChartDao : Dao() {
             setString(4, chartInsert.updated)
             setString(5, chartInsert.issued)
             setInt(6, chartInsert.zoom)
-            setObject(7, Singletons.objectMapper.writeValueAsString(chartInsert.dsidProps))
-            setObject(8, Singletons.objectMapper.writeValueAsString(chartInsert.chartTxt))
+            setObject(7, objectMapper.writeValueAsString(chartInsert.dsidProps))
+            setObject(8, objectMapper.writeValueAsString(chartInsert.chartTxt))
         }
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {

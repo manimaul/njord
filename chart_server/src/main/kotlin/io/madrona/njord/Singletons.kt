@@ -5,7 +5,6 @@ import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.madrona.njord.db.ChartDao
 import io.madrona.njord.model.ColorLibrary
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +32,6 @@ object Singletons {
         hc.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
         HikariDataSource(hc)
     }
-
-    val chartDao = ChartDao()
 
     val colorLibrary: ColorLibrary = ColorLibrary()
 

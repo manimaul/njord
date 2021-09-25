@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.json.simple.JSONObject
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Chart(
     val id: Long,

@@ -50,7 +50,12 @@ class ChartServerApp {
                 //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' http://localhost:9000/v1/chart
                 //curl -v -X DELETE 'http://localhost:9000/v1/chart?id=1'
                 //curl -v 'http://localhost:9000/v1/chart?id=1 | jq'
-                ChartHandler()
+                ChartHandler(),
+
+                //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=8&name=BOYSPP'
+                //curl -v -H "Content-Type: application/json" --request POST --data-binary "@/Users/williamkamp/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=17&name=BOYSPP'
+                //curl -v 'http://localhost:9000/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
+                GeoJsonHandler(),
             )
         }.start(wait = true)
     }

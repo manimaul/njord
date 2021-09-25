@@ -4,13 +4,12 @@ import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
-import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.ChartInsert
 
 class ChartHandler(
-    private val dao: ChartDao = Singletons.chartDao
+    private val dao: ChartDao = ChartDao()
 ) : KtorHandler {
     override val route = "/v1/chart"
 

@@ -45,6 +45,7 @@ class S57(
     /**
      * export OGR_S57_OPTIONS="RETURN_PRIMITIVES=ON,RETURN_LINKAGES=ON,LNAM_REFS=ON:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
      * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_SOUNDG.json $(pwd)/US5WA22M.000 SOUNDG
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_BOYSPP.json $(pwd)/US3WA46M.000 BOYSPP
      * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_DSID.json $(pwd)/US5WA22M.000 DSID
      */
     fun renderGeoJson(

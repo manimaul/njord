@@ -10,11 +10,10 @@ import java.sql.SQLException
 import javax.sql.DataSource
 
 abstract class Dao(
-    protected val ds: DataSource = Singletons.ds,
-    protected val scope: CoroutineScope = Singletons.ioScope
+    private val ds: DataSource = Singletons.ds,
+    private val scope: CoroutineScope = Singletons.ioScope
 ) {
     protected val log = logger()
-
 
     fun <T> sqlOpAsync(msg: String = "error", block: (conn: Connection) -> T) : Deferred<T?> {
         return scope.async {

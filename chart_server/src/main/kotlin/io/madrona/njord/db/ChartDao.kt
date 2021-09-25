@@ -2,18 +2,43 @@ package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.Singletons
-import io.madrona.njord.logger
 import io.madrona.njord.model.Chart
 import io.madrona.njord.model.ChartInsert
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import java.sql.Connection
-import java.sql.SQLException
-import java.sql.Statement
-import javax.sql.DataSource
+import java.sql.*
 
 class ChartDao : Dao() {
+
+    private fun ResultSet.chart() = if (next()) {
+        Chart(
+            id = getLong(1),
+            name = getString(2),
+            scale = getInt(3),
+            fileName = getString(4),
+            updated = getString(5),
+            issued = getString(6),
+            zoom = getInt(7),
+            dsidProps = Singletons.objectMapper.readValue(getString(8)),
+            chartTxt = Singletons.objectMapper.readValue(getString(9))
+        )
+    } else {
+        null
+    }
+
+    private fun ResultSet.charts() : Sequence<Chart> {
+        return generateSequence {
+            chart()
+        }
+    }
+
+    fun findAsync(id: Long) = sqlOpAsync { conn ->
+        val stmt = conn.prepareStatement(
+            "SELECT * from charts WHERE id=?",
+            Statement.RETURN_GENERATED_KEYS
+        ).apply {
+            setLong(1, id)
+        }
+        stmt.executeQuery().chart()
+    }
 
     fun insertAsync(chartInsert: ChartInsert) = sqlOpAsync { conn ->
         val stmt = conn.prepareStatement(
@@ -32,21 +57,7 @@ class ChartDao : Dao() {
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
             stmt.generatedKeys.use { rs ->
-                if (rs.next()) {
-                    Chart(
-                        id = rs.getLong(1),
-                        name = rs.getString(2),
-                        scale = rs.getInt(3),
-                        fileName = rs.getString(4),
-                        updated = rs.getString(5),
-                        issued = rs.getString(6),
-                        zoom = rs.getInt(7),
-                        dsidProps = Singletons.objectMapper.readValue(rs.getString(8)),
-                        chartTxt = Singletons.objectMapper.readValue(rs.getString(9))
-                    )
-                } else {
-                    null
-                }
+                rs.chart()
             }
         }
     }

@@ -47,6 +47,14 @@ class ChartWebSocketHandler(
         }
     }
 
+    /**
+     * Process zipped, uploaded s57 chart files. See [EncSaveHandler]
+     *
+     * 1. Unzip [EncUpload.cacheFiles]
+     * 2. Read .000 S57 files and convert them to geojson files by layer
+     * 3. Read DSID layer and create chart (require WS confirmation for upsert) todo:
+     * 4. Insert geojson layers into database todo:
+     */
     private suspend fun DefaultWebSocketServerSession.processFiles(encUpload: EncUpload) {
         encUpload.uuidDir()?.let { dir ->
             unzipFiles(encUpload).filter {

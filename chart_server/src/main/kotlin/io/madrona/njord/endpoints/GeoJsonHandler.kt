@@ -17,6 +17,17 @@ class GeoJsonHandler(
 ) : KtorHandler {
     override val route = "/v1/geojson"
 
+    override suspend fun handleGet(call: ApplicationCall) {
+        letTwo(
+            call.request.queryParameters["chart_id"]?.toLongOrNull(),
+            call.request.queryParameters["layer_name"]
+        ) { id, name ->
+            geoJsonDao.fetchAsync(id, name).await()
+        }?.let {
+            call.respond(it)
+        } ?: call.respond(HttpStatusCode.NotFound)
+    }
+
     override suspend fun handlePost(call: ApplicationCall) {
         val geo = call.receive<GeoJsonObject>()
         letTwo(

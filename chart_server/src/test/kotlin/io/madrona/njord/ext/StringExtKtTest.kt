@@ -22,4 +22,13 @@ internal class StringExtKtTest {
         val mt = path.mimeType()
         assertEquals("application/x-protobuf", mt)
     }
+
+    @Test
+    fun testRange() {
+        assertEquals(0..1, "[0,1]".intRange())
+        assertEquals(999..-1, "[999,-1]".intRange())
+        assertEquals(IntRange.EMPTY, "[".intRange())
+        assertEquals(IntRange.EMPTY, "]".intRange())
+        assertEquals(IntRange.EMPTY, "".intRange())
+    }
 }

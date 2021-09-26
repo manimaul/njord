@@ -1,7 +1,6 @@
 package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.madrona.njord.ext.intRange
 import io.madrona.njord.model.FeatureInsert
 import mil.nga.sf.geojson.Feature
 import mil.nga.sf.geojson.FeatureCollection
@@ -21,6 +20,14 @@ class GeoJsonDao : Dao() {
         return generateSequence {
             featureRecord()
         }
+    }
+
+    fun fetchTileAsync(z: Int, x: Int, y: Int) = sqlOpAsync { conn ->
+        conn.prepareStatement("SELECT concat_mvt(?,?,?);").apply {
+                setInt(1, z)
+                setInt(2, x)
+                setInt(3, y)
+            }.executeQuery().takeIf { it.next() }?.getBytes(1)
     }
 
     fun fetchAsync(chartId: Long, layerName: String) = sqlOpAsync("error fetching feature") { conn ->

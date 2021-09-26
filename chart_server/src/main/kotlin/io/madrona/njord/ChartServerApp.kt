@@ -56,6 +56,8 @@ class ChartServerApp {
                 //curl -v -H "Content-Type: application/json" --request POST --data-binary "@/Users/williamkamp/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=17&name=BOYSPP'
                 //curl -v 'http://localhost:9000/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
                 GeoJsonHandler(),
+
+                TileHandler(),
             )
         }.start(wait = true)
     }

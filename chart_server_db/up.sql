@@ -46,3 +46,34 @@ CREATE INDEX features_gist ON features USING GIST (geom);
 CREATE INDEX features_idx ON features (id);
 CREATE INDEX features_layer_idx ON features (layer);
 CREATE INDEX features_zoom_idx ON features USING gist (z_range);
+
+------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.concat_mvt(z INTEGER, x INTEGER, y INTEGER)
+    RETURNS BYTEA
+    LANGUAGE plpgsql
+AS
+$BODY$
+DECLARE
+    i   TEXT;
+    res BYTEA DEFAULT '';
+    rec BYTEA;
+BEGIN
+    FOR i IN SELECT DISTINCT layer from features
+        LOOP
+            WITH mvtdata AS (
+                SELECT ST_AsMvtGeom(geom, ST_Transform(ST_TileEnvelope(z, x, y), 4326)) AS geom,
+                       layer                                                            AS name,
+                       props                                                            AS properties,
+                       z_range
+                FROM features
+                WHERE layer = i AND geom && ST_Transform(ST_TileEnvelope(z, x, y), 4326) AND z <@ z_range
+            )
+            SELECT ST_AsMVT(mvtdata.*, i)
+            FROM mvtdata
+            INTO rec;
+            res := res || rec;
+        END LOOP;
+    RETURN res;
+END
+$BODY$;

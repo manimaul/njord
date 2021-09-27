@@ -2,6 +2,9 @@ package io.madrona.njord.geo
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
+import io.madrona.njord.ext.letTwo
+import io.madrona.njord.model.ChartInsert
+import io.madrona.njord.util.getZoom
 import mil.nga.sf.geojson.FeatureCollection
 import org.gdal.gdal.Dataset
 import org.gdal.gdal.gdal
@@ -13,28 +16,63 @@ import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.ogrConstants.*
 import java.io.File
+import java.lang.Double.max
+import java.lang.Double.min
 import java.lang.RuntimeException
 
 class S57(
-    file: File,
+    val file: File,
     private val inLayers: Set<String>? = null,
+    private val exLayers: Set<String>? = null,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
 ) {
-    private val dataSet: Dataset
-
-    init {
-        dataSet = gdal.OpenEx(file.absolutePath)
-    }
+    private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
     val layerGeoJson: Map<String, FeatureCollection> by lazy {
         layerGeoJsonSequence().toMap()
     }
 
+    fun findLayer(name: String) : FeatureCollection? {
+        return dataSet.GetLayer(name)?.featureCollection()
+    }
+
+    fun chartInsertInfo() : ChartInsert? {
+        val chartTxt = file.parentFile.listFiles { _: File, name: String ->
+            name.endsWith(".TXT", true)
+        }?.map {
+            it.name to it.readText()
+        }?.toMap() ?: emptyMap()
+
+        return findLayer("DSID")?.features?.firstOrNull()?.properties?.let { props ->
+            letTwo(
+                props["DSPM_CSCL"]?.toString()?.toIntOrNull(),
+                dataSet.GetLayer("M_COVR")?.GetExtent()?.takeIf { it.size == 4 }?.let {
+                    //minx, maxx, miny, maxy
+                    val n = max(it[2], it[3])
+                    val s = min(it[2], it[3])
+                    s + ((n - s) * 0.5)
+                }
+            ) { scale, centerLat ->
+                ChartInsert(
+                    name = props["DSID_DSNM"]?.toString() ?: "",
+                    scale = props["DSPM_CSCL"]?.toString()?.toIntOrNull() ?: 0,
+                    fileName = file.name,
+                    updated = props["DSID_UADT"]?.toString() ?: "",
+                    issued = props["DSID_ISDT"]?.toString() ?: "",
+                    zoom = getZoom(scale, centerLat),
+                    dsidProps = props,
+                    chartTxt = chartTxt
+                )
+            }
+
+        }
+    }
+
     fun layerGeoJsonSequence(): Sequence<Pair<String, FeatureCollection>> {
         return dataSet.layers().mapNotNull { layer ->
             val name = layer.GetName()
-            if (inLayers == null || inLayers.contains(name)) {
+            if ((inLayers == null || inLayers.contains(name)) && exLayers?.contains(name) != true) {
                 name to layer.featureCollection()
             } else {
                 null
@@ -49,7 +87,7 @@ class S57(
      * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_DSID.json $(pwd)/US5WA22M.000 DSID
      */
     fun renderGeoJson(
-        outDir: File,
+        outDir: File = file.parentFile,
         msg: (String) -> Unit
     ) {
         layerGeoJsonSequence().forEach {

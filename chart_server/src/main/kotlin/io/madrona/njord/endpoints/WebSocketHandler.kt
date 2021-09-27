@@ -1,21 +1,29 @@
 package io.madrona.njord.endpoints
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
+import io.madrona.njord.db.ChartDao
+import io.madrona.njord.db.GeoJsonDao
 import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
 import io.madrona.njord.logger
 import io.madrona.njord.model.EncUpload
+import io.madrona.njord.model.FeatureInsert
 import kotlinx.coroutines.*
+import mil.nga.sf.geojson.FeatureCollection
 import java.io.File
 import java.util.zip.ZipFile
 
 class ChartWebSocketHandler(
     config: ChartsConfig = Singletons.config,
+    private val chartDao: ChartDao = ChartDao(),
+    private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
+    private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val scope: CoroutineScope = Singletons.ioScope
 ) : KtorWebsocket {
     private val log = logger()
@@ -28,7 +36,8 @@ class ChartWebSocketHandler(
 
         letTwo(
             ws.call.request.queryParameters["uuid"],
-            ws.call.request.queryParameters.getAll("file")) { uuid, files ->
+            ws.call.request.queryParameters.getAll("file")
+        ) { uuid, files ->
             scope.launch {
                 ws.processFiles(EncUpload(files, uuid))
             }
@@ -42,7 +51,8 @@ class ChartWebSocketHandler(
                 is Frame.Text -> {
                     log.info("ws received ${frame.readText()}")
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
     }
@@ -61,19 +71,34 @@ class ChartWebSocketHandler(
                 it.name.endsWith(".000")
             }.map {
                 send("reading ${it.name}")
-                S57(it)
-            }.forEach {
-                it.renderGeoJson(dir){
+                S57(it, exLayers = setOf("DSID", "IsolatedNode", "ConnectedNode", "Edge", "Face"))
+            }.forEach { s57 ->
+                s57.chartInsertInfo()?.let { insert ->
+                    chartDao.insertAsync(insert).await()
+                }?.let { chart ->
                     scope.launch {
-                        send("creating $it")
+                        send("created chart id=${chart.id}")
+                    }
+                    s57.layerGeoJsonSequence().forEach { (name, fc) ->
+                        val count = geoJsonDao.insertAsync(
+                            FeatureInsert(
+                                layerName = name,
+                                chart = chart,
+                                geo = fc
+                            )
+                        ).await()
+                        scope.launch {
+                            send("created $count records for layer $name")
+                        }
                     }
                 }
             }
+            dir.deleteRecursively()
         }
         close()
     }
 
-    private suspend fun DefaultWebSocketServerSession.unzipFiles(encUpload: EncUpload) : List<File> {
+    private suspend fun DefaultWebSocketServerSession.unzipFiles(encUpload: EncUpload): List<File> {
         val retVal = mutableListOf<File>()
         letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
             files.forEach { zipFile ->
@@ -103,7 +128,7 @@ class ChartWebSocketHandler(
         return retVal
     }
 
-    private fun EncUpload.cacheFiles()  : List<File> {
+    private fun EncUpload.cacheFiles(): List<File> {
         return uuidDir()?.let { dir ->
             files.mapNotNull { name ->
                 File(dir, name).takeIf {
@@ -116,7 +141,7 @@ class ChartWebSocketHandler(
         } ?: emptyList()
     }
 
-    private fun EncUpload.uuidDir()  : File? {
+    private fun EncUpload.uuidDir(): File? {
         return File(charDir, uuid).takeIf {
             it.exists()
         } ?: run {

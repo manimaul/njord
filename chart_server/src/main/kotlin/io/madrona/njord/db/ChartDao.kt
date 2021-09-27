@@ -7,7 +7,7 @@ import java.sql.*
 
 class ChartDao : Dao() {
 
-    private fun ResultSet.chart() = if (next()) {
+    private fun ResultSet.chart(layers: List<String>) = if (next()) {
         Chart(
             id = getLong(1),
             name = getString(2),
@@ -16,17 +16,29 @@ class ChartDao : Dao() {
             updated = getString(5),
             issued = getString(6),
             zoom = getInt(7),
+            layers = layers,
             dsidProps = objectMapper.readValue(getString(8)),
-            chartTxt = objectMapper.readValue(getString(9))
+            chartTxt = objectMapper.readValue(getString(9)),
         )
     } else {
         null
     }
 
-    private fun ResultSet.charts() : Sequence<Chart> {
-        return generateSequence {
-            chart()
-        }
+    fun findLayers(id: Long, conn: Connection) : List<String> {
+        return conn.prepareStatement(
+            "SELECT layer FROM features where chart_id=?;",
+            Statement.RETURN_GENERATED_KEYS
+        ).apply {
+            setLong(1, id)
+        }.executeQuery().let {
+            generateSequence {
+                if (it.next()) {
+                    it.getString(1)
+                } else {
+                    null
+                }
+            }
+        }.toList()
     }
 
     fun findAsync(id: Long) = sqlOpAsync { conn ->
@@ -36,7 +48,7 @@ class ChartDao : Dao() {
         ).apply {
             setLong(1, id)
         }
-        stmt.executeQuery().chart()
+        stmt.executeQuery().chart(findLayers(id, conn))
     }
 
     fun insertAsync(chartInsert: ChartInsert) = sqlOpAsync { conn ->
@@ -59,7 +71,7 @@ class ChartDao : Dao() {
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
             stmt.generatedKeys.use { rs ->
-                rs.chart()
+                rs.chart(emptyList())
             }
         }
     }
@@ -67,10 +79,14 @@ class ChartDao : Dao() {
 
     fun deleteAsync(id: Long) = sqlOpAsync { conn ->
         conn.prepareStatement(
-            "DELETE FROM charts WHERE id=?",
+            """
+                DELETE FROM features WHERE chart_id=?;
+                DELETE FROM charts WHERE id=?;
+                """.trimIndent(),
             Statement.NO_GENERATED_KEYS
         ).apply {
             setLong(1, id)
+            setLong(2, id)
         }.executeUpdate() > 0
     }
 }

@@ -57,7 +57,7 @@ class Boyspp : Layerable {
                     filter = listOf(Filters.any, Filters.eqTypePoint),
                     layout = Layout(
                             symbolPlacement = Placement.POINT,
-                            iconImage = listOf("GET", "SY"),
+                            iconImage = listOf("get", "SY"),
                             iconAnchor = Anchor.BOTTOM,
                             iconAllowOverlap = true,
                             iconKeepUpright = true,

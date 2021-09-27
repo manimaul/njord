@@ -5,7 +5,8 @@ fun String.mimeType() = when(extToken()) {
     "pbf" -> "application/x-protobuf"
     "svg" -> "image/svg+xml"
     "json" -> "application/json"
-    "html" -> "text/html"
+    "css" -> "text/css"
+    "txt", "html" -> "text/html"
     "js" -> "text/javascript"
     else -> null
 }

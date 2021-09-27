@@ -1,9 +1,9 @@
 CREATE TABLE charts
 (
     id         BIGSERIAL PRIMARY KEY,
-    name       VARCHAR UNIQUE NOT NULL,
+    name       VARCHAR UNIQUE NOT NULL, -- DSID_DSNM
     scale      INTEGER        NOT NULL, -- DSPM_CSCL
-    file_name  VARCHAR        NOT NULL, -- DSID_DSNM
+    file_name  VARCHAR        NOT NULL, -- actual file name
     updated    VARCHAR        NOT NULL, -- DSID_UADT
     issued     VARCHAR        NOT NULL, -- DSID_ISDT
 

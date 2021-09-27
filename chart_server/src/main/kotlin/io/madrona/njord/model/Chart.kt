@@ -13,6 +13,7 @@ data class Chart(
     val updated: String,
     val issued: String,
     val zoom: Int,
+    val layers: List<String>,
     @JsonProperty("dsid_props") val dsidProps: Map<String, Any>,
     @JsonProperty("chart_txt") val chartTxt: JSONObject,
 )

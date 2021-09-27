@@ -1,8 +1,7 @@
 package io.madrona.njord.geo
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
 import java.io.File
+import kotlin.test.*
 
 internal class S57Test {
 
@@ -22,9 +21,19 @@ internal class S57Test {
         val dsid = s57.layerGeoJson["DSID"]
         assertNotNull(dsid)
 
-        assertEquals(dsid?.features?.size, 1)
-        val props = dsid?.features?.first()?.properties
+        assertEquals(dsid.features?.size, 1)
+        val props = dsid.features?.first()?.properties
         assertEquals(props?.get("DSID_UPDN"), "4")
         assertEquals(props?.get("DSID_ISDT"), "20200626")
+    }
+
+    @Test
+    fun testChartInfo() {
+        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        assertTrue(f.exists())
+
+        val s57 = S57(f)
+        val info = s57.chartInsertInfo()
+        assertNotNull(info)
     }
 }

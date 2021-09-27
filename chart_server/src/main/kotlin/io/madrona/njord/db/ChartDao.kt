@@ -26,7 +26,7 @@ class ChartDao : Dao() {
 
     fun findLayers(id: Long, conn: Connection) : List<String> {
         return conn.prepareStatement(
-            "SELECT layer FROM features where chart_id=?;",
+            "SELECT DISTINCT  layer FROM features where chart_id=?;",
             Statement.RETURN_GENERATED_KEYS
         ).apply {
             setLong(1, id)

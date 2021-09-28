@@ -24,12 +24,12 @@ class Lndare : Layerable {
                         type = LayerType.LINE,
                         sourceLayer = key,
                         filter = listOf(
-                                Filters.all,
+                                Filters.any,
                                 Filters.eqTypePolyGon,
                                 Filters.eqTypeLineString
                         ),
                         paint = Paint(
-                                lineColor = options.color.from("LANDA"),
+                                lineColor = options.color.from("CSTLN"),
                                 lineWidth = 2f
                         )
                 )

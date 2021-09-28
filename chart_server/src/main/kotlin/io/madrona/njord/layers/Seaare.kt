@@ -29,6 +29,7 @@ class Seaare : Layerable {
                         paint = Paint(
                                 fillColor = options.color.from("CHWHT")
                         ),
+                        filter = listOf(Filters.any, Filters.eqTypePolyGon, Filters.eqTypeLineString),
                         sourceLayer = "SEAARE",
                         type = LayerType.FILL
                 ),

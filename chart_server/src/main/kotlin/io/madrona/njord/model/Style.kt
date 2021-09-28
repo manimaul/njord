@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Style(
-        @JsonProperty("glyphys") val glyphsUrl: String,
+        @JsonProperty("glyphs") val glyphsUrl: String,
         val layers: List<Layer>,
         val name: String,
         val sources: Map<String, Source>,
@@ -18,7 +18,7 @@ data class Layer(
         val id: String,
         val paint: Paint? = null,
         val type: LayerType,
-        val source: String = Source.SENC,
+        val source: String? = Source.SENC,
         @JsonProperty("source-layer") val sourceLayer: String? = null,
         val filter: List<Any>? = null,
         val layout: Layout? = null,
@@ -54,8 +54,8 @@ data class Paint(
 data class Layout(
         @JsonProperty("icon-image") val iconImage: List<Any>? = null,
         @JsonProperty("icon-anchor") val iconAnchor: Anchor? = null,
-        @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean =  true,
-        @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean =  true,
+        @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean? = null,
+        @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean? = null,
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
         @JsonProperty("text-justify") val textJustify: Anchor? = null,

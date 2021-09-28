@@ -1,7 +1,5 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.StyleColor
-
 class LayerFactory(
         private val layerables: Sequence<Layerable> = sequenceOf(
                 Background(),
@@ -14,7 +12,7 @@ class LayerFactory(
                 Lndare(),
                 Soundg(),
                 Boyspp(),
-                Lights()
+                Lights() //symbol lookup
         )
 ) {
 

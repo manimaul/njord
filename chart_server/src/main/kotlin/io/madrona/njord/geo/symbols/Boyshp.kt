@@ -38,7 +38,7 @@ enum class Boyshp(val code: Int) {
 fun Feature.addBoyShp() {
     val colpat = Colpat.fromProp(properties)
     val color = Color.fromProp(properties)
-    val sy: String  = when (Boyshp.fromProp(properties)) {
+    val sy: String = when (Boyshp.fromProp(properties)) {
         Boyshp.Conical -> when (color) {
             listOf(Color.White) -> "BOYCON01"
             listOf(Color.Red) -> "BOYCON60"
@@ -120,7 +120,30 @@ fun Feature.addBoyShp() {
             else -> "BOYSPH01"
         }
         Boyshp.Pillar -> when (color) {
-            else -> ""
+            listOf(Color.Red) -> "BOYPIL60"
+            listOf(Color.Green) -> "BOYPIL61"
+            listOf(Color.Yellow) -> "BOYPIL62"
+            listOf(Color.Black) -> "BOYPIL63"
+            listOf(Color.Orange) -> "BOYPIL64"
+            listOf(Color.Grey) -> "BOYPIL65"
+            listOf(Color.Red, Color.Green, Color.Red) -> "BOYPIL66"
+            listOf(Color.Green, Color.Red, Color.Green) -> "BOYPIL67"
+            listOf(Color.Black, Color.Yellow) -> "BOYPIL68"
+            listOf(Color.Yellow, Color.Black) -> "BOYPIL69"
+            listOf(Color.Yellow, Color.Black, Color.Yellow) -> "BOYPIL70"
+            listOf(Color.Black, Color.Red, Color.Black) -> "BOYPIL72"
+            listOf(Color.Red, Color.White) -> when (colpat) {
+                listOf(Colpat.VerticalStripes) -> "BOYPIL73"
+                else -> "BOYPIL76"
+            }
+            listOf(Color.Red, Color.Green) -> "BOYPIL74"
+            listOf(Color.Green, Color.Red) -> "BOYPIL75"
+            listOf(Color.Green, Color.White) -> "BOYPIL77"
+            listOf(Color.Red, Color.White, Color.Red, Color.White) -> "BOYPIL78"
+            listOf(Color.Green, Color.White, Color.Green, Color.White) -> "BOYPIL79"
+            listOf(Color.Red, Color.Yellow) -> "BOYPIL80"
+            listOf(Color.White, Color.Orange) -> "BOYPIL81"
+            else -> "BOYPIL01"
         }
         Boyshp.Spar -> when (color) {
             else -> ""

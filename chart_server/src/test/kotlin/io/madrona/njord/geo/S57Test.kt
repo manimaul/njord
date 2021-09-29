@@ -62,6 +62,15 @@ internal class S57Test {
         val soundg = fc.features.firstOrNull()?.geometry as? Point
         assertNotNull(soundg)
         assertFalse(soundg.coordinates.hasZ())
+    }
+
+    @Test
+    fun testBoySpp() {
+        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        assertTrue(f.exists())
+        val s57 = S57(f)
+
+        val fc = s57.findLayer("BOYSPP")
 
     }
 }

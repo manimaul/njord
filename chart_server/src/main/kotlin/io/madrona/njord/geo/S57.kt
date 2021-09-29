@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.letTwo
+import io.madrona.njord.geo.symbols.addBoyShp
 import io.madrona.njord.logger
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.util.getZoom
@@ -14,8 +15,6 @@ import org.gdal.ogr.Geometry
 import org.gdal.ogr.Layer
 import org.gdal.osr.SpatialReference
 import mil.nga.sf.geojson.FeatureConverter
-import mil.nga.sf.geojson.Point
-import mil.nga.sf.geojson.Position
 import org.gdal.ogr.ogrConstants.*
 import java.io.File
 import java.lang.Double.max
@@ -31,7 +30,6 @@ class S57(
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
 ) {
-    private val log = logger()
     private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
     val layerGeoJson: Map<String, FeatureCollection> by lazy {
@@ -153,30 +151,12 @@ class S57(
             fc.addFeatures(features().mapNotNull { feat ->
                 feat.geoJsonFeature()?.apply {
                     when (name) {
-                        "SOUNDG" -> addSounding(this)
-                        "BOYSPP" -> { }
+                        "SOUNDG" -> addSounding()
+                        "BOYSPP" -> addBoyShp()
                         "LIGHTS" -> { }
                     }
                 }
             }.toList())
-        }
-    }
-
-    private fun addSounding(feature: mil.nga.sf.geojson.Feature) {
-        (feature.geometry as? Point)?.let {
-            val meters = it.coordinates.z ?: 0.0
-            val feet = meters * 3.28084
-            val fathoms = (meters * 0.546807)
-            val fathomsWhole = fathoms.toInt()
-            val fathomsFeet = ((fathoms - fathomsWhole) * 6.0).toInt()
-            feature.properties["METERS"] = FORMAT_M.format(meters).toFloat()
-            feature.properties["FEET"] = FORMAT_FT.format(feet).toFloat()
-            feature.properties["FATHOMS"] = fathomsWhole
-            feature.properties["FATHOMS_FT"] = fathomsFeet
-            it.coordinates = Position(it.coordinates.x, it.coordinates.y)
-            feature.geometry = it
-        } ?:  run {
-            log.error("unexpected geometry point ${feature.geometryType}")
         }
     }
 

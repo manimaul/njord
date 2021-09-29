@@ -147,29 +147,4 @@ class Soundg : Layerable {
                     )
             )
     )
-        /*
-        json!({
-              "id": "soundg_meters",
-              "type": "symbol",
-              "source": "src_senc",
-              "source-layer": "SOUNDG",
-              "filter": [ "any", [ "==", "$type", "Point" ], ],
-              "layout": {
-                "text-font": [ "Roboto Bold" ],
-                "text-anchor": "center",
-                "text-justify": "center",
-                "text-field": ["get", "METERS"],
-                "text-allow-overlap": true,
-                "text-ignore-placement": true,
-                "text-size": 11,
-                "symbol-placement": "point"
-              },
-              "paint": {
-                "text-color": ["case", ["<=", ["get", "METERS"], 9.0], colors["SNDG2"], colors["SNDG1"] ],
-                "text-halo-color": colors["CHWHT"],
-                "text-halo-width": 1.5
-              }
-            })
-         */
-
 }

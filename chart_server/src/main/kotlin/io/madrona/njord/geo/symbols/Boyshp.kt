@@ -38,7 +38,7 @@ enum class Boyshp(val code: Int) {
 fun Feature.addBoyShp() {
     val colpat = Colpat.fromProp(properties)
     val color = Color.fromProp(properties)
-    val sy: String = when (Boyshp.fromProp(properties)) {
+    val sy: String? = when (Boyshp.fromProp(properties)) {
         Boyshp.Conical -> when (color) {
             listOf(Color.White) -> "BOYCON01"
             listOf(Color.Red) -> "BOYCON60"
@@ -146,19 +146,29 @@ fun Feature.addBoyShp() {
             else -> "BOYPIL01"
         }
         Boyshp.Spar -> when (color) {
-            else -> ""
+            listOf(Color.Orange, Color.White, Color.Orange, Color.White) -> "BOYSPR04"
+            listOf(Color.White) -> "BOYSPR05"
+            listOf(Color.Red) -> "BOYSPR60"
+            listOf(Color.Green) -> "BOYSPR61"
+            listOf(Color.Yellow) -> "BOYSPR62"
+            listOf(Color.Red, Color.White, Color.Red) -> "BOYSPR65"
+            listOf(Color.Black, Color.Yellow) -> "BOYSPR68"
+            listOf(Color.Yellow, Color.Black) -> "BOYSPR69"
+            listOf(Color.Black, Color.Yellow, Color.Black) -> "BOYSPR70"
+            listOf(Color.Yellow, Color.Black, Color.Yellow) -> "BOYSPR71"
+            listOf(Color.Black, Color.Red, Color.Black) -> "BOYSPR72"
+            else -> "BOYSPR01"
         }
         Boyshp.Barrel -> when (color) {
-            else -> ""
+            listOf(Color.Red) -> "BOYBAR60"
+            listOf(Color.Green) -> "BOYBAR61"
+            listOf(Color.Yellow) -> "BOYBAR62"
+            else -> "BOYBAR01"
         }
-        Boyshp.SuperBuoy -> when (color) {
-            else -> ""
-        }
-        Boyshp.IceBuoy -> when (color) {
-            else -> ""
-        }
-        else -> ""
+        Boyshp.SuperBuoy -> "BOYSUP01" //todo:()
+        Boyshp.IceBuoy -> "BOYSPR01" //todo:()
+        else -> null
     }
-    properties?.put("SY", sy)
+    sy?.let { properties?.put("SY", sy) }
 }
 

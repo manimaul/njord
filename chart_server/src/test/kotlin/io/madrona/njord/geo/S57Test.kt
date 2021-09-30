@@ -1,5 +1,8 @@
 package io.madrona.njord.geo
 
+import io.madrona.njord.geo.symbols.floatValue
+import io.madrona.njord.geo.symbols.intValue
+import io.madrona.njord.geo.symbols.s57Props
 import mil.nga.sf.geojson.Point
 import java.io.File
 import kotlin.test.*
@@ -45,23 +48,30 @@ internal class S57Test {
 
         val fc = s57.findLayer("SOUNDG")
 
-        val props = fc?.features?.firstOrNull()?.properties
+        val props = fc?.features?.firstOrNull()?.s57Props()
         assertNotNull(props)
         val depthMeters = props["METERS"] as? Float
         assertEquals(15.8f, depthMeters)
 
-        val feet = props["FEET"] as? Float
-        assertEquals(51.83f, feet)
+        val feet = props.floatValue("FEET")
+        assertEquals(51.8f, feet)
 
-        val fathoms = props["FATHOMS"] as? Int
+
+        val fathoms = props.intValue("FATHOMS")
         assertEquals(8, fathoms)
 
-        val fathomsFt = props["FATHOMS_FT"] as? Int
+        val fathomsFt = props.intValue("FATHOMS_FT")
         assertEquals(3, fathomsFt)
 
         val soundg = fc.features.firstOrNull()?.geometry as? Point
         assertNotNull(soundg)
         assertFalse(soundg.coordinates.hasZ())
+
+        val scaMin = props.intValue("SCAMIN")
+
+        val minZ = props.intValue("MINZ")
+        assertEquals(13, minZ)
+        assertNotNull(minZ)
     }
 
     @Test
@@ -71,6 +81,16 @@ internal class S57Test {
         val s57 = S57(f)
 
         val fc = s57.findLayer("BOYSPP")
+        fc?.bbox
+    }
+
+    @Test
+    fun testLnDare() {
+        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        assertTrue(f.exists())
+        val s57 = S57(f)
+
+        val fc = s57.findLayer("LNDARE")
 
     }
 }

@@ -15,7 +15,7 @@ object Deps {
     const val gdal = "org.gdal:gdal:3.3.0"
     const val jtsCore = "org.locationtech.jts:jts-core:1.18.2"
     const val guava = "com.google.guava:guava:29.0-jre"
-    const val proj4 = "org.locationtech.proj4j:proj4j:1.1.3"
+//    const val proj4 = "org.locationtech.proj4j:proj4j:1.1.3"
     const val geojson = "mil.nga.sf:sf-geojson:2.0.4"
     const val rxJava = "io.reactivex.rxjava2:rxjava:2.2.12"
     const val slf4j = "org.slf4j:slf4j-api:1.7.25"

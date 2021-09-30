@@ -1,7 +1,6 @@
 package io.madrona.njord.ext
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import kotlin.test.*
 
 internal class StringExtKtTest {
 

@@ -26,6 +26,6 @@ data class ChartInsert(
     val updated: String,
     val issued: String,
     val zoom: Int,
-    @JsonProperty("dsid_props") val dsidProps: Map<String, Any>,
+    @JsonProperty("dsid_props") val dsidProps: Map<String, Any?>,
     @JsonProperty("chart_txt") val chartTxt: Map<String, String>,
 )

@@ -2,11 +2,9 @@ package io.madrona.njord.geo
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
-import io.madrona.njord.ext.letTwo
-import io.madrona.njord.geo.symbols.addBoyShp
-import io.madrona.njord.logger
+import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.model.ChartInsert
-import io.madrona.njord.util.getZoom
+import io.madrona.njord.util.ZFinder
 import mil.nga.sf.geojson.FeatureCollection
 import org.gdal.gdal.Dataset
 import org.gdal.gdal.gdal
@@ -17,11 +15,7 @@ import org.gdal.osr.SpatialReference
 import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.ogr.ogrConstants.*
 import java.io.File
-import java.lang.Double.max
-import java.lang.Double.min
 import java.lang.RuntimeException
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class S57(
     val file: File,
@@ -29,6 +23,7 @@ class S57(
     private val exLayers: Set<String>? = null,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
+    private val zFinder: ZFinder = Singletons.zFinder,
 ) {
     private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
@@ -36,39 +31,30 @@ class S57(
         layerGeoJsonSequence().toMap()
     }
 
-    fun findLayer(name: String) : FeatureCollection? {
+    fun findLayer(name: String): FeatureCollection? {
         return dataSet.GetLayer(name)?.featureCollection()
     }
 
-    fun chartInsertInfo() : ChartInsert? {
+    fun chartInsertInfo(): ChartInsert? {
         val chartTxt = file.parentFile.listFiles { _: File, name: String ->
             name.endsWith(".TXT", true)
         }?.map {
             it.name to it.readText()
         }?.toMap() ?: emptyMap()
 
-        return findLayer("DSID")?.features?.firstOrNull()?.properties?.let { props ->
-            letTwo(
-                props["DSPM_CSCL"]?.toString()?.toIntOrNull(),
-                dataSet.GetLayer("M_COVR")?.GetExtent()?.takeIf { it.size == 4 }?.let {
-                    //minx, maxx, miny, maxy
-                    val n = max(it[2], it[3])
-                    val s = min(it[2], it[3])
-                    s + ((n - s) * 0.5)
-                }
-            ) { scale, centerLat ->
+        return findLayer("DSID")?.features?.firstOrNull()?.s57Props()?.let { props ->
+            props.intValue("DSPM_CSCL")?.let { scale ->
                 ChartInsert(
-                    name = props["DSID_DSNM"]?.toString() ?: "",
-                    scale = props["DSPM_CSCL"]?.toString()?.toIntOrNull() ?: 0,
+                    name = props.stringValue("DSID_DSNM") ?: "",
+                    scale = scale,
                     fileName = file.name,
-                    updated = props["DSID_UADT"]?.toString() ?: "",
-                    issued = props["DSID_ISDT"]?.toString() ?: "",
-                    zoom = getZoom(scale, centerLat),
+                    updated = props.stringValue("DSID_UADT") ?: "",
+                    issued = props.stringValue("DSID_ISDT") ?: "",
+                    zoom = zFinder.findZoom(scale),
                     dsidProps = props,
                     chartTxt = chartTxt
                 )
             }
-
         }
     }
 
@@ -101,12 +87,21 @@ class S57(
     }
 
     private fun Feature.geoJsonFeature(): mil.nga.sf.geojson.Feature? {
-        return GetGeometryRef()?.geoJson()?.let { geoJson ->
-            mil.nga.sf.geojson.Feature().also {
-                it.geometry = FeatureConverter.toGeometry(geoJson)
-                it.properties = fields()
+        return GetGeometryRef()?.let { geom ->
+            geom.geoJson()?.let { geoJson ->
+                mil.nga.sf.geojson.Feature().also { feat ->
+                    feat.geometry = FeatureConverter.toGeometry(geoJson)
+                    feat.properties = fields().apply {
+                        intValue("SCAMIN")?.takeIf { it > 0 }?.let {
+                            put("MINZ", zFinder.findZoom(it))
+                        }
+                        intValue("SCAMAX")?.takeIf { it > 0 }?.let {
+                            put("MAXZ", zFinder.findZoom(it))
+                        }
+                    }
+                }
             }
-        } ?: run {
+        }?: run {
             fields().takeIf { it.isNotEmpty() }?.let { fields ->
                 mil.nga.sf.geojson.Feature().also {
                     it.geometry = null
@@ -116,13 +111,13 @@ class S57(
         }
     }
 
-    private fun Feature.fields(): Map<String, Any?> {
+    private fun Feature.fields(): S57Prop {
         return (0 until GetFieldCount()).asSequence().map { id ->
             GetFieldDefnRef(id).let {
                 val name = it.GetName()
                 name to value(it.GetFieldType(), id)
             }
-        }.toMap()
+        }.toMap().toMutableMap()
     }
 
     private fun Feature.value(type: Int, id: Int): Any? {
@@ -153,7 +148,8 @@ class S57(
                     when (name) {
                         "SOUNDG" -> addSounding()
                         "BOYSPP" -> addBoyShp()
-                        "LIGHTS" -> { }
+                        "LIGHTS" -> {
+                        } //todo:
                     }
                 }
             }.toList())
@@ -206,14 +202,6 @@ class S57(
         init {
             gdal.AllRegister()
             gdal.SetConfigOption(OGR_S57_OPTIONS_K, OGR_S57_OPTIONS_V)
-        }
-
-        private val FORMAT_M = DecimalFormat("#.##").apply {
-            roundingMode = RoundingMode.DOWN
-        }
-
-        private val FORMAT_FT = DecimalFormat("#.#").apply {
-            roundingMode = RoundingMode.DOWN
         }
     }
 }

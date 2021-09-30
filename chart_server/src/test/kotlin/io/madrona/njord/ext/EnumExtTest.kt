@@ -2,8 +2,7 @@ package io.madrona.njord.ext
 
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.StyleColor
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import kotlin.test.*
 
 internal class EnumExtTest {
 

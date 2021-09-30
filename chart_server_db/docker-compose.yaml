@@ -48,12 +48,14 @@ services:
   postgressetup:
     build:
       context: .
-      dockerfile: Dockerfile_dbinit
+      dockerfile: postgres_init/Dockerfile
     depends_on:
       - postgres
     networks:
       - overlay
     restart: "no"
+    volumes:
+      - ./postgres_init/scripts:/postgres_init
     environment:
       PGUSER: admin
       PGPASSWORD: mysecretpassword

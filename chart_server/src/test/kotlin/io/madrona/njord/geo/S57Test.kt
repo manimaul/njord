@@ -1,8 +1,11 @@
 package io.madrona.njord.geo
 
+import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.s57Props
+import io.madrona.njord.geo.symbols.stringValue
+import io.madrona.njord.model.ChartInsert
 import mil.nga.sf.geojson.Point
 import java.io.File
 import kotlin.test.*
@@ -12,22 +15,26 @@ internal class S57Test {
     fun testOpen() {
         val f = File("src/test/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
-        S57(f, setOf("DSID"))
+        S57(f)
     }
 
     @Test
     fun testProperties() {
         val f = File("src/test/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
-        val s57 = S57(f, setOf("DSID"))
-        assertEquals(1, s57.layerGeoJson.size)
-        val dsid = s57.layerGeoJson["DSID"]
+        val s57 = S57(f)
+        assertEquals(67, s57.layerNames.size)
+
+        val dsid = s57.findLayer("DSID")
         assertNotNull(dsid)
 
-        assertEquals(dsid.features?.size, 1)
-        val props = dsid.features?.first()?.properties
-        assertEquals(props?.get("DSID_UPDN"), "4")
-        assertEquals(props?.get("DSID_ISDT"), "20200626")
+        val props = dsid.features?.firstOrNull()?.s57Props()
+        assertNotNull(props)
+
+        assertEquals(props.stringValue("DSID_UPDN"), "4")
+        assertEquals(props.intValue("DSID_UPDN"), 4)
+        assertEquals(props.stringValue("DSID_ISDT"), "20200626")
+        assertEquals(props.intValue("DSID_ISDT"), 20200626)
     }
 
     @Test
@@ -37,7 +44,7 @@ internal class S57Test {
 
         val s57 = S57(f)
         val info = s57.chartInsertInfo()
-        assertNotNull(info)
+        assertTrue(info is InsertSuccess<ChartInsert>)
     }
 
     @Test
@@ -48,9 +55,11 @@ internal class S57Test {
 
         val fc = s57.findLayer("SOUNDG")
 
+        assertTrue(s57.layerNames.isNotEmpty())
+
         val props = fc?.features?.firstOrNull()?.s57Props()
         assertNotNull(props)
-        val depthMeters = props["METERS"] as? Float
+        val depthMeters = props.floatValue("METERS")
         assertEquals(15.8f, depthMeters)
 
         val feet = props.floatValue("FEET")
@@ -68,6 +77,7 @@ internal class S57Test {
         assertFalse(soundg.coordinates.hasZ())
 
         val scaMin = props.intValue("SCAMIN")
+        assertEquals(17999, scaMin)
 
         val minZ = props.intValue("MINZ")
         assertEquals(13, minZ)
@@ -81,7 +91,7 @@ internal class S57Test {
         val s57 = S57(f)
 
         val fc = s57.findLayer("BOYSPP")
-        fc?.bbox
+        assertNotNull(fc)
     }
 
     @Test
@@ -91,6 +101,6 @@ internal class S57Test {
         val s57 = S57(f)
 
         val fc = s57.findLayer("LNDARE")
-
+        assertNotNull(fc)
     }
 }

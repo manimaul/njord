@@ -2,6 +2,9 @@ package io.madrona.njord.geo
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
+import io.madrona.njord.db.InsertError
+import io.madrona.njord.db.InsertSuccess
+import io.madrona.njord.db.Insertable
 import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.util.ZFinder
@@ -19,67 +22,70 @@ import java.lang.RuntimeException
 
 class S57(
     val file: File,
-    private val inLayers: Set<String>? = null,
-    private val exLayers: Set<String>? = null,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val zFinder: ZFinder = Singletons.zFinder,
 ) {
     private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
-    val layerGeoJson: Map<String, FeatureCollection> by lazy {
-        layerGeoJsonSequence().toMap()
+    val layerNames: List<String> by lazy {
+        dataSet.layers().map { it.GetName() }.toList()
     }
 
     fun findLayer(name: String): FeatureCollection? {
         return dataSet.GetLayer(name)?.featureCollection()
     }
 
-    fun chartInsertInfo(): ChartInsert? {
+    fun chartInsertInfo(): Insertable<ChartInsert> {
         val chartTxt = file.parentFile.listFiles { _: File, name: String ->
             name.endsWith(".TXT", true)
         }?.map {
             it.name to it.readText()
         }?.toMap() ?: emptyMap()
 
-        return findLayer("DSID")?.features?.firstOrNull()?.s57Props()?.let { props ->
-            props.intValue("DSPM_CSCL")?.let { scale ->
-                ChartInsert(
-                    name = props.stringValue("DSID_DSNM") ?: "",
-                    scale = scale,
-                    fileName = file.name,
-                    updated = props.stringValue("DSID_UADT") ?: "",
-                    issued = props.stringValue("DSID_ISDT") ?: "",
-                    zoom = zFinder.findZoom(scale),
-                    dsidProps = props,
-                    chartTxt = chartTxt
-                )
-            }
-        }
+        val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
+        val mcovr = findLayer("M_COVR")?.features?.firstOrNull {
+            it.s57Props().intValue("CATCOV") == 1
+        } ?: return InsertError("M_COVR is missing")
+        val props = dsid.features?.firstOrNull()?.s57Props() ?: return InsertError("DSID props are missing")
+        val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
+
+        return InsertSuccess(
+            ChartInsert(
+                name = props.stringValue("DSID_DSNM") ?: "",
+                scale = scale,
+                fileName = file.name,
+                updated = props.stringValue("DSID_UADT") ?: "",
+                issued = props.stringValue("DSID_ISDT") ?: "",
+                zoom = zFinder.findZoom(scale),
+                covr = mcovr,
+                dsidProps = props,
+                chartTxt = chartTxt
+            )
+        )
     }
 
-    fun layerGeoJsonSequence(): Sequence<Pair<String, FeatureCollection>> {
+    fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<Pair<String, FeatureCollection>> {
         return dataSet.layers().mapNotNull { layer ->
-            val name = layer.GetName()
-            if ((inLayers == null || inLayers.contains(name)) && exLayers?.contains(name) != true) {
-                name to layer.featureCollection()
-            } else {
-                null
+            layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
+                it to layer.featureCollection()
             }
         }
     }
 
     /**
      * export OGR_S57_OPTIONS="RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_SOUNDG.json $(pwd)/US5WA22M.000 SOUNDG
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_BOYSPP.json $(pwd)/US3WA46M.000 BOYSPP
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/ogr_DSID.json $(pwd)/US5WA22M.000 DSID
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/SOUNDG.json $(pwd)/US5WA22M.000 SOUNDG
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/BOYSPP.json $(pwd)/US3WA46M.000 BOYSPP
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/DSID.json $(pwd)/US5WA22M.000 DSID
+     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/M_COVR.json $(pwd)/US5WA22M.000 M_COVR
      */
     fun renderGeoJson(
         outDir: File = file.parentFile,
+        exLayers: Set<String>? = null,
         msg: (String) -> Unit
     ) {
-        layerGeoJsonSequence().forEach {
+        layerGeoJsonSequence(exLayers).forEach {
             val name = "${it.first}.json"
             msg(name)
             objectMapper.writeValue(File(outDir, name), it.second)
@@ -101,7 +107,7 @@ class S57(
                     }
                 }
             }
-        }?: run {
+        } ?: run {
             fields().takeIf { it.isNotEmpty() }?.let { fields ->
                 mil.nga.sf.geojson.Feature().also {
                     it.geometry = null

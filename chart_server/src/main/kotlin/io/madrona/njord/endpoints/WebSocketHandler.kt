@@ -8,6 +8,8 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.GeoJsonDao
+import io.madrona.njord.db.InsertError
+import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
@@ -15,7 +17,6 @@ import io.madrona.njord.logger
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.FeatureInsert
 import kotlinx.coroutines.*
-import mil.nga.sf.geojson.FeatureCollection
 import java.io.File
 import java.util.zip.ZipFile
 
@@ -71,15 +72,21 @@ class ChartWebSocketHandler(
                 it.name.endsWith(".000")
             }.map {
                 send("reading ${it.name}")
-                S57(it, exLayers = setOf("DSID", "IsolatedNode", "ConnectedNode", "Edge", "Face"))
+                S57(it)
             }.forEach { s57 ->
-                s57.chartInsertInfo()?.let { insert ->
-                    chartDao.insertAsync(insert).await()
+                when (val insert = s57.chartInsertInfo()) {
+                    is InsertError -> {
+                        scope.launch {
+                            send("error creating chart ${s57.file.name} msg = ${insert.msg}")
+                        }
+                        null
+                    }
+                    is InsertSuccess -> chartDao.insertAsync(insert.value).await()
                 }?.let { chart ->
                     scope.launch {
                         send("created chart id=${chart.id}")
                     }
-                    s57.layerGeoJsonSequence().forEach { (name, fc) ->
+                    s57.layerGeoJsonSequence(exLayers).forEach { (name, fc) ->
                         val count = geoJsonDao.insertAsync(
                             FeatureInsert(
                                 layerName = name,
@@ -148,5 +155,9 @@ class ChartWebSocketHandler(
             log.error("chart dir does not exist $charDir/$uuid")
             null
         }
+    }
+
+    companion object {
+        val exLayers = setOf("DSID", "IsolatedNode", "ConnectedNode", "Edge", "Face")
     }
 }

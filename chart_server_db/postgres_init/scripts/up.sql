@@ -88,24 +88,31 @@ AS
 $BODY$
 DECLARE
     tileEnvelope geometry;
+    coverage     geometry;
     chart        RECORD;
     i            TEXT;
     res          BYTEA DEFAULT '';
     rec          BYTEA;
 BEGIN
     tileEnvelope = ST_Transform(ST_TileEnvelope(z, x, y), 4326);
-    FOR chart in SELECT id FROM charts WHERE st_intersects(covr, tileEnvelope) ORDER BY scale
+    coverage = null;
+    FOR chart in SELECT id, covr FROM charts WHERE st_intersects(covr, tileEnvelope) ORDER BY scale
         LOOP
-            FOR i IN SELECT DISTINCT layer from features WHERE chart_id=chart.id
+            coverage = CASE
+                           WHEN coverage IS NULL THEN st_intersection(chart.covr, tileEnvelope)
+                           ELSE st_union(chart.covr, coverage)
+                END;
+
+            FOR i IN SELECT DISTINCT layer from features WHERE chart_id = chart.id
                 LOOP
                     WITH mvtdata AS (
                         SELECT ST_AsMvtGeom(geom, tileEnvelope) AS geom,
-                               layer                                          AS name,
-                               props                                          AS properties,
+                               layer                            AS name,
+                               props                            AS properties,
                                z_range
                         FROM features
                         WHERE layer = i
-                          AND chart_id=chart.id
+                          AND chart_id = chart.id
                           AND geom && tileEnvelope
                           AND z <@ z_range
                     )
@@ -114,6 +121,10 @@ BEGIN
                     INTO rec;
                     res := res || rec;
                 END LOOP;
+
+            IF st_within(coverage, tileEnvelope) THEN EXIT;
+            END IF;
+
         END LOOP;
     RETURN res;
 END

@@ -24,7 +24,7 @@ class GeoJsonDao : Dao() {
     }
 
     fun fetchTileAsync(z: Int, x: Int, y: Int) = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT concat_mvt(?,?,?);").apply {
+        conn.prepareStatement("SELECT concat_mvt_occluded(?,?,?);").apply {
                 setInt(1, z)
                 setInt(2, x)
                 setInt(3, y)

@@ -1,7 +1,7 @@
 CREATE TABLE charts
 (
-    id         BIGSERIAL                PRIMARY KEY,
-    name       VARCHAR                  UNIQUE NOT NULL, -- DSID_DSNM
+    id         BIGSERIAL PRIMARY KEY,
+    name       VARCHAR UNIQUE           NOT NULL, -- DSID_DSNM
     scale      INTEGER                  NOT NULL, -- DSPM_CSCL
     file_name  VARCHAR                  NOT NULL, -- actual file name
     updated    VARCHAR                  NOT NULL, -- DSID_UADT
@@ -60,7 +60,9 @@ BEGIN
                        props                                                            AS properties,
                        z_range
                 FROM features
-                WHERE layer = i AND geom && ST_Transform(ST_TileEnvelope(z, x, y), 4326) AND z <@ z_range
+                WHERE layer = i
+                  AND geom && ST_Transform(ST_TileEnvelope(z, x, y), 4326)
+                  AND z <@ z_range
             )
             SELECT ST_AsMVT(mvtdata.*, i)
             FROM mvtdata
@@ -76,42 +78,43 @@ $BODY$;
 -- https://postgis.net/docs/ST_Intersection.html
 -- https://postgis.net/docs/ST_Difference.html
 --
--- 1 find the chart mcovr geometries within the tile envelope ordered by zoom
+-- 1 find the chart covr geometries within the tile envelope ordered by scale
 -- 2
 --
--- CREATE OR REPLACE FUNCTION public.concat_mvt_occluded(z INTEGER, x INTEGER, y INTEGER)
---     RETURNS BYTEA
---     LANGUAGE plpgsql
--- AS
--- $BODY$
--- DECLARE
---     tileEnvelope  geometry;
---     g   geometry;
---     i   TEXT;
---     res BYTEA DEFAULT '';
---     rec BYTEA;
--- BEGIN
---     tileEnvelope = ST_Transform(ST_TileEnvelope(z, x, y), 4326);
---     FOR g in SELECT mcovr FROM charts
---         LOOP
---
---         END LOOP;
---
---     FOR i IN SELECT DISTINCT layer from features
---         LOOP
---             WITH mvtdata AS (
---                 SELECT ST_AsMvtGeom(geom, tileEnvelope) AS geom,
---                        layer                                                            AS name,
---                        props                                                            AS properties,
---                        z_range
---                 FROM features
---                 WHERE layer = i AND geom && tileEnvelope AND z <@ z_range
---             )
---             SELECT ST_AsMVT(mvtdata.*, i)
---             FROM mvtdata
---             INTO rec;
---             res := res || rec;
---         END LOOP;
---     RETURN res;
--- END
--- $BODY$;
+CREATE OR REPLACE FUNCTION public.concat_mvt_occluded(z INTEGER, x INTEGER, y INTEGER)
+    RETURNS BYTEA
+    LANGUAGE plpgsql
+AS
+$BODY$
+DECLARE
+    tileEnvelope geometry;
+    chart        RECORD;
+    i            TEXT;
+    res          BYTEA DEFAULT '';
+    rec          BYTEA;
+BEGIN
+    tileEnvelope = ST_Transform(ST_TileEnvelope(z, x, y), 4326);
+    FOR chart in SELECT id FROM charts WHERE st_intersects(covr, tileEnvelope) ORDER BY scale
+        LOOP
+            FOR i IN SELECT DISTINCT layer from features WHERE chart_id=chart.id
+                LOOP
+                    WITH mvtdata AS (
+                        SELECT ST_AsMvtGeom(geom, tileEnvelope) AS geom,
+                               layer                                          AS name,
+                               props                                          AS properties,
+                               z_range
+                        FROM features
+                        WHERE layer = i
+                          AND chart_id=chart.id
+                          AND geom && tileEnvelope
+                          AND z <@ z_range
+                    )
+                    SELECT ST_AsMVT(mvtdata.*, i)
+                    FROM mvtdata
+                    INTO rec;
+                    res := res || rec;
+                END LOOP;
+        END LOOP;
+    RETURN res;
+END
+$BODY$;

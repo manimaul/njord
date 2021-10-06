@@ -30,7 +30,7 @@ dependencies {
     implementation(Deps.ktorJackson)
     implementation(Deps.logBack)
     implementation(Deps.gdal)
-    implementation(Deps.proj4)
+    implementation(Deps.vectorTile)
     implementation(Deps.jtsCore)
     implementation(Deps.geojson)
     implementation(Deps.postgres)

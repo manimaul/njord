@@ -23,6 +23,9 @@ allprojects {
                 password = "${project.findProperty("github_token")}"
             }
         }
+        maven {
+            url = uri("https://github.com/ElectronicChartCentre/ecc-mvn-repo/raw/master/releases")
+        }
         mavenCentral()
     }
 

@@ -12,7 +12,8 @@ class LayerFactory(
                 Lndare(),
                 Soundg(),
                 Boyspp(),
-                Lights() //symbol lookup
+                Lights(), //symbol lookup
+                Debug()
         )
 ) {
 

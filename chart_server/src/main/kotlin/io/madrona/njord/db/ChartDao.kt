@@ -2,9 +2,14 @@ package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.model.Chart
+import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.ChartInfo
 import io.madrona.njord.model.ChartInsert
 import kotlinx.coroutines.Deferred
 import mil.nga.sf.geojson.Feature
+import org.locationtech.jts.geom.Geometry
+import org.locationtech.jts.geom.Polygon
+import org.locationtech.jts.io.WKBWriter
 import java.sql.*
 
 class ChartDao : Dao() {
@@ -31,7 +36,7 @@ class ChartDao : Dao() {
 
     fun findLayers(id: Long, conn: Connection): List<String> {
         return conn.prepareStatement(
-            "SELECT DISTINCT  layer FROM features where chart_id=?;",
+            "SELECT DISTINCT layer FROM features where chart_id=?;",
             Statement.RETURN_GENERATED_KEYS
         ).apply {
             setLong(1, id)
@@ -44,6 +49,71 @@ class ChartDao : Dao() {
                 }
             }
         }.toList()
+    }
+
+
+
+    fun findChartFeaturesAsync(x: Int, y: Int, z: Int, chartId: Long, layer: String): Deferred<List<ChartFeature>?> =
+        sqlOpAsync { conn ->
+            val sql = """
+              WITH tile_bounds AS (VALUES (st_transform(st_tileenvelope(?, ?, ?), 4326)))
+              SELECT st_asbinary(st_intersection(geom, (table tile_bounds))), props
+              FROM features
+              WHERE chart_id=?
+                AND layer=?
+                AND st_intersects(geom, (table tile_bounds));
+          """.trimIndent()
+            log.debug("sql=$sql")
+            conn.prepareStatement(sql).apply {
+                setInt(1, z)
+                setInt(2, x)
+                setInt(3, y)
+                setLong(4, chartId)
+                setString(5, layer)
+            }.executeQuery().let { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = objectMapper.readValue(rs.getString(2))
+                        )
+                    } else {
+                        null
+                    }
+                }.toList()
+            }
+        }
+
+    fun findInfoAsync(polygon: Polygon): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+                SELECT 
+                    id,
+                    scale, 
+                    zoom,
+                    st_asbinary(covr) as covrWKB
+                FROM charts 
+                WHERE st_intersects(st_geomfromwkb(?, 4326), covr)
+                ORDER BY scale;
+            """.trimIndent()
+        ).apply {
+            setBytes(1, WKBWriter().write(polygon))
+        }.executeQuery()?.let { rs ->
+            generateSequence {
+                if (rs.next()) {
+                    val id = rs.getLong(1)
+                    ChartInfo(
+                        id = id,
+                        scale = rs.getInt(2),
+                        zoom = rs.getInt(3),
+                        covrWKB = rs.getBytes(4),
+                        layers = findLayers(id, conn)
+                    )
+                } else {
+                    null
+                }
+            }.toList()
+        }
     }
 
     fun findAsync(id: Long): Deferred<Chart?> = sqlOpAsync { conn ->

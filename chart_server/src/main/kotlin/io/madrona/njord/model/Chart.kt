@@ -3,9 +3,19 @@ package io.madrona.njord.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import mil.nga.sf.geojson.Feature
-import mil.nga.sf.geojson.FeatureCollection
-import mil.nga.sf.geojson.GeoJsonObject
-import mil.nga.sf.geojson.Geometry
+
+class ChartInfo(
+    val id: Long,
+    val scale: Int,
+    val zoom: Int,
+    val covrWKB: ByteArray,
+    val layers: List<String>,
+)
+
+class ChartFeature(
+    val geomWKB: ByteArray?,
+    val props: Map<String, Any>
+)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Chart(

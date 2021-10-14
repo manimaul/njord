@@ -19,7 +19,7 @@ internal class TileSystemTest {
 
         val tileGeom = subject.tileGeometry(wgsGeom, x, y, z)
         assertEquals(
-            WKTReader().read("POLYGON ((0 4096, 4096 4096, 4096 0, 0 0, 0 4096))"),
+            WKTReader().read("POLYGON ((0 0, 4096 0, 4096 4096, 0 4096, 0 0))"),
             tileGeom
         )
     }

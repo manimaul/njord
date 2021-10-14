@@ -129,7 +129,7 @@ class TileSystem(
         val pxy = latLngToPixelXy(lngX, latY, z)
         val tileX = pxy.x - x * tileSize
         val tileY = pxy.y - y * tileSize
-        return Coordinate(tileX, tileSize - tileY)
+        return Coordinate(tileX, tileY)
     }
 
 

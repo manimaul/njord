@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
+import org.locationtech.jts.geom.GeometryFactory
 import javax.sql.DataSource
 
 object Singletons {
@@ -42,4 +43,6 @@ object Singletons {
     val zFinder = ZFinder()
 
     val tileSystem = TileSystem()
+
+    val geometryFactory = GeometryFactory()
 }

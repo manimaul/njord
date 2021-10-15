@@ -7,6 +7,8 @@ import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBReader
+import java.time.Duration
+import java.time.Instant
 
 class TileEncoder(
     val x: Int,
@@ -32,34 +34,31 @@ class TileEncoder(
     }
 
     suspend fun addCharts(): TileEncoder {
+        val start = Instant.now()
         var include = tileEnvelope.copy() //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
-        val tag = "x=$x y=$y z=$z "
-        chartDao.findInfoAsync(tileEnvelope).await()?.let { charts ->
+        chartDao.findInfoAsync(tileEnvelope, z).await()?.let { charts ->
             charts.forEach { chart ->
-//                if (tileEnvelope.within(covered)) {
-//                    return@forEach
-//                }
                 if (include.isEmpty) {
-                    log.debug("$tag chart id=${chart.id} empty - early out")
+                    log.debug("tile x=$x y=$y z=$z chart id=${chart.id} empty - early out")
                     return@forEach
                 }
                 chart.layers.forEach { layer ->
-                    log.debug("$tag  chart id=${chart.id} layer=${layer}")
-                    chartDao.findChartFeaturesAsync(x, y, z, chart.id, layer).await()?.filter {
+                    chartDao.findChartFeaturesAsync(include, z, chart.id, layer).await()?.filter {
                         it.geomWKB != null
                     }?.forEach { feature ->
-//                        val tileGeo = WKBReader().read(feature.geomWKB)
                         val tileGeo = tileSystem.tileGeometry(WKBReader().read(feature.geomWKB), x, y, z)
                         encoder.addFeature(layer, feature.props, tileGeo)
                     }
                 }
-//                WKBReader().read(chart.covrWKB)?.let { geo ->
-//                    covered = covered.union(geo)
-//                    envelope = envelope.difference(covered)
-//                }
+                WKBReader().read(chart.covrWKB)?.let { geo ->
+                    covered = covered.union(geo)
+                    include = include.difference(covered)
+                }
             }
         }
+        val t = Duration.between(start, Instant.now()).toMillis()
+        log.debug("tile x=$x y=$y z=$z render time millis = $t")
         return this
     }
 

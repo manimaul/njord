@@ -51,25 +51,21 @@ class ChartDao : Dao() {
         }.toList()
     }
 
-
-
-    fun findChartFeaturesAsync(x: Int, y: Int, z: Int, chartId: Long, layer: String): Deferred<List<ChartFeature>?> =
+    fun findChartFeaturesAsync(bounds: Geometry, z: Int, chartId: Long, layer: String): Deferred<List<ChartFeature>?> =
         sqlOpAsync { conn ->
-            val sql = """
-              WITH tile_bounds AS (VALUES (st_transform(st_tileenvelope(?, ?, ?), 4326)))
-              SELECT st_asbinary(st_intersection(geom, (table tile_bounds))), props
+            conn.prepareStatement("""
+              WITH tile_bounds AS (VALUES (ST_GeomFromWKB(?, 4326)))
+              SELECT ST_AsBinary(ST_Intersection(geom, (table tile_bounds))), props
               FROM features
               WHERE chart_id=?
                 AND layer=?
-                AND st_intersects(geom, (table tile_bounds));
-          """.trimIndent()
-            log.debug("sql=$sql")
-            conn.prepareStatement(sql).apply {
-                setInt(1, z)
-                setInt(2, x)
-                setInt(3, y)
-                setLong(4, chartId)
-                setString(5, layer)
+                AND ? <@ z_range
+                AND ST_Intersects(geom, (table tile_bounds));
+          """.trimIndent()).apply {
+                setBytes(1, WKBWriter().write(bounds))
+                setLong(2, chartId)
+                setString(3, layer)
+                setInt(4, z)
             }.executeQuery().let { rs ->
                 generateSequence {
                     if (rs.next()) {
@@ -84,7 +80,7 @@ class ChartDao : Dao() {
             }
         }
 
-    fun findInfoAsync(polygon: Polygon): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
+    fun findInfoAsync(polygon: Polygon, z: Int): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
         conn.prepareStatement(
             """
                 SELECT 
@@ -94,10 +90,12 @@ class ChartDao : Dao() {
                     st_asbinary(covr) as covrWKB
                 FROM charts 
                 WHERE st_intersects(st_geomfromwkb(?, 4326), covr)
+                AND zoom BETWEEN 0 AND ?
                 ORDER BY scale;
             """.trimIndent()
         ).apply {
             setBytes(1, WKBWriter().write(polygon))
+            setInt(2, z)
         }.executeQuery()?.let { rs ->
             generateSequence {
                 if (rs.next()) {

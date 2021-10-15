@@ -25,7 +25,7 @@ class Lndare : Layerable {
                         sourceLayer = key,
                         filter = listOf(
                                 Filters.any,
-//                                Filters.eqTypePolyGon,
+                                Filters.eqTypePolyGon,
                                 Filters.eqTypeLineString
                         ),
                         paint = Paint(

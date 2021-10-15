@@ -7,6 +7,15 @@ WHERE chart_id=?
 
 ---------------------
 
+WITH tile_bounds AS (VALUES (ST_GeomFromWKB(?, 4326))),
+     box AS (VALUES (ST_MakeBox2D(ST_Point(0, 0), ST_Point(4096, 4096))))
+SELECT ST_AsBinary(ST_AsMVTGeom(ST_Intersection(geom, (table tile_bounds)), (table box))), props
+FROM features
+WHERE chart_id=?
+  AND layer=?
+  AND ST_Intersects(geom, (table tile_bounds));
+---------------------
+
 WITH tile_bounds AS (VALUES (st_transform(st_tileenvelope(?, ?, ?), 4326)))
 SELECT st_asbinary(st_asmvtgeom(geom, (table tile_bounds))), props
 FROM features

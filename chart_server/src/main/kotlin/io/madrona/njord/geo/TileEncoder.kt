@@ -1,5 +1,6 @@
 package io.madrona.njord.geo
 
+import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import no.ecc.vectortile.VectorTileEncoder
@@ -7,8 +8,6 @@ import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBReader
-import java.time.Duration
-import java.time.Instant
 
 class TileEncoder(
     val x: Int,
@@ -18,6 +17,7 @@ class TileEncoder(
     private val geometryFactory: GeometryFactory = Singletons.geometryFactory,
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true),
     private val chartDao: ChartDao = ChartDao(),
+    private val timer: Timer = Singletons.metrics.timer("TileEncoder")
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)
@@ -34,13 +34,12 @@ class TileEncoder(
     }
 
     suspend fun addCharts(): TileEncoder {
-        val start = Instant.now()
+        val ctx = timer.time()
         var include = tileEnvelope.copy() //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
         chartDao.findInfoAsync(tileEnvelope, z).await()?.let { charts ->
             charts.forEach { chart ->
                 if (include.isEmpty) {
-                    log.debug("tile x=$x y=$y z=$z chart id=${chart.id} empty - early out")
                     return@forEach
                 }
                 chart.layers.forEach { layer ->
@@ -57,8 +56,7 @@ class TileEncoder(
                 }
             }
         }
-        val t = Duration.between(start, Instant.now()).toMillis()
-        log.debug("tile x=$x y=$y z=$z render time millis = $t")
+        ctx.stop()
         return this
     }
 

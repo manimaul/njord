@@ -1,5 +1,7 @@
 package io.madrona.njord
 
+import com.codahale.metrics.ConsoleReporter
+import com.codahale.metrics.MetricRegistry
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
@@ -13,9 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
 import org.locationtech.jts.geom.GeometryFactory
+import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
-object Singletons {
+object Singletons{
 
     val objectMapper: JsonMapper = jsonMapper {
         addModule(kotlinModule())
@@ -45,4 +48,12 @@ object Singletons {
     val tileSystem = TileSystem()
 
     val geometryFactory = GeometryFactory()
+
+    val metrics = MetricRegistry().also {
+        ConsoleReporter.forRegistry(it)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .build()
+            .start(5, TimeUnit.SECONDS)
+    }
 }

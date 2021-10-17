@@ -7,6 +7,7 @@ const val logbackVersion = "1.2.3"
 const val junitVersion="5.7.1"
 const val hamcrestVersion="1.3"
 const val mockitoVersion="2.18.3"
+const val dropWizardVersion="4.2.4"
 
 object Deps {
     const val dagger = "com.google.dagger:dagger:${daggerVersion}"
@@ -35,4 +36,5 @@ object Deps {
     const val jupiter = "org.junit.jupiter:junit-jupiter"
     const val mockito = "org.mockito:mockito-core:$mockitoVersion"
     const val hamcrest = "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    const val dropWizard = "io.dropwizard.metrics:metrics-core:$dropWizardVersion"
 }

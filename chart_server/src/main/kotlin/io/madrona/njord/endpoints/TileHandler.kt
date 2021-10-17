@@ -18,7 +18,7 @@ class TileHandler : KtorHandler {
         ) { x, y, z ->
             TileEncoder(x, y, z)
                 .addCharts()
-                .addDebug()
+                //.addDebug()
                 .encode()
         }?.let {
             call.respondBytes(it, ContentType.Application.ProtoBuf)

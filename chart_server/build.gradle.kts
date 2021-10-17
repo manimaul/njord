@@ -35,6 +35,7 @@ dependencies {
     implementation(Deps.geojson)
     implementation(Deps.postgres)
     implementation(Deps.HikariCP)
+    implementation(Deps.dropWizard)
 
     testImplementation(platform(Deps.jupiterBom))
     testImplementation(Deps.jupiter)

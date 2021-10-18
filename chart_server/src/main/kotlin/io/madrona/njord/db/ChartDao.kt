@@ -1,6 +1,8 @@
 package io.madrona.njord.db
 
+import com.codahale.metrics.Timer
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.madrona.njord.Singletons
 import io.madrona.njord.model.Chart
 import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.ChartInfo
@@ -12,7 +14,11 @@ import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBWriter
 import java.sql.*
 
-class ChartDao : Dao() {
+class ChartDao(
+    private val findInfoAsyncTimer: Timer = Singletons.metrics.timer("findInfoAsync"),
+    private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
+    private val wkbWriter: WKBWriter = WKBWriter()
+) : Dao() {
 
     private fun ResultSet.chart(layers: List<String>): Chart? = if (next()) {
         Chart(
@@ -36,8 +42,7 @@ class ChartDao : Dao() {
 
     fun findLayers(id: Long, conn: Connection): List<String> {
         return conn.prepareStatement(
-            "SELECT DISTINCT layer FROM features where chart_id=?;",
-            Statement.RETURN_GENERATED_KEYS
+            "SELECT DISTINCT layer FROM features where chart_id=?;"
         ).apply {
             setLong(1, id)
         }.executeQuery().let {
@@ -51,36 +56,39 @@ class ChartDao : Dao() {
         }.toList()
     }
 
-    fun findChartFeaturesAsync(bounds: Geometry, z: Int, chartId: Long, layer: String): Deferred<List<ChartFeature>?> =
+    fun findChartFeaturesAsync(bounds: Geometry, z: Int, chartId: Long): Deferred<List<ChartFeature>?> =
         sqlOpAsync { conn ->
+            val tCtx = findChartFeaturesAsyncTimer.time()
             conn.prepareStatement("""
               WITH tile_bounds AS (VALUES (ST_GeomFromWKB(?, 4326)))
-              SELECT ST_AsBinary(ST_Intersection(geom, (table tile_bounds))), props
+              SELECT ST_AsBinary(ST_Intersection(geom, (table tile_bounds))), props, layer
               FROM features
               WHERE chart_id=?
-                AND layer=?
                 AND ? <@ z_range
                 AND ST_Intersects(geom, (table tile_bounds));
           """.trimIndent()).apply {
-                setBytes(1, WKBWriter().write(bounds))
+                setBytes(1, wkbWriter.write(bounds))
                 setLong(2, chartId)
-                setString(3, layer)
-                setInt(4, z)
+                setInt(3, z)
             }.executeQuery().let { rs ->
-                generateSequence {
+                val result = generateSequence {
                     if (rs.next()) {
                         ChartFeature(
                             geomWKB = rs.getBytes(1),
-                            props = objectMapper.readValue(rs.getString(2))
+                            props = objectMapper.readValue(rs.getString(2)),
+                            layer = rs.getString(3)
                         )
                     } else {
                         null
                     }
                 }.toList()
+                tCtx.stop()
+                result
             }
         }
 
     fun findInfoAsync(polygon: Polygon, z: Int): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
+        val tCtx = findInfoAsyncTimer.time()
         conn.prepareStatement(
             """
                 SELECT 
@@ -94,23 +102,24 @@ class ChartDao : Dao() {
                 ORDER BY scale;
             """.trimIndent()
         ).apply {
-            setBytes(1, WKBWriter().write(polygon))
+            setBytes(1, wkbWriter.write(polygon))
             setInt(2, z)
         }.executeQuery()?.let { rs ->
-            generateSequence {
+            val result = generateSequence {
                 if (rs.next()) {
                     val id = rs.getLong(1)
                     ChartInfo(
                         id = id,
                         scale = rs.getInt(2),
                         zoom = rs.getInt(3),
-                        covrWKB = rs.getBytes(4),
-                        layers = findLayers(id, conn)
+                        covrWKB = rs.getBytes(4)
                     )
                 } else {
                     null
                 }
             }.toList()
+            tCtx.stop()
+            result
         }
     }
 

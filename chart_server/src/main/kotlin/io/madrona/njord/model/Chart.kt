@@ -8,11 +8,11 @@ class ChartInfo(
     val id: Long,
     val scale: Int,
     val zoom: Int,
-    val covrWKB: ByteArray,
-    val layers: List<String>,
+    val covrWKB: ByteArray
 )
 
 class ChartFeature(
+    val layer: String,
     val geomWKB: ByteArray?,
     val props: Map<String, Any>
 )

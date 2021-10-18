@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBReader
+import org.locationtech.jts.io.WKBWriter
 
 class TileEncoder(
     val x: Int,
@@ -17,7 +18,8 @@ class TileEncoder(
     private val geometryFactory: GeometryFactory = Singletons.geometryFactory,
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true),
     private val chartDao: ChartDao = ChartDao(),
-    private val timer: Timer = Singletons.metrics.timer("TileEncoder")
+    private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
+    private val wkbReader: WKBReader = WKBReader()
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)
@@ -42,15 +44,13 @@ class TileEncoder(
                 if (include.isEmpty) {
                     return@forEach
                 }
-                chart.layers.forEach { layer ->
-                    chartDao.findChartFeaturesAsync(include, z, chart.id, layer).await()?.filter {
-                        it.geomWKB != null
-                    }?.forEach { feature ->
-                        val tileGeo = tileSystem.tileGeometry(WKBReader().read(feature.geomWKB), x, y, z)
-                        encoder.addFeature(layer, feature.props, tileGeo)
-                    }
+                chartDao.findChartFeaturesAsync(include, z, chart.id).await()?.filter {
+                    it.geomWKB != null
+                }?.forEach { feature ->
+                    val tileGeo = tileSystem.tileGeometry(wkbReader.read(feature.geomWKB), x, y, z)
+                    encoder.addFeature(feature.layer, feature.props, tileGeo)
                 }
-                WKBReader().read(chart.covrWKB)?.let { geo ->
+                wkbReader.read(chart.covrWKB)?.let { geo ->
                     covered = covered.union(geo)
                     include = include.difference(covered)
                 }

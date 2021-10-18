@@ -10,6 +10,7 @@ class LayerFactory(
                 Ponton(),
                 Hulkes(),
                 Lndare(),
+                Coalne(),
                 Soundg(),
                 Boyspp(),
                 Lights(), //symbol lookup

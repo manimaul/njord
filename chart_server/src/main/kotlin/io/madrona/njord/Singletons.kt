@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
 import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.io.WKBReader
 import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
@@ -48,6 +49,8 @@ object Singletons{
     val tileSystem = TileSystem()
 
     val geometryFactory = GeometryFactory()
+
+    val wkbReader: WKBReader = WKBReader()
 
     val metrics = MetricRegistry().also {
         ConsoleReporter.forRegistry(it)

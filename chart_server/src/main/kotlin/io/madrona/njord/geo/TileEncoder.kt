@@ -19,7 +19,7 @@ class TileEncoder(
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true),
     private val chartDao: ChartDao = ChartDao(),
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
-    private val wkbReader: WKBReader = WKBReader()
+    private val wkbReader: WKBReader = Singletons.wkbReader
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)

@@ -2,21 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Lndare : Layerable {
-    override val key = "LNDARE"
+class Coalne : Layerable {
+    override val key = "COALNE"
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
                 Layer(
-                        id = "${key}_fill",
-                        type = LayerType.FILL,
+                        id = "${key}_line",
+                        type = LayerType.LINE,
                         sourceLayer = key,
                         filter = listOf(
-                                Filters.all,
-                                Filters.eqTypePolyGon
+                                Filters.any,
+                                Filters.eqTypeLineString
                         ),
                         paint = Paint(
-                                fillColor = options.color.from("LANDA")
+                                lineColor = options.color.from("CSTLN"),
+                                lineWidth = 2f
                         )
                 )
         )

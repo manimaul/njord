@@ -14,6 +14,7 @@ class LayerFactory(
                 Soundg(),
                 Boyspp(),
                 Lights(), //symbol lookup
+                Ply(),
                 Debug()
         )
 ) {

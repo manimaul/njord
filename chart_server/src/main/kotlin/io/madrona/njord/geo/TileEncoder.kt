@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.model.ChartInfo
 import no.ecc.vectortile.VectorTileEncoder
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
@@ -19,13 +20,12 @@ class TileEncoder(
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true),
     private val chartDao: ChartDao = ChartDao(),
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
-    private val wkbReader: WKBReader = Singletons.wkbReader
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)
 
     fun addDebug(): TileEncoder {
-        val tileGeom = tileSystem.tileGeometry(tileEnvelope, x, y, z)
+        val tileGeom = tileSystem.tileGeometry(tileEnvelope.exteriorRing, x, y, z)
         encoder.addFeature("DEBUG", emptyMap<String, Any>(), tileGeom)
         encoder.addFeature(
             "DEBUG", mapOf<String, Any>(
@@ -39,25 +39,33 @@ class TileEncoder(
         val ctx = timer.time()
         var include = tileEnvelope.copy() //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
-        chartDao.findInfoAsync(tileEnvelope, z).await()?.let { charts ->
+        chartDao.findInfoAsync(tileEnvelope).await()?.let { charts ->
             charts.forEach { chart ->
-                if (include.isEmpty) {
-                    return@forEach
+                val chartGeo = WKBReader().read(chart.covrWKB)
+                if (!include.isEmpty && chart.zoom in 0..z) {
+                    chartDao.findChartFeaturesAsync(include, z, chart.id).await()?.filter {
+                        it.geomWKB != null
+                    }?.forEach { feature ->
+                        val tileGeo = tileSystem.tileGeometry(WKBReader().read(feature.geomWKB), x, y, z)
+                        encoder.addFeature(feature.layer, feature.props, tileGeo)
+                    }
+                    chartGeo?.let { geo ->
+                        covered = covered.union(geo)
+                        include = include.difference(covered)
+                    }
                 }
-                chartDao.findChartFeaturesAsync(include, z, chart.id).await()?.filter {
-                    it.geomWKB != null
-                }?.forEach { feature ->
-                    val tileGeo = tileSystem.tileGeometry(wkbReader.read(feature.geomWKB), x, y, z)
-                    encoder.addFeature(feature.layer, feature.props, tileGeo)
-                }
-                wkbReader.read(chart.covrWKB)?.let { geo ->
-                    covered = covered.union(geo)
-                    include = include.difference(covered)
-                }
+                addPly(chartGeo)
             }
         }
         ctx.stop()
         return this
+    }
+
+    private fun addPly(chartGeo: Geometry) {
+        (chartGeo as? Polygon)?.let { ply ->
+            val plyTile = tileSystem.tileGeometry(ply.exteriorRing, x, y, z)
+            encoder.addFeature("PLY", emptyMap<String, Any?>(), plyTile)
+        }
     }
 
     fun encode(): ByteArray {

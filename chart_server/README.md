@@ -1,7 +1,10 @@
 # Chart Server
 
 ## todo:
- - layer occlusion 
+ - DONE - chart occlusion 
+    - geometry clipping - (eg great peninsula)
+ - traditional raster theme
+ - web address # location update
  - chart outlines
  - scamin / scamax test various latitudes and scales
  - findzoom optimizations (use chart latitude and/or caching)

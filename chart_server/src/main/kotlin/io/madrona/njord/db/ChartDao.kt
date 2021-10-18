@@ -17,7 +17,6 @@ import java.sql.*
 class ChartDao(
     private val findInfoAsyncTimer: Timer = Singletons.metrics.timer("findInfoAsync"),
     private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
-    private val wkbWriter: WKBWriter = WKBWriter()
 ) : Dao() {
 
     private fun ResultSet.chart(layers: List<String>): Chart? = if (next()) {
@@ -67,7 +66,7 @@ class ChartDao(
                 AND ? <@ z_range
                 AND ST_Intersects(geom, (table tile_bounds));
           """.trimIndent()).apply {
-                setBytes(1, wkbWriter.write(bounds))
+                setBytes(1, WKBWriter().write(bounds))
                 setLong(2, chartId)
                 setInt(3, z)
             }.executeQuery().let { rs ->
@@ -87,7 +86,7 @@ class ChartDao(
             }
         }
 
-    fun findInfoAsync(polygon: Polygon, z: Int): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
+    fun findInfoAsync(polygon: Polygon): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
         val tCtx = findInfoAsyncTimer.time()
         conn.prepareStatement(
             """
@@ -98,12 +97,10 @@ class ChartDao(
                     st_asbinary(covr) as covrWKB
                 FROM charts 
                 WHERE st_intersects(st_geomfromwkb(?, 4326), covr)
-                AND zoom BETWEEN 0 AND ?
                 ORDER BY scale;
             """.trimIndent()
         ).apply {
-            setBytes(1, wkbWriter.write(polygon))
-            setInt(2, z)
+            setBytes(1, WKBWriter().write(polygon))
         }.executeQuery()?.let { rs ->
             val result = generateSequence {
                 if (rs.next()) {

@@ -1,4 +1,4 @@
-package io.madrona.njord.geo
+package io.madrona.njord.geo.symbols
 
 import io.madrona.njord.logger
 import mil.nga.sf.geojson.Feature

@@ -153,9 +153,6 @@ class S57(
                 feat.geoJsonFeature()?.apply {
                     when (name) {
                         "SOUNDG" -> addSounding()
-                        "BOYSPP" -> addBoyShp()
-                        "LIGHTS" -> {
-                        } //todo:
                     }
                 }
             }.toList())

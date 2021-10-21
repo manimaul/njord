@@ -3,6 +3,10 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.addBoyShp
+import io.madrona.njord.geo.symbols.addLights
+import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.ChartInfo
 import no.ecc.vectortile.VectorTileEncoder
 import org.locationtech.jts.geom.Geometry
@@ -46,7 +50,12 @@ class TileEncoder(
                     chartDao.findChartFeaturesAsync(include, z, chart.id).await()?.filter {
                         it.geomWKB != null
                     }?.forEach { feature ->
-                        val tileGeo = tileSystem.tileGeometry(WKBReader().read(feature.geomWKB), x, y, z)
+                        val fg = WKBReader().read(feature.geomWKB)
+                        val tileGeo = tileSystem.tileGeometry(fg, x, y, z)
+                        when (feature.layer) {
+                            "BOYSPP" -> feature.props.addBoyShp()
+                            "LIGHTS" -> feature.props.addLights()
+                        }
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->

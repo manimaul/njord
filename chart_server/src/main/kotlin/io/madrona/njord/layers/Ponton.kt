@@ -24,7 +24,8 @@ class Ponton : Layerable {
                         type = LayerType.LINE,
                         sourceLayer = key,
                         filter = listOf(
-                                Filters.all,
+                                Filters.any,
+                                Filters.eqTypePoint,
                                 Filters.eqTypePolyGon,
                                 Filters.eqTypeLineString,
                         ),

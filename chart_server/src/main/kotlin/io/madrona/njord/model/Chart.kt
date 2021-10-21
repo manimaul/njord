@@ -14,7 +14,7 @@ class ChartInfo(
 class ChartFeature(
     val layer: String,
     val geomWKB: ByteArray?,
-    val props: Map<String, Any>
+    val props: MutableMap<String, Any?>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

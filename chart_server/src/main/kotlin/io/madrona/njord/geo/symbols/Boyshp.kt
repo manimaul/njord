@@ -35,10 +35,10 @@ enum class Boyshp(val code: Int) {
     }
 }
 
-fun Feature.addBoyShp() {
-    val colpat = Colpat.fromProp(properties)
-    val color = Color.fromProp(properties)
-    val sy: String? = when (Boyshp.fromProp(properties)) {
+fun S57Prop.addBoyShp() {
+    val colpat = Colpat.fromProp(this)
+    val color = Color.fromProp(this)
+    val sy: String? = when (Boyshp.fromProp(this)) {
         Boyshp.Conical -> when (color) {
             listOf(Color.White) -> "BOYCON01"
             listOf(Color.Red) -> "BOYCON60"
@@ -169,6 +169,6 @@ fun Feature.addBoyShp() {
         Boyshp.IceBuoy -> "BOYSPR01" //todo:()
         else -> null
     }
-    sy?.let { properties?.put("SY", sy) }
+    sy?.let { put("SY", sy) }
 }
 

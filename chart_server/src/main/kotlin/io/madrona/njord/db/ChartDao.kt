@@ -135,9 +135,8 @@ class ChartDao(
                 dsid_props,
                 chart_txt
             FROM charts
-            WHERE id = 1;
-            """.trimIndent(),
-            Statement.RETURN_GENERATED_KEYS
+            WHERE id=?;
+            """.trimIndent()
         ).apply {
             setLong(1, id)
         }

@@ -25,7 +25,7 @@ class Lights : Layerable {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
-                    id = "lights",
+                    id = "${key}_point",
                     type = LayerType.SYMBOL,
                     sourceLayer = key,
                     filter = listOf(Filters.any, Filters.eqTypePoint),

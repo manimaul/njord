@@ -47,7 +47,9 @@ data class Paint(
         @JsonProperty("background-opacity") val backgroundOpacity: Int? = null,
         @JsonProperty("fill-color") val fillColor: String? = null,
         @JsonProperty("line-color") val lineColor: String? = null,
+        @JsonProperty("circle-color") val circleColor: String? = null,
         @JsonProperty("line-width") val lineWidth: Float? = null,
+        @JsonProperty("circle-radius") val circleRadius: Float? = null,
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

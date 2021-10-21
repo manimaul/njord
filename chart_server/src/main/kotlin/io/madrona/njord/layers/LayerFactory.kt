@@ -8,6 +8,7 @@ class LayerFactory(
                 Depcnt(),
                 Slcons(),
                 Ponton(),
+                Pilpnt(),
                 Hulkes(),
                 Lndare(),
                 Coalne(),

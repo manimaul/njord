@@ -37,8 +37,6 @@ dependencies {
     implementation(Deps.HikariCP)
     implementation(Deps.dropWizard)
 
-    testImplementation(platform(Deps.jupiterBom))
-    testImplementation(Deps.jupiter)
     testImplementation(Deps.mockito)
     testImplementation(Deps.hamcrest)
 }

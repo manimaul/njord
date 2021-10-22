@@ -24,9 +24,32 @@
     var map = new mapboxgl.Map({
         container: 'map', // container id
         style: style,
-        center: [-122.4437, 47.27848], // starting position [lng, lat]
-        zoom: 13.23 // starting zoom
+        hash: true
     });
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'LNDARE_fill', (e) => {
+    // Copy coordinates array.
+        const description = e.features[0].properties.description;
+
+        new mapboxgl.Popup()
+            .setHTML(description)
+            .addTo(map);
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'LNDARE_fill', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'LNDARE_fill', () => {
+        map.getCanvas().style.cursor = '';
+    });
+
 </script>
 
 </body>

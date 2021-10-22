@@ -12,9 +12,10 @@ class LayerFactory(
                 Hulkes(),
                 Lndare(),
                 Coalne(),
-                Soundg(),
                 Boyspp(),
+                Boylat(),
                 Lights(), //symbol lookup
+                Soundg(),
                 Ply(),
                 Debug()
         )

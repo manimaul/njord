@@ -68,6 +68,7 @@ fun S57Prop.addLights() {
     val sy = when(color) {
         listOf(Color.Red) -> "LIGHTS11"
         listOf(Color.Green) -> "LIGHTS12"
+        listOf(Color.White),
         listOf(Color.Yellow) -> "LIGHTS13"
         else -> "LIGHTDEF"
     }

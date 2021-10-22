@@ -35,7 +35,40 @@ enum class Boyshp(val code: Int) {
     }
 }
 
-fun S57Prop.addBoyShp() {
+private fun boypil(color: List<Color>, colpat: List<Colpat>) : String {
+    return when (color) {
+        listOf(Color.Red) -> "BOYPIL60"
+        listOf(Color.Green) -> "BOYPIL61"
+        listOf(Color.Yellow) -> "BOYPIL62"
+        listOf(Color.Black) -> "BOYPIL63"
+        listOf(Color.Orange) -> "BOYPIL64"
+        listOf(Color.Grey) -> "BOYPIL65"
+        listOf(Color.Red, Color.Green, Color.Red) -> "BOYPIL66"
+        listOf(Color.Green, Color.Red, Color.Green) -> "BOYPIL67"
+        listOf(Color.Black, Color.Yellow) -> "BOYPIL68"
+        listOf(Color.Yellow, Color.Black) -> "BOYPIL69"
+        listOf(Color.Yellow, Color.Black, Color.Yellow) -> "BOYPIL70"
+        listOf(Color.Black, Color.Red, Color.Black) -> "BOYPIL72"
+        listOf(Color.Red, Color.White) -> when (colpat) {
+            listOf(Colpat.VerticalStripes) -> "BOYPIL73"
+            else -> "BOYPIL76"
+        }
+        listOf(Color.Red, Color.Green) -> "BOYPIL74"
+        listOf(Color.Green, Color.Red) -> "BOYPIL75"
+        listOf(Color.Green, Color.White) -> "BOYPIL77"
+        listOf(Color.Red, Color.White, Color.Red, Color.White) -> "BOYPIL78"
+        listOf(Color.Green, Color.White, Color.Green, Color.White) -> "BOYPIL79"
+        listOf(Color.Red, Color.Yellow) -> "BOYPIL80"
+        listOf(Color.White, Color.Orange) -> "BOYPIL81"
+        else -> "BOYPIL01"
+    }
+}
+
+fun S57Prop.addBoypil() {
+    put("SY", boypil(Color.fromProp(this), Colpat.fromProp(this)))
+}
+
+fun S57Prop.addBoyspp() {
     val colpat = Colpat.fromProp(this)
     val color = Color.fromProp(this)
     val sy: String? = when (Boyshp.fromProp(this)) {
@@ -119,32 +152,7 @@ fun S57Prop.addBoyShp() {
             }
             else -> "BOYSPH01"
         }
-        Boyshp.Pillar -> when (color) {
-            listOf(Color.Red) -> "BOYPIL60"
-            listOf(Color.Green) -> "BOYPIL61"
-            listOf(Color.Yellow) -> "BOYPIL62"
-            listOf(Color.Black) -> "BOYPIL63"
-            listOf(Color.Orange) -> "BOYPIL64"
-            listOf(Color.Grey) -> "BOYPIL65"
-            listOf(Color.Red, Color.Green, Color.Red) -> "BOYPIL66"
-            listOf(Color.Green, Color.Red, Color.Green) -> "BOYPIL67"
-            listOf(Color.Black, Color.Yellow) -> "BOYPIL68"
-            listOf(Color.Yellow, Color.Black) -> "BOYPIL69"
-            listOf(Color.Yellow, Color.Black, Color.Yellow) -> "BOYPIL70"
-            listOf(Color.Black, Color.Red, Color.Black) -> "BOYPIL72"
-            listOf(Color.Red, Color.White) -> when (colpat) {
-                listOf(Colpat.VerticalStripes) -> "BOYPIL73"
-                else -> "BOYPIL76"
-            }
-            listOf(Color.Red, Color.Green) -> "BOYPIL74"
-            listOf(Color.Green, Color.Red) -> "BOYPIL75"
-            listOf(Color.Green, Color.White) -> "BOYPIL77"
-            listOf(Color.Red, Color.White, Color.Red, Color.White) -> "BOYPIL78"
-            listOf(Color.Green, Color.White, Color.Green, Color.White) -> "BOYPIL79"
-            listOf(Color.Red, Color.Yellow) -> "BOYPIL80"
-            listOf(Color.White, Color.Orange) -> "BOYPIL81"
-            else -> "BOYPIL01"
-        }
+        Boyshp.Pillar -> boypil(color, colpat)
         Boyshp.Spar -> when (color) {
             listOf(Color.Orange, Color.White, Color.Orange, Color.White) -> "BOYSPR04"
             listOf(Color.White) -> "BOYSPR05"

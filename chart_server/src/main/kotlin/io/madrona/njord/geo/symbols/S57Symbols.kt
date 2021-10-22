@@ -5,7 +5,9 @@ import mil.nga.sf.geojson.Feature
 typealias S57Prop = MutableMap<String, Any?>
 
 inline fun <R : Any> S57Prop?.listFrom(key: String, transform: (Int) -> R?) : List<R> {
-    return (this?.get(key) as? Array<*>)?.mapNotNull { it?.toString()?.toIntOrNull() }?.mapNotNull {
+    return (this?.get(key) as? Iterable<*>)?.mapNotNull {
+        it?.toString()?.toIntOrNull()
+    }?.mapNotNull {
         transform(it)
     }?.toList() ?: emptyList()
 }

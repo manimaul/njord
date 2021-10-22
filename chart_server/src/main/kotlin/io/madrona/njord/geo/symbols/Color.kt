@@ -34,7 +34,7 @@ enum class Color(val code: Int) {
 
     companion object {
         fun fromProp(prop: S57Prop?): List<Color> {
-            return prop.listFrom("COLPAT") { code ->
+            return prop.listFrom("COLOUR") { code ->
                 values().firstOrNull { it.code == code }
             }
         }

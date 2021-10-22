@@ -6,6 +6,8 @@ class LayerFactory(
                 Seaare(),
                 Depare(),
                 Depcnt(),
+                NavLne(),
+                Fairwy(),
                 Slcons(),
                 Ponton(),
                 Pilpnt(),

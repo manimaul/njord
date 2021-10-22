@@ -1,7 +1,5 @@
 package io.madrona.njord.geo.symbols
 
-import mil.nga.sf.geojson.Feature
-
 /**
  * Attribute type: L 	Used in: 	LIGHTS
  * ID   Meaning	                INT 1       S-4

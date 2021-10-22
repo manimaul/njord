@@ -40,7 +40,7 @@ object Filters {
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Paint(
-        @JsonProperty("text-color") val textColor: List<Any>? = null,
+        @JsonProperty("text-color") val textColor: Any? = null,
         @JsonProperty("text-halo-color") val textHaloColor: String? = null,
         @JsonProperty("text-halo-width") val textHaloWidth: Float? = null,
         @JsonProperty("background-color") val backgroundColor: String? = null,
@@ -49,6 +49,7 @@ data class Paint(
         @JsonProperty("line-color") val lineColor: String? = null,
         @JsonProperty("circle-color") val circleColor: String? = null,
         @JsonProperty("line-width") val lineWidth: Float? = null,
+        @JsonProperty("line-dasharray") val lineDashArray: List<Float>? = null,
         @JsonProperty("circle-radius") val circleRadius: Float? = null,
 )
 
@@ -73,6 +74,7 @@ data class Layout(
 
 enum class Placement {
     @JsonProperty("point") POINT,
+    @JsonProperty("line") LINE,
 }
 
 enum class Anchor {

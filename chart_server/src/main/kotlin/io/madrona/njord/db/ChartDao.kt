@@ -55,20 +55,27 @@ class ChartDao(
         }.toList()
     }
 
-    fun findChartFeaturesAsync(bounds: Geometry, z: Int, chartId: Long): Deferred<List<ChartFeature>?> =
+    fun findChartFeaturesAsync(covered: Geometry, x: Int, y: Int, z: Int, chartId: Long): Deferred<List<ChartFeature>?> =
         sqlOpAsync { conn ->
             val tCtx = findChartFeaturesAsyncTimer.time()
             conn.prepareStatement("""
-              WITH tile_bounds AS (VALUES (ST_GeomFromWKB(?, 4326)))
-              SELECT ST_AsBinary(ST_Intersection(geom, (table tile_bounds))), props, layer
+              WITH exclude AS (VALUES (ST_GeomFromWKB(?, 4326))),
+                   tile AS (VALUES (ST_Transform(ST_TileEnvelope(?,?,?), 4326)))
+              SELECT ST_AsBinary(ST_AsMVTGeom(ST_Difference(geom, (table exclude)), (table tile))), 
+                     props, 
+                     layer
               FROM features
               WHERE chart_id=?
                 AND ? <@ z_range
-                AND ST_Intersects(geom, (table tile_bounds));
+                AND ST_Intersects(geom, (table tile));
           """.trimIndent()).apply {
-                setBytes(1, WKBWriter().write(bounds))
-                setLong(2, chartId)
-                setInt(3, z)
+                var i = 0
+                setBytes(++i, WKBWriter().write(covered))
+                setInt(++i, z)
+                setInt(++i, x)
+                setInt(++i, y)
+                setLong(++i, chartId)
+                setInt(++i, z)
             }.executeQuery().let { rs ->
                 val result = generateSequence {
                     if (rs.next()) {

@@ -80,10 +80,11 @@ class TileSystem(
      */
     fun createTileClipPolygon(x: Int, y: Int, z: Int): Polygon {
         val pixelCoord = tileXyToPixelXy(x, y)
-        val tl = pixelXyToLatLng(pixelCoord, z)
-        val tr = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize), z)
-        val br = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
-        val bl = pixelXyToLatLng(pixelCoord.newCoordinate(y = pixelCoord.y + tileSize), z)
+        val bl = pixelXyToLatLng(pixelCoord, z)
+        val br = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize), z)
+        val tr = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
+        val tl = pixelXyToLatLng(pixelCoord.newCoordinate(y = pixelCoord.y + tileSize), z)
+
         return geometryFactory.createPolygon(
             geometryFactory.coordinateSequenceFactory.create(
                 arrayOf(

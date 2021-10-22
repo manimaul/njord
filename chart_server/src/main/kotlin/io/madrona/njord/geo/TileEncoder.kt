@@ -38,17 +38,16 @@ class TileEncoder(
 
     suspend fun addCharts(): TileEncoder {
         val ctx = timer.time()
-        var include = tileEnvelope.copy() //wgs84
+        var include: Geometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
         chartDao.findInfoAsync(tileEnvelope).await()?.let { charts ->
             charts.forEach { chart ->
                 val chartGeo = WKBReader().read(chart.covrWKB)
                 if (!include.isEmpty && chart.zoom in 0..z) {
-                    chartDao.findChartFeaturesAsync(include, z, chart.id).await()?.filter {
+                    chartDao.findChartFeaturesAsync(covered, x, y, z, chart.id).await()?.filter {
                         it.geomWKB != null
                     }?.forEach { feature ->
-                        val fg = WKBReader().read(feature.geomWKB)
-                        val tileGeo = tileSystem.tileGeometry(fg, x, y, z)
+                        val tileGeo = WKBReader().read(feature.geomWKB)
                         when (feature.layer) {
                             "BOYLAT" -> feature.props.addBoypil()
                             "BOYSPP" -> feature.props.addBoyspp()

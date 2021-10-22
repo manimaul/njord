@@ -1,6 +1,7 @@
 package io.madrona.njord.geo.symbols
 
 import io.madrona.njord.geo.symbols.attributes.Boyshp
+import io.madrona.njord.geo.symbols.attributes.Catspm
 
 private fun conical(color: List<Color>, colpat: List<Colpat>) : String {
     return when (color) {
@@ -146,18 +147,8 @@ private fun barrel(color: List<Color>) : String {
     }
 }
 
-fun S57Prop.addBcnLat() {
-    //todo:()
-}
-
-fun S57Prop.addBoypil() {
-    put("SY", pillar(Color.fromProp(this), Colpat.fromProp(this)))
-}
-
-fun S57Prop.addBoyspp() {
-    val colpat = Colpat.fromProp(this)
-    val color = Color.fromProp(this)
-    val sy: String? = when (Boyshp.fromProp(this)) {
+private fun buoy(shape: Boyshp?, color: List<Color>, colpat: List<Colpat>) : String? {
+    return when (shape) {
         Boyshp.Conical -> conical(color, colpat)
         Boyshp.Can -> can(color, colpat)
         Boyshp.Spherical -> spherical(color, colpat)
@@ -168,6 +159,48 @@ fun S57Prop.addBoyspp() {
         Boyshp.IceBuoy -> "BOYSPR01" //todo:()
         else -> null
     }
-    sy?.let { put("SY", sy) }
 }
 
+fun S57Prop.addBcnLat() {
+    //todo: (bcnshp)
+}
+
+
+//completed all "Paper" permutations in chartsymbols.xml
+fun S57Prop.addBoySpp() {
+    val catspm = Catspm.fromProp(this)
+    val shape = Boyshp.fromProp(this)
+    val color = Color.fromProp(this)
+    val colpat = Colpat.fromProp(this)
+    val sy = when (catspm) {
+        Catspm.OutfallMark -> when (shape) {
+            Boyshp.Can -> when (color) {
+                listOf(Color.Red) -> "BOYCAN60"
+                else -> null
+            }
+            else -> null
+        }
+        Catspm.OceanDataAcquisitionSystem -> "BOYSUP01"
+        Catspm.MooringMark -> when (shape) {
+            Boyshp.Can -> "BOYMOR31"
+            else -> null
+        }
+        Catspm.LargeAutomaticNavigationalBuoy -> "BOYSUP03"
+        Catspm.NoticeMark -> when (color) {
+            listOf(Color.Yellow) -> "NOTBRD12"
+            else -> "NOTBRD11"
+        }
+        Catspm.RefugeBeacon -> "BCNGEN01"
+        else -> null
+    } ?: buoy(shape, color, colpat)
+    put("SY", sy)
+}
+
+//completed all "Paper" permutations in chartsymbols.xml
+fun S57Prop.addBoyLat() {
+    val shape = Boyshp.fromProp(this)
+    val color = Color.fromProp(this)
+    val colpat = Colpat.fromProp(this)
+    val sy: String? = buoy(shape, color, colpat)
+    sy?.let { put("SY", sy) }
+}

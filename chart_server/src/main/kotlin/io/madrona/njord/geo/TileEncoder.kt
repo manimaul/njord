@@ -3,10 +3,7 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
-import io.madrona.njord.geo.symbols.addBcnLat
-import io.madrona.njord.geo.symbols.addBoypil
-import io.madrona.njord.geo.symbols.addBoyspp
-import io.madrona.njord.geo.symbols.addLights
+import io.madrona.njord.geo.symbols.*
 import no.ecc.vectortile.VectorTileEncoder
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
@@ -51,8 +48,8 @@ class TileEncoder(
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         when (feature.layer) {
                             "BCNLAT" -> feature.props.addBcnLat()
-                            "BOYLAT" -> feature.props.addBoypil()
-                            "BOYSPP" -> feature.props.addBoyspp()
+                            "BOYLAT" -> feature.props.addBoyLat()
+                            "BOYSPP" -> feature.props.addBoySpp()
                             "LIGHTS" -> feature.props.addLights()
                         }
                         encoder.addFeature(feature.layer, feature.props, tileGeo)

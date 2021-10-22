@@ -16,6 +16,7 @@ class LayerFactory(
                 Coalne(),
                 Boyspp(),
                 Boylat(),
+                Bcnlat(),
                 Lights(), //symbol lookup
                 Soundg(),
                 Ply(),

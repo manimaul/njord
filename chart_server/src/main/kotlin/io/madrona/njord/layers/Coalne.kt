@@ -17,7 +17,7 @@ class Coalne : Layerable {
                         ),
                         paint = Paint(
                                 lineColor = options.color.from("CSTLN"),
-                                lineWidth = 2f
+                                lineWidth = 1.5f
                         )
                 )
         )

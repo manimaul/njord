@@ -16,7 +16,7 @@ class Ponton : Layerable {
                                 Filters.eqTypePolyGon
                         ),
                         paint = Paint(
-                                fillColor = "#B7911F"
+                                fillColor = options.color.from("CHBRN")
                         )
                 ),
                 Layer(

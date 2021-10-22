@@ -16,7 +16,7 @@ class Hulkes : Layerable {
                                 Filters.eqTypePolyGon
                         ),
                         paint = Paint(
-                                fillColor = "#B7911F"
+                                fillColor = options.color.from("CHBRN")
                         )
                 ),
                 Layer(
@@ -24,7 +24,7 @@ class Hulkes : Layerable {
                         type = LayerType.LINE,
                         sourceLayer = key,
                         filter = listOf(
-                                Filters.all,
+                                Filters.any,
                                 Filters.eqTypePolyGon,
                                 Filters.eqTypeLineString
                         ),

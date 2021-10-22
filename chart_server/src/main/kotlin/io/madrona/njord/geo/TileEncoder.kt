@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.geo.symbols.addBcnLat
 import io.madrona.njord.geo.symbols.addBoypil
 import io.madrona.njord.geo.symbols.addBoyspp
 import io.madrona.njord.geo.symbols.addLights
@@ -49,6 +50,7 @@ class TileEncoder(
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         when (feature.layer) {
+                            "BCNLAT" -> feature.props.addBcnLat()
                             "BOYLAT" -> feature.props.addBoypil()
                             "BOYSPP" -> feature.props.addBoyspp()
                             "LIGHTS" -> feature.props.addLights()

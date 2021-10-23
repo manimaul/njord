@@ -43,8 +43,6 @@ public class VectorTileEncoder {
     
     private final Envelope clipEnvelope;
     
-    private final PreparedGeometry clipGeometryPrepared;
-
     private final boolean autoScale;
 
     private long autoincrement;
@@ -54,32 +52,6 @@ public class VectorTileEncoder {
     private final double simplificationDistanceTolerance;
     
     private final GeometryFactory gf = new GeometryFactory();
-
-    /**
-     * Create a {@link VectorTileEncoder} with the default extent of 4096 and
-     * clip buffer of 8.
-     */
-    public VectorTileEncoder() {
-        this(4096, 8, true);
-    }
-
-    /**
-     * Create a {@link VectorTileEncoder} with the given extent and a clip
-     * buffer of 8.
-     * 
-     * @param extent a int to specify vector tile extent. 4096 is a good value.
-     */
-    public VectorTileEncoder(int extent) {
-        this(extent, 8, true);
-    }
-
-    public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale) {
-        this(extent, clipBuffer, autoScale, false);
-    }
-    
-    public VectorTileEncoder(int extent, int clipBuffer, boolean autoScale, boolean autoincrementIds) {
-        this(extent, clipBuffer, autoScale, autoincrementIds, -1.0);
-    }
 
     /**
      * Create a {@link VectorTileEncoder} with the given extent value.
@@ -121,7 +93,6 @@ public class VectorTileEncoder {
         final int size = autoScale ? 256 : extent;
         clipGeometry = createTileEnvelope(clipBuffer, size);
         clipEnvelope = clipGeometry.getEnvelopeInternal();
-        clipGeometryPrepared = PreparedGeometryFactory.prepare(clipGeometry);
     }
 
     private static Geometry createTileEnvelope(int buffer, int size) {
@@ -199,8 +170,6 @@ public class VectorTileEncoder {
             if (!clipCovers(geometry)) {
                 return;
             }
-        } else {
-            geometry = clipGeometry(geometry);
         }
 
         // no need to add empty geometry
@@ -234,7 +203,7 @@ public class VectorTileEncoder {
     /**
      * A short circuit clip to the tile extent (tile boundary + buffer) for
      * points to improve performance. This method can be overridden to change
-     * clipping behavior. See also {@link #clipGeometry(Geometry)}.
+     * clipping behavior.
      * 
      * @param geom a {@link Geometry} to check for "covers"
      * @return a boolean true when the current clip geometry covers the given geom.
@@ -245,41 +214,6 @@ public class VectorTileEncoder {
             return clipGeometry.getEnvelopeInternal().covers(p.getCoordinate());
         }
         return clipEnvelope.covers(geom.getEnvelopeInternal());
-    }
-
-    /**
-     * Clip geometry according to buffer given at construct time. This method
-     * can be overridden to change clipping behavior. See also
-     * {@link #clipCovers(Geometry)}.
-     *
-     * @param geometry a {@link Geometry} to check for intersection with the current clip geometry
-     * @return a boolean true when current clip geometry intersects with the given geometry.
-     */
-    protected Geometry clipGeometry(Geometry geometry) {
-        try {
-            if (clipEnvelope.contains(geometry.getEnvelopeInternal())) {
-                return geometry;
-            }
-            
-            Geometry original = geometry;
-            geometry = clipGeometry.intersection(original);
-
-            // some times a intersection is returned as an empty geometry.
-            // going via wkt fixes the problem.
-            if (geometry.isEmpty() && clipGeometryPrepared.intersects(original)) {
-                Geometry originalViaWkt = new WKTReader().read(original.toText());
-                geometry = clipGeometry.intersection(originalViaWkt);
-            }
-
-            return geometry;
-        } catch (TopologyException e) {
-            // could not intersect. original geometry will be used instead.
-            return geometry;
-        } catch (ParseException e1) {
-            // could not encode/decode WKT. original geometry will be used
-            // instead.
-            return geometry;
-        }
     }
 
     /**

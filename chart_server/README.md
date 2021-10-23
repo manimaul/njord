@@ -21,4 +21,5 @@
 
 
 ## geometry clipping issues: 
-http://localhost:9000/v1/content/index.html#11.03/47.1874/-122.8123 
+http://localhost:9000/v1/content/index.html#5.56/46.609/-128.481
+DONE - http://localhost:9000/v1/content/index.html#11.03/47.1874/-122.8123 

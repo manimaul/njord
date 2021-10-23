@@ -1,0 +1,639 @@
+<chartsymbols>
+    <lookups>
+        <lookup id="1939" RCID="93898" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR4,1,4,1,4</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCON65);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1940" RCID="93807" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR5,3,1,5</attrib-code>
+            <attrib-code index="2">COLPAT1,2</attrib-code>
+            <instruction>SY(BOYCON81);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1941" RCID="93805" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR1,11,1</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCON80);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1942" RCID="30216" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR1,11,1</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCAN78);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1943" RCID="30217" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR3,4,3</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYSPH66);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1944" RCID="30218" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCAN77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1945" RCID="30219" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR11,1</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCAN81);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1946" RCID="30220" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYSPH77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1947" RCID="30221" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYPIL81);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1948" RCID="30222" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR4,1</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCON73);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1949" RCID="30223" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR3,1</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCAN80);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1950" RCID="93959" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR3,4</attrib-code>
+            <attrib-code index="2">COLPAT1</attrib-code>
+            <instruction>SY(BOYCAN75);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1951" RCID="30224" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR3,1</attrib-code>
+            <attrib-code index="2">COLPAT2</attrib-code>
+            <instruction>SY(BOYPIL73);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1952" RCID="30225" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR3,1</attrib-code>
+            <attrib-code index="2">COLPAT4</attrib-code>
+            <instruction>SY(BOYPIL78);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1953" RCID="93967" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP7</attrib-code>
+            <attrib-code index="1">COLPAT1</attrib-code>
+            <attrib-code index="2">COLOUR3,1</attrib-code>
+            <instruction>SY(BOYSUP66);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1954" RCID="30233" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP7</attrib-code>
+            <attrib-code index="1">COLPAT2</attrib-code>
+            <attrib-code index="2">COLOUR3,1</attrib-code>
+            <instruction>SY(BOYSUP65);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1955" RCID="30226" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">CATSPM14</attrib-code>
+            <attrib-code index="1">BOYSHP2</attrib-code>
+            <attrib-code index="2">COLOUR1</attrib-code>
+            <instruction>SY(BOYMOR31);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1956" RCID="30227" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">CATSPM8</attrib-code>
+            <attrib-code index="1">BOYSHP2</attrib-code>
+            <attrib-code index="2">COLOUR3</attrib-code>
+            <instruction>SY(BOYCAN60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1957" RCID="30228" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <instruction>SY(BOYCON77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1958" RCID="30229" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <instruction>SY(BOYCAN77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1959" RCID="30230" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <instruction>SY(BOYSPH77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1960" RCID="30231" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR1,11</attrib-code>
+            <instruction>SY(BOYPIL81);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1961" RCID="30232" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR4,3</attrib-code>
+            <instruction>SY(BOYPIL74);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1962" RCID="30234" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR11</attrib-code>
+            <instruction>SY(BOYCAN79);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1963" RCID="93965" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR11</attrib-code>
+            <instruction>SY(BOYPIL59);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1964" RCID="30235" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">CATSPM14</attrib-code>
+            <attrib-code index="1">BOYSHP2</attrib-code>
+            <instruction>SY(BOYMOR03);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1965" RCID="30236" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR3</attrib-code>
+            <instruction>SY(BOYCON60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1966" RCID="30237" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYCON62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1967" RCID="30238" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR1</attrib-code>
+            <instruction>SY(BOYCAN65);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1968" RCID="30239" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR2</attrib-code>
+            <instruction>SY(BOYCAN64);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1969" RCID="30240" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR3</attrib-code>
+            <instruction>SY(BOYCAN60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1970" RCID="30241" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR4</attrib-code>
+            <instruction>SY(BOYCAN61);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+
+        <lookup id="1971" RCID="30242" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYCAN63);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+
+        <lookup id="1971" RCID="3024200" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <attrib-code index="1">INFORMwhite/orange</attrib-code>
+            <instruction>SY(BOYCAN77);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+
+        <lookup id="1972" RCID="30243" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR1</attrib-code>
+            <instruction>SY(BOYSPH05);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1973" RCID="30244" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR3</attrib-code>
+            <instruction>SY(BOYSPH60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1974" RCID="30245" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYSPH62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1975" RCID="30246" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR3</attrib-code>
+            <instruction>SY(BOYPIL60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1976" RCID="30247" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR4</attrib-code>
+            <instruction>SY(BOYPIL61);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1977" RCID="30248" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYPIL62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1978" RCID="30249" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP5</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYSPR62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1979" RCID="30250" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP6</attrib-code>
+            <attrib-code index="1">COLOUR3</attrib-code>
+            <instruction>SY(BOYBAR60);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1980" RCID="30251" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP6</attrib-code>
+            <attrib-code index="1">COLOUR4</attrib-code>
+            <instruction>SY(BOYBAR61);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1981" RCID="30252" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP6</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYBAR62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1982" RCID="30253" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP7</attrib-code>
+            <attrib-code index="1">COLOUR6</attrib-code>
+            <instruction>SY(BOYSUP62);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1983" RCID="30254" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">CATSPM15</attrib-code>
+            <instruction>SY(BOYSUP03);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1984" RCID="30255" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP1</attrib-code>
+            <instruction>SY(BOYCON01);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1985" RCID="30256" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP2</attrib-code>
+            <instruction>SY(BOYCAN62);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1986" RCID="30257" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP3</attrib-code>
+            <instruction>SY(BOYSPH01);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1987" RCID="30258" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP4</attrib-code>
+            <instruction>SY(BOYPIL01);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1988" RCID="30259" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP5</attrib-code>
+            <instruction>SY(BOYSPR01);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1989" RCID="93873" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP6</attrib-code>
+            <instruction>SY(BOYBAR01);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1990" RCID="30261" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP7</attrib-code>
+            <instruction>SY(BOYSUP01);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1991" RCID="30262" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">BOYSHP8</attrib-code>
+            <instruction>SY(BOYSPR01);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1992" RCID="30263" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">CATSPM9</attrib-code>
+            <instruction>SY(BOYSUP01);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1993" RCID="30264" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <attrib-code index="0">COLOUR6</attrib-code>
+            <instruction>SY(BOYSPH62);TE('%s','OBJNAM',2,1,2,'15110',-2,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+        <lookup id="1994" RCID="30265" name="BOYSPP">
+            <type>Point</type>
+            <disp-prio>Hazards</disp-prio>
+            <radar-prio>On Top</radar-prio>
+            <table-name>Paper</table-name>
+            <instruction>SY(BOYGEN03);TE('%s','OBJNAM',2,1,2,'15110',-1,-1,CHBLK,21)</instruction>
+            <display-cat>Standard</display-cat>
+            <comment>17010</comment>
+        </lookup>
+    </lookups>
+</chartsymbols>

@@ -1,9 +1,8 @@
 package io.madrona.njord.geo.symbols
 
-import io.madrona.njord.geo.symbols.attributes.Boyshp
-import io.madrona.njord.geo.symbols.attributes.Catspm
+import io.madrona.njord.geo.symbols.attributes.*
 
-private fun conical(color: List<Color>, colpat: List<Colpat>) : String {
+private fun conical(color: List<Color>, colpat: List<Colpat>): String {
     return when (color) {
         listOf(Color.White) -> "BOYCON01"
         listOf(Color.Red) -> "BOYCON60"
@@ -35,7 +34,7 @@ private fun conical(color: List<Color>, colpat: List<Colpat>) : String {
     }
 }
 
-private fun pillar(color: List<Color>, colpat: List<Colpat>) : String {
+private fun pillar(color: List<Color>, colpat: List<Colpat>): String {
     return when (color) {
         listOf(Color.Red) -> "BOYPIL60"
         listOf(Color.Green) -> "BOYPIL61"
@@ -64,7 +63,7 @@ private fun pillar(color: List<Color>, colpat: List<Colpat>) : String {
     }
 }
 
-private fun can(color: List<Color>, colpat: List<Colpat>) : String {
+private fun can(color: List<Color>, colpat: List<Colpat>): String {
     return when (color) {
         listOf(Color.Red) -> "BOYCAN60"
         listOf(Color.Green) -> "BOYCAN61"
@@ -94,7 +93,7 @@ private fun can(color: List<Color>, colpat: List<Colpat>) : String {
     }
 }
 
-private fun spherical(color: List<Color>, colpat: List<Colpat>) : String {
+private fun spherical(color: List<Color>, colpat: List<Colpat>): String {
     return when (color) {
         listOf(Color.White) -> "BOYSPH05"
         listOf(Color.Red) -> "BOYSPH60"
@@ -121,7 +120,7 @@ private fun spherical(color: List<Color>, colpat: List<Colpat>) : String {
     }
 }
 
-private fun spar(color: List<Color>) : String {
+private fun spar(color: List<Color>): String {
     return when (color) {
         listOf(Color.Orange, Color.White, Color.Orange, Color.White) -> "BOYSPR04"
         listOf(Color.White) -> "BOYSPR05"
@@ -138,7 +137,7 @@ private fun spar(color: List<Color>) : String {
     }
 }
 
-private fun barrel(color: List<Color>) : String {
+private fun barrel(color: List<Color>): String {
     return when (color) {
         listOf(Color.Red) -> "BOYBAR60"
         listOf(Color.Green) -> "BOYBAR61"
@@ -147,7 +146,7 @@ private fun barrel(color: List<Color>) : String {
     }
 }
 
-private fun buoy(shape: Boyshp?, color: List<Color>, colpat: List<Colpat>) : String? {
+private fun buoy(shape: Boyshp?, color: List<Color>, colpat: List<Colpat>): String? {
     return when (shape) {
         Boyshp.Conical -> conical(color, colpat)
         Boyshp.Can -> can(color, colpat)
@@ -162,7 +161,99 @@ private fun buoy(shape: Boyshp?, color: List<Color>, colpat: List<Colpat>) : Str
 }
 
 fun S57Prop.addBcnLat() {
-    //todo: (bcnshp)
+    val shape = Bcnshp.fromProp(this)
+    val catlam = Catlam.fromProp(this)
+    val colors = Color.fromProp(this)
+    val colpat = Colpat.fromProp(this)
+    val sy = when (shape) {
+        Bcnshp.StakePolePerchPost -> when(catlam) {
+            Catlam.PortHandLateralMark -> when(colors) {
+                listOf(Color.Green) -> "BCNSTK61"
+                else -> beaconStakePolePerchPostDefault
+            }
+            Catlam.StarboardHandLateralMark -> when(colors) {
+                listOf(Color.Red) -> "BCNSTK60"
+                else -> beaconStakePolePerchPostDefault
+            }
+            else -> when(colors) {
+                listOf(Color.White, Color.Red) -> "BCNSTK78"
+                listOf(Color.White, Color.Green) -> "BCNSTK77"
+                listOf(Color.Red, Color.Green) -> "BOYCON79"
+                listOf(Color.Green, Color.Red) -> "BOYCON68"
+                listOf(Color.Red) -> "BCNSTK60"
+                listOf(Color.Green) -> "BCNSTK61"
+                listOf(Color.Yellow) -> "BCNSTK08"
+                else -> beaconStakePolePerchPostDefault
+            }
+        }
+        Bcnshp.Withy -> when(catlam) {
+            Catlam.PortHandLateralMark -> "PRICKE03"
+            Catlam.StarboardHandLateralMark -> "PRICKE04"
+            else -> beaconDefault
+        }
+        Bcnshp.Tower -> when(catlam) {
+            Catlam.PreferredChannelToPortLateralMark -> when (colpat) {
+                listOf(Colpat.HorizontalStripes) -> when(colors) {
+                    listOf(Color.Red, Color.Green, Color.Red) -> "BCNTOW74"
+                    else -> beaconTowerDefault
+                }
+                else -> beaconTowerDefault
+            }
+            Catlam.PortHandLateralMark -> when (colpat) {
+                listOf(Colpat.HorizontalStripes) -> when(colors) {
+                    listOf(Color.White, Color.Green) -> "BCNTOW66"
+                    listOf(Color.Green, Color.White) -> "BCNTOW65"
+                    else -> beaconTowerDefault
+                }
+                else -> beaconTowerDefault
+            }
+            Catlam.StarboardHandLateralMark -> when (colpat) {
+                listOf(Colpat.HorizontalStripes) -> when(colors) {
+                    listOf(Color.White, Color.Red) -> "BCNTOW63"
+                    listOf(Color.Red, Color.White) -> "BCNTOW64"
+                    else -> beaconTowerDefault
+                }
+                else -> beaconTowerDefault
+            }
+            else -> beaconTowerDefault
+        }
+        Bcnshp.Lattice -> beaconLatticeDefault
+        Bcnshp.Pile -> when(catlam) {
+            Catlam.PortHandLateralMark -> when(colors) {
+                listOf(Color.Green) -> "BCNSTK61"
+                else -> beaconPileDefault
+            }
+            Catlam.StarboardHandLateralMark -> when(colors) {
+                listOf(Color.Red) -> "BCNSTK60"
+                else -> beaconPileDefault
+            }
+            else -> when(colors) {
+                listOf(Color.White, Color.Red) -> "BCNSTK78"
+                listOf(Color.White, Color.Green) -> "BCNSTK81"
+                listOf(Color.Red) -> "BCNGEN60"
+                listOf(Color.Green) -> "BCNGEN61"
+                else -> beaconPileDefault
+            }
+        }
+        Bcnshp.Cairn -> when(Conviz.fromProp(this)) {
+            Conviz.VisuallyConspicuous -> "CAIRNS11"
+            else -> "CAIRNS01"
+        }
+        Bcnshp.Buoyant -> when (colors) {
+            listOf(Color.Red, Color.White) -> "BCNSTK78"
+            listOf(Color.Yellow) -> "BCNSTK62"
+            else -> beaconBuoyantDefault
+        }
+        else -> when(colpat) {
+            listOf(Colpat.HorizontalStripes) -> when (colors) {
+                listOf(Color.Red, Color.Green) -> "BCNSTK82"
+                listOf(Color.Green, Color.Red) -> "BCNSTK83"
+                else -> beaconBuoyantDefault
+            }
+            else -> beaconBuoyantDefault
+        }
+    }
+    put("SY", sy)
 }
 
 
@@ -204,3 +295,10 @@ fun S57Prop.addBoyLat() {
     val sy: String? = buoy(shape, color, colpat)
     sy?.let { put("SY", sy) }
 }
+
+const val beaconDefault = "BCNGEN01"
+const val beaconStakePolePerchPostDefault = "BCNSTK01"
+const val beaconTowerDefault = "BCNTOW01"
+const val beaconLatticeDefault = "BCNLTC01"
+const val beaconPileDefault = beaconDefault
+const val beaconBuoyantDefault = beaconDefault

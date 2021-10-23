@@ -91,6 +91,42 @@ enum class Boyshp(val code: Int) {
     }
 }
 
+/**
+ * BCNSHP
+ *
+ * Attribute type: E	Used in: BCNCAR, BCNISD, BCNLAT, BCNSAW, BCNSPP
+ * Expected input:
+ * ID	Meaning	INT 1	S-4
+ * 1	stake, pole, perch, post	IQ 90;	456.1;
+ * 2	withy	IQ 92;	456.1;
+ * 3	beacon tower	IQ 110;	456.4;
+ * 4	lattice beacon	IQ 111;	456.4;
+ * 5	pile beacon
+ * 6	cairn	IQ 100;	456.2;
+ * 7	buoyant beacon	IP 5	459.1-2
+ * Remarks:
+ * The beacon shape describes the characteristic geometric form of the beacon.
+ */
+enum class Bcnshp(val code: Int) {
+    StakePolePerchPost(1),
+    Withy(2),
+    Tower(3),
+    Lattice(4),
+    Pile(5),
+    Cairn(6),
+    Buoyant(7);
+
+    companion object {
+        fun fromProp(prop: S57Prop?): Bcnshp? {
+            return prop?.let {
+                it["BCNSHP"]?.toString()?.toIntOrNull()
+            }?.let { code ->
+                values().firstOrNull { it.code == code }
+            }
+        }
+    }
+}
+
 
 /**
  * CATSPM
@@ -222,6 +258,36 @@ enum class Catspm(val code: Int) {
         fun fromProp(prop: S57Prop?): Catspm? {
             return prop?.let {
                 it["CATSPM"]?.toString()?.toIntOrNull()
+            }?.let { code ->
+                values().firstOrNull { it.code == code }
+            }
+        }
+    }
+}
+
+/**
+ *
+ * Attribute type: E	Used in: <option> AIRARE, BCNCAR, BCNISD, BCNLAT, BCNSAW, BCNSPP, BRIDGE, BUAARE, BUIREL, BUISGL,
+ * CAIRNS, CBLOHD, CEMTRY, CHIMNY, COALNE, CONVYR, CRANES, DAMCON, DSHAER, DUNARE, FLASTK, FLGSTF, FLODOC, FNCLNE, FORSTC,
+ * HILARE, HULKES, ICEARE, LITFLT, LITVES, LNDELV, LNDMRK, MONUMT, MORFAC, MSTCON, NEWOBJ, OFSPLF, OSPARE, PILPNT, PINGOS,
+ * PIPOHD, PONTON, PRDARE, PRDINS, PYLONS, RADDOM, RUNWAY, SILBUI, SILTNK, SLCONS, SLOGRD, SLOTOP, TELPHC, TNKCON, TOWERS,
+ * TREPNT, VEGARE, VEGATN, WATFAL, WIMCON, WNDMIL, WRECKS,
+ *
+ * Expected input:
+ * ID	Meaning	INT 1	S-4
+ * 1	visually conspicuous	 	340.1;
+ * 2	not visually conspicuous
+ * Remarks:
+ * No remarks.
+ */
+enum class Conviz(val code: Int) {
+    VisuallyConspicuous(1),
+    NotVisuallyConspicuous(2);
+
+    companion object {
+        fun fromProp(prop: S57Prop?): Conviz? {
+            return prop?.let {
+                it["CONVIZ"]?.toString()?.toIntOrNull()
             }?.let { code ->
                 values().firstOrNull { it.code == code }
             }

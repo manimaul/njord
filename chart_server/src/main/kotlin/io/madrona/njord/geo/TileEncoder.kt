@@ -4,7 +4,7 @@ import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.symbols.*
-import no.ecc.vectortile.VectorTileEncoder
+import io.madrona.njord.geo.tile.VectorTileEncoder
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
@@ -16,6 +16,7 @@ class TileEncoder(
     val z: Int,
     private val tileSystem: TileSystem = Singletons.tileSystem,
     private val geometryFactory: GeometryFactory = Singletons.geometryFactory,
+    //todo: self try removing clipping code ... we've already clipped
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true),
     private val chartDao: ChartDao = ChartDao(),
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
@@ -47,6 +48,7 @@ class TileEncoder(
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         when (feature.layer) {
+                            "BCNSPP" -> feature.props.addBcnSpp()
                             "BCNLAT" -> feature.props.addBcnLat()
                             "BOYLAT" -> feature.props.addBoyLat()
                             "BOYSPP" -> feature.props.addBoySpp()

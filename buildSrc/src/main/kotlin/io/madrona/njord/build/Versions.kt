@@ -16,6 +16,8 @@ object Deps {
     const val jtsCore = "org.locationtech.jts:jts-core:1.18.2"
     const val guava = "com.google.guava:guava:29.0-jre"
     const val vectorTile = "no.ecc.vectortile:java-vector-tile:1.3.15"
+    const val protoBuf = "com.google.protobuf:protobuf-java:3.18.1"
+    //const val vectorTile = "com.wdtinc:mapbox-vector-tile:3.1.0"
     const val geojson = "mil.nga.sf:sf-geojson:2.0.4"
     const val rxJava = "io.reactivex.rxjava2:rxjava:2.2.12"
     const val slf4j = "org.slf4j:slf4j-api:1.7.25"

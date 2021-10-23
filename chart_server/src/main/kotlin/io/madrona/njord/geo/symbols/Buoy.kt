@@ -160,6 +160,12 @@ private fun buoy(shape: Boyshp?, color: List<Color>, colpat: List<Colpat>): Stri
     }
 }
 
+//todo:
+fun S57Prop.addBcnSpp() {
+    val sy = "BCNGEN01"
+    put("SY", sy)
+}
+//completed all "Paper" permutations in chartsymbols.xml
 fun S57Prop.addBcnLat() {
     val shape = Bcnshp.fromProp(this)
     val catlam = Catlam.fromProp(this)

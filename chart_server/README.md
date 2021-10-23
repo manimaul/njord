@@ -1,6 +1,7 @@
 # Chart Server
 
 ## todo:
+
  - DONE - chart occlusion 
     - geometry clipping - (eg great peninsula)
  - traditional raster theme
@@ -17,3 +18,7 @@
  - whirlyglobe client
  - divide features into layer sets (land, lights, etc) - this allows simpler configurability
  - maplibre clients https://github.com/maplibre/maplibre-gl-native
+
+
+## geometry clipping issues: 
+http://localhost:9000/v1/content/index.html#11.03/47.1874/-122.8123 

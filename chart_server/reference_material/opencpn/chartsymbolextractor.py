@@ -75,7 +75,33 @@ def read_symbols():
     return result
 
 
-def read_sprites(render_img: bool = False, only_names: set = None):
+def read_symbol_rules():
+    dom = parseString(lines)
+    result = dict()
+    for lookup in dom.getElementsByTagName("lookup"):
+        name = str(lookup.attributes['name'].value).upper()  # ex BOYSPP
+        table_name = lookup.getElementsByTagName("table-name")[0].firstChild.nodeValue
+        rule = dict()
+        if table_name not in result:
+            result[table_name] = dict()  # key = Plain, Symbolized, Simplified, Paper
+        if name not in result[table_name]:
+            result[table_name][name] = list()  # rules
+        result[table_name][name].append(rule)
+        inst = lookup.getElementsByTagName("instruction")
+        attr = lookup.getElementsByTagName("attrib-code")
+        if attr is not None:
+            rule["ATT"] = list()
+            for att in attr:
+                rule["ATT"].append(att.firstChild.nodeValue)
+        if inst is not None and inst.item(0) is not None and inst.item(0).firstChild is not None:
+            for ea in inst.item(0).firstChild.nodeValue.split(";"):
+                if ea.startswith("SY"):
+                    for sy in ea[3:-1].split(","):
+                        rule["SY"] = sy
+    return result
+
+
+def read_sprites(render_img: str = None, only_names: set = None):
     dom = parseString(lines)
     result = dict()
     for symbol in dom.getElementsByTagName("symbol"):
@@ -93,7 +119,7 @@ def read_sprites(render_img: bool = False, only_names: set = None):
                 im = Image.open(os.path.join(script_dir, "rastersymbols-day.png"))
                 # (left, upper, right, lower) = (20, 20, 100, 100)
                 im = im.crop((int(x), int(y), int(x) + int(width), int(y) + int(height)))
-                im.save(os.path.join(script_dir, "out/{}.png".format(name)))
+                im.save(os.path.join(script_dir, "{}/{}.png".format(render_img, name)))
             result[name] = {
                 "width": int(width),
                 "height": int(height),
@@ -123,7 +149,15 @@ def read_colors():
 
 
 if __name__ == '__main__':
-    read_sprites(render_img=True)
-    # paper_symbols = set(read_symbols()["Paper"])
+
+    import os
+    os.makedirs("out", exist_ok=True)
+    with open("out/rules.json", 'w', encoding="utf-8") as f:
+        json.dump(read_symbol_rules(), f, ensure_ascii=False, indent=2)
+    # os.makedirs("out/paper")
+    # read_sprites(render_img="out/paper", only_names=set(read_symbols()["Paper"]))
+    # os.makedirs("out/simplified")
+    # read_sprites(render_img="out/simplified", only_names=set(read_symbols()["Simplified"]))
+    # print(json.dumps(read_symbols()["Paper"], indent=2))
     # read_sprites(render_img=True, only_names=paper_symbols)
     # print(json.dumps(read_symbols(), indent=2))

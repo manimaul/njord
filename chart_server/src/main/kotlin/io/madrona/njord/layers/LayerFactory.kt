@@ -15,6 +15,7 @@ class LayerFactory(
                 Lndare(),
                 Coalne(),
                 Boyspp(),
+                Bcnspp(),
                 Boylat(),
                 Bcnlat(),
                 Lights(), //symbol lookup

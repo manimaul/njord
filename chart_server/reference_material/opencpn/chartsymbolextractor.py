@@ -105,7 +105,7 @@ def read_symbol_rules(theme: str = "Paper"):
             rule["ATT"] = list()
             for att in attr:
                 att_str = att.firstChild.nodeValue
-                att_key = att_str[0:6]
+                att_key = att_str[0:6].upper()
                 att_values = list(filter(lambda x: len(x.strip()) > 0 and not x.endswith("?"), att_str[6:].split(",")))
                 att_values = list(map(str_int, att_values))
                 rule["ATT"].append({att_key: att_values})

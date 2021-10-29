@@ -43,6 +43,6 @@ dependencies {
 
 tasks.named<JavaExec>("run") {
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.3.1_3/lib/")
+        jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.3.2_3/lib/")
     }
 }

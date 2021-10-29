@@ -1,0 +1,53 @@
+diff --git a/Formula/gdal.rb b/Formula/gdal.rb
+index cd7281b5a54..d7c28b4e7d8 100644
+--- a/Formula/gdal.rb
++++ b/Formula/gdal.rb
+@@ -24,6 +24,7 @@ class Gdal < Formula
+     depends_on "doxygen" => :build
+   end
+ 
++  depends_on "ant"
+   depends_on "pkg-config" => :build
+   depends_on "cfitsio"
+   depends_on "epsilon"
+@@ -49,6 +50,7 @@ class Gdal < Formula
+   depends_on "proj@7"
+   depends_on "python@3.9"
+   depends_on "sqlite" # To ensure compatibility with SpatiaLite
++  depends_on "swig"
+   depends_on "unixodbc" # macOS version is not complete enough
+   depends_on "webp"
+   depends_on "xerces-c"
+@@ -74,12 +76,15 @@ class Gdal < Formula
+   end
+ 
+   def install
++    java = ENV["JAVA_HOME"]
++    java = "yes" if java.blank?
+     args = [
+       # Base configuration
+       "--prefix=#{prefix}",
+       "--mandir=#{man}",
+       "--disable-debug",
+       "--with-libtool",
++      "--with-java=#{java}",
+       "--with-local=#{prefix}",
+       "--with-threads",
+ 
+@@ -166,6 +171,16 @@ class Gdal < Formula
+     system "make"
+     system "make", "install"
+ 
++    # Build Java bindings
++    cd "swig/java" do
++      inreplace "java.opt", "linux", "darwin"
++      system "make"
++      system "make", "install"
++
++      # Install the jar that complements the native JNI bindings
++      lib.install "gdal.jar"
++    end
++
+     # Build Python bindings
+     cd "swig/python" do
+       system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)

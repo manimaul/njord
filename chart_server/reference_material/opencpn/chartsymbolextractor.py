@@ -75,7 +75,19 @@ def read_symbols():
     return result
 
 
-def read_symbol_rules():
+def str_int(input: str):
+    try:
+        return int(input.replace('?', ""))
+    except:
+        return input
+
+
+def filter_sy_rule(rule: dict):
+    _, value = rule
+    return next(filter(lambda d: "SY" in d, value)) is not None
+
+
+def read_symbol_rules(theme: str = "Paper"):
     dom = parseString(lines)
     result = dict()
     for lookup in dom.getElementsByTagName("lookup"):
@@ -92,12 +104,17 @@ def read_symbol_rules():
         if attr is not None:
             rule["ATT"] = list()
             for att in attr:
-                rule["ATT"].append(att.firstChild.nodeValue)
+                att_str = att.firstChild.nodeValue
+                att_key = att_str[0:6]
+                att_values = list(filter(lambda x: len(x.strip()) > 0 and not x.endswith("?"), att_str[6:].split(",")))
+                att_values = list(map(str_int, att_values))
+                rule["ATT"].append({att_key: att_values})
         if inst is not None and inst.item(0) is not None and inst.item(0).firstChild is not None:
             for ea in inst.item(0).firstChild.nodeValue.split(";"):
                 if ea.startswith("SY"):
                     for sy in ea[3:-1].split(","):
                         rule["SY"] = sy
+    result = dict(filter(filter_sy_rule, result[theme].items()))
     return result
 
 
@@ -152,8 +169,8 @@ if __name__ == '__main__':
 
     import os
     os.makedirs("out", exist_ok=True)
-    with open("out/rules.json", 'w', encoding="utf-8") as f:
-        json.dump(read_symbol_rules(), f, ensure_ascii=False, indent=2)
+    with open("out/paper_symbol_rules.json", 'w', encoding="utf-8") as f:
+        json.dump(read_symbol_rules("Paper"), f, ensure_ascii=False, indent=2)
     # os.makedirs("out/paper")
     # read_sprites(render_img="out/paper", only_names=set(read_symbols()["Paper"]))
     # os.makedirs("out/simplified")

@@ -1,0 +1,7653 @@
+{
+  "######": [
+    {
+      "ATT": [],
+      "SY": "QUESMRK1"
+    }
+  ],
+  "ACHARE": [
+    {
+      "ATT": [],
+      "SY": "ACHARE02"
+    },
+    {
+      "ATT": [],
+      "SY": "ACHARE02"
+    }
+  ],
+  "ACHBRT": [
+    {
+      "ATT": [],
+      "SY": "ACHBRT07"
+    },
+    {
+      "ATT": [],
+      "SY": "ACHBRT07"
+    }
+  ],
+  "ACHPNT": [
+    {
+      "ATT": [],
+      "SY": "ACHPNT01"
+    }
+  ],
+  "AIRARE": [
+    {
+      "ATT": [],
+      "SY": "AIRARE02"
+    }
+  ],
+  "BCNCAR": [
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        },
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW70"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        },
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW71"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        },
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW68"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        },
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW69"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNGEN70"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BCNGEN71"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BCNGEN68"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNGEN69"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK02"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN03"
+    }
+  ],
+  "BCNISD": [
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW76"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2,
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNGEN76"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK02"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN03"
+    }
+  ],
+  "BCNLAT": [
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW74"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNTOW66"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW65"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW63"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW64"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK77"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK77"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "PRICKE03"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "PRICKE04"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNTOW61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNTOW61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "CAIRNS11"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW05"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK61"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK77"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK02"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "CAIRNS01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNGEN60"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNGEN61"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "PRICKE03"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "PRICKE04"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "CAIRNS11"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK03"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "CAIRNS01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK81"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNGEN60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNGEN61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON79"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCON68"
+    },
+    {
+      "ATT": [
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK82"
+    },
+    {
+      "ATT": [
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK82"
+    },
+    {
+      "ATT": [
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK83"
+    }
+  ],
+  "BCNSAW": [
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK02"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN03"
+    }
+  ],
+  "BCNSPP": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1,
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            5,
+            3,
+            1,
+            5
+          ]
+        }
+      ],
+      "SY": "BCNCON81"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW87"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW85"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW65"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW86"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW88"
+    },
+    {
+      "ATT": [
+        {
+          "CATSPM": [
+            18
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "NOTBRD12"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK05"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BCNSTK08"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW05"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW89"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNTOW61"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BCNTOW62"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNTOW91"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "BCNTOW89"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW60"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            8
+          ]
+        }
+      ],
+      "SY": "BCNTOW90"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK05"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BCNSTK08"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "CAIRNS11"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BCNSTK62"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK79"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK80"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK81"
+    },
+    {
+      "ATT": [
+        {
+          "CATSPM": [
+            18
+          ]
+        }
+      ],
+      "SY": "NOTBRD11"
+    },
+    {
+      "ATT": [
+        {
+          "CATSPM": [
+            44
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "BCNGEN79"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK02"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNTOW01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNLTC01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "CAIRNS01"
+    },
+    {
+      "ATT": [
+        {
+          "BCNSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BCNGEN01"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN05"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "BCNGEN80"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNGEN60"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNGEN61"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BCNSPR62"
+    },
+    {
+      "ATT": [],
+      "SY": "BCNGEN01"
+    }
+  ],
+  "BERTHS": [
+    {
+      "ATT": [],
+      "SY": "BRTHNO01"
+    },
+    {
+      "ATT": [],
+      "SY": "BRTHNO01"
+    }
+  ],
+  "BOYCAR": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCON71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCON72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCAN71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPH70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPH71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYPIL71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPR70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPR71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCON69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCON70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCAN68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPH68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPH69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYPIL68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPR68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPR69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "CATCAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "CATCAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "CATCAM": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "CATCAM": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "CATCAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPR68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "CATCAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPR70"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "CATCAM": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPR69"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "CATCAM": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYSPR71"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BOYSUP01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYGEN03"
+    }
+  ],
+  "BOYINB": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSUP62"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYINB01"
+    }
+  ],
+  "BOYISD": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "BOYCON77"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            "2.3.2"
+          ]
+        }
+      ],
+      "SY": "BOYCON63"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN76"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPR72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BOYSUP01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYGEN03"
+    }
+  ],
+  "BOYLAT": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN82"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "CATLAM": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN83"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON66"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL66"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL67"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH79"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH75"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            23
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPH62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            4,
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON67"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL66"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL67"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCON68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCAN75"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYSPH74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCON64"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCON60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCON62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCAN61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCAN63"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPR05"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPR60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYSPR61"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            3
+          ]
+        },
+        {
+          "CATLAM": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL60"
+    },
+    {
+      "ATT": [
+        {
+          "COLOUR": [
+            4
+          ]
+        },
+        {
+          "CATLAM": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BOYSUP01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "catlam": [
+            8
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            4,
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "catlam": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN82"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "catlam": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN83"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCON78"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN64"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCON68"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCAN75"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BOYSPH74"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH75"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYCON61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCON62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYCAN60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYCAN63"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYSPH62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYCAN01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BOYSUP01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BCNGEN61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BCNGEN60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4,
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNGEN65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNGEN64"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON67"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON66"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCAN72"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK83"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK80"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR62"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK81"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK79"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL60"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL61"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH75"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BCNGEN64"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK83"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK82"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK78"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BCNSTK81"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK82"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "BCNSTK80"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "BCNSTK79"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH66"
+    }
+  ],
+  "BOYSAW": [
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYSPH65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        }
+      ],
+      "SY": "BOYPIL73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYCON78"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYSPH65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "BOYPIL73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYPIL73"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            3
+          ]
+        }
+      ],
+      "SY": "BOYSPH01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            4
+          ]
+        }
+      ],
+      "SY": "BOYPIL01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            5
+          ]
+        }
+      ],
+      "SY": "BOYSPR65"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "BOYBAR01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "BOYSUP01"
+    },
+    {
+      "ATT": [
+        {
+          "BOYSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "BOYSPR01"
+    },
+    {
+      "ATT": [],
+      "SY": "BOYGEN03"
+    }
+  ],
+  "BRIDGE": [
+    {
+      "ATT": []
+    },
+    {
+      "ATT": [],
+      "SY": "BRIDGE01"
+    }
+  ],
+  "BUAARE": [
+    {
+      "ATT": [],
+      "SY": "BUAARE02"
+    }
+  ],
+  "BUIREL": [
+    {
+      "ATT": [],
+      "SY": "BUIREL13"
+    }
+  ],
+  "BUISGL": [
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            33
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        },
+        {
+          "OBJNAM": []
+        }
+      ],
+      "SY": "POSGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            20
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL13"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            21
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL13"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            22
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL14"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            23
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL14"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            24
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL14"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            25
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL14"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            26
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL15"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            27
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUIREL15"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            33
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "POSGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            35
+          ]
+        },
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "TNKCON12"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            33
+          ]
+        },
+        {
+          "OBJNAM": []
+        }
+      ],
+      "SY": "POSGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            20
+          ]
+        }
+      ],
+      "SY": "BUIREL01"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            21
+          ]
+        }
+      ],
+      "SY": "BUIREL01"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            22
+          ]
+        }
+      ],
+      "SY": "BUIREL04"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            23
+          ]
+        }
+      ],
+      "SY": "BUIREL04"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            24
+          ]
+        }
+      ],
+      "SY": "BUIREL04"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            25
+          ]
+        }
+      ],
+      "SY": "BUIREL04"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            26
+          ]
+        }
+      ],
+      "SY": "BUIREL05"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            27
+          ]
+        }
+      ],
+      "SY": "BUIREL05"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            33
+          ]
+        }
+      ],
+      "SY": "POSGEN03"
+    },
+    {
+      "ATT": [
+        {
+          "FUNCTN": [
+            35
+          ]
+        }
+      ],
+      "SY": "TNKCON02"
+    },
+    {
+      "ATT": [
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "BUISGL11"
+    },
+    {
+      "ATT": [],
+      "SY": "BUISGL01"
+    }
+  ],
+  "CGUSTA": [
+    {
+      "ATT": [],
+      "SY": "CGUSTA02"
+    }
+  ],
+  "CHKPNT": [
+    {
+      "ATT": []
+    },
+    {
+      "ATT": [
+        {
+          "catchp": [
+            1
+          ]
+        }
+      ],
+      "SY": "CUSTOM01"
+    },
+    {
+      "ATT": [
+        {
+          "catchp": [
+            2
+          ]
+        }
+      ],
+      "SY": "BORDER01"
+    },
+    {
+      "ATT": [],
+      "SY": "POSGEN04"
+    }
+  ],
+  "CRANES": [
+    {
+      "ATT": [],
+      "SY": "CRANES01"
+    },
+    {
+      "ATT": [],
+      "SY": "CRANES01"
+    }
+  ],
+  "CTNARE": [
+    {
+      "ATT": [],
+      "SY": "CHINFO06"
+    }
+  ],
+  "CTRPNT": [
+    {
+      "ATT": [],
+      "SY": "POSGEN04"
+    }
+  ],
+  "CTSARE": [
+    {
+      "ATT": [],
+      "SY": "CHINFO07"
+    }
+  ],
+  "CURENT": [
+    {
+      "ATT": [
+        {
+          "ORIENT": []
+        },
+        {
+          "CURVEL": []
+        }
+      ],
+      "SY": "ORIENT"
+    },
+    {
+      "ATT": [
+        {
+          "ORIENT": []
+        }
+      ],
+      "SY": "ORIENT"
+    },
+    {
+      "ATT": []
+    },
+    {
+      "ATT": [
+        {
+          "ORIENT": []
+        }
+      ],
+      "SY": "ORIENT"
+    },
+    {
+      "ATT": [],
+      "SY": "POSGEN04"
+    }
+  ],
+  "DAMCON": [
+    {
+      "ATT": [
+        {
+          "CATDAM": [
+            3
+          ]
+        }
+      ],
+      "SY": "CHINFO06"
+    },
+    {
+      "ATT": []
+    }
+  ],
+  "DAYMAR": [
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP77"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP76"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            6,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP78"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            5,
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP96"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP74"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP7"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP72"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP64"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP76"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP43"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP43"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            5,
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP90"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            2,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP17"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP0"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP08"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            33
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            5
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP00"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP34"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6,
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP38"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP63"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP41"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP29"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP33"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP30"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP8"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHPA5"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP94"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHPA1"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP90"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            2,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHPA0"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHPA3"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHPA7"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            2,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP97"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP1"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            33
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP00"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            33
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHPS1"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP62"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP61"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP71"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP67"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP25"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP31"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP84"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP8"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP79"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            22
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP03"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            23
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP01"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP13"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            25
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            11,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP05"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            6
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHPT"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP58"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP65"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            4
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP74"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP69"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP70"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP42"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP32"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP40"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPMA107"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            2,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP37"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP48"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP44"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP85"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP87"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP88"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP80"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHPA9"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHPB0"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP99"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP92"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP93"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP91"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP98"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHPA2"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHPA8"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHPA4"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            22
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP04"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            23
+          ]
+        },
+        {
+          "COLPAT": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP02"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP16"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP20"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP19"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHPU1"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            6,
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP18"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP55"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            3
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHPD2"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            1,
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP28"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            10
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP47"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            4,
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP48"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLOUR": [
+            3,
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP20"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP55"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP36"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHP11"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            26
+          ]
+        },
+        {
+          "COLOUR": [
+            11
+          ]
+        }
+      ],
+      "SY": "TOPSHPD1"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP51"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP21"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP23"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP22"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP24"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP35"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP83"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHP82"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLOUR": [
+            1
+          ]
+        }
+      ],
+      "SY": "TOPSHP95"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHPA6"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHP12"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "TOPMA102"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHP10"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            25
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPMA100"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            3
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPSHPD3"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            15
+          ]
+        }
+      ],
+      "SY": "TOPSHQ15"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            16
+          ]
+        }
+      ],
+      "SY": "TOPSHQ16"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            17
+          ]
+        }
+      ],
+      "SY": "TOPSHQ17"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            18
+          ]
+        }
+      ],
+      "SY": "TOPSHQ18"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            19
+          ]
+        }
+      ],
+      "SY": "TOPSHQ19"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        }
+      ],
+      "SY": "TOPSHQ20"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            21
+          ]
+        }
+      ],
+      "SY": "TOPSHQ21"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            22
+          ]
+        }
+      ],
+      "SY": "TOPSHQ22"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            23
+          ]
+        }
+      ],
+      "SY": "TOPSHQ23"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            24
+          ]
+        }
+      ],
+      "SY": "TOPSHQ24"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            25
+          ]
+        }
+      ],
+      "SY": "TOPSHQ25"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            26
+          ]
+        }
+      ],
+      "SY": "TOPSHQ26"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            27
+          ]
+        }
+      ],
+      "SY": "TOPSHQ27"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            28
+          ]
+        }
+      ],
+      "SY": "TOPSHQ28"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            29
+          ]
+        }
+      ],
+      "SY": "TOPSHQ29"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            30
+          ]
+        }
+      ],
+      "SY": "TOPSHQ30"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            31
+          ]
+        }
+      ],
+      "SY": "TOPSHQ31"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            32
+          ]
+        }
+      ],
+      "SY": "TOPSHQ32"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPSHQ06"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            7
+          ]
+        }
+      ],
+      "SY": "TOPSHQ07"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            8
+          ]
+        }
+      ],
+      "SY": "TOPSHQ08"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "ATT": [],
+      "SY": "DAYSQR21"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            12
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            4
+          ]
+        },
+        {
+          "COLPAT": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPMA109"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPMA113"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            8
+          ]
+        },
+        {
+          "COLOUR": [
+            6
+          ]
+        }
+      ],
+      "SY": "TOPMA111"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            2
+          ]
+        },
+        {
+          "COLOUR": [
+            3
+          ]
+        }
+      ],
+      "SY": "TOPMA100"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            1
+          ]
+        },
+        {
+          "COLOUR": [
+            4
+          ]
+        }
+      ],
+      "SY": "TOPMA102"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            20
+          ]
+        },
+        {
+          "COLOUR": [
+            1,
+            2
+          ]
+        },
+        {
+          "COLPAT": [
+            4
+          ]
+        }
+      ],
+      "SY": "TOPSHP83"
+    },
+    {
+      "ATT": [
+        {
+          "TOPSHP": [
+            7
+          ]
+        },
+        {
+          "COLOUR": [
+            2
+          ]
+        }
+      ],
+      "SY": "TOPSHPI2"
+    }
+  ],
+  "DISMAR": [
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "DISMAR04"
+    },
+    {
+      "ATT": [],
+      "SY": "DISMAR03"
+    },
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            1
+          ]
+        },
+        {
+          "hunits": [
+            3
+          ]
+        }
+      ],
+      "SY": "DISMAR05"
+    },
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            1
+          ]
+        },
+        {
+          "hunits": [
+            4
+          ]
+        }
+      ],
+      "SY": "DISMAR05"
+    },
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            1
+          ]
+        },
+        {
+          "wtwdis": []
+        }
+      ],
+      "SY": "DISMAR03"
+    },
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            3
+          ]
+        },
+        {
+          "hunits": [
+            3
+          ]
+        }
+      ],
+      "SY": "HECMTR02"
+    },
+    {
+      "ATT": [
+        {
+          "CATDIS": [
+            3
+          ]
+        },
+        {
+          "hunits": [
+            4
+          ]
+        }
+      ],
+      "SY": "HECMTR01"
+    },
+    {
+      "ATT": [
+        {
+          "catdis": [
+            5
+          ]
+        }
+      ],
+      "SY": "HECMTR02"
+    },
+    {
+      "ATT": [
+        {
+          "catdis": [
+            6
+          ]
+        }
+      ],
+      "SY": "HECMTR01"
+    },
+    {
+      "ATT": [
+        {
+          "catdis": [
+            7
+          ]
+        }
+      ],
+      "SY": "DISMAR06"
+    },
+    {
+      "ATT": [
+        {
+          "catdis": [
+            8
+          ]
+        }
+      ],
+      "SY": "DISMAR05"
+    },
+    {
+      "ATT": [
+        {
+          "wtwdis": []
+        }
+      ],
+      "SY": "DISMAR03"
+    },
+    {
+      "ATT": [],
+      "SY": "DISMAR03"
+    }
+  ],
+  "DMPGRD": [
+    {
+      "ATT": [],
+      "SY": "CHINFO07"
+    }
+  ],
+  "FOGSIG": [
+    {
+      "ATT": [],
+      "SY": "FOGSIG01"
+    }
+  ],
+  "FORSTC": [
+    {
+      "ATT": [
+        {
+          "CONVIS": [
+            1
+          ]
+        }
+      ],
+      "SY": "FORSTC11"
+    },
+    {
+      "ATT": [],
+      "SY": "FORSTC01"
+    }
+  ],
+  "FSHFAC": [
+    {
+      "ATT": [
+        {
+          "CATFIF": [
+            1
+          ]
+        }
+      ],
+      "SY": "FSHFAC03"
+    },
+    {
+      "ATT": [
+        {
+          "CATFIF": [
+            2
+          ]
+        }
+      ],
+      "SY": "FSHFAC02"
+    },
+    {
+      "ATT": [
+        {
+          "CATFIF": [
+            3
+          ]
+        }
+      ],
+      "SY": "FSHFAC02"
+    },
+    {
+      "ATT": [
+        {
+          "CATFIF": [
+            4
+          ]
+        }
+      ],
+      "SY": "FSHFAC02"
+    },
+    {
+      "ATT": [],
+      "SY": "FSHHAV01"
+    }
+  ],
+  "GATCON": [
+    {
+      "ATT": [
+        {
+          "CATGAT": [
+            2
+          ]
+        }
+      ],
+      "SY": "GATCON04"
+    },
+    {
+      "ATT": [
+        {
+          "CATGAT": [
+            3
+          ]
+        }
+      ],
+      "SY": "GATCON04"
+    },
+    {
+      "ATT": [
+        {
+          "CATGAT": [
+            4
+          ]
+        }
+      ],
+      "SY": "GATCON03"
+    },
+    {
+      "ATT": [],
+      "SY": "GATCON04"
+    }
+  ]
+}

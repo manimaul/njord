@@ -2,8 +2,8 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Daymar : SymbolLayerable() {
-    override val key = "DAYMAR"
+class Morfac : SymbolLayerable() {
+    override val key = "MORFAC"
 
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
@@ -15,7 +15,6 @@ class Daymar : SymbolLayerable() {
                             symbolPlacement = Placement.POINT,
                             iconImage = listOf("get", "SY"),
                             iconAnchor = Anchor.BOTTOM,
-                            iconOffset = listOf(0f, -20f),
                             iconAllowOverlap = true,
                             iconKeepUpright = true,
                     )

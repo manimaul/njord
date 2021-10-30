@@ -49,6 +49,7 @@ class LayerFactory(
         Forstc(),
         Fshfac(),
         Gatcon(),
+        Morfac(),
         Lights(), //symbol lookup
         Soundg(),
         Ply(),

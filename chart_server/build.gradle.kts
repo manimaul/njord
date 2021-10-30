@@ -28,6 +28,7 @@ dependencies {
     implementation(Deps.ktorWebsockets)
     implementation(Deps.ktorHostCommon)
     implementation(Deps.ktorJackson)
+    implementation(Deps.jacksonYaml)
     implementation(Deps.logBack)
     implementation(Deps.gdal)
     implementation(Deps.protoBuf)

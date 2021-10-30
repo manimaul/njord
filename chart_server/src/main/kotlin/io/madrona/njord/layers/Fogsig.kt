@@ -15,6 +15,7 @@ class Fogsig : SymbolLayerable() {
                             symbolPlacement = Placement.POINT,
                             iconImage = listOf("get", "SY"),
                             iconAnchor = Anchor.BOTTOM,
+                            iconOffset = listOf(-10f, 10f),
                             iconAllowOverlap = true,
                             iconKeepUpright = true,
                     )

@@ -27,6 +27,7 @@ object Deps {
     const val ktorNetty = "io.ktor:ktor-server-netty:$ktorVersion"
     const val logBack = "ch.qos.logback:logback-classic:$logbackVersion"
     const val ktorJackson = "io.ktor:ktor-jackson:$ktorVersion"
+    const val jacksonYaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0"
     const val postgres = "org.postgresql:postgresql:42.2.23.jre7"
     const val HikariCP = "com.zaxxer:HikariCP:5.0.0"
 

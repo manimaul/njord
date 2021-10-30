@@ -1,0 +1,3543 @@
+'######':
+- ATT: []
+  SY: QUESMRK1
+$CSYMB:
+- ATT:
+  - $SCODE:
+    - ACHRES61
+  SY: ACHRES61
+- ATT:
+  - $SCODE:
+    - ACHRES71
+  SY: ACHRES71
+- ATT:
+  - $SCODE:
+    - AISDEF01
+  SY: AISDEF01
+- ATT:
+  - $SCODE:
+    - AISONE01
+  SY: AISONE01
+- ATT:
+  - $SCODE:
+    - AISSIX01
+  SY: AISSIX01
+- ATT:
+  - $SCODE:
+    - AISSLP01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - AISVES01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - ARPATG01
+  SY: ARPATG01
+- ATT:
+  - $SCODE:
+    - ARPONE01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - ARPSIX01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - BLKADJ01
+  SY: BLKADJ01
+- ATT:
+  - $SCODE:
+    - BRIDGE01
+  SY: BRIDGE01
+- ATT:
+  - $SCODE:
+    - CHCRDEL1
+  SY: CHCRDEL1
+- ATT:
+  - $SCODE:
+    - CHCRID01
+  SY: CHCRID01
+- ATT:
+  - $SCODE:
+    - CHINFO08
+  SY: CHINFO08
+- ATT:
+  - $SCODE:
+    - CHINFO09
+  SY: CHINFO09
+- ATT:
+  - $SCODE:
+    - CHINFO10
+  SY: CHINFO10
+- ATT:
+  - $SCODE:
+    - CHINFO11
+  SY: CHINFO11
+- ATT:
+  - $SCODE:
+    - CHKSYM01
+  SY: CHKSYM01
+- ATT:
+  - $SCODE:
+    - CLRLIN01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - CURSRA01
+  SY: CURSRA01
+- ATT:
+  - $SCODE:
+    - CURSRB01
+  SY: CURSRB01
+- ATT:
+  - $SCODE:
+    - DANGER01
+  SY: DANGER51
+- ATT:
+  - $SCODE:
+    - DANGER02
+  SY: DANGER52
+- ATT:
+  - $SCODE:
+    - DANGER03
+  SY: DANGER53
+- ATT:
+  - $SCODE:
+    - DIRBOY01
+  SY: DIRBOY01
+- ATT:
+  - $SCODE:
+    - DIRBOYA1
+  SY: DIRBOYA1
+- ATT:
+  - $SCODE:
+    - DIRBOYB1
+  SY: DIRBOYB1
+- ATT:
+  - $SCODE:
+    - DNGHILIT
+  SY: DNGHILIT)
+- ATT:
+  - $SCODE:
+    - EBLVRM11
+  SY: EBLVRM11
+- ATT:
+  - $SCODE:
+    - ERBLTIK1
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - EVENTS02
+  SY: EVENTS02
+- ATT:
+  - $SCODE:
+    - INFORM01
+  SY: INFORM01
+- ATT:
+  - $SCODE:
+    - ISODGR01
+  SY: ISODGR51
+- ATT:
+  - $SCODE:
+    - LOWACC01
+  SY: LOWACC01
+- ATT:
+  - $SCODE:
+    - NORTHAR1
+  SY: NORTHAR1
+- ATT:
+  - $SCODE:
+    - OBSTRN01
+  SY: OBSTRN01
+- ATT:
+  - $SCODE:
+    - OBSTRN02
+  SY: OBSTRN02
+- ATT:
+  - $SCODE:
+    - OBSTRN03
+  SY: OBSTRN03
+- ATT:
+  - $SCODE:
+    - OBSTRN11
+  SY: OBSTRN11
+- ATT:
+  - $SCODE:
+    - OSPONE02
+  SY: OSPONE02
+- ATT:
+  - $SCODE:
+    - OSPSIX02
+  SY: OSPSIX02
+- ATT:
+  - $SCODE:
+    - OWNSHP01
+  SY: OWNSHP01
+- ATT:
+  - $SCODE:
+    - OWNSHP05
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - PLNPOS01
+  SY: PLNPOS01
+- ATT:
+  - $SCODE:
+    - PLNSPD03
+  SY: PLNSPD03
+- ATT:
+  - $SCODE:
+    - PLNSPD04
+  SY: PLNSPD04
+- ATT:
+  - $SCODE:
+    - POSITN02
+  SY: POSITN02
+- ATT:
+  - $SCODE:
+    - QUAPOS01
+  SY: QUAPOS01
+- ATT:
+  - $SCODE:
+    - QUARRY01
+  SY: QUARRY01
+- ATT:
+  - $SCODE:
+    - QUESMRK1
+  SY: QUESMRK1
+- ATT:
+  - $SCODE:
+    - RACNSP01
+  SY: RACNSP01
+- ATT:
+  - $SCODE:
+    - RECDEF51
+  SY: RECDEF51
+- ATT:
+  - $SCODE:
+    - RECTRC55
+  SY: RECTRC55
+- ATT:
+  - $SCODE:
+    - RECTRC56
+  SY: RECTRC56
+- ATT:
+  - $SCODE:
+    - RECTRC57
+  SY: RECTRC57
+- ATT:
+  - $SCODE:
+    - RECTRC58
+  SY: RECTRC58
+- ATT:
+  - $SCODE:
+    - REFPNT02
+  SY: REFPNT02
+- ATT:
+  - $SCODE:
+    - RFNERY01
+  SY: RFNERY01
+- ATT:
+  - $SCODE:
+    - RFNERY11
+  SY: RFNERY11
+- ATT:
+  - $SCODE:
+    - SCALEB10
+  SY: SCALEB10
+- ATT:
+  - $SCODE:
+    - SCALEB11
+  SY: SCALEB11
+- ATT:
+  - $SCODE:
+    - TIDCUR01
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - TIDCUR02
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - TIDCUR03
+  SY: TIDCUR03
+- ATT:
+  - $SCODE:
+    - TMBYRD01
+  SY: TMBYRD01
+- ATT:
+  - $SCODE:
+    - TNKFRM01
+  SY: TNKFRM01
+- ATT:
+  - $SCODE:
+    - TNKFRM11
+  SY: TNKFRM11
+- ATT:
+  - $SCODE:
+    - TOWERS05
+  SY: TOWERS05
+- ATT:
+  - $SCODE:
+    - TOWERS15
+  SY: TOWERS15
+- ATT:
+  - $SCODE:
+    - TREPNT04
+  SY: TREPNT04
+- ATT:
+  - $SCODE:
+    - TREPNT05
+  SY: TREPNT05
+- ATT:
+  - $SCODE:
+    - UNITFTH1
+  SY: UNITFTH1
+- ATT:
+  - $SCODE:
+    - UNITMTR1
+  SY: UNITMTR1
+- ATT:
+  - $SCODE:
+    - UWTROC03
+  SY: UWTROC03
+- ATT:
+  - $SCODE:
+    - UWTROC04
+  SY: UWTROC04
+- ATT:
+  - $SCODE:
+    - VECGND01
+  SY: VECGND01
+- ATT:
+  - $SCODE:
+    - VECGND21
+  SY: VECGND21
+- ATT:
+  - $SCODE:
+    - VECWTR01
+  SY: VECWTR01
+- ATT:
+  - $SCODE:
+    - VECWTR21
+  SY: ORIENT
+- ATT:
+  - $SCODE:
+    - WAYPNT01
+  SY: WAYPNT01
+- ATT:
+  - $SCODE:
+    - WAYPNT03
+  SY: WAYPNT03
+- ATT:
+  - $SCODE:
+    - WAYPNT11
+  SY: WAYPNT11
+- ATT:
+  - $SCODE:
+    - WNDFRM51
+  SY: WNDFRM51
+- ATT:
+  - $SCODE:
+    - WNDFRM61
+  SY: WNDFRM61
+- ATT:
+  - $SCODE:
+    - WRECKS01
+  SY: WRECKS01
+- ATT:
+  - $SCODE:
+    - WRECKS04
+  SY: WRECKS04
+- ATT:
+  - $SCODE:
+    - WRECKS05
+  SY: WRECKS05
+- ATT: []
+  SY: QUESMRK1
+$TEXTS: []
+ACHARE:
+- ATT: []
+  SY: ACHARE02
+- ATT: []
+  SY: ACHARE02
+ACHBRT:
+- ATT: []
+  SY: ACHBRT07
+- ATT: []
+  SY: ACHBRT07
+ACHPNT:
+- ATT: []
+  SY: ACHPNT01
+AIRARE:
+- ATT: []
+  SY: AIRARE02
+ANNOTA: []
+BCNCAR:
+- ATT:
+  - CATCAM:
+    - '1'
+  SY: BCNCAR01
+- ATT:
+  - CATCAM:
+    - '2'
+  SY: BCNCAR02
+- ATT:
+  - CATCAM:
+    - '3'
+  SY: BCNCAR03
+- ATT:
+  - CATCAM:
+    - '4'
+  SY: BCNCAR04
+- ATT: []
+  SY: BCNDEF13
+BCNISD:
+- ATT: []
+  SY: BCNISD21
+BCNLAT:
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '2'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '4'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '7'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '2'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '3'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '6'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '7'
+  SY: BCNLAT22
+- ATT:
+  - BCNSHP:
+    - '6'
+  - CONVIS:
+    - '1'
+  SY: CAIRNS11
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '2'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '4'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '7'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '2'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '3'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '7'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - BCNSHP:
+    - '6'
+  SY: CAIRNS01
+- ATT:
+  - COLOUR:
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+  SY: BCNLAT16
+- ATT: []
+  SY: BCNDEF13
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT21
+- ATT:
+  - COLOUR:
+    - '3'
+  - BCNSHP:
+    - '5'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+  - BCNSHP:
+    - '1'
+  SY: BCNLAT22
+- ATT:
+  - BCNSHP:
+    - '5'
+  - COLOUR:
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - CATLAM:
+    - '11'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '12'
+  SY: BCNLAT22
+- ATT:
+  - CATLAM:
+    - '13'
+  SY: BCNSPP21
+- ATT:
+  - CATLAM:
+    - '14'
+  SY: BCNSPP21
+- ATT:
+  - CATLAM:
+    - '15'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '16'
+  SY: BCNLAT22
+- ATT:
+  - CATLAM:
+    - '17'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '18'
+  SY: BCNLAT22
+- ATT:
+  - CATLAM:
+    - '19'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '20'
+  SY: BCNLAT22
+- ATT:
+  - CATLAM:
+    - '21'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '22'
+  SY: BCNLAT22
+- ATT:
+  - COLOUR:
+    - '3'
+  SY: BCNLAT15
+- ATT:
+  - COLOUR:
+    - '4'
+  SY: BCNLAT16
+- ATT:
+  - CATLAM:
+    - '5'
+  SY: BCNLAT21
+- ATT:
+  - CATLAM:
+    - '6'
+  SY: BCNLAT22
+- ATT:
+  - CATLAM:
+    - '9'
+  SY: BCNLAT23
+- ATT: []
+  SY: BCNDEF13
+BCNSAW:
+- ATT:
+  - BCNSHP:
+    - '1'
+  SY: BCNSAW21
+- ATT:
+  - BCNSHP:
+    - '2'
+  SY: BCNSAW21
+- ATT:
+  - BCNSHP:
+    - '3'
+  SY: BCNSAW13
+- ATT:
+  - BCNSHP:
+    - '4'
+  SY: BCNSAW13
+- ATT:
+  - BCNSHP:
+    - '5'
+  SY: BCNSAW13
+- ATT:
+  - BCNSHP:
+    - '7'
+  SY: BCNSAW21
+- ATT: []
+  SY: BCNSAW13
+BCNSPP:
+- ATT:
+  - BCNSHP:
+    - '6'
+  - CONVIS:
+    - '1'
+  SY: CAIRNS11
+- ATT:
+  - CATSPM:
+    - '18'
+  SY: NOTBRD11
+- ATT:
+  - CATSPM:
+    - '44'
+  SY: BCNSPP13
+- ATT:
+  - CATSPM:
+    - '52'
+  SY: BCNDEF13
+- ATT:
+  - BCNSHP:
+    - '1'
+  SY: BCNSPP21
+- ATT:
+  - BCNSHP:
+    - '3'
+  SY: BCNSPP13
+- ATT:
+  - BCNSHP:
+    - '4'
+  SY: BCNSPP13
+- ATT:
+  - BCNSHP:
+    - '5'
+  SY: BCNSPP13
+- ATT:
+  - BCNSHP:
+    - '6'
+  SY: CAIRNS01
+- ATT:
+  - BCNSHP:
+    - '7'
+  SY: BCNSPP21
+- ATT: []
+  SY: BCNSPP21
+BCNWTW:
+- ATT: []
+  SY: BCNLAT50
+BERTHS:
+- ATT: []
+  SY: BRTHNO01
+- ATT: []
+  SY: BRTHNO01
+BOYCAR:
+- ATT:
+  - CATCAM:
+    - '1'
+  SY: BOYCAR01
+- ATT:
+  - CATCAM:
+    - '2'
+  SY: BOYCAR02
+- ATT:
+  - CATCAM:
+    - '3'
+  SY: BOYCAR03
+- ATT:
+  - CATCAM:
+    - '4'
+  SY: BOYCAR04
+- ATT: []
+  SY: BOYDEF03
+BOYINB:
+- ATT: []
+  SY: BOYMOR11
+BOYISD:
+- ATT: []
+  SY: BOYISD12
+BOYLAT:
+- ATT:
+  - BOYSHP:
+    - '1'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - BOYSHP:
+    - '1'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT13
+- ATT:
+  - BOYSHP:
+    - '2'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - BOYSHP:
+    - '2'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '3'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - CATLAM:
+    - '3'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '4'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - CATLAM:
+    - '4'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT13
+- ATT:
+  - BOYSHP:
+    - '1'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - BOYSHP:
+    - '1'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT13
+- ATT:
+  - BOYSHP:
+    - '2'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - BOYSHP:
+    - '2'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '1'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - CATLAM:
+    - '1'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '2'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - CATLAM:
+    - '2'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT13
+- ATT: []
+  SY: BOYDEF03
+- ATT:
+  - CATLAM:
+    - '3'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - CATLAM:
+    - '3'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '4'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - CATLAM:
+    - '4'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT13
+- ATT:
+  - CATLAM:
+    - '10'
+  - COLOUR:
+    - '3'
+    - '4'
+  SY: BOYLAT25
+- ATT:
+  - CATLAM:
+    - '10'
+  - COLOUR:
+    - '4'
+    - '3'
+  SY: BOYLAT25
+- ATT:
+  - CATLAM:
+    - '15'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT26
+- ATT:
+  - CATLAM:
+    - '16'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT27
+- ATT:
+  - CATLAM:
+    - '23'
+  - COLOUR:
+    - '6'
+  SY: BOYSPP25
+- ATT:
+  - CATLAM:
+    - '1'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - CATLAM:
+    - '1'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT23
+- ATT:
+  - CATLAM:
+    - '2'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT14
+- ATT:
+  - CATLAM:
+    - '2'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT13
+- ATT:
+  - CATLAM:
+    - '7'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT24
+- ATT:
+  - CATLAM:
+    - '8'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT13
+- ATT: []
+  SY: BOYDEF03
+BOYSAW:
+- ATT: []
+  SY: BOYSAW12
+BOYSPP:
+- ATT:
+  - CATSPM:
+    - '19'
+  - BOYSHP:
+    - '1'
+  SY: BOYSPP15
+- ATT:
+  - CATSPM:
+    - '19'
+  - BOYSHP:
+    - '2'
+  SY: BOYSPP25
+- ATT:
+  - CATSPM:
+    - '54'
+  - BOYSHP:
+    - '1'
+  SY: BOYSPP15
+- ATT:
+  - CATSPM:
+    - '54'
+  - BOYSHP:
+    - '2'
+  SY: BOYSPP25
+- ATT:
+  - CATSPM:
+    - '54'
+  - BOYSHP:
+    - '4'
+  SY: BOYSPP11
+- ATT:
+  - CATSPM:
+    - '54'
+  - BOYSHP:
+    - '5'
+  SY: BOYSPP11
+- ATT:
+  - CATSPM:
+    - '15'
+  SY: BOYSUP02
+- ATT:
+  - CATSPM:
+    - '52'
+  SY: BOYDEF03
+- ATT:
+  - BOYSHP:
+    - '1'
+  SY: BOYSPP15
+- ATT:
+  - BOYSHP:
+    - '2'
+  SY: BOYSPP25
+- ATT:
+  - BOYSHP:
+    - '3'
+  SY: BOYSPP11
+- ATT:
+  - BOYSHP:
+    - '4'
+  SY: BOYSPP11
+- ATT:
+  - BOYSHP:
+    - '5'
+  SY: BOYSPP11
+- ATT:
+  - BOYSHP:
+    - '6'
+  SY: BOYSPP11
+- ATT:
+  - BOYSHP:
+    - '7'
+  SY: BOYSUP02
+- ATT:
+  - BOYSHP:
+    - '8'
+  SY: BOYSPP11
+- ATT:
+  - CATSPM:
+    - '9'
+  SY: BOYSUP02
+- ATT: []
+  SY: BOYSPP11
+BOYWTW:
+- ATT:
+  - CATWWM:
+    - '10'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT53
+- ATT:
+  - CATWWM:
+    - '13'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT52
+- ATT:
+  - CATWWM:
+    - '14'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT53
+- ATT:
+  - CATWWM:
+    - '15'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT52
+- ATT:
+  - CATWWM:
+    - '16'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT53
+- ATT:
+  - CATWWM:
+    - '17'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT52
+- ATT:
+  - CATWWM:
+    - '18'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT53
+- ATT:
+  - CATWWM:
+    - '7'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT52
+- ATT:
+  - CATWWM:
+    - '8'
+  - COLOUR:
+    - '4'
+    - '3'
+    - '4'
+  SY: BOYLAT53
+- ATT:
+  - CATWWM:
+    - '9'
+  - COLOUR:
+    - '3'
+    - '4'
+    - '3'
+  SY: BOYLAT52
+- ATT:
+  - CATWWM:
+    - '10'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '10'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '11'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '11'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '12'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '12'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '13'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '13'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '14'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '14'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '15'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '15'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '16'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '16'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '17'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '17'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '18'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '18'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '6'
+  - COLOUR:
+    - '3'
+    - '4'
+  SY: BOYLAT54
+- ATT:
+  - CATWWM:
+    - '6'
+  - COLOUR:
+    - '4'
+    - '3'
+  SY: BOYLAT54
+- ATT:
+  - CATWWM:
+    - '7'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '7'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '8'
+  - COLOUR:
+    - '1'
+    - '4'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '8'
+  - COLOUR:
+    - '4'
+    - '1'
+  SY: BOYLAT56
+- ATT:
+  - CATWWM:
+    - '9'
+  - COLOUR:
+    - '1'
+    - '3'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '9'
+  - COLOUR:
+    - '3'
+    - '1'
+  SY: BOYLAT55
+- ATT:
+  - CATWWM:
+    - '19'
+  - COLOUR:
+    - '6'
+  SY: boyspp50
+- ATT:
+  - CATWWM:
+    - '4'
+  - COLOUR:
+    - '3'
+  SY: BOYLAT50
+- ATT:
+  - CATWWM:
+    - '5'
+  - COLOUR:
+    - '4'
+  SY: BOYLAT51
+- ATT:
+  - COLOUR:
+    - '6'
+  SY: boyspp50
+- ATT: []
+  SY: BOYDEF03
+BRIDGE:
+- ATT: []
+  SY: BRIDGE01
+BUAARE:
+- ATT: []
+  SY: BUAARE02
+BUIREL:
+- ATT: []
+  SY: BUIREL13
+BUISGL:
+- ATT:
+  - FUNCTN:
+    - '33'
+  - CONVIS:
+    - '1'
+  - OBJNAM: []
+  SY: POSGEN03
+- ATT:
+  - FUNCTN:
+    - '20'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - FUNCTN:
+    - '21'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - FUNCTN:
+    - '22'
+  - CONVIS:
+    - '1'
+  SY: BUIREL14
+- ATT:
+  - FUNCTN:
+    - '23'
+  - CONVIS:
+    - '1'
+  SY: BUIREL14
+- ATT:
+  - FUNCTN:
+    - '24'
+  - CONVIS:
+    - '1'
+  SY: BUIREL14
+- ATT:
+  - FUNCTN:
+    - '25'
+  - CONVIS:
+    - '1'
+  SY: BUIREL14
+- ATT:
+  - FUNCTN:
+    - '26'
+  - CONVIS:
+    - '1'
+  SY: BUIREL15
+- ATT:
+  - FUNCTN:
+    - '27'
+  - CONVIS:
+    - '1'
+  SY: BUIREL15
+- ATT:
+  - FUNCTN:
+    - '33'
+  - CONVIS:
+    - '1'
+  SY: POSGEN03
+- ATT:
+  - FUNCTN:
+    - '35'
+  - CONVIS:
+    - '1'
+  SY: TNKCON12
+- ATT:
+  - FUNCTN:
+    - '33'
+  - OBJNAM: []
+  SY: POSGEN03
+- ATT:
+  - FUNCTN:
+    - '20'
+  SY: BUIREL01
+- ATT:
+  - FUNCTN:
+    - '21'
+  SY: BUIREL01
+- ATT:
+  - FUNCTN:
+    - '22'
+  SY: BUIREL04
+- ATT:
+  - FUNCTN:
+    - '23'
+  SY: BUIREL04
+- ATT:
+  - FUNCTN:
+    - '24'
+  SY: BUIREL04
+- ATT:
+  - FUNCTN:
+    - '25'
+  SY: BUIREL04
+- ATT:
+  - FUNCTN:
+    - '26'
+  SY: BUIREL05
+- ATT:
+  - FUNCTN:
+    - '27'
+  SY: BUIREL05
+- ATT:
+  - FUNCTN:
+    - '33'
+  SY: POSGEN03
+- ATT:
+  - FUNCTN:
+    - '35'
+  SY: TNKCON02
+- ATT:
+  - CONVIS:
+    - '1'
+  SY: BUISGL11
+- ATT: []
+  SY: BUISGL01
+BUNSTA:
+- ATT:
+  - CATBUN:
+    - '1'
+  SY: BUNSTA01
+- ATT:
+  - CATBUN:
+    - '2'
+  SY: BUNSTA02
+- ATT:
+  - CATBUN:
+    - '3'
+  SY: BUNSTA03
+- ATT: []
+  SY: CHINFO07
+CGUSTA:
+- ATT: []
+  SY: CGUSTA02
+CHKPNT:
+- ATT:
+  - CATCHP:
+    - '1'
+  SY: CUSTOM01
+- ATT:
+  - CATCHP:
+    - '2'
+  SY: BORDER01
+- ATT: []
+  SY: POSGEN04
+CRANES:
+- ATT: []
+  SY: CRANES01
+- ATT: []
+  SY: CRANES01
+CTNARE:
+- ATT: []
+  SY: CHINFO06
+CTRPNT:
+- ATT: []
+  SY: POSGEN04
+CTSARE:
+- ATT: []
+  SY: CHINFO07
+CURENT:
+- ATT:
+  - ORIENT: []
+  - CURVEL: []
+  SY: ORIENT
+- ATT:
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - ORIENT: []
+  SY: ORIENT
+- ATT: []
+  SY: POSGEN04
+CURSOR:
+- ATT:
+  - CURSTY:
+    - '2'
+  SY: CURSRB01
+- ATT: []
+  SY: CURSRA01
+DAMCON:
+- ATT:
+  - CATDAM:
+    - '3'
+  SY: CHINFO06
+DAYMAR:
+- ATT:
+  - TOPSHP:
+    - '19'
+  SY: DAYSQR01
+- ATT:
+  - TOPSHP:
+    - '20'
+  SY: DAYSQR01
+- ATT:
+  - TOPSHP:
+    - '21'
+  SY: DAYSQR01
+- ATT:
+  - TOPSHP:
+    - '24'
+  SY: DAYTRI01
+- ATT:
+  - TOPSHP:
+    - '25'
+  SY: DAYTRI05
+- ATT: []
+  SY: DAYSQR01
+DISMAR:
+- ATT:
+  - CATDIS:
+    - '1'
+  SY: DISMAR04
+- ATT: []
+  SY: DISMAR03
+- ATT:
+  - CATDIS:
+    - '1'
+  - HUNITS:
+    - '3'
+  SY: DISMAR06
+- ATT:
+  - CATDIS:
+    - '1'
+  - HUNITS:
+    - '4'
+  SY: DISMAR05
+- ATT:
+  - CATDIS:
+    - '3'
+  - HUNITS:
+    - '3'
+  SY: HECMTR02
+- ATT:
+  - CATDIS:
+    - '3'
+  - HUNITS:
+    - '4'
+  SY: HECMTR01
+- ATT:
+  - CATDIS:
+    - '5'
+  SY: HECMTR02
+- ATT:
+  - CATDIS:
+    - '6'
+  SY: HECMTR01
+- ATT:
+  - CATDIS:
+    - '7'
+  SY: DISMAR06
+- ATT:
+  - CATDIS:
+    - '8'
+  SY: DISMAR05
+- ATT: []
+  SY: DISMAR03
+DMPGRD:
+- ATT: []
+  SY: CHINFO07
+DNGHLT:
+- ATT: []
+  SY: DNGHILIT
+EVENTS:
+- ATT: []
+  SY: EVENTS02
+FOGSIG:
+- ATT: []
+  SY: FOGSIG01
+FORSTC:
+- ATT:
+  - CONVIS:
+    - '1'
+  SY: FORSTC11
+- ATT: []
+  SY: FORSTC01
+FSHFAC:
+- ATT:
+  - CATFIF:
+    - '1'
+  SY: FSHFAC03
+- ATT:
+  - CATFIF:
+    - '2'
+  SY: FSHFAC02
+- ATT:
+  - CATFIF:
+    - '3'
+  SY: FSHFAC02
+- ATT:
+  - CATFIF:
+    - '4'
+  SY: FSHFAC02
+- ATT: []
+  SY: FSHHAV01
+GATCON:
+- ATT:
+  - CATGAT:
+    - '2'
+  SY: GATCON04
+- ATT:
+  - CATGAT:
+    - '3'
+  SY: GATCON04
+- ATT:
+  - CATGAT:
+    - '4'
+  SY: GATCON03
+- ATT: []
+  SY: GATCON04
+GENNAV:
+- ATT: []
+  SY: BCNTOW01
+GRIDRN: []
+HRBFAC:
+- ATT:
+  - CATHAF:
+    - '1'
+  SY: ROLROL01
+- ATT:
+  - CATHAF:
+    - '4'
+  SY: HRBFAC09
+- ATT:
+  - CATHAF:
+    - '5'
+  SY: SMCFAC02
+- ATT: []
+  SY: CHINFO07
+- ATT:
+  - CATHAF:
+    - '12'
+  SY: HRBFAC13
+- ATT:
+  - CATHAF:
+    - '13'
+  SY: HRBFAC14
+- ATT:
+  - CATHAF:
+    - '14'
+  SY: HRBFAC15
+- ATT:
+  - CATHAF:
+    - '15'
+  SY: HRBFAC16
+- ATT:
+  - CATHAF:
+    - '16'
+  SY: HRBFAC17
+- ATT:
+  - CATHAF:
+    - '17'
+  SY: HRBFAC18
+- ATT:
+  - CATHAF:
+    - '6'
+  SY: HRBFAC11
+- ATT:
+  - CATHAF:
+    - '9'
+  SY: HRBFAC12
+- ATT: []
+  SY: HRBFAC10
+HULKES:
+- ATT: []
+  SY: HULKES01
+ICNARE:
+- ATT: []
+  SY: CHINFO07
+LIGHTS: []
+LITFLT:
+- ATT: []
+  SY: LITFLT02
+LITVES:
+- ATT: []
+  SY: LITVES02
+LNDARE:
+- ATT: []
+  SY: LNDARE01
+LNDELV:
+- ATT: []
+  SY: POSGEN04
+LNDMRK:
+- ATT:
+  - CATLMK:
+    - '15'
+  - FUNCTN:
+    - '20'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '15'
+  - FUNCTN:
+    - '21'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '17'
+  - FUNCTN:
+    - '20'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '17'
+  - FUNCTN:
+    - '21'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '17'
+  - FUNCTN:
+    - '33'
+  - CONVIS:
+    - '1'
+  SY: TOWERS03
+- ATT:
+  - CATLMK:
+    - '20'
+  - FUNCTN:
+    - '20'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '20'
+  - FUNCTN:
+    - '21'
+  - CONVIS:
+    - '1'
+  SY: BUIREL13
+- ATT:
+  - CATLMK:
+    - '20'
+  - FUNCTN:
+    - '26'
+  - CONVIS:
+    - '1'
+  SY: BUIREL15
+- ATT:
+  - CATLMK:
+    - '20'
+  - FUNCTN:
+    - '27'
+  - CONVIS:
+    - '1'
+  SY: BUIREL15
+- ATT:
+  - CATLMK:
+    - '15'
+  - FUNCTN:
+    - '20'
+  SY: BUIREL01
+- ATT:
+  - CATLMK:
+    - '17'
+  - FUNCTN:
+    - '20'
+  SY: BUIREL01
+- ATT:
+  - CATLMK:
+    - '17'
+  - FUNCTN:
+    - '33'
+  SY: TOWERS01
+- ATT:
+  - CATLMK:
+    - '20'
+  - FUNCTN:
+    - '20'
+  SY: BUIREL01
+- ATT:
+  - CATLMK:
+    - '10'
+  - CONVIS:
+    - '1'
+  SY: MONUMT12
+- ATT:
+  - CATLMK:
+    - '12'
+  - CONVIS:
+    - '1'
+  SY: MONUMT12
+- ATT:
+  - CATLMK:
+    - '13'
+  - CONVIS:
+    - '1'
+  SY: MONUMT12
+- ATT:
+  - CATLMK:
+    - '15'
+  - CONVIS:
+    - '1'
+  SY: DOMES011
+- ATT:
+  - CATLMK:
+    - '16'
+  - CONVIS:
+    - '1'
+  SY: RASCAN11
+- ATT:
+  - CATLMK:
+    - '17'
+  - CONVIS:
+    - '1'
+  SY: TOWERS03
+- ATT:
+  - CATLMK:
+    - '18'
+  - CONVIS:
+    - '1'
+  SY: WNDMIL12
+- ATT:
+  - CATLMK:
+    - '19'
+  - CONVIS:
+    - '1'
+  SY: WIMCON11
+- ATT:
+  - CATLMK:
+    - '20'
+  - CONVIS:
+    - '1'
+  SY: POSGEN03
+- ATT:
+  - CATLMK:
+    - '1'
+  - CONVIS:
+    - '1'
+  SY: CAIRNS11
+- ATT:
+  - CATLMK:
+    - '3'
+  - CONVIS:
+    - '1'
+  SY: CHIMNY11
+- ATT:
+  - CATLMK:
+    - '4'
+  - CONVIS:
+    - '1'
+  SY: DSHAER11
+- ATT:
+  - CATLMK:
+    - '5'
+  - CONVIS:
+    - '1'
+  SY: FLGSTF01
+- ATT:
+  - CATLMK:
+    - '6'
+  - CONVIS:
+    - '1'
+  SY: FLASTK11
+- ATT:
+  - CATLMK:
+    - '7'
+  - CONVIS:
+    - '1'
+  SY: MSTCON14
+- ATT:
+  - CATLMK:
+    - '8'
+  - CONVIS:
+    - '1'
+  SY: POSGEN03
+- ATT:
+  - CATLMK:
+    - '9'
+  - CONVIS:
+    - '1'
+  SY: MONUMT12
+- ATT:
+  - CATLMK:
+    - '15'
+  SY: DOMES001
+- ATT:
+  - CATLMK:
+    - '16'
+  SY: RASCAN01
+- ATT:
+  - CATLMK:
+    - '17'
+  SY: TOWERS01
+- ATT:
+  - CATLMK:
+    - '3'
+  SY: CHIMNY01
+- ATT:
+  - CATLMK:
+    - '6'
+  SY: FLASTK01
+- ATT:
+  - CATLMK:
+    - '7'
+  SY: MSTCON04
+- ATT:
+  - CONVIS:
+    - '1'
+  SY: POSGEN03
+- ATT: []
+  SY: POSGEN01
+LNDRGN:
+- ATT: []
+  SY: POSGEN04
+LOCMAG:
+- ATT: []
+  SY: LOCMAG01
+LOGPON: []
+MAGVAR:
+- ATT: []
+  SY: MAGVAR01
+MARCUL:
+- ATT: []
+  SY: MARCUL02
+MARFEA:
+- ATT: []
+  SY: CHINFO09
+MARNOT:
+- ATT:
+  - CATNOT:
+    - '1'
+  SY: CHINFO08
+- ATT:
+  - CATNOT:
+    - '2'
+  SY: CHINFO09
+- ATT: []
+  SY: CHINFO09
+MIPARE:
+- ATT: []
+  SY: CHINFO06
+MNUFEA:
+- ATT:
+  - CATNOT:
+    - '1'
+  SY: CHINFO10
+- ATT:
+  - CATNOT:
+    - '2'
+  SY: CHINFO11
+- ATT: []
+  SY: CHINFO10
+MONUMT:
+- ATT: []
+  SY: MONUMT12
+MORFAC:
+- ATT:
+  - CATMOR:
+    - '1'
+  SY: MORFAC03
+- ATT:
+  - CATMOR:
+    - '2'
+  SY: MORFAC04
+- ATT:
+  - CATMOR:
+    - '3'
+  SY: PILPNT02
+- ATT:
+  - CATMOR:
+    - '5'
+  SY: PILPNT02
+- ATT:
+  - CATMOR:
+    - '7'
+  SY: BOYMOR11
+- ATT: []
+  SY: MORFAC03
+M_NPUB:
+- ATT: []
+  SY: CHINFO07
+NEWOBJ:
+- ATT: []
+  SY: NEWOBJ 01
+NOTMRK:
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+    - '3'
+    - '4'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '2'
+    - '3'
+    - '4'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+    - '3'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+    - '4'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '72'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+    - '3'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '72'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+    - '4'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '100'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '100'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '2'
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '2'
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '8'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '11'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '11'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '38'
+  - FNCTNM:
+    - '3'
+  - ADDMRK:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '39'
+  - FNCTNM:
+    - '3'
+  - ADDMRK:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '52'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '72'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '72'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '95'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '95'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '97'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '97'
+  - FNCTNM:
+    - '5'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '1'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '1'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '8'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '3'
+  SY: ADDMRK01
+- ATT:
+  - CATNMK:
+    - '8'
+  - FNCTNM:
+    - '1'
+  - ADDMRK:
+    - '4'
+  SY: ADDMRK02
+- ATT:
+  - CATNMK:
+    - '100'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF48
+- ATT:
+  - CATNMK:
+    - '101'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF49
+- ATT:
+  - CATNMK:
+    - '102'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF50
+- ATT:
+  - CATNMK:
+    - '223'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG01
+- ATT:
+  - CATNMK:
+    - '235'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG01
+- ATT:
+  - CATNMK:
+    - '10'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH10
+- ATT:
+  - CATNMK:
+    - '11'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH11
+- ATT:
+  - CATNMK:
+    - '12'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH12
+- ATT:
+  - CATNMK:
+    - '13'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH13
+- ATT:
+  - CATNMK:
+    - '23'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG02
+- ATT:
+  - CATNMK:
+    - '31'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG10
+- ATT:
+  - CATNMK:
+    - '32'
+  - FNCTNM:
+    - '2'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '33'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG11
+- ATT:
+  - CATNMK:
+    - '34'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG12
+- ATT:
+  - CATNMK:
+    - '35'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG13
+- ATT:
+  - CATNMK:
+    - '36'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG14
+- ATT:
+  - CATNMK:
+    - '37'
+  - FNCTNM:
+    - '2'
+  SY: NMKREG15
+- ATT:
+  - CATNMK:
+    - '38'
+  - FNCTNM:
+    - '3'
+  SY: NMKREG16
+- ATT:
+  - CATNMK:
+    - '39'
+  - FNCTNM:
+    - '3'
+  SY: NMKREG17
+- ATT:
+  - CATNMK:
+    - '41'
+  - FNCTNM:
+    - '3'
+  SY: ADDMRK05
+- ATT:
+  - CATNMK:
+    - '42'
+  - FNCTNM:
+    - '3'
+  SY: NMKREG19
+- ATT:
+  - CATNMK:
+    - '43'
+  - FNCTNM:
+    - '3'
+  SY: NMKREG20
+- ATT:
+  - CATNMK:
+    - '44'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD01
+- ATT:
+  - CATNMK:
+    - '45'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD02
+- ATT:
+  - CATNMK:
+    - '46'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD03
+- ATT:
+  - CATNMK:
+    - '47'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD04
+- ATT:
+  - CATNMK:
+    - '48'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD05
+- ATT:
+  - CATNMK:
+    - '49'
+  - FNCTNM:
+    - '4'
+  SY: NMKRCD06
+- ATT:
+  - CATNMK:
+    - '50'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF01
+- ATT:
+  - CATNMK:
+    - '51'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF02
+- ATT:
+  - CATNMK:
+    - '52'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF03
+- ATT:
+  - CATNMK:
+    - '53'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF04
+- ATT:
+  - CATNMK:
+    - '54'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF05
+- ATT:
+  - CATNMK:
+    - '55'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF06
+- ATT:
+  - CATNMK:
+    - '58'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF06
+- ATT:
+  - CATNMK:
+    - '71'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF19
+- ATT:
+  - CATNMK:
+    - '72'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF20
+- ATT:
+  - CATNMK:
+    - '73'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF21
+- ATT:
+  - CATNMK:
+    - '74'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF22
+- ATT:
+  - CATNMK:
+    - '75'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF23
+- ATT:
+  - CATNMK:
+    - '76'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF24
+- ATT:
+  - CATNMK:
+    - '77'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF25
+- ATT:
+  - CATNMK:
+    - '78'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF26
+- ATT:
+  - CATNMK:
+    - '79'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF27
+- ATT:
+  - CATNMK:
+    - '80'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF28
+- ATT:
+  - CATNMK:
+    - '81'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF29
+- ATT:
+  - CATNMK:
+    - '90'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF38
+- ATT:
+  - CATNMK:
+    - '95'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF43
+- ATT:
+  - CATNMK:
+    - '96'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF44
+- ATT:
+  - CATNMK:
+    - '97'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF45
+- ATT:
+  - CATNMK:
+    - '98'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF46
+- ATT:
+  - CATNMK:
+    - '99'
+  - FNCTNM:
+    - '5'
+  SY: NMKINF47
+- ATT:
+  - CATNMK:
+    - '1'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH02
+- ATT:
+  - CATNMK:
+    - '5'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH06
+- ATT:
+  - CATNMK:
+    - '6'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH07
+- ATT:
+  - CATNMK:
+    - '8'
+  - FNCTNM:
+    - '1'
+  SY: NMKPRH08
+- ATT:
+  - CATNMK:
+    - '12'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '13'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '44'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '45'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '46'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '47'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '50'
+  SY: ORIENT
+- ATT:
+  - CATNMK:
+    - '1'
+  SY: ORIENT
+- ATT:
+  - FNCTNM:
+    - '1'
+  SY: NOTMRK01
+- ATT:
+  - FNCTNM:
+    - '4'
+  SY: NOTMRK03
+- ATT:
+  - FNCTNM:
+    - '5'
+  SY: NOTMRK03
+- ATT: []
+  SY: NOTMRK02
+OBSTRN:
+- ATT:
+  - CATOBS:
+    - '10'
+  - VALSOU: []
+  SY: FLTHAZ02
+- ATT:
+  - CATOBS:
+    - '7'
+  - VALSOU: []
+  SY: FOULGND1
+- ATT:
+  - CATOBS:
+    - '8'
+  - VALSOU: []
+  SY: FLTHAZ02
+- ATT:
+  - CATOBS:
+    - '9'
+  - VALSOU: []
+  SY: ACHARE02
+- ATT:
+  - CATOBS:
+    - '10'
+  SY: FLTHAZ02
+- ATT:
+  - CATOBS:
+    - '7'
+  SY: FOULGND1
+- ATT:
+  - CATOBS:
+    - '8'
+  SY: FLTHAZ02
+- ATT:
+  - CATOBS:
+    - '9'
+  SY: ACHARE02
+- ATT:
+  - WATLEV:
+    - '7'
+  SY: FLTHAZ02
+OFSPLF:
+- ATT: []
+  SY: OFSPLF01
+OWNSHP: []
+PILBOP:
+- ATT: []
+  SY: PILBOP02
+PILPNT:
+- ATT: []
+  SY: PILPNT02
+PIPARE:
+- ATT: []
+  SY: CHINFO07
+PIPSOL: []
+PLNPOS:
+- ATT: []
+  SY: ORIENT
+POSITN:
+- ATT:
+  - PFMETH:
+    - '10'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '11'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '12'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '13'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '14'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '15'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '1'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '2'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '3'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '4'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '5'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '6'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '7'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '8'
+  SY: POSITN02
+- ATT:
+  - PFMETH:
+    - '9'
+  SY: POSITN02
+- ATT: []
+  SY: POSITN02
+PRCARE:
+- ATT: []
+  SY: PRCARE12
+PRDARE:
+- ATT:
+  - CATPRA:
+    - '5'
+  - CONVIS:
+    - '1'
+  SY: FLASTK11
+- ATT:
+  - CATPRA:
+    - '8'
+  - CONVIS:
+    - '1'
+  SY: TNKCON12
+- ATT:
+  - CATPRA:
+    - '9'
+  - CONVIS:
+    - '1'
+  SY: WIMCON11
+- ATT:
+  - CATPRA:
+    - '10'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '1'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '2'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '3'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '4'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '5'
+  SY: FLASTK01
+- ATT:
+  - CATPRA:
+    - '6'
+  SY: TMBYRD01
+- ATT:
+  - CATPRA:
+    - '7'
+  SY: PRDINS02
+- ATT:
+  - CATPRA:
+    - '8'
+  SY: TNKCON02
+- ATT:
+  - CATPRA:
+    - '9'
+  SY: WIMCON01
+PYLONS:
+- ATT: []
+  SY: POSGEN03
+RADRFL:
+- ATT: []
+  SY: RADRFL03
+RADSTA:
+- ATT:
+  - CATRAS:
+    - '2'
+  SY: RDOSTA02
+- ATT: []
+  SY: POSGEN01
+RAPIDS: []
+RCTLPT:
+- ATT:
+  - ORIENT: []
+  SY: ORIENT
+- ATT: []
+  SY: RTLDEF51
+RDOCAL:
+- ATT:
+  - TRAFIC:
+    - '1'
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '2'
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '3'
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '4'
+  - ORIENT: []
+  SY: ORIENT
+- ATT: []
+  SY: RCLDEF01
+- ATT:
+  - TRAFIC:
+    - '1'
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '2'
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '3'
+  SY: ORIENT
+- ATT:
+  - TRAFIC:
+    - '4'
+  SY: ORIENT
+- ATT: []
+  SY: RCLDEF01
+RDOSTA:
+- ATT:
+  - CATROS:
+    - '10'
+  SY: DGPS01DRFSTA01
+- ATT: []
+  SY: RDOSTA02
+REFDMP:
+- ATT: []
+  SY: REFDMP01
+REFPNT:
+- ATT: []
+  SY: REFPNT02
+RETRFL:
+- ATT: []
+  SY: RETRFL02
+ROADWY: []
+RSCSTA:
+- ATT: []
+  SY: RSCSTA02
+RTPBCN:
+- ATT: []
+  SY: RTPBCN02
+RUNWAY: []
+SBDARE: []
+SEAARE: []
+SILTNK:
+- ATT:
+  - CATSIL:
+    - '1'
+  - CONVIS:
+    - '1'
+  SY: SILBUI11
+- ATT:
+  - CATSIL:
+    - '2'
+  - CONVIS:
+    - '1'
+  SY: TNKCON12
+- ATT:
+  - CATSIL:
+    - '3'
+  - CONVIS:
+    - '1'
+  SY: TOWERS03
+- ATT:
+  - CATSIL:
+    - '4'
+  - CONVIS:
+    - '1'
+  SY: TOWERS12
+- ATT:
+  - CATSIL:
+    - '1'
+  SY: SILBUI01
+- ATT:
+  - CATSIL:
+    - '2'
+  SY: TNKCON02
+- ATT:
+  - CATSIL:
+    - '3'
+  SY: TOWERS01
+- ATT:
+  - CATSIL:
+    - '4'
+  SY: TOWERS02
+- ATT:
+  - CONVIS:
+    - '1'
+  SY: TNKCON12
+- ATT: []
+  SY: TNKCON02
+SISTAT:
+- ATT: []
+  SY: SISTAT02
+- ATT:
+  - CATSIT:
+    - '10'
+  SY: SSWARS01
+- ATT:
+  - CATSIT:
+    - '2'
+  SY: SSENTR01
+- ATT:
+  - CATSIT:
+    - '6'
+  SY: SSLOCK01
+- ATT: []
+  SY: SISTAT02
+SISTAW:
+- ATT: []
+  SY: SISTAT02
+- ATT:
+  - CATSIW:
+    - '12'
+  SY: WTLVGG02
+- ATT:
+  - CATSIW:
+    - '13'
+  SY: WTLVGG01
+- ATT:
+  - CATSIW:
+    - '15'
+  SY: HGWTMK01
+- ATT:
+  - CATSIW:
+    - '16'
+  SY: VTCLMK01
+- ATT:
+  - CATSIW:
+    - '17'
+  SY: VTCLMK01
+- ATT: []
+  SY: SISTAT02
+SLCONS:
+- ATT: []
+  SY: MORFAC03
+- ATT:
+  - CATSLC:
+    - '4'
+  SY: PIER0001
+- ATT: []
+  SY: MORFAC03
+SLOGRD:
+- ATT: []
+  SY: HILTOP01
+SLOTOP:
+- ATT:
+  - CONVIS:
+    - '1'
+  SY: HILTOP11
+- ATT: []
+  SY: HILTOP01
+SMCFAC: []
+SNDWAV:
+- ATT: []
+  SY: SNDWAV02
+SOUNDG: []
+SPLARE:
+- ATT: []
+  SY: CHINFO06
+SPRING:
+- ATT: []
+  SY: SPRING02
+TERMNL:
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '10'
+  SY: TERMNL12
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '1'
+  SY: TERMNL03
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '2'
+  SY: TERMNL04
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '3'
+  SY: TERMNL05
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '4'
+  SY: TERMNL06
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '5'
+  SY: TERMNL07
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '6'
+  SY: TERMNL08
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '7'
+  SY: TERMNL09
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '8'
+  SY: TERMNL10
+- ATT:
+  - CATTML:
+    - '3'
+  - TRSHGD:
+    - '9'
+  SY: TERMNL11
+- ATT:
+  - CATHAF:
+    - '10'
+  SY: TERMNL03
+- ATT:
+  - CATHAF:
+    - '11'
+  SY: TERMNL04
+- ATT:
+  - CATHAF:
+    - '1'
+  SY: TERMNL13
+- ATT:
+  - CATHAF:
+    - '3'
+  SY: TERMNL02
+- ATT:
+  - CATHAF:
+    - '7'
+  SY: TERMNL02
+- ATT:
+  - CATHAF:
+    - '8'
+  SY: TERMNL01
+- ATT:
+  - CATTML:
+    - '1'
+  SY: TERMNL01
+- ATT:
+  - CATTML:
+    - '3'
+  SY: TERMNL12
+- ATT:
+  - TRSHGD:
+    - '1'
+  SY: TERMNL03
+- ATT:
+  - TRSHGD:
+    - '2'
+  SY: TERMNL04
+- ATT:
+  - TRSHGD:
+    - '3'
+  SY: TERMNL05
+- ATT:
+  - TRSHGD:
+    - '4'
+  SY: TERMNL06
+- ATT:
+  - TRSHGD:
+    - '5'
+  SY: TERMNL07
+- ATT:
+  - TRSHGD:
+    - '6'
+  SY: TERMNL08
+- ATT:
+  - TRSHGD:
+    - '7'
+  SY: TERMNL09
+- ATT:
+  - TRSHGD:
+    - '8'
+  SY: TERMNL10
+- ATT:
+  - TRSHGD:
+    - '9'
+  SY: TERMNL11
+- ATT: []
+  SY: TERMNL12
+TIDCUR:
+- ATT:
+  - CATCUR:
+    - '1'
+  SY: TIDCUR03
+- ATT:
+  - CATCUR:
+    - '2'
+  SY: TIDCUR03
+- ATT: []
+  SY: TIDCUR03
+TOPMAR:
+- ATT: []
+TOWERS:
+- ATT: []
+  SY: TOWERS03
+TRNBSN:
+- ATT: []
+  SY: TRNBSN01
+TS_FEB:
+- ATT:
+  - CAT_TS:
+    - '1'
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - CAT_TS:
+    - '2'
+  - ORIENT: []
+  SY: ORIENT
+- ATT:
+  - CAT_TS:
+    - '3'
+  - ORIENT: []
+  SY: ORIENT
+- ATT: []
+  SY: CURDEF01
+TS_PAD:
+- ATT: []
+  SY: TIDSTR01
+TS_PNH:
+- ATT: []
+  SY: TIDSTR01
+TS_PRH:
+- ATT: []
+  SY: TIDSTR01
+TS_TIS:
+- ATT: []
+  SY: TIDSTR01
+TUNNEL: []
+T_HMON:
+- ATT: []
+  SY: TIDEHT01
+T_NHMN:
+- ATT: []
+  SY: TIDEHT01
+T_TIMS:
+- ATT: []
+  SY: TIDEHT01
+UWTROC:
+- ATT: []
+VEGATN:
+- ATT:
+  - CATVEG:
+    - '13'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '14'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '15'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '16'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '17'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '18'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '19'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '20'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '21'
+  SY: TREPNT05
+- ATT:
+  - CATVEG:
+    - '22'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '3'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '4'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '5'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '6'
+  SY: TREPNT04
+- ATT:
+  - CATVEG:
+    - '7'
+  SY: TREPNT05
+VEHTRF:
+- ATT: []
+  SY: VEHTRF01
+VESSEL: []
+WATFAL: []
+WATTUR:
+- ATT: []
+  SY: WATTUR02
+WAYPNT:
+- ATT:
+  - SELECT:
+    - '1'
+  SY: WAYPNT11
+- ATT:
+  - SELECT:
+    - '2'
+  SY: WAYPNT03
+- ATT: []
+  SY: WAYPNT11
+WEDKLP:
+- ATT: []
+  SY: WEDKLP03
+WRECKS:
+- ATT:
+  - CATWRK:
+    - '3'
+  - VALSOU: []
+  SY: FOULGND1
+- ATT:
+  - CATWRK:
+    - '3'
+  SY: FOULGND1
+WTWGAG:
+- ATT: []
+  SY: WTLVGG02
+_BCNGN:
+- ATT: []
+  SY: BCNGEN01
+_BOYGN:
+- ATT:
+  - COLMAR:
+    - '7'
+  SY: BOYPIL69
+- ATT: []
+  SY: BOYCAN62
+_EXTGN:
+- ATT: []
+  SY: STARPT01
+_SLGTO:
+- ATT:
+  - BOYSHP:
+    - '5'
+  - COLOUR:
+    - '1'
+    - '11'
+  - COLPAT:
+    - '1'
+  SY: BOYSPR04
+- ATT:
+  - BOYSHP:
+    - '1'
+  - COLOUR:
+    - '3'
+  SY: BOYCON60
+- ATT:
+  - BOYSHP:
+    - '2'
+  - COLOUR:
+    - '4'
+  SY: BOYCAN61
+- ATT:
+  - BOYSHP:
+    - '4'
+  - COLOUR:
+    - '3'
+  SY: BOYPIL60
+- ATT:
+  - BOYSHP:
+    - '4'
+  - COLOUR:
+    - '4'
+  SY: BOYPIL61
+- ATT:
+  - BOYSHP:
+    - '5'
+  - COLOUR:
+    - '3'
+  SY: BOYSPR03
+- ATT:
+  - BOYSHP:
+    - '5'
+  - COLOUR:
+    - '4'
+  SY: BOYSPR02
+- ATT:
+  - BOYSHP:
+    - '5'
+  SY: BOYSPR01
+- ATT: []
+  SY: BCNGEN01
+_TEXTO:
+- ATT:
+  - WRKATT:
+    - '1'
+  SY: WRECKS04

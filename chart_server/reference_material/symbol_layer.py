@@ -6,7 +6,7 @@ template = """package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class CLASS : Layerable {
+class CLASS : SymbolLayerable() {
     override val key = "KEY"
 
     override fun layers(options: LayerableOptions) = sequenceOf(
@@ -27,41 +27,43 @@ class CLASS : Layerable {
 }
 """
 
-layers = ["Achare",
-          "Achbrt",
-          "Achpnt",
-          "Airare",
-          "Bcncar",
-          "Bcnisd",
-          "Bcnlat",
-          "Bcnsaw",
-          "Bcnspp",
-          "Berths",
-          "Boycar",
-          "Boyinb",
-          "Boyisd",
-          "Boylat",
-          "Boysaw",
-          "Bridge",
-          "Buaare",
-          "Buirel",
-          "Buisgl",
-          "Cgusta",
-          "Chkpnt",
-          "Cranes",
-          "Ctnare",
-          "Ctrpnt",
-          "Ctsare",
-          "Curent",
-          "Damcon",
-          "Daymar",
-          "Dismar",
-          "Dmpgrd",
-          "Fogsig",
-          "Forstc",
-          "Fshfac",
-          "Gatcon"
-          ]
+layers = [
+    "Morfac",
+    # "Achare",
+    # "Achbrt",
+    # "Achpnt",
+    # "Airare",
+    # "Bcncar",
+    # "Bcnisd",
+    # "Bcnlat",
+    # "Bcnsaw",
+    # "Bcnspp",
+    # "Berths",
+    # "Boycar",
+    # "Boyinb",
+    # "Boyisd",
+    # "Boylat",
+    # "Boysaw",
+    # "Bridge",
+    # "Buaare",
+    # "Buirel",
+    # "Buisgl",
+    # "Cgusta",
+    # "Chkpnt",
+    # "Cranes",
+    # "Ctnare",
+    # "Ctrpnt",
+    # "Ctsare",
+    # "Curent",
+    # "Damcon",
+    # "Daymar",
+    # "Dismar",
+    # "Dmpgrd",
+    # "Fogsig",
+    # "Forstc",
+    # "Fshfac",
+    # "Gatcon"
+]
 
 for ea in layers:
     print(ea)

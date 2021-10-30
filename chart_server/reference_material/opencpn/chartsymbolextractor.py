@@ -6,6 +6,7 @@
 from xml.dom.minidom import parseString
 import os
 import json
+import yaml
 from PIL import Image
 
 f = open("chartsymbols.xml", "r")
@@ -177,10 +178,10 @@ if __name__ == '__main__':
 
     import os
     # os.makedirs("out", exist_ok=True)
-    with open("../../src/main/resources/paper_symbol_rules.json", 'w', encoding="utf-8") as f:
-        json.dump(read_symbol_rules("Paper"), f, ensure_ascii=False, indent=2)
-    with open("../../src/main/resources/simplified_symbol_rules.json", 'w', encoding="utf-8") as f:
-        json.dump(read_symbol_rules("Simplified"), f, ensure_ascii=False, indent=2)
+    with open("../../src/main/resources/paper_symbol_rules.yaml", 'w', encoding="utf-8") as f:
+        yaml.dump(read_symbol_rules("Paper"), f, indent=2)
+    with open("../../src/main/resources/simplified_symbol_rules.yaml", 'w', encoding="utf-8") as f:
+        yaml.dump(read_symbol_rules("Simplified"), f, indent=2)
     # os.makedirs("out/paper")
     # read_sprites(render_img="out/paper", only_names=set(read_symbols()["Paper"]))
     # os.makedirs("out/simplified")

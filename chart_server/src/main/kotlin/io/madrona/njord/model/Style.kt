@@ -64,6 +64,11 @@ data class Layout(
         @JsonProperty("text-justify") val textJustify: Anchor? = null,
         @JsonProperty("text-field") val textField: List<Any>? = null,
         @JsonProperty("text-offset") val textOffset: List<Float>? = null,
+
+        /**
+         * Positive values indicate right and down, while negative values indicate left and up.
+         */
+        @JsonProperty("icon-offset") val iconOffset: List<Float>? = null,
         @JsonProperty("text-allow-overlap") val textAllowOverlap: Boolean? = null,
         @JsonProperty("text-ignore-placement") val textIgnorePlacement: Boolean? = null,
         @JsonProperty("text-max-width") val textMaxWidthEms: Float? = null,

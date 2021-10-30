@@ -23,7 +23,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * daymark; beacon lateral; beacon safe water; beacon isolated danger; beacon cardinal; distance mark;
  */
-class Bcnspp : Layerable {
+class Bcnspp : SymbolLayerable() {
     override val key = "BCNSPP"
 
     override fun layers(options: LayerableOptions) = sequenceOf(

@@ -22,7 +22,7 @@ import io.madrona.njord.model.*
  * daymark; beacon cardinal; beacon safe water; beacon isolated danger; beacon special purpose/general;
 
  */
-class Bcnlat : Layerable {
+class Bcnlat : SymbolLayerable() {
     override val key = "BCNLAT"
 
     override fun layers(options: LayerableOptions) = sequenceOf(

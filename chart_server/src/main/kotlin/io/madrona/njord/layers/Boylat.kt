@@ -19,7 +19,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * buoy cardinal; buoy safe water; buoy isolated danger; buoy special purpose/general; mooring/warping facility;
  */
-class Boylat : Layerable {
+class Boylat : SymbolLayerable() {
     override val key = "BOYLAT"
 
     override fun layers(options: LayerableOptions) = sequenceOf(

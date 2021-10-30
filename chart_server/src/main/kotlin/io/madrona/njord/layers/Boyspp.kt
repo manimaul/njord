@@ -1,6 +1,7 @@
 package io.madrona.njord.layers
 
 import com.fasterxml.jackson.annotation.JsonValue
+import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.model.*
 
 /**
@@ -46,7 +47,8 @@ enum class Boyshp(@get:JsonValue val code: Int) {
  * Distinction:
  *     buoy lateral; buoy safe water; buoy isolated danger; buoy cardinal; buoy installation; mooring/warping facility;
  */
-class Boyspp : Layerable {
+class Boyspp : SymbolLayerable() {
+
     override val key = "BOYSPP"
 
     override fun layers(options: LayerableOptions) = sequenceOf(

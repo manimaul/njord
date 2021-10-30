@@ -8,6 +8,8 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.geo.TileSystem
+import io.madrona.njord.geo.symbols.SymbolLayerLibrary
+import io.madrona.njord.layers.SymbolLayerable
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.ZFinder
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +18,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.io.WKBReader
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
@@ -57,4 +60,8 @@ object Singletons{
             .build()
             .start(30, TimeUnit.SECONDS)
     }
+
+    val symbolLayerLibrary = SymbolLayerLibrary()
+
+    val symbolLayers: MutableMap<String, SymbolLayerable> = ConcurrentHashMap()
 }

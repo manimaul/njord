@@ -47,11 +47,12 @@ class TileEncoder(
                         it.geomWKB != null
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
+                            Singletons.symbolLayers[feature.layer]?.addSymbol(feature.props)
                         when (feature.layer) {
-                            "BCNSPP" -> feature.props.addBcnSpp()
-                            "BCNLAT" -> feature.props.addBcnLat()
-                            "BOYLAT" -> feature.props.addBoyLat()
-                            "BOYSPP" -> feature.props.addBoySpp()
+//                            "BCNSPP" -> feature.props.addBcnSpp()
+//                            "BCNLAT" -> feature.props.addBcnLat()
+//                            "BOYLAT" -> feature.props.addBoyLat()
+//                            "BOYSPP" -> feature.props.addBoySpp()
                             "LIGHTS" -> feature.props.addLights()
                         }
                         encoder.addFeature(feature.layer, feature.props, tileGeo)

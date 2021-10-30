@@ -7,7 +7,7 @@ import io.madrona.njord.logger
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
 import io.madrona.njord.model.StyleColor
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 interface Layerable {
@@ -25,14 +25,15 @@ abstract class SymbolLayerable(
     init {
         val thiz = this
         Singletons.ioScope.launch {
+            delay(1000)
             Singletons.symbolLayers[key] = thiz
         }
     }
 
-    fun addSymbol(props: S57Prop) : String? {
+    fun addSymbol(props: S57Prop) {
         val sy = library.symbol(key, props)
         log.debug("finding symbol for layer $key = $sy")
-        return sy
+        props["SY"] = sy
     }
 }
 

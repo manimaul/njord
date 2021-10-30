@@ -21,8 +21,8 @@ class S57SymbolTest {
         val subject = Singletons.symbolLayerLibrary
         assertEquals(setOf("COLOUR", "BCNSHP"), subject.attKeys("BCNCAR"))
         val props: S57Prop = mutableMapOf(
-            "COLOUR" to listOf(2, 6),
-            "BCNSHP" to listOf(3)
+            "COLOUR" to listOf("2", "6"),
+            "BCNSHP" to listOf("3")
         )
         val sy = subject.symbol("BCNCAR", props)
         assertEquals("BCNTOW68", sy)
@@ -32,8 +32,8 @@ class S57SymbolTest {
     fun testBcnCarFallback_NoMatchingColor() {
         val subject = Singletons.symbolLayerLibrary
         val props: S57Prop = mutableMapOf(
-            "COLOUR" to listOf(2, 6, 2, 6, 2, 6),
-            "BCNSHP" to listOf(3)
+            "COLOUR" to listOf("2", "6", "2", "6", "2", "6"),
+            "BCNSHP" to listOf("3")
         )
         val sy = subject.symbol("BCNCAR", props)
         assertEquals("BCNTOW01", sy)
@@ -43,8 +43,8 @@ class S57SymbolTest {
     fun testBcnCarFallback_NoMatching() {
         val subject = Singletons.symbolLayerLibrary
         val props: S57Prop = mutableMapOf(
-            "COLOUR" to listOf(2, 6, 2, 6, 2, 6),
-            "BCNSHP" to listOf(9)
+            "COLOUR" to listOf("2", "6", "2", "6", "2", "6"),
+            "BCNSHP" to listOf("9")
         )
         val sy = subject.symbol("BCNCAR", props)
         assertEquals("BCNGEN03", sy)

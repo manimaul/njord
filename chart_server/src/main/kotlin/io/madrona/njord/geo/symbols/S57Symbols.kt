@@ -13,7 +13,13 @@ inline fun <R : Any> S57Prop?.listFrom(key: String, transform: (Int) -> R?) : Li
 fun S57Prop.intValues(key: String) : List<Int> {
     return (this[key] as? Iterable<*>)?.mapNotNull {
         it?.toString()?.toIntOrNull()
-    } ?: emptyList()
+    } ?: intValue(key)?.let { listOf(it) } ?: emptyList()
+}
+
+fun S57Prop.stringValues(key: String) : List<String> {
+    return (this[key] as? Iterable<*>)?.mapNotNull {
+        it?.toString()
+    } ?: stringValue(key)?.let { listOf(it) } ?: emptyList()
 }
 
 fun Feature.s57Props(): S57Prop {

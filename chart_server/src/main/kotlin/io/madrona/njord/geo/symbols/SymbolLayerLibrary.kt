@@ -36,7 +36,7 @@ class SymbolLayerLibrary(
     private fun S57Prop.matches(symbol: S57Symbol) : Boolean {
         symbol.attributes.forEach { att ->
             att.forEach { (key, values) ->
-                if (intValues(key) != values) {
+                if (stringValues(key) != values) {
                     return false
                 }
             }

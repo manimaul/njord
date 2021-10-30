@@ -61,4 +61,15 @@ class S57SymbolTest {
         val sy = subject.symbol("DAYMAR", props)
         assertEquals("BCNTOW01", sy)
     }
+
+    @Test
+    fun testBoyspp() {
+        val subject = Singletons.symbolLayerLibrary
+        val props: S57Prop = mutableMapOf(
+            "COLOUR" to listOf("3"),
+            "CATSPM" to listOf("8")
+        )
+        val sy = subject.symbol("BOYSPP", props)
+        assertEquals("BOYCAN60", sy)
+    }
 }

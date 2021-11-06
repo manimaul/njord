@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: njord-init-postgis
+  namespace: njord
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: ghreg
+      containers:
+        - name: njord-init-postgis
+          image: 'ghcr.io/manimaul/njord-init-postgis:latest'
+          imagePullPolicy: Always
+          env:
+            - name: PGUSER
+              value: admin
+            - name: PGPASSWORD
+              value: mysecretpassword
+            - name: PGHOST
+              value: njord-postgis-svc.njord.svc.cluster.local
+            - name: PGDATABASE
+              value: s57server
+          command: [ "/postgres_init/postgres_init.sh" ]
+      restartPolicy: Never
+  backoffLimit: 4

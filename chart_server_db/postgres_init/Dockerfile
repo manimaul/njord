@@ -4,8 +4,8 @@ FROM debian:buster-slim
 RUN apt-get update && apt-get install -y postgresql-client
 
 WORKDIR /postgres_init
-#COPY up.sql .
-#COPY postgres_init.sh .
+COPY scripts/up.sql .
+COPY scripts/postgres_init.sh .
 
 # https://www.postgresql.org/docs/current/libpq-envars.html
 ENV PGUSER=admin

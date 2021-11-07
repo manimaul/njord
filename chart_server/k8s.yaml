@@ -53,29 +53,17 @@ spec:
           resources:
             requests:
               cpu: 100m
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    haproxy.org/request-set-header: "l5d-dst-override njord-chart-svc.mxmariner.svc.cluster.local:80"
-    haproxy.org/ssl-redirect: "true" # https://www.haproxy.com/documentation/kubernetes/latest/configuration/ingress/
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  name: njord-mxmarineringress
-  namespace: njord
-spec:
-  rules:
-    - host: s57dev.mxmariner.com
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: njord-chart-svc
-              servicePort: 9000
-  tls:
-    - hosts:
-        - s57dev.mxmariner.com
-      secretName: njord-mxmariner-cert
+          volumeMounts:
+            - name: njord-confic-vol
+              mountPath: /etc/chart_server
+              readOnly: true
+          env:
+            - name: JAVA_OPTS
+              value: "-Dconfig.file=/etc/chart_server/application.conf"
+      volumes:
+        - name: njord-confic-vol
+          configMap:
+            name: njord-config
 ---
 # kubectl -n njord create configmap njord-config --from-file=/Users/williamkamp/source/madrona/njord/chart_server/src/main/resources/application.conf
 apiVersion: v1
@@ -105,3 +93,28 @@ data:
         chartTempData = /tmp/njord/data
     }
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    haproxy.org/server-ssl: "true"
+    haproxy.org/ssl-redirect: "true"
+  name: njord-ingress
+  namespace: njord
+spec:
+  rules:
+    - host: s57dev.mxmariner.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: njord-chart-svc
+                port:
+                  number: 9000
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - s57dev.mxmariner.com
+#      secretName: njord-cert

@@ -43,6 +43,8 @@ spec:
       labels:
         app: njord-chart-svc
     spec:
+      imagePullSecrets:
+        - name: ghreg
       containers:
         - image: ghcr.io/manimaul/njord-chart-server:latest
           imagePullPolicy: Always
@@ -80,7 +82,7 @@ data:
         pgPort=5432
         pgDatabase=s57server
 
-        host = "0.0.0.0"
+        host = "njord-chart-svc.njord.svc.cluster.local"
         port = 9000
 
         externalScheme = "https"
@@ -96,25 +98,25 @@ data:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: njord-ingress
+  namespace: njord
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     haproxy.org/server-ssl: "true"
     haproxy.org/ssl-redirect: "true"
-  name: njord-ingress
-  namespace: njord
 spec:
   rules:
     - host: s57dev.mxmariner.com
       http:
         paths:
-          - backend:
+          - pathType: Prefix
+            path: "/"
+            backend:
               service:
                 name: njord-chart-svc
                 port:
                   number: 9000
-            path: /
-            pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - s57dev.mxmariner.com
+#  tls:
+#    - hosts:
+#        - s57dev.mxmariner.com
 #      secretName: njord-cert

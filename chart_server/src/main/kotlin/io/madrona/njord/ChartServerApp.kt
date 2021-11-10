@@ -9,6 +9,7 @@ import io.ktor.server.netty.*
 import io.ktor.websocket.*
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandlers
+import org.slf4j.event.Level
 import java.time.Duration
 
 
@@ -25,6 +26,9 @@ class ChartServerApp {
                 timeout = Duration.ofSeconds(15)
                 maxFrameSize = Long.MAX_VALUE
                 masking = false
+            }
+            install(CallLogging) {
+                level = Level.INFO
             }
             addHandlers(
                 // curl http://localhost:9000/v1/about | jq

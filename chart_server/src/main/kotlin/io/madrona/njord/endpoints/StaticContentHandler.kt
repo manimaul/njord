@@ -5,11 +5,13 @@ import io.ktor.http.*
 import io.ktor.response.*
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.mimeType
+import io.madrona.njord.logger
 import io.madrona.njord.resourceBytes
 import java.lang.StringBuilder
 import java.net.URLDecoder
 
 class StaticContentHandler : KtorHandler {
+    private val log = logger()
     override val route = "/v1/content/{content...}"
 
     override suspend fun handleGet(call: ApplicationCall) {
@@ -21,8 +23,12 @@ class StaticContentHandler : KtorHandler {
             name.mimeType()?.let {
                 ContentType.parse(it)
             }?.let { contentType ->
-                resourceBytes("/www/$name")?.let { data ->
+                val resName = "www$name"
+                resourceBytes(resName)?.let { data ->
                     call.respondBytes(data, contentType)
+                } ?: run {
+                    log.error("error finding resource '$resName'")
+                    call.respond(HttpStatusCode.InternalServerError)
                 }
             }
         } ?: call.respond(HttpStatusCode.NotFound)

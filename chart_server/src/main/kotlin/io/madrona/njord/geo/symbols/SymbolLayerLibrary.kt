@@ -11,7 +11,7 @@ class SymbolLayerLibrary(
     objectMapper: ObjectMapper = Singletons.yamlMapper
 ) {
 
-    private val objAcronyms: S57ObjAcronyms = objectMapper.readValue<S57ObjAcronyms>(resourceAsString("/paper_symbol_rules.yaml")!!).apply {
+    private val objAcronyms: S57ObjAcronyms = objectMapper.readValue<S57ObjAcronyms>(resourceAsString("paper_symbol_rules.yaml")!!).apply {
         values.forEach { symbols ->
             symbols.sortByDescending {
                 it.attributes.size

@@ -10,7 +10,7 @@ class S57SymbolTest {
 
     @Test
     fun testDeserialize() {
-        val soa = resourceAsString("/paper_symbol_rules.yaml")?.let {
+        val soa = resourceAsString("paper_symbol_rules.yaml")?.let {
             Singletons.yamlMapper.readValue<S57ObjAcronyms>(it)
         }
         assertNotNull(soa)

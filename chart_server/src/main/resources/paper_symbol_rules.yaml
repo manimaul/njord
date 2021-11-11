@@ -1,3 +1,124 @@
+BOYSPP:
+  ## BOYSHP
+  #  - '1' #Conical
+  #  - '2' #Can
+  #  - '3' #Spherical
+  #  - '4' #Pillar
+  #  - '5' #Spar
+  #  - '6' #Barrel
+  #  - '7' #SuperBuoy
+  #  - '8' #IceBuoy
+
+  ## COLOUR
+  # '1'  - white
+  # '2'  - black
+  # '3'  - red
+  # '4'  - green
+  # '5'  - blue
+  # '6'  - yellow
+  # '7'  - grey
+  # '8'  - brown
+  # '9'  - amber
+  # '10' - violet
+  # '11' - orange
+  # '12' - magenta
+  # '13' - pink
+
+  ## OutfallMark
+  - ATT:
+      - CATSPM:
+          - '8' #OutfallMark
+      - COLOUR:
+          - '3' #Red
+    SY: BOYCAN60
+
+  ## OceanDataAcquisitionSystem
+  - ATT:
+      - CATSPM:
+          - '9' #OceanDataAcquisitionSystem
+    SY: BOYSUP01
+
+  - ATT:
+      - CATSPM:
+          - '14' #MooringMark
+      - BOYSHP:
+          - '2' #Can
+    SY: BOYMOR31
+
+  - ATT:
+      - CATSPM:
+          - '14' #NoticeMark
+      - COLOUR:
+          - '6' #Yellow
+    SY: NOTBRD12
+
+  - ATT:
+      - CATSPM:
+          - '15' #LargeAutomaticNavigationalBuoy
+    SY: BOYSUP03
+
+  - ATT:
+      - CATSPM:
+          - '14' #NoticeMark
+    SY: NOTBRD11
+
+  - ATT:
+      - CATSPM:
+          - '44' #RefugeBeacon
+    SY: BCNGEN01
+
+   ########
+
+  # Conical
+  - ATT:
+      - BOYSHP:
+          - '1' #Conical
+    SY: BOYCON01
+  - ATT:
+      - BOYSHP:
+          - '1' #Conical
+      - COLOUR:
+          - '3' #Red
+    SY: BOYCAN60
+
+  # Can
+  - ATT:
+      - BOYSHP:
+          - '2' #Can
+    SY: BOYCAN65
+
+  - ATT:
+      - BOYSHP:
+          - '3' #Spherical
+    SY: BOYSPH01
+
+  - ATT:
+      - BOYSHP:
+          - '4' #Pillar
+    SY: BOYPIL01
+
+  - ATT:
+      - BOYSHP:
+          - '5' #Spar
+    SY: BOYSPR01
+
+  - ATT:
+      - BOYSHP:
+          - '6' #Barrel
+    SY: BOYBAR01
+
+  - ATT:
+      - BOYSHP:
+          - '7' #SuperBuoy
+    SY: BOYSUP01
+
+  - ATT:
+      - BOYSHP:
+          - '8' #IceBuoy
+    SY: BOYSPR01
+
+#BOYSPP: !concat [*vBOYSPP, *vBUOY]
+
 '######':
   - ATT: [ ]
     SY: QUESMRK1
@@ -5896,49 +6017,8 @@ TIDCUR:
   - ATT: [ ]
     SY: TIDCUR03
 
-BOYSPP:
-  - ATT:
-      - CATSPM:
-          - '8' #OutfallMark
-      - COLOUR:
-          - '3' #Red
-    SY: BOYCAN60
 
-  - ATT:
-      - CATSPM:
-          - '9' #OceanDataAcquisitionSystem
-    SY: BOYSUP01
 
-  - ATT:
-      - CATSPM:
-          - '14' #MooringMark
-      - BOYSHP:
-          - '2' #Can
-    SY: BOYMOR31
-
-  - ATT:
-      - CATSPM:
-          - '14' #NoticeMark
-      - COLOUR:
-          - '6' #Yellow
-    SY: NOTBRD12
-
-  - ATT:
-      - CATSPM:
-          - '15' #LargeAutomaticNavigationalBuoy
-      SY: BOYSUP03
-
-  - ATT:
-      - CATSPM:
-          - '14' #NoticeMark
-    SY: NOTBRD11
-
-  - ATT:
-      - CATSPM:
-          - '44' #RefugeBeacon
-    SY: BCNGEN01
-
-#    todo() buoy
 
 TOPMAR:
   - ATT:

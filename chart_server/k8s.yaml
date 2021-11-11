@@ -1,8 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: njord
----
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -23,8 +18,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 9000
-      targetPort: 9000
+      port: 80
+      targetPort: 80
   selector:
     app: njord-chart-svc
   type: ClusterIP
@@ -50,7 +45,7 @@ spec:
           imagePullPolicy: Always
           name: njord-chart-svc
           ports:
-            - containerPort: 9000
+            - containerPort: 80
               name: http
           resources:
             requests:
@@ -82,8 +77,8 @@ data:
         pgPort=5432
         pgDatabase=s57server
 
-        host = "njord-chart-svc.njord.svc.cluster.local"
-        port = 9000
+        host = "0.0.0.0"
+        port = 80
 
         externalScheme = "https"
         externalHostName = "s57dev.mxmariner.com"
@@ -102,21 +97,20 @@ metadata:
   namespace: njord
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    haproxy.org/server-ssl: "true"
     haproxy.org/ssl-redirect: "true"
 spec:
   rules:
     - host: s57dev.mxmariner.com
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
+          - backend:
               service:
                 name: njord-chart-svc
                 port:
-                  number: 9000
-#  tls:
-#    - hosts:
-#        - s57dev.mxmariner.com
-#      secretName: njord-cert
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - s57dev.mxmariner.com
+      secretName: njord-cert

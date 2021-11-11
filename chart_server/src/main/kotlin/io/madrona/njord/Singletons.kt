@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.geo.TileSystem
@@ -29,7 +30,9 @@ object Singletons{
         addModule(kotlinModule())
     }
 
-    val yamlMapper: ObjectMapper = ObjectMapper(YAMLFactory())
+    val yamlMapper: ObjectMapper = ObjectMapper(
+        YAMLFactory()
+    ).registerKotlinModule()
 
     val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 

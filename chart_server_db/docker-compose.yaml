@@ -47,8 +47,8 @@ services:
 
   postgressetup:
     build:
-      context: .
-      dockerfile: postgres_init/Dockerfile
+      context: ./postgres_init
+      dockerfile: Dockerfile
     depends_on:
       - postgres
     networks:

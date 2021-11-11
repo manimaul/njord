@@ -116,7 +116,8 @@ class GeoJsonDao : Dao() {
             setLong(4, chartId)
             setInt(5, zoomRange.first)
             setInt(6, zoomRange.last)
-        }.executeUpdate()
+        }.executeUpdate() //todo: invalid geojson representation error inserting feature
+                          //org.postgresql.util.PSQLException: ERROR: invalid GeoJSON representation
     }
 }
 

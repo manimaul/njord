@@ -28,11 +28,9 @@ spec:
       labels:
         app: njord-postgis-svc
     spec:
-#      imagePullSecrets:
-#        - name: ghreg
       containers:
         - name: njord-postgis
-          image: 'postgis/postgis:13-3.1'
+          image: postgis/postgis:13-3.1
           ports:
             - name: postgres
               containerPort: 5432
@@ -48,24 +46,8 @@ spec:
               value: mysecretpassword
             - name: POSTGRES_DB
               value: s57server
-#            - name: PGDATA
-#              value: /var/lib/postgresql/data/pgdata
       volumes:
         - name: njordvolume
           persistentVolumeClaim:
             claimName: njordvolume
-#      initContainers:
-#        - name: njord-init-postgis
-#          image: 'ghcr.io/manimaul/njord-init-postgis:latest'
-##          imagePullPolicy: Always
-#          env:
-#            - name: PGUSER
-#              value: admin
-#            - name: PGPASSWORD
-#              value: mysecretpassword
-#            - name: PGHOST
-#              value: njord-postgis-svc
-#            - name: PGDATABASE
-#              value: s57server
-#          command: [ "/postgres_init/postgres_init.sh" ]
 ---

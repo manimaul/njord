@@ -1,8 +1,0 @@
-
-See: https://github.com/OpenCPN/OpenCPN/blob/master/data/copyright
-
-Files: theme/opencpn_resources/*
-Copyright: 2000-2001 Sylvain Duclos <sylvain_duclos@yahoo.com>
-           2010 David S. Register <bdbcat@yahoo.com>
-           2010 by Pavel Kalian" <pavel@kalian.cz>
-License: GPL-2.0+

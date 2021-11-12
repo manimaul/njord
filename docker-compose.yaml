@@ -2,6 +2,20 @@
 version: '3.8'
 services:
 
+  s57server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - overlay
+    ports:
+      - "9000:9000"
+    environment:
+      JAVA_OPTS: "-Dcharts.chartTempData=/tmp/njord/data -Dcharts.pgHost=postgres"
+
+    depends_on:
+      - postgres
+
   postgres:
     image: 'postgis/postgis:13-3.1'
     networks:
@@ -21,7 +35,7 @@ services:
 
   postgressetup:
     build:
-      context: ./postgres_init
+      context: ./chart_server_db/postgres_init
       dockerfile: Dockerfile
     depends_on:
       - postgres
@@ -29,7 +43,7 @@ services:
       - overlay
     restart: "no"
     volumes:
-      - ./postgres_init/scripts:/postgres_init
+      - ./chart_server_db/postgres_init/scripts:/postgres_init
     environment:
       PGUSER: admin
       PGPASSWORD: mysecretpassword

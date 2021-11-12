@@ -2,7 +2,7 @@ package io.madrona.njord.db
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
-import io.madrona.njord.logger
+import io.madrona.njord.util.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

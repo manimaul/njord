@@ -1,4 +1,4 @@
-package io.madrona.njord
+package io.madrona.njord.util
 
 fun Any.resourceAsString(name: String) : String? {
     return javaClass.classLoader.getResourceAsStream(name)?.let {

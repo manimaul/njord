@@ -1,6 +1,6 @@
 package io.madrona.njord.geo.symbols
 
-import io.madrona.njord.logger
+import io.madrona.njord.util.logger
 import mil.nga.sf.geojson.Feature
 import mil.nga.sf.geojson.Point
 import mil.nga.sf.geojson.Position

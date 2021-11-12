@@ -1,4 +1,4 @@
-package io.madrona.njord
+package io.madrona.njord.util
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

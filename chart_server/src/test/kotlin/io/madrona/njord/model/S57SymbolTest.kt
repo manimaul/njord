@@ -1,7 +1,7 @@
 package io.madrona.njord.model
 
 import io.madrona.njord.Singletons
-import io.madrona.njord.resourceAsString
+import io.madrona.njord.util.resourceAsString
 import kotlin.test.*
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.geo.symbols.S57Prop

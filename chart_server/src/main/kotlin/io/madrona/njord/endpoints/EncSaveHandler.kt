@@ -8,7 +8,7 @@ import io.ktor.response.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
-import io.madrona.njord.logger
+import io.madrona.njord.util.logger
 import io.madrona.njord.model.EncUpload
 import java.io.File
 import java.util.*

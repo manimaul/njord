@@ -5,8 +5,8 @@ import io.ktor.http.*
 import io.ktor.response.*
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.mimeType
-import io.madrona.njord.logger
-import io.madrona.njord.resourceBytes
+import io.madrona.njord.util.logger
+import io.madrona.njord.util.resourceBytes
 import java.lang.StringBuilder
 import java.net.URLDecoder
 

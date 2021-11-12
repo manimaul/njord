@@ -13,7 +13,7 @@ import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.ext.KtorWebsocket
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
-import io.madrona.njord.logger
+import io.madrona.njord.util.logger
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.FeatureInsert
 import kotlinx.coroutines.*

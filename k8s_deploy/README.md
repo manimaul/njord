@@ -1,16 +1,21 @@
 # Kubernetes Deployment Configs
 
+------------------
+
 ## Chart Server
 
 Build & Publish container image
 ```shell
 ../chart_server/docker-build.sh
+docker push "ghcr.io/manimaul/njord-chart-server:latest"
 ```
 
 Deploy
 ```shell
 kubectl apply -f chart_server.yaml
 ```
+
+------------------
 
 ## PostGIS
 

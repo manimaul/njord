@@ -3,7 +3,7 @@ package io.madrona.njord.geo.symbols
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.S57ObjAcronyms
-import io.madrona.njord.resourceAsString
+import io.madrona.njord.util.resourceAsString
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.model.S57Symbol
 

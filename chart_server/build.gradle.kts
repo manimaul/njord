@@ -10,18 +10,7 @@ application {
     mainClass.set("io.madrona.njord.ChartServerAppKt")
 }
 
-//val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-//val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-//
-//compileKotlin.kotlinOptions {
-//    jvmTarget = "11"
-//}
-//compileTestKotlin.kotlinOptions {
-//    jvmTarget = "11"
-//}
-
 dependencies {
-    implementation(project(":common"))
     implementation(Deps.ktorNetty)
     implementation(Deps.ktorCore)
     implementation(Deps.ktorLocations)

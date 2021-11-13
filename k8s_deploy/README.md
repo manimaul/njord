@@ -6,7 +6,7 @@
 
 Build & Publish container image
 ```shell
-../chart_server/docker-build.sh
+docker build -t "ghcr.io/manimaul/njord-chart-server:latest" .
 docker push "ghcr.io/manimaul/njord-chart-server:latest"
 ```
 

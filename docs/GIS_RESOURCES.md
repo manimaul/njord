@@ -1,4 +1,6 @@
 - [Spatial Reference / EPSG](https://spatialreference.org/ref/epsg/)
+- [S-57 Attribute Catalog](http://www.s-57.com/)
+- [ESRI S-57 Attribute Catalog](https://desktop.arcgis.com/en/arcmap/latest/extensions/maritime-charting/s-57-object-finder.htm)
 - [Gdal API Docs](https://gdal.org/api/index.html#id3)
 - [s52 standard](./s52-standard-ed6.1.1.pdf)
 - [s57 appendix b](./20ApB1.pdf)

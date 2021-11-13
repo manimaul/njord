@@ -18,6 +18,7 @@ dependencies {
     implementation(Deps.ktorHostCommon)
     implementation(Deps.ktorJackson)
     implementation(Deps.jacksonYaml)
+    implementation(Deps.jacksonCsv)
     implementation(Deps.logBack)
     implementation(Deps.gdal)
     implementation(Deps.protoBuf)

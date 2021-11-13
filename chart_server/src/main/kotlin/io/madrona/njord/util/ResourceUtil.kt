@@ -8,6 +8,14 @@ fun Any.resourceAsString(name: String) : String? {
     }
 }
 
+fun Any.resourceAsLines(name: String) : List<String> {
+    return javaClass.classLoader.getResourceAsStream(name)?.let {
+        it.bufferedReader(Charsets.UTF_8).use { reader ->
+            reader.readLines()
+        }
+    } ?: emptyList()
+}
+
 fun Any.resourceBytes(name: String) : ByteArray? {
     return javaClass.classLoader.getResourceAsStream(name)?.use { ips ->
         val byteList = mutableListOf<Byte>()

@@ -4,6 +4,7 @@ import com.codahale.metrics.ConsoleReporter
 import com.codahale.metrics.MetricRegistry
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
@@ -29,6 +30,8 @@ object Singletons{
     val objectMapper: JsonMapper = jsonMapper {
         addModule(kotlinModule())
     }
+
+    val csvMapper: CsvMapper = CsvMapper()
 
     val yamlMapper: ObjectMapper = ObjectMapper(
         YAMLFactory()

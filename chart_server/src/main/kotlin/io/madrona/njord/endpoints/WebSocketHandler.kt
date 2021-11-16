@@ -1,6 +1,5 @@
 package io.madrona.njord.endpoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
 import io.ktor.websocket.*
@@ -24,7 +23,6 @@ class ChartWebSocketHandler(
     config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
-    private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val scope: CoroutineScope = Singletons.ioScope
 ) : KtorWebsocket {
     private val log = logger()

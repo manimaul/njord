@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.geo.TileSystem
+import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.layers.SymbolLayerable
 import io.madrona.njord.model.ColorLibrary
@@ -73,4 +74,6 @@ object Singletons{
     val symbolLayerLibrary = SymbolLayerLibrary()
 
     val symbolLayers: MutableMap<String, SymbolLayerable> = ConcurrentHashMap()
+
+    val s57ObjectLibrary = S57ObjectLibrary()
 }

@@ -1,20 +1,37 @@
 package io.madrona.njord.endpoints
 
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.response.*
+import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
+import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.model.About
 import org.gdal.gdal.gdal
+import java.lang.StringBuilder
 
-class AboutHandler : KtorHandler {
-    override val route = "/v1/about"
+class AboutHandler(
+    private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary
+) : KtorHandler {
+    override val route = "/v1/about/{path...}"
 
     override suspend fun handleGet(call: ApplicationCall) {
-        call.respond(
-            About(
-                version = "1.0",
-                gdalVersion = gdal.VersionInfo() ?: "NONE"
+        val aboutPath = call.parameters.getAll("path")?.fold(StringBuilder()) { acc, s ->
+            acc.append('/').append(s)
+        }.toString()
+
+        when (aboutPath) {
+            "/version" -> call.respond(
+                About(
+                    version = "1.0",
+                    gdalVersion = gdal.VersionInfo() ?: "NONE"
+                )
             )
-        )
+            "/s57objects" -> call.respond(s57ObjectLibrary.objects)
+            "/s57attributes" -> call.respond(s57ObjectLibrary.attributes)
+            "/expectedInput" -> call.respond(s57ObjectLibrary.expectedInput)
+            else -> call.respond(HttpStatusCode.NotFound)
+        }
+
     }
 }

@@ -31,7 +31,9 @@ class ChartServerApp {
                 level = Level.INFO
             }
             addHandlers(
-                // curl http://localhost:9000/v1/about | jq
+                // curl http://localhost:9000/v1/about/version | jq
+                // curl http://localhost:9000/v1/about/s57objects | jq
+                // curl http://localhost:9000/v1/about/s57attributes | jq
                 AboutHandler(),
 
                 // curl http://localhost:9000/v1/tile_json | jq

@@ -15,7 +15,7 @@ fun String.extToken() = lastIndexOf('.')
         .takeIf {
             it in 1 until length - 1
         }?.let {
-            substring(it + 1).toLowerCase()
+            substring(it + 1).lowercase()
         }
 
 fun String.intRange() : IntRange {

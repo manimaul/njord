@@ -18,12 +18,12 @@ class StyleHandler(
 
     override suspend fun handleGet(call: ApplicationCall) {
         letFromStrings(call.parameters["color"], call.parameters["depth"]) { color: StyleColor, depth: Depth ->
-            val name = "${color.name.toLowerCase()}-${depth.name.toLowerCase()}"
+            val name = "${color.name.lowercase()}-${depth.name.lowercase()}"
             call.respond(
                 Style(
                     name = name,
                     glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
-                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/rastersymbols-${color.name.toLowerCase()}",
+                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/rastersymbols-${color.name.lowercase()}",
                     sources = mapOf(
                         Source.SENC to Source(
                             type = SourceType.VECTOR,

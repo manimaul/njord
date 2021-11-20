@@ -1,16 +1,34 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import io.madrona.njord.build.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin(module="jvm")
+    kotlin(module = "jvm") version "1.5.30"
+    kotlin(module = "kapt") version "1.5.30"
 }
+
+repositories {
+    mavenCentral()
+}
+
 
 application {
     mainClass.set("io.madrona.njord.ChartServerAppKt")
 }
 
+//https://kotlinlang.org/docs/reference/using-gradle.html#compiler-options
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.apiVersion = "1.5"
+}
+
 dependencies {
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+
     implementation(Deps.ktorNetty)
     implementation(Deps.ktorCore)
     implementation(Deps.ktorLocations)

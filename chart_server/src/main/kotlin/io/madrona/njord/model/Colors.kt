@@ -14,11 +14,6 @@ class ColorLibrary(
     val colorMap: Colors by lazy {
         objectMapper.readValue(javaClass.getResourceAsStream("/colors.json"), Colors::class.java)
     }
-
-    companion object {
-        const val black = "#000"
-        const val white = "#FFF"
-    }
 }
 
 

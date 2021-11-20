@@ -3,15 +3,13 @@ version: '3.8'
 services:
 
   s57server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: 'ghcr.io/manimaul/njord-chart-server:latest'
     networks:
       - overlay
     ports:
       - "9000:9000"
     environment:
-      JAVA_OPTS: "-Dcharts.chartTempData=/tmp/njord/data -Dcharts.pgHost=postgres"
+      JAVA_OPTS: "-Dcharts.chartTempData=/tmp/njord/data -Dcharts.pgHost=postgres -Dcharts.webStaticContent=/opt/chart_server/public"
 
     depends_on:
       - postgres

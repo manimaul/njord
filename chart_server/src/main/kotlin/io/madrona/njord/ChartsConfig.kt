@@ -22,6 +22,12 @@ class ChartsConfig(
             it.mkdirs()
         }
     }
+
+    val webStaticContent: File = File(config.getString("webStaticContent")).also {
+        if (!it.exists() || !it.canRead()) {
+            throw IllegalStateException("webStaticContent ${it.absolutePath} does not exist or is not readable")
+        }
+    }
     val externalBaseUrl = "${externalScheme}://${externalHostName}:${externalPort}"
 
     val pgUser: String = config.getString("pgUser")

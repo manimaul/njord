@@ -3,9 +3,12 @@ package io.madrona.njord.ext
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
+import io.madrona.njord.Singletons
+import java.io.File
 
 interface KtorBaseHandler {
     val route: String
@@ -46,6 +49,11 @@ fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
                     handler.handle(this)
                 }
             }
+        }
+        static("v1/content") {
+            staticRootFolder = Singletons.config.webStaticContent
+            files(".")
+            default("index.html")
         }
     }
 }

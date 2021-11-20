@@ -88,6 +88,8 @@ data:
         chartMaxZoom = 30
 
         chartTempData = /tmp/njord/data
+
+        webStaticContent=/opt/chart_server/public
     }
 ---
 apiVersion: networking.k8s.io/v1

@@ -1,3 +1,4 @@
+import io.madrona.njord.build.K8S
 
 task("version") {
     doLast {
@@ -21,7 +22,7 @@ task<Exec>("runPostgis") {
  */
 task<Exec>("buildImage") {
     dependsOn(":chart_server:installDist")
-    commandLine("docker", "build", "-t", "ghcr.io/manimaul/njord-chart-server:${project.version}", ".")
+    commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
 /**
@@ -30,5 +31,17 @@ task<Exec>("buildImage") {
  */
 task<Exec>("publishImage") {
     dependsOn("buildImage")
-    commandLine("docker", "push", "ghcr.io/manimaul/njord-chart-server:${project.version}")
+    commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
+}
+
+/**
+ * Deploy to Kubernetes
+ */
+task<Exec>("deploy") {
+    val yaml = K8S.chartServerDeployment("${project.version}")
+    commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
+}
+
+tasks.register<GradleBuild>("buildPublishDeploy") {
+    tasks = listOf("buildImage", "publishImage", "deploy")
 }

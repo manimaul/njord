@@ -42,6 +42,10 @@ task<Exec>("deploy") {
     commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
 }
 
+/**
+ * Builds container image, deploys image to registry and deploys changes to Kubernetes
+ * eg `./gradlew :buildPublishDeploy`
+ */
 tasks.register<GradleBuild>("buildPublishDeploy") {
     tasks = listOf("buildImage", "publishImage", "deploy")
 }

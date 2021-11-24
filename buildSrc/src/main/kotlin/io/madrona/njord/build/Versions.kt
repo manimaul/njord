@@ -1,6 +1,5 @@
 package io.madrona.njord.build
 
-const val vialVersion = "2.0.3-SNAPSHOT"
 const val ktorVersion = "1.6.3"
 const val logbackVersion = "1.2.3"
 const val hamcrestVersion="1.3"
@@ -9,7 +8,6 @@ const val dropWizardVersion="4.2.4"
 const val jacksonVersion="2.13.0"
 
 object Deps {
-    const val vial = "com.willkamp:vial-server:$vialVersion"
     const val gdal = "org.gdal:gdal:3.3.0"
     const val jtsCore = "org.locationtech.jts:jts-core:1.18.2"
     const val protoBuf = "com.google.protobuf:protobuf-java:3.18.1"

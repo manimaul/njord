@@ -38,7 +38,7 @@ task<Exec>("publishImage") {
  * Deploy to Kubernetes
  */
 task<Exec>("deploy") {
-    val yaml = K8S.chartServerDeployment("${project.version}")
+    val yaml = K8S.chartServerDeployment(rootProject.projectDir,"${project.version}")
     commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
 }
 

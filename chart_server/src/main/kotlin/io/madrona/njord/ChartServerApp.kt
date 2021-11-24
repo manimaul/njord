@@ -30,6 +30,10 @@ class ChartServerApp {
             install(CallLogging) {
                 level = Level.INFO
             }
+            install(CORS) {
+                //todo:(WK) make this configurable
+                anyHost()
+            }
             addHandlers(
                 // curl http://localhost:9000/v1/about/version | jq
                 // curl http://localhost:9000/v1/about/s57objects | jq

@@ -1,3 +1,6 @@
+package io.madrona.njord.components
+
+import io.madrona.njord.Map
 import kotlinext.js.require
 import kotlinx.css.height
 import kotlinx.css.pct
@@ -27,7 +30,7 @@ class MapLibre : RComponent<AppProps, AppState>() {
 
     override fun componentDidMount() {
         map = Map(
-           options = json(
+            options = json(
                 "container" to mapContainer.current,
                 "style" to props.style,
                 "center" to arrayOf(props.lng, props.lat),
@@ -53,7 +56,7 @@ class MapLibre : RComponent<AppProps, AppState>() {
  * https://maplibre.org/maplibre-gl-js-docs/api/map/
  */
 fun RBuilder.mapLibre(
-    style: String = "http://localhost:9000/v1/style/day/meters",
+    style: String = "/v1/style/day/meters",
     lng: Float = -122.44f,
     lat: Float = 47.257f,
     zoom: Float = 11f,

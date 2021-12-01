@@ -1,25 +1,18 @@
-import kotlinx.browser.document
-import react.dom.render
-import react.dom.*
+package io.madrona.njord.components
+
 import kotlinx.css.*
+import react.Props
+import react.dom.h4
+import react.fc
 import styled.css
-import styled.injectGlobal
 import styled.styledDiv
 
-fun main() {
 
-    //https://ktor.io/docs/css-dsl.html#use_css
-    val styles = CssBuilder(allowClasses = false).apply {
-        body {
+val Chart = fc<Props> {
+    styledDiv {
+        css {
             height = 100.vh
-            margin(0.px)
         }
-    }
-
-    injectGlobal(styles)
-
-
-    render(document.getElementById("root")) {
         styledDiv {
             css {
                 height = 100.vh
@@ -40,15 +33,14 @@ fun main() {
                 }
                 mapLibre()
             }
-//            styledDiv {
-//                css {
-//                    flex(0.0, 1.0, FlexBasis.auto)
-//                }
-//                h4 {
-//                    +"Footer"
-//                }
-//            }
+            styledDiv {
+                css {
+                    flex(0.0, 1.0, FlexBasis.auto)
+                }
+                h4 {
+                    +"Footer"
+                }
+            }
         }
     }
 }
-

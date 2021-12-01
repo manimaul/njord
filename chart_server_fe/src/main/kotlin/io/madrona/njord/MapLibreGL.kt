@@ -1,6 +1,8 @@
 @file:JsModule("maplibre-gl")
 @file:JsNonModule
 
+package io.madrona.njord
+
 import kotlin.js.Json
 
 ////https://github.com/visgl/react-map-gl/tree/6.1-release/examples

@@ -2,6 +2,7 @@ package io.madrona.njord
 
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.jackson.*
 import io.ktor.server.engine.*
@@ -30,10 +31,10 @@ class ChartServerApp {
             install(CallLogging) {
                 level = Level.INFO
             }
-            install(CORS) {
-                //todo:(WK) make this configurable
-                anyHost()
-            }
+//            install(CORS) {
+//                //todo:(WK) make this configurable
+//                anyHost()
+//            }
             addHandlers(
                 // curl http://localhost:9000/v1/about/version | jq
                 // curl http://localhost:9000/v1/about/s57objects | jq
@@ -68,7 +69,10 @@ class ChartServerApp {
                 // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.json | jq
                 // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.png
                 // http://localhost:9000/v1/content/upload.html
-                //// Static content
+                StaticContentHandler(),
+
+                // http://localhost:9000/v1/app/
+                //// Static content (KtorExt.addHandlers)
             )
         }.start(wait = true)
     }

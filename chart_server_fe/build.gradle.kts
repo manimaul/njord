@@ -12,6 +12,14 @@ kotlin {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
+                outputFileName = "njord.js"
+            }
+            val envTargetWebpackArgs = listOf("--env", "njordVersion='${project.version}'")
+            webpackTask {
+                args.plusAssign(envTargetWebpackArgs)
+                webpackConfigApplier {
+                    export = false // stops default export of config object in Webpack code
+                }
             }
         }
     }

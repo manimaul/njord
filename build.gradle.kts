@@ -43,9 +43,16 @@ task<Exec>("deploy") {
 }
 
 /**
+ * Cycle K8S Pods
+ */
+task<Exec>("cyclePods") {
+    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc")
+}
+
+/**
  * Builds container image, deploys image to registry and deploys changes to Kubernetes
  * eg `./gradlew :buildPublishDeploy`
  */
 tasks.register<GradleBuild>("buildPublishDeploy") {
-    tasks = listOf("buildImage", "publishImage", "deploy")
+    tasks = listOf("buildImage", "publishImage", "deploy", "cyclePods")
 }

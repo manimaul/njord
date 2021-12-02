@@ -50,8 +50,6 @@ class MapLibre : RComponent<AppProps, AppState>() {
     }
 }
 
-
-
 /**
  * https://maplibre.org/maplibre-gl-js-docs/api/map/
  */

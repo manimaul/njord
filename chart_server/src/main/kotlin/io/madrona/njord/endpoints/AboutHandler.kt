@@ -3,10 +3,10 @@ package io.madrona.njord.endpoints
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
+import io.madrona.njord.AboutJson
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
-import io.madrona.njord.model.About
 import org.gdal.gdal.gdal
 import java.lang.StringBuilder
 
@@ -22,7 +22,7 @@ class AboutHandler(
 
         when (aboutPath) {
             "/version" -> call.respond(
-                About(
+                AboutJson(
                     version = "1.0",
                     gdalVersion = gdal.VersionInfo() ?: "NONE"
                 )

@@ -2,13 +2,14 @@ package io.madrona.njord.components
 
 import react.Props
 import react.createElement
+import react.dom.*
 import react.fc
 import react.router.Route
 import react.router.Routes
-import react.router.dom.BrowserRouter
 
 val App = fc<Props> {
-    BrowserRouter {
+    div {
+        NavBar()
         Routes {
             Route {
                 attrs.index = true

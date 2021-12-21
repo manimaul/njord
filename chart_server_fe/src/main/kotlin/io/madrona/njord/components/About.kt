@@ -5,6 +5,8 @@ import kotlinx.browser.window
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.css.paddingTop
+import kotlinx.css.px
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import react.Props
@@ -12,15 +14,15 @@ import react.dom.*
 import react.fc
 import react.useEffectOnce
 import react.useState
+import styled.css
+import styled.styledDiv
 
-//@OptIn(ExperimentalSerializationApi::class)
 suspend fun fetchAbout(): AboutJson {
     val response = window
         .fetch("/v1/about/version")
         .await()
         .text()
         .await()
-
     return Json.decodeFromString(response)
 }
 
@@ -33,15 +35,20 @@ val About = fc<Props> {
             aboutJson = fetchAbout()
         }
     }
-    div {
-        h1 {
-            +"Njord S57 Chart Server"
-        }
-        h6 {
-            +"Njord ${js("NJORD_VERSION")}"
-        }
-        h6 {
-            +"Gdal ${aboutJson?.gdalVersion ?: "..."}"
+    div(classes = "container") {
+        styledDiv {
+            css {
+                paddingTop = 20.px
+            }
+            h1 {
+                +"Njord S57 Chart Server"
+            }
+            h6 {
+                +"Njord ${js("NJORD_VERSION")}"
+            }
+            h6 {
+                +"Gdal ${aboutJson?.gdalVersion ?: "..."}"
+            }
         }
     }
 }

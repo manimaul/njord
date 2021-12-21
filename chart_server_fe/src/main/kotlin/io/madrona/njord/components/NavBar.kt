@@ -1,5 +1,6 @@
 package io.madrona.njord.components
 
+import io.madrona.njord.styles.AppRoutes
 import kotlinx.html.ButtonType
 import react.Props
 import react.dom.*
@@ -13,7 +14,7 @@ val NavBar = fc<Props> {
                 + "Njord"
                 attrs.also {
                     it.className = "navbar-brand"
-                    it.to = "/v1/app"
+                    it.to = AppRoutes.home
                 }
             }
             button(classes = "navbar-toggler", type = ButtonType.button) {
@@ -24,12 +25,23 @@ val NavBar = fc<Props> {
             }
             div(classes = "collapse navbar-collapse") {
                 setProp("id", "navbarNavAltMarkup")
-                div(classes = "navbar-nav") {
-                    Link {
-                        + "About"
-                        attrs.also {
-                            it.className = "navbar-text"
-                            it.to = "/v1/app/about"
+                ul(classes = "navbar-nav") {
+                    li(classes = "nav-item") {
+                        Link {
+                            + "Control Panel"
+                            attrs.also {
+                                it.className = "nav-link"
+                                it.to = AppRoutes.control
+                            }
+                        }
+                    }
+                    li(classes = "nav-item") {
+                        Link {
+                            + "About"
+                            attrs.also {
+                                it.className = "nav-link"
+                                it.to = AppRoutes.about
+                            }
                         }
                     }
                 }

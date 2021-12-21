@@ -8,6 +8,10 @@ import react.router.dom.BrowserRouter
 import styled.injectGlobal
 
 fun main() {
+    kotlinext.js.require("bootstrap/dist/css/bootstrap.min.css")
+    kotlinext.js.require("bootstrap/dist/js/bootstrap.min.js")
+    kotlinext.js.require("jquery/dist/jquery.js")
+
     //https://ktor.io/docs/css-dsl.html#use_css
     injectGlobal(
         CssBuilder(allowClasses = false).apply {
@@ -20,7 +24,7 @@ fun main() {
 
     render(document.getElementById("root")!!) {
         BrowserRouter {
-            App()
+            App {}
         }
     }
 }

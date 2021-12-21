@@ -6,7 +6,7 @@ end is written in Kotlin. However, the front end is transpiled to JS so that it 
 
 ### Start the FE
 ```shell
-./gradlew :chart_server_fe:browserWebpack
+./gradlew :chart_server_fe:browserDevelopmentWebpack
 ```
 Note: `./gradlew :chart_server_fe:browserDevelopmentRun --continuous` is currently NOT supported
 

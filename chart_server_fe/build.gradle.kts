@@ -26,7 +26,7 @@ kotlin {
     }
 }
 
-val kotlinWrappersVersion = "0.0.1-pre.274-kotlin-1.6.0"
+val kotlinWrappersVersion = "0.0.1-pre.275-kotlin-1.6.0"
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
@@ -42,11 +42,12 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-table")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-mui")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-mui-icons")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
 
+    //bootstrap
+    implementation(npm("bootstrap", "5.1.3"))
+    implementation(npm("@popperjs/core", "2.11.0"))
+    implementation(npm("jquery", "3.6.0"))
+
+    //maplibre
     implementation(npm("maplibre-gl", "1.15.2"))
-    implementation(npm("@emotion/react", "11.7.0"))
-    implementation(npm("@emotion/styled", "11.6.0"))
 }

@@ -24,7 +24,6 @@ enum class ControlTab {
     }
 }
 
-
 val Control = fc<Props> {
     val tab = ControlTab.getSelected(useLocation())
     styledDiv {
@@ -52,13 +51,9 @@ val Control = fc<Props> {
                 css {
                     paddingTop = 10.px
                 }
-                when(tab) {
-                    ControlTab.Charts ->  h2 {
-                        + "charts tab"
-                    }
-                    ControlTab.Symbols -> h2 {
-                        + "symbols tab"
-                    }
+                when (tab) {
+                    ControlTab.Charts -> ControlCharts {}
+                    ControlTab.Symbols -> ControlSymbols {}
                 }
             }
         }

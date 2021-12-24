@@ -2,6 +2,7 @@ package io.madrona.njord.db
 
 import com.codahale.metrics.Timer
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.madrona.njord.ChartItem
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.Chart
 import io.madrona.njord.model.ChartFeature
@@ -148,6 +149,28 @@ class ChartDao(
             setLong(1, id)
         }
         stmt.executeQuery().chart(findLayers(id, conn))
+    }
+
+    fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
+        val stmt = conn.prepareStatement(
+            """
+            SELECT
+                id, name
+            FROM charts;
+            """.trimIndent()
+        )
+        stmt.executeQuery().let {
+            val result = mutableListOf<ChartItem>()
+            while (it.next()) {
+                result.add(
+                    ChartItem(
+                        id = it.getLong(1),
+                        name = it.getString(2)
+                    )
+                )
+            }
+            result
+        }
     }
 
     fun insertAsync(chartInsert: ChartInsert): Deferred<Chart?> = sqlOpAsync { conn ->

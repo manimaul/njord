@@ -68,6 +68,9 @@ class ChartServerApp {
                 // curl -v "http://localhost:9000/v1/tile/0/0/0"
                 TileHandler(),
 
+                // http://localhost:9000/v1/icon/day/ACHARE02.png
+                IconHandler(),
+
                 // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"
                 // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.json | jq
                 // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.png

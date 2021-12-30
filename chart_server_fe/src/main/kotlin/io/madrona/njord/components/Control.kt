@@ -13,7 +13,8 @@ import styled.styledDiv
 
 enum class ControlTab {
     Charts,
-    Symbols;
+    Symbols,
+    SymbolSprites;
 
     companion object {
         fun getSelected(location: history.Location): ControlTab {
@@ -54,6 +55,7 @@ val Control = fc<Props> {
                 when (tab) {
                     ControlTab.Charts -> ControlCharts {}
                     ControlTab.Symbols -> ControlSymbols {}
+                    ControlTab.SymbolSprites -> ControlSymbolSprites {}
                 }
             }
         }

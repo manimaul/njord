@@ -3,6 +3,7 @@ package io.madrona.njord.endpoints
 import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
 import io.ktor.websocket.*
+import io.madrona.njord.ext.letTwo
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
@@ -10,7 +11,6 @@ import io.madrona.njord.db.GeoJsonDao
 import io.madrona.njord.db.InsertError
 import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.ext.KtorWebsocket
-import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
 import io.madrona.njord.util.logger
 import io.madrona.njord.model.EncUpload

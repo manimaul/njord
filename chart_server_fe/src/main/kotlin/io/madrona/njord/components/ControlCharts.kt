@@ -22,7 +22,7 @@ suspend fun fetchCharts(): List<ChartItem> {
 }
 
 val ControlCharts = fc<Props> {
-    var chartList: List<ChartItem> by useState(emptyList())
+    var chartList: List<ChartItem>? by useState(null)
     useEffectOnce {
         mainScope.launch {
             chartList = fetchCharts()
@@ -33,11 +33,11 @@ val ControlCharts = fc<Props> {
             +"Installed Charts"
         }
         ol {
-            chartList.forEach {
+            chartList?.forEach {
                 li {
                     +it.name
                 }
-            }
+            } ?: Loading {}
         }
     }
 }

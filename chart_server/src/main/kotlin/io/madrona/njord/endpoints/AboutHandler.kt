@@ -6,6 +6,7 @@ import io.ktor.response.*
 import io.madrona.njord.AboutJson
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
+import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import org.gdal.gdal.gdal
 import java.lang.StringBuilder
@@ -27,9 +28,9 @@ class AboutHandler(
                     gdalVersion = gdal.VersionInfo() ?: "NONE"
                 )
             )
-            "/s57objects" -> call.respond(s57ObjectLibrary.objects)
-            "/s57attributes" -> call.respond(s57ObjectLibrary.attributes)
-            "/expectedInput" -> call.respond(s57ObjectLibrary.expectedInput)
+            "/s57objects" -> call.respondJson(s57ObjectLibrary.objects)
+            "/s57attributes" -> call.respondJson(s57ObjectLibrary.attributes)
+            "/expectedInput" -> call.respondJson(s57ObjectLibrary.expectedInput)
             else -> call.respond(HttpStatusCode.NotFound)
         }
 

@@ -1,9 +1,11 @@
 package io.madrona.njord.geo.symbols
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.MappingIterator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import io.madrona.njord.S57Attribute
+import io.madrona.njord.S57ExpectedInput
+import io.madrona.njord.S57Object
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.resourceAsString
 
@@ -117,100 +119,4 @@ class S57ObjectLibrary(
             }
         } ?: emptyList()
     }
-
-
 }
-
-
-data class S57Object(
-
-    /**
-     * Unique code for the object.
-     */
-    @JsonProperty("Code") val code: Int,
-
-    /**
-     * Human-readable description of the object.
-     */
-    @JsonProperty("ObjectClass") val objectClass: String,
-
-    /**
-     * Six character acronym key for the object.
-     */
-    @JsonProperty("Acronym") val acronym: String,
-
-    /**
-     * Attributes in this subset define the individual characteristics of the object.
-     */
-    @JsonProperty("Attribute_A") val attributeA: List<String>,
-
-    /**
-     * Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an
-     * information system.
-     */
-    @JsonProperty("Attribute_B") val attributeB: List<String>,
-
-    /**
-     * Attributes in this subset provide administrative information about the object and data describing it.
-     */
-    @JsonProperty("Attribute_C") val attributeC: List<String>,
-
-
-    /**
-     * todo: (what do these mean?) G= M= C= $= <empty>=
-     */
-    @JsonProperty("Class") val cls: String,
-
-    /**
-     * The geometric primitives allowed for the object are P=point L=line A=area N=none
-     */
-    @JsonProperty("Primitives") val primitives: List<String>
-)
-
-data class S57Attribute(
-    /**
-     * Unique code for the attribute.
-     */
-    @JsonProperty("Code") val code: Int,
-
-    /**
-     * Human-readable description of the attribute.
-     */
-    @JsonProperty("Attribute") val attribute: String,
-
-    /**
-     * Six character acronym key for the attribute.
-     */
-    @JsonProperty("Acronym") val acronym: String,
-
-    /**
-     * todo: (what do these mean?) A= E= F= S= L= I= N/A=
-     */
-    @JsonProperty("Attributetype") val attributeType: String,
-
-    /**
-     * todo: (what do these mean?) F= $= N= S= ?=
-     */
-    @JsonProperty("Class") val cls: String,
-)
-
-data class S57ExpectedInput(
-    /**
-     * The corresponding [S57Attribute.code]
-     */
-    @JsonProperty("Code") val code: Int,
-
-    /**
-     * Value in the [S57Object]'s [S57Attribute]
-     * eg A BOYSPP feature with an attribute: CATSPM: ["27"]
-     * CATSPM has id 66 so the [S57ExpectedInput] with Code: 66 and ID: 27 has the [S57ExpectedInput.meaning]: "general warning mark"
-    },
-     */
-    @JsonProperty("ID") val id: Int,
-
-    /**
-     * Human readable description
-     */
-    @JsonProperty("Meaning") val meaning: String,
-
-)

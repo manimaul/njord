@@ -19,6 +19,8 @@ object Deps {
     const val ktorNetty = "io.ktor:ktor-server-netty:$ktorVersion"
     const val logBack = "ch.qos.logback:logback-classic:$logbackVersion"
     const val ktorJackson = "io.ktor:ktor-jackson:$ktorVersion"
+    const val ktorJson = "io.ktor:ktor-serialization:$ktorVersion"
+
     const val jacksonYaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
     const val jacksonCsv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVersion"
     const val postgres = "org.postgresql:postgresql:42.2.23.jre7"

@@ -2,7 +2,6 @@ package io.madrona.njord
 
 import io.ktor.application.*
 import io.ktor.features.*
-import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.jackson.*
 import io.ktor.server.engine.*

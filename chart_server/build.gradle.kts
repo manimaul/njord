@@ -6,6 +6,7 @@ plugins {
     application
     kotlin(module = "jvm") version "1.6.0"
     kotlin(module = "kapt") version "1.6.0"
+    kotlin("plugin.serialization") version "1.6.0"
 }
 
 repositories {
@@ -36,6 +37,7 @@ dependencies {
     implementation(Deps.ktorWebsockets)
     implementation(Deps.ktorHostCommon)
     implementation(Deps.ktorJackson)
+    implementation(Deps.ktorJson)
     implementation(Deps.jacksonYaml)
     implementation(Deps.jacksonCsv)
     implementation(Deps.logBack)

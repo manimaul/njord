@@ -41,13 +41,16 @@ val About = fc<Props> {
                 paddingTop = 20.px
             }
             h1 {
-                +"Njord S57 Chart Server"
+                +"Njord"
+            }
+            h3 {
+                +"Marine Electronic Navigational Chart (ENC) Server"
             }
             h6 {
-                +"Njord ${js("NJORD_VERSION")}"
+                +"Njord version = ${js("NJORD_VERSION")}"
             }
             h6 {
-                +"Gdal ${aboutJson?.gdalVersion ?: "..."}"
+                +"Gdal version = ${aboutJson?.gdalVersion ?: "..."}"
             }
         }
     }

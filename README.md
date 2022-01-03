@@ -1,4 +1,12 @@
-# Njord - S57 Chart Server
+# Njord 
+### Marine Electronic Navigational Chart (ENC) Server
+
+Njord consumes S-57 IHO transfer standard for digital hydrographic data. S-57 format chart data is published by 
+hydrographic offices such as NOAA. https://www.charts.noaa.gov/ENCs/ENCs.shtml 
+
+Njord displays ENC charts but does **NOT** strictly follow the IHO S-52 specifications for chart content and display.
+
+S-52 display and S-57 data standards can be found here: https://iho.int/en/standards-and-specifications
 
 Demo / Staging Deployment: https://s57dev.mxmariner.com/v1/app
 

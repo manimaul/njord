@@ -61,6 +61,9 @@ val ControlSymbols = fc<Props> {
                 h2 {
                     +"S57 Objects"
                 }
+                pathToA("/v1/about/s57objects")
+                br { }
+                br { }
                 objects?.let { objs ->
                     dropdown(
                         items = objs.values.map {
@@ -92,6 +95,11 @@ val ControlSymbols = fc<Props> {
                 h2 {
                     +"S57 Attributes"
                 }
+                pathToA("/v1/about/s57attributes")
+                br { }
+                pathToA("/v1/about/expectedInput")
+                br { }
+                br { }
                 attributes?.let {
                     Loading {}
                 }

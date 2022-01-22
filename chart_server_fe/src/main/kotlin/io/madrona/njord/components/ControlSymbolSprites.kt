@@ -2,6 +2,7 @@ package io.madrona.njord.components
 
 import io.madrona.njord.IconInfo
 import io.madrona.njord.Theme
+import io.madrona.njord.pathToFullUrl
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
@@ -15,9 +16,9 @@ import styled.styledImg
 
 typealias IconData = Map<String, IconInfo>
 
-fun spriteJsonUrl(theme: Theme) = "${window.location.protocol}//${window.location.host}/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.json"
+fun spriteJsonUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.json".pathToFullUrl()
 
-fun spritePngUrl(theme: Theme) = "${window.location.protocol}//${window.location.host}/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.png"
+fun spritePngUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.png".pathToFullUrl()
 
 suspend fun fetchThemeIcons(theme: Theme): IconData {
     val response = window

@@ -41,16 +41,19 @@ val About = fc<Props> {
                 paddingTop = 20.px
             }
             h1 {
-                +"Njord"
+                +"Njord Marine"
             }
             h3 {
-                +"Marine Electronic Navigational Chart (ENC) Server"
+                +"Electronic Navigational Chart (ENC) Server"
             }
             h6 {
                 +"Njord version = ${js("NJORD_VERSION")}"
             }
             h6 {
                 +"Gdal version = ${aboutJson?.gdalVersion ?: "..."}"
+            }
+            a(href = "https://github.com/manimaul/njord", target = "_blank") {
+                +"https://github.com/manimaul/njord"
             }
         }
     }

@@ -30,6 +30,8 @@ abstract class SymbolLayerable(
         }
     }
 
+    override val key = javaClass.simpleName.uppercase()
+
     fun addSymbol(props: S57Prop) {
         val sy = library.symbol(key, props)
         log.debug("finding symbol for layer $key = $sy")

@@ -16,9 +16,9 @@ import styled.styledImg
 
 typealias IconData = Map<String, IconInfo>
 
-fun spriteJsonUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.json".pathToFullUrl()
+fun spriteJsonUrl(theme: Theme) = "/v1/content/sprites/${theme.name.lowercase()}_sprites.json".pathToFullUrl()
 
-fun spritePngUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.png".pathToFullUrl()
+fun spritePngUrl(theme: Theme) = "/v1/content/sprites/${theme.name.lowercase()}_sprites.png".pathToFullUrl()
 
 suspend fun fetchThemeIcons(theme: Theme): IconData {
     val response = window
@@ -31,14 +31,13 @@ suspend fun fetchThemeIcons(theme: Theme): IconData {
 
 val ControlSprites = fc<Props> {
     var themeData: Map<Theme, IconData>? by useState(null)
+    val theme = Theme.Day
     useEffectOnce {
         mainScope.launch {
-            themeData = Theme.values().map {
-                it to fetchThemeIcons(it)
-            }.toMap()
+            themeData = mapOf(theme to fetchThemeIcons(theme))
         }
     }
-    val theme = Theme.Day
+
     div {
         h2 {
             +"Chart Symbol Sprites - ${theme.name}"
@@ -65,14 +64,16 @@ val ControlSprites = fc<Props> {
                                 div(classes = "col-sm") {
                                     br { }
                                     +it.key
-                                    styledImg {
-                                        css {
-                                            width = imgData.width.px
-                                            height = imgData.height.px
-                                            background = "url('${spritePngUrl(theme)}');"
-                                            backgroundPosition = "-${imgData.x}px -${imgData.y}px"
-                                            display = Display.inlineBlock
-                                            borderWidth = 4.px
+                                    a(href= "/v1/icon/${theme}/${it.key}.png") {
+                                        styledImg {
+                                            css {
+                                                width = imgData.width.px
+                                                height = imgData.height.px
+                                                background = "url('${spritePngUrl(theme)}');"
+                                                backgroundPosition = "-${imgData.x}px -${imgData.y}px"
+                                                display = Display.inlineBlock
+                                                borderWidth = 4.px
+                                            }
                                         }
                                     }
                                     br { }

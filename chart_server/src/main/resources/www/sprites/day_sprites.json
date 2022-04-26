@@ -1,0 +1,149 @@
+{
+    "can_green": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "can_green_red": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "can_red": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "can_red_green": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "can_yellow": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "conical_green": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "conical_green_red": {
+        "width": 24,
+        "height": 24,
+        "x": 144,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "conical_red": {
+        "width": 24,
+        "height": 24,
+        "x": 168,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "conical_red_green": {
+        "width": 24,
+        "height": 24,
+        "x": 192,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "conical_yellow": {
+        "width": 24,
+        "height": 24,
+        "x": 216,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "light_float_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "light_green": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "light_red": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "mooring_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "pillar_green": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "pillar_green_red": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "pillar_red": {
+        "width": 24,
+        "height": 24,
+        "x": 144,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "pillar_red_green": {
+        "width": 24,
+        "height": 24,
+        "x": 168,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "pillar_yellow": {
+        "width": 24,
+        "height": 24,
+        "x": 192,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "sound_violet": {
+        "width": 24,
+        "height": 24,
+        "x": 216,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "super_buoy_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 48,
+        "pixelRatio": 1
+    }
+}

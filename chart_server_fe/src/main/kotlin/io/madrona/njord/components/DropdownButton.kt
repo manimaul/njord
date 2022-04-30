@@ -1,5 +1,6 @@
 package io.madrona.njord.components
 
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
@@ -123,7 +124,7 @@ val Dropdown = fc<DropdownProps> { props ->
                                     +item.label
                                     attrs.also {
                                         it.to = item.href
-                                        it.className = "dropdown-item"
+                                        it.className = ClassName("dropdown-item")
                                         it.onClick = {
                                             props.callback?.invoke(item)
                                             expanded = false

@@ -1,5 +1,6 @@
 package io.madrona.njord.components
 
+import csstype.ClassName
 import io.madrona.njord.styles.AppRoutes
 import kotlinx.html.ButtonType
 import react.Props
@@ -13,7 +14,7 @@ val NavBar = fc<Props> {
             Link {
                 + "Njord"
                 attrs.also {
-                    it.className = "navbar-brand"
+                    it.className = ClassName("navbar-brand")
                     it.to = AppRoutes.home
                 }
             }
@@ -30,7 +31,7 @@ val NavBar = fc<Props> {
                         Link {
                             + "Control Panel"
                             attrs.also {
-                                it.className = "nav-link"
+                                it.className = ClassName("nav-link")
                                 it.to = AppRoutes.control
                             }
                         }
@@ -39,7 +40,7 @@ val NavBar = fc<Props> {
                         Link {
                             + "About"
                             attrs.also {
-                                it.className = "nav-link"
+                                it.className = ClassName("nav-link")
                                 it.to = AppRoutes.about
                             }
                         }

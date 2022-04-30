@@ -1,12 +1,11 @@
 import org.apache.tools.ant.taskdefs.condition.Os
-import io.madrona.njord.build.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin(module = "jvm") version "1.6.0"
-    kotlin(module = "kapt") version "1.6.0"
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin(module = "jvm") version ktVersion
+    kotlin(module = "kapt") version ktVersion
+    kotlin("plugin.serialization") version ktVersion
 }
 
 repositories {

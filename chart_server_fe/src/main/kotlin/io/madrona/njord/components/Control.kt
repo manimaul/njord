@@ -1,5 +1,6 @@
 package io.madrona.njord.components
 
+import csstype.ClassName
 import io.madrona.njord.styles.AppRoutes
 import kotlinx.css.paddingTop
 import kotlinx.css.px
@@ -41,7 +42,7 @@ val Control = fc<Props> {
                         Link {
                             +eaTab.name
                             attrs.also {
-                                it.className = "nav-link${if (tab == eaTab) " active" else ""}"
+                                it.className = ClassName("nav-link${if (tab == eaTab) " active" else ""}")
                                 it.to = "${AppRoutes.control}/${eaTab.name.lowercase()}"
                             }
                         }

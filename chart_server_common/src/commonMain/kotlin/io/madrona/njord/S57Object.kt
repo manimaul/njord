@@ -67,7 +67,13 @@ data class S57Attribute(
     @SerialName("Acronym") val acronym: String,
 
     /**
-     * todo: (what do these mean?) A= E= F= S= L= I= N/A=
+     * Attribute type: one-character code for the attribute type - there are six possible types:
+     * Enumerated ("E") - the expected input is a number selected from a list of predefined attribute values; exactly one value must be chosen.
+     * List ("L") - the expected input is a list of one or more numbers selected from a list of pre-defined attribute values.
+     * Float ("F") - the expected input is a floating point numeric value with defined range, resolution, units and format.
+     * Integer ("I") - the expected input is an integer numeric value with defined range, units and format.
+     * Coded String ("A") - the expected input is a string of ASCII characters in a predefined format; the information is encoded according to defined coding systems.
+     * Free Text ("S") - the expected input is a free-format alphanumeric string; it may be a file name which points to a text or graphic file.
      */
     @SerialName("Attributetype") val attributeType: String,
 

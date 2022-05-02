@@ -25,13 +25,18 @@ val App = fc<Props> {
                 attrs.element = createElement(About)
             }
             Route {
-                attrs.path = AppRoutes.control
+                attrs.path = AppRoutes.controlPage
                 attrs.element = createElement(Control)
             }
             Route {
-                attrs.path = AppRoutes.controlPage
+                attrs.path = AppRoutes.controlSymbolsPage
+                attrs.element = createElement(Control)
+            }
+            Route {
+                attrs.path = AppRoutes.controlSymbolsAttPage
                 attrs.element = createElement(Control)
             }
         }
     }
 }
+

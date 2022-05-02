@@ -1,17 +1,22 @@
 package io.madrona.njord.components
 
 import io.madrona.njord.*
+import io.madrona.njord.styles.AppRoutes
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.html.HTMLTag
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import react.*
 import react.dom.*
+import react.router.dom.Link
+import react.router.useNavigate
+import react.router.useParams
 import kotlin.collections.Map
 
 typealias S57ObjectMap = Map<String, S57Object>
-typealias S57AttributeMap = Map<String, S57Attribute>
+typealias S57AttributeMap = Map<String?, S57Attribute?>
 typealias S57ExpectedInputMap = Map<String, S57ExpectedInput>
 
 suspend fun fetchObjects(): S57ObjectMap {
@@ -41,79 +46,40 @@ suspend fun fetchExpectedInput(): S57ExpectedInputMap {
     return Json.decodeFromString(response)
 }
 
-val ControlSymbols = fc<Props> {
-    var objects: S57ObjectMap? by useState(null)
-    var selectedObject: String? by useState(null)
+val ControlSymbols = fc<Props> { props ->
+    val params = useParams()
+    val symbol = params[AppRoutes.Params.symbol]
+    val att = params[AppRoutes.Params.att]
+
+    var objMap: S57ObjectMap? by useState(null)
     var attributes: S57AttributeMap? by useState(null)
-    var selectedAttribute: String? by useState(null)
     var input: S57ExpectedInputMap? by useState(null)
     useEffectOnce {
         mainScope.launch {
-            objects = fetchObjects()
+            objMap = fetchObjects()
             attributes = fetchAttributes()
             input = fetchExpectedInput()
         }
     }
     div(classes = "container") {
         div(classes = "row") {
-
-            div(classes = "col") {
-                h2 {
-                    +"S57 Objects"
-                }
-                pathToA("/v1/about/s57objects")
-                br { }
-                br { }
-                objects?.let { objs ->
-                    dropdown(
-                        items = objs.values.map {
-                            DropdownLink(
-                                label = it.acronym,
-                                active = it.acronym == selectedObject
-                            )
-                        },
-                        label = selectedObject ?: "",
-                        enableFilter = true,
-                        callback = {
-                            selectedObject = it?.label
-                        }
-                    )
-                    if (selectedObject == null) {
-                        selectedObject = objs.keys.first()
-                    }
-                    objs[selectedObject]?.let {
-                        S57ObjectComponent {
-                            attrs {
-                                this.obj = it
-                            }
-                        }
-                    }
-                } ?: Loading {}
-            }
-
-            div(classes = "col") {
-                h2 {
-                    +"S57 Attributes"
-                }
-                pathToA("/v1/about/s57attributes")
-                br { }
-                pathToA("/v1/about/expectedInput")
-                br { }
-                br { }
-                attributes?.let {
-                    Loading {}
-                }
-            }
+            s57Objects(objMap, symbol)
+            s57attribute(attributes?.let { it[att] }, input)
         }
     }
 }
 
-interface S57ObjectProps : Props {
+external interface S57ObjectProps : Props {
     var obj: S57Object
 }
 
 val S57ObjectComponent = fc<S57ObjectProps> { props ->
     div {
+        br { }
+        p {
+            strong { +"Geometry Primitives: " }
+            +"?"
+        }
         p {
             strong { +"Object: " }
             +props.obj.objectClass
@@ -129,6 +95,7 @@ val S57ObjectComponent = fc<S57ObjectProps> { props ->
         AttributeSet {
             attrs.apply {
                 name = "Attribute_A"
+                selectedObject = props.obj.acronym
                 desc = "(Attributes in this subset define the individual characteristics of the object.)"
                 attributes = props.obj.attributeA
             }
@@ -136,6 +103,7 @@ val S57ObjectComponent = fc<S57ObjectProps> { props ->
         AttributeSet {
             attrs.apply {
                 name = "Attribute_B"
+                selectedObject = props.obj.acronym
                 desc =
                     "(Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an information system.)"
                 attributes = props.obj.attributeB
@@ -144,6 +112,7 @@ val S57ObjectComponent = fc<S57ObjectProps> { props ->
         AttributeSet {
             attrs.apply {
                 name = "Attribute_C"
+                selectedObject = props.obj.acronym
                 desc =
                     "(Attributes in this subset provide administrative information about the object and data describing it.)"
                 attributes = props.obj.attributeC
@@ -152,7 +121,8 @@ val S57ObjectComponent = fc<S57ObjectProps> { props ->
     }
 }
 
-interface AttributeSetProps : Props {
+external interface AttributeSetProps : Props {
+    var selectedObject: String
     var name: String
     var desc: String
     var attributes: List<String>
@@ -166,10 +136,117 @@ val AttributeSet = fc<AttributeSetProps> { props ->
             +props.desc
         }
         br { }
-        props.attributes.forEach {
+        props.attributes.forEach { attName ->
             span {
-                +"$it "
+                Link {
+                    +attName
+                    attrs.also {
+                        it.to =
+                            "${AppRoutes.control}/${ControlTab.Symbols.name.lowercase()}/${props.selectedObject}/$attName"
+                    }
+                }
+                +" "
             }
         }
+    }
+}
+
+fun RDOMBuilder<HTMLTag>.s57attribute(
+    attribute: S57Attribute?,
+    input: S57ExpectedInputMap?
+) {
+    val expectedInput = input?.values?.filter {
+        it.code == attribute?.code
+    }?.takeIf { it.isNotEmpty() }
+    div(classes = "col") {
+        h2 {
+            +"S57 Attributes"
+        }
+        pathToA("/v1/about/s57attributes")
+        br { }
+        pathToA("/v1/about/expectedInput")
+        br { }
+        br { }
+        input?.let {
+            attribute?.let { att ->
+                p {
+                    strong { +"Attribute: " }
+                    +att.attribute
+                }
+                p {
+                    strong { +"Acronym: " }
+                    +att.acronym
+                }
+                p {
+                    strong { +"Code: " }
+                    +"${att.code}"
+                }
+
+                expectedInput?.let { ei ->
+                    table {
+                        tr {
+                            th { +"ID" }
+                            th { +"Meaning" }
+                        }
+                        ei.forEach { each ->
+                            tr {
+                                td { +"${each.id}" }
+                                td { +each.meaning }
+                            }
+                        }
+                    }
+                    br {}
+                }
+
+                p {
+                    strong { +"Attribute type: " }
+                    +att.attributeType
+                }
+                p {
+                    strong { +"Attribute class: " }
+                    +att.cls
+                }
+            } ?: +"Attribute not selected"
+        } ?: Loading {}
+    }
+}
+
+fun RDOMBuilder<HTMLTag>.s57Objects(
+    objects: S57ObjectMap?,
+    selectedObject: String?,
+) {
+    val navigate = useNavigate()
+    div(classes = "col") {
+        h2 {
+            +"S57 Objects"
+        }
+        pathToA("/v1/about/s57objects")
+        br { }
+        br { }
+        objects?.let { objs ->
+            dropdown(
+                items = objs.values.map {
+                    DropdownLink(
+                        label = it.acronym,
+                        active = it.acronym == selectedObject
+                    )
+                },
+                label = selectedObject ?: "",
+                enableFilter = true,
+                callback = {
+                    it?.label?.let { navigate("${AppRoutes.control}/${ControlTab.Symbols.name.lowercase()}/$it") }
+                }
+            )
+            if (selectedObject == null) {
+                navigate("${AppRoutes.control}/${ControlTab.Symbols.name.lowercase()}/${objs.keys.first()}")
+            }
+            objs[selectedObject]?.let {
+                S57ObjectComponent {
+                    attrs {
+                        this.obj = it
+                    }
+                }
+            }
+        } ?: Loading {}
     }
 }

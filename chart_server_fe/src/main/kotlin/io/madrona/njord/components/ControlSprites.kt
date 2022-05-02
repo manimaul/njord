@@ -29,7 +29,7 @@ suspend fun fetchThemeIcons(theme: Theme): IconData {
     return Json.decodeFromString(response)
 }
 
-val ControlSymbolSprites = fc<Props> {
+val ControlSprites = fc<Props> {
     var themeData: Map<Theme, IconData>? by useState(null)
     useEffectOnce {
         mainScope.launch {

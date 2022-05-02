@@ -32,7 +32,7 @@ val NavBar = fc<Props> {
                             + "Control Panel"
                             attrs.also {
                                 it.className = ClassName("nav-link")
-                                it.to = AppRoutes.control
+                                it.to = "${AppRoutes.control}/${ControlTab.Charts}"
                             }
                         }
                     }

@@ -75,7 +75,7 @@ external interface S57ObjectProps : Props {
 
 val S57ObjectComponent = fc<S57ObjectProps> { props ->
     div {
-        br {  }
+        br { }
         p {
             strong { +"Geometry Primitives: " }
             +"?"
@@ -141,10 +141,11 @@ val AttributeSet = fc<AttributeSetProps> { props ->
                 Link {
                     +attName
                     attrs.also {
-                        it.to = "${AppRoutes.control}/${ControlTab.Symbols.name.lowercase()}/${props.selectedObject}/$attName"
+                        it.to =
+                            "${AppRoutes.control}/${ControlTab.Symbols.name.lowercase()}/${props.selectedObject}/$attName"
                     }
                 }
-                + " "
+                +" "
             }
         }
     }
@@ -154,6 +155,9 @@ fun RDOMBuilder<HTMLTag>.s57attribute(
     attribute: S57Attribute?,
     input: S57ExpectedInputMap?
 ) {
+    val expectedInput = input?.values?.filter {
+        it.code == attribute?.code
+    }?.takeIf { it.isNotEmpty() }
     div(classes = "col") {
         h2 {
             +"S57 Attributes"
@@ -177,6 +181,23 @@ fun RDOMBuilder<HTMLTag>.s57attribute(
                     strong { +"Code: " }
                     +"${att.code}"
                 }
+
+                expectedInput?.let { ei ->
+                    table {
+                        tr {
+                            th { +"ID" }
+                            th { +"Meaning" }
+                        }
+                        ei.forEach { each ->
+                            tr {
+                                td { +"${each.id}" }
+                                td { +each.meaning }
+                            }
+                        }
+                    }
+                    br {}
+                }
+
                 p {
                     strong { +"Attribute type: " }
                     +att.attributeType
@@ -185,10 +206,11 @@ fun RDOMBuilder<HTMLTag>.s57attribute(
                     strong { +"Attribute class: " }
                     +att.cls
                 }
-            } ?: + "Attribute not selected"
+            } ?: +"Attribute not selected"
         } ?: Loading {}
     }
 }
+
 fun RDOMBuilder<HTMLTag>.s57Objects(
     objects: S57ObjectMap?,
     selectedObject: String?,

@@ -27,18 +27,6 @@ enum class ControlTab {
     }
 }
 
-//external interface ControlProps : Props {
-//    var symbol: String?
-//    var attribute: String?
-//    var tab: ControlTab
-//}
-//
-//data class ControlPropsD(
-//    override var tab: ControlTab,
-//    override var symbol: String? = null,
-//    override var attribute: String? = null
-//) : ControlProps
-
 val Control = fc<Props> {
     val params = useParams()
     val tab = ControlTab.getSelected(params[AppRoutes.Params.page])

@@ -9,25 +9,40 @@ import react.dom.*
 import react.fc
 import react.router.dom.Link
 import react.router.useLocation
+import react.router.useParams
 import styled.css
 import styled.styledDiv
 
 enum class ControlTab {
     Charts,
     Symbols,
-    SymbolSprites;
+    Sprites;
 
     companion object {
-        fun getSelected(location: history.Location): ControlTab {
+        fun getSelected(page: String?): ControlTab {
             return values().firstOrNull {
-                "${AppRoutes.control}/${it.name}".equals(location.pathname, true)
+                it.name.equals(page, true)
             } ?: Charts
         }
     }
 }
 
+//external interface ControlProps : Props {
+//    var symbol: String?
+//    var attribute: String?
+//    var tab: ControlTab
+//}
+//
+//data class ControlPropsD(
+//    override var tab: ControlTab,
+//    override var symbol: String? = null,
+//    override var attribute: String? = null
+//) : ControlProps
+
 val Control = fc<Props> {
-    val tab = ControlTab.getSelected(useLocation())
+    val params = useParams()
+    val tab = ControlTab.getSelected(params[AppRoutes.Params.page])
+
     styledDiv {
         css {
             paddingTop = 20.px
@@ -56,7 +71,7 @@ val Control = fc<Props> {
                 when (tab) {
                     ControlTab.Charts -> ControlCharts {}
                     ControlTab.Symbols -> ControlSymbols {}
-                    ControlTab.SymbolSprites -> ControlSymbolSprites {}
+                    ControlTab.Sprites -> ControlSprites {}
                 }
             }
         }

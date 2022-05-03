@@ -17,7 +17,7 @@ import kotlin.collections.Map
 
 typealias S57ObjectMap = Map<String, S57Object>
 typealias S57AttributeMap = Map<String?, S57Attribute?>
-typealias S57ExpectedInputMap = Map<String, S57ExpectedInput>
+typealias S57ExpectedInputMap = Map<String, List<S57ExpectedInput>>
 
 suspend fun fetchObjects(): S57ObjectMap {
     val response = window
@@ -155,9 +155,7 @@ fun RDOMBuilder<HTMLTag>.s57attribute(
     attribute: S57Attribute?,
     input: S57ExpectedInputMap?
 ) {
-    val expectedInput = input?.values?.filter {
-        it.code == attribute?.code
-    }?.takeIf { it.isNotEmpty() }
+    val expectedInput = input?.get("${attribute?.code}")?.takeIf { it.isNotEmpty() }
     div(classes = "col") {
         h2 {
             +"S57 Attributes"

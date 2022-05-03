@@ -14,7 +14,7 @@ class S57ObjectLibrary(
     private val csvMapper: CsvMapper = Singletons.csvMapper,
 ) {
 
-    val expectedInput: Map<String, S57ExpectedInput> by lazy {
+    val expectedInput: Map<String, List<S57ExpectedInput>> by lazy {
         val schema = CsvSchema.builder()
             .addColumn("Code")
             .addColumn("ID")
@@ -39,7 +39,7 @@ class S57ObjectLibrary(
                 )
             }
         }
-        list.associateBy { "${it.code}-${it.id}" }
+        list.groupBy { "${it.code}" }
     }
 
     val attributes: Map<String, S57Attribute> by lazy {

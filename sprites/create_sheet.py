@@ -118,6 +118,8 @@ if __name__ == '__main__':
             "light": [
                 Icon(variant="red", color_1=red),
                 Icon(variant="green", color_1=green),
+                Icon(variant="yellow", color_1=yellow),
+                Icon(variant="violet", color_1=violet),
             ],
             "can": [
                 Icon(variant="red", color_1=red, color_2=red),

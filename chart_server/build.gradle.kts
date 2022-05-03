@@ -38,7 +38,6 @@ dependencies {
     implementation(Deps.ktorJackson)
     implementation(Deps.ktorJson)
     implementation(Deps.jacksonYaml)
-    implementation(Deps.jacksonCsv)
     implementation(Deps.logBack)
     implementation(Deps.gdal)
     implementation(Deps.protoBuf)

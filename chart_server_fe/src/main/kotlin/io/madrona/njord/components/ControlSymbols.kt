@@ -78,7 +78,13 @@ val S57ObjectComponent = fc<S57ObjectProps> { props ->
         br { }
         p {
             strong { +"Geometry Primitives: " }
-            +"?"
+            +props.obj.primitives.foldIndexed(StringBuilder()) { i, acc, ea ->
+                acc.append(ea).also {
+                    if (i < props.obj.primitives.size - 1) {
+                        acc.append(", ")
+                    }
+                }
+            }.toString()
         }
         p {
             strong { +"Object: " }

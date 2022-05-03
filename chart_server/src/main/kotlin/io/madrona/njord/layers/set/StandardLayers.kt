@@ -1,18 +1,18 @@
 package io.madrona.njord.layers.set
 
 /**
- * airport / airfield
- * anchor berth
- * anchor
- * anchorage area
- * beacon cardinal
- * beacon isolated danger
- * beacon lateral
- * beacon safe water
- * beacon special purpose/general
- * building single
- * building religious
- * built-up area
+ * airport / airfield (AIRARE)
+ * anchor berth (ACHBRT)
+ * anchor (ACHPNT) deleted
+ * anchorage area (ACHARE)
+ * beacon cardinal (BCNCAR)
+ * beacon isolated danger (BCNISD)
+ * beacon lateral (BCNLAT)
+ * beacon safe water (BCNSAW)
+ * beacon special purpose/general (BCNSPP)
+ * building single (BUISGL)
+ * building religious (BUIREL) deleted
+ * built-up area (BUAARE)
  * buoy cardinal
  * buoy installation
  * buoy isolated danger

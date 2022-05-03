@@ -1,0 +1,10105 @@
+{
+  "ADMARE": {
+    "Code": 1,
+    "ObjectClass": "Administration area (Named)",
+    "Acronym": "ADMARE",
+    "Attribute_A": [
+      "JRSDTN",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "AIRARE": {
+    "Code": 2,
+    "ObjectClass": "Airport / airfield",
+    "Acronym": "AIRARE",
+    "Attribute_A": [
+      "CATAIR",
+      "CONDTN",
+      "CONVIS",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ACHBRT": {
+    "Code": 3,
+    "ObjectClass": "Anchor berth",
+    "Acronym": "ACHBRT",
+    "Attribute_A": [
+      "CATACH",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RADIUS",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ACHARE": {
+    "Code": 4,
+    "ObjectClass": "Anchorage area",
+    "Acronym": "ACHARE",
+    "Attribute_A": [
+      "CATACH",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "BCNCAR": {
+    "Code": 5,
+    "ObjectClass": "Beacon, cardinal",
+    "Acronym": "BCNCAR",
+    "Attribute_A": [
+      "BCNSHP",
+      "CATCAM",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONVIS",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BCNISD": {
+    "Code": 6,
+    "ObjectClass": "Beacon, isolated danger",
+    "Acronym": "BCNISD",
+    "Attribute_A": [
+      "BCNSHP",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BCNLAT": {
+    "Code": 7,
+    "ObjectClass": "Beacon, lateral",
+    "Acronym": "BCNLAT",
+    "Attribute_A": [
+      "BCNSHP",
+      "CATLAM",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BCNSAW": {
+    "Code": 8,
+    "ObjectClass": "Beacon, safe water",
+    "Acronym": "BCNSAW",
+    "Attribute_A": [
+      "BCNSHP",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BCNSPP": {
+    "Code": 9,
+    "ObjectClass": "Beacon, special purpose/general",
+    "Acronym": "BCNSPP",
+    "Attribute_A": [
+      "BCNSHP",
+      "CATSPM",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BERTHS": {
+    "Code": 10,
+    "ObjectClass": "Berth",
+    "Acronym": "BERTHS",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "BRIDGE": {
+    "Code": 11,
+    "ObjectClass": "Bridge",
+    "Acronym": "BRIDGE",
+    "Attribute_A": [
+      "CATBRG",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORCLR",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERCCL",
+      "VERCLR",
+      "VERCOP",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "BUISGL": {
+    "Code": 12,
+    "ObjectClass": "Building, single",
+    "Acronym": "BUISGL",
+    "Attribute_A": [
+      "BUISHP",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "FUNCTN",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "BUAARE": {
+    "Code": 13,
+    "ObjectClass": "Built-up area",
+    "Acronym": "BUAARE",
+    "Attribute_A": [
+      "CATBUA",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "BOYCAR": {
+    "Code": 14,
+    "ObjectClass": "Buoy, cardinal",
+    "Acronym": "BOYCAR",
+    "Attribute_A": [
+      "BOYSHP",
+      "CATCAM",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BOYINB": {
+    "Code": 15,
+    "ObjectClass": "Buoy, installation",
+    "Acronym": "BOYINB",
+    "Attribute_A": [
+      "BOYSHP",
+      "CATINB",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BOYISD": {
+    "Code": 16,
+    "ObjectClass": "Buoy, isolated danger",
+    "Acronym": "BOYISD",
+    "Attribute_A": [
+      "BOYSHP",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BOYLAT": {
+    "Code": 17,
+    "ObjectClass": "Buoy, lateral",
+    "Acronym": "BOYLAT",
+    "Attribute_A": [
+      "BOYSHP",
+      "CATLAM",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BOYSAW": {
+    "Code": 18,
+    "ObjectClass": "Buoy, safe water",
+    "Acronym": "BOYSAW",
+    "Attribute_A": [
+      "BOYSHP",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BOYSPP": {
+    "Code": 19,
+    "ObjectClass": "Buoy, special purpose/general",
+    "Acronym": "BOYSPP",
+    "Attribute_A": [
+      "BOYSHP",
+      "CATSPM",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "CBLARE": {
+    "Code": 20,
+    "ObjectClass": "Cable area",
+    "Acronym": "CBLARE",
+    "Attribute_A": [
+      "CATCBL",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "CBLOHD": {
+    "Code": 21,
+    "ObjectClass": "Cable, overhead",
+    "Acronym": "CBLOHD",
+    "Attribute_A": [
+      "CATCBL",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ICEFAC",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERCSA",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "CBLSUB": {
+    "Code": 22,
+    "ObjectClass": "Cable, submarine",
+    "Acronym": "CBLSUB",
+    "Attribute_A": [
+      "BURDEP",
+      "CATCBL",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "CANALS": {
+    "Code": 23,
+    "ObjectClass": "Canal",
+    "Acronym": "CANALS",
+    "Attribute_A": [
+      "CATCAN",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORCLR",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "CANBNK": {
+    "Code": 24,
+    "ObjectClass": "Canal bank",
+    "Acronym": "CANBNK",
+    "Attribute_A": [
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "CTSARE": {
+    "Code": 25,
+    "ObjectClass": "Cargo transshipment area",
+    "Acronym": "CTSARE",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "CAUSWY": {
+    "Code": 26,
+    "ObjectClass": "Causeway",
+    "Acronym": "CAUSWY",
+    "Attribute_A": [
+      "CONDTN",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "CTNARE": {
+    "Code": 27,
+    "ObjectClass": "Caution area",
+    "Acronym": "CTNARE",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "PEREND",
+      "PERSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "CHKPNT": {
+    "Code": 28,
+    "ObjectClass": "Checkpoint",
+    "Acronym": "CHKPNT",
+    "Attribute_A": [
+      "CATCHP",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "CGUSTA": {
+    "Code": 29,
+    "ObjectClass": "Coastguard station",
+    "Acronym": "CGUSTA",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "COALNE": {
+    "Code": 30,
+    "ObjectClass": "Coastline",
+    "Acronym": "COALNE",
+    "Attribute_A": [
+      "CATCOA",
+      "COLOUR",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "CONZNE": {
+    "Code": 31,
+    "ObjectClass": "Contiguous zone",
+    "Acronym": "CONZNE",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NATION",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "COSARE": {
+    "Code": 32,
+    "ObjectClass": "Continental shelf area",
+    "Acronym": "COSARE",
+    "Attribute_A": [
+      "NATION",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "CTRPNT": {
+    "Code": 33,
+    "ObjectClass": "Control point",
+    "Acronym": "CTRPNT",
+    "Attribute_A": [
+      "CATCTR",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "CONVYR": {
+    "Code": 34,
+    "ObjectClass": "Conveyor",
+    "Acronym": "CONVYR",
+    "Attribute_A": [
+      "CATCON",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "LIFCAP",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "CRANES": {
+    "Code": 35,
+    "ObjectClass": "Crane",
+    "Acronym": "CRANES",
+    "Attribute_A": [
+      "CATCRN",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "HEIGHT",
+      "LIFCAP",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "RADIUS",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "CURENT": {
+    "Code": 36,
+    "ObjectClass": "Current - non - gravitational",
+    "Acronym": "CURENT",
+    "Attribute_A": [
+      "CURVEL",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "SCAMAX",
+      "SCAMIN"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "CUSZNE": {
+    "Code": 37,
+    "ObjectClass": "Custom zone",
+    "Acronym": "CUSZNE",
+    "Attribute_A": [
+      "NATION"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "DAMCON": {
+    "Code": 38,
+    "ObjectClass": "Dam",
+    "Acronym": "DAMCON",
+    "Attribute_A": [
+      "CATDAM",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "DAYMAR": {
+    "Code": 39,
+    "ObjectClass": "Daymark",
+    "Acronym": "DAYMAR",
+    "Attribute_A": [
+      "CATSPM",
+      "COLOUR",
+      "COLPAT",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "TOPSHP",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "DWRTCL": {
+    "Code": 40,
+    "ObjectClass": "Deep water route centerline",
+    "Acronym": "DWRTCL",
+    "Attribute_A": [
+      "CATTRK",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "TRAFIC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "DWRTPT": {
+    "Code": 41,
+    "ObjectClass": "Deep water route part",
+    "Acronym": "DWRTPT",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "TRAFIC",
+      "VERDAT",
+      "RESTRN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "DEPARE": {
+    "Code": 42,
+    "ObjectClass": "Depth area",
+    "Acronym": "DEPARE",
+    "Attribute_A": [
+      "DRVAL1",
+      "DRVAL2",
+      "QUASOU",
+      "SOUACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "DEPCNT": {
+    "Code": 43,
+    "ObjectClass": "Depth contour",
+    "Acronym": "DEPCNT",
+    "Attribute_A": [
+      "VALDCO",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND",
+      "hypcat"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "DISMAR": {
+    "Code": 44,
+    "ObjectClass": "Distance mark",
+    "Acronym": "DISMAR",
+    "Attribute_A": [
+      "CATDIS",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "DOCARE": {
+    "Code": 45,
+    "ObjectClass": "Dock area",
+    "Acronym": "DOCARE",
+    "Attribute_A": [
+      "CATDOC",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORCLR",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "DRGARE": {
+    "Code": 46,
+    "ObjectClass": "Dredged area",
+    "Acronym": "DRGARE",
+    "Attribute_A": [
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "QUASOU",
+      "RESTRN",
+      "SOUACC",
+      "TECSOU",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "DRYDOC": {
+    "Code": 47,
+    "ObjectClass": "Dry dock",
+    "Acronym": "DRYDOC",
+    "Attribute_A": [
+      "CONDTN",
+      "HORACC",
+      "HORCLR",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "DRVAL1",
+      "QUASOU",
+      "SOUACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "DMPGRD": {
+    "Code": 48,
+    "ObjectClass": "Dumping ground",
+    "Acronym": "DMPGRD",
+    "Attribute_A": [
+      "CATDPG",
+      "NOBJNM",
+      "OBJNAM",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "DYKCON": {
+    "Code": 49,
+    "ObjectClass": "Dyke",
+    "Acronym": "DYKCON",
+    "Attribute_A": [
+      "CONDTN",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NATCON",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "EXEZNE": {
+    "Code": 50,
+    "ObjectClass": "Exclusive Economic Zone",
+    "Acronym": "EXEZNE",
+    "Attribute_A": [
+      "NATION"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "FAIRWY": {
+    "Code": 51,
+    "ObjectClass": "Fairway",
+    "Acronym": "FAIRWY",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "QUASOU",
+      "RESTRN",
+      "SOUACC",
+      "STATUS",
+      "TRAFIC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "FNCLNE": {
+    "Code": 52,
+    "ObjectClass": "Fence/wall",
+    "Acronym": "FNCLNE",
+    "Attribute_A": [
+      "CATFNC",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "FERYRT": {
+    "Code": 53,
+    "ObjectClass": "Ferry route",
+    "Acronym": "FERYRT",
+    "Attribute_A": [
+      "CATFRY",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "FSHZNE": {
+    "Code": 54,
+    "ObjectClass": "Fishery zone",
+    "Acronym": "FSHZNE",
+    "Attribute_A": [
+      "NATION",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "FSHFAC": {
+    "Code": 55,
+    "ObjectClass": "Fishing facility",
+    "Acronym": "FSHFAC",
+    "Attribute_A": [
+      "CATFIF",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "FSHGRD": {
+    "Code": 56,
+    "ObjectClass": "Fishing ground",
+    "Acronym": "FSHGRD",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "FLODOC": {
+    "Code": 57,
+    "ObjectClass": "Floating dock",
+    "Acronym": "FLODOC",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "HORACC",
+      "HORCLR",
+      "HORLEN",
+      "HORWID",
+      "LIFCAP",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERLEN",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "FOGSIG": {
+    "Code": 58,
+    "ObjectClass": "Fog signal",
+    "Acronym": "FOGSIG",
+    "Attribute_A": [
+      "CATFOG",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "SIGFRQ",
+      "SIGGEN",
+      "SIGGRP",
+      "SIGPER",
+      "SIGSEQ",
+      "STATUS",
+      "VALMXR"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "FORSTC": {
+    "Code": 59,
+    "ObjectClass": "Fortified structure",
+    "Acronym": "FORSTC",
+    "Attribute_A": [
+      "CATFOR",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "FRPARE": {
+    "Code": 60,
+    "ObjectClass": "Free port area",
+    "Acronym": "FRPARE",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "GATCON": {
+    "Code": 61,
+    "ObjectClass": "Gate",
+    "Acronym": "GATCON",
+    "Attribute_A": [
+      "CATGAT",
+      "CONDTN",
+      "DRVAL1",
+      "HORACC",
+      "HORCLR",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "GRIDRN": {
+    "Code": 62,
+    "ObjectClass": "Gridiron",
+    "Acronym": "GRIDRN",
+    "Attribute_A": [
+      "HORACC",
+      "HORLEN",
+      "HORWID",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "HRBARE": {
+    "Code": 63,
+    "ObjectClass": "Harbour area (administrative)",
+    "Acronym": "HRBARE",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "HRBFAC": {
+    "Code": 64,
+    "ObjectClass": "Harbour facility",
+    "Acronym": "HRBFAC",
+    "Attribute_A": [
+      "CATHAF",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "HULKES": {
+    "Code": 65,
+    "ObjectClass": "Hulk",
+    "Acronym": "HULKES",
+    "Attribute_A": [
+      "CATHLK",
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "CONVIS",
+      "HORACC",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERLEN",
+      "CONDTN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ICEARE": {
+    "Code": 66,
+    "ObjectClass": "Ice area",
+    "Acronym": "ICEARE",
+    "Attribute_A": [
+      "CATICE",
+      "CONVIS",
+      "ELEVAT",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "ICNARE": {
+    "Code": 67,
+    "ObjectClass": "Incineration area",
+    "Acronym": "ICNARE",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ISTZNE": {
+    "Code": 68,
+    "ObjectClass": "Inshore traffic zone",
+    "Acronym": "ISTZNE",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "LAKARE": {
+    "Code": 69,
+    "ObjectClass": "Lake",
+    "Acronym": "LAKARE",
+    "Attribute_A": [
+      "ELEVAT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "LAKSHR": {
+    "Code": 70,
+    "ObjectClass": "Lake shore",
+    "Acronym": "LAKSHR",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "LNDARE": {
+    "Code": 71,
+    "ObjectClass": "Land area",
+    "Acronym": "LNDARE",
+    "Attribute_A": [
+      "CONDTN",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "LNDELV": {
+    "Code": 72,
+    "ObjectClass": "Land elevation",
+    "Acronym": "LNDELV",
+    "Attribute_A": [
+      "CONVIS",
+      "ELEVAT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "LNDRGN": {
+    "Code": 73,
+    "ObjectClass": "Land region",
+    "Acronym": "LNDRGN",
+    "Attribute_A": [
+      "CATLND",
+      "NATQUA",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "LNDMRK": {
+    "Code": 74,
+    "ObjectClass": "Landmark",
+    "Acronym": "LNDMRK",
+    "Attribute_A": [
+      "CATLMK",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "FUNCTN",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "LIGHTS": {
+    "Code": 75,
+    "ObjectClass": "Light",
+    "Acronym": "LIGHTS",
+    "Attribute_A": [
+      "CATLIT",
+      "COLOUR",
+      "DATEND",
+      "DATSTA",
+      "EXCLIT",
+      "HEIGHT",
+      "LITCHR",
+      "LITVIS",
+      "MARSYS",
+      "MLTYLT",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "SECTR1",
+      "SECTR2",
+      "SIGGRP",
+      "SIGPER",
+      "SIGSEQ",
+      "STATUS",
+      "VERACC",
+      "VALNMR",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "LITFLT": {
+    "Code": 76,
+    "ObjectClass": "Light float",
+    "Acronym": "LITFLT",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORLEN",
+      "HORWID",
+      "MARSYS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "LITVES": {
+    "Code": 77,
+    "ObjectClass": "Light vessel",
+    "Acronym": "LITVES",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORLEN",
+      "HORWID",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "LOCMAG": {
+    "Code": 78,
+    "ObjectClass": "Local magnetic anomaly",
+    "Acronym": "LOCMAG",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "VALLMA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "LOKBSN": {
+    "Code": 79,
+    "ObjectClass": "Lock basin",
+    "Acronym": "LOKBSN",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORCLR",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "LOGPON": {
+    "Code": 80,
+    "ObjectClass": "Log pond",
+    "Acronym": "LOGPON",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "MAGVAR": {
+    "Code": 81,
+    "ObjectClass": "Magnetic variation",
+    "Acronym": "MAGVAR",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "RYRMGV",
+      "VALACM",
+      "VALMAG"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "SCAMAX",
+      "SCAMIN"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "MARCUL": {
+    "Code": 82,
+    "ObjectClass": "Marine farm/culture",
+    "Acronym": "MARCUL",
+    "Attribute_A": [
+      "CATMFA",
+      "DATEND",
+      "DATSTA",
+      "EXPSOU",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "QUASOU",
+      "RESTRN",
+      "SOUACC",
+      "STATUS",
+      "VALSOU",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "MIPARE": {
+    "Code": 83,
+    "ObjectClass": "Military practice area",
+    "Acronym": "MIPARE",
+    "Attribute_A": [
+      "CATMPA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "MORFAC": {
+    "Code": 84,
+    "ObjectClass": "Mooring/warping facility",
+    "Acronym": "MORFAC",
+    "Attribute_A": [
+      "BOYSHP",
+      "CATMOR",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "NAVLNE": {
+    "Code": 85,
+    "ObjectClass": "Navigation line",
+    "Acronym": "NAVLNE",
+    "Attribute_A": [
+      "CATNAV",
+      "DATEND",
+      "DATSTA",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "OBSTRN": {
+    "Code": 86,
+    "ObjectClass": "Obstruction",
+    "Acronym": "OBSTRN",
+    "Attribute_A": [
+      "CATOBS",
+      "CONDTN",
+      "EXPSOU",
+      "HEIGHT",
+      "NATCON",
+      "NATQUA",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "VALSOU",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV",
+      "NATSUR"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "OFSPLF": {
+    "Code": 87,
+    "ObjectClass": "Offshore platform",
+    "Acronym": "OFSPLF",
+    "Attribute_A": [
+      "CATOFP",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "OSPARE": {
+    "Code": 88,
+    "ObjectClass": "Offshore production area",
+    "Acronym": "OSPARE",
+    "Attribute_A": [
+      "CATPRA",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "RESTRN",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "OILBAR": {
+    "Code": 89,
+    "ObjectClass": "Oil barrier",
+    "Acronym": "OILBAR",
+    "Attribute_A": [
+      "CATOLB",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "PILPNT": {
+    "Code": 90,
+    "ObjectClass": "Pile",
+    "Acronym": "PILPNT",
+    "Attribute_A": [
+      "CATPLE",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "PILBOP": {
+    "Code": 91,
+    "ObjectClass": "Pilot boarding place",
+    "Acronym": "PILBOP",
+    "Attribute_A": [
+      "CATPIL",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "NPLDST",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "PILDST",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "PIPARE": {
+    "Code": 92,
+    "ObjectClass": "Pipeline area",
+    "Acronym": "PIPARE",
+    "Attribute_A": [
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "RESTRN",
+      "STATUS",
+      "CATPIP"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "PIPOHD": {
+    "Code": 93,
+    "ObjectClass": "Pipeline, overhead",
+    "Acronym": "PIPOHD",
+    "Attribute_A": [
+      "CATPIP",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "PIPSOL": {
+    "Code": 94,
+    "ObjectClass": "Pipeline, submarine/on land",
+    "Acronym": "PIPSOL",
+    "Attribute_A": [
+      "BURDEP",
+      "CATPIP",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERLEN",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "PONTON": {
+    "Code": 95,
+    "ObjectClass": "Pontoon",
+    "Acronym": "PONTON",
+    "Attribute_A": [
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "PRCARE": {
+    "Code": 96,
+    "ObjectClass": "Precautionary area",
+    "Acronym": "PRCARE",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "PRDARE": {
+    "Code": 97,
+    "ObjectClass": "Production / storage area",
+    "Acronym": "PRDARE",
+    "Attribute_A": [
+      "CATPRA",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ELEVAT",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "PYLONS": {
+    "Code": 98,
+    "ObjectClass": "Pylon/bridge support",
+    "Acronym": "PYLONS",
+    "Attribute_A": [
+      "CATPYL",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "RADLNE": {
+    "Code": 99,
+    "ObjectClass": "Radar line",
+    "Acronym": "RADLNE",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "RADRNG": {
+    "Code": 100,
+    "ObjectClass": "Radar range",
+    "Acronym": "RADRNG",
+    "Attribute_A": [
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "RADRFL": {
+    "Code": 101,
+    "ObjectClass": "Radar reflector",
+    "Acronym": "RADRFL",
+    "Attribute_A": [
+      "HEIGHT",
+      "STATUS",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RADSTA": {
+    "Code": 102,
+    "ObjectClass": "Radar station",
+    "Acronym": "RADSTA",
+    "Attribute_A": [
+      "CATRAS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VALMXR",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RTPBCN": {
+    "Code": 103,
+    "ObjectClass": "Radar transponder beacon",
+    "Acronym": "RTPBCN",
+    "Attribute_A": [
+      "CATRTB",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "RADWAL",
+      "SECTR1",
+      "SECTR2",
+      "SIGGRP",
+      "SIGSEQ",
+      "STATUS",
+      "VALMXR"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RDOCAL": {
+    "Code": 104,
+    "ObjectClass": "Radio calling-in point",
+    "Acronym": "RDOCAL",
+    "Attribute_A": [
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "TRAFIC"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "RDOSTA": {
+    "Code": 105,
+    "ObjectClass": "Radio station",
+    "Acronym": "RDOSTA",
+    "Attribute_A": [
+      "CALSGN",
+      "CATROS",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "ESTRNG",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "SIGFRQ",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RAILWY": {
+    "Code": 106,
+    "ObjectClass": "Railway",
+    "Acronym": "RAILWY",
+    "Attribute_A": [
+      "CONDTN",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "RAPIDS": {
+    "Code": 107,
+    "ObjectClass": "Rapids",
+    "Acronym": "RAPIDS",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "RCRTCL": {
+    "Code": 108,
+    "ObjectClass": "Recommended route centerline",
+    "Acronym": "RCRTCL",
+    "Attribute_A": [
+      "CATTRK",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "TRAFIC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "RECTRC": {
+    "Code": 109,
+    "ObjectClass": "Recommended track",
+    "Acronym": "RECTRC",
+    "Attribute_A": [
+      "CATTRK",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "TRAFIC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "RCTLPT": {
+    "Code": 110,
+    "ObjectClass": "Recommended Traffic Lane Part",
+    "Acronym": "RCTLPT",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "ORIENT",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "RSCSTA": {
+    "Code": 111,
+    "ObjectClass": "Rescue station",
+    "Acronym": "RSCSTA",
+    "Attribute_A": [
+      "CATRSC",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "SCAMAX",
+      "SCAMIN"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RESARE": {
+    "Code": 112,
+    "ObjectClass": "Restricted area",
+    "Acronym": "RESARE",
+    "Attribute_A": [
+      "CATREA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "RETRFL": {
+    "Code": 113,
+    "ObjectClass": "Retro-reflector",
+    "Acronym": "RETRFL",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "HEIGHT",
+      "MARSYS",
+      "STATUS",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "RIVERS": {
+    "Code": 114,
+    "ObjectClass": "River",
+    "Acronym": "RIVERS",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "RIVBNK": {
+    "Code": 115,
+    "ObjectClass": "River bank",
+    "Acronym": "RIVBNK",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "ROADWY": {
+    "Code": 116,
+    "ObjectClass": "Road",
+    "Acronym": "ROADWY",
+    "Attribute_A": [
+      "CATROD",
+      "CONDTN",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "RUNWAY": {
+    "Code": 117,
+    "ObjectClass": "Runway",
+    "Acronym": "RUNWAY",
+    "Attribute_A": [
+      "CATRUN",
+      "CONDTN",
+      "CONVIS",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "SNDWAV": {
+    "Code": 118,
+    "ObjectClass": "Sand waves",
+    "Acronym": "SNDWAV",
+    "Attribute_A": [
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "SEAARE": {
+    "Code": 119,
+    "ObjectClass": "Sea area / named water area",
+    "Acronym": "SEAARE",
+    "Attribute_A": [
+      "CATSEA",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "SPLARE": {
+    "Code": 120,
+    "ObjectClass": "Sea-plane landing area",
+    "Acronym": "SPLARE",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "SBDARE": {
+    "Code": 121,
+    "ObjectClass": "Seabed area",
+    "Acronym": "SBDARE",
+    "Attribute_A": [
+      "COLOUR",
+      "NATQUA",
+      "NATSUR",
+      "WATLEV",
+      "OBJNAM",
+      "NOBJNM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "SLCONS": {
+    "Code": 122,
+    "ObjectClass": "Shoreline Construction",
+    "Acronym": "SLCONS",
+    "Attribute_A": [
+      "CATSLC",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HEIGHT",
+      "HORACC",
+      "HORCLR",
+      "HORLEN",
+      "HORWID",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "SISTAT": {
+    "Code": 123,
+    "ObjectClass": "Signal station, traffic",
+    "Acronym": "SISTAT",
+    "Attribute_A": [
+      "CATSIT",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "SISTAW": {
+    "Code": 124,
+    "ObjectClass": "Signal station, warning",
+    "Acronym": "SISTAW",
+    "Attribute_A": [
+      "CATSIW",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "SILTNK": {
+    "Code": 125,
+    "ObjectClass": "Silo / tank",
+    "Acronym": "SILTNK",
+    "Attribute_A": [
+      "BUISHP",
+      "CATSIL",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "HEIGHT",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PRODCT",
+      "STATUS",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "SLOTOP": {
+    "Code": 126,
+    "ObjectClass": "Slope topline",
+    "Acronym": "SLOTOP",
+    "Attribute_A": [
+      "CATSLO",
+      "COLOUR",
+      "CONRAD",
+      "CONVIS",
+      "ELEVAT",
+      "NATCON",
+      "NATQUA",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "SLOGRD": {
+    "Code": 127,
+    "ObjectClass": "Sloping ground",
+    "Acronym": "SLOGRD",
+    "Attribute_A": [
+      "CATSLO",
+      "COLOUR",
+      "CONRAD",
+      "CONVIS",
+      "NATCON",
+      "NATQUA",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "SMCFAC": {
+    "Code": 128,
+    "ObjectClass": "Small craft facility",
+    "Acronym": "SMCFAC",
+    "Attribute_A": [
+      "CATSCF",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "SOUNDG": {
+    "Code": 129,
+    "ObjectClass": "Sounding",
+    "Acronym": "SOUNDG",
+    "Attribute_A": [
+      "EXPSOU",
+      "NOBJNM",
+      "OBJNAM",
+      "QUASOU",
+      "SOUACC",
+      "TECSOU",
+      "VERDAT",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "SPRING": {
+    "Code": 130,
+    "ObjectClass": "Spring",
+    "Acronym": "SPRING",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "SQUARE": {
+    "Code": 131,
+    "ObjectClass": "Square",
+    "Acronym": "SQUARE",
+    "Attribute_A": [
+      "CONDTN",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "STSLNE": {
+    "Code": 132,
+    "ObjectClass": "Straight territorial sea baseline",
+    "Acronym": "STSLNE",
+    "Attribute_A": [
+      "NATION"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "SUBTLN": {
+    "Code": 133,
+    "ObjectClass": "Submarine transit lane",
+    "Acronym": "SUBTLN",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "RESTRN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "SWPARE": {
+    "Code": 134,
+    "ObjectClass": "Swept Area",
+    "Acronym": "SWPARE",
+    "Attribute_A": [
+      "DRVAL1",
+      "QUASOU",
+      "SOUACC",
+      "TECSOU",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TESARE": {
+    "Code": 135,
+    "ObjectClass": "Territorial sea area",
+    "Acronym": "TESARE",
+    "Attribute_A": [
+      "NATION",
+      "RESTRN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TS_PRH": {
+    "Code": 136,
+    "ObjectClass": "Tidal stream - harmonic prediction",
+    "Acronym": "TS_PRH",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "T_MTOD",
+      "T_VAHC",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "TS_PNH": {
+    "Code": 137,
+    "ObjectClass": "Tidal stream - non-harmonic prediction",
+    "Acronym": "TS_PNH",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "T_MTOD",
+      "T_THDF",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "TS_PAD": {
+    "Code": 138,
+    "ObjectClass": "Tidal stream panel data",
+    "Acronym": "TS_PAD",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "TS_TSP"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "TS_TIS": {
+    "Code": 139,
+    "ObjectClass": "Tidal stream - time series",
+    "Acronym": "TS_TIS",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA",
+      "T_TINT",
+      "TS_TSV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "T_HMON": {
+    "Code": 140,
+    "ObjectClass": "Tide - harmonic prediction",
+    "Acronym": "T_HMON",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "T_ACWL",
+      "T_MTOD",
+      "T_VAHC",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "T_NHMN": {
+    "Code": 141,
+    "ObjectClass": "Tide - non-harmonic prediction",
+    "Acronym": "T_NHMN",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "T_ACWL",
+      "T_MTOD",
+      "T_THDF",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "T_TIMS": {
+    "Code": 142,
+    "ObjectClass": "Tidal stream - time series",
+    "Acronym": "T_TIMS",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM",
+      "T_HWLW",
+      "T_TINT",
+      "T_TSVL",
+      "TIMEND",
+      "TIMSTA",
+      "STATUS",
+      "T_ACWL"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "TIDEWY": {
+    "Code": 143,
+    "ObjectClass": "Tideway",
+    "Acronym": "TIDEWY",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "TOPMAR": {
+    "Code": 144,
+    "ObjectClass": "Top mark",
+    "Acronym": "TOPMAR",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "HEIGHT",
+      "MARSYS",
+      "STATUS",
+      "TOPSHP",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "TSELNE": {
+    "Code": 145,
+    "ObjectClass": "Traffic Separation Line",
+    "Acronym": "TSELNE",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "TSSBND": {
+    "Code": 146,
+    "ObjectClass": "Traffic Separation Scheme  Boundary",
+    "Acronym": "TSSBND",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "TSSCRS": {
+    "Code": 147,
+    "ObjectClass": "Traffic Separation Scheme Crossing",
+    "Acronym": "TSSCRS",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TSSLPT": {
+    "Code": 148,
+    "ObjectClass": "Traffic Separation Scheme  Lane part",
+    "Acronym": "TSSLPT",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "ORIENT",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TSSRON": {
+    "Code": 149,
+    "ObjectClass": "Traffic Separation Scheme  Roundabout",
+    "Acronym": "TSSRON",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TSEZNE": {
+    "Code": 150,
+    "ObjectClass": "Traffic Separation Zone",
+    "Acronym": "TSEZNE",
+    "Attribute_A": [
+      "CATTSS",
+      "DATEND",
+      "DATSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "TUNNEL": {
+    "Code": 151,
+    "ObjectClass": "Tunnel",
+    "Acronym": "TUNNEL",
+    "Attribute_A": [
+      "BURDEP",
+      "CONDTN",
+      "HORACC",
+      "HORCLR",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERCLR"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "TWRTPT": {
+    "Code": 152,
+    "ObjectClass": "Two-way route  part",
+    "Acronym": "TWRTPT",
+    "Attribute_A": [
+      "CATTRK",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "DRVAL2",
+      "ORIENT",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "TRAFIC",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "UWTROC": {
+    "Code": 153,
+    "ObjectClass": "Underwater rock / awash rock",
+    "Acronym": "UWTROC",
+    "Attribute_A": [
+      "EXPSOU",
+      "NATSUR",
+      "NATQUA",
+      "NOBJNM",
+      "OBJNAM",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "VALSOU",
+      "VERDAT",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "UNSARE": {
+    "Code": 154,
+    "ObjectClass": "Unsurveyed area",
+    "Acronym": "UNSARE",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "VEGATN": {
+    "Code": 155,
+    "ObjectClass": "Vegetation",
+    "Acronym": "VEGATN",
+    "Attribute_A": [
+      "CATVEG",
+      "CONVIS",
+      "ELEVAT",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERDAT",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "WATTUR": {
+    "Code": 156,
+    "ObjectClass": "Water turbulence",
+    "Acronym": "WATTUR",
+    "Attribute_A": [
+      "CATWAT",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "WATFAL": {
+    "Code": 157,
+    "ObjectClass": "Waterfall",
+    "Acronym": "WATFAL",
+    "Attribute_A": [
+      "CONVIS",
+      "NOBJNM",
+      "OBJNAM",
+      "VERACC",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "WEDKLP": {
+    "Code": 158,
+    "ObjectClass": "Weed/Kelp",
+    "Acronym": "WEDKLP",
+    "Attribute_A": [
+      "CATWED",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "WRECKS": {
+    "Code": 159,
+    "ObjectClass": "Wreck",
+    "Acronym": "WRECKS",
+    "Attribute_A": [
+      "CATWRK",
+      "CONRAD",
+      "CONVIS",
+      "EXPSOU",
+      "HEIGHT",
+      "NOBJNM",
+      "OBJNAM",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "VALSOU",
+      "VERACC",
+      "VERDAT",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "TS_FEB": {
+    "Code": 160,
+    "ObjectClass": "Tidal stream - flood/ebb",
+    "Acronym": "TS_FEB",
+    "Attribute_A": [
+      "CAT_TS",
+      "CURVEL",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ARCSLN": {
+    "Code": 161,
+    "ObjectClass": "Archipelagix Sea Lane",
+    "Acronym": "ARCSLN",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "ASLXIS": {
+    "Code": 162,
+    "ObjectClass": "Archipelagix Sea Lane axis",
+    "Acronym": "ASLXIS",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "NEWOBJ": {
+    "Code": 163,
+    "ObjectClass": "New object",
+    "Acronym": "NEWOBJ",
+    "Attribute_A": [
+      "CLSDEF",
+      "CLSNAM",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RESTRN",
+      "STATUS",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "SYMINS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area",
+      "Point"
+    ]
+  },
+  "M_ACCY": {
+    "Code": 300,
+    "ObjectClass": "Accuracy of data",
+    "Acronym": "M_ACCY",
+    "Attribute_A": [
+      "HORACC",
+      "POSACC",
+      "SOUACC",
+      "VERACC"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_CSCL": {
+    "Code": 301,
+    "ObjectClass": "Compilation scale of data",
+    "Acronym": "M_CSCL",
+    "Attribute_A": [
+      "CSCALE"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_COVR": {
+    "Code": 302,
+    "ObjectClass": "Coverage",
+    "Acronym": "M_COVR",
+    "Attribute_A": [
+      "CATCOV"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_HDAT": {
+    "Code": 303,
+    "ObjectClass": "Horizontal datum of data",
+    "Acronym": "M_HDAT",
+    "Attribute_A": [
+      "HORDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_HOPA": {
+    "Code": 304,
+    "ObjectClass": "Horizontal datum shift parameters",
+    "Acronym": "M_HOPA",
+    "Attribute_A": [
+      "HORDAT",
+      "SHIPAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_NPUB": {
+    "Code": 305,
+    "ObjectClass": "Nautical publication information",
+    "Acronym": "M_NPUB",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "PUBREF",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_NSYS": {
+    "Code": 306,
+    "ObjectClass": "Navigational system of marks",
+    "Acronym": "M_NSYS",
+    "Attribute_A": [
+      "MARSYS",
+      "ORIENT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_PROD": {
+    "Code": 307,
+    "ObjectClass": "Production information",
+    "Acronym": "M_PROD",
+    "Attribute_A": [
+      "AGENCY",
+      "CPDATE",
+      "NATION",
+      "NMDATE",
+      "PRCTRY"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_QUAL": {
+    "Code": 308,
+    "ObjectClass": "Quality of data",
+    "Acronym": "M_QUAL",
+    "Attribute_A": [
+      "CATQUA",
+      "CATZOC",
+      "DRVAL1",
+      "DRVAL2",
+      "POSACC",
+      "SOUACC",
+      "SUREND",
+      "SURSTA",
+      "TECSOU",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_SDAT": {
+    "Code": 309,
+    "ObjectClass": "Sounding datum",
+    "Acronym": "M_SDAT",
+    "Attribute_A": [
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_SREL": {
+    "Code": 310,
+    "ObjectClass": "Survey reliability",
+    "Acronym": "M_SREL",
+    "Attribute_A": [
+      "QUAPOS",
+      "QUASOU",
+      "SCVAL1",
+      "SCVAL2",
+      "SDISMN",
+      "SDISMX",
+      "SURATH",
+      "SUREND",
+      "SURSTA",
+      "SURTYP",
+      "TECSOU"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_UNIT": {
+    "Code": 311,
+    "ObjectClass": "Units of measurement of data",
+    "Acronym": "M_UNIT",
+    "Attribute_A": [
+      "DUNITS",
+      "HUNITS",
+      "PUNITS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "M_VDAT": {
+    "Code": 312,
+    "ObjectClass": "Vertical datum of data",
+    "Acronym": "M_VDAT",
+    "Attribute_A": [
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "C_AGGR": {
+    "Code": 400,
+    "ObjectClass": "Aggregation",
+    "Acronym": "C_AGGR",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "C",
+    "Primitives": []
+  },
+  "C_ASSO": {
+    "Code": 401,
+    "ObjectClass": "Association",
+    "Acronym": "C_ASSO",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "C",
+    "Primitives": []
+  },
+  "C_STAC": {
+    "Code": 402,
+    "ObjectClass": "Stacked on/stacked under",
+    "Acronym": "C_STAC",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "C",
+    "Primitives": []
+  },
+  "$AREAS": {
+    "Code": 500,
+    "ObjectClass": "Cartographic area",
+    "Acronym": "$AREAS",
+    "Attribute_A": [
+      "COLOUR",
+      "ORIENT",
+      "$SCODE",
+      "$TINTS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "$",
+    "Primitives": []
+  },
+  "$LINES": {
+    "Code": 501,
+    "ObjectClass": "Cartographic line",
+    "Acronym": "$LINES",
+    "Attribute_A": [
+      "$SCODE"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "$",
+    "Primitives": []
+  },
+  "$CSYMB": {
+    "Code": 502,
+    "ObjectClass": "Cartographic symbol",
+    "Acronym": "$CSYMB",
+    "Attribute_A": [
+      "ORIENT",
+      "$SCALE",
+      "$SCODE"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "$",
+    "Primitives": []
+  },
+  "$COMPS": {
+    "Code": 503,
+    "ObjectClass": "Compass",
+    "Acronym": "$COMPS",
+    "Attribute_A": [
+      "$CSIZE",
+      "RYRMGV",
+      "VALACM",
+      "VALMAG"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "$",
+    "Primitives": []
+  },
+  "$TEXTS": {
+    "Code": 504,
+    "ObjectClass": "Text",
+    "Acronym": "$TEXTS",
+    "Attribute_A": [
+      "$CHARS",
+      "COLOUR",
+      "$JUSTH",
+      "$JUSTV",
+      "$NTXST",
+      "$SPACE",
+      "$TXSTR"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "$",
+    "Primitives": []
+  },
+  "": {
+    "Code": 0,
+    "ObjectClass": "###Codes in the 20xxx and 21xxx range come from past s57objectclasses_aml.csv (Additional_Military_Layers)",
+    "Acronym": "",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "",
+    "Primitives": []
+  },
+  "achbrt": {
+    "Code": 17000,
+    "ObjectClass": "Anchor berth",
+    "Acronym": "achbrt",
+    "Attribute_A": [
+      "catach",
+      "clsdng",
+      "comctn",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "RADIUS",
+      "restrn",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "achare": {
+    "Code": 17001,
+    "ObjectClass": "Anchorage area",
+    "Acronym": "achare",
+    "Attribute_A": [
+      "catach",
+      "clsdng",
+      "comctn",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "restrn",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "canbnk": {
+    "Code": 17002,
+    "ObjectClass": "Canal bank",
+    "Acronym": "canbnk",
+    "Attribute_A": [
+      "catbnk",
+      "CONRAD",
+      "DATEND",
+      "DATSTA",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "depare": {
+    "Code": 17003,
+    "ObjectClass": "Depth area",
+    "Acronym": "depare",
+    "Attribute_A": [
+      "DRVAL1",
+      "DRVAL2",
+      "eleva1",
+      "eleva2",
+      "wtwdis",
+      "QUASOU",
+      "SOUACC",
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "dismar": {
+    "Code": 17004,
+    "ObjectClass": "Distance mark",
+    "Acronym": "dismar",
+    "Attribute_A": [
+      "catdis",
+      "wtwdis",
+      "unlocd",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "resare": {
+    "Code": 17005,
+    "ObjectClass": "Restricted area",
+    "Acronym": "resare",
+    "Attribute_A": [
+      "CATREA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "restrn",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "rivbnk": {
+    "Code": 17006,
+    "ObjectClass": "River bank",
+    "Acronym": "rivbnk",
+    "Attribute_A": [
+      "catbnk",
+      "CONRAD",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "sistat": {
+    "Code": 17007,
+    "ObjectClass": "Signal station traffic",
+    "Acronym": "sistat",
+    "Attribute_A": [
+      "catsit",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "dirimp",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "sistaw": {
+    "Code": 17008,
+    "ObjectClass": "Signal station warning",
+    "Acronym": "sistaw",
+    "Attribute_A": [
+      "catsiw",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "topmar": {
+    "Code": 17009,
+    "ObjectClass": "Top Mark",
+    "Acronym": "topmar",
+    "Attribute_A": [
+      "COLOUR",
+      "COLPAT",
+      "HEIGHT",
+      "marsys",
+      "STATUS",
+      "TOPSHP",
+      "VERACC",
+      "verdat",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "berths": {
+    "Code": 17010,
+    "ObjectClass": "Berth berths",
+    "Acronym": "berths",
+    "Attribute_A": [
+      "catbrt",
+      "clsdng",
+      "comctn",
+      "DATEND",
+      "DATSTA",
+      "DRVAL1",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "QUASOU",
+      "SOUACC",
+      "STATUS",
+      "trshgd",
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "bridge": {
+    "Code": 17011,
+    "ObjectClass": "Bridge",
+    "Acronym": "bridge",
+    "Attribute_A": [
+      "catbrg",
+      "comctn",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "HORACC",
+      "HORCLR",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "TIMEND",
+      "TIMSTA",
+      "VERACC",
+      "VERCCL",
+      "VERCLR",
+      "VERCOP",
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line",
+      "Area"
+    ]
+  },
+  "cblohd": {
+    "Code": 17012,
+    "ObjectClass": "Cable overhead",
+    "Acronym": "cblohd",
+    "Attribute_A": [
+      "CATCBL",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "ICEFAC",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "VERACC",
+      "VERCLR",
+      "VERCSA",
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg",
+      "RECDAT",
+      "RECIND"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "feryrt": {
+    "Code": 17013,
+    "ObjectClass": "Ferry route",
+    "Acronym": "feryrt",
+    "Attribute_A": [
+      "catfry",
+      "comctn",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "hrbare": {
+    "Code": 17014,
+    "ObjectClass": "Harbour Area",
+    "Acronym": "hrbare",
+    "Attribute_A": [
+      "cathbr",
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "unlocd"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "hrbfac": {
+    "Code": 17015,
+    "ObjectClass": "Harbour Facilities",
+    "Acronym": "hrbfac",
+    "Attribute_A": [
+      "cathaf",
+      "CONDTN",
+      "DATEND",
+      "DATSTA",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "lokbsn": {
+    "Code": 17016,
+    "ObjectClass": "Lock Basin",
+    "Acronym": "lokbsn",
+    "Attribute_A": [
+      "HORACC",
+      "horcll",
+      "horclw",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "rdocal": {
+    "Code": 17017,
+    "ObjectClass": "Radio calling-in point",
+    "Acronym": "rdocal",
+    "Attribute_A": [
+      "catcom",
+      "comctn",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "TRAFIC",
+      "dirimp"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "m_nsys": {
+    "Code": 17018,
+    "ObjectClass": "Navigational system of marks",
+    "Acronym": "m_nsys",
+    "Attribute_A": [
+      "marsys",
+      "ORIENT"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "notmrk": {
+    "Code": 17050,
+    "ObjectClass": "Notice mark",
+    "Acronym": "notmrk",
+    "Attribute_A": [
+      "catnmk",
+      "fnctnm",
+      "dirimp",
+      "disipd",
+      "disipu",
+      "disbk1",
+      "disbk2",
+      "addmrk",
+      "marsys",
+      "ORIENT",
+      "CONDTN",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "wtwaxs": {
+    "Code": 17051,
+    "ObjectClass": "Waterway axis",
+    "Acronym": "wtwaxs",
+    "Attribute_A": [
+      "catccl",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "wtwprf": {
+    "Code": 17052,
+    "ObjectClass": "Waterway profile",
+    "Acronym": "wtwprf",
+    "Attribute_A": [
+      "wtwdis",
+      "HEIGHT",
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Line"
+    ]
+  },
+  "brgare": {
+    "Code": 20536,
+    "ObjectClass": "Iceberg Area",
+    "Acronym": "brgare",
+    "Attribute_A": [
+      "icebnm",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "bunsta": {
+    "Code": 17054,
+    "ObjectClass": "Bunker station",
+    "Acronym": "bunsta",
+    "Attribute_A": [
+      "bunves",
+      "catbun",
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "TIMEND",
+      "TIMSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "comare": {
+    "Code": 17055,
+    "ObjectClass": "Communication Area",
+    "Acronym": "comare",
+    "Attribute_A": [
+      "catcom",
+      "COMCHA",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "hrbbsn": {
+    "Code": 17056,
+    "ObjectClass": "Harbour Basin",
+    "Acronym": "hrbbsn",
+    "Attribute_A": [
+      "HORACC",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "lokare": {
+    "Code": 17057,
+    "ObjectClass": "Lock area",
+    "Acronym": "lokare",
+    "Attribute_A": [
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "lkbspt": {
+    "Code": 17058,
+    "ObjectClass": "Lock basin part",
+    "Acronym": "lkbspt",
+    "Attribute_A": [
+      "HORACC",
+      "horcll",
+      "horclw",
+      "HORLEN",
+      "HORWID",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "prtare": {
+    "Code": 17059,
+    "ObjectClass": "Port Area",
+    "Acronym": "prtare",
+    "Attribute_A": [
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "unlocd"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "bcnwtw": {
+    "Code": 17060,
+    "ObjectClass": "Beacon water-way",
+    "Acronym": "bcnwtw",
+    "Attribute_A": [
+      "BCNSHP",
+      "catwwm",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "dirimp",
+      "ELEVAT",
+      "HEIGHT",
+      "marsys",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERACC",
+      "verdat",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "boywtw": {
+    "Code": 17061,
+    "ObjectClass": "Buoy water-way",
+    "Acronym": "boywtw",
+    "Attribute_A": [
+      "BOYSHP",
+      "catwwm",
+      "COLOUR",
+      "COLPAT",
+      "CONDTN",
+      "CONRAD",
+      "CONVIS",
+      "DATEND",
+      "DATSTA",
+      "marsys",
+      "NATCON",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "refdmp": {
+    "Code": 17062,
+    "ObjectClass": "Refuse dump",
+    "Acronym": "refdmp",
+    "Attribute_A": [
+      "catrfd",
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "rtplpt": {
+    "Code": 17063,
+    "ObjectClass": "Route planning point",
+    "Acronym": "rtplpt",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "termnl": {
+    "Code": 17064,
+    "ObjectClass": "Terminal",
+    "Acronym": "termnl",
+    "Attribute_A": [
+      "cattml",
+      "comctn",
+      "NOBJNM",
+      "OBJNAM",
+      "STATUS",
+      "TIMEND",
+      "TIMSTA",
+      "trshgd",
+      "unlocd"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "trnbsn": {
+    "Code": 17065,
+    "ObjectClass": "Turning basin",
+    "Acronym": "trnbsn",
+    "Attribute_A": [
+      "HORCLR",
+      "NOBJNM",
+      "STATUS",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "SCAMIN",
+      "TXTDSC",
+      "updmsg"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "atsctl": {
+    "Code": 20484,
+    "ObjectClass": "ATS Route Centreline",
+    "Acronym": "atsctl",
+    "Attribute_A": [
+      "authty",
+      "linech",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "airres + catasr": {
+    "Code": 20485,
+    "ObjectClass": "Airspace Restriction",
+    "Acronym": "airres + catasr",
+    "Attribute_A": [
+      "authty",
+      "catasr",
+      "linech",
+      "maxalt",
+      "maxftl",
+      "minalt",
+      "minftl",
+      "NOBJNM",
+      "OBJNAM",
+      "HUNITS",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "imgare": {
+    "Code": 20486,
+    "ObjectClass": "Area of Imagery Coverage",
+    "Acronym": "imgare",
+    "Attribute_A": [
+      "bearng",
+      "catimg",
+      "ELEVAT",
+      "HUNITS",
+      "orgntr",
+      "SUREND",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "bchext": {
+    "Code": 20487,
+    "ObjectClass": "Beach Exit",
+    "Acronym": "bchext",
+    "Attribute_A": [
+      "ccmidx",
+      "exitus",
+      "gradnt",
+      "HORCLR",
+      "HORLEN",
+      "HORWID",
+      "HUNITS",
+      "VERCSA",
+      "wbrcap"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "L"
+    ]
+  },
+  "bchprf": {
+    "Code": 20488,
+    "ObjectClass": "Beach Profile",
+    "Acronym": "bchprf",
+    "Attribute_A": [
+      "bearng",
+      "gradnt",
+      "SUREND"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "bchare": {
+    "Code": 20489,
+    "ObjectClass": "Beach Survey",
+    "Acronym": "bchare",
+    "Attribute_A": [
+      "accres",
+      "brktyp",
+      "ccmidx",
+      "dgmrlf",
+      "HORLEN",
+      "HORWID",
+      "HUNITS",
+      "quabch",
+      "orgntr",
+      "srfhgt",
+      "srfzne",
+      "stbacv",
+      "SUREND",
+      "SURSTA",
+      "swlhgt",
+      "tdlrng",
+      "tdltyp"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P   A   "
+    ]
+  },
+  "bedare": {
+    "Code": 20490,
+    "ObjectClass": "Bedrock area",
+    "Acronym": "bedare",
+    "Attribute_A": [
+      "N/A"
+    ],
+    "Attribute_B": [
+      "N/A"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "botmft + catbot": {
+    "Code": 20491,
+    "ObjectClass": "Bottom Feature",
+    "Acronym": "botmft + catbot",
+    "Attribute_A": [
+      "catbot",
+      "DUNITS",
+      "gradnt",
+      "HORLEN",
+      "HORWID",
+      "HUNITS",
+      "migspd",
+      "migdir",
+      "NOBJNM",
+      "OBJNAM",
+      "ORIENT",
+      "soudat",
+      "stfotn",
+      "VALSOU",
+      "VERLEN",
+      "WATLEV",
+      "wavlen"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "L",
+      "A"
+    ]
+  },
+  "centre": {
+    "Code": 20492,
+    "ObjectClass": "Centre Line",
+    "Acronym": "centre",
+    "Attribute_A": [
+      "N/A"
+    ],
+    "Attribute_B": [
+      "N/A"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "histob": {
+    "Code": 20494,
+    "ObjectClass": "Contact History",
+    "Acronym": "histob",
+    "Attribute_A": [
+      "orgntr",
+      "surdat",
+      "SUREND"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "ctlasp + catcas": {
+    "Code": 20495,
+    "ObjectClass": "Controlled airspace",
+    "Acronym": "ctlasp + catcas",
+    "Attribute_A": [
+      "authty",
+      "catcas",
+      "caircd",
+      "linech",
+      "maxalt",
+      "maxftl",
+      "minalt",
+      "minftl",
+      "NOBJNM",
+      "OBJNAM",
+      "HUNITS",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L",
+      "A"
+    ]
+  },
+  "divloc": {
+    "Code": 20496,
+    "ObjectClass": "Diving Location",
+    "Acronym": "divloc",
+    "Attribute_A": [
+      "depact",
+      "divact",
+      "DUNITS",
+      "OBJNAM",
+      "NOBJNM",
+      "timeyr",
+      "watclr"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "watloc": {
+    "Code": 20497,
+    "ObjectClass": "Drinking Water Location",
+    "Acronym": "watloc",
+    "Attribute_A": [
+      "N/A"
+    ],
+    "Attribute_B": [
+      "N/A"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "drpzne": {
+    "Code": 20498,
+    "ObjectClass": "Drop Zone",
+    "Acronym": "drpzne",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "envare": {
+    "Code": 20499,
+    "ObjectClass": "Environmentally Sensitive Area",
+    "Acronym": "envare",
+    "Attribute_A": [
+      "authty",
+      "legsta",
+      "OBJNAM",
+      "NOBJNM",
+      "PEREND",
+      "PERSTA"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A",
+      "P"
+    ]
+  },
+  "fshare": {
+    "Code": 20500,
+    "ObjectClass": "Fishing Activity Area",
+    "Acronym": "fshare",
+    "Attribute_A": [
+      "catfsh",
+      "STATUS",
+      "timeyr"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "iscour": {
+    "Code": 20501,
+    "ObjectClass": "Impact Scour",
+    "Acronym": "iscour",
+    "Attribute_A": [
+      "datfir",
+      "datlst",
+      "depwat",
+      "DUNITS",
+      "gendep",
+      "HORLEN",
+      "HORWID",
+      "HUNITS",
+      "NATQUA",
+      "NATSUR",
+      "NOBJNM",
+      "OBJNAM",
+      "orcard",
+      "ORIENT",
+      "QUASOU",
+      "senfir",
+      "senlst",
+      "sonsig",
+      "sorfir",
+      "sorlst",
+      "SOUACC",
+      "soudat",
+      "STATUS",
+      "TECSOU",
+      "VALSOU",
+      "VERLEN",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "lngare": {
+    "Code": 20502,
+    "ObjectClass": "Landing Area",
+    "Acronym": "lngare",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "lndplc": {
+    "Code": 20503,
+    "ObjectClass": "Landing Place",
+    "Acronym": "lndplc",
+    "Attribute_A": [
+      "gradnt",
+      "STATUS",
+      "wbrcap"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "lndpnt": {
+    "Code": 20504,
+    "ObjectClass": "Landing Point",
+    "Acronym": "lndpnt",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "lndste": {
+    "Code": 20505,
+    "ObjectClass": "Landing Site",
+    "Acronym": "lndste",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "lndstp": {
+    "Code": 20506,
+    "ObjectClass": "Landing Strip",
+    "Acronym": "lndstp",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "lndzne": {
+    "Code": 20507,
+    "ObjectClass": "Landing Zone",
+    "Acronym": "lndzne",
+    "Attribute_A": [
+      "apprch",
+      "extdes",
+      "lndcon",
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "marman + catmma": {
+    "Code": 20508,
+    "ObjectClass": "Marine management area",
+    "Acronym": "marman + catmma",
+    "Attribute_A": [
+      "actper",
+      "authty",
+      "catmma",
+      "identy",
+      "linech",
+      "NOBJNM",
+      "OBJNAM",
+      "NATION",
+      "spcies",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "msiare": {
+    "Code": 20509,
+    "ObjectClass": "Maritime Safety Information area",
+    "Acronym": "msiare",
+    "Attribute_A": [
+      "catmsi",
+      "condet",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "mcmare": {
+    "Code": 20510,
+    "ObjectClass": "MCM Area",
+    "Acronym": "mcmare",
+    "Attribute_A": [
+      "mhclas",
+      "milden",
+      "nomden"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "mexasp + catmea": {
+    "Code": 20511,
+    "ObjectClass": "Military exercise airspace",
+    "Acronym": "mexasp + catmea",
+    "Attribute_A": [
+      "actper",
+      "authty",
+      "catmea",
+      "linech",
+      "maxalt",
+      "maxftl",
+      "minalt",
+      "minftl",
+      "NOBJNM",
+      "OBJNAM",
+      "HUNITS",
+      "VERDAT"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "patare + catpat": {
+    "Code": 20513,
+    "ObjectClass": "Patrol area",
+    "Acronym": "patare + catpat",
+    "Attribute_A": [
+      "authty",
+      "catpat",
+      "identy",
+      "linech",
+      "NOBJNM",
+      "OBJNAM",
+      "NATION",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "qroute": {
+    "Code": 20514,
+    "ObjectClass": "Q-Route Leg",
+    "Acronym": "qroute",
+    "Attribute_A": [
+      "actper",
+      "dnbear",
+      "lftwid",
+      "NATION",
+      "NOBJNM",
+      "OBJNAM",
+      "rclass",
+      "rgtwid",
+      "STATUS",
+      "TRAFIC",
+      "HUNITS",
+      "upbear"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "rdoare": {
+    "Code": 20515,
+    "ObjectClass": "Radio broadcast area",
+    "Acronym": "rdoare",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "regasp": {
+    "Code": 20516,
+    "ObjectClass": "Regulated airspace",
+    "Acronym": "regasp",
+    "Attribute_A": [
+      "N/A"
+    ],
+    "Attribute_B": [
+      "N/A"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "sedlay": {
+    "Code": 20517,
+    "ObjectClass": "Geological Layer",
+    "Acronym": "sedlay",
+    "Attribute_A": [
+      "attutn",
+      "bulkdn",
+      "COLOUR",
+      "deplyr",
+      "dttdep",
+      "dttnum",
+      "DUNITS",
+      "gascon",
+      "grnsiz",
+      "hfbmls",
+      "laynum",
+      "lfbmls",
+      "mgstyp",
+      "reflco",
+      "migspd",
+      "migdir",
+      "msstrg",
+      "natsed",
+      "NATQUA",
+      "porsty",
+      "revebn",
+      "revfqy",
+      "revgan",
+      "samret",
+      "sndvel",
+      "snrflc",
+      "soudat",
+      "WATLEV",
+      "wbrcap"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "seiare": {
+    "Code": 20518,
+    "ObjectClass": "Seismic Activity Area",
+    "Acronym": "seiare",
+    "Attribute_A": [
+      "bearng",
+      "ricsca"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "senanm": {
+    "Code": 20519,
+    "ObjectClass": "Sensor Anomaly",
+    "Acronym": "senanm",
+    "Attribute_A": [
+      "datfir",
+      "datlst",
+      "DUNITS",
+      "gendep",
+      "HUNITS",
+      "madsig",
+      "magany",
+      "magint",
+      "NOBJNM",
+      "OBJNAM",
+      "orcard",
+      "ORIENT",
+      "QUASOU",
+      "scrdim",
+      "senfir",
+      "senlst",
+      "sonsig",
+      "sorfir",
+      "sorlst",
+      "soudat",
+      "SOUACC",
+      "STATUS",
+      "TECSOU",
+      "VALSOU",
+      "WATLEV"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "shlloc": {
+    "Code": 20520,
+    "ObjectClass": "Shelter Location",
+    "Acronym": "shlloc",
+    "Attribute_A": [
+      "OBJNAM",
+      "NOBJNM",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "seddep": {
+    "Code": 20521,
+    "ObjectClass": "Superficial Sediment Deposits",
+    "Acronym": "seddep",
+    "Attribute_A": [
+      "N/A"
+    ],
+    "Attribute_B": [
+      "N/A"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "trfare": {
+    "Code": 20522,
+    "ObjectClass": "Trafficability Area",
+    "Acronym": "trfare",
+    "Attribute_A": [
+      "cattrf"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "twlscr": {
+    "Code": 20523,
+    "ObjectClass": "Trawl Scours",
+    "Acronym": "twlscr",
+    "Attribute_A": [
+      "HUNITS",
+      "HORWID",
+      "ORIENT"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L",
+      "A"
+    ]
+  },
+  "turnpt": {
+    "Code": 20524,
+    "ObjectClass": "Turning point",
+    "Acronym": "turnpt",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "viewpt": {
+    "Code": 20525,
+    "ObjectClass": "Viewpoint",
+    "Acronym": "viewpt",
+    "Attribute_A": [
+      "bearng",
+      "discon",
+      "DUNITS",
+      "shpspd",
+      "snrfrq",
+      "snrrsc",
+      "twdbdp"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "btdare": {
+    "Code": 20526,
+    "ObjectClass": "Bottom Tactical Data Area",
+    "Acronym": "btdare",
+    "Attribute_A": [
+      "mntden",
+      "undmnr",
+      "umnrwb",
+      "umrwob"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "bprare": {
+    "Code": 20527,
+    "ObjectClass": "Burial Probability Area",
+    "Acronym": "bprare",
+    "Attribute_A": [
+      "brmchm",
+      "brperd",
+      "brprob",
+      "tgrfwt"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "lsrare": {
+    "Code": 20528,
+    "ObjectClass": "Leisure Activity Area",
+    "Acronym": "lsrare",
+    "Attribute_A": [
+      "lsract",
+      "timeyr"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "pfdare": {
+    "Code": 20529,
+    "ObjectClass": "Performance Data Area",
+    "Acronym": "pfdare",
+    "Attribute_A": [
+      "clperc",
+      "clprob",
+      "csprob",
+      "cswidt",
+      "dsprob",
+      "dtprob"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "resloc": {
+    "Code": 20530,
+    "ObjectClass": "Resource Location",
+    "Acronym": "resloc",
+    "Attribute_A": [
+      "typres",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "rkdare": {
+    "Code": 20531,
+    "ObjectClass": "Risk Data Area",
+    "Acronym": "rkdare",
+    "Attribute_A": [
+      "conlev",
+      "numrmn",
+      "prbrmn",
+      "rmnlmn",
+      "sminth",
+      "znecol"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "navaid + CATROS": {
+    "Code": 20532,
+    "ObjectClass": "Navigation system (NAVAID)",
+    "Acronym": "navaid + CATROS",
+    "Attribute_A": [
+      "actper",
+      "CALSGN",
+      "CATROS",
+      "COMCHA",
+      "NOBJNM",
+      "OBJNAM",
+      "SIGFRQ"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "intwtr": {
+    "Code": 20533,
+    "ObjectClass": "Internal Waters Area ",
+    "Acronym": "intwtr",
+    "Attribute_A": [
+      "linech",
+      "NATION",
+      "RESTRN",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "seaice": {
+    "Code": 20534,
+    "ObjectClass": "Sea Ice",
+    "Acronym": "seaice",
+    "Attribute_A": [
+      "iceact",
+      "icecvt",
+      "icesod",
+      "icemax",
+      "icemin",
+      "icerdv",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "iceadv": {
+    "Code": 20535,
+    "ObjectClass": "Ice Advisory Area",
+    "Acronym": "iceadv",
+    "Attribute_A": [
+      "iceadc",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "lndice": {
+    "Code": 20537,
+    "ObjectClass": "Land Ice",
+    "Acronym": "lndice",
+    "Attribute_A": [
+      "icelnd",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "icelin": {
+    "Code": 20538,
+    "ObjectClass": "Ice Line",
+    "Acronym": "icelin",
+    "Attribute_A": [
+      "icelnc",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "icerte": {
+    "Code": 20539,
+    "ObjectClass": "Ice Route",
+    "Acronym": "icerte",
+    "Attribute_A": [
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "icepol": {
+    "Code": 20540,
+    "ObjectClass": "Ice Polynya",
+    "Acronym": "icepol",
+    "Attribute_A": [
+      "icepst",
+      "icepty",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "icelea": {
+    "Code": 20541,
+    "ObjectClass": "Ice Lead",
+    "Acronym": "icelea",
+    "Attribute_A": [
+      "icelty",
+      "icelst",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L",
+      "A"
+    ]
+  },
+  "icebrg": {
+    "Code": 20542,
+    "ObjectClass": "Iceberg",
+    "Acronym": "icebrg",
+    "Attribute_A": [
+      "icebsz",
+      "icebsh",
+      "icebdr",
+      "icebsp",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "icemov": {
+    "Code": 20543,
+    "ObjectClass": "Ice Movement",
+    "Acronym": "icemov",
+    "Attribute_A": [
+      "icebsp",
+      "icebdr",
+      "NOBJNM",
+      "OBJNAM"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "tfcrte": {
+    "Code": 20544,
+    "ObjectClass": "Traffic route",
+    "Acronym": "tfcrte",
+    "Attribute_A": [
+      "linech",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "traden",
+      "TRAFIC",
+      "typshp"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "L"
+    ]
+  },
+  "u_defd": {
+    "Code": 20717,
+    "ObjectClass": "User Defined",
+    "Acronym": "u_defd",
+    "Attribute_A": [
+      "txtdes"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P",
+      "L",
+      "A"
+    ]
+  },
+  "smalbo": {
+    "Code": 20718,
+    "ObjectClass": "Small Bottom Object",
+    "Acronym": "smalbo",
+    "Attribute_A": [
+      "blndzn",
+      "brmchm",
+      "brpctg",
+      "COLOUR",
+      "comsys",
+      "datfir",
+      "datlst",
+      "depwat",
+      "DUNITS",
+      "gendep",
+      "HORLEN",
+      "HORWID",
+      "HUNITS",
+      "incltn",
+      "layptm",
+      "layrfn",
+      "laytim",
+      "madsig",
+      "magany",
+      "magint",
+      "minern",
+      "miscls",
+      "miscom",
+      "misdat",
+      "misnme",
+      "mnhsys",
+      "mnimnc",
+      "mnimnt",
+      "mnssys",
+      "mulcon",
+      "mwdcrn",
+      "NATCON",
+      "navsys",
+      "notfnd",
+      "nmprob",
+      "objtrn",
+      "objshp onsonr",
+      "orbobn",
+      "orgdat",
+      "orgntr",
+      "ORIENT",
+      "QUASOU",
+      "scrdim",
+      "senfir",
+      "senlst",
+      "snrflc",
+      "soudat",
+      "stacon",
+      "surdat",
+      "SUREND",
+      "tarstg",
+      "TECSOU",
+      "unwrfm",
+      "VERLEN"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "P"
+    ]
+  },
+  "m_conf + catcnf": {
+    "Code": 21484,
+    "ObjectClass": "Completeness for the product specification",
+    "Acronym": "m_conf + catcnf",
+    "Attribute_A": [
+      "catcnf"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "M",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "m_clas": {
+    "Code": 21485,
+    "ObjectClass": "Security Classification Information",
+    "Acronym": "m_clas",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "M",
+    "Primitives": [
+      "A"
+    ]
+  },
+  "m_vers": {
+    "Code": 21486,
+    "ObjectClass": "Vertical Datum Shift Area",
+    "Acronym": "m_vers",
+    "Attribute_A": [
+      "vershf"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "M",
+    "Primitives": [
+      "P",
+      "A"
+    ]
+  },
+  "m_line": {
+    "Code": 21487,
+    "ObjectClass": "Defined Straight Lines",
+    "Acronym": "m_line",
+    "Attribute_A": [
+      "linech"
+    ],
+    "Attribute_B": [
+      "AGENCY",
+      "CSCALE",
+      "elvacc",
+      "errell",
+      "HORACC",
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "PICREP",
+      "POSACC",
+      "PRCTRY",
+      "PUBREF",
+      "RECDAT",
+      "QUAPOS",
+      "seccvt",
+      "secido",
+      "secown",
+      "secpmk",
+      "SORDAT",
+      "SORIND",
+      "TXTDSC",
+      "VERACC"
+    ],
+    "Attribute_C": [],
+    "Class": "M",
+    "Primitives": [
+      "N/A"
+    ]
+  }
+}

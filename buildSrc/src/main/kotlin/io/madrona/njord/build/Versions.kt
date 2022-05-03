@@ -27,7 +27,6 @@ object Deps {
     const val ktorJson = "io.ktor:ktor-serialization:${Versions.ktorVersion}"
 
     const val jacksonYaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${Versions.jacksonVersion}"
-    const val jacksonCsv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${Versions.jacksonVersion}"
     const val postgres = "org.postgresql:postgresql:42.2.23.jre7"
     const val HikariCP = "com.zaxxer:HikariCP:5.0.0"
 

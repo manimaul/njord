@@ -146,17 +146,24 @@
         "y": 48,
         "pixelRatio": 1
     },
-    "sound_violet": {
+    "point_blk": {
         "width": 24,
         "height": 24,
         "x": 24,
         "y": 48,
         "pixelRatio": 1
     },
-    "super_buoy_blk": {
+    "sound_violet": {
         "width": 24,
         "height": 24,
         "x": 48,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "super_buoy_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
         "y": 48,
         "pixelRatio": 1
     }

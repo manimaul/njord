@@ -60,19 +60,19 @@ class ChartServerApp {
                 ChartCatalogHandler(),
 
                 //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=8&name=BOYSPP'
-                //curl -v -H "Content-Type: application/json" --request POST --data-binary "@/Users/williamkamp/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=17&name=BOYSPP'
+                //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=17&name=BOYSPP'
                 //curl -v 'http://localhost:9000/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
                 GeoJsonHandler(),
 
                 // curl -v "http://localhost:9000/v1/tile/0/0/0"
                 TileHandler(),
 
-                // http://localhost:9000/v1/icon/day/ACHARE02.png
+                // http://localhost:9000/v1/icon/day/can_green.png
                 IconHandler(),
 
                 // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"
-                // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.json | jq
-                // curl http://localhost:9000/v1/content/sprites/rastersymbols-day.png
+                // curl http://localhost:9000/v1/content/sprites/day_sprites.json | jq
+                // curl http://localhost:9000/v1/content/sprites/day_sprites.png
                 // http://localhost:9000/v1/content/upload.html
                 StaticContentHandler(),
 

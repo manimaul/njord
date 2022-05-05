@@ -1,7 +1,7 @@
 package io.madrona.njord.ext
 
+import io.madrona.njord.Theme
 import io.madrona.njord.model.Depth
-import io.madrona.njord.model.StyleColor
 import kotlin.test.*
 
 internal class EnumExtTest {
@@ -20,12 +20,12 @@ internal class EnumExtTest {
 
     @Test
     fun testLetFromStrings() {
-        letFromStrings("meters", "day") { depths: Depth, color: StyleColor ->
+        letFromStrings("meters", "day") { depths: Depth, theme: Theme ->
             assertEquals(Depth.METERS, depths)
-            assertEquals(StyleColor.DAY, color)
+            assertEquals(Theme.Day, theme)
         } ?: fail()
 
-        val passed = letFromStrings<Depth, StyleColor, Boolean>("meters", "foo") { _, _ ->
+        val passed = letFromStrings<Depth, Theme, Boolean>("meters", "foo") { _, _ ->
             false
         } ?: true
         assertTrue(passed)

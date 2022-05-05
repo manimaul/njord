@@ -15,6 +15,7 @@ import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.layers.SymbolLayerable
 import io.madrona.njord.model.ColorLibrary
+import io.madrona.njord.util.SpriteSheet
 import io.madrona.njord.util.ZFinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,8 @@ object Singletons{
     val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val config = ChartsConfig()
+
+    val spriteSheet = SpriteSheet()
 
     val ds: DataSource by lazy {
         val hc = HikariConfig()

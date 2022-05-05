@@ -5120,7 +5120,7 @@
   },
   "TSSBND": {
     "Code": 146,
-    "ObjectClass": "Traffic Separation Scheme  Boundary",
+    "ObjectClass": "Traffic Separation Scheme Boundary",
     "Acronym": "TSSBND",
     "Attribute_A": [
       "CATTSS",
@@ -7427,7 +7427,7 @@
       "Area"
     ]
   },
-  "trnbsn": {
+  "trnbsntrnbsn": {
     "Code": 17065,
     "ObjectClass": "Turning basin",
     "Acronym": "trnbsn",

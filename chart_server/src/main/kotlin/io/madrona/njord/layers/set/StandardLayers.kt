@@ -1,5 +1,7 @@
 package io.madrona.njord.layers.set
 
+import io.madrona.njord.layers.Layerable
+
 /**
  * airport / airfield (AIRARE)
  * anchor berth (ACHBRT)
@@ -109,10 +111,6 @@ package io.madrona.njord.layers.set
  * traffic line
  * general navaid
  */
-class StandardLayers(
-    baseLayers: BaseLayers = BaseLayers()
-) {
-    val layers = baseLayers.layers + sequenceOf(
-
-    )
+class StandardLayers {
+    val layers = sequenceOf<Layerable>()
 }

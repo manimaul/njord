@@ -2,6 +2,9 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * https://s57dev.mxmariner.com/v1/app/control/symbols/LNDARE
+ */
 class Lndare : Layerable {
     override val key = "LNDARE"
 
@@ -30,6 +33,19 @@ class Lndare : Layerable {
                 paint = Paint(
                     lineColor = options.color.from("CSTLN"),
                     lineWidth = 1.5f
+                )
+            ),
+            Layer(
+                id = "${key}_point",
+                type = LayerType.SYMBOL,
+                sourceLayer = key,
+                filter = listOf(Filters.any, Filters.eqTypePoint),
+                layout = Layout(
+                    symbolPlacement = Placement.POINT,
+                    iconImage = listOf("get", "SY"),
+                    iconAnchor = Anchor.CENTER,
+                    iconAllowOverlap = true,
+                    iconKeepUpright = false,
                 )
             )
         )

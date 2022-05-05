@@ -69,101 +69,122 @@
         "y": 0,
         "pixelRatio": 1
     },
-    "light_float_blk": {
+    "light_blue": {
         "width": 24,
         "height": 24,
         "x": 0,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "light_float_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
         "y": 24,
         "pixelRatio": 1
     },
     "light_green": {
         "width": 24,
         "height": 24,
-        "x": 24,
+        "x": 48,
+        "y": 24,
+        "pixelRatio": 1
+    },
+    "light_orange": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
         "y": 24,
         "pixelRatio": 1
     },
     "light_red": {
         "width": 24,
         "height": 24,
-        "x": 48,
+        "x": 96,
         "y": 24,
         "pixelRatio": 1
     },
     "light_violet": {
         "width": 24,
         "height": 24,
-        "x": 72,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "light_yellow": {
-        "width": 24,
-        "height": 24,
-        "x": 96,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "mooring_blk": {
-        "width": 24,
-        "height": 24,
         "x": 120,
         "y": 24,
         "pixelRatio": 1
     },
-    "pillar_green": {
+    "light_white": {
         "width": 24,
         "height": 24,
         "x": 144,
         "y": 24,
         "pixelRatio": 1
     },
-    "pillar_green_red": {
+    "light_yellow": {
         "width": 24,
         "height": 24,
         "x": 168,
         "y": 24,
         "pixelRatio": 1
     },
-    "pillar_red": {
+    "mooring_blk": {
         "width": 24,
         "height": 24,
         "x": 192,
         "y": 24,
         "pixelRatio": 1
     },
-    "pillar_red_green": {
+    "pillar_green": {
         "width": 24,
         "height": 24,
         "x": 216,
         "y": 24,
         "pixelRatio": 1
     },
-    "pillar_yellow": {
+    "pillar_green_red": {
         "width": 24,
         "height": 24,
         "x": 0,
         "y": 48,
         "pixelRatio": 1
     },
-    "point_blk": {
-        "width": 9,
-        "height": 9,
+    "pillar_red": {
+        "width": 24,
+        "height": 24,
         "x": 24,
         "y": 48,
         "pixelRatio": 1
     },
-    "sound_violet": {
+    "pillar_red_green": {
         "width": 24,
         "height": 24,
         "x": 48,
         "y": 48,
         "pixelRatio": 1
     },
-    "super_buoy_blk": {
+    "pillar_yellow": {
         "width": 24,
         "height": 24,
         "x": 72,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "point_blk": {
+        "width": 9,
+        "height": 9,
+        "x": 96,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "sound_violet": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "super_buoy_blk": {
+        "width": 24,
+        "height": 24,
+        "x": 144,
         "y": 48,
         "pixelRatio": 1
     }

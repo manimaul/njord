@@ -18,15 +18,38 @@ LNDARE:
 LIGHTS:
   - ATT:
       - COLOUR:
+          - '1'
+    SY: light_white
+
+  - ATT:
+      - COLOUR:
           - '3'
     SY: light_red
+
   - ATT:
       - COLOUR:
           - '4'
     SY: light_green
+
+  - ATT:
+      - COLOUR:
+          - '5'
+    SY: light_blue
+
   - ATT:
       - COLOUR:
           - '6'
     SY: light_yellow
-  - ATT: [ ]
+
+  - ATT:
+      - COLOUR:
+          - '9'
+    SY: light_orange
+
+  - ATT:
+      - COLOUR:
+          - '12'
     SY: light_violet
+
+  - ATT: [ ]
+    SY: light_yellow

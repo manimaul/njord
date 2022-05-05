@@ -20,10 +20,13 @@ os.makedirs(sprites)
 color_1 = "#ffffff"
 color_2 = "#808080"
 
+
 red = "#ff0000"
 green = "#00ff00"
 yellow = "#ffff00"
 white = "#ffffff"
+blue = "#0000ff"
+orange = "#ff8000"
 violet = "#c545c3"
 
 
@@ -121,6 +124,9 @@ if __name__ == '__main__':
                 Icon(variant="green", color_1=green),
                 Icon(variant="yellow", color_1=yellow),
                 Icon(variant="violet", color_1=violet),
+                Icon(variant="white", color_1=white),
+                Icon(variant="blue", color_1=blue),
+                Icon(variant="orange", color_1=orange),
             ],
             "can": [
                 Icon(variant="red", color_1=red, color_2=red),

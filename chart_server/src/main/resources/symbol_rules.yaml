@@ -1,3 +1,32 @@
 LNDARE:
   - ATT: [ ]
     SY: point_blk
+
+#    1	white
+#    2	black
+#    3	red
+#    4	green
+#    5	blue
+#    6	yellow
+#    7	grey
+#    8	brown
+#    9	amber
+#    10	violet
+#    11	orange
+#    12	magenta
+#    13	pink
+LIGHTS:
+  - ATT:
+      - COLOUR:
+          - '3'
+    SY: light_red
+  - ATT:
+      - COLOUR:
+          - '4'
+    SY: light_green
+  - ATT:
+      - COLOUR:
+          - '6'
+    SY: light_yellow
+  - ATT: [ ]
+    SY: light_violet

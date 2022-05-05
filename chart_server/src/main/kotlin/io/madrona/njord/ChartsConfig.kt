@@ -17,7 +17,10 @@ class ChartsConfig(
 
     val chartMinZoom: Int = config.getInt("chartMinZoom")
     val chartMaxZoom: Int = config.getInt("chartMaxZoom")
+
     val chartSymbols: String = config.getString("chartSymbols")
+    val chartSymbolSprites: String = config.getString("chartSymbolSprites")
+
     val chartTempData: File = File(config.getString("chartTempData")).also {
         if (!it.exists()) {
             it.mkdirs()

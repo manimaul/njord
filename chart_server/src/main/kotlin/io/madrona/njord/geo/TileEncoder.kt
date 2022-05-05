@@ -48,9 +48,6 @@ class TileEncoder(
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         Singletons.symbolLayers[feature.layer]?.addSymbol(feature.props)
-                        when (feature.layer) {
-                            "LIGHTS" -> feature.props.addLights()
-                        }
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->

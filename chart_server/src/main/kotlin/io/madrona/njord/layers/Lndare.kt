@@ -3,7 +3,7 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 /**
- * https://s57dev.mxmariner.com/v1/app/control/symbols/LNDARE
+ * /v1/app/control/symbols/LNDARE
  */
 class Lndare : Layerable {
     override val key = "LNDARE"

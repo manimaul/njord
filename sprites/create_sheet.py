@@ -95,11 +95,12 @@ class Theme:
             box = (left, top, right, bottom)
             box = [int(i) for i in box]
             cut_frame = current_frame.crop((0, 0, tile_width, tile_height))
+            width, height = current_frame.size
 
             spritesheet.paste(cut_frame, box)
             sprite_json[name] = {
-                "width": tile_width,
-                "height": tile_height,
+                "width": width,
+                "height": height,
                 "x": int(left),
                 "y": int(top),
                 "pixelRatio": 1

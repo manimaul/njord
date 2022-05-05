@@ -1,6 +1,7 @@
 package io.madrona.njord.layers.set
 
-import io.madrona.njord.layers.Bridge
+import io.madrona.njord.layers.Background
+import io.madrona.njord.layers.Lndare
 
 /**
  * http://localhost:9000/v1/about/s57objects
@@ -36,6 +37,8 @@ import io.madrona.njord.layers.Bridge
  **/
 class BaseLayers {
     val layers = sequenceOf(
-        Bridge()
+        Background(),
+        Lndare()
+//        Bridge()
     )
 }

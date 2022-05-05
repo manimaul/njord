@@ -8,10 +8,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.model.S57Symbol
 
 class SymbolLayerLibrary(
-    objectMapper: ObjectMapper = Singletons.yamlMapper
+    objectMapper: ObjectMapper = Singletons.yamlMapper,
+    rules: String = Singletons.config.chartSymbols
 ) {
 
-    private val objAcronyms: S57ObjAcronyms = objectMapper.readValue<S57ObjAcronyms>(resourceAsString("paper_symbol_rules.yaml")!!).apply {
+    private val objAcronyms: S57ObjAcronyms = objectMapper.readValue<S57ObjAcronyms>(resourceAsString(rules)!!).apply {
         values.forEach { symbols ->
             symbols.sortByDescending {
                 it.attributes.size

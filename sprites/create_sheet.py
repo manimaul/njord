@@ -146,6 +146,7 @@ if __name__ == '__main__':
             "mooring": [Icon(variant="blk")],
             "super_buoy": [Icon(variant="blk")],
             "sound": [Icon(variant="violet", color_1=violet)],
+            "point": [Icon(variant="blk")],
         }
     )
 

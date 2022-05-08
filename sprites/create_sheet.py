@@ -4,9 +4,9 @@ import json
 import math
 import os
 import os.path
+import subprocess as sp
 
 from PIL import Image
-from cairosvg import svg2png
 from marshmallow_dataclass import dataclass
 
 import shutil
@@ -19,7 +19,6 @@ os.makedirs(sprites)
 
 color_1 = "#ffffff"
 color_2 = "#808080"
-
 
 red = "#ff0000"
 green = "#00ff00"
@@ -36,18 +35,37 @@ class Icon:
     color_1: str = None
     color_2: str = None
 
+    def file_name(self, name: str):
+        if self.variant is None:
+            return os.path.join(sprites, "{}.png".format(name))
+        else:
+            return os.path.join(sprites, "{}{}.png".format(name, self.variant))
+
     def svg_to_png(self, name: str):
         with open(os.path.join(base_dir, "{}.svg".format(name))) as svg:
             svg_str = svg.read()
             if self.color_1 is not None:
                 svg_str = svg_str.replace(color_1, self.color_1)
+            else:
+                svg_str = svg_str.replace(
+                    "fill:{};fill-opacity:1;".format(color_1),
+                    "fill:{};fill-opacity:0;".format(col_black)
+                )
             if self.color_2 is not None:
                 svg_str = svg_str.replace(color_2, self.color_2)
-            svg2png(
-                bytestring=svg_str,
-                write_to=os.path.join(sprites, "{}_{}.png".format(name, self.variant)),
-                dpi=240
-            )
+            else:
+                svg_str = svg_str.replace(
+                    "fill:{};fill-opacity:1;".format(color_2),
+                    "fill:{};fill-opacity:0;".format(col_black)
+                )
+            tmp = os.path.join(sprites, "temp.svg".format(name))
+            if os.path.exists(tmp):
+                os.remove(tmp)
+            with open(tmp, "w") as svg_temp:
+                svg_temp.write(svg_str)
+            png_name = self.file_name(name)
+            print(
+                sp.getoutput('inkscape --without-gui --export-type=png --export-filename={} {}'.format(png_name, tmp)))
 
 
 @dataclass
@@ -61,21 +79,26 @@ class Theme:
             for each in self.icons[icon]:
                 each.svg_to_png(name=icon)
 
-        max_frames_row = 10.0
         frames = []
 
         files = os.listdir(sprites)
         files.sort()
 
+        tile_width = 0
+        tile_height = 0
+
         for current_file in files:
             try:
                 with Image.open(os.path.join(sprites, current_file)) as im:
-                    frames.append((current_file[:-4], im.getdata()))
+                    name = current_file[:-4]
+                    image = im.getdata()
+                    frames.append((name, image))
+                    tile_width = max(tile_width, image.size[0])
+                    tile_height = max(tile_height, image.size[1])
             except:
                 print(current_file + " is not a valid image")
 
-        tile_width = frames[0][1].size[0]
-        tile_height = frames[0][1].size[1]
+        max_frames_row = math.ceil(math.sqrt(len(files)))
 
         if len(frames) > max_frames_row:
             spritesheet_width = tile_width * max_frames_row
@@ -89,18 +112,17 @@ class Theme:
 
         sprite_json = dict()
 
-        for i, (name, current_frame) in enumerate(frames):
+        for i, (name, image) in enumerate(frames):
             top = tile_height * math.floor(i / max_frames_row)
             left = tile_width * (i % max_frames_row)
-            bottom = top + tile_height
-            right = left + tile_width
+            width, height = image.size
+            bottom = top + height
+            right = left + width
 
             box = (left, top, right, bottom)
-            box = [int(i) for i in box]
-            cut_frame = current_frame.crop((0, 0, tile_width, tile_height))
-            width, height = current_frame.size
+            # box = [int(i) for i in box]
 
-            spritesheet.paste(cut_frame, box)
+            spritesheet.paste(image, box)
             sprite_json[name] = {
                 "width": width,
                 "height": height,
@@ -115,45 +137,61 @@ class Theme:
         spritesheet.save(os.path.join(sprite_sheet_dir, "{}_sprites.png".format(self.name)), "PNG")
 
 
+col_white = "01"
+col_black = "02"
+col_red = "03"
+col_green = "04"
+col_blue = "05"
+col_yellow = "06"
+col_grey = "07"
+col_brown = "08"
+col_amber = "09"
+col_violet = "10"
+col_orange = "11"
+col_magenta = "12"
+col_pink = "13"
+
 if __name__ == '__main__':
     theme = Theme(
         name="day",
         icons={
             "light": [
-                Icon(variant="red", color_1=red),
-                Icon(variant="green", color_1=green),
-                Icon(variant="yellow", color_1=yellow),
-                Icon(variant="violet", color_1=violet),
-                Icon(variant="white", color_1=white),
-                Icon(variant="blue", color_1=blue),
-                Icon(variant="orange", color_1=orange),
+                Icon(variant=col_red, color_1=red),
+                Icon(variant=col_green, color_1=green),
+                Icon(variant=col_yellow, color_1=yellow),
+                Icon(variant=col_magenta, color_1=violet),
+                Icon(variant=col_white, color_1=white),
+                Icon(variant=col_blue, color_1=blue),
+                Icon(variant=col_orange, color_1=orange),
             ],
-            "can": [
-                Icon(variant="red", color_1=red, color_2=red),
-                Icon(variant="green", color_1=green, color_2=green),
-                Icon(variant="yellow", color_1=yellow, color_2=yellow),
-                Icon(variant="red_green", color_1=red, color_2=green),
-                Icon(variant="green_red", color_1=green, color_2=red),
+            "BOYCAN": [
+                Icon(variant=None),
+                Icon(variant=col_red, color_1=red, color_2=red),
+                Icon(variant=col_green, color_1=green, color_2=green),
+                Icon(variant=col_yellow, color_1=yellow, color_2=yellow),
+                Icon(variant="{}_{}".format(col_red, col_green), color_1=red, color_2=green),
+                Icon(variant="{}_{}".format(col_green, col_red), color_1=green, color_2=red),
             ],
-            "conical": [
-                Icon(variant="red", color_1=red, color_2=red),
-                Icon(variant="green", color_1=green, color_2=green),
-                Icon(variant="yellow", color_1=yellow, color_2=yellow),
-                Icon(variant="red_green", color_1=red, color_2=green),
-                Icon(variant="green_red", color_1=green, color_2=red),
+            "BOYCON": [
+                Icon(variant=None),
+                Icon(variant=col_red, color_1=red, color_2=red),
+                Icon(variant=col_green, color_1=green, color_2=green),
+                Icon(variant=col_yellow, color_1=yellow, color_2=yellow),
+                Icon(variant="{}_{}".format(col_red, col_green), color_1=red, color_2=green),
+                Icon(variant="{}_{}".format(col_green, col_red), color_1=green, color_2=red),
             ],
             "pillar": [
-                Icon(variant="red", color_1=red, color_2=red),
-                Icon(variant="green", color_1=green, color_2=green),
-                Icon(variant="yellow", color_1=yellow, color_2=yellow),
-                Icon(variant="red_green", color_1=red, color_2=green),
-                Icon(variant="green_red", color_1=green, color_2=red),
+                Icon(variant=col_red, color_1=red, color_2=red),
+                Icon(variant=col_green, color_1=green, color_2=green),
+                Icon(variant=col_yellow, color_1=yellow, color_2=yellow),
+                Icon(variant="{}_{}".format(col_red, col_green), color_1=red, color_2=green),
+                Icon(variant="{}_{}".format(col_green, col_red), color_1=green, color_2=red),
             ],
-            "light_float": [Icon(variant="blk")],
-            "mooring": [Icon(variant="blk")],
-            "super_buoy": [Icon(variant="blk")],
-            "sound": [Icon(variant="violet", color_1=violet)],
-            "point": [Icon(variant="blk")],
+            "light_float": [Icon(variant=None)],
+            "mooring": [Icon(variant=None)],
+            "super_buoy": [Icon(variant=None)],
+            "sound": [Icon(variant=col_magenta, color_1=violet)],
+            "point": [Icon(variant=None)],
         }
     )
 

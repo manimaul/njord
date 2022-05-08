@@ -1,191 +1,205 @@
 {
-    "can_green": {
+    "BOYCAN": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 0,
         "y": 0,
         "pixelRatio": 1
     },
-    "can_green_red": {
+    "BOYCAN03": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 24,
         "y": 0,
         "pixelRatio": 1
     },
-    "can_red": {
+    "BOYCAN03_04": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 48,
         "y": 0,
         "pixelRatio": 1
     },
-    "can_red_green": {
+    "BOYCAN04": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 72,
         "y": 0,
         "pixelRatio": 1
     },
-    "can_yellow": {
+    "BOYCAN04_03": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 96,
         "y": 0,
         "pixelRatio": 1
     },
-    "conical_green": {
+    "BOYCAN06": {
         "width": 24,
-        "height": 24,
+        "height": 16,
         "x": 120,
         "y": 0,
         "pixelRatio": 1
     },
-    "conical_green_red": {
+    "BOYCON": {
         "width": 24,
-        "height": 24,
-        "x": 144,
-        "y": 0,
-        "pixelRatio": 1
-    },
-    "conical_red": {
-        "width": 24,
-        "height": 24,
-        "x": 168,
-        "y": 0,
-        "pixelRatio": 1
-    },
-    "conical_red_green": {
-        "width": 24,
-        "height": 24,
-        "x": 192,
-        "y": 0,
-        "pixelRatio": 1
-    },
-    "conical_yellow": {
-        "width": 24,
-        "height": 24,
-        "x": 216,
-        "y": 0,
-        "pixelRatio": 1
-    },
-    "light_blue": {
-        "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 0,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_float_blk": {
+    "BOYCON03": {
         "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 24,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_green": {
+    "BOYCON03_04": {
         "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 48,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_orange": {
+    "BOYCON04": {
         "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 72,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_red": {
+    "BOYCON04_03": {
         "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 96,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_violet": {
+    "BOYCON06": {
         "width": 24,
-        "height": 24,
+        "height": 21,
         "x": 120,
         "y": 24,
         "pixelRatio": 1
     },
-    "light_white": {
-        "width": 24,
-        "height": 24,
-        "x": 144,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "light_yellow": {
-        "width": 24,
-        "height": 24,
-        "x": 168,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "mooring_blk": {
-        "width": 24,
-        "height": 24,
-        "x": 192,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "pillar_green": {
-        "width": 24,
-        "height": 24,
-        "x": 216,
-        "y": 24,
-        "pixelRatio": 1
-    },
-    "pillar_green_red": {
+    "light01": {
         "width": 24,
         "height": 24,
         "x": 0,
         "y": 48,
         "pixelRatio": 1
     },
-    "pillar_red": {
+    "light03": {
         "width": 24,
         "height": 24,
         "x": 24,
         "y": 48,
         "pixelRatio": 1
     },
-    "pillar_red_green": {
+    "light04": {
         "width": 24,
         "height": 24,
         "x": 48,
         "y": 48,
         "pixelRatio": 1
     },
-    "pillar_yellow": {
+    "light05": {
         "width": 24,
         "height": 24,
         "x": 72,
         "y": 48,
         "pixelRatio": 1
     },
-    "point_blk": {
+    "light06": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "light11": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 48,
+        "pixelRatio": 1
+    },
+    "light12": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "light_float": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "mooring": {
+        "width": 24,
+        "height": 24,
+        "x": 48,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "pillar03": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "pillar03_04": {
+        "width": 24,
+        "height": 24,
+        "x": 96,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "pillar04": {
+        "width": 24,
+        "height": 24,
+        "x": 120,
+        "y": 72,
+        "pixelRatio": 1
+    },
+    "pillar04_03": {
+        "width": 24,
+        "height": 24,
+        "x": 0,
+        "y": 96,
+        "pixelRatio": 1
+    },
+    "pillar06": {
+        "width": 24,
+        "height": 24,
+        "x": 24,
+        "y": 96,
+        "pixelRatio": 1
+    },
+    "point": {
         "width": 9,
         "height": 9,
+        "x": 48,
+        "y": 96,
+        "pixelRatio": 1
+    },
+    "sound12": {
+        "width": 24,
+        "height": 24,
+        "x": 72,
+        "y": 96,
+        "pixelRatio": 1
+    },
+    "super_buoy": {
+        "width": 24,
+        "height": 24,
         "x": 96,
-        "y": 48,
-        "pixelRatio": 1
-    },
-    "sound_violet": {
-        "width": 24,
-        "height": 24,
-        "x": 120,
-        "y": 48,
-        "pixelRatio": 1
-    },
-    "super_buoy_blk": {
-        "width": 24,
-        "height": 24,
-        "x": 144,
-        "y": 48,
+        "y": 96,
         "pixelRatio": 1
     }
 }

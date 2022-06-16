@@ -1,3 +1,10 @@
+#Complete:
+LNDARE:
+  - ATT: []
+    SY: LNDARE01
+
+#Todo:
+
 '######':
 - ATT: []
   SY: QUESMRK1
@@ -1827,9 +1834,7 @@ LITFLT:
 LITVES:
 - ATT: []
   SY: LITVES02
-LNDARE:
-- ATT: []
-  SY: LNDARE01
+
 LNDELV:
 - ATT: []
   SY: POSGEN04

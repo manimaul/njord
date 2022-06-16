@@ -1,11 +1,17 @@
 package io.madrona.njord.layers.set
 
 import io.madrona.njord.layers.Background
+import io.madrona.njord.layers.Hulkes
 import io.madrona.njord.layers.Lndare
 
 /**
  * http://localhost:9000/v1/about/s57objects
  *
+ * land area (LNDARE)
+ * hulk (HULKES)
+ * ice area (ICEARE)
+ *
+ * <TODO:>
  * bridge (BRIDGE)
  * cable overhead (CBLOHD)
  * canal (CANALS)
@@ -17,9 +23,8 @@ import io.madrona.njord.layers.Lndare
  * dock area (DOCARE)
  * floating dock (FLODOC)
  * gate (GATCON)
- * hulk (HULKES)
- * ice area (ICEARE)
- * land area (LNDARE)
+
+
  * lock basin (LOKBSN)
  * log pond (LOGPON)
  * mooring/warping facility (MORFAC)
@@ -38,7 +43,8 @@ import io.madrona.njord.layers.Lndare
 class BaseLayers {
     val layers = sequenceOf(
         Background(),
-        Lndare()
+        Lndare(),
+        Hulkes(),
 //        Bridge()
     )
 }

@@ -54,6 +54,6 @@ dependencies {
 tasks.named<JavaExec>("run") {
     dependsOn(":chart_server_fe:browserDevelopmentWebpack")
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.4.1_1/lib/")
+        jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.5.0_1/lib/")
     }
 }

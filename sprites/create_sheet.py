@@ -8,11 +8,22 @@ import os.path
 from PIL import Image
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
-sprites = os.path.join(base_dir, "sprites/simplified")
+sprites = os.path.join(base_dir, "simplified")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
 
 
-def save_sprite_sheet(self):
+def find_tile_wh(frames):
+    width = 0
+    height = 0
+    for each in frames:
+        cell = each[1]
+        width = max(width, cell.size[0])
+        height = max(width, cell.size[1])
+
+    return width, height
+
+
+def save_sprite_sheet():
     max_frames_row = 10.0
     frames = []
 
@@ -26,8 +37,7 @@ def save_sprite_sheet(self):
         except:
             print(current_file + " is not a valid image")
 
-    tile_width = frames[0][1].size[0]
-    tile_height = frames[0][1].size[1]
+    tile_width, tile_height = find_tile_wh(frames)
 
     if len(frames) > max_frames_row:
         spritesheet_width = tile_width * max_frames_row
@@ -62,10 +72,10 @@ def save_sprite_sheet(self):
         }
 
     name = "simplified"
-    with open(os.path.join(sprite_sheet_dir, "{}_sprites.json".format(name)), "w") as fp:
+    with open(os.path.join(sprite_sheet_dir, "{}.json".format(name)), "w") as fp:
         json.dump(sprite_json, fp, indent=4)
 
-    spritesheet.save(os.path.join(sprite_sheet_dir, "{}_sprites.png".format(name)), "PNG")
+    spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
 if __name__ == '__main__':

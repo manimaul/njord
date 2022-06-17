@@ -35,7 +35,7 @@ class NavLne : Layerable {
                     Filters.eqTypeLineString
                 ),
                 paint = Paint(
-                    lineColor = options.color.from("CHBLK"),
+                    lineColor = colorFrom("CHBLK"),
                     lineWidth = 0.5f,
                     lineDashArray = listOf(10f, 5f)
                 )
@@ -56,8 +56,8 @@ class NavLne : Layerable {
                     symbolPlacement = Placement.LINE,
                 ),
                 paint = Paint(
-                    textColor = options.color.from("CHBLK"),
-                    textHaloColor = options.color.from("CHWHT"),
+                    textColor = colorFrom("CHBLK"),
+                    textHaloColor = colorFrom("CHWHT"),
                     textHaloWidth = 2.5f
                 )
             )

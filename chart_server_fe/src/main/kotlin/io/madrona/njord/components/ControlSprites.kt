@@ -16,13 +16,13 @@ import styled.styledImg
 
 typealias IconData = Map<String, IconInfo>
 
-fun spriteJsonUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.json".pathToFullUrl()
+fun spriteJsonUrl() = "/v1/content/sprites/simplified.json".pathToFullUrl()
 
-fun spritePngUrl(theme: Theme) = "/v1/content/sprites/rastersymbols-${theme.name.lowercase()}.png".pathToFullUrl()
+fun spritePngUrl() = "/v1/content/sprites/simplified.png".pathToFullUrl()
 
-suspend fun fetchThemeIcons(theme: Theme): IconData {
+suspend fun fetchThemeIcons(): IconData {
     val response = window
-        .fetch(spriteJsonUrl(theme))
+        .fetch(spriteJsonUrl())
         .await()
         .text()
         .await()
@@ -30,54 +30,51 @@ suspend fun fetchThemeIcons(theme: Theme): IconData {
 }
 
 val ControlSprites = fc<Props> {
-    var themeData: Map<Theme, IconData>? by useState(null)
-    val theme = Theme.Day
+    var themeData: IconData? by useState(null)
     useEffectOnce {
         mainScope.launch {
-            themeData = mapOf(theme to fetchThemeIcons(theme))
+            themeData = fetchThemeIcons()
         }
     }
 
     div {
         h2 {
-            +"Chart Symbol Sprites - ${theme.name}"
+            +"Chart Symbol Sprites"
         }
         div {
             +"Sprite sheet: "
-            a(href = spritePngUrl(theme), target = "_blank") {
-                +spritePngUrl(theme)
+            a(href = spritePngUrl(), target = "_blank") {
+                +spritePngUrl()
             }
         }
         div {
             +"Sprite json: "
-            a(href = spriteJsonUrl(theme), target = "_blank") {
-                +spriteJsonUrl(theme)
+            a(href = spriteJsonUrl(), target = "_blank") {
+                +spriteJsonUrl()
             }
         }
         themeData?.let {
             div(classes = "col") {
                 div(classes = "container") {
-                    themeData?.get(theme)?.asIterable()?.chunked(3)?.forEach {
-                        div(classes = "row") {
-                            it.forEach {
-                                val imgData = it.value
-                                div(classes = "col-sm") {
-                                    br { }
-                                    +it.key
-                                    a(href= "/v1/icon/${theme}/${it.key}.png") {
-                                        styledImg {
-                                            css {
-                                                width = imgData.width.px
-                                                height = imgData.height.px
-                                                background = "url('${spritePngUrl(theme)}');"
-                                                backgroundPosition = "-${imgData.x}px -${imgData.y}px"
-                                                display = Display.inlineBlock
-                                                borderWidth = 4.px
-                                            }
+                    div(classes = "row") {
+                        it.forEach {
+                            val imgData = it.value
+                            div(classes = "col-sm") {
+                                br { }
+                                +it.key
+                                a(href= "/v1/icon/${it.key}.png") {
+                                    styledImg {
+                                        css {
+                                            width = imgData.width.px
+                                            height = imgData.height.px
+                                            background = "url('${spritePngUrl()}');"
+                                            backgroundPosition = "-${imgData.x}px -${imgData.y}px"
+                                            display = Display.inlineBlock
+                                            borderWidth = 4.px
                                         }
                                     }
-                                    br { }
                                 }
+                                br { }
                             }
                         }
                     }

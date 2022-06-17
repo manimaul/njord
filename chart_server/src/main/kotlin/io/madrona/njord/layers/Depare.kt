@@ -31,7 +31,7 @@ class Depare : Layerable {
                 Layer(
                         id = "${key}_fill_2",
                         paint = Paint(
-                                fillColor = options.color.from("DEPMD")
+                                fillColor = colorFrom("DEPMD")
                         ),
                         sourceLayer = key,
                         type = LayerType.FILL,
@@ -44,7 +44,7 @@ class Depare : Layerable {
                 Layer(
                         id = "${key}_fill_1",
                         paint = Paint(
-                                fillColor = options.color.from("DEPVS")
+                                fillColor = colorFrom("DEPVS")
                         ),
                         type = LayerType.FILL,
                         sourceLayer = key,
@@ -57,7 +57,7 @@ class Depare : Layerable {
                 Layer(
                         id = "${key}_fill_0",
                         paint = Paint(
-                                fillColor = options.color.from("DEPIT")
+                                fillColor = colorFrom("DEPIT")
                         ),
                         type = LayerType.FILL,
                         sourceLayer = key,
@@ -71,7 +71,7 @@ class Depare : Layerable {
                 Layer(
                         id = "${key}_line",
                         paint = Paint(
-                                lineColor = options.color.from("CSTLN"),
+                                lineColor = colorFrom("CSTLN"),
                                 lineWidth = 0.5f
                         ),
                         type = LayerType.LINE,

@@ -13,7 +13,7 @@ class Slcons : Layerable {
                         sourceLayer = key,
                         filter = listOf(Filters.all),
                         paint = Paint(
-                                lineColor = options.color.from("CSTLN"),
+                                lineColor = colorFrom("CSTLN"),
                                 lineWidth = 1f
                         )
                 )

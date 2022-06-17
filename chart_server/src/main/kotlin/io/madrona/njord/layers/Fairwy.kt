@@ -29,7 +29,7 @@ class Fairwy : Layerable {
                     Filters.eqTypePolyGon
                 ),
                 paint = Paint(
-                    lineColor = options.color.from("CHBLK"),
+                    lineColor = colorFrom("CHBLK"),
                     lineWidth = 0.5f,
                     lineDashArray = listOf(10f, 5f)
                 )

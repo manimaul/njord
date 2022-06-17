@@ -33,7 +33,7 @@ class Debug : Layerable {
                             Filters.eqTypeLineString
                     ),
                     paint = Paint(
-                            lineColor = options.color.from("CSTLN"),
+                            lineColor = colorFrom("CSTLN"),
                             lineWidth = 3f
                     )
             )

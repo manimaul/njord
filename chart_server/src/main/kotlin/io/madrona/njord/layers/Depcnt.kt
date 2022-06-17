@@ -33,7 +33,7 @@ class Depcnt : Layerable {
                                 Filters.eqTypeLineString
                         ),
                         paint = Paint(
-                                lineColor = options.color.from("CSTLN"),
+                                lineColor = colorFrom("CSTLN"),
                                 lineWidth = 0.5f
                         )
                 )

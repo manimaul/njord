@@ -19,7 +19,7 @@ class Lndare : Layerable {
                     Filters.eqTypePolyGon
                 ),
                 paint = Paint(
-                    fillColor = options.color.from("LANDA")
+                    fillColor = colorFrom("LANDA")
                 )
             ),
             Layer(
@@ -31,7 +31,7 @@ class Lndare : Layerable {
                     Filters.eqTypePolyGon
                 ),
                 paint = Paint(
-                    lineColor = options.color.from("CSTLN"),
+                    lineColor = colorFrom("CSTLN"),
                     lineWidth = 1.5f
                 )
             ),

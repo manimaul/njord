@@ -2,6 +2,29 @@
 LNDARE:
   - ATT: []
     SY: LNDARE01
+MORFAC:
+  - ATT:
+      - CATMOR:
+          - '1'
+    SY: MORFAC03
+  - ATT:
+      - CATMOR:
+          - '2'
+    SY: MORFAC04
+  - ATT:
+      - CATMOR:
+          - '3'
+    SY: PILPNT02
+  - ATT:
+      - CATMOR:
+          - '5'
+    SY: PILPNT02
+  - ATT:
+      - CATMOR:
+          - '7'
+    SY: BOYMOR11
+  - ATT: []
+    SY: MORFAC03
 
 #Todo:
 
@@ -2111,29 +2134,6 @@ MNUFEA:
 MONUMT:
 - ATT: []
   SY: MONUMT12
-MORFAC:
-- ATT:
-  - CATMOR:
-    - '1'
-  SY: MORFAC03
-- ATT:
-  - CATMOR:
-    - '2'
-  SY: MORFAC04
-- ATT:
-  - CATMOR:
-    - '3'
-  SY: PILPNT02
-- ATT:
-  - CATMOR:
-    - '5'
-  SY: PILPNT02
-- ATT:
-  - CATMOR:
-    - '7'
-  SY: BOYMOR11
-- ATT: []
-  SY: MORFAC03
 M_NPUB:
 - ATT: []
   SY: CHINFO07

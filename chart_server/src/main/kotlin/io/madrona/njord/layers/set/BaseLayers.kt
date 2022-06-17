@@ -1,9 +1,6 @@
 package io.madrona.njord.layers.set
 
-import io.madrona.njord.layers.Background
-import io.madrona.njord.layers.Hulkes
-import io.madrona.njord.layers.Iceare
-import io.madrona.njord.layers.Lndare
+import io.madrona.njord.layers.*
 
 /**
  * http://localhost:9000/v1/about/s57objects
@@ -11,6 +8,7 @@ import io.madrona.njord.layers.Lndare
  * land area (LNDARE)
  * hulk (HULKES)
  * ice area (ICEARE)
+ * mooring/warping facility (MORFAC)
  *
  * <TODO:>
  * bridge (BRIDGE)
@@ -28,7 +26,7 @@ import io.madrona.njord.layers.Lndare
 
  * lock basin (LOKBSN)
  * log pond (LOGPON)
- * mooring/warping facility (MORFAC)
+
  * obstruction (OBSTRN)
  * offshore platform (OFSPLF)
  * oil barrier (OILBAR)
@@ -47,6 +45,7 @@ class BaseLayers {
         Lndare(),
         Hulkes(),
         Iceare(),
+        Morfac(),
 //        Bridge()
     )
 }

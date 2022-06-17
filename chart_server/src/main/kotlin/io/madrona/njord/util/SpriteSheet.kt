@@ -13,7 +13,7 @@ class SpriteSheet(
     private val chartSymbolSprites: String = Singletons.config.chartSymbolSprites
 ) {
 
-    private val resNameBase = "/www/sprites/${chartSymbolSprites}"
+    private val resNameBase = "/www/sprites/${chartSymbolSprites}@2x"
 
     private val spriteSheetImage: BufferedImage by lazy {
         IconHandler::class.java.getResourceAsStream("${resNameBase}.png").use { iss ->
@@ -22,7 +22,7 @@ class SpriteSheet(
     }
 
     private val spriteSheetJson: Map<String, IconInfo> by lazy {
-        resourceAsString("www/sprites/${chartSymbolSprites}.json")?.let {
+        resourceAsString("www/sprites/${chartSymbolSprites}@2x.json")?.let {
             Json.decodeFromString(it)
         } ?: throw RuntimeException("sprite sheet json not found: $chartSymbolSprites")
     }

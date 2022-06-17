@@ -15,9 +15,9 @@ import styled.styledImg
 
 typealias IconData = Map<String, IconInfo>
 
-fun spriteJsonUrl() = "/v1/content/sprites/simplified.json".pathToFullUrl()
+fun spriteJsonUrl() = "/v1/content/sprites/simplified@2x.json".pathToFullUrl()
 
-fun spritePngUrl() = "/v1/content/sprites/simplified.png".pathToFullUrl()
+fun spritePngUrl() = "/v1/content/sprites/simplified@2x.png".pathToFullUrl()
 
 suspend fun fetchThemeIcons(): IconData {
     val response = window

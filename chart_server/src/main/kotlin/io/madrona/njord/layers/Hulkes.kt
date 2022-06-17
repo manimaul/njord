@@ -8,7 +8,7 @@ class Hulkes : Layerable {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(
-                id = "${key}_fill",
+                id = "${key}_area_fill",
                 type = LayerType.FILL,
                 sourceLayer = key,
                 filter = listOf(
@@ -20,7 +20,7 @@ class Hulkes : Layerable {
                 )
             ),
             Layer(
-                id = "${key}_line",
+                id = "${key}_area_line",
                 type = LayerType.LINE,
                 sourceLayer = key,
                 filter = listOf(
@@ -30,7 +30,7 @@ class Hulkes : Layerable {
                 ),
                 paint = Paint(
                     lineColor = colorFrom("CSTLN"),
-                    lineWidth = 1.5f
+                    lineWidth = 2f
                 )
             ),
             Layer(

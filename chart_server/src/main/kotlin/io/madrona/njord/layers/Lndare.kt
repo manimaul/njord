@@ -30,7 +30,7 @@ class Lndare : Layerable {
                 ),
                 paint = Paint(
                     lineColor = colorFrom("CSTLN"),
-                    lineWidth = 1.5f
+                    lineWidth = 2f
                 )
             ),
             Layer(

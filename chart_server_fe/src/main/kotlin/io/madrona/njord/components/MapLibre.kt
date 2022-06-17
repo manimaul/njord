@@ -54,7 +54,7 @@ class MapLibre : RComponent<AppProps, AppState>() {
  * https://maplibre.org/maplibre-gl-js-docs/api/map/
  */
 fun RBuilder.mapLibre(
-    style: String = "/v1/style/day/meters",
+    style: String = "/v1/style/meters",
     lng: Float = -122.44f,
     lat: Float = 47.257f,
     zoom: Float = 11f,

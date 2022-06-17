@@ -13,7 +13,7 @@ class SpriteSheet(
     private val chartSymbolSprites: String = Singletons.config.chartSymbolSprites
 ) {
 
-    val resNameBase = "/www/sprites/${chartSymbolSprites}"
+    private val resNameBase = "/www/sprites/${chartSymbolSprites}"
 
     private val spriteSheetImage: BufferedImage by lazy {
         IconHandler::class.java.getResourceAsStream("${resNameBase}.png").use { iss ->

@@ -2,6 +2,7 @@ package io.madrona.njord.layers.set
 
 import io.madrona.njord.layers.Background
 import io.madrona.njord.layers.Hulkes
+import io.madrona.njord.layers.Iceare
 import io.madrona.njord.layers.Lndare
 
 /**
@@ -45,6 +46,7 @@ class BaseLayers {
         Background(),
         Lndare(),
         Hulkes(),
+        Iceare(),
 //        Bridge()
     )
 }

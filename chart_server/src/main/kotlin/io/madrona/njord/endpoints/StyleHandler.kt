@@ -9,14 +9,12 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
 import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
-import io.madrona.njord.util.SpriteSheet
 
 class StyleHandler(
-    private val spriteSheet: SpriteSheet = Singletons.spriteSheet,
     private val config: ChartsConfig = Singletons.config,
     private val layerFactory: LayerFactory = LayerFactory()
 ) : KtorHandler {
-    override val route = "/v1/style/{theme}/{depth}"
+    override val route = "/v1/style/{depth}"
 
     override suspend fun handleGet(call: ApplicationCall) {
         fromString<Depth>(call.parameters["depth"])?.let { depth ->
@@ -24,7 +22,7 @@ class StyleHandler(
                 Style(
                     name = config.chartSymbolSprites,
                     glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
-                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${spriteSheet.resNameBase}",
+                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${config.chartSymbolSprites}",
                     sources = mapOf(
                         Source.SENC to Source(
                             type = SourceType.VECTOR,

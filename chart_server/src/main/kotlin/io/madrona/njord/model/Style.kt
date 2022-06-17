@@ -9,7 +9,7 @@ data class Style(
         val layers: List<Layer>,
         val name: String,
         val sources: Map<String, Source>,
-        @JsonProperty("sprite") val spriteUrl: String, // "http://localhost:9000/res/sprites/rastersymbols-day"
+        @JsonProperty("sprite") val spriteUrl: String,
         val version: Int
 )
 
@@ -46,16 +46,18 @@ data class Paint(
         @JsonProperty("background-color") val backgroundColor: String? = null,
         @JsonProperty("background-opacity") val backgroundOpacity: Int? = null,
         @JsonProperty("fill-color") val fillColor: String? = null,
+        @JsonProperty("fill-pattern") val fillPattern: Any? = null, //List<String> or String>
         @JsonProperty("line-color") val lineColor: String? = null,
         @JsonProperty("circle-color") val circleColor: String? = null,
         @JsonProperty("line-width") val lineWidth: Float? = null,
         @JsonProperty("line-dasharray") val lineDashArray: List<Float>? = null,
+        @JsonProperty("line-pattern") val linePattern: Any? = null, //List<String> or String>
         @JsonProperty("circle-radius") val circleRadius: Float? = null,
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Layout(
-        @JsonProperty("icon-image") val iconImage: List<Any>? = null,
+        @JsonProperty("icon-image") val iconImage: Any? = null, //List<String> or String>
         @JsonProperty("icon-anchor") val iconAnchor: Anchor? = null,
         @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean? = null,
         @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean? = null,

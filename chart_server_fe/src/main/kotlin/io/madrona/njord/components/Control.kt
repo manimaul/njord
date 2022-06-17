@@ -16,7 +16,8 @@ import styled.styledDiv
 enum class ControlTab {
     Charts,
     Symbols,
-    Sprites;
+    Sprites,
+    Endpoints;
 
     companion object {
         fun getSelected(page: String?): ControlTab {
@@ -60,6 +61,7 @@ val Control = fc<Props> {
                     ControlTab.Charts -> ControlCharts {}
                     ControlTab.Symbols -> ControlSymbols {}
                     ControlTab.Sprites -> ControlSprites {}
+                    ControlTab.Endpoints -> ControlEndpoints {}
                 }
             }
         }

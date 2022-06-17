@@ -43,7 +43,7 @@ class ChartServerApp {
                 // curl http://localhost:9000/v1/tile_json | jq
                 TileJsonHandler(),
 
-                // curl http://localhost:9000/v1/style/day/meters | jq
+                // curl http://localhost:9000/v1/style/meters | jq
                 StyleHandler(),
 
                 // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'

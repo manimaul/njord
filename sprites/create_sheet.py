@@ -12,6 +12,18 @@ sprites = os.path.join(base_dir, "simplified")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
 
 
+pixelRatios = {
+    "ICEARE04": 3
+}
+
+
+def pixelRatio(name: str):
+    if name in pixelRatios:
+        return pixelRatios[name]
+    else:
+        return 1
+
+
 def find_tile_wh(frames):
     width = 0
     height = 0
@@ -23,7 +35,7 @@ def find_tile_wh(frames):
     return width, height
 
 
-def save_sprite_sheet():
+def save_sprite_sheet(retna: bool):
     max_frames_row = 10.0
     frames = []
 
@@ -33,6 +45,10 @@ def save_sprite_sheet():
     for current_file in files:
         try:
             with Image.open(os.path.join(sprites, current_file)) as im:
+                if not retna:
+                    w, h = im.size
+                    w, h = int(float(w) / 2.0), int(float(h) / 2.0)
+                    im = im.resize((w, h), Image.ANTIALIAS)
                 frames.append((current_file[:-4], im.getdata()))
         except:
             print(current_file + " is not a valid image")
@@ -68,10 +84,12 @@ def save_sprite_sheet():
             "height": height,
             "x": int(left),
             "y": int(top),
-            "pixelRatio": 1
+            "pixelRatio": pixelRatio(name)
         }
 
     name = "simplified"
+    if retna:
+        name = name + "@2x"
     with open(os.path.join(sprite_sheet_dir, "{}.json".format(name)), "w") as fp:
         json.dump(sprite_json, fp, indent=4)
 
@@ -79,4 +97,5 @@ def save_sprite_sheet():
 
 
 if __name__ == '__main__':
-    save_sprite_sheet()
+    save_sprite_sheet(False)
+    save_sprite_sheet(True)

@@ -18,7 +18,7 @@ class IconHandler(
         call.parameters["name"]?.let { name ->
             spriteSheet.spriteImage(name)?.let { imageBytes ->
                 call.respondBytes(imageBytes, ContentType.Image.PNG)
-            } ?: call.respond(HttpStatusCode.NotFound)
-        }
+            }
+        } ?: call.respond(HttpStatusCode.NotFound)
     }
 }

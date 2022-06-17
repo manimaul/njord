@@ -1,6 +1,5 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.Theme
 import io.madrona.njord.model.*
 
 /**
@@ -26,12 +25,12 @@ class Soundg : Layerable {
     override val key = "SOUNDG"
 
     override fun layers(options: LayerableOptions) = when(options.depth) {
-        Depth.FATHOMS -> fathoms(options.color)
-        Depth.METERS -> meters(options.color)
-        Depth.FEET -> feet(options.color)
+        Depth.FATHOMS -> fathoms()
+        Depth.METERS -> meters()
+        Depth.FEET -> feet()
     }
 
-    private fun fathoms(theme: Theme) = sequenceOf(
+    private fun fathoms() = sequenceOf(
             Layer(
                     id = "soundg_fathoms",
                     type = LayerType.SYMBOL,
@@ -52,10 +51,10 @@ class Soundg : Layerable {
                     paint = Paint(
                             textColor = listOf(
                                     "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
-                                    theme.from("SNDG2"),
-                                    theme.from("SNDG1")
+                                    colorFrom("SNDG2"),
+                                    colorFrom("SNDG1")
                             ),
-                            textHaloColor = theme.from("CHWHT"),
+                            textHaloColor = colorFrom("CHWHT"),
                             textHaloWidth = 1.5f
                     )
             ),
@@ -82,14 +81,14 @@ class Soundg : Layerable {
                     paint = Paint(
                             textColor = listOf(
                                     "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
-                                    theme.from("SNDG2"),
-                                    theme.from("SNDG1")
+                                    colorFrom("SNDG2"),
+                                    colorFrom("SNDG1")
                             )
                     )
             )
     )
 
-    private fun feet(theme: Theme) = sequenceOf(
+    private fun feet() = sequenceOf(
             Layer(
                     id = "soundg_feet",
                     type = LayerType.SYMBOL,
@@ -110,16 +109,16 @@ class Soundg : Layerable {
                     paint = Paint(
                             textColor = listOf(
                                     "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
-                                    theme.from("SNDG2"),
-                                    theme.from("SNDG1")
+                                    colorFrom("SNDG2"),
+                                    colorFrom("SNDG1")
                             ),
-                            textHaloColor = theme.from("CHWHT"),
+                            textHaloColor = colorFrom("CHWHT"),
                             textHaloWidth = 1.5f
                     )
             )
     )
 
-    private fun meters(theme: Theme) = sequenceOf(
+    private fun meters() = sequenceOf(
             Layer(
                     id = "soundg_meters",
                     type = LayerType.SYMBOL,
@@ -140,10 +139,10 @@ class Soundg : Layerable {
                     paint = Paint(
                             textColor = listOf(
                                     "case", listOf("<=", listOf("get", "METERS"), 9.0f),
-                                    theme.from("SNDG2"),
-                                    theme.from("SNDG1")
+                                    colorFrom("SNDG2"),
+                                    colorFrom("SNDG1")
                             ),
-                            textHaloColor = theme.from("CHWHT"),
+                            textHaloColor = colorFrom("CHWHT"),
                             textHaloWidth = 1.5f
                     )
             )

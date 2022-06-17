@@ -16,7 +16,7 @@ class Ponton : Layerable {
                                 Filters.eqTypePolyGon
                         ),
                         paint = Paint(
-                                fillColor = options.color.from("CHBRN")
+                                fillColor = colorFrom("CHBRN")
                         )
                 ),
                 Layer(
@@ -30,7 +30,7 @@ class Ponton : Layerable {
                                 Filters.eqTypeLineString,
                         ),
                         paint = Paint(
-                                lineColor = options.color.from("CSTLN"),
+                                lineColor = colorFrom("CSTLN"),
                                 lineWidth = 1f
                         )
                 )

@@ -1,9 +1,6 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.Layer
-import io.madrona.njord.model.LayerType
-import io.madrona.njord.model.Paint
-import io.madrona.njord.model.from
+import io.madrona.njord.model.*
 
 class Background : Layerable {
 
@@ -13,7 +10,7 @@ class Background : Layerable {
             Layer(
                     id = "background",
                     paint = Paint(
-                            backgroundColor = options.color.from("CHWHT"),
+                            backgroundColor = colorFrom("CHWHT"),
                             backgroundOpacity = 1
                     ),
                     type = LayerType.BACKGROUND,

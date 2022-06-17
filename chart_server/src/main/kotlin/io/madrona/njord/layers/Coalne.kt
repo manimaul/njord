@@ -16,7 +16,7 @@ class Coalne : Layerable {
                                 Filters.eqTypeLineString
                         ),
                         paint = Paint(
-                                lineColor = options.color.from("CSTLN"),
+                                lineColor = colorFrom("CSTLN"),
                                 lineWidth = 1.5f
                         )
                 )

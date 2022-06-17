@@ -67,7 +67,7 @@ class ChartServerApp {
                 // curl -v "http://localhost:9000/v1/tile/0/0/0"
                 TileHandler(),
 
-                // http://localhost:9000/v1/icon/day/can_green.png
+                // http://localhost:9000/v1/icon/<name>.png
                 IconHandler(),
 
                 // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"

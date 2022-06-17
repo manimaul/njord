@@ -1,10 +1,7 @@
 package io.madrona.njord.util
 
-import io.ktor.http.*
-import io.ktor.response.*
 import io.madrona.njord.IconInfo
 import io.madrona.njord.Singletons
-import io.madrona.njord.Theme
 import io.madrona.njord.endpoints.IconHandler
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -16,36 +13,30 @@ class SpriteSheet(
     private val chartSymbolSprites: String = Singletons.config.chartSymbolSprites
 ) {
 
-    fun nameBase(theme: Theme) = chartSymbolSprites.replace("{theme}", theme.name.lowercase())
-    private fun resNameBase(theme: Theme) = "/www/sprites/${nameBase(theme)}"
+    val resNameBase = "/www/sprites/${chartSymbolSprites}"
 
-    private val spriteSheets: Map<Theme, BufferedImage> by lazy {
-        Theme.values().associate { theme ->
-            IconHandler::class.java.getResourceAsStream("${resNameBase(theme)}.png").use { iss ->
-                theme to ImageIO.read(iss)
-            }
+    private val spriteSheetImage: BufferedImage by lazy {
+        IconHandler::class.java.getResourceAsStream("${resNameBase}.png").use { iss ->
+            ImageIO.read(iss)
         }
     }
 
-    private fun spriteSheet(theme: Theme) : BufferedImage {
-        return spriteSheets[theme] ?: throw RuntimeException("sprite sheet not found for theme $theme")
-    }
-
-    private fun spriteSheetJson(theme: Theme) : Map<String, IconInfo> {
-        val resName = "www/sprites/rastersymbols-${theme.name.lowercase()}"
-        return resourceAsString("$resName.json")?.let {
+    private val spriteSheetJson: IconInfo by lazy {
+        resourceAsString("www/sprites/${chartSymbolSprites}.json")?.let {
             Json.decodeFromString(it)
-        } ?: throw RuntimeException("sprite sheet json not found for theme $theme")
+        } ?: throw RuntimeException("sprite sheet json not found: $chartSymbolSprites")
     }
 
-    fun spriteImage(theme: Theme, name: String) : ByteArray? {
-        val image = spriteSheet(theme)
-        return spriteSheetJson(theme)[name.replace(".png", "")]?.let { iconInfo ->
-            val subImage = image.getSubimage(iconInfo.x, iconInfo.y, iconInfo.width, iconInfo.height)
-            ByteArrayOutputStream(1024).use { oss ->
-                ImageIO.write(subImage, "png", oss)
-                oss.toByteArray()
-            }
+    fun spriteImage(name: String): ByteArray {
+        val subImage = spriteSheetImage.getSubimage(
+            spriteSheetJson.x,
+            spriteSheetJson.y,
+            spriteSheetJson.width,
+            spriteSheetJson.height
+        )
+        return ByteArrayOutputStream(1024).use { oss ->
+            ImageIO.write(subImage, "png", oss)
+            oss.toByteArray()
         }
     }
 }

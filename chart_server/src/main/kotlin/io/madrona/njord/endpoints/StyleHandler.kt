@@ -26,7 +26,7 @@ class StyleHandler(
                 Style(
                     name = name,
                     glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
-                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${spriteSheet.nameBase(theme)}",
+                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${spriteSheet.resNameBase}",
                     sources = mapOf(
                         Source.SENC to Source(
                             type = SourceType.VECTOR,
@@ -34,7 +34,7 @@ class StyleHandler(
                         )
                     ),
 
-                    layers = layerFactory.layers(LayerableOptions(theme, depth)),
+                    layers = layerFactory.layers(LayerableOptions(depth)),
                     version = 8
                 )
             )

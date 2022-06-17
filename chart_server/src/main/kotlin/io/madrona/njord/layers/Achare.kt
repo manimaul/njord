@@ -45,7 +45,7 @@ class Achare : SymbolLayerable() {
                 Filters.eqTypePolyGon
             ),
             paint = Paint(
-                lineColor = options.color.from("CHMGF"),
+                lineColor = colorFrom("CHMGF"),
                 lineWidth = 2.0f,
                 lineDashArray = listOf(7f, 4f)
             )

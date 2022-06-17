@@ -30,7 +30,7 @@ class Pilpnt : Layerable {
                     Filters.eqTypePoint,
                 ),
                 paint = Paint(
-                    circleColor = options.color.from("CHBLK"),
+                    circleColor = colorFrom("CHBLK"),
                     circleRadius = 2.5f
                 )
             )

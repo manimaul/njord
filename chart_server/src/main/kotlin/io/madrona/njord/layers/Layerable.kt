@@ -40,6 +40,5 @@ abstract class SymbolLayerable(
 }
 
 data class LayerableOptions(
-        val color: Theme,
         val depth: Depth
 )

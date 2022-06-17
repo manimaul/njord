@@ -4,17 +4,19 @@ import io.madrona.njord.layers.*
 
 /**
  * http://localhost:9000/v1/about/s57objects
- *
- * land area (LNDARE)
+ * coastline (COALNE)
  * hulk (HULKES)
  * ice area (ICEARE)
+ * land area (LNDARE)
  * mooring/warping facility (MORFAC)
+ * pontoon (PONTON)
+
  *
  * <TODO:>
  * bridge (BRIDGE)
  * cable overhead (CBLOHD)
  * canal (CANALS)
- * coastline (COALNE)
+
  * conveyor (CONVYR)
  * dam (DAMCON)
  * deep water route centerline (DWRTCL)
@@ -30,7 +32,6 @@ import io.madrona.njord.layers.*
  * obstruction (OBSTRN)
  * offshore platform (OFSPLF)
  * oil barrier (OILBAR)
- * pontoon (PONTON)
  * pylon/bridge support (PYLONS)
  * shoreline construction (SLCONS)
  * cartographic area ($AREAS)
@@ -43,8 +44,10 @@ class BaseLayers {
     val layers = sequenceOf(
         Background(),
         Lndare(),
-        Hulkes(),
         Iceare(),
+        Coalne(),
+        Hulkes(),
+        Ponton(),
         Morfac(),
 //        Bridge()
     )

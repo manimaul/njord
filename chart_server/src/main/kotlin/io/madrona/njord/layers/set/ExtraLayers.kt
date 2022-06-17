@@ -1,12 +1,13 @@
 package io.madrona.njord.layers.set
 
-import io.madrona.njord.layers.Layerable
 import io.madrona.njord.layers.Ply
+import io.madrona.njord.layers.Soundg
 
 /**
  */
 class ExtraLayers {
-    val layers = sequenceOf<Layerable>(
-        Ply()
+    val layers = sequenceOf(
+        Soundg(),
+        Ply(),
     )
 }

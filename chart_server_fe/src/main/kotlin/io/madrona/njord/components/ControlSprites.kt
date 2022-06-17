@@ -1,7 +1,6 @@
 package io.madrona.njord.components
 
 import io.madrona.njord.IconInfo
-import io.madrona.njord.Theme
 import io.madrona.njord.pathToFullUrl
 import kotlinx.browser.window
 import kotlinx.coroutines.await

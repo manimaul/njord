@@ -5,9 +5,8 @@ import io.ktor.http.*
 import io.ktor.response.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
-import io.madrona.njord.Theme
 import io.madrona.njord.ext.KtorHandler
-import io.madrona.njord.ext.letFromStrings
+import io.madrona.njord.ext.fromString
 import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
 import io.madrona.njord.util.SpriteSheet
@@ -20,11 +19,10 @@ class StyleHandler(
     override val route = "/v1/style/{theme}/{depth}"
 
     override suspend fun handleGet(call: ApplicationCall) {
-        letFromStrings(call.parameters["theme"], call.parameters["depth"]) { theme: Theme, depth: Depth ->
-            val name = "${theme.name.lowercase()}-${depth.name.lowercase()}"
+        fromString<Depth>(call.parameters["depth"])?.let { depth ->
             call.respond(
                 Style(
-                    name = name,
+                    name = config.chartSymbolSprites,
                     glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
                     spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${spriteSheet.resNameBase}",
                     sources = mapOf(

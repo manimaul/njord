@@ -21,22 +21,24 @@ class SpriteSheet(
         }
     }
 
-    private val spriteSheetJson: IconInfo by lazy {
+    private val spriteSheetJson: Map<String, IconInfo> by lazy {
         resourceAsString("www/sprites/${chartSymbolSprites}.json")?.let {
             Json.decodeFromString(it)
         } ?: throw RuntimeException("sprite sheet json not found: $chartSymbolSprites")
     }
 
-    fun spriteImage(name: String): ByteArray {
-        val subImage = spriteSheetImage.getSubimage(
-            spriteSheetJson.x,
-            spriteSheetJson.y,
-            spriteSheetJson.width,
-            spriteSheetJson.height
-        )
-        return ByteArrayOutputStream(1024).use { oss ->
-            ImageIO.write(subImage, "png", oss)
-            oss.toByteArray()
+    fun spriteImage(name: String): ByteArray? {
+        return spriteSheetJson[name]?.let {
+            val subImage = spriteSheetImage.getSubimage(
+                it.x,
+                it.y,
+                it.width,
+                it.height
+            )
+            ByteArrayOutputStream(1024).use { oss ->
+                ImageIO.write(subImage, "png", oss)
+                oss.toByteArray()
+            }
         }
     }
 }

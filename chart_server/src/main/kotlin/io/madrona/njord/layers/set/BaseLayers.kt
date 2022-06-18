@@ -7,6 +7,7 @@ import io.madrona.njord.layers.*
  *
  * bridge (BRIDGE)
  * coastline (COALNE)
+ * depth area (DEPARE)
  * hulk (HULKES)
  * ice area (ICEARE)
  * land area (LNDARE)
@@ -21,7 +22,6 @@ import io.madrona.njord.layers.*
  * conveyor (CONVYR)
  * dam (DAMCON)
  * deep water route centerline (DWRTCL)
- * depth area (DEPARE)
  * dock area (DOCARE)
  * floating dock (FLODOC)
  * gate (GATCON)
@@ -43,6 +43,7 @@ class BaseLayers {
     val layers = sequenceOf(
         Background(),
         Lndare(),
+        Depare(),
         Iceare(),
         Coalne(),
         Hulkes(),

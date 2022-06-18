@@ -32,10 +32,12 @@ object Filters {
     const val lt = ">"
     const val ltEq = ">="
     const val eq = "=="
+    const val isIn = "in"
     const val notEq = "!="
-    val eqTypeLineString = listOf("==", "\$type", "LineString")
-    val eqTypePolyGon = listOf("==", "\$type", "Polygon")
-    val eqTypePoint = listOf("==", "\$type", "Point")
+    val eqTypeLineStringOrPolygon = listOf(notEq, "\$type", "Point")
+    val eqTypeLineString = listOf(eq, "\$type", "LineString")
+    val eqTypePolyGon = listOf(eq, "\$type", "Polygon")
+    val eqTypePoint = listOf(eq, "\$type", "Point")
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,6 +62,7 @@ data class Layout(
         @JsonProperty("icon-image") val iconImage: Any? = null, //List<String> or String>
         @JsonProperty("icon-anchor") val iconAnchor: Anchor? = null,
         @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean? = null,
+        @JsonProperty("icon-ignore-placement") val iconIgnorePlacement: Boolean? = null,
         @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean? = null,
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
@@ -82,6 +85,7 @@ data class Layout(
 enum class Placement {
     @JsonProperty("point") POINT,
     @JsonProperty("line") LINE,
+    @JsonProperty("line-center") LINE_CENTER,
 }
 
 enum class Anchor {

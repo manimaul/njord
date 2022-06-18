@@ -1,4 +1,3 @@
-#Complete:
 LNDARE:
   - ATT: []
     SY: LNDARE01
@@ -26,8 +25,37 @@ MORFAC:
   - ATT: []
     SY: MORFAC03
 
-#Todo:
+# We only use symbol icons for point,line and area bridge geometries that are opening types 2,3,4,5,7,8
+BRIDGE:
+  - ATT:
+      - CATBRG:
+          - '2'
+    SY: BRIDGE01
+  - ATT:
+      - CATBRG:
+          - '3'
+    SY: BRIDGE01
+  - ATT:
+      - CATBRG:
+          - '4'
+    SY: BRIDGE01
+  - ATT:
+      - CATBRG:
+          - '5'
+    SY: BRIDGE01
+  - ATT:
+      - CATBRG:
+          - '7'
+    SY: BRIDGE01
+  - ATT:
+      - CATBRG:
+          - '8'
+    SY: BRIDGE01
 
+#############todo: ###################################
+#############todo: ###################################
+#############todo: ###################################
+#############todo: ###################################
 '######':
 - ATT: []
   SY: QUESMRK1
@@ -1470,9 +1498,6 @@ BOYWTW:
   SY: boyspp50
 - ATT: []
   SY: BOYDEF03
-BRIDGE:
-- ATT: []
-  SY: BRIDGE01
 BUAARE:
 - ATT: []
   SY: BUAARE02

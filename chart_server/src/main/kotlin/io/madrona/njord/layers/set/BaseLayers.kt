@@ -4,6 +4,8 @@ import io.madrona.njord.layers.*
 
 /**
  * http://localhost:9000/v1/about/s57objects
+ *
+ * bridge (BRIDGE)
  * coastline (COALNE)
  * hulk (HULKES)
  * ice area (ICEARE)
@@ -13,10 +15,9 @@ import io.madrona.njord.layers.*
 
  *
  * <TODO:>
- * bridge (BRIDGE)
+ *
  * cable overhead (CBLOHD)
  * canal (CANALS)
-
  * conveyor (CONVYR)
  * dam (DAMCON)
  * deep water route centerline (DWRTCL)
@@ -24,11 +25,8 @@ import io.madrona.njord.layers.*
  * dock area (DOCARE)
  * floating dock (FLODOC)
  * gate (GATCON)
-
-
  * lock basin (LOKBSN)
  * log pond (LOGPON)
-
  * obstruction (OBSTRN)
  * offshore platform (OFSPLF)
  * oil barrier (OILBAR)
@@ -39,6 +37,7 @@ import io.madrona.njord.layers.*
  * harbour basin (HRBBSN)
  * lock basin part (LKBSPT)
  * exceptional navigation structure (EXCNST) (note: IENC only)
+ *
  **/
 class BaseLayers {
     val layers = sequenceOf(
@@ -49,6 +48,7 @@ class BaseLayers {
         Hulkes(),
         Ponton(),
         Morfac(),
-//        Bridge()
+        Bridge(),
+
     )
 }

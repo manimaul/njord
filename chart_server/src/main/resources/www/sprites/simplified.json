@@ -6,45 +6,52 @@
         "y": 0,
         "pixelRatio": 1
     },
+    "BRIDGE01": {
+        "width": 6,
+        "height": 6,
+        "x": 40,
+        "y": 0,
+        "pixelRatio": 1
+    },
     "HULKES01": {
         "width": 7,
         "height": 4,
-        "x": 40,
+        "x": 80,
         "y": 0,
         "pixelRatio": 1
     },
     "ICEARE04": {
         "width": 40,
         "height": 38,
-        "x": 80,
+        "x": 120,
         "y": 0,
         "pixelRatio": 3
     },
     "LNDARE01": {
         "width": 3,
         "height": 3,
-        "x": 120,
+        "x": 160,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC03": {
         "width": 4,
         "height": 4,
-        "x": 160,
+        "x": 200,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC04": {
         "width": 5,
         "height": 8,
-        "x": 200,
+        "x": 240,
         "y": 0,
         "pixelRatio": 1
     },
     "PILPNT02": {
         "width": 3,
         "height": 3,
-        "x": 240,
+        "x": 280,
         "y": 0,
         "pixelRatio": 1
     }

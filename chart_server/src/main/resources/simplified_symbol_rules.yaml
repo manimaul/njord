@@ -52,6 +52,44 @@ BRIDGE:
           - '8'
     SY: BRIDGE01
 
+OBSTRN:
+  - ATT:
+      - CATOBS:
+          - '10'
+    SY: FLTHAZ02
+  - ATT:
+      - CATOBS:
+          - '7'
+    SY: FOULGND1
+  - ATT:
+      - CATOBS:
+          - '8'
+    SY: FLTHAZ02
+  - ATT:
+      - CATOBS:
+          - '9'
+    SY: ACHARE02
+  - ATT:
+      - CATOBS:
+          - '10'
+    SY: FLTHAZ02
+  - ATT:
+      - CATOBS:
+          - '7'
+    SY: FOULGND1
+  - ATT:
+      - CATOBS:
+          - '8'
+    SY: FLTHAZ02
+  - ATT:
+      - CATOBS:
+          - '9'
+    SY: ACHARE02
+  - ATT:
+      - WATLEV:
+          - '7'
+    SY: FLTHAZ02
+
 #############todo: ###################################
 #############todo: ###################################
 #############todo: ###################################
@@ -2824,47 +2862,7 @@ NOTMRK:
   SY: NOTMRK03
 - ATT: []
   SY: NOTMRK02
-OBSTRN:
-- ATT:
-  - CATOBS:
-    - '10'
-  - VALSOU: []
-  SY: FLTHAZ02
-- ATT:
-  - CATOBS:
-    - '7'
-  - VALSOU: []
-  SY: FOULGND1
-- ATT:
-  - CATOBS:
-    - '8'
-  - VALSOU: []
-  SY: FLTHAZ02
-- ATT:
-  - CATOBS:
-    - '9'
-  - VALSOU: []
-  SY: ACHARE02
-- ATT:
-  - CATOBS:
-    - '10'
-  SY: FLTHAZ02
-- ATT:
-  - CATOBS:
-    - '7'
-  SY: FOULGND1
-- ATT:
-  - CATOBS:
-    - '8'
-  SY: FLTHAZ02
-- ATT:
-  - CATOBS:
-    - '9'
-  SY: ACHARE02
-- ATT:
-  - WATLEV:
-    - '7'
-  SY: FLTHAZ02
+
 OFSPLF:
 - ATT: []
   SY: OFSPLF01

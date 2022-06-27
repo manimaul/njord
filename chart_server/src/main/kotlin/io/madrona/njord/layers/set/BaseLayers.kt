@@ -13,6 +13,7 @@ import io.madrona.njord.layers.*
  * land area (LNDARE)
  * mooring/warping facility (MORFAC)
  * pontoon (PONTON)
+ * obstruction (OBSTRN)
 
  *
  * <TODO:>
@@ -27,7 +28,6 @@ import io.madrona.njord.layers.*
  * gate (GATCON)
  * lock basin (LOKBSN)
  * log pond (LOGPON)
- * obstruction (OBSTRN)
  * offshore platform (OFSPLF)
  * oil barrier (OILBAR)
  * pylon/bridge support (PYLONS)
@@ -50,6 +50,6 @@ class BaseLayers {
         Ponton(),
         Morfac(),
         Bridge(),
-
+        Obstrn(),
     )
 }

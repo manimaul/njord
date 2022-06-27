@@ -10,10 +10,7 @@ class Morfac : SymbolLayerable() {
             id = "${key}_area_fill",
             type = LayerType.FILL,
             sourceLayer = key,
-            filter = listOf(
-                Filters.all,
-                Filters.eqTypePolyGon
-            ),
+            filter = Filters.eqTypePolyGon,
             paint = Paint(
                 fillColor = colorFrom("CHBRN")
             )
@@ -22,10 +19,7 @@ class Morfac : SymbolLayerable() {
             id = "${key}_area_line",
             type = LayerType.LINE,
             sourceLayer = key,
-            filter = listOf(
-                Filters.all,
-                Filters.eqTypePolyGon
-            ),
+            filter = Filters.eqTypePolyGon,
             paint = Paint(
                 lineColor = colorFrom("CHBLK"),
                 lineWidth = 1f
@@ -79,7 +73,7 @@ class Morfac : SymbolLayerable() {
             id = "${key}_point",
             type = LayerType.SYMBOL,
             sourceLayer = key,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
+            filter = Filters.eqTypePoint,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = listOf("get", "SY"),

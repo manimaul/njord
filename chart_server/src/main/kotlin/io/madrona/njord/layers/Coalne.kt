@@ -11,10 +11,7 @@ class Coalne : Layerable {
                 id = "${key}_line",
                 type = LayerType.LINE,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.any,
-                    Filters.eqTypeLineString
-                ),
+                filter = Filters.eqTypeLineString,
                 paint = Paint(
                     lineColor = colorFrom("CSTLN"),
                     lineWidth = 1f,

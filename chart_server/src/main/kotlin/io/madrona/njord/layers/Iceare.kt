@@ -11,10 +11,7 @@ class Iceare : Layerable {
                 id = "${key}_fill",
                 type = LayerType.FILL,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.all,
-                    Filters.eqTypePolyGon
-                ),
+                filter = Filters.eqTypePolyGon,
                 paint = Paint(
                     fillPattern = "ICEARE04"
                 )

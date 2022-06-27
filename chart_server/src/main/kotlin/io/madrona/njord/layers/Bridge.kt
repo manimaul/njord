@@ -24,10 +24,7 @@ class Bridge : SymbolLayerable() {
             id = "${key}_symbol_opening_bridge",
             type = LayerType.SYMBOL,
             sourceLayer = key,
-            filter = listOf(
-                Filters.all,
-                Filters.eqTypeLineStringOrPolygon,
-            ),
+            filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.LINE_CENTER,
                 iconImage = listOf("get", "SY"),
@@ -38,7 +35,7 @@ class Bridge : SymbolLayerable() {
             id = "${key}_point",
             type = LayerType.SYMBOL,
             sourceLayer = key,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
+            filter = Filters.eqTypePoint,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = listOf("get", "SY"),

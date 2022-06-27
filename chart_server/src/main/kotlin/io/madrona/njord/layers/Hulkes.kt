@@ -11,10 +11,7 @@ class Hulkes : Layerable {
                 id = "${key}_area_fill",
                 type = LayerType.FILL,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.all,
-                    Filters.eqTypePolyGon
-                ),
+                filter = Filters.eqTypePolyGon,
                 paint = Paint(
                     fillColor = colorFrom("CHBRN")
                 )
@@ -37,10 +34,7 @@ class Hulkes : Layerable {
                 id = "${key}_point",
                 type = LayerType.SYMBOL,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.any,
-                    Filters.eqTypePoint
-                ),
+                filter = Filters.eqTypePoint,
                 layout = Layout(
                     symbolPlacement = Placement.POINT,
                     iconImage = "HULKES01",

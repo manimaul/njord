@@ -13,46 +13,67 @@
         "y": 0,
         "pixelRatio": 1
     },
+    "FLTHAZ02": {
+        "width": 24,
+        "height": 24,
+        "x": 162,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "FOULAR01": {
+        "width": 20,
+        "height": 24,
+        "x": 243,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "FOULGND1": {
+        "width": 12,
+        "height": 10,
+        "x": 324,
+        "y": 0,
+        "pixelRatio": 1
+    },
     "HULKES01": {
         "width": 15,
         "height": 9,
-        "x": 162,
+        "x": 405,
         "y": 0,
         "pixelRatio": 1
     },
     "ICEARE04": {
         "width": 81,
         "height": 77,
-        "x": 243,
+        "x": 486,
         "y": 0,
         "pixelRatio": 3
     },
     "LNDARE01": {
         "width": 7,
         "height": 7,
-        "x": 324,
+        "x": 567,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC03": {
         "width": 9,
         "height": 9,
-        "x": 405,
+        "x": 648,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC04": {
         "width": 11,
         "height": 16,
-        "x": 486,
+        "x": 729,
         "y": 0,
         "pixelRatio": 1
     },
     "PILPNT02": {
         "width": 7,
         "height": 7,
-        "x": 567,
-        "y": 0,
+        "x": 0,
+        "y": 81,
         "pixelRatio": 1
     }
 }

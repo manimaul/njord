@@ -15,6 +15,11 @@ class ChartsConfig(
     val host: String = config.getString("host")
     val port: Int = config.getInt("port")
 
+    val shallowDepth: Float = config.getDouble("shallowDepth").toFloat()
+    val safetyDepth: Float = config.getDouble("safetyDepth").toFloat()
+    val deepDepth: Float = config.getDouble("deepDepth").toFloat()
+    val debugTile: Boolean = config.getBoolean("debugTile")
+
     val chartMinZoom: Int = config.getInt("chartMinZoom")
     val chartMaxZoom: Int = config.getInt("chartMaxZoom")
 

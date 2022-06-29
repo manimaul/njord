@@ -47,5 +47,5 @@ dependencies {
     implementation(npm("jquery", "3.6.0"))
 
     //maplibre
-    implementation(npm("maplibre-gl", "1.15.2"))
+    implementation(npm("maplibre-gl", "2.1.9"))
 }

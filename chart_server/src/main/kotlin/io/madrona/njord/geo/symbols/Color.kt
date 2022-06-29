@@ -40,6 +40,3 @@ enum class Color(val code: Int) {
         }
     }
 }
-
-
-

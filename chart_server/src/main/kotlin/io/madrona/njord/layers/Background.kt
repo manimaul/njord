@@ -10,7 +10,7 @@ class Background : Layerable {
             Layer(
                     id = "background",
                     paint = Paint(
-                            backgroundColor = colorFrom("CHWHT"),
+                            backgroundColor = colorFrom("CHBLK"),
                             backgroundOpacity = 1
                     ),
                     type = LayerType.BACKGROUND,

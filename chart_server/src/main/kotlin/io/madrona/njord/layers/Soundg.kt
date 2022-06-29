@@ -1,5 +1,7 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ChartsConfig
+import io.madrona.njord.Singletons
 import io.madrona.njord.model.*
 
 /**
@@ -21,7 +23,9 @@ import io.madrona.njord.model.*
  * Distinction:
  * depth area; wreck; underwater/awash rock; obstruction;
  */
-class Soundg : Layerable {
+class Soundg(
+        private val config: ChartsConfig = Singletons.config
+) : Layerable {
     override val key = "SOUNDG"
 
     override fun layers(options: LayerableOptions) = when(options.depth) {
@@ -50,9 +54,9 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
-                                    colorFrom("SNDG2"),
-                                    colorFrom("SNDG1")
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
+                                    colorFrom("SNDG2"), //light
+                                    colorFrom("SNDG1")  //dark
                             ),
                             textHaloColor = colorFrom("CHWHT"),
                             textHaloWidth = 1.5f
@@ -80,7 +84,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
                                     colorFrom("SNDG2"),
                                     colorFrom("SNDG1")
                             )
@@ -108,7 +112,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
                                     colorFrom("SNDG2"),
                                     colorFrom("SNDG1")
                             ),
@@ -138,7 +142,7 @@ class Soundg : Layerable {
                     ),
                     paint = Paint(
                             textColor = listOf(
-                                    "case", listOf("<=", listOf("get", "METERS"), 9.0f),
+                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
                                     colorFrom("SNDG2"),
                                     colorFrom("SNDG1")
                             ),

@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Morfac : SymbolLayerable() {
-    override val key = "MORFAC"
-
+class Morfac : Layerable(autoSymbol = true) {
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_area_fill",

@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Debug : Layerable {
-    override val key = "DEBUG"
-
+class Debug : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
                     id = "debug-msg",

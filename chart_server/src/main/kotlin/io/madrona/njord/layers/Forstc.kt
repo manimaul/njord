@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Forstc : SymbolLayerable() {
-    override val key = "FORSTC"
-
+class Forstc : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
                     id = "${key}_point",

@@ -25,8 +25,7 @@ import io.madrona.njord.model.*
  */
 class Soundg(
         private val config: ChartsConfig = Singletons.config
-) : Layerable {
-    override val key = "SOUNDG"
+) : Layerable() {
 
     override fun layers(options: LayerableOptions) = when(options.depth) {
         Depth.FATHOMS -> fathoms()

@@ -1,43 +1,33 @@
 package io.madrona.njord.layers
 
 import io.madrona.njord.Singletons
-import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
+import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.util.logger
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-interface Layerable {
-    val key: String
-    fun layers(options: LayerableOptions): Sequence<Layer>
-}
+abstract class Layerable(
+    private val autoSymbol: Boolean = false,
+) {
+    val log = logger()
+    val key = javaClass.simpleName.uppercase()
+    abstract fun layers(options: LayerableOptions): Sequence<Layer>
 
-@Suppress("LeakingThis")
-abstract class SymbolLayerable(
-    private val library: SymbolLayerLibrary = Singletons.symbolLayerLibrary
-): Layerable {
+    open fun tileEncode(feature: ChartFeature) = Unit
 
-    private val log = logger()
-
-    init {
-        val thiz = this
-        Singletons.ioScope.launch {
-            delay(1000)
-            Singletons.symbolLayers[key] = thiz
+    fun addTileEncodings(feature: ChartFeature) {
+        if (autoSymbol) {
+            val sy = Singletons.symbolLayerLibrary.symbol(key, feature.props)
+            log.debug("finding symbol for layer $key = $sy")
+            feature.props["SY"] = sy
         }
-    }
-
-    override val key = javaClass.simpleName.uppercase()
-
-    fun addSymbol(props: S57Prop) {
-        val sy = library.symbol(key, props)
-        log.debug("finding symbol for layer $key = $sy")
-        props["SY"] = sy
+        if (feature.layer == key) {
+            tileEncode(feature)
+        }
     }
 }
 
 data class LayerableOptions(
-        val depth: Depth
+    val depth: Depth
 )

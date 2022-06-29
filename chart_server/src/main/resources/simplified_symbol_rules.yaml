@@ -55,8 +55,8 @@ BRIDGE:
 OBSTRN:
   - ATT:
       - CATOBS:
-          - '10'
-    SY: FLTHAZ02
+          - '6'
+    SY: FOULAR01
   - ATT:
       - CATOBS:
           - '7'
@@ -73,22 +73,12 @@ OBSTRN:
       - CATOBS:
           - '10'
     SY: FLTHAZ02
-  - ATT:
-      - CATOBS:
-          - '7'
-    SY: FOULGND1
-  - ATT:
-      - CATOBS:
-          - '8'
-    SY: FLTHAZ02
-  - ATT:
-      - CATOBS:
-          - '9'
-    SY: ACHARE02
   - ATT:
       - WATLEV:
           - '7'
     SY: FLTHAZ02
+  - ATT: []
+    SY: ISODGR51
 
 #############todo: ###################################
 #############todo: ###################################

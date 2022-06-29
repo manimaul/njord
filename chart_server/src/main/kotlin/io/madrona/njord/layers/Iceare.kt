@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Iceare : Layerable {
-    override val key = "ICEARE"
-
+class Iceare : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(

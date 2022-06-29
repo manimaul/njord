@@ -16,9 +16,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * beacon, cardinal; beacon, isolated danger; beacon, lateral; beacon, safe water; beacon special purpose/general; mooring/warping facility;
  */
-class Pilpnt : Layerable {
-    override val key = "PILPNT"
-
+class Pilpnt : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(

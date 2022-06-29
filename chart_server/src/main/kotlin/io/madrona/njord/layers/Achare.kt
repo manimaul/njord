@@ -19,9 +19,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * anchor berth; mooring/warping facility;
  */
-class Achare : SymbolLayerable() {
-    override val key = "ACHARE"
-
+class Achare : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_point",

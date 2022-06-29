@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Cranes : SymbolLayerable() {
-    override val key = "CRANES"
-
+class Cranes : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
                     id = "${key}_point",

@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Ply : Layerable {
-    override val key = "PLY"
-
+class Ply : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
                 Layer(

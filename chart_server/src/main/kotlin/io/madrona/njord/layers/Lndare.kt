@@ -2,9 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Lndare : Layerable {
-    override val key = "LNDARE"
-
+class Lndare : Layerable(autoSymbol = true) {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(

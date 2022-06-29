@@ -1295,6 +1295,11 @@
       "Code": 42,
       "ID": 9,
       "Meaning": "ground tackle"
+    },
+    {
+      "Code": 42,
+      "ID": 10,
+      "Meaning": "boom"
     }
   ],
   "43": [
@@ -3983,7 +3988,7 @@
     {
       "Code": 125,
       "ID": 11,
-      "Meaning": "not reguraly maintained"
+      "Meaning": "not regularly maintained"
     }
   ],
   "131": [

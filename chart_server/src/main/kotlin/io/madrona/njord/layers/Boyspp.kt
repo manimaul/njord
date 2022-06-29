@@ -47,10 +47,7 @@ enum class Boyshp(@get:JsonValue val code: Int) {
  * Distinction:
  *     buoy lateral; buoy safe water; buoy isolated danger; buoy cardinal; buoy installation; mooring/warping facility;
  */
-class Boyspp : SymbolLayerable() {
-
-    override val key = "BOYSPP"
-
+class Boyspp : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
             Layer(
                     id = "${key}_point",

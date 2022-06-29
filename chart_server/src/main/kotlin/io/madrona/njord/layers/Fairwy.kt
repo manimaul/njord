@@ -16,8 +16,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * deep water route centerline; deep water route part; traffic separation scheme lane part;
  */
-class Fairwy : Layerable {
-    override val key = "FAIRWY"
+class Fairwy : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(

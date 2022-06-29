@@ -4,7 +4,7 @@ import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.tile.VectorTileEncoder
-import io.madrona.njord.layers.Depare
+import io.madrona.njord.layers.LayerFactory
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
@@ -20,6 +20,7 @@ class TileEncoder(
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true, 0.0),
     private val chartDao: ChartDao = ChartDao(),
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
+    private val layerFactory: LayerFactory = Singletons.layerFactory
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)
@@ -47,8 +48,7 @@ class TileEncoder(
                         it.geomWKB != null
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
-                        Singletons.symbolLayers[feature.layer]?.addSymbol(feature.props)
-                        Depare.tileEncodeFillColor(feature)
+                        layerFactory.tileEncode(feature)
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->

@@ -5,9 +5,7 @@ import io.madrona.njord.model.*
 /**
  * /v1/app/control/symbols/LIGHTS
  */
-class Lights : SymbolLayerable() {
-    override val key = "LIGHTS"
-
+class Lights : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_point",

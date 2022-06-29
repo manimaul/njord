@@ -20,8 +20,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * sounding; depth area; coastline;
  */
-class Depcnt : Layerable {
-    override val key = "DEPCNT"
+class Depcnt : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
                 Layer(

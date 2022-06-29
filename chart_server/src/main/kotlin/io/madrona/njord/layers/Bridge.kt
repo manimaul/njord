@@ -3,7 +3,7 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 
-class Bridge : SymbolLayerable() {
+class Bridge : Layerable(autoSymbol = true) {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(

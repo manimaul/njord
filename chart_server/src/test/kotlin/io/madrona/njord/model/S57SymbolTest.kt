@@ -1,9 +1,6 @@
 package io.madrona.njord.model
 
-import io.madrona.njord.Singletons
-import io.madrona.njord.util.resourceAsString
 import kotlin.test.*
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import org.junit.Before
@@ -29,7 +26,26 @@ class S57SymbolTest {
     }
 
     @Test
-    fun test_obstrn_foul_ground() {
+    fun testObstrn() {
+        assertEquals("ISODGR51",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf()
+            )
+        )
+        assertEquals("ISODGR51",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "CATOBS" to listOf("1"),
+                )
+            )
+        )
+        assertEquals("FOULAR01",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "CATOBS" to listOf("6"),
+                )
+            )
+        )
         assertEquals("FOULGND1",
             subject.symbol(
                 layer = "OBSTRN", props = mutableMapOf(
@@ -45,15 +61,34 @@ class S57SymbolTest {
                 )
             )
         )
-    }
 
-//    @Test
-//    fun test_obstrn_() {
-//        val subject = SymbolLayerLibrary(rules = "simplified_symbol_rules.yaml")
-//        val props: S57Prop = mutableMapOf(
-//            "CATOBS" to listOf("6"),
-//        )
-//        val sy = subject.symbol("OBSTRN", props)
-//        assertEquals("FOULAR01", sy)
-//    }
+        assertEquals("FLTHAZ02",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "CATOBS" to listOf("8"),
+                )
+            )
+        )
+        assertEquals("ACHARE02",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "CATOBS" to listOf("9"),
+                )
+            )
+        )
+        assertEquals("FLTHAZ02",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "CATOBS" to listOf("10"),
+                )
+            )
+        )
+        assertEquals("FLTHAZ02",
+            subject.symbol(
+                layer = "OBSTRN", props = mutableMapOf(
+                    "WATLEV" to listOf("7"),
+                )
+            )
+        )
+    }
 }

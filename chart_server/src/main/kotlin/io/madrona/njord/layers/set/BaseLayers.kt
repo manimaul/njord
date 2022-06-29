@@ -49,7 +49,7 @@ class BaseLayers {
         Hulkes(),
         Ponton(),
         Morfac(),
-        Bridge(),
         Obstrn(),
+        Bridge(),
     )
 }

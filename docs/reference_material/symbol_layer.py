@@ -6,7 +6,7 @@ template = """package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class CLASS : SymbolLayerable() {
+class CLASS : Layerable(autoSymbol = true) {
     override val key = "KEY"
 
     override fun layers(options: LayerableOptions) = sequenceOf(

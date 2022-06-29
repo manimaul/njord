@@ -13,7 +13,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
-import io.madrona.njord.layers.SymbolLayerable
+import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.SpriteSheet
 import io.madrona.njord.util.ZFinder
@@ -71,9 +71,9 @@ object Singletons{
             .start(30, TimeUnit.SECONDS)
     }
 
-    val symbolLayerLibrary = SymbolLayerLibrary()
+    val layerFactory = LayerFactory()
 
-    val symbolLayers: MutableMap<String, SymbolLayerable> = ConcurrentHashMap()
+    val symbolLayerLibrary = SymbolLayerLibrary()
 
     val s57ObjectLibrary = S57ObjectLibrary()
 }

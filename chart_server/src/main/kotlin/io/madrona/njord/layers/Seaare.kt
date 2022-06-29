@@ -20,8 +20,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * depth area; seabed area;
  */
-class Seaare : Layerable {
-    override val key = "SEAARE"
+class Seaare : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
                 Layer(

@@ -48,31 +48,38 @@
         "y": 0,
         "pixelRatio": 3
     },
+    "ISODGR51": {
+        "width": 9,
+        "height": 9,
+        "x": 280,
+        "y": 0,
+        "pixelRatio": 1
+    },
     "LNDARE01": {
         "width": 3,
         "height": 3,
-        "x": 280,
+        "x": 320,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC03": {
         "width": 4,
         "height": 4,
-        "x": 320,
+        "x": 360,
         "y": 0,
         "pixelRatio": 1
     },
     "MORFAC04": {
         "width": 5,
         "height": 8,
-        "x": 360,
-        "y": 0,
+        "x": 0,
+        "y": 40,
         "pixelRatio": 1
     },
     "PILPNT02": {
         "width": 3,
         "height": 3,
-        "x": 0,
+        "x": 40,
         "y": 40,
         "pixelRatio": 1
     }

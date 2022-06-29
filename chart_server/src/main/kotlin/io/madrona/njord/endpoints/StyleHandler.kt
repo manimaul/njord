@@ -12,7 +12,7 @@ import io.madrona.njord.model.*
 
 class StyleHandler(
     private val config: ChartsConfig = Singletons.config,
-    private val layerFactory: LayerFactory = LayerFactory()
+    private val layerFactory: LayerFactory = Singletons.layerFactory
 ) : KtorHandler {
     override val route = "/v1/style/{depth}"
 

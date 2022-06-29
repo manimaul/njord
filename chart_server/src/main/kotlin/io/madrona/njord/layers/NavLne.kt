@@ -22,8 +22,7 @@ import io.madrona.njord.model.*
  * Distinction:
  * recommended route; recommended track;
  */
-class NavLne : Layerable {
-    override val key = "NAVLNE"
+class NavLne : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(

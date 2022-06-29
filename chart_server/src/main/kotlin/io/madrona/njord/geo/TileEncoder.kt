@@ -3,8 +3,8 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
-import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.geo.tile.VectorTileEncoder
+import io.madrona.njord.layers.Depare
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
@@ -48,6 +48,7 @@ class TileEncoder(
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         Singletons.symbolLayers[feature.layer]?.addSymbol(feature.props)
+                        Depare.tileEncodeFillColor(feature)
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->

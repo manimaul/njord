@@ -1,7 +1,6 @@
 package io.madrona.njord.layers
 
 import io.madrona.njord.Singletons
-import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.util.logger
 import io.madrona.njord.model.Depth
@@ -16,10 +15,9 @@ abstract class Layerable(
 
     open fun tileEncode(feature: ChartFeature) = Unit
 
-    fun addTileEncodings(feature: ChartFeature) {
+    fun preTileEncode(feature: ChartFeature) {
         if (autoSymbol) {
             val sy = Singletons.symbolLayerLibrary.symbol(key, feature.props)
-            log.debug("finding symbol for layer $key = $sy")
             feature.props["SY"] = sy
         }
         if (feature.layer == key) {

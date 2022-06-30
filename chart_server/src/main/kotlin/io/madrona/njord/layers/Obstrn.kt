@@ -26,11 +26,10 @@ class Obstrn : Layerable() {
                 sourceLayer = key,
                 filter = listOf(
                     Filters.all,
-                    Filters.eqTypeLineStringOrPolygon,
-                    listOf(Filters.ltEq, "VALSOU", 3.0)
+                    Filters.eqTypePolyGon,
                 ),
                 paint = Paint(
-                    fillColor = colorFrom("DEPIT")
+                    fillColor = Filters.areaFillColor
                 )
             ),
             Layer(
@@ -39,7 +38,7 @@ class Obstrn : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
-                    fillPattern = listOf("get", "SY")
+                    fillPattern = listOf("get", "AP")
                 )
             ),
             Layer(
@@ -59,13 +58,61 @@ class Obstrn : Layerable() {
     }
 
     private fun encodeAreaPattern(feature: ChartFeature) {
+        val category = feature.props.intValue("CATOBS")
+        /**
+        1	snag / stump
+        2	wellhead
+        3	diffuser
+        4	crib
+        5	fish haven
+        6	foul area
+        7	foul ground
+        8	ice boom
+        9	ground tackle
+        10	boom
+         */
+        if (category == 6) {
+            feature.props["AP"] = "FOULAR01"
+        }
+    }
+
+    private fun encodeAreaColor(feature: ChartFeature) {
         val meters: Float = feature.props.floatValue("VALSOU") ?: 0.0f
         val quality = feature.props.intValues("QUASOU")
+        val waterLevelEffect = feature.props.intValue("WATLEV")
         val ac = when {
-            quality.contains(1) || //depth known
-                    quality.contains(5) || //no bottom found at value shown
-                    quality.contains(6) || //least depth known
-                    quality.contains(10) -> { //maintained depth
+            /**
+            1	partly submerged at high water
+            2	always dry
+            3	always under water/submerged
+            4	covers and uncovers
+            5	awash
+            6	subject to inundation or flooding
+            7	floating
+             */
+            waterLevelEffect == 1 ||
+                    waterLevelEffect == 2 ||
+                    waterLevelEffect == 4 ||
+                    waterLevelEffect == 5 ||
+                    waterLevelEffect == 7 -> "DEPIT"
+
+            /**
+            1	depth known
+            2	depth unknown
+            3	doubtful sounding
+            4	unreliable sounding
+            5	no bottom found at value shown
+            6	least depth known
+            7	least depth unknown, safe clearance at value shown
+            8	value reported (not surveyed)
+            9	value reported (not confirmed)
+            10	maintained depth
+            11	not regularly maintained
+             */
+            quality.contains(1) ||
+                    quality.contains(5) ||
+                    quality.contains(6) ||
+                    quality.contains(10) -> {
                 when {
                     meters <= 0.0 -> "DEPIT"
                     meters <= Singletons.config.shallowDepth -> "DEPVS"
@@ -76,20 +123,14 @@ class Obstrn : Layerable() {
                 }
             }
             else -> null
-            //2 depth unknown
-            //3 doubtful sounding
-            //4 unreliable sounding
-            //7 least depth unknown, safe clearance at value shown
-            //8 value reported (not surveyed)
-            //9 value reported (not confirmed)
-            //11 not regularly maintained
+        } ?: "DEPVS"
 
-        }
-        log.debug("finding area fill color for $key $ac VALSOU=$meters QUASOU=$quality")
+        log.debug("found area fill color for $key $ac VALSOU=$meters QUASOU=$quality WATLEV=$waterLevelEffect")
         feature.props["AC"] = ac
     }
 
     override fun tileEncode(feature: ChartFeature) {
+        encodeAreaColor(feature)
         encodeAreaPattern(feature)
         encodePointSymbol(feature)
     }
@@ -98,20 +139,66 @@ class Obstrn : Layerable() {
         val category = feature.props.intValue("CATOBS")
         val waterLevelEffect = feature.props.intValue("WATLEV")
         val sy = when {
-            category == 8 ||                        //ice boom
-            category == 10 ||                       //boom
+            /**
+             *  ice boom
+             */
+            category == 8 ||
+
+                    /**
+                     *  boom
+                     */
+                    category == 10 ||
+
+                    /**
+                     * floating
+                     */
+                    waterLevelEffect == 7 -> "FLTHAZ02"
+
+            /**
+             *  foul area
+             */
+            category == 6 -> "FOULAR01"
+
+            /**
+             *  ground tackle
+             */
+            category == 9 -> "ACHARE02"
+
+
+            /**
+             *  snag / stump
+             */
+            category == 1 ||
+
+                    /**
+                     *  wellhead
+                     */
+                    category == 2 ||
+
+                    /**
+                     *  diffuser
+                     */
+                    category == 3 ||
+
+                    /**
+                     *  crib
+                     */
+                    category == 4 ||
+
+                    /**
+                     *  fish haven
+                     */
+                    category == 5 -> null
+
+            /**
+             * foul ground
+             */
+            category == 7 -> "FOULGND1"
+
+            /**
+             * floating
+             */
             waterLevelEffect == 7 -> "FLTHAZ02"
-
-            category == 6 -> "FOULAR01"             //foul area
-
-            category == 9 -> "ACHARE02"             //ground tackle
-
-            category == 1 ||                        //snag / stump
-            category == 2 ||                        //wellhead
-            category == 3 ||                        //diffuser
-            category == 4 ||                        //crib
-            category == 5 ||                        //fish haven
-            category == 7 -> null                   //foul ground
 
             else -> null
         } ?: "ISODGR51"

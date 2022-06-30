@@ -3,7 +3,6 @@ package io.madrona.njord.layers
 import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.model.*
-import io.madrona.njord.util.logger
 
 class Depare : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -16,16 +15,7 @@ class Depare : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
-                    fillColor = listOf(
-                        "case",
-                        listOf("==", listOf("get", "AC"), "DEPIT"), colorFrom("DEPIT"),
-                        listOf("==", listOf("get", "AC"), "DEPVS"), colorFrom("DEPVS"),
-                        listOf("==", listOf("get", "AC"), "DEPMS"), colorFrom("DEPMS"),
-                        listOf("==", listOf("get", "AC"), "DEPMD"), colorFrom("DEPMD"),
-                        listOf("==", listOf("get", "AC"), "DEPDW"), colorFrom("DEPDW"),
-                        listOf("==", listOf("get", "AC"), "CHBLK"), colorFrom("CHBLK"),
-                        colorFrom("CHRED")
-                    )
+                    fillColor = Filters.areaFillColor
                 ),
             ),
             Layer(

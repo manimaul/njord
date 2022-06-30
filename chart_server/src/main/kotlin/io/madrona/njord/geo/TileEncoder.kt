@@ -5,6 +5,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.tile.VectorTileEncoder
 import io.madrona.njord.layers.LayerFactory
+import io.madrona.njord.model.ChartFeatureInfo
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
@@ -36,7 +37,11 @@ class TileEncoder(
         return this
     }
 
-    suspend fun addCharts(): TileEncoder {
+    private val infoFeatures by lazy {
+        mutableListOf<ChartFeatureInfo>()
+    }
+
+    suspend fun addCharts(info: Boolean): TileEncoder {
         val ctx = timer.time()
         var include: Geometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
@@ -49,6 +54,9 @@ class TileEncoder(
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         layerFactory.preTileEncode(feature)
+                        if (info) {
+                            infoFeatures.add(ChartFeatureInfo(feature.layer, feature.props, tileGeo::class.simpleName))
+                        }
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->
@@ -73,4 +81,6 @@ class TileEncoder(
     fun encode(): ByteArray {
         return encoder.encode()
     }
+
+    fun infoJson() = infoFeatures
 }

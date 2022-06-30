@@ -10,6 +10,7 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
@@ -26,21 +27,27 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
-object Singletons{
+object Singletons {
 
-    val objectMapper: JsonMapper = jsonMapper {
-        addModule(kotlinModule())
+    val chartDao by lazy { ChartDao() }
+
+    val objectMapper: JsonMapper by lazy {
+        jsonMapper {
+            addModule(kotlinModule())
+        }
     }
 
-    val yamlMapper: ObjectMapper = ObjectMapper(
-        YAMLFactory()
-    ).registerKotlinModule()
+    val yamlMapper: ObjectMapper by lazy {
+        ObjectMapper(
+            YAMLFactory()
+        ).registerKotlinModule()
+    }
 
-    val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    val ioScope by lazy { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
 
-    val config = ChartsConfig()
+    val config by lazy { ChartsConfig() }
 
-    val spriteSheet = SpriteSheet()
+    val spriteSheet by lazy { SpriteSheet() }
 
     val ds: DataSource by lazy {
         val hc = HikariConfig()
@@ -53,27 +60,29 @@ object Singletons{
         HikariDataSource(hc)
     }
 
-    val colorLibrary: ColorLibrary = ColorLibrary()
+    val colorLibrary by lazy { ColorLibrary() }
 
-    val wgs84SpatialRef = SpatialReference("""GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]""")
+    val wgs84SpatialRef by lazy { SpatialReference("""GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]""") }
 
-    val zFinder = ZFinder()
+    val zFinder by lazy { ZFinder() }
 
-    val tileSystem = TileSystem()
+    val tileSystem by lazy { TileSystem() }
 
-    val geometryFactory = GeometryFactory()
+    val geometryFactory by lazy { GeometryFactory() }
 
-    val metrics = MetricRegistry().also {
-        ConsoleReporter.forRegistry(it)
-            .convertRatesTo(TimeUnit.SECONDS)
-            .convertDurationsTo(TimeUnit.MILLISECONDS)
-            .build()
-            .start(30, TimeUnit.SECONDS)
+    val metrics by lazy {
+        MetricRegistry().also {
+            ConsoleReporter.forRegistry(it)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build()
+                .start(30, TimeUnit.SECONDS)
+        }
     }
 
-    val layerFactory = LayerFactory()
+    val layerFactory by lazy { LayerFactory() }
 
-    val symbolLayerLibrary = SymbolLayerLibrary()
+    val symbolLayerLibrary by lazy { SymbolLayerLibrary() }
 
-    val s57ObjectLibrary = S57ObjectLibrary()
+    val s57ObjectLibrary by lazy { S57ObjectLibrary() }
 }

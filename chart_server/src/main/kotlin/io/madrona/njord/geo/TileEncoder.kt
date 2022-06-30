@@ -18,7 +18,7 @@ class TileEncoder(
     private val geometryFactory: GeometryFactory = Singletons.geometryFactory,
     //todo: self try removing clipping code ... we've already clipped
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true, 0.0),
-    private val chartDao: ChartDao = ChartDao(),
+    private val chartDao: ChartDao = Singletons.chartDao,
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
     private val layerFactory: LayerFactory = Singletons.layerFactory
 ) {

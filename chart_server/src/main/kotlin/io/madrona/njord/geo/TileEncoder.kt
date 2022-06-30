@@ -48,7 +48,7 @@ class TileEncoder(
                         it.geomWKB != null
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)
-                        layerFactory.tileEncode(feature)
+                        layerFactory.preTileEncode(feature)
                         encoder.addFeature(feature.layer, feature.props, tileGeo)
                     }
                     chartGeo?.let { geo ->

@@ -38,6 +38,17 @@ object Filters {
     val eqTypeLineString = listOf(eq, "\$type", "LineString")
     val eqTypePolyGon = listOf(eq, "\$type", "Polygon")
     val eqTypePoint = listOf(eq, "\$type", "Point")
+
+    val areaFillColor = listOf(
+        "case",
+        listOf("==", listOf("get", "AC"), "DEPIT"), colorFrom("DEPIT"),
+        listOf("==", listOf("get", "AC"), "DEPVS"), colorFrom("DEPVS"),
+        listOf("==", listOf("get", "AC"), "DEPMS"), colorFrom("DEPMS"),
+        listOf("==", listOf("get", "AC"), "DEPMD"), colorFrom("DEPMD"),
+        listOf("==", listOf("get", "AC"), "DEPDW"), colorFrom("DEPDW"),
+        listOf("==", listOf("get", "AC"), "CHBLK"), colorFrom("CHBLK"),
+        colorFrom("CHRED")
+    )
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

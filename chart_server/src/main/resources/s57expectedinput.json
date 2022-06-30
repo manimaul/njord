@@ -4688,6 +4688,11 @@
       "Code": 187,
       "ID": 6,
       "Meaning": "subject to inundation or flooding"
+    },
+    {
+      "Code": 187,
+      "ID": 7,
+      "Meaning": "floating"
     }
   ],
   "400": [

@@ -18,11 +18,11 @@ abstract class Layerable(
     open fun tileEncode(feature: ChartFeature) = Unit
 
     fun preTileEncode(feature: ChartFeature) {
-        if (autoSymbol) {
-            val sy = symbolLayerLibrary.symbol(key, feature.props)
-            feature.props["SY"] = sy
-        }
         if (feature.layer == key) {
+            if (autoSymbol) {
+                val sy = symbolLayerLibrary.symbol(key, feature.props)
+                feature.props["SY"] = sy
+            }
             tileEncode(feature)
         }
     }

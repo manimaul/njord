@@ -7,6 +7,7 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.letThree
+import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.TileEncoder
 
 class TileHandler(
@@ -15,21 +16,25 @@ class TileHandler(
     override val route = "/v1/tile/{z}/{x}/{y}"
 
     override suspend fun handleGet(call: ApplicationCall) {
+        val info = call.request.queryParameters["info"]?.toBoolean() ?: false
         letThree(
             call.parameters["x"]?.toIntOrNull(),
             call.parameters["y"]?.toIntOrNull(),
             call.parameters["z"]?.toIntOrNull(),
         ) { x, y, z ->
             TileEncoder(x, y, z)
-                .addCharts()
+                .addCharts(info)
                 .apply {
                     if (chartsConfig.debugTile) {
                         addDebug()
                     }
                 }
-                .encode()
         }?.let {
-            call.respondBytes(it, ContentType.Application.ProtoBuf)
+            if (info) {
+                call.respond(it.infoJson())
+            } else {
+                call.respondBytes(it.encode(), ContentType.Application.ProtoBuf)
+            }
         } ?: call.respond(HttpStatusCode.NotFound)
     }
 }

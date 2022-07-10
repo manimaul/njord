@@ -86,10 +86,19 @@ data:
 
         chartMinZoom = 0
         chartMaxZoom = 30
+        
+        chartSymbols = simplified_symbol_rules.yaml
+        chartSymbolSprites = simplified
 
         chartTempData = /tmp/njord/data
 
         webStaticContent=/opt/chart_server/public
+        
+        shallowDepth = 3.0 // meters (9.8 feet)
+        safetyDepth = 6.0 // meters (19.6 feet)
+        deepDepth = 9.0 // meters (29.5 feet)
+    
+        debugTile = false
     }
 ---
 apiVersion: networking.k8s.io/v1

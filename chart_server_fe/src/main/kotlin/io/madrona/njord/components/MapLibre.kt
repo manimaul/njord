@@ -19,34 +19,35 @@ external interface AppProps : Props {
     var zoom: Float
 }
 
-class MapLibre : RComponent<AppProps, AppState>() {
+val MapLibre = fc<AppProps> { props ->
+    require("maplibre-gl/dist/maplibre-gl.css")
+    val mapContainer: RefObject<Any> = useRef(null)
+    val map: MutableRefObject<Map> = useRef()
+    val lng: Float? by useState(props.lng)
+    val lat: Float? by useState(props.lat)
+    val style: String? by useState(props.style)
+    val zoom: Float? by useState(props.zoom)
 
-    private val mapContainer : RefObject<Any> = createRef()
-    private var map: Map? = null
-
-    init {
-        require("maplibre-gl/dist/maplibre-gl.css")
-    }
-
-    override fun componentDidMount() {
-        map = Map(
-            options = json(
-                "container" to mapContainer.current,
-                "style" to props.style,
-                "center" to arrayOf(props.lng, props.lat),
-                "zoom" to props.zoom
+    useEffect {
+        if (map.current == null) {
+            println("creating map with style $style")
+            map.current = Map(
+                options = json(
+                    "container" to mapContainer.current,
+                    "style" to style,
+                    "center" to arrayOf(lng, lat),
+                    "zoom" to zoom
+                )
             )
-        )
+        }
     }
 
-    override fun RBuilder.render() {
-        styledDiv {
-            css {
-                height = 100.pct
-                width = 100.pct
-            }
-            ref = mapContainer
+    styledDiv {
+        css {
+            height = 100.pct
+            width = 100.pct
         }
+        ref = mapContainer
     }
 }
 
@@ -58,9 +59,13 @@ fun RBuilder.mapLibre(
     lng: Float = -122.44f,
     lat: Float = 47.257f,
     zoom: Float = 11f,
-) = child(MapLibre::class) {
-    attrs.style = style
-    attrs.lng = lng
-    attrs.lat = lat
-    attrs.zoom = zoom
+){
+    MapLibre {
+        attrs.also {
+            it.style = style
+            it.lng = lng
+            it.lat = lat
+            it.zoom = zoom
+        }
+    }
 }

@@ -1,0 +1,2 @@
+GET http://localhost:9000/v1/chart_catalog
+Accept: application/json

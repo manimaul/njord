@@ -1,0 +1,2 @@
+DELETE http://localhost:9000/v1/chart?id=2
+Accept: application/json

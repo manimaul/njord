@@ -1,8 +1,8 @@
 package io.madrona.njord.endpoints
 
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.response.*
+import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.mimeType
 import io.madrona.njord.util.logger
@@ -10,7 +10,7 @@ import io.madrona.njord.util.resourceBytes
 import java.lang.StringBuilder
 import java.net.URLDecoder
 
-class StaticContentHandler : KtorHandler {
+class StaticResourceContentHandler : KtorHandler {
     private val log = logger()
     override val route = "/v1/content/{content...}"
 

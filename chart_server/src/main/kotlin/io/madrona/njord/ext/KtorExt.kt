@@ -1,16 +1,20 @@
 package io.madrona.njord.ext
 
-import io.ktor.application.*
+//import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.http.cio.websocket.*
-import io.ktor.http.content.*
-import io.ktor.response.*
-import io.ktor.routing.*
+//import io.ktor.http.cio.websocket.*
+//import io.ktor.http.content.*
+//import io.ktor.response.*
+//import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.http.content.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import io.madrona.njord.Singletons
-import java.io.File
 
-interface KtorBaseHandler {
+sealed interface KtorBaseHandler {
     val route: String
 }
 
@@ -35,25 +39,26 @@ interface KtorWebsocket : KtorBaseHandler {
 fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
     routing {
         handlers.forEach { handler ->
-            (handler as? KtorHandler)?.let {
-                get(handler.route) { handler.handleGet(call) }
-                post(handler.route) { handler.handlePost(call) }
-                put(handler.route) { handler.handlePut(call) }
-                patch(handler.route) { handler.handlePatch(call) }
-                delete(handler.route) { handler.handleDelete(call) }
-                head(handler.route) { handler.handleHead(call) }
-                options(handler.route) { handler.handleOptions(call) }
-            }
-            (handler as? KtorWebsocket)?.let {
-                webSocket(handler.route) {
-                    handler.handle(this)
+            when (handler) {
+                is KtorHandler -> {
+                    get(handler.route) { handler.handleGet(call) }
+                    post(handler.route) { handler.handlePost(call) }
+                    put(handler.route) { handler.handlePut(call) }
+                    patch(handler.route) { handler.handlePatch(call) }
+                    delete(handler.route) { handler.handleDelete(call) }
+                    head(handler.route) { handler.handleHead(call) }
+                    options(handler.route) { handler.handleOptions(call) }
+                }
+                is KtorWebsocket -> {
+                    webSocket(handler.route) {
+                        handler.handle(this)
+                    }
                 }
             }
         }
-        static("{...}") {
+        static("/") {
             staticRootFolder = Singletons.config.webStaticContent
             files(".")
-            default("index.html")
         }
     }
 }

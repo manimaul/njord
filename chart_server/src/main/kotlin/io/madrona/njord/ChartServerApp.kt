@@ -1,15 +1,19 @@
 package io.madrona.njord
 
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.cio.websocket.*
-import io.ktor.jackson.*
+import io.ktor.http.*
+import io.ktor.serialization.jackson.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.websocket.*
+import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
+import io.ktor.server.websocket.*
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandlers
 import org.slf4j.event.Level
+import java.io.File
 import java.time.Duration
 
 
@@ -74,11 +78,16 @@ class ChartServerApp {
                 // curl http://localhost:9000/v1/content/sprites/day_sprites.json | jq
                 // curl http://localhost:9000/v1/content/sprites/day_sprites.png
                 // http://localhost:9000/v1/content/upload.html
-                StaticContentHandler(),
-
-                // http://localhost:9000/v1/app/
-                //// Static content (KtorExt.addHandlers)
+                StaticResourceContentHandler(),
             )
+
+            install(StatusPages) {
+
+                // http://localhost:9000
+                unhandled { call ->
+                    call.respondText(File(Singletons.config.webStaticContent, "index.html").readText(), ContentType.Text.Html)
+                }
+            }
         }.start(wait = true)
     }
 }

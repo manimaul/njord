@@ -1,7 +1,7 @@
 package io.madrona.njord.endpoints
 
-import io.ktor.application.*
-import io.ktor.response.*
+import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler

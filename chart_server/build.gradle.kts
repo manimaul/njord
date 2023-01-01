@@ -5,7 +5,8 @@ plugins {
     application
     kotlin(module = "jvm") version ktVersion
     kotlin(module = "kapt") version ktVersion
-    kotlin("plugin.serialization") version ktVersion
+    id("io.ktor.plugin") version "2.2.1"
+//    kotlin("plugin.serialization") version ktVersion
 }
 
 repositories {
@@ -31,9 +32,10 @@ dependencies {
 
     implementation(Deps.ktorNetty)
     implementation(Deps.ktorCore)
-    implementation(Deps.ktorLocations)
     implementation(Deps.ktorWebsockets)
     implementation(Deps.ktorHostCommon)
+    implementation(Deps.ktorLogging)
+    implementation(Deps.ktorStatus)
     implementation(Deps.ktorJackson)
     implementation(Deps.ktorJson)
     implementation(Deps.jacksonYaml)
@@ -51,6 +53,7 @@ dependencies {
 }
 
 tasks.named<JavaExec>("run") {
+    dependsOn(":chart_server_fe:build")
     if (Os.isFamily(Os.FAMILY_MAC)) {
         jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.5.3/lib/")
     }

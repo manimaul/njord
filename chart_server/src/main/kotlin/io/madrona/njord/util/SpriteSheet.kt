@@ -1,16 +1,17 @@
 package io.madrona.njord.util
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.IconInfo
 import io.madrona.njord.Singletons
 import io.madrona.njord.endpoints.IconHandler
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import io.madrona.njord.ext.decodeJson
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
 class SpriteSheet(
-    private val chartSymbolSprites: String = Singletons.config.chartSymbolSprites
+    private val chartSymbolSprites: String = Singletons.config.chartSymbolSprites,
+    protected val objectMapper: ObjectMapper = Singletons.objectMapper,
 ) {
 
     private val resNameBase = "/www/sprites/${chartSymbolSprites}@2x"
@@ -23,7 +24,7 @@ class SpriteSheet(
 
     private val spriteSheetJson: Map<String, IconInfo> by lazy {
         resourceAsString("www/sprites/${chartSymbolSprites}@2x.json")?.let {
-            Json.decodeFromString(it)
+            it.decodeJson(objectMapper)
         } ?: throw RuntimeException("sprite sheet json not found: $chartSymbolSprites")
     }
 

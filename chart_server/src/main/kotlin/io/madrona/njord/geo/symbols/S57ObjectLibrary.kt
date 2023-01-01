@@ -1,21 +1,25 @@
 package io.madrona.njord.geo.symbols
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.*
+import io.madrona.njord.ext.decodeJson
 import io.madrona.njord.util.resourceAsString
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
-class S57ObjectLibrary {
+class S57ObjectLibrary(
+    private val objectMapper: ObjectMapper = Singletons.objectMapper,
+) {
 
     val expectedInput: Map<String, List<S57ExpectedInput>> by lazy {
-        Json.decodeFromString(resourceAsString("s57expectedinput.json")!!)
+        resourceAsString("s57expectedinput.json")!!.decodeJson(objectMapper)
     }
 
     val attributes: Map<String, S57Attribute> by lazy {
-        Json.decodeFromString(resourceAsString("s57attributes.json")!!)
+        resourceAsString("s57attributes.json")!!.decodeJson(objectMapper)
     }
 
     val objects: Map<String, S57Object> by lazy {
-        Json.decodeFromString(resourceAsString("s57objectclasses.json")!!)
+        resourceAsString("s57objectclasses.json")!!.decodeJson(objectMapper)
     }
 }
+
+

@@ -1,6 +1,7 @@
 package io.madrona.njord.endpoints
 
-import io.ktor.http.cio.websocket.*
+import io.ktor.server.util.*
+import io.ktor.server.websocket.*
 import io.ktor.util.*
 import io.ktor.websocket.*
 import io.madrona.njord.ext.letTwo

@@ -1,15 +1,14 @@
 package io.madrona.njord.ext
 
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.response.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import io.madrona.njord.Singletons
 
 /**
  * Respond using kotlinx-serialization-json rather than jackson.
  */
 suspend inline fun <reified T : Any> ApplicationCall.respondJson(message: T) = respondText(
-    Json.encodeToString(message),
+    Singletons.objectMapper.writeValueAsString(message),
     ContentType.Application.Json
 )

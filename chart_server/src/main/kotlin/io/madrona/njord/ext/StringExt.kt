@@ -1,5 +1,7 @@
 package io.madrona.njord.ext
 
+import com.fasterxml.jackson.databind.ObjectMapper
+
 fun String.mimeType() = when(extToken()) {
     "png" -> "image/png"
     "pbf" -> "application/x-protobuf"
@@ -30,4 +32,8 @@ fun String.intRange() : IntRange {
     return letTwo(left, right) { l, r ->
         l..r
     } ?: IntRange.EMPTY
+}
+
+inline fun <reified T> String.decodeJson(objectMapper: ObjectMapper) : T {
+    return objectMapper.readValue(this, T::class.java)
 }

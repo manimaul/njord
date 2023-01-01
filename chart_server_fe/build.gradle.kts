@@ -12,7 +12,7 @@ kotlin {
         binaries.executable()
         browser {
             commonWebpackConfig {
-                cssSupport.enabled = true
+//                cssSupport.enabled = true
                 outputFileName = "njord.js"
             }
             val envTargetWebpackArgs = listOf("--env", "njordVersion='${project.version}'")
@@ -29,7 +29,7 @@ kotlin {
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:${Versions.kotlinVersion}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation(Deps.jsonSer)
     implementation(project(":chart_server_common"))
 
@@ -38,7 +38,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-table")
+//    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-table")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled")
 
     //bootstrap

@@ -29,7 +29,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
-    implementation(project(":chart_server_common"))
     implementation(Deps.ktorNetty)
     implementation(Deps.ktorCore)
     implementation(Deps.ktorLocations)
@@ -52,7 +51,6 @@ dependencies {
 }
 
 tasks.named<JavaExec>("run") {
-    dependsOn(":chart_server_fe:browserDevelopmentWebpack")
     if (Os.isFamily(Os.FAMILY_MAC)) {
         jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.5.3/lib/")
     }

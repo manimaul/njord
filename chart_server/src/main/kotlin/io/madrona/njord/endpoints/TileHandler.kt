@@ -7,7 +7,6 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.letThree
-import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.TileEncoder
 
 class TileHandler(

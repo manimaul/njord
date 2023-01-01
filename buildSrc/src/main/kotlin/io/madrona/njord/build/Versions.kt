@@ -1,4 +1,4 @@
-const val ktVersion = "1.6.21"
+const val ktVersion = "1.8.0"
 
 object Versions {
     const val kotlinVersion = "1.6.21"
@@ -9,7 +9,7 @@ object Versions {
     const val dropWizardVersion="4.2.4"
     const val jacksonVersion="2.13.0"
 
-    val kotlinWrappersVersion = "0.0.1-pre.332-kotlin-1.6.21"
+    val kotlinWrappersVersion = "1.0.0-pre.467"
 }
 
 object Deps {

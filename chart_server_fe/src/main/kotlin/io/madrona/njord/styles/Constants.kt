@@ -1,7 +1,5 @@
 package io.madrona.njord.styles
 
-import io.madrona.njord.components.ControlTab
-
 object AppRoutes {
     const val home = "/v1/app"
     const val about = "/v1/app/about"

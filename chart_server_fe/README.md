@@ -1,22 +1,22 @@
-# Njord Front End - WebUI
+# chart_server_fe
 
-This module includes source code which builds the web front end to Njord. Like the `chart_server` backend the front
-end is written in Kotlin. However, the front end is transpiled to JS so that it can be run in the browser. 
+## CLI Commands
 
+```bash
+# install dependencies
+npm install
 
-### Start the FE
-```shell
-./gradlew :chart_server_fe:browserDevelopmentWebpack
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# test the production build locally
+npm run serve
+
+# run tests with jest and enzyme
+npm run test
 ```
-Note: `./gradlew :chart_server_fe:browserDevelopmentRun --continuous` is currently NOT supported
 
-
-### Start the back end
-```shell
-./gradlew :chart_server:run
-```
-
-
-### Open Browser
-http://localhost:9000/v1/app/about
-http://localhost:9000/v1/app
+For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).

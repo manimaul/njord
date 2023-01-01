@@ -50,17 +50,10 @@ fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
                 }
             }
         }
-        static("v1/app/{...}") {
+        static("{...}") {
             staticRootFolder = Singletons.config.webStaticContent
+            files(".")
             default("index.html")
-        }
-        static("njord.js") {
-            staticRootFolder = Singletons.config.webStaticContent
-            default("njord.js")
-        }
-        static("njord.js.map") {
-            staticRootFolder = Singletons.config.webStaticContent
-            default("njord.js.map")
         }
     }
 }

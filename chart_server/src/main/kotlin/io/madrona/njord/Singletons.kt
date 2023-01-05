@@ -23,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
 import org.locationtech.jts.geom.GeometryFactory
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 

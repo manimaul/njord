@@ -1,6 +1,5 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.model.*
 
 /**

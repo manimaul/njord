@@ -1,7 +1,10 @@
 package io.madrona.njord.geo.symbols
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.madrona.njord.*
+import io.madrona.njord.S57Attribute
+import io.madrona.njord.S57ExpectedInput
+import io.madrona.njord.S57Object
+import io.madrona.njord.Singletons
 import io.madrona.njord.ext.decodeJson
 import io.madrona.njord.util.resourceAsString
 

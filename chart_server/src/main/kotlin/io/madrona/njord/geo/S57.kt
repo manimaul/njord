@@ -9,16 +9,15 @@ import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.util.ZFinder
 import mil.nga.sf.geojson.FeatureCollection
+import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.gdal.Dataset
 import org.gdal.gdal.gdal
 import org.gdal.ogr.Feature
 import org.gdal.ogr.Geometry
 import org.gdal.ogr.Layer
-import org.gdal.osr.SpatialReference
-import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.ogr.ogrConstants.*
+import org.gdal.osr.SpatialReference
 import java.io.File
-import java.lang.RuntimeException
 
 class S57(
     val file: File,

@@ -7,8 +7,12 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
-import io.madrona.njord.layers.*
-import io.madrona.njord.model.*
+import io.madrona.njord.layers.LayerFactory
+import io.madrona.njord.layers.LayerableOptions
+import io.madrona.njord.model.Depth
+import io.madrona.njord.model.Source
+import io.madrona.njord.model.SourceType
+import io.madrona.njord.model.Style
 
 class StyleHandler(
     private val config: ChartsConfig = Singletons.config,

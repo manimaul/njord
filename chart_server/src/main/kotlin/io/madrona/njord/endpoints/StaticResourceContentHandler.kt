@@ -7,7 +7,6 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.mimeType
 import io.madrona.njord.util.logger
 import io.madrona.njord.util.resourceBytes
-import java.lang.StringBuilder
 import java.net.URLDecoder
 
 class StaticResourceContentHandler : KtorHandler {

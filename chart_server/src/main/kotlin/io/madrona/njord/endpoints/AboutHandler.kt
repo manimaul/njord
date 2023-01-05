@@ -9,7 +9,6 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import org.gdal.gdal.gdal
-import java.lang.StringBuilder
 
 class AboutHandler(
     private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary

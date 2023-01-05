@@ -3,9 +3,9 @@ package io.madrona.njord.layers
 import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.model.ChartFeature
-import io.madrona.njord.util.logger
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
+import io.madrona.njord.util.logger
 
 abstract class Layerable(
     private val autoSymbol: Boolean = false,

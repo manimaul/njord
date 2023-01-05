@@ -13,7 +13,9 @@ import mil.nga.sf.geojson.Feature
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBWriter
-import java.sql.*
+import java.sql.Connection
+import java.sql.ResultSet
+import java.sql.Statement
 
 class ChartDao(
     private val findInfoAsyncTimer: Timer = Singletons.metrics.timer("findInfoAsync"),

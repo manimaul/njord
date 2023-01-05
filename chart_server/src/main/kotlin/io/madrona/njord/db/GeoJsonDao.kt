@@ -1,7 +1,6 @@
 package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.madrona.njord.model.Chart
 import io.madrona.njord.model.FeatureInsert
 import mil.nga.sf.geojson.Feature
 import mil.nga.sf.geojson.FeatureCollection

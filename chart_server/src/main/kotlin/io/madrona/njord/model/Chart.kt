@@ -3,7 +3,6 @@ package io.madrona.njord.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import mil.nga.sf.geojson.Feature
-//import org.locationtech.jts.geom.Geometry
 
 class ChartInfo(
     val id: Long,

@@ -20,6 +20,7 @@ object Deps {
     const val ktorHostCommon = "io.ktor:ktor-server-host-common:${Versions.ktorVersion}"
     const val ktorNetty = "io.ktor:ktor-server-netty-jvm:${Versions.ktorVersion}"
     const val ktorLogging = "io.ktor:ktor-server-call-logging-jvm:${Versions.ktorVersion}"
+    const val ktorCors = "io.ktor:ktor-server-cors:${Versions.ktorVersion})"
     const val ktorStatus = "io.ktor:ktor-server-status-pages:${Versions.ktorVersion}"
     const val logBack = "ch.qos.logback:logback-classic:${Versions.logbackVersion}"
     const val ktorJackson = "io.ktor:ktor-serialization-jackson-jvm:${Versions.ktorVersion}"

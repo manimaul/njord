@@ -37,6 +37,7 @@ dependencies {
     implementation(Deps.ktorStatus)
     implementation(Deps.ktorJackson)
     implementation(Deps.ktorJson)
+    implementation(Deps.ktorCors)
     implementation(Deps.jacksonYaml)
     implementation(Deps.logBack)
     implementation(Deps.gdal)

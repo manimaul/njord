@@ -7,6 +7,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.websocket.*
@@ -33,6 +34,9 @@ class ChartServerApp {
             }
             install(CallLogging) {
                 level = Level.INFO
+            }
+            install(CORS) {
+                allowHost("localhost:3000")
             }
             addHandlers(
                 // curl http://localhost:9000/v1/about/version | jq

@@ -6,7 +6,6 @@ plugins {
     kotlin(module = "jvm") version ktVersion
     kotlin(module = "kapt") version ktVersion
     id("io.ktor.plugin") version "2.2.1"
-//    kotlin("plugin.serialization") version ktVersion
 }
 
 repositories {

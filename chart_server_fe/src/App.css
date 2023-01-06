@@ -4,11 +4,17 @@
   min-height: 100vh;
 }
 
-.App.Header {
+.Center {
+  horiz-align: center;
+  justify-content: center;
   display: flex;
-  flex-direction: column;
+}
+
+.Header {
+  padding: 28px;
   align-items: center;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
   font-size: x-large;
-  color: white;
 }

@@ -18,3 +18,7 @@
   flex-direction: column;
   font-size: x-large;
 }
+
+.Content {
+  padding: 28px;
+}

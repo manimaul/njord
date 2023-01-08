@@ -1,11 +1,12 @@
 import njord from './njord.png'
 import './App.css';
 import {Routes, Route, Outlet} from "react-router-dom";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useState} from "react";
 import NavBar from "./NavBar";
 import Enc from "./Enc";
 import ControlPanel from "./ControlPanel";
 import {Table} from "react-bootstrap";
+import {useRequest} from "./Effects";
 
 function Home() {
     const [apiInfo, initVersion] = useState({
@@ -13,21 +14,12 @@ function Home() {
         gdalVersion: ""
     })
 
-    const fetchVersionInfo = useCallback(async () => {
-        let response = await fetch("/v1/about/version")
-        response = await response.json()
-        initVersion(response)
-    }, [])
-
-    useEffect(() => {
-        fetchVersionInfo()
-    }, [fetchVersionInfo])
+    useRequest("/v1/about/version", initVersion)
 
     return (
         <div className="container-fluid">
             <header className="Header">
                 <img src={njord} className="img-fluid w-25" alt="logo"/>
-
             </header>
             <div className="Center">
                 <Table striped bordered hover variant="dark" className="w-50">
@@ -55,6 +47,7 @@ function Home() {
         </div>
     );
 }
+
 const NoMatch = () => <header className="App Header">
     <p>Page not found!</p>
 </header>

@@ -11,7 +11,7 @@ function NavLink(props) {
 }
 function NavBar() {
     return (
-        <Navbar bg="dark" expand="lg" variant="dark">
+        <Navbar bg="secondary" expand="lg" variant="dark">
             <Container>
                 <Navbar.Brand>Njord ENC Server</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -19,7 +19,7 @@ function NavBar() {
                     <Nav className="me-auto">
                         <NavLink path="/" label="About" />
                         <NavLink path="/enc" label="ENC (Electronic Navigation Chart)" />
-                        <NavLink path="/control" label="Control Panel" />
+                        <NavLink path="/control/charts" label="Control Panel" />
                     </Nav>
                 </Navbar.Collapse>
             </Container>

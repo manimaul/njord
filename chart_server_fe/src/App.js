@@ -22,7 +22,7 @@ function Home() {
                 <img src={njord} className="img-fluid w-25" alt="logo"/>
             </header>
             <div className="Center">
-                <Table striped bordered hover variant="dark" className="w-50">
+                <Table striped bordered hover variant="light" className="w-50">
                     <thead>
                     <tr>
                         <th colSpan="2">Njord ENC Server</th>
@@ -60,7 +60,7 @@ function App() {
                 <Route path="/" element={<Outlet/>}>
                     <Route index element={<Home/>}/>
                     <Route path="enc" element={<Enc/>}/>
-                    <Route path="control" element={<ControlPanel/>}/>
+                    <Route path="control/:page" element={<ControlPanel/>}/>
                     <Route path="*" element={<NoMatch/>}/>
                 </Route>
             </Routes>

@@ -29,11 +29,7 @@ function Enc() {
     });
 
     return (
-        <div className="container-fluid">
-            <div className="enc-wrap">
-                <div ref={mapContainer} className="enc"/>
-            </div>
-        </div>
+        <div ref={mapContainer} className="enc"></div>
     );
 }
 

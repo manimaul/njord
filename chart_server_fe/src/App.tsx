@@ -25,7 +25,7 @@ function Home() {
                 <Table striped bordered hover variant="light" className="w-50">
                     <thead>
                     <tr>
-                        <th colSpan="2">Njord ENC Server</th>
+                        <th colSpan={2}>Njord Electronic Navigation Chart Server</th>
                     </tr>
                     </thead>
                     <tbody>

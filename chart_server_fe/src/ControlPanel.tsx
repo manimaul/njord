@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {Tab, Table, Tabs} from "react-bootstrap";
 import {useRequest} from "./Effects";
 import ChartSymbols from "./ControlSymbols";
-import {useLocation, useNavigate, useParams} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 
-function pathToFullUrl(path) {
+function pathToFullUrl(path: string) {
     return `${window.location.protocol}//${window.location.host}${path}`
 }
 
@@ -41,8 +41,13 @@ function Endpoints() {
     )
 }
 
+type ChartProps = {
+    id: number;
+    name: string;
+};
+
 function Charts() {
-    const [charts, setCharts] = useState([])
+    const [charts, setCharts] = useState<Array<ChartProps>>([])
     useRequest("/v1/chart_catalog", setCharts)
 
     return (
@@ -68,8 +73,7 @@ function Charts() {
         </div>
     )
 }
-
-function imgStyle(value) {
+function imgStyle(value: any): React.CSSProperties {
     return {
         width: `${value.width}px`,
         height: `${value.height}px`,
@@ -81,7 +85,7 @@ function imgStyle(value) {
 }
 
 function Sprites() {
-    const [themeData, setThemeData] = useState({})
+    const [themeData, setThemeData] = useState<any>({})
     useRequest("/v1/content/sprites/simplified@2x.json", setThemeData)
     return (
         <div>
@@ -112,7 +116,7 @@ function Sprites() {
     )
 }
 
-function getTab(location) {
+function getTab(location: any) {
     return location.pathname.substring(location.pathname.lastIndexOf("/") + 1)
 }
 

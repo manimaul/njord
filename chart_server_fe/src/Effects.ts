@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 
-async function fetchData<T>(path: string, callback: (arg: T) => void) {
+async function fetchData(path: string, callback: (arg: any) => void) {
     let response = await fetch(path)
     response = await response.json()
-    callback(response as T)
+    callback(response)
 }
-export function useRequest<T>(path: string, callback: (arg: T) => void) {
+export function useRequest(path: string, callback: (arg: any) => void) {
     const [run, setRun] = useState(false)
 
     useEffect(() => {

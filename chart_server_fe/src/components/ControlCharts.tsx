@@ -13,7 +13,8 @@ export function ControlCharts() {
 
     return (
         <div>
-            <Table striped bordered hover variant="light" className="w-50">
+            <h2>Installed S57 ENCs</h2>
+            <Table striped bordered hover variant="light">
                 <thead>
                 <tr>
                     <th>Record ID</th>

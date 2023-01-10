@@ -13,7 +13,7 @@ function NavLink(props: NavLinkProps) {
         <li className="nav-item"><Link to={props.path} className="nav-link">{props.label}</Link></li>
     )
 }
-function NavBar() {
+export function NavBar() {
     return (
         <Navbar bg="secondary" expand="lg" variant="dark">
             <Container>
@@ -30,5 +30,3 @@ function NavBar() {
         </Navbar>
     );
 }
-
-export default NavBar;

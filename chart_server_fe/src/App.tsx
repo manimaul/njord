@@ -2,11 +2,11 @@ import njord from './njord.png'
 import './App.css';
 import {Routes, Route, Outlet} from "react-router-dom";
 import React, {useState} from "react";
-import NavBar from "./NavBar";
-import Enc from "./Enc";
-import ControlPanel from "./ControlPanel";
+import {NavBar} from "./components/NavBar";
+import {Enc} from "./components/Enc";
 import {Table} from "react-bootstrap";
 import {useRequest} from "./Effects";
+import {ControlPanel} from "./components/ControlPanel";
 
 function Home() {
     const [apiInfo, initVersion] = useState({

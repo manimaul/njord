@@ -7,7 +7,7 @@ import "./Enc.css"
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
 
 maplibregl.workerClass = MapLibreWorker;
-function Enc() {
+export function Enc() {
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lng] = useState(-122.44);
@@ -32,5 +32,3 @@ function Enc() {
         <div ref={mapContainer} className="enc"></div>
     );
 }
-
-export default Enc;

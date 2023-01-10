@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useParams} from "react-router";
-import {useRequest} from "./Effects";
+import {useRequest} from "../Effects";
 import {Dropdown} from "react-bootstrap";
 
 
@@ -45,7 +45,7 @@ export default function ChartSymbols() {
     useRequest("/v1/about/expectedInput", setExIn)
 
     return (
-        <div className="container">
+        <div>
             <div className="row">
                 <S57Objects objects ={objMap}/>
             </div>

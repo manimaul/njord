@@ -21,7 +21,7 @@ task<Exec>("runPostgis") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("buildImage") {
-    dependsOn(":clean", ":chart_server_fe:browserProductionWebpack", ":chart_server:installDist")
+    dependsOn(":chart_server:clean", ":chart_server_fe:build", ":chart_server:installDist")
     commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
@@ -30,7 +30,6 @@ task<Exec>("buildImage") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("publishImage") {
-    dependsOn("buildImage")
     commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
 }
 

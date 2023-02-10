@@ -60,7 +60,11 @@ function App() {
                 <Route path="/" element={<Outlet/>}>
                     <Route index element={<Home/>}/>
                     <Route path="enc" element={<Enc/>}/>
-                    <Route path="control/:page" element={<ControlPanel/>}/>
+                    <Route path="control/:page" element={<ControlPanel/>}>
+						<Route path=":object" element={<ControlPanel/>}>
+							<Route path=":attribute" element={<ControlPanel/>}/>
+						</Route>
+                    </Route>
                     <Route path="*" element={<NoMatch/>}/>
                 </Route>
             </Routes>

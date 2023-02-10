@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router";
 import {useRequest} from "../Effects";
 import {Dropdown} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import {useNavigate} from "react-router";
+import {Link} from "react-router-dom";
 
 
 type PathToAProps = {
@@ -17,24 +18,34 @@ function PathToA(props: PathToAProps) {
 
 function S57Objects(props: ObjMapProps) {
     const [filter, setFilter] = useState("")
-    const [selected, setSelected] = useState("")
     const [options, setOptions] = useState<Array<String>>([])
-    useEffect(() => setSelected(props.selected), [props.selected])
     useEffect(() => {
         setOptions(Array.from(props.objects.keys()).filter(each => filter === "" || each.toLowerCase().includes(filter.toLowerCase())))
     }, [props.objects, filter])
+    const nav = useNavigate()
+
+	function setSelected(selected: string) {
+		nav(`/control/symbols/${selected}`);
+	}
+
+	let object = props.objects.get(props.selected)
+
+	function geometryPrimitives(): string {
+		if (object) {
+			return object.Primitives.reduce((acc, value) => `${acc}, ${value}`);
+		}
+		return ""
+	}
 
     return (
         <div className="col">
-            <h2>S57 Objects</h2>
-            <PathToA path="/v1/about/s57objects"/>
-            <br/>
+            <h2>S57 Object</h2>
+            <div><PathToA path="/v1/about/s57objects"/></div>
             <br/>
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    {selected}
+                    {props.selected}
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
                     <Form.Control
                         autoFocus
@@ -51,38 +62,116 @@ function S57Objects(props: ObjMapProps) {
                 </Dropdown.Menu>
 
             </Dropdown>
+            <br />
+			<p><strong>Geometry Primitives: </strong>{geometryPrimitives()}</p>
+			<p><strong>Object: </strong>{object?.ObjectClass}</p>
+			<p><strong>Acronym: </strong>{object?.Acronym}</p>
+			<p><strong>Code: </strong>{object?.Code}</p>
+			<AttributeSet selectedObject={props.selected} name="Attribute_A" desc="(Attributes in this subset define the individual characteristics of the object.)" attributes={object?.Attribute_A} />
+			<AttributeSet selectedObject={props.selected} name="Attribute_B" desc="(Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an information system.)" attributes={object?.Attribute_B} />
+			<AttributeSet selectedObject={props.selected} name="Attribute_C" desc="(Attributes in this subset provide administrative information about the object and data describing it.)" attributes={object?.Attribute_C} />
         </div>
     )
 }
 
-type  AttProps = {
-    slectedObject: string,
-    name: string,
-    desc: string,
-    attributes: Array<string>
+
+
+type AttSetProps = {
+	selectedObject: string,
+	name: string,
+	desc: string,
+	attributes?: Array<string>,
+}
+
+function AttributeSet(props: AttSetProps) {
+	return(
+		<p>
+			<strong>{props.name}</strong>
+			<br />
+			{props.desc}
+			<br />
+			{props.attributes ? props.attributes.map((each, i) => <span key={i}><Link to={`/control/symbols/${props.selectedObject}/${each}`}>{each}</Link> </span>) : <span>Attributes missing</span>}
+		</p>
+	)
+}
+
+type AttProps = {
+    attribute?: S57Attribute,
+    input?: Map<String, Array<S57ExpectedInput>>
+}
+
+function showInput(inputs: Array<S57ExpectedInput>) {
+	inputs.forEach(each => console.log(`fount expected input ${each.ID}`));
+	if (inputs.length === 0) {
+		return (<p>No expected inputs</p>)
+	}
+	return (
+		<table>
+			<tbody>
+			<tr><th>ID</th><th>Meaning</th></tr>
+			{
+				inputs.map(
+					(each, i) => {
+						return (
+							<tr key={i}><td>{each.ID}</td><td>{each.Meaning}</td></tr>
+						)
+					}
+				)
+			}
+			</tbody>
+		</table>
+	)
+}
+
+function showAttribute(
+	att: S57Attribute,
+    input?: Map<String, Array<S57ExpectedInput>>
+) {
+	let selectedInput: Array<S57ExpectedInput> | undefined = input?.get(`${att.Code}`);
+	return (
+		<div>
+			<br />
+			<p><strong>Attribute: </strong>{att.Attribute}</p>	
+			<p><strong>Acronym: </strong>{att.Acronym}</p>	
+			<p><strong>Code: </strong>{att.Code}</p>	
+			{ (selectedInput) ? showInput(selectedInput) : "" }
+			<br />
+			<p><strong>Attribute type:: </strong>{att.Attributetype}</p>	
+			<p><strong>Attribute class: </strong>{att.Class}</p>	
+		</div>
+	)
 }
 
 function S57Attributes(props: AttProps) {
     return (
         <div className="col">
-
+            <h2>S57 Attribute</h2>
+            <div><PathToA path="/v1/about/s57attributes"/></div>
+            <div><PathToA path="/v1/about/expectedInput"/></div>
+            { (props.attribute) ? showAttribute(props.attribute, props.input) : <span>Attribute not selected</span> }
+            <br/>
         </div>
     )
 }
 
 type ObjMapProps = {
     objects: Map<String, S57Object>,
-    selected: string
+    selected: string,
+    attribute?: string
 };
+
+type ChartSymbolProps = {
+	object?: string,
+	attribute?: string,
+}
 
 /**
  * Chart Symbols Tab
  */
-export default function ChartSymbols() {
+export default function ChartSymbols(props: ChartSymbolProps) {
     const [objMap, setObjMap] = useState<Map<String, S57Object>>(new Map())
     const [atts, setAtts] = useState<Map<String, S57Attribute>>(new Map())
-    const [exIn, setExIn] = useState<Map<String, S57ExpectedInput>>(new Map())
-    let params = useParams()
+    const [exIn, setExIn] = useState<Map<String, Array<S57ExpectedInput>>>(new Map())
     useRequest("/v1/about/s57objects", response => {
         setObjMap(new Map(Object.keys(response).map(key => [key, response[key]])))
     })
@@ -93,11 +182,27 @@ export default function ChartSymbols() {
         setExIn(new Map(Object.keys(response).map(key => [key, response[key]])))
     })
 
+	function getAttribute() :S57Attribute | undefined {
+		if (props.attribute) {
+			return atts.get(props.attribute);
+		} else {
+			return undefined;
+		}
+	}
+
+	function getObject() :string {
+		if (props.object) {
+			return props.object
+		} else {
+			return objMap.keys().next().value
+		}
+	}
+
     return (
         <div>
             <div className="row">
-                <S57Objects objects={objMap} selected={objMap.keys().next().value}/>
-                {/*<S57Attributes />*/}
+                <S57Objects objects={objMap} selected={getObject()} attribute={props.attribute}/>
+                <S57Attributes attribute={getAttribute()} input={exIn}/>
             </div>
         </div>
     )

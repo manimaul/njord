@@ -53,5 +53,5 @@ task<Exec>("cyclePods") {
  * eg `./gradlew :buildPublishDeploy`
  */
 tasks.register<GradleBuild>("buildPublishDeploy") {
-    tasks = listOf("buildImage", "publishImage", "deploy", "cyclePods")
+    tasks = listOf(":buildImage", ":publishImage", ":deploy", ":cyclePods")
 }

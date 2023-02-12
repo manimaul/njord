@@ -56,7 +56,7 @@ spec:
               readOnly: true
           env:
             - name: JAVA_OPTS
-              value: "-Dconfig.file=/etc/chart_server/application.conf"
+              value: "-Dconfig.file=/etc/chart_server/application.conf -Djava.library.path=/opt/gdal/share/java"
       volumes:
         - name: njord-confic-vol
           configMap:
@@ -125,3 +125,4 @@ spec:
     - hosts:
         - s57dev.mxmariner.com
       secretName: njord-cert
+

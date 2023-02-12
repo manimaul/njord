@@ -2,6 +2,18 @@
 version: '3.8'
 services:
 
+  # s57server:
+  #   image: 'ghcr.io/manimaul/njord-chart-server:latest'
+  #   networks:
+  #     - overlay
+  #   ports:
+  #     - "9000:9000"
+  #   environment:
+  #     JAVA_OPTS: "-Dconfig.file=/opt/chart_server/application.conf -Dcharts.webStaticContent=/opt/chart_server/public -Djava.library.path=/opt/gdal/share/java  -Dcharts.pgHost=postgres"
+  #
+  #   depends_on:
+  #     - postgres
+
   postgres:
     image: 'postgis/postgis:13-3.1'
     networks:

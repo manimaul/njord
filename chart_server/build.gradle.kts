@@ -24,8 +24,8 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.compileJava {
-    targetCompatibility = "11"
-    sourceCompatibility = "11"
+   targetCompatibility = "11"
+   sourceCompatibility = "11"
 }
 
 dependencies {
@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
+    implementation(files("libs/gdal-3.6.2.jar"))
     implementation(Deps.ktorNetty)
     implementation(Deps.ktorCore)
     implementation(Deps.ktorWebsockets)
@@ -45,7 +46,6 @@ dependencies {
     implementation(Deps.ktorCors)
     implementation(Deps.jacksonYaml)
     implementation(Deps.logBack)
-    implementation(Deps.gdal)
     implementation(Deps.protoBuf)
     implementation(Deps.jtsCore)
     implementation(Deps.geojson)
@@ -60,6 +60,7 @@ dependencies {
 tasks.named<JavaExec>("run") {
     dependsOn(":chart_server_fe:build")
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        jvmArgs = listOf("-Djava.library.path=/usr/local/Cellar/gdal/3.5.3/lib/")
+        jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
     }
 }
+

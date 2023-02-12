@@ -11,7 +11,6 @@ object Versions {
 }
 
 object Deps {
-    const val gdal = "org.gdal:gdal:3.3.0"
     const val jtsCore = "org.locationtech.jts:jts-core:1.18.2"
     const val protoBuf = "com.google.protobuf:protobuf-java:3.18.1"
     const val geojson = "mil.nga.sf:sf-geojson:2.0.4"

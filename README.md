@@ -19,7 +19,7 @@ Demo / Staging Deployment: https://s57dev.mxmariner.com/v1/app
 
 # Development System Requirements
 
-* OpenJDK 11
+* OpenJDK 17
 * Gdal 3.2+ **with Java bindings**
   * Note: Homebrew Gdal does not come with Java bindings and the osgeo tap is broken. 
           See [docs/gdal/README.md](docs/gdal/README.md) for building gdal from source with java via `brew`.
@@ -30,13 +30,21 @@ Demo / Staging Deployment: https://s57dev.mxmariner.com/v1/app
 
 # Local Development Quick Start
 
+Bring up database
 ```shell
 cd chart_server_db
 docker-compose up
 ```
 
+Bring up api
 ```shell
 ./gradlew :chart_server:run
+```
+
+Brin up front end with hot-reload
+```shell
+cd chart_server_fe
+npm start
 ```
 
 ----------

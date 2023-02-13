@@ -19,14 +19,17 @@ application {
 
 //https://kotlinlang.org/docs/reference/using-gradle.html#compiler-options
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
     kotlinOptions.apiVersion = "1.5"
 }
 
 tasks.compileJava {
-   targetCompatibility = "11"
-   sourceCompatibility = "11"
+   targetCompatibility = "17"
+   sourceCompatibility = "17"
 }
+
+val kotlinVersion = "1.8.0"
+val ktorVersion = "2.2.1"
 
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
@@ -35,26 +38,26 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     implementation(files("libs/gdal-3.6.2.jar"))
-    implementation(Deps.ktorNetty)
-    implementation(Deps.ktorCore)
-    implementation(Deps.ktorWebsockets)
-    implementation(Deps.ktorHostCommon)
-    implementation(Deps.ktorLogging)
-    implementation(Deps.ktorStatus)
-    implementation(Deps.ktorJackson)
-    implementation(Deps.ktorJson)
-    implementation(Deps.ktorCors)
-    implementation(Deps.jacksonYaml)
-    implementation(Deps.logBack)
-    implementation(Deps.protoBuf)
-    implementation(Deps.jtsCore)
-    implementation(Deps.geojson)
-    implementation(Deps.postgres)
-    implementation(Deps.HikariCP)
-    implementation(Deps.dropWizard)
+    implementation("io.ktor:ktor-server-netty-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-core-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-websockets-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-host-common:${ktorVersion}")
+    implementation("io.ktor:ktor-server-call-logging-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
+    implementation("io.ktor:ktor-serialization-jackson-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-cors:${ktorVersion})")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("com.google.protobuf:protobuf-java:3.18.1")
+    implementation("org.locationtech.jts:jts-core:1.18.2")
+    implementation("mil.nga.sf:sf-geojson:2.0.4")
+    implementation("org.postgresql:postgresql:42.2.23.jre7")
+    implementation("com.zaxxer:HikariCP:5.0.0")
+    implementation("io.dropwizard.metrics:metrics-core:4.2.4")
 
-    testImplementation(Deps.mockito)
-    testImplementation(Deps.hamcrest)
+    testImplementation("org.mockito:mockito-core:2.18.3")
+    testImplementation("org.hamcrest:hamcrest-all:1.3")
 }
 
 tasks.named<JavaExec>("run") {

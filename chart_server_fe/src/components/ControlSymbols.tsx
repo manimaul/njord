@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useRequest} from "../Effects";
-import {Dropdown} from "react-bootstrap";
+import {Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
@@ -125,7 +125,7 @@ function showInput(inputs: Array<S57ExpectedInput>) {
 
 function showAttribute(
 	att: S57Attribute,
-    input?: Map<String, Array<S57ExpectedInput>>
+	input?: Map<String, Array<S57ExpectedInput>>
 ) {
 	let selectedInput: Array<S57ExpectedInput> | undefined = input?.get(`${att.Code}`);
 	return (
@@ -136,7 +136,16 @@ function showAttribute(
 			<p><strong>Code: </strong>{att.Code}</p>	
 			{ (selectedInput) ? showInput(selectedInput) : "" }
 			<br />
-			<p><strong>Attribute type:: </strong>{att.Attributetype}</p>	
+			<p><strong>Attribute type: </strong>{att.Attributetype}</p>	
+			<ul>
+				<li> Attribute type: one-character code for the attribute type - there are six possible types:</li>
+				<li> Enumerated ("E") - the expected input is a number selected from a list of predefined attribute values; exactly one value must be chosen.</li>
+				<li> List ("L") - the expected input is a list of one or more numbers selected from a list of pre-defined attribute values.</li>
+				<li> Float ("F") - the expected input is a floating point numeric value with defined range, resolution, units and format.</li>
+				<li> Integer ("I") - the expected input is an integer numeric value with defined range, units and format.</li>
+				<li> Coded String ("A") - the expected input is a string of ASCII characters in a predefined format; the information is encoded according to defined coding systems.</li>
+				<li> Free Text ("S") - the expected input is a free-format alphanumeric string; it may be a file name which points to a text or graphic file.</li>
+			</ul>
 			<p><strong>Attribute class: </strong>{att.Class}</p>	
 		</div>
 	)
@@ -208,7 +217,7 @@ export default function ChartSymbols(props: ChartSymbolProps) {
     )
 }
 
-type S57Attribute = {
+export type S57Attribute = {
     /**
      * Unique code for the attribute.
      */
@@ -285,7 +294,7 @@ export type S57Object = {
     Primitives: Array<string>
 }
 
-type S57ExpectedInput = {
+export type S57ExpectedInput = {
     /**
      * The corresponding [S57Attribute.code]
      */

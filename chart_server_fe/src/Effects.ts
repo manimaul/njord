@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import {useEffect, useState} from "react";
 
 async function fetchData(path: string, callback: (arg: any) => void) {
@@ -5,6 +6,7 @@ async function fetchData(path: string, callback: (arg: any) => void) {
     response = await response.json()
     callback(response)
 }
+
 export function useRequest(path: string, callback: (arg: any) => void) {
     const [run, setRun] = useState(false)
 
@@ -15,3 +17,24 @@ export function useRequest(path: string, callback: (arg: any) => void) {
         }
     }, [run, callback, path])
 }
+
+export function useRequests(paths: Array<string>, callback: (arg: Array<any>) => void) {
+    const [run, setRun] = useState(false)
+    let responses: Array<any> = paths.map(_ => null);
+
+    useEffect(() => {
+    	var count = 0;
+    	paths.forEach(async (path, i) => {
+    		let response = await fetch(path);
+    		response = await response.json();
+    		responses[i] = response;
+    		count = count + 1;
+    		if (count === paths.length) {
+    			setRun(true);
+    			callback(responses);
+			}
+		});
+
+    }, [run, callback, paths])
+}
+

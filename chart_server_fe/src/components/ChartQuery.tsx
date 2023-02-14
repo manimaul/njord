@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useRequest} from "../Effects";
+import {useRequest, useRequests} from "../Effects";
 import {MapGeoJSONFeature} from "maplibre-gl"
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
@@ -16,23 +16,22 @@ export default function ChartQuery(props: Query) {
     const [att, setAtt] = useState<S57Attribute | null>(null);
     const [ex, setEx] = useState<Array<S57ExpectedInput>>(new Array());
 
-    const [atts, setAtts] = useState<Map<String, S57Attribute>>(new Map());
-    const [exIn, setExIn] = useState<Map<String, Array<S57ExpectedInput>>>(new Map());
 	let name = props.feature?.sourceLayer;
 
-	useRequest("/v1/about/s57objects", response => {
-		let r = new Map<string, S57Object>(Object.keys(response).map(key => [key, response[key]]));
+	useRequests(["/v1/about/s57objects", "v1/about/s57attributes", "v1/about/expectedInput"], responses => {
+		let objMap = new Map<string, S57Object>(Object.keys(responses[0]).map(key => [key, responses[0][key]]));
 		if (name) {
-			let o = r.get(name!);
+			let o = objMap.get(name!);
 			if (o) setObj(o);
 		}
-	})
-	useRequest("/v1/about/s57attributes", response => {
-		setAtts(new Map(Object.keys(response).map(key => [key, response[key]])))
-	})
-	useRequest("/v1/about/expectedInput", response => {
-		setExIn(new Map(Object.keys(response).map(key => [key, response[key]])))
-	})
+
+		})
+	// useRequest("/v1/about/s57attributes", response => {
+	// 	setAtts(new Map(Object.keys(response).map(key => [key, response[key]])))
+	// })
+	// useRequest("/v1/about/expectedInput", response => {
+	// 	setExIn(new Map(Object.keys(response).map(key => [key, response[key]])))
+	// })
 
 	if (obj) {
 		return(

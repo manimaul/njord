@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import {useRequest} from "../Effects";
-import {Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {useRequests} from "../Effects";
+import {Dropdown} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
+import {S57Object, S57Attribute, S57ExpectedInput} from "../model/S57Objects"
 
 
 type PathToAProps = {
@@ -15,6 +16,12 @@ function PathToA(props: PathToAProps) {
         <a href={props.path}>{props.path}</a>
     )
 }
+
+type ObjMapProps = {
+    objects: Map<String, S57Object>,
+    selected: string,
+    attribute?: string
+};
 
 function S57Objects(props: ObjMapProps) {
     const [filter, setFilter] = useState("")
@@ -67,14 +74,24 @@ function S57Objects(props: ObjMapProps) {
 			<p><strong>Object: </strong>{object?.ObjectClass}</p>
 			<p><strong>Acronym: </strong>{object?.Acronym}</p>
 			<p><strong>Code: </strong>{object?.Code}</p>
-			<AttributeSet selectedObject={props.selected} name="Attribute_A" desc="(Attributes in this subset define the individual characteristics of the object.)" attributes={object?.Attribute_A} />
-			<AttributeSet selectedObject={props.selected} name="Attribute_B" desc="(Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an information system.)" attributes={object?.Attribute_B} />
-			<AttributeSet selectedObject={props.selected} name="Attribute_C" desc="(Attributes in this subset provide administrative information about the object and data describing it.)" attributes={object?.Attribute_C} />
+			<AttributeSet 
+				selectedObject={props.selected} 
+				name="Attribute_A" 
+				desc="(Attributes in this subset define the individual characteristics of the object.)" 
+				attributes={object?.Attribute_A} />
+			<AttributeSet 
+				selectedObject={props.selected} 
+				name="Attribute_B" 
+				desc="(Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an information system.)" 
+				attributes={object?.Attribute_B} />
+			<AttributeSet 
+				selectedObject={props.selected} 
+				name="Attribute_C" 
+				desc="(Attributes in this subset provide administrative information about the object and data describing it.)" 
+				attributes={object?.Attribute_C} />
         </div>
     )
 }
-
-
 
 type AttSetProps = {
 	selectedObject: string,
@@ -90,7 +107,10 @@ function AttributeSet(props: AttSetProps) {
 			<br />
 			{props.desc}
 			<br />
-			{props.attributes ? props.attributes.map((each, i) => <span key={i}><Link to={`/control/symbols/${props.selectedObject}/${each}`}>{each}</Link> </span>) : <span>Attributes missing</span>}
+			{props.attributes ? props.attributes.map((each, i) => 
+				<span key={i}>
+					<Link to={`/control/symbols/${props.selectedObject}/${each}`}>{each}</Link> 
+				{" "}</span>) : <span>Attributes missing</span>}
 		</p>
 	)
 }
@@ -163,11 +183,6 @@ function S57Attributes(props: AttProps) {
     )
 }
 
-type ObjMapProps = {
-    objects: Map<String, S57Object>,
-    selected: string,
-    attribute?: string
-};
 
 type ChartSymbolProps = {
 	object?: string,
@@ -181,15 +196,11 @@ export default function ChartSymbols(props: ChartSymbolProps) {
     const [objMap, setObjMap] = useState<Map<String, S57Object>>(new Map())
     const [atts, setAtts] = useState<Map<String, S57Attribute>>(new Map())
     const [exIn, setExIn] = useState<Map<String, Array<S57ExpectedInput>>>(new Map())
-    useRequest("/v1/about/s57objects", response => {
-        setObjMap(new Map(Object.keys(response).map(key => [key, response[key]])))
-    })
-    useRequest("/v1/about/s57attributes", response => {
-        setAtts(new Map(Object.keys(response).map(key => [key, response[key]])))
-    })
-    useRequest("/v1/about/expectedInput", response => {
-        setExIn(new Map(Object.keys(response).map(key => [key, response[key]])))
-    })
+	useRequests(["/v1/about/s57objects", "/v1/about/s57attributes", "/v1/about/expectedInput"], responses => {
+		setObjMap(new Map(Object.keys(responses[0]).map(key => [key, responses[0][key]])));
+        setAtts(new Map(Object.keys(responses[1]).map(key => [key, responses[1][key]])));
+        setExIn(new Map(Object.keys(responses[2]).map(key => [key, responses[2][key]])));
+	})
 
 	function getAttribute() :S57Attribute | undefined {
 		if (props.attribute) {
@@ -217,99 +228,4 @@ export default function ChartSymbols(props: ChartSymbolProps) {
     )
 }
 
-export type S57Attribute = {
-    /**
-     * Unique code for the attribute.
-     */
-    Code: number,
 
-    /**
-     * Human-readable description of the attribute.
-     */
-    Attribute: string,
-
-    /**
-     * Six character acronym key for the attribute.
-     */
-    Acronym: string,
-
-    /**
-     * Attribute type: one-character code for the attribute type - there are six possible types:
-     * Enumerated ("E") - the expected input is a number selected from a list of predefined attribute values; exactly one value must be chosen.
-     * List ("L") - the expected input is a list of one or more numbers selected from a list of pre-defined attribute values.
-     * Float ("F") - the expected input is a floating point numeric value with defined range, resolution, units and format.
-     * Integer ("I") - the expected input is an integer numeric value with defined range, units and format.
-     * Coded String ("A") - the expected input is a string of ASCII characters in a predefined format; the information is encoded according to defined coding systems.
-     * Free Text ("S") - the expected input is a free-format alphanumeric string; it may be a file name which points to a text or graphic file.
-     */
-    Attributetype: string,
-
-    /**
-     * todo: (what do these mean?) F= $= N= S= ?=
-     */
-    Class: string,
-}
-
-export type S57Object = {
-    /**
-     * Unique code for the object.
-     */
-    Code: number,
-
-    /**
-     * Human-readable description of the object.
-     */
-    ObjectClass: string,
-
-    /**
-     * Six character acronym key for the object.
-     */
-    Acronym: string
-
-    /**
-     * Attributes in this subset define the individual characteristics of the object.
-     */
-    Attribute_A: Array<string>,
-
-    /**
-     * Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an
-     * information system.
-     */
-    Attribute_B: Array<string>,
-
-    /**
-     * Attributes in this subset provide administrative information about the object and data describing it.
-     */
-    Attribute_C: Array<string>,
-
-
-    /**
-     * todo: (what do these mean?) G= M= C= $= <empty>=
-     */
-    Class: string,
-
-    /**
-     * The geometric primitives allowed for the object are P=point L=line A=area N=none
-     */
-    Primitives: Array<string>
-}
-
-export type S57ExpectedInput = {
-    /**
-     * The corresponding [S57Attribute.code]
-     */
-    Code: number,
-
-    /**
-     * Value in the [S57Object]'s [S57Attribute]
-     * eg A BOYSPP feature with an attribute: CATSPM: ["27"]
-     * CATSPM has id 66 so the [S57ExpectedInput] with Code: 66 and ID: 27 has the [S57ExpectedInput.meaning]: "general warning mark"
-     },
-     */
-    ID: number,
-
-    /**
-     * Human readable description
-     */
-    Meaning: string,
-}

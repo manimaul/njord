@@ -1,14 +1,19 @@
-import React, {useState} from "react";
-import {useRequest, useRequests} from "../Effects";
+import {useState} from "react";
+import {useRequests} from "../Effects";
 import {MapGeoJSONFeature} from "maplibre-gl"
-import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
-import {S57ExpectedInput, S57Object, S57Attribute} from './ControlSymbols';
+import {S57Object, S57Attribute, S57ExpectedInput} from "../model/S57Objects"
 import Loading from "./Loading";
 
 type Query = {
 	feature?: MapGeoJSONFeature;
 	eventKey: string
+}
+
+type QueryState = {
+	obj?: S57Object;
+	att?: S57Attribute;
+
 }
 
 export default function ChartQuery(props: Query) {

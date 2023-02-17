@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.tile.VectorTileEncoder
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
@@ -21,7 +22,8 @@ class TileEncoder(
     private val encoder: VectorTileEncoder = VectorTileEncoder(4096, 8, false, true, 0.0),
     private val chartDao: ChartDao = Singletons.chartDao,
     private val timer: Timer = Singletons.metrics.timer("TileEncoder"),
-    private val layerFactory: LayerFactory = Singletons.layerFactory
+    private val layerFactory: LayerFactory = Singletons.layerFactory,
+    private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
 ) {
 
     private val tileEnvelope: Polygon = tileSystem.createTileClipPolygon(x, y, z)
@@ -41,6 +43,35 @@ class TileEncoder(
         mutableListOf<ChartFeatureInfo>()
     }
 
+    private fun MutableMap<String, Any?>.filtered() : MutableMap<String, Any?>{
+        iterator().also { itor ->
+            while (itor.hasNext()) {
+                itor.next().also { entry ->
+                    entry.value?.let { value ->
+                        when(value) {
+                            is String -> {
+                               if (value.isBlank()) {
+                                   itor.remove()
+                               }
+                            }
+                            is Int -> {
+                                if (value == 0 && s57ObjectLibrary.attributes[entry.key]?.attributeType == "E") {
+                                    itor.remove()
+                                }
+                            }
+                            is ArrayList<*> -> {
+                                if (value.isEmpty()) {
+                                    itor.remove()
+                                }
+                            }
+                        }
+                    } ?: itor.remove()
+                }
+            }
+        }
+        return this
+    }
+
     suspend fun addCharts(info: Boolean): TileEncoder {
         val ctx = timer.time()
         var include: Geometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
@@ -55,9 +86,9 @@ class TileEncoder(
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         layerFactory.preTileEncode(feature)
                         if (info) {
-                            infoFeatures.add(ChartFeatureInfo(feature.layer, feature.props, tileGeo::class.simpleName))
+                            infoFeatures.add(ChartFeatureInfo(feature.layer, feature.props.filtered(), tileGeo::class.simpleName))
                         }
-                        encoder.addFeature(feature.layer, feature.props, tileGeo)
+                        encoder.addFeature(feature.layer, feature.props.filtered(), tileGeo)
                     }
                     chartGeo?.let { geo ->
                         covered = covered.union(geo)

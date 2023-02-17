@@ -603,14 +603,14 @@
   },
   "DRVAL1": {
     "Code": 87,
-    "Attribute": "Depth range value 1",
+    "Attribute": "Depth range value low",
     "Acronym": "DRVAL1",
     "Attributetype": "F",
     "Class": "F"
   },
   "DRVAL2": {
     "Code": 88,
-    "Attribute": "Depth range value 2",
+    "Attribute": "Depth range value high",
     "Acronym": "DRVAL2",
     "Attributetype": "F",
     "Class": "F"

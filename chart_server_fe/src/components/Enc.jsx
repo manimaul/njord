@@ -66,9 +66,9 @@ function DisplayQuery(props) {
 		return(
 			<>
 				<Accordion>
-					{Object.keys(props.object).map(each => {
+					{Object.keys(props.object).map((each, i) => {
 						return(
-							<ChartQuery feature={props.object[each]} eventKey={`${each}`} />
+							<ChartQuery key={i} feature={props.object[each]} eventKey={`${each}`} />
 						);
 					})}
 				</Accordion>

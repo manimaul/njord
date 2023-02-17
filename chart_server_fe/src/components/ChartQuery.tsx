@@ -31,8 +31,12 @@ type ChartPropsProps = {
 function ChartProps(props: ChartPropsProps) {
     let listItems: Map<string, Array<any>> = new Map();
     let displayProps = props.qs?.properties ? Object.keys(props.qs?.properties).filter(key => {
-        if (key === "DEBUG" || key === "PLY") {
-            return false
+        switch (key) {
+            case "SY":
+            case "AC":
+            case "DEBUG":
+            case "PLY":
+                return false
         }
         let value = props.qs?.properties?.[key];
         if (typeof value === 'string') {
@@ -65,9 +69,11 @@ function ChartProps(props: ChartPropsProps) {
 					</ul>
 				</>
 			)
-		} else if (input && len == 1) {
+		} else if (input && len === 1) {
 			return (
-				<><strong>{input?.toString()} {meanings}</strong></>
+				<>
+                    <strong>{input?.toString()} {meanings}</strong>
+                </>
 			)
 
 		}
@@ -120,6 +126,8 @@ export default function ChartQuery(props: Query) {
             setQs(qs);
         }
     })
+    let imageSymbol = qs?.properties?.["SY"]
+    let areaColor = qs?.properties?.["AC"]
 
     if (qs) {
         return (
@@ -129,6 +137,16 @@ export default function ChartQuery(props: Query) {
                     <Accordion.Body>
                         <p><strong>Geometry: </strong>{props?.feature?.geometry?.type}</p>
                         <LatLng geo={props.feature?.geometry}/>
+                        {imageSymbol && <>
+                            <p>
+                                <strong>Symbol: </strong>SY {imageSymbol} <img src={`/v1/icon/${imageSymbol}.png`} alt={imageSymbol}/>
+                            </p>
+                        </>}
+                        {areaColor && <>
+                            <p>
+                                <strong>Area Color: </strong>AC {areaColor}
+                            </p>
+                        </>}
                         <ChartProps qs={qs}/>
                     </Accordion.Body>
                 </Accordion.Item>

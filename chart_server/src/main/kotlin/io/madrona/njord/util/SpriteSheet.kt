@@ -1,5 +1,6 @@
 package io.madrona.njord.util
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.IconInfo
 import io.madrona.njord.Singletons
@@ -23,9 +24,8 @@ class SpriteSheet(
     }
 
     private val spriteSheetJson: Map<String, IconInfo> by lazy {
-        resourceAsString("www/sprites/${chartSymbolSprites}@2x.json")?.let {
-            it.decodeJson(objectMapper)
-        } ?: throw RuntimeException("sprite sheet json not found: $chartSymbolSprites")
+        val sheet = resourceAsString("www/sprites/${chartSymbolSprites}@2x.json")
+        objectMapper.readValue(sheet, object: TypeReference<Map<String, IconInfo>>() {})
     }
 
     fun spriteImage(name: String): ByteArray? {

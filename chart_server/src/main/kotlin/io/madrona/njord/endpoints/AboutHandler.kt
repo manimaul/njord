@@ -8,10 +8,12 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
+import io.madrona.njord.model.ColorLibrary
 import org.gdal.gdal.gdal
 
 class AboutHandler(
-    private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary
+    private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
+    private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
 ) : KtorHandler {
     override val route = "/v1/about/{path...}"
 
@@ -30,6 +32,7 @@ class AboutHandler(
             "/s57objects" -> call.respondJson(s57ObjectLibrary.objects)
             "/s57attributes" -> call.respondJson(s57ObjectLibrary.attributes)
             "/expectedInput" -> call.respondJson(s57ObjectLibrary.expectedInput)
+            "/colors" -> call.respondJson(colorLibrary.colorMap.library)
             else -> call.respond(HttpStatusCode.NotFound)
         }
 

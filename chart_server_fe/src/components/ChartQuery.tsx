@@ -5,6 +5,8 @@ import {GeoJSON} from "geojson"
 import Accordion from 'react-bootstrap/Accordion';
 import {S57Object, S57Attribute, S57ExpectedInput} from "../model/S57Objects"
 import Loading from "./Loading";
+import {Color} from "react-bootstrap/types";
+import SvgCircle from "./SvgCircle";
 
 type Query = {
     feature?: MapGeoJSONFeature;
@@ -22,6 +24,7 @@ type QueryState = {
     properties?: {
         [name: string]: any;
     };
+    colors: Map<String, String>;
 }
 
 type ChartPropsProps = {
@@ -32,8 +35,9 @@ function ChartProps(props: ChartPropsProps) {
     let listItems: Map<string, Array<any>> = new Map();
     let displayProps = props.qs?.properties ? Object.keys(props.qs?.properties).filter(key => {
         switch (key) {
-            case "SY":
-            case "AC":
+            case "SY": //point symbol
+            case "AC": //area color
+            case "AP": //area pattern
             case "DEBUG":
             case "PLY":
                 return false
@@ -113,21 +117,24 @@ export default function ChartQuery(props: Query) {
     const [qs, setQs] = useState<QueryState | null>(null);
     let name = props.feature?.sourceLayer;
 
-    useRequests(["/v1/about/s57objects", "v1/about/s57attributes", "v1/about/expectedInput"], responses => {
+    useRequests(["/v1/about/s57objects", "/v1/about/s57attributes", "/v1/about/expectedInput", "/v1/about/colors"], responses => {
         if (name) {
             let objMap = new Map<String, S57Object>(Object.keys(responses[0]).map(key => [key, responses[0][key]]));
             let atts = new Map(Object.keys(responses[1]).map(key => [key, responses[1][key]]));
+            let colors = new Map<String, String>(Object.keys(responses[3]["DAY_BRIGHT"]).map(key => [key,responses[3]["DAY_BRIGHT"][key]]))
             let qs: QueryState = {
                 obj: objMap.get(name!),
                 att: atts,
                 input: new Map(Object.keys(responses[2]).map(key => [key, responses[2][key]])),
-                properties: props.feature?.properties
+                properties: props.feature?.properties,
+                colors: colors
             }
             setQs(qs);
         }
     })
     let imageSymbol = qs?.properties?.["SY"]
     let areaColor = qs?.properties?.["AC"]
+    let areaPattern = qs?.properties?.["AP"]
 
     if (qs) {
         return (
@@ -142,10 +149,15 @@ export default function ChartQuery(props: Query) {
                                 <strong>Symbol: </strong>SY {imageSymbol} <img src={`/v1/icon/${imageSymbol}.png`} alt={imageSymbol}/>
                             </p>
                         </>}
-                        {areaColor && <>
+                        {areaPattern && <>
                             <p>
-                                <strong>Area Color: </strong>AC {areaColor}
+                                <strong>Area pattern: </strong>AP {areaPattern} <img src={`/v1/icon/${areaPattern}.png`} alt={areaPattern}/>
                             </p>
+                        </>}
+                        {areaColor && <>
+                            <pre>
+                                <strong>Area Color: </strong><span>AC {areaColor} </span><SvgCircle color={qs.colors.get(areaColor)} />
+                            </pre>
                         </>}
                         <ChartProps qs={qs}/>
                     </Accordion.Body>

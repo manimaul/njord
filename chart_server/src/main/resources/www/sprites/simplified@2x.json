@@ -1,86 +1,275 @@
 {
-    "BOYMOR11": {
-        "width": 23,
-        "height": 11,
+    "ACHARE02": {
+        "width": 13,
+        "height": 16,
         "x": 0,
         "y": 0,
         "pixelRatio": 1
     },
-    "BRIDGE01": {
-        "width": 13,
-        "height": 13,
+    "ACHBRT07": {
+        "width": 16,
+        "height": 16,
         "x": 81,
         "y": 0,
         "pixelRatio": 1
     },
-    "FLTHAZ02": {
+    "AIRARE02": {
         "width": 24,
         "height": 24,
         "x": 162,
         "y": 0,
         "pixelRatio": 1
     },
+    "BCNCAR01": {
+        "width": 13,
+        "height": 19,
+        "x": 243,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNCAR02": {
+        "width": 13,
+        "height": 20,
+        "x": 324,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNCAR03": {
+        "width": 13,
+        "height": 19,
+        "x": 405,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNCAR04": {
+        "width": 13,
+        "height": 19,
+        "x": 486,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNDEF13": {
+        "width": 16,
+        "height": 14,
+        "x": 567,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNISD21": {
+        "width": 8,
+        "height": 17,
+        "x": 648,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNLAT15": {
+        "width": 7,
+        "height": 13,
+        "x": 729,
+        "y": 0,
+        "pixelRatio": 1
+    },
+    "BCNLAT16": {
+        "width": 7,
+        "height": 13,
+        "x": 0,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNLAT21": {
+        "width": 5,
+        "height": 15,
+        "x": 81,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNLAT22": {
+        "width": 5,
+        "height": 15,
+        "x": 162,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNSAW13": {
+        "width": 7,
+        "height": 13,
+        "x": 243,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNSAW21": {
+        "width": 5,
+        "height": 15,
+        "x": 324,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNSPP13": {
+        "width": 7,
+        "height": 13,
+        "x": 405,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BCNSPP21": {
+        "width": 5,
+        "height": 15,
+        "x": 486,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BOYCAR01": {
+        "width": 13,
+        "height": 19,
+        "x": 567,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BOYCAR02": {
+        "width": 12,
+        "height": 20,
+        "x": 648,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BOYCAR03": {
+        "width": 13,
+        "height": 19,
+        "x": 729,
+        "y": 81,
+        "pixelRatio": 1
+    },
+    "BOYCAR04": {
+        "width": 19,
+        "height": 19,
+        "x": 0,
+        "y": 162,
+        "pixelRatio": 1
+    },
+    "BOYDEF03": {
+        "width": 22,
+        "height": 14,
+        "x": 81,
+        "y": 162,
+        "pixelRatio": 1
+    },
+    "BOYISD12": {
+        "width": 12,
+        "height": 17,
+        "x": 162,
+        "y": 162,
+        "pixelRatio": 1
+    },
+    "BOYMOR11": {
+        "width": 23,
+        "height": 11,
+        "x": 243,
+        "y": 162,
+        "pixelRatio": 1
+    },
+    "BRIDGE01": {
+        "width": 13,
+        "height": 13,
+        "x": 324,
+        "y": 162,
+        "pixelRatio": 1
+    },
+    "FLTHAZ02": {
+        "width": 24,
+        "height": 24,
+        "x": 405,
+        "y": 162,
+        "pixelRatio": 1
+    },
     "FOULAR01": {
         "width": 20,
         "height": 24,
-        "x": 243,
-        "y": 0,
+        "x": 486,
+        "y": 162,
         "pixelRatio": 1
     },
     "FOULGND1": {
         "width": 12,
         "height": 10,
-        "x": 324,
-        "y": 0,
+        "x": 567,
+        "y": 162,
         "pixelRatio": 1
     },
     "HULKES01": {
         "width": 15,
         "height": 9,
-        "x": 405,
-        "y": 0,
+        "x": 648,
+        "y": 162,
         "pixelRatio": 1
     },
     "ICEARE04": {
         "width": 81,
         "height": 77,
-        "x": 486,
-        "y": 0,
+        "x": 729,
+        "y": 162,
         "pixelRatio": 3
     },
     "ISODGR51": {
         "width": 19,
         "height": 19,
-        "x": 567,
-        "y": 0,
+        "x": 0,
+        "y": 243,
         "pixelRatio": 1
     },
     "LNDARE01": {
         "width": 7,
         "height": 7,
-        "x": 648,
-        "y": 0,
+        "x": 81,
+        "y": 243,
         "pixelRatio": 1
     },
     "MORFAC03": {
         "width": 9,
         "height": 9,
-        "x": 729,
-        "y": 0,
+        "x": 162,
+        "y": 243,
         "pixelRatio": 1
     },
     "MORFAC04": {
         "width": 11,
         "height": 16,
-        "x": 0,
-        "y": 81,
+        "x": 243,
+        "y": 243,
+        "pixelRatio": 1
+    },
+    "OBSTRN01": {
+        "width": 13,
+        "height": 13,
+        "x": 324,
+        "y": 243,
+        "pixelRatio": 1
+    },
+    "OBSTRN02": {
+        "width": 13,
+        "height": 13,
+        "x": 405,
+        "y": 243,
+        "pixelRatio": 1
+    },
+    "OBSTRN03": {
+        "width": 13,
+        "height": 13,
+        "x": 486,
+        "y": 243,
+        "pixelRatio": 1
+    },
+    "OBSTRN11": {
+        "width": 9,
+        "height": 9,
+        "x": 567,
+        "y": 243,
         "pixelRatio": 1
     },
     "PILPNT02": {
         "width": 7,
         "height": 7,
-        "x": 81,
-        "y": 81,
+        "x": 648,
+        "y": 243,
         "pixelRatio": 1
     }
 }

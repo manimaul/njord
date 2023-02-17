@@ -1,30 +1,17 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.Singletons
-import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
 import io.madrona.njord.util.logger
 
-abstract class Layerable(
-    private val autoSymbol: Boolean = false,
-    private val symbolLayerLibrary: SymbolLayerLibrary = Singletons.symbolLayerLibrary,
-) {
+abstract class Layerable {
     val log = logger()
     val key = javaClass.simpleName.uppercase()
     abstract fun layers(options: LayerableOptions): Sequence<Layer>
 
-    open fun tileEncode(feature: ChartFeature) = Unit
-
-    fun preTileEncode(feature: ChartFeature) {
-        if (feature.layer == key) {
-            if (autoSymbol) {
-                val sy = symbolLayerLibrary.symbol(key, feature.props)
-                feature.props["SY"] = sy
-            }
-            tileEncode(feature)
-        }
+    open fun preTileEncode(feature: ChartFeature) {
+        log.warn("layer $key preTileEncode not handled")
     }
 }
 

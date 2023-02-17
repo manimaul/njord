@@ -39,6 +39,10 @@ class LayerFactory(
     )
 
     fun preTileEncode(feature: ChartFeature) {
-        layerables.forEach { it.preTileEncode(feature) }
+        layerables.forEach {
+            if (feature.layer == it.key) {
+                it.preTileEncode(feature)
+            }
+        }
     }
 }

@@ -13,7 +13,6 @@ import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
-import io.madrona.njord.geo.symbols.SymbolLayerLibrary
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.SpriteSheet
@@ -80,8 +79,6 @@ object Singletons {
     }
 
     val layerFactory by lazy { LayerFactory() }
-
-    val symbolLayerLibrary by lazy { SymbolLayerLibrary() }
 
     val s57ObjectLibrary by lazy { S57ObjectLibrary() }
 }

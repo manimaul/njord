@@ -3,7 +3,25 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 
-class Bridge : Layerable(autoSymbol = true) {
+class Bridge : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        /* https://s57dev.mxmariner.com/control/symbols/BRIDGE/CATBRG
+        List
+        1	fixed bridge
+        2	opening bridge
+        3	swing bridge
+        4	lifting bridge
+        5	bascule bridge
+        6	pontoon bridge
+        7	draw bridge
+        8	transporter bridge
+        9	footbridge
+        10	viaduct
+        11	aqueduct
+        12	suspension bridge
+         */
+        feature.props["SY"] = "BRIDGE01"
+    }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(

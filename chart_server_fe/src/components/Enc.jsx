@@ -25,7 +25,7 @@ export function Enc() {
         if (map.current) return; //stops map from intializing more than once
         map.current = new maplibregl.Map({
             container: mapContainer.current,
-            style: '/v1/style/meters',
+            style: '/v1/style/feet',
             center: [lng, lat],
             zoom: zoom
         });

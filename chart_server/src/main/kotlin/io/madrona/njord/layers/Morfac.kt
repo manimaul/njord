@@ -1,8 +1,33 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.model.*
 
-class Morfac : Layerable(autoSymbol = true) {
+class Morfac : Layerable() {
+
+    override fun preTileEncode(feature: ChartFeature) {
+        /* https://s57dev.mxmariner.com/control/symbols/MORFAC/CATMOR
+        Enum
+        1	dolphin
+        2	deviation dolphin
+        3	bollard
+        4	tie-up wall
+        5	post or pile
+        6	chain/wire/cable
+        7	mooring buoy
+         */
+        val category = feature.props.intValue("CATMOR") ?: 0
+        val sy =  when (category) {
+            1 -> "MORFAC03"
+            2 -> "MORFAC04"
+            3 -> "PILPNT02"
+            5 -> "PILPNT02"
+            7 -> "BOYMOR11"
+            else -> "MORFAC03"
+        }
+        feature.props["SY"] = sy
+    }
+
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_area_fill",

@@ -122,6 +122,7 @@ class Obstrn : Layerable() {
                     else -> throw IllegalStateException("unexpected VALSOU $meters")
                 }
             }
+
             else -> null
         } ?: "DEPVS"
 
@@ -129,77 +130,69 @@ class Obstrn : Layerable() {
         feature.props["AC"] = ac
     }
 
-    override fun tileEncode(feature: ChartFeature) {
+    override fun preTileEncode(feature: ChartFeature) {
         encodeAreaColor(feature)
         encodeAreaPattern(feature)
         encodePointSymbol(feature)
     }
 
     private fun encodePointSymbol(feature: ChartFeature) {
-        val category = feature.props.intValue("CATOBS")
-        val waterLevelEffect = feature.props.intValue("WATLEV")
+        /* /control/symbols/OBSTRN/CATOBS
+        Enum
+        1	snag / stump
+        2	wellhead
+        3	diffuser
+        4	crib
+        5	fish haven
+        6	foul area
+        7	foul ground
+        8	ice boom
+        9	ground tackle
+        10	boom
+         */
+        val category = feature.props.intValue("CATOBS") ?: 0
+
+        /* /control/symbols/OBSTRN/WATLEV
+        Enum
+        1	partly submerged at high water
+        2	always dry
+        3	always under water/submerged
+        4	covers and uncovers
+        5	awash
+        6	subject to inundation or flooding
+        7	floating
+         */
+        val waterLevelEffect = feature.props.intValue("WATLEV") ?: 0
+
+
+        /* /control/symbols/OBSTRN/QUASOU
+        List
+        1	depth known
+        2	depth unknown
+        3	doubtful sounding
+        4	unreliable sounding
+        5	no bottom found at value shown
+        6	least depth known
+        7	least depth unknown, safe clearance at value shown
+        8	value reported (not surveyed)
+        9	value reported (not confirmed)
+        10	maintained depth
+        11	not regularly maintained
+         */
+        val qualityOfSounding = feature.props.intValues("QUASOU")
+
         val sy = when {
-            /**
-             *  ice boom
-             */
-            category == 8 ||
-
-                    /**
-                     *  boom
-                     */
-                    category == 10 ||
-
-                    /**
-                     * floating
-                     */
-                    waterLevelEffect == 7 -> "FLTHAZ02"
-
-            /**
-             *  foul area
-             */
+            category == 8 || category == 10  -> "FLTHAZ02"
             category == 6 -> "FOULAR01"
-
-            /**
-             *  ground tackle
-             */
             category == 9 -> "ACHARE02"
-
-
-            /**
-             *  snag / stump
-             */
-            category == 1 ||
-
-                    /**
-                     *  wellhead
-                     */
-                    category == 2 ||
-
-                    /**
-                     *  diffuser
-                     */
-                    category == 3 ||
-
-                    /**
-                     *  crib
-                     */
-                    category == 4 ||
-
-                    /**
-                     *  fish haven
-                     */
-                    category == 5 -> null
-
-            /**
-             * foul ground
-             */
+//            category == 1 || category == 2 || category == 3 || category == 4 || category == 5 -> null
             category == 7 -> "FOULGND1"
-
-            /**
-             * floating
-             */
+            qualityOfSounding.contains(1) -> ""
+            waterLevelEffect == 4 -> "OBSTRN03"
+            waterLevelEffect == 3 -> "OBSTRN02"
+//            waterLevelEffect == 4 -> "OBSTRN01"
             waterLevelEffect == 7 -> "FLTHAZ02"
-
+//            qualityOfSounding.contains(1) ->
             else -> null
         } ?: "ISODGR51"
         feature.props["SY"] = sy

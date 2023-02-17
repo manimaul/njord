@@ -31,7 +31,7 @@ class Depare : Layerable() {
         )
     }
 
-    override fun tileEncode(feature: ChartFeature) {
+    override fun preTileEncode(feature: ChartFeature) {
         var ac = "CHBLK"
         feature.props.floatValue("DRVAL1")?.let { shallowRange ->
             feature.props.floatValue("DRVAL2")?.let { deepRange ->

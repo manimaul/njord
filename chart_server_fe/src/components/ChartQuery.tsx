@@ -37,6 +37,7 @@ function ChartProps(props: ChartPropsProps) {
         switch (key) {
             case "SY": //point symbol
             case "AC": //area color
+            case "LC": //area color
             case "AP": //area pattern
             case "DEBUG":
             case "PLY":
@@ -134,6 +135,7 @@ export default function ChartQuery(props: Query) {
     })
     let imageSymbol = qs?.properties?.["SY"]
     let areaColor = qs?.properties?.["AC"]
+    let lineColor = qs?.properties?.["LC"]
     let areaPattern = qs?.properties?.["AP"]
 
     if (qs) {
@@ -157,6 +159,11 @@ export default function ChartQuery(props: Query) {
                         {areaColor && <>
                             <pre>
                                 <strong>Area Color: </strong><span>AC {areaColor} </span><SvgCircle color={qs.colors.get(areaColor)} />
+                            </pre>
+                        </>}
+                        {lineColor && <>
+                            <pre>
+                                <strong>Line Color: </strong><span>LC {lineColor} </span><SvgCircle color={qs.colors.get(lineColor)} />
                             </pre>
                         </>}
                         <ChartProps qs={qs}/>

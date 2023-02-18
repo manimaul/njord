@@ -2,6 +2,7 @@ package io.madrona.njord.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.madrona.njord.Singletons
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Style(
@@ -39,16 +40,13 @@ object Filters {
     val eqTypePolyGon = listOf(eq, "\$type", "Polygon")
     val eqTypePoint = listOf(eq, "\$type", "Point")
 
-    val areaFillColor = listOf(
-        "case",
-        listOf("==", listOf("get", "AC"), "DEPIT"), colorFrom("DEPIT"),
-        listOf("==", listOf("get", "AC"), "DEPVS"), colorFrom("DEPVS"),
-        listOf("==", listOf("get", "AC"), "DEPMS"), colorFrom("DEPMS"),
-        listOf("==", listOf("get", "AC"), "DEPMD"), colorFrom("DEPMD"),
-        listOf("==", listOf("get", "AC"), "DEPDW"), colorFrom("DEPDW"),
-        listOf("==", listOf("get", "AC"), "CHBLK"), colorFrom("CHBLK"),
-        colorFrom("CHRED")
-    )
+    val areaFillColor= listOf("case") + Singletons.colorLibrary.colorMap.library["DAY_BRIGHT"]!!.map {
+        listOf(listOf("==", listOf("get", "AC"), it.key), it.value )
+    }.flatten() + listOf(colorFrom("CHRED"))
+
+    val lineColor = listOf("case") + Singletons.colorLibrary.colorMap.library["DAY_BRIGHT"]!!.map {
+        listOf(listOf("==", listOf("get", "LC"), it.key), it.value )
+    }.flatten() + listOf(colorFrom("CHRED"))
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -60,7 +58,7 @@ data class Paint(
         @JsonProperty("background-opacity") val backgroundOpacity: Int? = null,
         @JsonProperty("fill-color") val fillColor: Any? = null,
         @JsonProperty("fill-pattern") val fillPattern: Any? = null, //List<String> or String>
-        @JsonProperty("line-color") val lineColor: String? = null,
+        @JsonProperty("line-color") val lineColor: Any? = null,
         @JsonProperty("circle-color") val circleColor: String? = null,
         @JsonProperty("line-width") val lineWidth: Float? = null,
         @JsonProperty("line-dasharray") val lineDashArray: List<Float>? = null,

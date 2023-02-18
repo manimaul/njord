@@ -5,6 +5,8 @@ import io.madrona.njord.model.*
 class Lndare : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "LNDARE01"
+        feature.props["AC"] = "LANDA"
+        feature.props["LC"] = "CSTLN"
     }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -15,8 +17,8 @@ class Lndare : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
-                    fillColor = colorFrom("LANDA")
-                )
+                    fillColor = Filters.areaFillColor
+                ),
             ),
             Layer(
                 id = "${key}_line",
@@ -28,7 +30,7 @@ class Lndare : Layerable() {
                     Filters.eqTypeLineString,
                 ),
                 paint = Paint(
-                    lineColor = colorFrom("CSTLN"),
+                    lineColor = Filters.lineColor,
                     lineWidth = 2f
                 )
             ),

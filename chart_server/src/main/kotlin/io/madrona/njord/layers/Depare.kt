@@ -24,7 +24,7 @@ class Depare : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypeLineStringOrPolygon,
                 paint = Paint(
-                    lineColor = colorFrom("CHGRD"),
+                    lineColor = Filters.lineColor,
                     lineWidth = 0.5f
                 ),
             )
@@ -47,5 +47,6 @@ class Depare : Layerable() {
             }
         }
         feature.props["AC"] = ac
+        feature.props["LC"] = "CHGRD"
     }
 }

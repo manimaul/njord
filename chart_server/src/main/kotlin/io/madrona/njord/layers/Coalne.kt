@@ -3,6 +3,10 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 class Coalne : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.props["LC"] = "CSTLN"
+    }
+
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(
@@ -11,7 +15,7 @@ class Coalne : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypeLineString,
                 paint = Paint(
-                    lineColor = colorFrom("CSTLN"),
+                    lineColor = Filters.lineColor,
                     lineWidth = 1f,
                     lineDashArray = listOf(5f, 5f)
                 )

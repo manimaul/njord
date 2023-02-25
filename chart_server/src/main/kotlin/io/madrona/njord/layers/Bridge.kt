@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.geo.symbols.intValueSet
 import io.madrona.njord.model.*
 
 
@@ -20,7 +21,13 @@ class Bridge : Layerable() {
         11	aqueduct
         12	suspension bridge
          */
-        feature.props["SY"] = "BRIDGE01"
+        val categories = feature.props.intValueSet("CATBRG")
+        arrayOf(2,3,4,5,7,8).forEach {
+            if  (categories.contains(it)) {
+                feature.props["SY"] = "BRIDGE01"
+                return
+            }
+        }
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(

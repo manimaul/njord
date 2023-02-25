@@ -16,6 +16,12 @@ fun S57Prop.intValues(key: String) : List<Int> {
     } ?: intValue(key)?.let { listOf(it) } ?: emptyList()
 }
 
+fun S57Prop.intValueSet(key: String) : Set<Int> {
+    return (this[key] as? Iterable<*>)?.asSequence()?.mapNotNull {
+        it?.toString()?.toIntOrNull()
+    }?.toSet() ?: intValue(key)?.let { setOf(it) } ?: emptySet()
+}
+
 fun S57Prop.stringValues(key: String) : List<String> {
     return (this[key] as? Iterable<*>)?.mapNotNull {
         it?.toString()

@@ -23,131 +23,131 @@ import io.madrona.njord.model.*
  * Distinction:
  * depth area; wreck; underwater/awash rock; obstruction;
  */
-class Soundg(
-        private val config: ChartsConfig = Singletons.config
+open class Soundg(
+    private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
 
-    override fun layers(options: LayerableOptions) = when(options.depth) {
+    override fun layers(options: LayerableOptions) = when (options.depth) {
         Depth.FATHOMS -> fathoms()
         Depth.METERS -> meters()
         Depth.FEET -> feet()
     }
 
     private fun fathoms() = sequenceOf(
-            Layer(
-                    id = "soundg_fathoms",
-                    type = LayerType.SYMBOL,
-                    sourceLayer = key,
-                    filter = listOf(
-                            Filters.any, Filters.eqTypePoint
-                    ),
-                    layout = Layout(
-                            textFont = listOf(Font.ROBOTO_BOLD),
-                            textAnchor = Anchor.BOTTOM_RIGHT,
-                            textJustify = Anchor.CENTER,
-                            textField = listOf("get", "FATHOMS"),
-                            textAllowOverlap = true,
-                            textIgnorePlacement = true,
-                            textSize = 11f,
-                            symbolPlacement = Placement.POINT,
-                    ),
-                    paint = Paint(
-                            textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                                    colorFrom("SNDG2"), //light
-                                    colorFrom("SNDG1")  //dark
-                            ),
-                            textHaloColor = colorFrom("CHWHT"),
-                            textHaloWidth = 1.5f
-                    )
+        Layer(
+            id = "${key}_fathoms",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = listOf(
+                Filters.any, Filters.eqTypePoint
             ),
-            Layer(
-                    id = "soundg_fathoms_feet",
-                    type = LayerType.SYMBOL,
-                    sourceLayer = key,
-                    filter = listOf(
-                            Filters.any,
-                            Filters.eqTypePoint,
-                            listOf(Filters.notEq, "FATHOMS_FT", 0)
-                    ),
-                    layout = Layout(
-                            textFont = listOf(Font.ROBOTO_BOLD),
-                            textAnchor = Anchor.TOP_LEFT,
-                            textOffset = listOf(0.1f,-0.7f),
-                            textJustify = Anchor.CENTER,
-                            textField = listOf("get", "FATHOMS_FT"),
-                            textAllowOverlap = true,
-                            textIgnorePlacement = true,
-                            textSize = 9f,
-                            symbolPlacement = Placement.POINT,
-                    ),
-                    paint = Paint(
-                            textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                                    colorFrom("SNDG2"),
-                                    colorFrom("SNDG1")
-                            )
-                    )
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = Anchor.BOTTOM_RIGHT,
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", "FATHOMS"),
+                textAllowOverlap = true,
+                textIgnorePlacement = true,
+                textSize = 11f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = listOf(
+                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
+                    colorFrom("SNDG2"), //light
+                    colorFrom("SNDG1")  //dark
+                ),
+                textHaloColor = colorFrom("CHWHT"),
+                textHaloWidth = 1.5f
             )
+        ),
+        Layer(
+            id = "${key}fathoms_feet",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = listOf(
+                Filters.any,
+                Filters.eqTypePoint,
+                listOf(Filters.notEq, "FATHOMS_FT", 0)
+            ),
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = Anchor.TOP_LEFT,
+                textOffset = listOf(0.1f, -0.7f),
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", "FATHOMS_FT"),
+                textAllowOverlap = true,
+                textIgnorePlacement = true,
+                textSize = 9f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = listOf(
+                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
+                    colorFrom("SNDG2"),
+                    colorFrom("SNDG1")
+                )
+            )
+        )
     )
 
     private fun feet() = sequenceOf(
-            Layer(
-                    id = "soundg_feet",
-                    type = LayerType.SYMBOL,
-                    sourceLayer = key,
-                    filter = listOf(
-                            "any", Filters.eqTypePoint
-                    ),
-                    layout = Layout(
-                            textFont = listOf(Font.ROBOTO_BOLD),
-                            textAnchor = Anchor.CENTER,
-                            textJustify = Anchor.CENTER,
-                            textField = listOf("get", "FEET"),
-                            textAllowOverlap = true,
-                            textIgnorePlacement = true,
-                            textSize = 11f,
-                            symbolPlacement = Placement.POINT,
-                    ),
-                    paint = Paint(
-                            textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                                    colorFrom("SNDG2"),
-                                    colorFrom("SNDG1")
-                            ),
-                            textHaloColor = colorFrom("CHWHT"),
-                            textHaloWidth = 1.5f
-                    )
+        Layer(
+            id = "${key}feet",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = listOf(
+                "any", Filters.eqTypePoint
+            ),
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = Anchor.CENTER,
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", "FEET"),
+                textAllowOverlap = true,
+                textIgnorePlacement = true,
+                textSize = 11f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = listOf(
+                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
+                    colorFrom("SNDG2"),
+                    colorFrom("SNDG1")
+                ),
+                textHaloColor = colorFrom("CHWHT"),
+                textHaloWidth = 1.5f
             )
+        )
     )
 
     private fun meters() = sequenceOf(
-            Layer(
-                    id = "soundg_meters",
-                    type = LayerType.SYMBOL,
-                    sourceLayer = key,
-                    filter = listOf(
-                            "any", Filters.eqTypePoint
-                    ),
-                    layout = Layout(
-                            textFont = listOf(Font.ROBOTO_BOLD),
-                            textAnchor = Anchor.CENTER,
-                            textJustify = Anchor.CENTER,
-                            textField = listOf("get", "METERS"),
-                            textAllowOverlap = true,
-                            textIgnorePlacement = true,
-                            textSize = 11f,
-                            symbolPlacement = Placement.POINT,
-                    ),
-                    paint = Paint(
-                            textColor = listOf(
-                                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                                    colorFrom("SNDG2"),
-                                    colorFrom("SNDG1")
-                            ),
-                            textHaloColor = colorFrom("CHWHT"),
-                            textHaloWidth = 1.5f
-                    )
+        Layer(
+            id = "${key}meters",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = listOf(
+                "any", Filters.eqTypePoint
+            ),
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = Anchor.CENTER,
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", "METERS"),
+                textAllowOverlap = true,
+                textIgnorePlacement = true,
+                textSize = 11f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = listOf(
+                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
+                    colorFrom("SNDG2"),
+                    colorFrom("SNDG1")
+                ),
+                textHaloColor = colorFrom("CHWHT"),
+                textHaloWidth = 1.5f
             )
+        )
     )
 }

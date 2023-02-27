@@ -4,7 +4,13 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
+import io.madrona.njord.layers.attributehelpers.Catobs
+import io.madrona.njord.layers.attributehelpers.DepthColor
+import io.madrona.njord.layers.attributehelpers.Quasou
+import io.madrona.njord.layers.attributehelpers.Watlev
 import io.madrona.njord.model.*
+import io.madrona.njord.util.logger
+
 
 class Obstrn : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -57,145 +63,101 @@ class Obstrn : Layerable() {
         )
     }
 
-    private fun encodeAreaPattern(feature: ChartFeature) {
-        val category = feature.props.intValue("CATOBS")
-        /**
-        1	snag / stump
-        2	wellhead
-        3	diffuser
-        4	crib
-        5	fish haven
-        6	foul area
-        7	foul ground
-        8	ice boom
-        9	ground tackle
-        10	boom
-         */
-        if (category == 6) {
-            feature.props["AP"] = "FOULAR01"
+    override fun preTileEncode(feature: ChartFeature) {
+        val state = ObstrnState(feature)
+        feature.props["AC"] = state.depthColor.code
+
+        var sySet = false
+
+        when (state.category) {
+            Catobs.SNAG_STUMP,
+            Catobs.WELLHEAD,
+            Catobs.DIFFUSER,
+            Catobs.CRIB -> {}
+
+            Catobs.FISH_HAVEN -> {
+                feature.props["SY"] = "FSHHAV01"
+                sySet = true
+            }
+
+            Catobs.FOUL_AREA,
+            Catobs.FOUL_GROUND -> feature.props["AP"] = "FOULAR01"
+
+            Catobs.GROUND_TACKLE -> {
+                feature.props["AP"] = "ACHARE02"
+                feature.props["SY"] = "ACHARE02"
+                sySet = true
+            }
+
+            Catobs.ICE_BOOM,
+            Catobs.BOOM -> feature.props["AP"] = "FLTHAZ02"
+
+            null -> {}
+        }
+
+        if (!sySet) {
+            when (state.waterLevelEffect) {
+                Watlev.COVERS_AND_UNCOVERS -> feature.props["SY"] = "OBSTRN03"
+                Watlev.ALWAYS_DRY -> feature.props["SY"] = "OBSTRN11"
+                Watlev.ALWAYS_UNDER_WATER_SUBMERGED -> {
+                    when (state.depthColor) {
+                        DepthColor.DEEP_WATER,
+                        DepthColor.MEDIUM_DEPTH-> feature.props["SY"] = "OBSTRN02"
+                        DepthColor.SAFETY_DEPTH,
+                        DepthColor.VERY_SHALLOW -> feature.props["SY"] = "OBSTRN01"
+                        DepthColor.COVERS_UNCOVERS -> feature.props["SY"] = "OBSTRN03"
+                    }
+                }
+                Watlev.FLOATING -> feature.props["SY"] = "FLTHAZ02"
+                Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
+                Watlev.AWASH,
+                Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
+                null -> feature.props["SY"] = "ISODGR51"
+            }
         }
     }
 
-    private fun encodeAreaColor(feature: ChartFeature) {
-        val meters: Float = feature.props.floatValue("VALSOU") ?: 0.0f
-        val quality = feature.props.intValues("QUASOU")
-        val waterLevelEffect = feature.props.intValue("WATLEV")
-        val ac = when {
-            /**
-            1	partly submerged at high water
-            2	always dry
-            3	always under water/submerged
-            4	covers and uncovers
-            5	awash
-            6	subject to inundation or flooding
-            7	floating
-             */
-            waterLevelEffect == 1 ||
-                    waterLevelEffect == 2 ||
-                    waterLevelEffect == 4 ||
-                    waterLevelEffect == 5 ||
-                    waterLevelEffect == 7 -> "DEPIT"
+}
 
-            /**
-            1	depth known
-            2	depth unknown
-            3	doubtful sounding
-            4	unreliable sounding
-            5	no bottom found at value shown
-            6	least depth known
-            7	least depth unknown, safe clearance at value shown
-            8	value reported (not surveyed)
-            9	value reported (not confirmed)
-            10	maintained depth
-            11	not regularly maintained
-             */
-            quality.contains(1) ||
-                    quality.contains(5) ||
-                    quality.contains(6) ||
-                    quality.contains(10) -> {
-                when {
-                    meters <= 0.0 -> "DEPIT"
-                    meters <= Singletons.config.shallowDepth -> "DEPVS"
-                    meters <= Singletons.config.safetyDepth -> "DEPMS"
-                    meters <= Singletons.config.deepDepth -> "DEPMD"
-                    meters > Singletons.config.deepDepth -> "DEPDW"
-                    else -> throw IllegalStateException("unexpected VALSOU $meters")
+class ObstrnState(feature: ChartFeature) {
+    val log = logger()
+    val meters: Float = feature.props.floatValue("VALSOU") ?: 0.0f
+    val category = feature.props.intValue("CATOBS")?.let { Catobs.fromId(it) }
+    val waterLevelEffect = feature.props.intValue("WATLEV")?.let { Watlev.fromId(it) }
+    val qualityOfSounding = feature.props.intValues("QUASOU").mapNotNull { Quasou.fromId(it) }
+    val depthColor: DepthColor
+        get() {
+            val ac = when (waterLevelEffect) {
+                Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
+                Watlev.ALWAYS_DRY,
+                Watlev.COVERS_AND_UNCOVERS,
+                Watlev.AWASH,
+                Watlev.FLOATING -> DepthColor.COVERS_UNCOVERS
+
+                Watlev.ALWAYS_UNDER_WATER_SUBMERGED,
+                Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING -> {
+                    if (qualityOfSounding.contains(Quasou.DEPTH_KNOWN) ||
+                        qualityOfSounding.contains(Quasou.NO_BOTTOM_FOUND_AT_VALUE_SHOWN) ||
+                        qualityOfSounding.contains(Quasou.LEAST_DEPTH_KNOWN) ||
+                        qualityOfSounding.contains(Quasou.LEAST_DEPTH_UNKNOWN_SAFE_CLEARANCE_AT_VALUE_SHOWN) ||
+                        qualityOfSounding.contains(Quasou.MAINTAINED_DEPTH)
+                    ) {
+                        when {
+                            meters <= 0.0 -> DepthColor.COVERS_UNCOVERS
+                            meters <= Singletons.config.shallowDepth -> DepthColor.VERY_SHALLOW
+                            meters <= Singletons.config.safetyDepth -> DepthColor.SAFETY_DEPTH
+                            meters <= Singletons.config.deepDepth -> DepthColor.MEDIUM_DEPTH
+                            meters > Singletons.config.deepDepth -> DepthColor.DEEP_WATER
+                            else -> throw IllegalStateException("unexpected VALSOU $meters")
+                        }
+                    } else {
+                        null
+                    }
                 }
-            }
 
-            else -> null
-        } ?: "DEPVS"
+                null -> null
+            } ?: DepthColor.COVERS_UNCOVERS
 
-        log.debug("found area fill color for $key $ac VALSOU=$meters QUASOU=$quality WATLEV=$waterLevelEffect")
-        feature.props["AC"] = ac
-    }
-
-    override fun preTileEncode(feature: ChartFeature) {
-        encodeAreaColor(feature)
-        encodeAreaPattern(feature)
-        encodePointSymbol(feature)
-    }
-
-    private fun encodePointSymbol(feature: ChartFeature) {
-        /* /control/symbols/OBSTRN/CATOBS
-        Enum
-        1	snag / stump
-        2	wellhead
-        3	diffuser
-        4	crib
-        5	fish haven
-        6	foul area
-        7	foul ground
-        8	ice boom
-        9	ground tackle
-        10	boom
-         */
-        val category = feature.props.intValue("CATOBS") ?: 0
-
-        /* /control/symbols/OBSTRN/WATLEV
-        Enum
-        1	partly submerged at high water
-        2	always dry
-        3	always under water/submerged
-        4	covers and uncovers
-        5	awash
-        6	subject to inundation or flooding
-        7	floating
-         */
-        val waterLevelEffect = feature.props.intValue("WATLEV") ?: 0
-
-
-        /* /control/symbols/OBSTRN/QUASOU
-        List
-        1	depth known
-        2	depth unknown
-        3	doubtful sounding
-        4	unreliable sounding
-        5	no bottom found at value shown
-        6	least depth known
-        7	least depth unknown, safe clearance at value shown
-        8	value reported (not surveyed)
-        9	value reported (not confirmed)
-        10	maintained depth
-        11	not regularly maintained
-         */
-        val qualityOfSounding = feature.props.intValues("QUASOU")
-
-        val sy = when {
-            category == 8 || category == 10  -> "FLTHAZ02"
-            category == 6 -> "FOULAR01"
-            category == 9 -> "ACHARE02"
-//            category == 1 || category == 2 || category == 3 || category == 4 || category == 5 -> null
-            category == 7 -> "FOULGND1"
-            qualityOfSounding.contains(1) -> ""
-            waterLevelEffect == 4 -> "OBSTRN03"
-            waterLevelEffect == 3 -> "OBSTRN02"
-//            waterLevelEffect == 4 -> "OBSTRN01"
-            waterLevelEffect == 7 -> "FLTHAZ02"
-//            qualityOfSounding.contains(1) ->
-            else -> null
-        } ?: "ISODGR51"
-        feature.props["SY"] = sy
-        log.debug("found symbol for layer $key = $sy CATOBS=$category WATLEV=$waterLevelEffect")
-    }
+            return ac
+        }
 }

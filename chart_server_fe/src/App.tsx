@@ -1,7 +1,7 @@
 import njord from './njord.png'
 import './App.css';
 import {Routes, Route, Outlet} from "react-router-dom";
-import React, {useState} from "react";
+import React, {createContext, Dispatch, SetStateAction, useState} from "react";
 import {NavBar} from "./components/NavBar";
 import {Enc} from "./components/Enc";
 import {Table} from "react-bootstrap";
@@ -52,22 +52,43 @@ const NoMatch = () => <header className="App Header">
     <p>Page not found!</p>
 </header>
 
+enum DepthUnit {
+    feet = 'feet',
+    fathoms = 'fathoms',
+    meters = 'meters'
+}
+
+class EncState {
+    lng: number = -122.4002;
+    lat: number = 47.27984;
+    zoom: number = 11.0;
+    depthUnit: DepthUnit = DepthUnit.meters;
+}
+
+let initialEncState = new EncState();
+
+export const EncContext = createContext<[EncState, Dispatch<SetStateAction<EncState>>]>([initialEncState, (value) => {
+}]);
+
 function App() {
+    const [currentState, setState] = useState<EncState>(initialEncState);
     return (
         <div className="App">
-            <NavBar/>
-            <Routes>
-                <Route path="/" element={<Outlet/>}>
-                    <Route index element={<Home/>}/>
-                    <Route path="enc" element={<Enc/>}/>
-                    <Route path="control/:page" element={<ControlPanel/>}>
-						<Route path=":object" element={<ControlPanel/>}>
-							<Route path=":attribute" element={<ControlPanel/>}/>
-						</Route>
+            <EncContext.Provider value={[currentState, setState]}>
+                <NavBar/>
+                <Routes>
+                    <Route path="/" element={<Outlet/>}>
+                        <Route index element={<Home/>}/>
+                        <Route path="enc" element={<Enc/>}/>
+                        <Route path="control/:page" element={<ControlPanel/>}>
+                            <Route path=":object" element={<ControlPanel/>}>
+                                <Route path=":attribute" element={<ControlPanel/>}/>
+                            </Route>
+                        </Route>
+                        <Route path="*" element={<NoMatch/>}/>
                     </Route>
-                    <Route path="*" element={<NoMatch/>}/>
-                </Route>
-            </Routes>
+                </Routes>
+            </EncContext.Provider>
         </div>
     );
 }

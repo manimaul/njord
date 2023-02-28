@@ -13,18 +13,37 @@ import "./Enc.css"
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
 import ChartQuery from './ChartQuery';
 import {MapLibreEvent, MapMouseEvent} from "maplibre-gl";
-import {EncContext} from "../App";
+import {DepthUnit} from "../App";
 
 maplibregl.workerClass = MapLibreWorker;
 
+export class EncState {
+    lng: number = parseFloat(window.localStorage.getItem("longitude") ?? "-122.4002");
+    lat: number = parseFloat(window.localStorage.getItem("latitude") ?? "47.27984");
+    zoom: number = parseFloat(window.localStorage.getItem("zoom") ?? "11.0");
+}
 
-export function Enc() {
-    // let {dunit} = useParams();
+function storeEncState(state: EncState) {
+    window.localStorage.setItem("longitude", `${state.lng}`)
+    window.localStorage.setItem("latitude", `${state.lat}`)
+    window.localStorage.setItem("zoom", `${state.zoom}`)
+    console.log(`stored EncState = ${JSON.stringify(state)}`)
+}
+
+type EncProps = {
+    depths: DepthUnit
+}
+export function Enc(props: EncProps) {
+    const [encState, setEncState] = useState<EncState>(new EncState());
     const mapContainer = useRef(null);
     const map = useRef(null);
-    const [encState, setEncState] = useContext(EncContext);
     const [show, setShow] = useState(null);
     const handleClose = () => setShow(null);
+
+    const encUpdater = (state: EncState) => {
+        setEncState(state);
+        storeEncState(state);
+    }
 
     useEffect(() => {
         let cMap: maplibregl.Map = map.current
@@ -34,7 +53,7 @@ export function Enc() {
 
         let newMap = new maplibregl.Map({
             container: mapContainer.current,
-            style: `/v1/style/${encState.depthUnit}`,
+            style: `/v1/style/${props.depths}`,
             center: [encState.lng, encState.lat],
             zoom: encState.zoom
         });
@@ -47,11 +66,11 @@ export function Enc() {
             let center = e.target.getCenter();
             let zoom = e.target.getZoom();
             console.log(`moved to Zoom(${zoom}) ${center.toString()}`)
-            let newState = encState;
-            newState.zoom = zoom
-            newState.lat = center.lat
-            newState.lng = center.lng
-            setEncState(newState);
+            encUpdater({
+                lat: center.lat,
+                lng: center.lng,
+                zoom: zoom,
+            });
         });
         newMap.on('click', function (e: MapMouseEvent) {
             let features = newMap.queryRenderedFeatures(e.point);

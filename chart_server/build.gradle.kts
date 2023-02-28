@@ -61,9 +61,13 @@ dependencies {
 }
 
 tasks.named<JavaExec>("run") {
-    dependsOn(":chart_server_fe:build")
+    //./gradlew :chart_server:run -Pskip
+    if (project.hasProperty("skip")) {
+        println("skipping web build")
+    } else {
+        dependsOn(":chart_server_fe:build")
+    }
     if (Os.isFamily(Os.FAMILY_MAC)) {
         jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
     }
 }
-

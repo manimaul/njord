@@ -48,8 +48,8 @@ class BaseLayers {
         Coalne(),
         Hulkes(),
         Ponton(),
-        Morfac(),
         Obstrn(),
+        Morfac(),
         Bridge(),
     )
 }

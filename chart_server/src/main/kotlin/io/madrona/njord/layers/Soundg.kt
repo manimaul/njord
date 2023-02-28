@@ -2,6 +2,8 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
+import io.madrona.njord.geo.symbols.addSoundingConversions
+import io.madrona.njord.geo.symbols.doubleValue
 import io.madrona.njord.model.*
 
 /**
@@ -27,6 +29,12 @@ open class Soundg(
     private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
 
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.props.doubleValue("METERS")?.let { meters ->
+            feature.props.addSoundingConversions(meters)
+        }
+    }
+
     override fun layers(options: LayerableOptions) = when (options.depth) {
         Depth.FATHOMS -> fathoms()
         Depth.METERS -> meters()
@@ -34,120 +42,113 @@ open class Soundg(
     }
 
     private fun fathoms() = sequenceOf(
-        Layer(
-            id = "${key}_fathoms",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(
-                Filters.any, Filters.eqTypePoint
-            ),
-            layout = Layout(
-                textFont = listOf(Font.ROBOTO_BOLD),
-                textAnchor = Anchor.BOTTOM_RIGHT,
-                textJustify = Anchor.CENTER,
-                textField = listOf("get", "FATHOMS"),
-                textAllowOverlap = true,
-                textIgnorePlacement = true,
-                textSize = 11f,
-                symbolPlacement = Placement.POINT,
-            ),
-            paint = Paint(
-                textColor = listOf(
-                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                    colorFrom("SNDG2"), //light
-                    colorFrom("SNDG1")  //dark
-                ),
-                textHaloColor = colorFrom("CHWHT"),
-                textHaloWidth = 1.5f
-            )
-        ),
-        Layer(
-            id = "${key}fathoms_feet",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(
-                Filters.any,
-                Filters.eqTypePoint,
-                listOf(Filters.notEq, "FATHOMS_FT", 0)
-            ),
-            layout = Layout(
-                textFont = listOf(Font.ROBOTO_BOLD),
-                textAnchor = Anchor.TOP_LEFT,
-                textOffset = listOf(0.1f, -0.7f),
-                textJustify = Anchor.CENTER,
-                textField = listOf("get", "FATHOMS_FT"),
-                textAllowOverlap = true,
-                textIgnorePlacement = true,
-                textSize = 9f,
-                symbolPlacement = Placement.POINT,
-            ),
-            paint = Paint(
-                textColor = listOf(
-                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                    colorFrom("SNDG2"),
-                    colorFrom("SNDG1")
-                )
-            )
-        )
+        singleText(id = "${key}_fathoms", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
+        primaryTextLayer(id = "${key}_fathoms_offset", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
+        subTextLayer(id = "${key}_fathoms_feet_offset", textKey = "FATHOMS_FT"),
     )
 
     private fun feet() = sequenceOf(
-        Layer(
-            id = "${key}feet",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(
-                "any", Filters.eqTypePoint
-            ),
-            layout = Layout(
-                textFont = listOf(Font.ROBOTO_BOLD),
-                textAnchor = Anchor.CENTER,
-                textJustify = Anchor.CENTER,
-                textField = listOf("get", "FEET"),
-                textAllowOverlap = true,
-                textIgnorePlacement = true,
-                textSize = 11f,
-                symbolPlacement = Placement.POINT,
-            ),
-            paint = Paint(
-                textColor = listOf(
-                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                    colorFrom("SNDG2"),
-                    colorFrom("SNDG1")
-                ),
-                textHaloColor = colorFrom("CHWHT"),
-                textHaloWidth = 1.5f
-            )
-        )
+        singleText(id = "${key}_feet", textKey = "FEET"),
     )
 
     private fun meters() = sequenceOf(
-        Layer(
-            id = "${key}meters",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(
-                "any", Filters.eqTypePoint
-            ),
-            layout = Layout(
-                textFont = listOf(Font.ROBOTO_BOLD),
-                textAnchor = Anchor.CENTER,
-                textJustify = Anchor.CENTER,
-                textField = listOf("get", "METERS"),
-                textAllowOverlap = true,
-                textIgnorePlacement = true,
-                textSize = 11f,
-                symbolPlacement = Placement.POINT,
-            ),
-            paint = Paint(
-                textColor = listOf(
-                    "case", listOf(Filters.gtEq, listOf("get", "METERS"), config.deepDepth),
-                    colorFrom("SNDG2"),
-                    colorFrom("SNDG1")
+        singleText(id = "${key}_meters", textKey = "METERS_W", subTextKey = "METERS_T"),
+        primaryTextLayer(id = "${key}_meters_offset", textKey = "METERS_W", subTextKey = "METERS_T"),
+        subTextLayer(id = "${key}_meters_tenths_offset", textKey = "METERS_T"),
+    )
+
+    private fun singleText(id: String, textKey: String, subTextKey: String? = null) = Layer(
+        id = id,
+        type = LayerType.SYMBOL,
+        sourceLayer = key,
+        filter = subTextKey?.let {
+            listOf(
+                Filters.all,
+                Filters.eqTypePoint,
+                listOf(
+                    Filters.any,
+                    listOf(">=", "METERS", config.deepDepth),
+                    listOf("==", subTextKey, 0),
                 ),
-                textHaloColor = colorFrom("CHWHT"),
-                textHaloWidth = 1.5f
             )
+        } ?: Filters.eqTypePoint,
+        layout = Layout(
+            textFont = listOf(Font.ROBOTO_BOLD),
+            textAnchor = Anchor.CENTER,
+            textJustify = Anchor.CENTER,
+            textField = listOf("get", textKey),
+            textAllowOverlap = true,
+            textIgnorePlacement = true,
+            textSize = 11f,
+            symbolPlacement = Placement.POINT,
+        ),
+        paint = Paint(
+            textColor = textColor,
+            textHaloColor = colorFrom("CHWHT"),
+            textHaloWidth = 1.5f
         )
     )
+
+    private fun primaryTextLayer(id: String, textKey: String, subTextKey: String) = Layer(
+        id = id,
+        type = LayerType.SYMBOL,
+        sourceLayer = key,
+        filter = listOf(
+            Filters.all,
+            Filters.eqTypePoint,
+            listOf(">", subTextKey, 0),
+            listOf("<", "METERS", config.deepDepth),
+        ),
+        layout = Layout(
+            textFont = listOf(Font.ROBOTO_BOLD),
+            textAnchor = Anchor.BOTTOM_RIGHT,
+            //x (neg left / pos right), y (neg up / pos down)
+            textOffset = listOf(0.0f, 0.6f),
+            textJustify = Anchor.CENTER,
+            textField = listOf("get", textKey),
+            textAllowOverlap = true,
+            textIgnorePlacement = true,
+            textSize = 11f,
+            symbolPlacement = Placement.POINT,
+        ),
+        paint = Paint(
+            textColor = textColor,
+            textHaloColor = colorFrom("CHWHT"),
+            textHaloWidth = 1.5f
+        )
+    )
+
+    private fun subTextLayer(id: String, textKey: String) = Layer(
+        id = id,
+        type = LayerType.SYMBOL,
+        sourceLayer = key,
+        filter = listOf(
+            Filters.all,
+            Filters.eqTypePoint,
+            listOf(">", textKey, 0),
+            listOf("<", "METERS", config.deepDepth),
+        ),
+        layout = Layout(
+            textFont = listOf(Font.ROBOTO_BOLD),
+            textAnchor = Anchor.TOP_LEFT,
+            //x (neg left / pos right), y (neg up / pos down)
+            textOffset = listOf(0.1f, 0.0f),
+            textJustify = Anchor.CENTER,
+            textField = listOf("get", textKey),
+            textAllowOverlap = true,
+            textIgnorePlacement = true,
+            textSize = 9f,
+            symbolPlacement = Placement.POINT,
+        ),
+        paint = Paint(
+            textColor = textColor,
+        )
+    )
+
+    private val textColor = listOf(
+        "case", listOf("<=", listOf("get", "METERS"), config.deepDepth),
+        colorFrom("SNDG2"), // dark
+        colorFrom("SNDG1")  // light
+    )
 }
+

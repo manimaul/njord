@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
 import io.madrona.njord.Singletons
-import io.madrona.njord.geo.symbols.addSounding
+import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
@@ -127,7 +127,7 @@ class Obstrn : Soundg() {
             }
         }
         state.meters?.takeIf { showDepth }?.let { meters ->
-            feature.props.addSounding(meters.toDouble())
+            feature.props.addSoundingConversions(meters.toDouble())
         }
     }
 }
@@ -162,22 +162,20 @@ class ObstrnState(feature: ChartFeature) {
                 Watlev.ALWAYS_DRY,
                 Watlev.COVERS_AND_UNCOVERS,
                 Watlev.AWASH,
+                Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
                 Watlev.FLOATING -> DepthColor.COVERS_UNCOVERS
 
-                Watlev.ALWAYS_UNDER_WATER_SUBMERGED,
-                Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING -> {
+                Watlev.ALWAYS_UNDER_WATER_SUBMERGED -> {
                     meters?.takeIf { usableDepthValue }?.let {
                         when {
-                            it <= 0.0 -> DepthColor.COVERS_UNCOVERS
                             it <= Singletons.config.shallowDepth -> DepthColor.VERY_SHALLOW
                             it <= Singletons.config.safetyDepth -> DepthColor.SAFETY_DEPTH
                             it <= Singletons.config.deepDepth -> DepthColor.MEDIUM_DEPTH
                             it > Singletons.config.deepDepth -> DepthColor.DEEP_WATER
                             else -> throw IllegalStateException("unexpected VALSOU $it")
                         }
-                    }
+                    } ?: DepthColor.VERY_SHALLOW
                 }
-
                 null -> null
             } ?: DepthColor.COVERS_UNCOVERS
 

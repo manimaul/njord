@@ -1,10 +1,13 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.model.*
 
-class Depare : Layerable() {
+class Depare(
+    private val config: ChartsConfig = Singletons.config
+) : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             //DRVAL1 is lower (sometimes negative) (shallower) end of range
@@ -37,10 +40,10 @@ class Depare : Layerable() {
             feature.props.floatValue("DRVAL2")?.let { deepRange ->
                 ac = when {
                     shallowRange < 0.0f && deepRange <= 0.0f -> "DEPIT"
-                    shallowRange <= Singletons.config.shallowDepth -> "DEPVS"
-                    shallowRange <= Singletons.config.safetyDepth -> "DEPMS"
-                    shallowRange <= Singletons.config.deepDepth -> "DEPMD"
-                    shallowRange > Singletons.config.deepDepth -> "DEPDW"
+                    shallowRange <= config.shallowDepth -> "DEPVS"
+                    shallowRange <= config.safetyDepth -> "DEPMS"
+                    shallowRange <= config.deepDepth -> "DEPMD"
+                    shallowRange > config.deepDepth -> "DEPDW"
                     else -> throw IllegalStateException("unexpected DRVAL1 $shallowRange")
                 }
                 log.debug("finding area fill color for $key $ac DRVAL1=$shallowRange DRVAL2=$deepRange")

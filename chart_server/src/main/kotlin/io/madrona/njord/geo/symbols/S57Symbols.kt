@@ -35,3 +35,4 @@ fun Feature.s57Props(): S57Prop {
 fun S57Prop.stringValue(key: String) = get(key)?.toString()
 fun S57Prop.intValue(key: String) = get(key)?.toString()?.toIntOrNull()
 fun S57Prop.floatValue(key: String) = get(key)?.toString()?.toFloatOrNull()
+fun S57Prop.doubleValue(key: String) = get(key)?.toString()?.toDoubleOrNull()

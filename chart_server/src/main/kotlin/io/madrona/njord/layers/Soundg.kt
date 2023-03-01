@@ -151,4 +151,3 @@ open class Soundg(
         colorFrom("SNDG1")  // light
     )
 }
-

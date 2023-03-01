@@ -3,13 +3,15 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 /**
- * Geometry Primitives: Line
+ * Geometry Primitives: Line, Area
  *
- * Object: Cable, overhead
+ * Object: Canal
  *
- * Acronym: CBLOHD
+ * Acronym: CANALS
+ *
+ * Code: 23
  */
-class Cblohd : Layerable() {
+class Canals : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_line",
@@ -19,7 +21,15 @@ class Cblohd : Layerable() {
             paint = Paint(
                 lineColor = colorFrom("CHBLK"),
                 lineWidth = 0.5f,
-                lineDashArray = listOf(10f, 5f)
+            ),
+        ),
+        Layer(
+            id = "${key}_fill",
+            type = LayerType.FILL,
+            sourceLayer = key,
+            filter = Filters.eqTypePolyGon,
+            paint = Paint(
+                fillColor = colorFrom("DEPVS")
             ),
         )
     )

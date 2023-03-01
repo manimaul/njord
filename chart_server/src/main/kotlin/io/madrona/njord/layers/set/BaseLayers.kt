@@ -14,13 +14,12 @@ import io.madrona.njord.layers.*
  * mooring/warping facility (MORFAC)
  * pontoon (PONTON)
  * obstruction (OBSTRN)
-
- *
- * <TODO:>
- *
  * cable overhead (CBLOHD)
  * canal (CANALS)
  * conveyor (CONVYR)
+ *
+ * <TODO:>
+ *
  * dam (DAMCON)
  * deep water route centerline (DWRTCL)
  * dock area (DOCARE)
@@ -51,5 +50,8 @@ class BaseLayers {
         Obstrn(),
         Morfac(),
         Bridge(),
+        Cblohd(),
+        Canals(),
+        Convyr(),
     )
 }

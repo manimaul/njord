@@ -75,7 +75,7 @@ class Obstrn : Soundg() {
             Catobs.SNAG_STUMP,
             Catobs.WELLHEAD,
             Catobs.DIFFUSER,
-            Catobs.CRIB -> {}
+            Catobs.CRIB -> Unit // let symbol be set by water level effect
 
             Catobs.FISH_HAVEN -> {
                 feature.props["SY"] = "FSHHAV01"
@@ -99,33 +99,58 @@ class Obstrn : Soundg() {
             null -> {}
         }
 
+        var checkAccuracy = true
         if (!sySet) {
             when (state.waterLevelEffect) {
-                Watlev.COVERS_AND_UNCOVERS -> feature.props["SY"] = "OBSTRN03"
-                Watlev.ALWAYS_DRY -> feature.props["SY"] = "OBSTRN11"
+                Watlev.COVERS_AND_UNCOVERS -> {
+                    checkAccuracy = false
+                    feature.props["SY"] = "OBSTRN03"
+                }
+
+                Watlev.ALWAYS_DRY -> {
+                    checkAccuracy = false
+                    feature.props["SY"] = "OBSTRN11"
+                }
+
                 Watlev.ALWAYS_UNDER_WATER_SUBMERGED -> {
                     state.qualityOfSounding
                     when (state.depthColor) {
                         DepthColor.DEEP_WATER,
-                        DepthColor.MEDIUM_DEPTH-> {
+                        DepthColor.MEDIUM_DEPTH -> {
                             feature.props["SY"] = if (showDepth) "DANGER02" else "OBSTRN02"
                         }
+
                         DepthColor.SAFETY_DEPTH,
                         DepthColor.VERY_SHALLOW -> {
                             feature.props["SY"] = if (showDepth) "DANGER01" else "OBSTRN01"
                         }
+
                         DepthColor.COVERS_UNCOVERS -> {
                             feature.props["SY"] = if (showDepth) "DANGER03" else "OBSTRN03"
                         }
+                        //unknown
                     }
                 }
+
                 Watlev.FLOATING -> feature.props["SY"] = "FLTHAZ02"
                 Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
                 Watlev.AWASH,
                 Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
-                null -> feature.props["SY"] = "ISODGR51"
+                null -> {
+                    checkAccuracy = false
+                    feature.props["SY"] = "ISODGR51"
+                }
             }
         }
+
+        if (checkAccuracy && state.qualityOfSounding.find {
+                it == Quasou.DOUBTFUL_SOUNDING
+                        || it == Quasou.UNRELIABLE_SOUNDING
+            } != null) {
+            showDepth = false
+            feature.props["SY"] = "LOWACC01"
+        }
+
         state.meters?.takeIf { showDepth }?.let { meters ->
             feature.props.addSoundingConversions(meters.toDouble())
         }
@@ -176,6 +201,7 @@ class ObstrnState(feature: ChartFeature) {
                         }
                     } ?: DepthColor.VERY_SHALLOW
                 }
+
                 null -> null
             } ?: DepthColor.COVERS_UNCOVERS
 

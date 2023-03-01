@@ -23,8 +23,6 @@ type NavBarProps = {
 }
 
 export function NavBar(props: NavBarProps) {
-    console.log("navbar foo")
-
     return (
         <Navbar bg="secondary" expand="lg" variant="dark">
             <Container>

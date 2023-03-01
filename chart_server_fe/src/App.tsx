@@ -82,6 +82,7 @@ function App() {
     return (
         <div className="App">
             <NavBar depths={depths} updater={depthUpdater}/>
+            <div className="Warning bg-danger text-white">EXPERIMENTAL! - NOT FOR NAVIGATION</div>
             <Routes>
                 <Route path="/" element={<Outlet/>}>
                     <Route index element={<Home/>}/>

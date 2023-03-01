@@ -1,4 +1,4 @@
-import {useRef, useEffect, useState, useContext} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
@@ -12,7 +12,7 @@ import "./Enc.css"
 //eslint-disable-next-line import/no-webpack-loader-syntax
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
 import ChartQuery from './ChartQuery';
-import {MapLibreEvent, MapMouseEvent} from "maplibre-gl";
+import {MapLibreEvent, MapMouseEvent, Map} from "maplibre-gl";
 import {DepthUnit} from "../App";
 
 maplibregl.workerClass = MapLibreWorker;
@@ -34,23 +34,25 @@ type EncProps = {
     depths: DepthUnit
 }
 export function Enc(props: EncProps) {
-    const [encState, setEncState] = useState<EncState>(new EncState());
     const mapContainer = useRef(null);
-    const map = useRef(null);
+    const map = useRef<Map | null>(null);
     const [show, setShow] = useState(null);
     const handleClose = () => setShow(null);
 
     const encUpdater = (state: EncState) => {
-        setEncState(state);
         storeEncState(state);
     }
 
     useEffect(() => {
-        let cMap: maplibregl.Map = map.current
+        let cMap: Map | null = map.current
         if (cMap) {
+            let url = `/v1/style/${props.depths}`
+            console.log(`loading style url ${url}`)
+            cMap?.setStyle(url)
             return; //stops map from intializing more than once
         }
 
+        let encState = new EncState();
         let newMap = new maplibregl.Map({
             container: mapContainer.current,
             style: `/v1/style/${props.depths}`,

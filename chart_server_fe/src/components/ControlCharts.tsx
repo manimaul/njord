@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useRequest} from "../Effects";
 import {Table} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 type ChartProps = {
     id: number;
@@ -26,7 +27,9 @@ export function ControlCharts() {
                     return (
                         <tr key={i}>
                             <td>{each.id}</td>
-                            <td>{each.name}</td>
+                            <td>
+                                <Link to={`/chart/${each.id}`} >{each.name}</Link>
+                            </td>
                         </tr>
                     )
                 })}

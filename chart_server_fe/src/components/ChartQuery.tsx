@@ -5,7 +5,6 @@ import {GeoJSON} from "geojson"
 import Accordion from 'react-bootstrap/Accordion';
 import {S57Object, S57Attribute, S57ExpectedInput} from "../model/S57Objects"
 import Loading from "./Loading";
-import {Color} from "react-bootstrap/types";
 import SvgCircle from "./SvgCircle";
 
 type Query = {

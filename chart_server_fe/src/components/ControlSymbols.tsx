@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
 import {S57Object, S57Attribute, S57ExpectedInput} from "../model/S57Objects"
+import Button from "react-bootstrap/Button";
 
 
 type PathToAProps = {
@@ -47,7 +48,6 @@ function S57Objects(props: ObjMapProps) {
     return (
         <div className="col">
             <h2>S57 Object</h2>
-            <div><PathToA path="/v1/about/s57objects"/></div>
             <br/>
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -70,6 +70,9 @@ function S57Objects(props: ObjMapProps) {
 
             </Dropdown>
             <br />
+			<Link to={`/layer/${object?.Acronym}`}><Button>Locate on Chart</Button></Link>
+			<br />
+			<br />
 			<p><strong>Geometry Primitives: </strong>{geometryPrimitives()}</p>
 			<p><strong>Object: </strong>{object?.ObjectClass}</p>
 			<p><strong>Acronym: </strong>{object?.Acronym}</p>
@@ -175,8 +178,6 @@ function S57Attributes(props: AttProps) {
     return (
         <div className="col">
             <h2>S57 Attribute</h2>
-            <div><PathToA path="/v1/about/s57attributes"/></div>
-            <div><PathToA path="/v1/about/expectedInput"/></div>
             { (props.attribute) ? showAttribute(props.attribute, props.input) : <span>Attribute not selected</span> }
             <br/>
         </div>

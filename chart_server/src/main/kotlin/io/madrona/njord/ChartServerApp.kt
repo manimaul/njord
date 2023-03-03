@@ -79,6 +79,9 @@ class ChartServerApp {
                 // curl http://localhost:9000/v1/content/sprites/day_sprites.png
                 // http://localhost:9000/v1/content/upload.html
                 StaticResourceContentHandler(),
+
+                // curl http://localhost:9000/v1/feature?lnam=02260F22BF31214F | jq
+                FeatureHandler(),
             )
 
             install(StatusPages) {

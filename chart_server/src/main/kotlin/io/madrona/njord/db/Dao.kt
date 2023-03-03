@@ -17,10 +17,12 @@ abstract class Dao(
 ) {
     protected val log = logger()
 
-    fun <T> sqlOpAsync(msg: String = "error", block: (conn: Connection) -> T) : Deferred<T?> {
+    fun <T> sqlOpAsync(msg: String = "error", block: suspend (conn: Connection) -> T): Deferred<T?> {
         return scope.async {
             try {
-                ds.connection.use(block)
+                ds.connection.use {
+                    block(it)
+                }
             } catch (e: SQLException) {
                 log.error(msg, e)
                 null
@@ -33,6 +35,7 @@ sealed class Insertable<T>
 class InsertError<T>(
     val msg: String
 ) : Insertable<T>()
+
 class InsertSuccess<T>(
     val value: T
 ) : Insertable<T>()

@@ -8,6 +8,7 @@ import {Table} from "react-bootstrap";
 import {useRequest} from "./Effects";
 import {ControlPanel} from "./components/ControlPanel";
 import ChartInfo from "./components/Chartinfo";
+import {LayerLocate} from "./components/LayerLocate";
 
 function Home() {
     const [apiInfo, initVersion] = useState({
@@ -89,6 +90,7 @@ function App() {
                     <Route index element={<Home/>}/>
                     <Route path="enc" element={<Enc depths={depths}/>}/>
                     <Route path="chart/:id" element={<ChartInfo/>}/>
+                    <Route path="layer/:layer" element={<LayerLocate/>}/>
                     <Route path="control/:page" element={<ControlPanel/>}>
                         <Route path=":object" element={<ControlPanel/>}>
                             <Route path=":attribute" element={<ControlPanel/>}/>

@@ -22,46 +22,69 @@ class ChartDao(
     private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
 ) : Dao() {
 
-    private fun ResultSet.chart(layers: List<String>): Chart? = if (next()) {
-        Chart(
-            id = getLong(1),
-            name = getString(2),
-            scale = getInt(3),
-            fileName = getString(4),
-            updated = getString(5),
-            issued = getString(6),
-            zoom = getInt(7),
-            covr = Feature().apply {
-                geometry = objectMapper.readValue(getString(8))
-            },
-            layers = layers,
-            dsidProps = objectMapper.readValue(getString(9)),
-            chartTxt = objectMapper.readValue(getString(10)),
-        )
-    } else {
-        null
+    private fun ResultSet.chart(layers: List<String>) = sequence {
+        while (next()) {
+            yield(
+                Chart(
+                    id = getLong(1),
+                    name = getString(2),
+                    scale = getInt(3),
+                    fileName = getString(4),
+                    updated = getString(5),
+                    issued = getString(6),
+                    zoom = getInt(7),
+                    covr = Feature().apply {
+                        geometry = objectMapper.readValue(getString(8))
+                    },
+                    layers = layers,
+                    dsidProps = objectMapper.readValue(getString(9)),
+                    chartTxt = objectMapper.readValue(getString(10)),
+                )
+            )
+        }
     }
 
-    fun findLayers(id: Long, conn: Connection): List<String> {
+    fun findChartsWithLayerAsync(layer: String): Deferred<List<Chart>?> = sqlOpAsync { conn ->
+        val statement = conn.prepareStatement("SELECT chart_id FROM features WHERE layer = ?;").apply {
+            setString(1, layer)
+        }
+        val result = mutableListOf<Long>()
+        statement.executeQuery().let {
+            while (it.next()) {
+                result.add(it.getLong(1))
+            }
+        }
+        result.mapNotNull { findAsync(it).await() }
+    }
+
+    private fun findLayers(id: Long, conn: Connection): List<String> {
         return conn.prepareStatement(
             "SELECT DISTINCT layer FROM features where chart_id=?;"
         ).apply {
             setLong(1, id)
         }.executeQuery().let {
-            generateSequence {
-                if (it.next()) {
-                    it.getString(1)
-                } else {
-                    null
+            sequence {
+                while (it.next()) {
+                    yield(it.getString(1))
                 }
             }
         }.toList()
     }
 
-    fun findChartFeaturesAsync(covered: Geometry, x: Int, y: Int, z: Int, chartId: Long): Deferred<List<ChartFeature>?> =
+    /**
+     * https://postgis.net/docs/reference.html
+     */
+    fun findChartFeaturesAsync(
+        covered: Geometry,
+        x: Int,
+        y: Int,
+        z: Int,
+        chartId: Long
+    ): Deferred<List<ChartFeature>?> =
         sqlOpAsync { conn ->
             val tCtx = findChartFeaturesAsyncTimer.time()
-            conn.prepareStatement("""
+            val result = conn.prepareStatement(
+                """
               WITH exclude AS (VALUES (ST_GeomFromWKB(?, 4326))),
                    tile AS (VALUES (ST_Transform(ST_TileEnvelope(?,?,?), 4326)))
               SELECT ST_AsBinary(ST_AsMVTGeom(ST_Difference(geom, (table exclude)), (table tile))), 
@@ -71,7 +94,8 @@ class ChartDao(
               WHERE chart_id=?
                 AND ? <@ z_range
                 AND ST_Intersects(geom, (table tile));
-          """.trimIndent()).apply {
+          """.trimIndent()
+            ).apply {
                 var i = 0
                 setBytes(++i, WKBWriter().write(covered))
                 setInt(++i, z)
@@ -80,20 +104,20 @@ class ChartDao(
                 setLong(++i, chartId)
                 setInt(++i, z)
             }.executeQuery().let { rs ->
-                val result = generateSequence {
-                    if (rs.next()) {
-                        ChartFeature(
-                            geomWKB = rs.getBytes(1),
-                            props = objectMapper.readValue(rs.getString(2)),
-                            layer = rs.getString(3)
+                sequence {
+                    while (rs.next()) {
+                        yield(
+                            ChartFeature(
+                                geomWKB = rs.getBytes(1),
+                                props = objectMapper.readValue(rs.getString(2)),
+                                layer = rs.getString(3)
+                            )
                         )
-                    } else {
-                        null
                     }
                 }.toList()
-                tCtx.stop()
-                result
             }
+            tCtx.stop()
+            result
         }
 
     fun findInfoAsync(polygon: Polygon): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
@@ -112,17 +136,17 @@ class ChartDao(
         ).apply {
             setBytes(1, WKBWriter().write(polygon))
         }.executeQuery()?.let { rs ->
-            val result = generateSequence {
-                if (rs.next()) {
+            val result = sequence {
+                while (rs.next()) {
                     val id = rs.getLong(1)
-                    ChartInfo(
-                        id = id,
-                        scale = rs.getInt(2),
-                        zoom = rs.getInt(3),
-                        covrWKB = rs.getBytes(4)
+                    yield(
+                        ChartInfo(
+                            id = id,
+                            scale = rs.getInt(2),
+                            zoom = rs.getInt(3),
+                            covrWKB = rs.getBytes(4)
+                        )
                     )
-                } else {
-                    null
                 }
             }.toList()
             tCtx.stop()
@@ -150,7 +174,7 @@ class ChartDao(
         ).apply {
             setLong(1, id)
         }
-        stmt.executeQuery().chart(findLayers(id, conn))
+        stmt.executeQuery().chart(findLayers(id, conn)).firstOrNull()
     }
 
     fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
@@ -198,7 +222,7 @@ class ChartDao(
             stmt.generatedKeys.use { rs ->
                 rs.chart(emptyList())
             }
-        }
+        }?.firstOrNull()
     }
 
 

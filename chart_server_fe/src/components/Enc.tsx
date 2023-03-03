@@ -23,7 +23,7 @@ export class EncState {
     zoom: number = parseFloat(window.localStorage.getItem("zoom") ?? "11.0");
 }
 
-function storeEncState(state: EncState) {
+export function storeEncState(state: EncState) {
     window.localStorage.setItem("longitude", `${state.lng}`)
     window.localStorage.setItem("latitude", `${state.lat}`)
     window.localStorage.setItem("zoom", `${state.zoom}`)

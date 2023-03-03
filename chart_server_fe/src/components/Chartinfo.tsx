@@ -15,6 +15,7 @@ export type ChartInfoResponse = {
     covr: any;
     layers: Array<string>;
     chart_txt: Record<string, string>;
+    dsid_props: Record<string, string | number>;
 }
 export default function ChartInfo() {
     let {id} = useParams();
@@ -67,6 +68,13 @@ export default function ChartInfo() {
                                 return <tr key={i}>
                                     <td>{each}</td>
                                     <td><p>{chartInfo?.chart_txt?.[each] ?? ""}</p></td>
+                                </tr>
+                            })
+                            }
+                            {Object.keys(chartInfo.dsid_props).map((each, i)=> {
+                                return <tr key={i}>
+                                    <td>{each}</td>
+                                    <td><p>{chartInfo?.dsid_props?.[each] ?? ""}</p></td>
                                 </tr>
                             })
                             }

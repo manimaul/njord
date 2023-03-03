@@ -12,7 +12,7 @@ import "./Enc.css"
 //eslint-disable-next-line import/no-webpack-loader-syntax
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
 import ChartQuery from './ChartQuery';
-import {MapLibreEvent, MapMouseEvent, Map} from "maplibre-gl";
+import {MapLibreEvent, MapMouseEvent, Map, MapGeoJSONFeature} from "maplibre-gl";
 import {DepthUnit} from "../App";
 
 maplibregl.workerClass = MapLibreWorker;
@@ -33,10 +33,11 @@ function storeEncState(state: EncState) {
 type EncProps = {
     depths: DepthUnit
 }
+
 export function Enc(props: EncProps) {
     const mapContainer = useRef(null);
     const map = useRef<Map | null>(null);
-    const [show, setShow] = useState(null);
+    const [show, setShow] = useState<MapGeoJSONFeature[] | null>(null);
     const handleClose = () => setShow(null);
 
     const encUpdater = (state: EncState) => {
@@ -75,7 +76,11 @@ export function Enc(props: EncProps) {
             });
         });
         newMap.on('click', function (e: MapMouseEvent) {
-            let features = newMap.queryRenderedFeatures(e.point);
+            const bbox = [
+                [e.point.x - 5, e.point.y - 5],
+                [e.point.x + 5, e.point.y + 5]
+            ];
+            let features = newMap.queryRenderedFeatures(bbox);
             setShow(features);
         });
         map.current = newMap
@@ -102,16 +107,20 @@ export function Enc(props: EncProps) {
     );
 }
 
-function DisplayQuery(props: any) {
+type DisplayQueryProps = {
+    object: MapGeoJSONFeature[] | null
+}
+
+function DisplayQuery(props: DisplayQueryProps) {
     if (props.object) {
         return (
             <>
                 <Accordion>
-                    {Object.keys(props.object).map((each, i) => {
-                        return (
-                            <ChartQuery key={i} feature={props.object[each]} eventKey={`${each}`}/>
-                        );
-                    })}
+                    {
+                        props.object.map((each, i) => {
+                            return <ChartQuery key={i} feature={each} eventKey={`${i}`}/>
+                        })
+                    }
                 </Accordion>
             </>
         );

@@ -36,6 +36,7 @@ object Filters {
     const val isIn = "in"
     const val notEq = "!="
     val eqTypeLineStringOrPolygon = listOf(notEq, "\$type", "Point")
+    val eqTypePointOrPolygon = listOf(notEq, "\$type", "LineString")
     val eqTypeLineString = listOf(eq, "\$type", "LineString")
     val eqTypePolyGon = listOf(eq, "\$type", "Polygon")
     val eqTypePoint = listOf(eq, "\$type", "Point")

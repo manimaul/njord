@@ -47,9 +47,14 @@ function ChartProps(props: ChartPropsProps) {
             let sVal: string = value;
             if (sVal.startsWith("[") && sVal.endsWith("]")) {
                 console.log("chart props list item: " + sVal);
-                let objs = JSON.parse(sVal);
-                listItems.set(key, objs);
-                console.log(`${key}, ${sVal}, ${objs}, ${listItems}`);
+                console.log("chart props list item: " + typeof sVal);
+                try {
+                    let objs = JSON.parse(sVal);
+                    listItems.set(key, objs);
+                    console.log(`${key}, ${sVal}, ${objs}, ${listItems}`);
+                } catch (error) {
+                    listItems.set(key, [`${sVal}`]);
+                }
                 return false;
             }
         }

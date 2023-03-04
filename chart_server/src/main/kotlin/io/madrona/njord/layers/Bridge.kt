@@ -51,7 +51,7 @@ class Bridge : Layerable() {
             sourceLayer = key,
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
-                symbolPlacement = Placement.LINE_CENTER,
+                symbolPlacement = Placement.LINE,
                 iconImage = listOf("get", "SY"),
                 iconKeepUpright = true,
             )

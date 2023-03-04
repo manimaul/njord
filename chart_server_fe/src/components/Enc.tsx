@@ -80,8 +80,19 @@ export function Enc(props: EncProps) {
                 [e.point.x - 5, e.point.y - 5],
                 [e.point.x + 5, e.point.y + 5]
             ];
+            let lnams = new Set<string>();
             let features = newMap.queryRenderedFeatures(bbox);
-            setShow(features);
+            let filtered = features.filter((each: MapGeoJSONFeature) => {
+                let lnam = each.properties["LNAM"]
+                if (lnam) {
+                    let f = !lnams.has(lnam);
+                    lnams.add(lnam)
+                    return f;
+                } else {
+                    return true;
+                }
+            })
+            setShow(filtered);
         });
         map.current = newMap
     });

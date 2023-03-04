@@ -23,15 +23,15 @@ import io.madrona.njord.model.*
 class Seaare : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-                Layer(
-                        id = "${key}_fill",
-                        paint = Paint(
-                                fillColor = colorFrom("CHWHT")
-                        ),
-                        filter = listOf(Filters.any, Filters.eqTypePolyGon, Filters.eqTypeLineString),
-                        sourceLayer = "SEAARE",
-                        type = LayerType.FILL
-                ),
+//                Layer(
+//                        id = "${key}_fill",
+//                        paint = Paint(
+//                                fillColor = colorFrom("CHWHT")
+//                        ),
+//                        filter = listOf(Filters.any, Filters.eqTypePolyGon, Filters.eqTypeLineString),
+//                        sourceLayer = "SEAARE",
+//                        type = LayerType.FILL
+//                ),
 //                Layer(
 //                        id = "${key}_point",
 //                        type = LayerType.SYMBOL,

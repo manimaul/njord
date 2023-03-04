@@ -47,11 +47,29 @@ class BaseLayers {
         Coalne(),
         Hulkes(),
         Ponton(),
-        Obstrn(),
+        Obstrn(), //todo: needs fix - see commencement bay compared with OpenCPN
         Morfac(),
         Bridge(),
         Cblohd(),
         Canals(),
         Convyr(),
+        Slcons(),
+
+        //todo: below layers need completion
+        Damcon(),
+        Dwrtcl(),
+        Docare(),
+        Flodoc(),
+        Gatcon(),
+        Lokbsn(),
+        Logpon(),
+        Ofsplf(),
+        Oilbar(),
+        Pylons(),
+        Areas(),
+        Notmrk(),
+        Hrbbsn(),
+        Lkbspt(),
+        Excnst(),
     )
 }

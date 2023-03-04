@@ -6,7 +6,6 @@ class Lndare : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "LNDARE01"
         feature.props["AC"] = "LANDA"
-        feature.props["LC"] = "CSTLN"
     }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -24,13 +23,9 @@ class Lndare : Layerable() {
                 id = "${key}_line",
                 type = LayerType.LINE,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.any,
-                    Filters.eqTypePolyGon,
-                    Filters.eqTypeLineString,
-                ),
+                filter = Filters.eqTypeLineStringOrPolygon,
                 paint = Paint(
-                    lineColor = Filters.lineColor,
+                    lineColor = colorFrom("CSTLN"),
                     lineWidth = 2f
                 )
             ),
@@ -38,7 +33,7 @@ class Lndare : Layerable() {
                 id = "${key}_point",
                 type = LayerType.SYMBOL,
                 sourceLayer = key,
-                filter = listOf(Filters.any, Filters.eqTypePoint),
+                filter = Filters.eqTypePoint,
                 layout = Layout(
                     symbolPlacement = Placement.POINT,
                     iconImage = listOf("get", "SY"),

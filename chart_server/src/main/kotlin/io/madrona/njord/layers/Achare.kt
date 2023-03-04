@@ -3,49 +3,43 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 /**
- * Geometric primitives: P, A
- * Set Attribute_A: 	CATACH; DATEND; DATSTA; NOBJNM; OBJNAM; PEREND; PERSTA; RESTRN; STATUS;
- * Set Attribute_B: 	INFORM; NINFOM; NTXTDS; SCAMAX; SCAMIN; TXTDSC;
- * Set Attribute_C: 	RECDAT; RECIND; SORDAT; SORIND;
+ * Geometry Primitives: Point, Area
  *
- * Definition:
- * An area in which vessels or seaplanes anchor or may anchor. (Adapted from the IHO Dictionary, S-32, 5th Edition, 130)
- * (changed according to MD 7.Co.15)
- * References
- * INT 1:	IN 12.1-9;
- * S-4:	431.3;
- * Remarks:
- * Distinction:
- * anchor berth; mooring/warping facility;
+ * Object: Anchorage area
+ *
+ * Acronym: ACHARE
+ *
+ * Code: 4
  */
 class Achare : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.props["SY"] = "ACHARE02"
+    }
+
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
-            id = "${key}_point",
+            id = "${key}_point_centroid",
             type = LayerType.SYMBOL,
             sourceLayer = key,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
+            filter = Filters.eqTypePointOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = listOf("get", "SY"),
                 iconAnchor = Anchor.BOTTOM,
                 iconAllowOverlap = true,
-                iconKeepUpright = true,
+                iconKeepUpright = false,
             )
         ),
         Layer(
-            id = "${key}_line",
+            id = "${key}_line_dash",
             type = LayerType.LINE,
             sourceLayer = key,
-            filter = listOf(
-                Filters.any,
-                Filters.eqTypePolyGon
-            ),
+            filter = Filters.eqTypePolyGon,
             paint = Paint(
                 lineColor = colorFrom("CHMGF"),
-                lineWidth = 2.0f,
-                lineDashArray = listOf(7f, 4f)
-            )
-        )
+                lineWidth = 2f,
+                lineDashArray = listOf(3f, 4f),
+            ),
+        ),
     )
 }

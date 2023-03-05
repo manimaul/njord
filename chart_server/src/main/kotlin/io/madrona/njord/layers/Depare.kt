@@ -5,7 +5,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.model.*
 
-class Depare(
+open class Depare(
     private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {

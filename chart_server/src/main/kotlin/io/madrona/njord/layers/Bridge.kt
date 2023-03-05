@@ -1,32 +1,22 @@
 package io.madrona.njord.layers
 
 import io.madrona.njord.geo.symbols.intValueSet
+import io.madrona.njord.layers.attributehelpers.Catbrg
 import io.madrona.njord.model.*
 
 
 class Bridge : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        /* https://s57dev.mxmariner.com/control/symbols/BRIDGE/CATBRG
-        List
-        1	fixed bridge
-        2	opening bridge
-        3	swing bridge
-        4	lifting bridge
-        5	bascule bridge
-        6	pontoon bridge
-        7	draw bridge
-        8	transporter bridge
-        9	footbridge
-        10	viaduct
-        11	aqueduct
-        12	suspension bridge
-         */
-        val categories = feature.props.intValueSet("CATBRG")
-        arrayOf(2,3,4,5,7,8).forEach {
-            if  (categories.contains(it)) {
-                feature.props["SY"] = "BRIDGE01"
-                return
-            }
+        val categories = feature.props.intValueSet("CATBRG").map { Catbrg.fromId(it) }
+        categories.firstOrNull{
+            it == Catbrg.OPENING_BRIDGE
+                    || it == Catbrg.SWING_BRIDGE
+                    || it == Catbrg.LIFTING_BRIDGE
+                    || it == Catbrg.BASCULE_BRIDGE
+                    || it == Catbrg.DRAW_BRIDGE
+                    || it == Catbrg.TRANSPORTER_BRIDGE
+        }?.let {
+            feature.props["SY"] = "BRIDGE01"
         }
     }
 

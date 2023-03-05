@@ -24,7 +24,7 @@ class Buaare : Layerable() {
                         sourceLayer = key,
                         filter = Filters.eqTypePolyGon,
                         paint = Paint(
-                                fillColor = colorFrom("LANDF")
+                                fillColor = colorFrom("CHBRN")
                         ),
                 ),
                 Layer(

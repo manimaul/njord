@@ -2,7 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Lndare : Layerable() {
+open class Lndare : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "LNDARE01"
         feature.props["AC"] = "LANDA"
@@ -16,7 +16,8 @@ class Lndare : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
-                    fillColor = Filters.areaFillColor
+                    //fillColor = Filters.areaFillColor,
+                    fillColor = colorFrom("LANDA")
                 ),
             ),
             Layer(

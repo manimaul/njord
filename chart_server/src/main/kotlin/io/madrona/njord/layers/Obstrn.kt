@@ -63,7 +63,6 @@ class Obstrn : Soundg() {
             )
         ) + super.layers(options)
     }
-// todo: fix
     override fun preTileEncode(feature: ChartFeature) {
         val state = ObstrnState(feature)
         feature.props["AC"] = state.depthColor.code
@@ -75,7 +74,13 @@ class Obstrn : Soundg() {
             Catobs.SNAG_STUMP,
             Catobs.WELLHEAD,
             Catobs.DIFFUSER,
-            Catobs.CRIB -> Unit // let symbol be set by water level effect
+            Catobs.CRIB -> {
+                if (!state.usableDepthValue) {
+                    feature.props["SY"] = "ISODGR51"
+                    sySet = true
+                    showDepth = false
+                }
+            }
 
             Catobs.FISH_HAVEN -> {
                 feature.props["SY"] = "FSHHAV01"
@@ -113,7 +118,6 @@ class Obstrn : Soundg() {
                 }
 
                 Watlev.ALWAYS_UNDER_WATER_SUBMERGED -> {
-                    state.qualityOfSounding
                     when (state.depthColor) {
                         DepthColor.DEEP_WATER,
                         DepthColor.MEDIUM_DEPTH -> {
@@ -128,7 +132,6 @@ class Obstrn : Soundg() {
                         DepthColor.COVERS_UNCOVERS -> {
                             feature.props["SY"] = if (showDepth) "DANGER03" else "OBSTRN03"
                         }
-                        //unknown
                     }
                 }
 

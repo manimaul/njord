@@ -43,11 +43,11 @@ object Filters {
 
     val areaFillColor= listOf("case") + Singletons.colorLibrary.colorMap.library["DAY_BRIGHT"]!!.map {
         listOf(listOf("==", listOf("get", "AC"), it.key), it.value )
-    }.flatten() + listOf(colorFrom("CHRED"))
+    }.flatten() + listOf("rgba(255, 255, 255, 0)")
 
     val lineColor = listOf("case") + Singletons.colorLibrary.colorMap.library["DAY_BRIGHT"]!!.map {
         listOf(listOf("==", listOf("get", "LC"), it.key), it.value )
-    }.flatten() + listOf(colorFrom("CHRED"))
+    }.flatten() + listOf("rgba(255, 255, 255, 0)")
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

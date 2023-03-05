@@ -131,6 +131,9 @@ class StandardLayers {
     val layers = sequenceOf(
         Background(),
         Lndare(),
+        Buisgl(),
+        Buaare(),
+        Slcons(),
         Depare(),
         Drgare(),
         Iceare(),
@@ -143,8 +146,6 @@ class StandardLayers {
         Cblohd(),
         Canals(),
         Convyr(),
-        Slcons(),
-
         //todo: below layers need completion
         Damcon(),
         Dwrtcl(),
@@ -169,8 +170,6 @@ class StandardLayers {
         Bcnlat(),
         Bcnsaw(),
         Bcnspp(),
-        Buisgl(),
-        Buaare(),
         Boycar(),
         Boyinb(),
         Boyisd(),

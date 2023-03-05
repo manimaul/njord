@@ -2,10 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Land area
+ *
+ * Acronym: LNDARE
+ *
+ * Code: 71
+ */
 open class Lndare : Layerable() {
+    open val areaColor = "LANDA"
+
+
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "LNDARE01"
-        feature.props["AC"] = "LANDA"
+        feature.props["AC"] = areaColor
     }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -17,7 +29,7 @@ open class Lndare : Layerable() {
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
                     //fillColor = Filters.areaFillColor,
-                    fillColor = colorFrom("LANDA")
+                    fillColor = colorFrom(areaColor)
                 ),
             ),
             Layer(

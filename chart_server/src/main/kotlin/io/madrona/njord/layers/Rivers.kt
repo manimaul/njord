@@ -1,11 +1,12 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
-
-class Rivers : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
-
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
-}
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: River
+ *
+ * Acronym: RIVERS
+ *
+ * Code: 114
+ */
+class Rivers : Canals()

@@ -11,7 +11,13 @@ import io.madrona.njord.model.*
  *
  * Code: 23
  */
-class Canals : Layerable() {
+open class Canals : Layerable() {
+    open val fillColor = "DEPVS"
+
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.props["AC"] = fillColor
+    }
+
     override fun layers(options: LayerableOptions) = sequenceOf(
         Layer(
             id = "${key}_line",
@@ -29,7 +35,7 @@ class Canals : Layerable() {
             sourceLayer = key,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = colorFrom("DEPVS")
+                fillColor = colorFrom(fillColor)
             ),
         )
     )

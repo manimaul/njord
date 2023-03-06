@@ -14,7 +14,6 @@ import io.madrona.njord.model.*
 open class Lndare : Layerable() {
     open val areaColor = "LANDA"
 
-
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "LNDARE01"
         feature.props["AC"] = areaColor

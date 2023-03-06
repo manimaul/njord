@@ -2,6 +2,7 @@ package io.madrona.njord.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonValue
 import io.madrona.njord.Singletons
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -67,6 +68,12 @@ data class Paint(
         @JsonProperty("circle-radius") val circleRadius: Float? = null,
 )
 
+enum class IconRotationAlignment {
+   @JsonProperty("map") MAP,
+   @JsonProperty("viewport") VIEWPORT,
+   @JsonProperty("auto") AUTO
+}
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Layout(
         @JsonProperty("icon-image") val iconImage: Any? = null, //List<String> or String>
@@ -74,6 +81,8 @@ data class Layout(
         @JsonProperty("icon-allow-overlap") val iconAllowOverlap: Boolean? = null,
         @JsonProperty("icon-ignore-placement") val iconIgnorePlacement: Boolean? = null,
         @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean? = null,
+        @JsonProperty("icon-rotate") val iconRotate: Any? = null,
+        @JsonProperty("icon-rotation-alignment") val iconRotationAlignment: IconRotationAlignment? = null,
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
         @JsonProperty("text-justify") val textJustify: Anchor? = null,

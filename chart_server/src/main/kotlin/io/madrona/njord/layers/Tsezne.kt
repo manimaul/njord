@@ -2,10 +2,27 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Tsezne : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Traffic Separation Zone
+ *
+ * Acronym: TSEZNE
+ *
+ * Code: 150
+ */
+class Tsezne : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) { }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        Layer(
+            id = "${key}_fill",
+            type = LayerType.FILL,
+            sourceLayer = key,
+            filter = Filters.eqTypePolyGon,
+            paint = Paint(
+                fillColor = colorFrom("TRFCF")
+            ),
+        ),
+    )
 }

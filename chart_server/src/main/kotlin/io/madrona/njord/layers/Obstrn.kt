@@ -12,26 +12,13 @@ import io.madrona.njord.util.logger
 
 class Obstrn : Soundg() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
+        val textLayers = super.layers(options)
         return sequenceOf(
-            Layer(
-                id = "${key}_line",
-                type = LayerType.LINE,
-                sourceLayer = key,
-                filter = Filters.eqTypeLineStringOrPolygon,
-                paint = Paint(
-                    lineColor = colorFrom("CHGRD"),
-                    lineWidth = 2f,
-                    lineDashArray = listOf(1f, 2f),
-                )
-            ),
             Layer(
                 id = "${key}_fill_color",
                 type = LayerType.FILL,
                 sourceLayer = key,
-                filter = listOf(
-                    Filters.all,
-                    Filters.eqTypePolyGon,
-                ),
+                filter = Filters.eqTypePolyGon,
                 paint = Paint(
                     fillColor = Filters.areaFillColor
                 )
@@ -43,6 +30,18 @@ class Obstrn : Soundg() {
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
                     fillPattern = listOf("get", "AP")
+                )
+            ),
+        ) + textLayers + sequenceOf(
+            Layer(
+                id = "${key}_line",
+                type = LayerType.LINE,
+                sourceLayer = key,
+                filter = Filters.eqTypeLineStringOrPolygon,
+                paint = Paint(
+                    lineColor = colorFrom("CHGRD"),
+                    lineWidth = 2f,
+                    lineDashArray = listOf(1f, 2f),
                 )
             ),
             Layer(
@@ -57,15 +56,29 @@ class Obstrn : Soundg() {
                     iconAllowOverlap = true,
                     iconKeepUpright = false,
                 ),
+            ),
+            Layer(
+                id = "${key}_area_point",
+                type = LayerType.SYMBOL,
+                sourceLayer = key,
+                filter = listOf(Filters.all,Filters.eqTypePolyGon, listOf("!=", "EA", true)),
+                layout = Layout(
+                    symbolPlacement = Placement.POINT,
+                    iconImage = listOf("get", "SY"),
+                    iconAnchor = Anchor.CENTER,
+                    iconAllowOverlap = true,
+                    iconKeepUpright = false,
+                ),
             )
-        ) + super.layers(options)
+        )
     }
+
     override fun preTileEncode(feature: ChartFeature) {
         val state = ObstrnState(feature)
-        feature.props["AC"] = state.depthColor.code
 
         var sySet = false
         var showDepth = state.usableDepthValue
+        var fillDepthColor = true
 
         when (state.category) {
             Catobs.SNAG_STUMP,
@@ -89,14 +102,13 @@ class Obstrn : Soundg() {
             Catobs.FOUL_GROUND -> feature.props["AP"] = "FOULAR01"
 
             Catobs.GROUND_TACKLE -> {
-                feature.props["AP"] = "ACHARE02"
                 feature.props["SY"] = "ACHARE02"
                 sySet = true
                 showDepth = false
             }
 
             Catobs.ICE_BOOM,
-            Catobs.BOOM -> feature.props["AP"] = "FLTHAZ02"
+            Catobs.BOOM -> feature.props["SY"] = "FLTHAZ02"
 
             null -> {}
         }
@@ -106,11 +118,13 @@ class Obstrn : Soundg() {
             when (state.waterLevelEffect) {
                 Watlev.COVERS_AND_UNCOVERS -> {
                     checkAccuracy = false
+                    feature.props["EA"] = true // exclude symbol from area geometry
                     feature.props["SY"] = "OBSTRN03"
                 }
 
                 Watlev.ALWAYS_DRY -> {
                     checkAccuracy = false
+                    feature.props["EA"] = true
                     feature.props["SY"] = "OBSTRN11"
                 }
 
@@ -118,21 +132,29 @@ class Obstrn : Soundg() {
                     when (state.depthColor) {
                         DepthColor.DEEP_WATER,
                         DepthColor.MEDIUM_DEPTH -> {
+                            feature.props["EA"] = true
                             feature.props["SY"] = if (showDepth) "DANGER02" else "OBSTRN02"
                         }
 
                         DepthColor.SAFETY_DEPTH,
                         DepthColor.VERY_SHALLOW -> {
+                            feature.props["EA"] = true
                             feature.props["SY"] = if (showDepth) "DANGER01" else "OBSTRN01"
                         }
 
                         DepthColor.COVERS_UNCOVERS -> {
+                            feature.props["EA"] = true
                             feature.props["SY"] = if (showDepth) "DANGER03" else "OBSTRN03"
                         }
                     }
                 }
 
-                Watlev.FLOATING -> feature.props["SY"] = "FLTHAZ02"
+                Watlev.FLOATING -> {
+                    showDepth = false
+                    fillDepthColor = false
+                    feature.props["SY"] = "FLTHAZ02"
+                }
+
                 Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
                 Watlev.AWASH,
                 Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
@@ -151,6 +173,9 @@ class Obstrn : Soundg() {
             feature.props["SY"] = "LOWACC01"
         }
 
+        if (fillDepthColor) {
+            feature.props["AC"] = state.depthColor.code
+        }
         state.meters?.takeIf { showDepth }?.let { meters ->
             feature.props.addSoundingConversions(meters.toDouble())
         }

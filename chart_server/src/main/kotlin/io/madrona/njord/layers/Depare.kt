@@ -5,6 +5,15 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: Depth area
+ *
+ * Acronym: DEPARE
+ *
+ * Code: 42
+ */
 open class Depare(
     private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
@@ -25,7 +34,7 @@ open class Depare(
                 id = "${key}_line",
                 type = LayerType.LINE,
                 sourceLayer = key,
-                filter = Filters.eqTypeLineStringOrPolygon,
+                filter = Filters.eqTypeLineString, //Drgare (inherits) is area only & we don't want outines there
                 paint = Paint(
                     lineColor = Filters.lineColor,
                     lineWidth = 0.5f

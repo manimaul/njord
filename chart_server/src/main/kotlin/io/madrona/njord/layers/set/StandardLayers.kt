@@ -130,10 +130,13 @@ import io.madrona.njord.layers.*
 class StandardLayers {
     val layers = sequenceOf(
         Background(),
+
+        //land / base layers
         Lndare(),
         Buisgl(),
         Buaare(),
         Slcons(),
+        Lndrgn(), // has area patterns - should be above other land layers
         Depare(),
         Drgare(),
         Iceare(),
@@ -196,7 +199,6 @@ class StandardLayers {
         Icnare(),
         Istzne(),
         Lakshr(),
-        Lndrgn(),
         Lndmrk(),
         Lights(),
         Litflt(),

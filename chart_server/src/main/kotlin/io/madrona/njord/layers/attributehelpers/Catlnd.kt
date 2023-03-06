@@ -1,5 +1,8 @@
 package io.madrona.njord.layers.attributehelpers
 
+import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.intValues
+
 /**
  * https://s57dev.mxmariner.com/control/symbols/LNDRGN/CATLND
  * List
@@ -49,4 +52,8 @@ enum class Catlnd {
             else -> null
         }
     }
+}
+
+fun S57Prop.catlnd() : List<Catlnd> {
+    return intValues("CATLND").mapNotNull { Catlnd.fromId(it) }
 }

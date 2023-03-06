@@ -1,13 +1,13 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.intValues
 import io.madrona.njord.layers.attributehelpers.Catlnd
+import io.madrona.njord.layers.attributehelpers.catlnd
 import io.madrona.njord.model.*
 
 class Lndrgn : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.props["SY"] = "POSGEN04"
-        val catlnd = feature.props.intValues("CATLND").map { Catlnd.fromId(it) }
+        val catlnd = feature.props.catlnd()
         catlnd.firstOrNull{ it == Catlnd.SWAMP || it == Catlnd.MARSH }?.let {
             feature.props["AP"] = "MARSHES1"
         }

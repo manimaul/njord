@@ -5,10 +5,7 @@ import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
-import io.madrona.njord.layers.attributehelpers.Catobs
-import io.madrona.njord.layers.attributehelpers.DepthColor
-import io.madrona.njord.layers.attributehelpers.Quasou
-import io.madrona.njord.layers.attributehelpers.Watlev
+import io.madrona.njord.layers.attributehelpers.*
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
 
@@ -163,9 +160,9 @@ class Obstrn : Soundg() {
 class ObstrnState(feature: ChartFeature) {
     val log = logger()
     val meters: Float? = feature.props.floatValue("VALSOU")
-    val category = feature.props.intValue("CATOBS")?.let { Catobs.fromId(it) }
-    val waterLevelEffect = feature.props.intValue("WATLEV")?.let { Watlev.fromId(it) }
-    val qualityOfSounding = feature.props.intValues("QUASOU").mapNotNull { Quasou.fromId(it) }
+    val category = feature.props.catobs()
+    val waterLevelEffect = feature.props.watlev()
+    val qualityOfSounding = feature.props.quasou()
     val usableDepthValue: Boolean = qualityOfSounding.firstOrNull {
         when (it) {
             Quasou.DEPTH_KNOWN,

@@ -1,13 +1,13 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.intValueSet
 import io.madrona.njord.layers.attributehelpers.Catbrg
+import io.madrona.njord.layers.attributehelpers.catbrg
 import io.madrona.njord.model.*
 
 
 class Bridge : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        val categories = feature.props.intValueSet("CATBRG").map { Catbrg.fromId(it) }
+        val categories = feature.props.catbrg()
         categories.firstOrNull{
             it == Catbrg.OPENING_BRIDGE
                     || it == Catbrg.SWING_BRIDGE

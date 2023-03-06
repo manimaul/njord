@@ -1,8 +1,9 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.layers.attributehelpers.Catsil
 import io.madrona.njord.layers.attributehelpers.Convis
+import io.madrona.njord.layers.attributehelpers.catsil
+import io.madrona.njord.layers.attributehelpers.convis
 import io.madrona.njord.model.*
 
 /**
@@ -16,8 +17,8 @@ import io.madrona.njord.model.*
  */
 class Siltnk : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        val convis = feature.props.intValue("CONVIS")?.let { Convis.fromId(it) }
-        when (feature.props.intValue("CATSIL")?.let { Catsil.fromId(it) }) {
+        val convis = feature.props.convis()
+        when (feature.props.catsil()) {
             Catsil.SILO_IN_GENERAL -> {
                 when (convis) {
                     Convis.VISUAL_CONSPICUOUS -> feature.props["SY"] = "SILBUI11"

@@ -1,5 +1,8 @@
 package io.madrona.njord.layers.attributehelpers
 
+import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.intValues
+
 /**
  * https://s57dev.mxmariner.com/control/symbols/BRIDGE/CATBRG
  * List
@@ -35,4 +38,8 @@ enum class Catbrg {
             else -> null
         }
     }
+}
+
+fun S57Prop.catbrg() : List<Catbrg> {
+    return intValues("CATBRG").mapNotNull { Catbrg.fromId(it) }
 }

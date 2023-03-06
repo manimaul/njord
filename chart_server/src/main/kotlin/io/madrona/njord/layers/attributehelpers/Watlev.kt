@@ -1,5 +1,8 @@
 package io.madrona.njord.layers.attributehelpers
 
+import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.intValue
+
 /**
  * https://s57dev.mxmariner.com/control/symbols/OBSTRN/WATLEV
  * Enum
@@ -25,4 +28,8 @@ enum class Watlev {
             else -> null
         }
     }
+}
+
+fun S57Prop.watlev() : Watlev? {
+    return intValue("WATLEV")?.let { Watlev.fromId(it) }
 }

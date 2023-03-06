@@ -1,5 +1,8 @@
 package io.madrona.njord.layers.attributehelpers
 
+import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.intValue
+
 /**
  * https://s57dev.mxmariner.com/control/symbols/SILTNK/CATSIL
  * Enum
@@ -23,4 +26,8 @@ enum class Catsil {
             else -> null
         }
     }
+}
+
+fun S57Prop.catsil() : Catsil? {
+    return intValue("CATSIL")?.let { Catsil.fromId(it) }
 }

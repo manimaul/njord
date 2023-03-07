@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Link} from "react-router-dom";
 import {NavDropdown} from "react-bootstrap";
 import {DepthUnit} from "../App";
+import '../App.css';
 
 type NavLinkProps = {
     path: string,
@@ -24,7 +25,7 @@ type NavBarProps = {
 
 export function NavBar(props: NavBarProps) {
     return (
-        <Navbar bg="secondary" expand="lg" variant="dark">
+        <Navbar className="Wrap" bg="secondary" expand="lg" variant="dark">
             <Container>
                 <Navbar.Brand>Njord</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>

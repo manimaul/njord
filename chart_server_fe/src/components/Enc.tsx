@@ -1,16 +1,17 @@
-import React, {useRef, useEffect, useState} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Accordion from 'react-bootstrap/Accordion';
-
 //@ts-ignore
 //eslint-disable-next-line import/no-webpack-loader-syntax
 import maplibregl from '!maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import "./Enc.css"
+
 //@ts-ignore
 //eslint-disable-next-line import/no-webpack-loader-syntax
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
+
+import React, {useRef, useEffect, useState} from "react";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Accordion from 'react-bootstrap/Accordion';
+import '../App.css'
+import 'maplibre-gl/dist/maplibre-gl.css';
 import ChartQuery from './ChartQuery';
 import {MapLibreEvent, MapMouseEvent, Map, MapGeoJSONFeature} from "maplibre-gl";
 import {DepthUnit} from "../App";
@@ -103,7 +104,7 @@ export function Enc(props: EncProps) {
 
     return (
         <>
-            <div ref={mapContainer} className="enc"></div>
+            <div ref={mapContainer} className="Fill"></div>
             <Modal show={show != null} onHide={handleClose} dialogClassName="modal-xl">
                 <Modal.Header closeButton><Modal.Title>Chart Query</Modal.Title></Modal.Header>
                 <Modal.Body>

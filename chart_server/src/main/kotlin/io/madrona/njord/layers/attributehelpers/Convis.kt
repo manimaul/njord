@@ -4,7 +4,7 @@ import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValue
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/SILTNK/CONVIS
+ * https://openenc.com/control/symbols/SILTNK/CONVIS
  * Enum
  */
 enum class Convis {

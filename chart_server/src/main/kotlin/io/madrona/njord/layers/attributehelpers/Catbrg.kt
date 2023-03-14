@@ -4,7 +4,7 @@ import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValues
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/BRIDGE/CATBRG
+ * https://openenc.com/control/symbols/BRIDGE/CATBRG
  * List
  */
 enum class Catbrg {

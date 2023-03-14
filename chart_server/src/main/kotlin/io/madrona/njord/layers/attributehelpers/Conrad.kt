@@ -1,7 +1,7 @@
 package io.madrona.njord.layers.attributehelpers
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/CONVYR/CONRAD
+ * https://openenc.com/control/symbols/CONVYR/CONRAD
  * Enum
  */
 enum class Conrad {

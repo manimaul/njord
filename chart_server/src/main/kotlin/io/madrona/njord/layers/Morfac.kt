@@ -6,7 +6,7 @@ import io.madrona.njord.model.*
 class Morfac : Layerable() {
 
     override fun preTileEncode(feature: ChartFeature) {
-        /* https://s57dev.mxmariner.com/control/symbols/MORFAC/CATMOR
+        /* https://openenc.com/control/symbols/MORFAC/CATMOR
         Enum
         1	dolphin
         2	deviation dolphin

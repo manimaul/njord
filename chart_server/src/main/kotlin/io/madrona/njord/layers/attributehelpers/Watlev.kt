@@ -4,7 +4,7 @@ import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValue
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/OBSTRN/WATLEV
+ * https://openenc.com/control/symbols/OBSTRN/WATLEV
  * Enum
  */
 enum class Watlev {

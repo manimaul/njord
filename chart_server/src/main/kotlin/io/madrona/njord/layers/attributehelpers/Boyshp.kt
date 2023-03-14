@@ -5,7 +5,7 @@ import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/BOYSPP/BOYSHP
+ * https://openenc.com/control/symbols/BOYSPP/BOYSHP
  * Enum
  */
 enum class Boyshp {

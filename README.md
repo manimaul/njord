@@ -11,7 +11,7 @@ Njord displays ENC charts but does **NOT** strictly follow the IHO S-52 specific
 
 S-52 display and S-57 data standards can be found here: https://iho.int/en/standards-and-specifications
 
-Demo / Staging Deployment: https://s57dev.mxmariner.com/v1/app
+Demo / Staging Deployment: https://openenc.com
 
 ### Status: This project is still very much a WORK IN PROGRESS.
 

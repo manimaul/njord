@@ -81,7 +81,7 @@ data:
         port = 80
 
         externalScheme = "https"
-        externalHostName = "s57dev.mxmariner.com"
+        externalHostName = "openenc.com"
         externalPort = 443
 
         chartMinZoom = 0
@@ -111,6 +111,33 @@ metadata:
     haproxy.org/ssl-redirect: "true"
 spec:
   rules:
+    - host: openenc.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: njord-chart-svc
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - openenc.com
+      secretName: njord-openenc-cert
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: njord-ingress-redirect
+  namespace: njord
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    haproxy.org/ssl-redirect: "true"
+    haproxy.org/request-redirect: openenc.com
+    haproxy.org/request-redirect-code: "302"
+spec:
+  rules:
     - host: s57dev.mxmariner.com
       http:
         paths:
@@ -125,4 +152,3 @@ spec:
     - hosts:
         - s57dev.mxmariner.com
       secretName: njord-cert
-

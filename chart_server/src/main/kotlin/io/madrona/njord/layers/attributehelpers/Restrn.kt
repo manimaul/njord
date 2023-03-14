@@ -4,7 +4,7 @@ import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValues
 
 /**
- * https://s57dev.mxmariner.com/control/symbols/RESARE/RESTRN
+ * https://openenc.com/control/symbols/RESARE/RESTRN
  * List
  */
 enum class Restrn {

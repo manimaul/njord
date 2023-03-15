@@ -12,6 +12,7 @@ class ChartsConfig(
     private val externalHostName: String = config.getString("externalHostName")
     private val externalPort: Int = config.getInt("externalPort")
 
+    val adminKey: String = config.getString("adminKey")
     val host: String = config.getString("host")
     val port: Int = config.getInt("port")
 

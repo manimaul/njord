@@ -71,6 +71,9 @@ metadata:
 data:
   application.conf: |
     charts {
+        adminKey = {ADMIN_KEY} 
+        adminExpirationSeconds = 100080 // 60 * 24 * 7
+    
         pgUser=admin
         pgPassword=mysecretpassword
         pgHost=njord-postgis-svc.njord.svc.cluster.local
@@ -100,6 +103,34 @@ data:
     
         debugTile = false
     }
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: njord-ingress-auth
+  namespace: njord
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    haproxy.org/ssl-redirect: "true"
+    haproxy.org/auth-type: basic-auth
+    haproxy.org/auth-secret: njord/haproxy-credentials
+
+spec:
+  rules:
+    - host: openenc.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: njord-chart-svc
+                port:
+                  number: 80
+            path: /v1/admin
+            pathType: Prefix
+  tls:
+    - hosts:
+        - openenc.com
+      secretName: njord-openenc-cert
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

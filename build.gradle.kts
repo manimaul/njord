@@ -1,4 +1,5 @@
 import io.madrona.njord.build.K8S
+import java.util.UUID
 
 task("version") {
     doLast {
@@ -37,7 +38,12 @@ task<Exec>("publishImage") {
  * Deploy to Kubernetes
  */
 task<Exec>("deploy") {
-    val yaml = K8S.chartServerDeployment(rootProject.projectDir,"${project.version}")
+    val adminKey = if (project.hasProperty("adminKey")) {
+        "${project.property("adminKey")}"
+    } else {
+        UUID.randomUUID().toString()
+    }
+    val yaml = K8S.chartServerDeployment(rootProject.projectDir,"${project.version}", adminKey)
     commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
 }
 

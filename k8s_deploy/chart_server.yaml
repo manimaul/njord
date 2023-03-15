@@ -72,7 +72,7 @@ data:
   application.conf: |
     charts {
         adminKey = {ADMIN_KEY} 
-        adminExpirationSeconds = 100080 // 60 * 24 * 7
+        adminExpirationSeconds = 604800 // 60 * 60 * 24 * 7days
     
         pgUser=admin
         pgPassword=mysecretpassword

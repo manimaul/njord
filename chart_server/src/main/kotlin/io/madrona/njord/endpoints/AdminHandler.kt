@@ -1,5 +1,7 @@
 package io.madrona.njord.endpoints
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -11,6 +13,7 @@ import io.madrona.njord.ext.respondJson
 import io.madrona.njord.model.AdminSignature
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -37,13 +40,16 @@ class AdminHandler(
 }
 
 class AdminUtil(
-    val config: ChartsConfig = Singletons.config
+    private val config: ChartsConfig = Singletons.config,
+    private val objectMapper: ObjectMapper = Singletons.objectMapper
 ) {
     private var formatter = DateTimeFormatter.ISO_INSTANT
 
     fun createSignature(): AdminSignature {
         val now = Instant.now()
+        val expiration = now.plus(config.adminExpirationSeconds, ChronoUnit.SECONDS)
         val dateString = formatter.format(now)
+        val expirationString = formatter.format(expiration)
         val secretKey = SecretKeySpec(config.adminKey.toByteArray(), "HmacSHA256")
         val uuid = UUID.randomUUID().toString()
         val hmac = Mac.getInstance("HmacSHA256")
@@ -55,14 +61,20 @@ class AdminUtil(
         return AdminSignature(
             date = dateString,
             signature = signature,
-            uuid = uuid
+            uuid = uuid,
+            expirationDate = expirationString
         )
+    }
+
+    fun veryifySignature(query: String): Boolean {
+        val data = Base64.getDecoder().decode(query)
+        return verifySignature(objectMapper.readValue(data))
     }
 
     fun verifySignature(signature: AdminSignature): Boolean {
         val now = Instant.now()
         val then = Instant.from(formatter.parse(signature.date))
-        if (now.epochSecond - then.epochSecond > 60 * 10) { //make configurable
+        if (now.epochSecond - then.epochSecond > config.adminExpirationSeconds) {
             return false
         }
         val secretKey = SecretKeySpec(config.adminKey.toByteArray(), "HmacSHA256")

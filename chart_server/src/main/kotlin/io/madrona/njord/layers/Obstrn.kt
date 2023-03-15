@@ -32,7 +32,7 @@ class Obstrn : Soundg() {
                     fillPattern = listOf("get", "AP")
                 )
             ),
-        ) + textLayers + sequenceOf(
+        ) + sequenceOf(
             Layer(
                 id = "${key}_line",
                 type = LayerType.LINE,
@@ -70,7 +70,7 @@ class Obstrn : Soundg() {
                     iconKeepUpright = false,
                 ),
             )
-        )
+        ) + textLayers
     }
 
     override fun preTileEncode(feature: ChartFeature) {

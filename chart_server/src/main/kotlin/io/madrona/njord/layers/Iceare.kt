@@ -1,11 +1,20 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.Filters
-import io.madrona.njord.model.Layer
-import io.madrona.njord.model.LayerType
-import io.madrona.njord.model.Paint
+import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Ice area
+ *
+ * Acronym: ICEARE
+ *
+ * Code: 66
+ */
 class Iceare : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.props["AP"] = "ICEARE04"
+    }
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             Layer(
@@ -14,7 +23,7 @@ class Iceare : Layerable() {
                 sourceLayer = key,
                 filter = Filters.eqTypePolyGon,
                 paint = Paint(
-                    fillPattern = "ICEARE04"
+                    fillPattern = listOf("get", "AP")
                 )
             ),
         )

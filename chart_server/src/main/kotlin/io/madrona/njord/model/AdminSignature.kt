@@ -7,4 +7,5 @@ data class AdminSignature(
     val date: String,
     val signature: String,
     val uuid: String,
+    val expirationDate: String,
 )

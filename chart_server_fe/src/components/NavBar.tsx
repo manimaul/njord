@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {NavDropdown} from "react-bootstrap";
 import {DepthUnit} from "../App";
 import '../App.css';
+// import Button from "react-bootstrap/Button";
 
 type NavLinkProps = {
     path: string,
@@ -24,6 +25,8 @@ type NavBarProps = {
 }
 
 export function NavBar(props: NavBarProps) {
+    // check for signature in local storage and set login button state based on result
+    // if exists try to login automatically & refresh
     return (
         <Navbar className="Wrap" bg="secondary" expand="lg" variant="dark">
             <Container>
@@ -47,6 +50,7 @@ export function NavBar(props: NavBarProps) {
                             }}>Feet</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
+                    {/*<Button variant="outline-light">Login</Button>*/}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

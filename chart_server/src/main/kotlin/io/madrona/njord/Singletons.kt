@@ -11,6 +11,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
@@ -26,6 +27,8 @@ import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
 object Singletons {
+
+    val adminUtil by lazy { AdminUtil() }
 
     val chartDao by lazy { ChartDao() }
 

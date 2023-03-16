@@ -15,48 +15,40 @@ import java.util.*
 
 class EncSaveHandler(
     config: ChartsConfig = Singletons.config,
-    private val util: AdminUtil = AdminUtil()
 ) : KtorHandler {
     override val route = "/v1/enc_save"
     private val log = logger()
     private val charDir = config.chartTempData
 
-    override suspend fun handlePost(call: ApplicationCall) {
-        val valid = call.request.queryParameters["signature"]?.let {
-            util.veryifySignature(it)
-        } ?: false
-        if (valid) {
-            val multipartData = call.receiveMultipart()
-            val uuid = UUID.randomUUID().toString()
-            val tempDir = File(charDir, uuid)
-            val files = mutableListOf<String>()
-            if (tempDir.mkdirs()) {
-                multipartData.forEachPart { part ->
-                    when (part) {
-                        is PartData.FormItem -> {
-                            log.info("file description = ${part.value}")
-                        }
-                        is PartData.FileItem -> {
-                            val fileName = part.originalFileName as String
-                            val fileBytes = part.streamProvider().readBytes()
-                            files.add(fileName)
-                            File(tempDir, fileName).writeBytes(fileBytes)
-                        }
-                        else -> {
-                        }
+    override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
+        val multipartData = call.receiveMultipart()
+        val uuid = UUID.randomUUID().toString()
+        val tempDir = File(charDir, uuid)
+        val files = mutableListOf<String>()
+        if (tempDir.mkdirs()) {
+            multipartData.forEachPart { part ->
+                when (part) {
+                    is PartData.FormItem -> {
+                        log.info("file description = ${part.value}")
+                    }
+                    is PartData.FileItem -> {
+                        val fileName = part.originalFileName as String
+                        val fileBytes = part.streamProvider().readBytes()
+                        files.add(fileName)
+                        File(tempDir, fileName).writeBytes(fileBytes)
+                    }
+                    else -> {
                     }
                 }
-                call.respond(
-                    EncUpload(
-                        files = files,
-                        uuid = uuid
-                    )
-                )
-            } else {
-                call.respond(HttpStatusCode.InternalServerError)
             }
+            call.respond(
+                EncUpload(
+                    files = files,
+                    uuid = uuid
+                )
+            )
         } else {
-            call.respond(HttpStatusCode.Unauthorized)
+            call.respond(HttpStatusCode.InternalServerError)
         }
     }
 }

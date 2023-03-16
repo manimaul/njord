@@ -30,7 +30,7 @@ class ChartWebSocketHandler(
     private val charDir = config.chartTempData
     override val route = "/v1/ws/enc_process"
 
-    override suspend fun handle(ws: DefaultWebSocketServerSession) {
+    override suspend fun handle(ws: DefaultWebSocketServerSession) = ws.call.requireSignature {
         log.info("ws uri = ${ws.call.url()}")
         log.info("ws query keys = ${ws.call.request.queryParameters.names()}")
 

@@ -52,15 +52,15 @@ fun Application.njord() {
         allowHost("localhost:3000")
     }
     addHandlers(
-        // curl http://localhost:9000/v1/about/version | jq
-        // curl http://localhost:9000/v1/about/s57objects | jq
-        // curl http://localhost:9000/v1/about/s57attributes | jq
+        // curl https://openenc.com/v1/about/version | jq
+        // curl https://openenc.com/v1/about/s57objects | jq
+        // curl https://openenc.com/v1/about/s57attributes | jq
         AboutHandler(),
 
-        // curl http://localhost:9000/v1/tile_json | jq
+        // curl https://openenc.com/v1/tile_json | jq
         TileJsonHandler(),
 
-        // curl http://localhost:9000/v1/style/meters | jq
+        // curl https://openenc.com/v1/style/meters | jq
         StyleHandler(),
 
         // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
@@ -68,42 +68,42 @@ fun Application.njord() {
 
         ChartWebSocketHandler(),
 
-        //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' http://localhost:9000/v1/chart
-        //curl -v -X DELETE 'http://localhost:9000/v1/chart?id=1'
-        //curl -v 'http://localhost:9000/v1/chart?id=1' | jq
+        //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' https://openenc.com/v1/chart
+        //curl -v -X DELETE 'https://openenc.com/v1/chart?id=1'
+        //curl -v 'https://openenc.com/v1/chart?id=1' | jq
         ChartHandler(),
 
-        //curl -v 'http://localhost:9000/v1/chart_catalog' | jq
+        //curl -v 'https://openenc.com/v1/chart_catalog' | jq
         ChartCatalogHandler(),
 
-        //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=8&name=BOYSPP'
-        //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'http://localhost:9000/v1/geojson?chart_id=17&name=BOYSPP'
-        //curl -v 'http://localhost:9000/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
+        //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=8&name=BOYSPP'
+        //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=17&name=BOYSPP'
+        //curl -v 'https://openenc.com/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
         GeoJsonHandler(),
 
-        // curl -v "http://localhost:9000/v1/tile/0/0/0"
+        // curl -v "https://openenc.com/v1/tile/0/0/0"
         TileHandler(),
 
-        // http://localhost:9000/v1/icon/<name>.png
+        // https://openenc.com/v1/icon/<name>.png
         IconHandler(),
 
-        // curl -v "http://localhost:9000/v1/content/fonts/Roboto Bold/0-255.pbf"
-        // curl http://localhost:9000/v1/content/sprites/day_sprites.json | jq
-        // curl http://localhost:9000/v1/content/sprites/day_sprites.png
-        // http://localhost:9000/v1/content/upload.html
+        // curl -v "https://openenc.com/v1/content/fonts/Roboto Bold/0-255.pbf"
+        // curl https://openenc.com/v1/content/sprites/day_sprites.json | jq
+        // curl https://openenc.com/v1/content/sprites/day_sprites.png
+        // https://openenc.com/v1/content/upload.html
         StaticResourceContentHandler(),
 
-        // curl http://localhost:9000/v1/feature?lnam=02260F22BF31214F | jq
+        // curl https://openenc.com/v1/feature?lnam=02260F22BF31214F | jq
         FeatureHandler(),
 
-        // curl -v -H "Content-Type: application/json" --request POST  --data "$(curl http://localhost:9000/v1/admin)" http://localhost:9000/v1/admin
-        // curl http://localhost:9000/v1/admin
+        // curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} -v -H "Content-Type: application/json" --request POST  --data "$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin)" https://openenc.com/v1/admin
+        // curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin
         AdminHandler(),
     )
 
     install(StatusPages) {
 
-        // http://localhost:9000
+        // https://openenc.com
         unhandled { call ->
             call.respondText(File(Singletons.config.webStaticContent, "index.html").readText(), ContentType.Text.Html)
         }

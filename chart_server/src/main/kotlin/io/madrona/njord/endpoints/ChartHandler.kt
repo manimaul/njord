@@ -21,14 +21,14 @@ class ChartHandler(
         } ?: call.respond(HttpStatusCode.BadRequest)
     }
 
-    override suspend fun handlePost(call: ApplicationCall) {
+    override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val chart = call.receive<ChartInsert>()
         dao.insertAsync(chart).await()?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.BadRequest)
     }
 
-    override suspend fun handleDelete(call: ApplicationCall) {
+    override suspend fun handleDelete(call: ApplicationCall) = call.requireSignature {
         when (
             call.request.queryParameters["id"]?.toLongOrNull()?.let {
                 dao.deleteAsync(it).await()

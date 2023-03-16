@@ -28,7 +28,7 @@ class GeoJsonHandler(
         } ?: call.respond(HttpStatusCode.NotFound)
     }
 
-    override suspend fun handlePost(call: ApplicationCall) {
+    override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val geo = call.receive<GeoJsonObject>()
         letTwo(
             call.request.queryParameters["chart_id"]?.toLongOrNull(),

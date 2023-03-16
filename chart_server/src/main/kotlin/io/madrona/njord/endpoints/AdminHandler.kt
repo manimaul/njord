@@ -10,6 +10,7 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.respondJson
+import io.madrona.njord.model.AdminResponse
 import io.madrona.njord.model.AdminSignature
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -18,15 +19,17 @@ import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-/**
- * It's up to you to protect this endpoint
- */
 class AdminHandler(
-    private val util: AdminUtil = AdminUtil()
+    private val util: AdminUtil = Singletons.adminUtil,
 ) : KtorHandler {
     override val route = "/v1/admin"
+
+    /**
+     * It's up to you to protect this endpoint if deployed in a public environment.
+     * Returns an authorization signature for other mutating calls that require a valid signature.
+     */
     override suspend fun handleGet(call: ApplicationCall) {
-        call.respondJson(util.createSignature())
+        call.respondJson(util.createSignatureResponse())
     }
 
     override suspend fun handlePost(call: ApplicationCall) {
@@ -44,6 +47,14 @@ class AdminUtil(
     private val objectMapper: ObjectMapper = Singletons.objectMapper
 ) {
     private var formatter = DateTimeFormatter.ISO_INSTANT
+
+    fun createSignatureResponse() : AdminResponse {
+        val signature = createSignature()
+        return AdminResponse(
+            signature = signature,
+            signatureEncoded = Base64.getEncoder().encodeToString(objectMapper.writeValueAsBytes(signature))
+        )
+    }
 
     fun createSignature(): AdminSignature {
         val now = Instant.now()
@@ -85,5 +96,17 @@ class AdminUtil(
         hmac.update(signature.uuid.toByteArray())
         val checkSignature = Base64.getEncoder().encodeToString(hmac.doFinal())
         return checkSignature.equals(signature.signature)
+    }
+}
+
+suspend fun ApplicationCall.requireSignature(onAuthorized: suspend () -> Unit) {
+    val adminUti = Singletons.adminUtil
+    val valid = request.queryParameters["signature"]?.let {
+        adminUti.veryifySignature(it)
+    } ?: false
+    if (valid) {
+        onAuthorized()
+    } else {
+        respond(HttpStatusCode.Unauthorized)
     }
 }

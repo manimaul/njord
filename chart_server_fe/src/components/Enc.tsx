@@ -15,6 +15,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import ChartQuery from './ChartQuery';
 import {MapLibreEvent, MapMouseEvent, Map, MapGeoJSONFeature} from "maplibre-gl";
 import {DepthUnit} from "../App";
+import {Bounds} from "./ControlCharts";
 
 maplibregl.workerClass = MapLibreWorker;
 
@@ -29,6 +30,12 @@ export function storeEncState(state: EncState) {
     window.localStorage.setItem("latitude", `${state.lat}`)
     window.localStorage.setItem("zoom", `${state.zoom}`)
     console.log(`stored EncState = ${JSON.stringify(state)}`)
+}
+
+var destination: Bounds | null = null
+
+export function setDestination(bounds: Bounds) {
+    destination = bounds;
 }
 
 type EncProps = {
@@ -96,6 +103,11 @@ export function Enc(props: EncProps) {
             setShow(filtered);
         });
         map.current = newMap
+
+        if (destination) {
+            newMap.fitBounds([[destination.leftLng, destination.topLat], [destination.rightLng, destination.bottomLat]])
+            destination = null
+        }
     });
 
     function clipboard() {

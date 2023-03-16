@@ -1,8 +1,11 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useRequest} from "../Effects";
 import React, {useState} from "react";
 import Loading from "./Loading";
 import {Table} from "react-bootstrap";
+import {setDestination} from "./Enc";
+import Button from "react-bootstrap/Button";
+import {Bounds} from "./ControlCharts";
 
 export type ChartInfoResponse = {
     id: number;
@@ -13,6 +16,7 @@ export type ChartInfoResponse = {
     zoom: number;
     scale: number;
     covr: any;
+    bounds: Bounds,
     layers: Array<string>;
     chart_txt: Record<string, string>;
     dsid_props: Record<string, string | number>;
@@ -21,6 +25,7 @@ export default function ChartInfo() {
     let {id} = useParams();
     const [chartInfo, setChartInfo] = useState<ChartInfoResponse | null>(null)
     useRequest(`/v1/chart?id=${id}`, setChartInfo)
+    let navigate = useNavigate();
     if (chartInfo) {
         return (
             <div className="container Content">
@@ -40,7 +45,15 @@ export default function ChartInfo() {
                             </tr>
                             <tr>
                                 <td>Name</td>
-                                <td>{chartInfo.name}</td>
+                                <td>
+                                    {chartInfo.name}{' '}
+                                    <Button variant="outline-primary" size="sm"
+                                            onClick={() => {
+                                                setDestination(chartInfo.bounds)
+                                                navigate("/enc")
+                                            }}
+                                    >zoom to</Button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Updated</td>
@@ -64,14 +77,14 @@ export default function ChartInfo() {
                                     return <><Link key={`${i}`} to={`/control/symbols/${each}`}>{each}</Link> </>
                                 })}</td>
                             </tr>
-                            {Object.keys(chartInfo.chart_txt).map((each, i)=> {
+                            {Object.keys(chartInfo.chart_txt).map((each, i) => {
                                 return <tr key={i}>
                                     <td>{each}</td>
                                     <td><p>{chartInfo?.chart_txt?.[each] ?? ""}</p></td>
                                 </tr>
                             })
                             }
-                            {Object.keys(chartInfo.dsid_props).map((each, i)=> {
+                            {Object.keys(chartInfo.dsid_props).map((each, i) => {
                                 return <tr key={i}>
                                     <td>{each}</td>
                                     <td><p>{chartInfo?.dsid_props?.[each] ?? ""}</p></td>

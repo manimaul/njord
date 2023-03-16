@@ -4,14 +4,12 @@ import com.codahale.metrics.Timer
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.ChartItem
 import io.madrona.njord.Singletons
-import io.madrona.njord.model.Chart
-import io.madrona.njord.model.ChartFeature
-import io.madrona.njord.model.ChartInfo
-import io.madrona.njord.model.ChartInsert
+import io.madrona.njord.model.*
 import kotlinx.coroutines.Deferred
 import mil.nga.sf.geojson.Feature
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.Polygon
+import org.locationtech.jts.io.WKBReader
 import org.locationtech.jts.io.WKBWriter
 import java.sql.Connection
 import java.sql.ResultSet
@@ -24,21 +22,24 @@ class ChartDao(
 
     private fun ResultSet.chart(layers: List<String>) = sequence {
         while (next()) {
+            var i = 0
             yield(
                 Chart(
-                    id = getLong(1),
-                    name = getString(2),
-                    scale = getInt(3),
-                    fileName = getString(4),
-                    updated = getString(5),
-                    issued = getString(6),
-                    zoom = getInt(7),
-                    covr = Feature().apply {
-                        geometry = objectMapper.readValue(getString(8))
+                    id = getLong(++i),
+                    name = getString(++i),
+                    scale = getInt(++i),
+                    fileName = getString(++i),
+                    updated = getString(++i),
+                    issued = getString(++i),
+                    zoom = getInt(++i),
+                    covr = Feature().apply { geometry = objectMapper.readValue(getString(++i)) },
+                    bounds = getBytes(++i).let {
+                        val env = WKBReader().read(it).envelopeInternal
+                        Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
                     },
                     layers = layers,
-                    dsidProps = objectMapper.readValue(getString(9)),
-                    chartTxt = objectMapper.readValue(getString(10)),
+                    dsidProps = objectMapper.readValue(getString(++i)),
+                    chartTxt = objectMapper.readValue(getString(++i)),
                 )
             )
         }
@@ -85,15 +86,15 @@ class ChartDao(
             val tCtx = findChartFeaturesAsyncTimer.time()
             val result = conn.prepareStatement(
                 """
-              WITH exclude AS (VALUES (ST_GeomFromWKB(?, 4326))),
-                   tile AS (VALUES (ST_Transform(ST_TileEnvelope(?,?,?), 4326)))
-              SELECT ST_AsBinary(ST_AsMVTGeom(ST_Difference(geom, (table exclude)), (table tile))), 
+              WITH exclude AS (VALUES (st_geomfromwkb(?, 4326))),
+                   tile AS (VALUES (st_transform(st_tileenvelope(?,?,?), 4326)))
+              SELECT st_asbinary(st_asmvtgeom(st_difference(geom, (table exclude)), (table tile))), 
                      props, 
                      layer
               FROM features
               WHERE chart_id=?
                 AND ? <@ z_range
-                AND ST_Intersects(geom, (table tile));
+                AND st_intersects(geom, (table tile));
           """.trimIndent()
             ).apply {
                 var i = 0
@@ -165,7 +166,8 @@ class ChartDao(
                 updated,
                 issued,
                 zoom,
-                ST_AsGeoJSON(covr)::JSON as covr,
+                st_asgeojson(covr)::JSON,
+                st_asbinary(covr),
                 dsid_props,
                 chart_txt
             FROM charts
@@ -181,7 +183,8 @@ class ChartDao(
         val stmt = conn.prepareStatement(
             """
             SELECT
-                id, name
+                id, 
+                name
             FROM charts;
             """.trimIndent()
         )
@@ -191,7 +194,7 @@ class ChartDao(
                 result.add(
                     ChartItem(
                         id = it.getLong(1),
-                        name = it.getString(2)
+                        name = it.getString(2),
                     )
                 )
             }
@@ -203,8 +206,8 @@ class ChartDao(
         val stmt = conn.prepareStatement(
             """
                 INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) 
-                VALUES (?,?,?,?,?,?,ST_SetSRID(ST_GeomFromGeoJSON(?), 4326),?::json,?::json)
-                RETURNING id, name, scale, file_name, updated, issued, zoom, ST_AsGeoJSON(covr)::JSON as covr, dsid_props, chart_txt""".trimIndent(),
+                VALUES (?,?,?,?,?,?,st_setsrid(st_geomfromgeojson(?), 4326),?::json,?::json)
+                RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent(),
             Statement.RETURN_GENERATED_KEYS
         ).apply {
             setString(1, chartInsert.name)
@@ -220,7 +223,7 @@ class ChartDao(
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
             stmt.generatedKeys.use { rs ->
-                rs.chart(emptyList())
+                rs.chart(layers = emptyList())
             }
         }?.firstOrNull()
     }

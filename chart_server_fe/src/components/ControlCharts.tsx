@@ -1,12 +1,22 @@
 import React, {useState} from "react";
 import {useRequest} from "../Effects";
 import {Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import {setDestination, storeEncState} from "./Enc";
 
 type ChartProps = {
     id: number;
     name: string;
+    bounds: Bounds;
 };
+
+export type Bounds = {
+     leftLng: number;
+     topLat: number;
+     rightLng: number;
+     bottomLat: number;
+}
 
 export function ControlCharts() {
     const [charts, setCharts] = useState<Array<ChartProps>>([])
@@ -19,7 +29,9 @@ export function ControlCharts() {
                 <thead>
                 <tr>
                     <th>Record ID</th>
-                    <th>Chart Name</th>
+                    <th>
+                        Chart Name
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,7 +40,7 @@ export function ControlCharts() {
                         <tr key={i}>
                             <td>{each.id}</td>
                             <td>
-                                <Link to={`/chart/${each.id}`} >{each.name}</Link>
+                                <Link to={`/chart/${each.id}`}>{each.name}</Link>{' '}
                             </td>
                         </tr>
                     )

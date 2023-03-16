@@ -34,9 +34,18 @@ data class Chart(
     val issued: String,
     val zoom: Int,
     val covr: Feature,
+    val bounds: Bounds,
     val layers: List<String>,
     @JsonProperty("dsid_props") val dsidProps: Map<String, Any>,
     @JsonProperty("chart_txt") val chartTxt: Map<String, String>,
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class Bounds(
+    val leftLng: Double,
+    val topLat: Double,
+    val rightLng: Double,
+    val bottomLat: Double,
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

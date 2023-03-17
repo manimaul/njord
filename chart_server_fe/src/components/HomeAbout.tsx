@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRequest} from "../Effects";
 import njord from "../njord.png";
 import {Table} from "react-bootstrap";
 import Footer from "./Footer";
 import "../App.css"
+import {useAdmin} from "./Admin";
 
 export default function HomeAbout() {
     const [apiInfo, initVersion] = useState({
@@ -12,6 +13,16 @@ export default function HomeAbout() {
     })
 
     useRequest("/v1/about/version", initVersion)
+    const [admin, , , validate] = useAdmin();
+    const [checked, setChecked] = useState(false)
+
+    useEffect(() => {
+        if (!checked && admin) {
+            console.log("validating admin")
+            validate()
+            setChecked(true)
+        }
+    }, [admin, validate, checked, setChecked])
 
     return (
         <div className="Column Fill">
@@ -39,6 +50,14 @@ export default function HomeAbout() {
                             <td>Gdal Version</td>
                             <td>{apiInfo.gdalVersion}</td>
                         </tr>
+                        {checked && admin &&
+                            <tr>
+                                <td>Admin</td>
+                                <td>
+                                    valid until: {admin.signature.expirationDate}
+                                </td>
+                            </tr>
+                        }
                         </tbody>
                     </Table>
                 </div>

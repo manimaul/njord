@@ -35,7 +35,7 @@ class AdminHandler(
     override suspend fun handlePost(call: ApplicationCall) {
         val signature = call.receive<AdminSignature>()
         if (util.verifySignature(signature)) {
-            call.respond(util.createSignature())
+            call.respond(util.createSignatureResponse())
         } else {
             call.respond(HttpStatusCode.Unauthorized)
         }

@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import {useEffect, useState} from "react";
 
 async function fetchData(path: string, callback: (arg: any) => void) {

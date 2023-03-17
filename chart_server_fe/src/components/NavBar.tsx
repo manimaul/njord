@@ -6,7 +6,8 @@ import {Link} from "react-router-dom";
 import {NavDropdown} from "react-bootstrap";
 import {DepthUnit} from "../App";
 import '../App.css';
-// import Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
+import {useAdmin} from "./Admin";
 
 type NavLinkProps = {
     path: string,
@@ -25,6 +26,8 @@ type NavBarProps = {
 }
 
 export function NavBar(props: NavBarProps) {
+    const [admin, login, logout] = useAdmin();
+
     // check for signature in local storage and set login button state based on result
     // if exists try to login automatically & refresh
     return (
@@ -50,7 +53,14 @@ export function NavBar(props: NavBarProps) {
                             }}>Feet</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    {/*<Button variant="outline-light">Login</Button>*/}
+                    {admin && <Button
+                        variant="outline-light"
+                        onClick={logout}
+                    >Disable Admin</Button>}
+                    { admin == null && <Button
+                        variant="outline-light"
+                        onClick={login}
+                    >Enable Admin</Button>}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

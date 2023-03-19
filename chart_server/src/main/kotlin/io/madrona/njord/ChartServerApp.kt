@@ -96,9 +96,11 @@ fun Application.njord() {
         // curl https://openenc.com/v1/feature?lnam=02260F22BF31214F | jq
         FeatureHandler(),
 
-        // curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} -v -H "Content-Type: application/json" --request POST  --data "$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin)" https://openenc.com/v1/admin
         // curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin
         AdminHandler(),
+
+        //curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} -v -H "Content-Type: application/json" --request POST  --data "$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin)" https://openenc.com/v1/admin/verify
+        AdminVerifyHandler(),
     )
 
     install(StatusPages) {

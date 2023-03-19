@@ -126,7 +126,7 @@ spec:
                 port:
                   number: 80
             path: /v1/admin
-            pathType: Prefix
+            pathType: Exact
   tls:
     - hosts:
         - openenc.com

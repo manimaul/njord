@@ -54,7 +54,7 @@ export function NavBar(props: NavBarProps) {
                         </NavDropdown>
                     </Nav>
                     {admin && <Button
-                        variant="outline-light"
+                        variant="danger"
                         onClick={logout}
                     >Disable Admin</Button>}
                     { admin == null && <Button

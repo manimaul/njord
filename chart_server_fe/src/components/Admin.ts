@@ -66,7 +66,7 @@ export function useAdmin(): [Admin | null, () => void, () => void, () => void] {
 
         try {
             let response = await fetch(
-                "/v1/admin",
+                "/v1/admin/verify",
                 {
                     method: "POST",
                     headers: {
@@ -75,6 +75,7 @@ export function useAdmin(): [Admin | null, () => void, () => void, () => void] {
                     body: JSON.stringify(admin?.signature)
                 }
             )
+            console.log(`admin verify response ${response}`)
             let adm = await response.json() as Admin
             saveAdmin(adm)
         } catch (e) {

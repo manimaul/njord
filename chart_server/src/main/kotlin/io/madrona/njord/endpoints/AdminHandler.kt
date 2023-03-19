@@ -31,15 +31,6 @@ class AdminHandler(
     override suspend fun handleGet(call: ApplicationCall) {
         call.respondJson(util.createSignatureResponse())
     }
-
-    override suspend fun handlePost(call: ApplicationCall) {
-        val signature = call.receive<AdminSignature>()
-        if (util.verifySignature(signature)) {
-            call.respond(util.createSignatureResponse())
-        } else {
-            call.respond(HttpStatusCode.Unauthorized)
-        }
-    }
 }
 
 class AdminUtil(
@@ -56,7 +47,7 @@ class AdminUtil(
         )
     }
 
-    fun createSignature(): AdminSignature {
+    private fun createSignature(): AdminSignature {
         val now = Instant.now()
         val expiration = now.plus(config.adminExpirationSeconds, ChronoUnit.SECONDS)
         val dateString = formatter.format(now)

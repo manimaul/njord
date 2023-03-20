@@ -52,7 +52,7 @@ export default function ChartInfo() {
                                                 setDestination(chartInfo.bounds)
                                                 navigate("/enc")
                                             }}
-                                    >zoom to</Button>
+                                    >ENC Zoom to</Button>
                                 </td>
                             </tr>
                             <tr>

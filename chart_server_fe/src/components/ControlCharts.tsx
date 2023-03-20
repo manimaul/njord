@@ -4,6 +4,7 @@ import {Table} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import {setDestination, storeEncState} from "./Enc";
+import {useAdmin} from "./Admin";
 
 type ChartProps = {
     id: number;
@@ -12,15 +13,28 @@ type ChartProps = {
 };
 
 export type Bounds = {
-     leftLng: number;
-     topLat: number;
-     rightLng: number;
-     bottomLat: number;
+    leftLng: number;
+    topLat: number;
+    rightLng: number;
+    bottomLat: number;
 }
 
 export function ControlCharts() {
     const [charts, setCharts] = useState<Array<ChartProps>>([])
-    useRequest("/v1/chart_catalog", setCharts)
+    const [reload] = useRequest("/v1/chart_catalog", setCharts)
+    const [admin] = useAdmin()
+
+    async function deleleteChart(id: number) {
+        setCharts([])
+        let response = await fetch(
+            `/v1/chart?id=${id}&signature=${admin?.signatureEncoded}`,
+            {
+                method: "DELETE"
+            }
+        )
+        console.log(`delete chart ${id} = ${response.statusText}`)
+        reload()
+    }
 
     return (
         <div>
@@ -41,6 +55,15 @@ export function ControlCharts() {
                             <td>{each.id}</td>
                             <td>
                                 <Link to={`/chart/${each.id}`}>{each.name}</Link>{' '}
+                                {admin &&
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm" onClick={() => {
+                                        deleleteChart(each.id)
+                                    }
+                                    }>Delete
+                                    </Button>
+                                }
                             </td>
                         </tr>
                     )

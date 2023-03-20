@@ -6,7 +6,7 @@ async function fetchData(path: string, callback: (arg: any) => void) {
     callback(response)
 }
 
-export function useRequest(path: string, callback: (arg: any) => void) {
+export function useRequest(path: string, callback: (arg: any) => void) : [() => void] {
     const [run, setRun] = useState(false)
 
     useEffect(() => {
@@ -15,6 +15,9 @@ export function useRequest(path: string, callback: (arg: any) => void) {
             setRun(true)
         }
     }, [run, callback, path])
+    return [function () {
+        setRun(false)
+    }]
 }
 
 export function useTypeRequest<T>(path: string, callback: (arg: T) => void) {

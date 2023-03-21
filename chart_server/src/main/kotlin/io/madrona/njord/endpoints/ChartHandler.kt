@@ -23,7 +23,7 @@ class ChartHandler(
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val chart = call.receive<ChartInsert>()
-        dao.insertAsync(chart).await()?.let {
+        dao.insertAsync(chart, true).await()?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.BadRequest)
     }

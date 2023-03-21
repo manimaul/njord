@@ -178,7 +178,7 @@ class ChartDao(
         ).apply {
             setLong(1, id)
         }
-        stmt.executeQuery().use { it.chart(findLayers(id, conn)).firstOrNull()  }
+        stmt.executeQuery().use { it.chart(findLayers(id, conn)).firstOrNull() }
     }
 
     fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
@@ -204,7 +204,10 @@ class ChartDao(
         }
     }
 
-    fun insertAsync(chartInsert: ChartInsert): Deferred<Chart?> = sqlOpAsync { conn ->
+    fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Deferred<Chart?> = sqlOpAsync { conn ->
+        if (overwrite) {
+            deleteAsync(name = chartInsert.name).await()
+        }
         val stmt = conn.prepareStatement(
             """
                 INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) 
@@ -230,6 +233,20 @@ class ChartDao(
         }
     }
 
+
+    fun deleteAsync(name: String): Deferred<Boolean?> = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+                DELETE from features WHERE features.chart_id IN
+                (SELECT id from charts where name = ?);
+                DELETE FROM charts WHERE name=?;
+                """.trimIndent(),
+            Statement.NO_GENERATED_KEYS
+        ).apply {
+            setString(1, name)
+            setString(2, name)
+        }.executeUpdate() > 0
+    }
 
     fun deleteAsync(id: Long): Deferred<Boolean?> = sqlOpAsync { conn ->
         conn.prepareStatement(

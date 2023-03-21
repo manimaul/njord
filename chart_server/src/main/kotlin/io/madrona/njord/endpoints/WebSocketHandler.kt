@@ -48,8 +48,9 @@ class ChartWebSocketHandler(
         } ?: run {
             log.error("ws invalid query params ${ws.call.request.queryString()}")
             ws.sendMessage(
-                WsMsg.FatalError(
+                WsMsg.Error(
                     message = "invalid query params",
+                    isFatal = true,
                 )
             )
             ws.close(CloseReason(CloseReason.Codes.NORMAL, "uuid and or files not provided"))
@@ -60,6 +61,7 @@ class ChartWebSocketHandler(
                 is Frame.Text -> {
                     log.info("ws received ${frame.readText()}")
                 }
+
                 else -> {
                     log.error("ws received unknown frame")
                 }
@@ -76,44 +78,34 @@ class ChartWebSocketHandler(
      * 4. Insert geojson layers into database todo:
      */
     private suspend fun DefaultWebSocketServerSession.processFiles(encUpload: EncUpload) {
+        val timer = TimeTracker()
+        var featureCountTotal = 0
+        var totalChartCount = 0
+        var chartInstallCount = 0
+        val insertItems = mutableListOf<WsMsg.InsertItem>()
+        val failedCharts = mutableListOf<String>()
         encUpload.uuidDir()?.let { dir ->
-            unzipFiles(encUpload).filter {
+            // unzip files
+            val s57Files = unzipFiles(encUpload).filter {
                 it.name.endsWith(".000")
-            }.map {
-                sendMessage(
-                    WsMsg.InsertionStatus(
-                        message = "reading file",
-                        chartName = it.name,
-                        isError = false
-                    )
-                )
+            }
+            totalChartCount = s57Files.size
+            s57Files.map {
                 S57(it)
             }.forEach { s57 ->
                 when (val insert = s57.chartInsertInfo()) {
                     is InsertError -> {
-                        scope.launch {
-                            sendMessage(
-                                WsMsg.InsertionStatus(
-                                    message = insert.msg,
-                                    chartName = s57.file.name,
-                                    isError = true
-                                )
-                            )
-                        }
+                        failedCharts.add(s57.file.name)
                         null
                     }
 
-                    is InsertSuccess -> chartDao.insertAsync(insert.value).await()
-                }?.let { chart ->
-                    scope.launch {
-                        sendMessage(
-                            WsMsg.InsertionStatus(
-                                chartName = chart.name,
-                                message = "created chart id=${chart.id}"
-                            )
-                        )
+                    is InsertSuccess -> {
+                        val chart = chartDao.insertAsync(insert.value, true).await()
+                        chart
                     }
-                    val layersToInsert = s57.layerGeoJsonSequence(exLayers)
+                }?.let { chart ->
+                    val layersToInsert = s57.layerGeoJsonSequence(exLayers).toList()
+                    var chartFeatureCount = 0
                     layersToInsert.forEach { (name, fc) ->
                         val count = geoJsonDao.insertAsync(
                             FeatureInsert(
@@ -122,23 +114,42 @@ class ChartWebSocketHandler(
                                 geo = fc
                             )
                         ).await()
-                        scope.launch {
-                            sendMessage(
-                                WsMsg.Insertion(
-                                    chartName = chart.name,
-                                    featureCount = count ?: 0,
-                                )
+                        chartFeatureCount += count ?: 0
+                        featureCountTotal += count ?: 0
+                        val item = WsMsg.InsertItem(
+                            layerName = name,
+                            chartName = chart.name,
+                            featureCount = count ?: 0,
+                        )
+                        insertItems.add(item)
+                        sendMessage(
+                            WsMsg.Info(
+                                num = chartInstallCount + 1,
+                                total = totalChartCount,
+                                name = chart.name,
+                                layer = name,
+                                featureCount = chartFeatureCount,
                             )
-                        }
+                        )
                     }
+                    chartInstallCount += 1
                 }
             }
             dir.deleteRecursively()
+            sendMessage(
+                WsMsg.CompletionReport(
+                    totalFeatureCount = featureCountTotal,
+                    totalChartCount = totalChartCount,
+                    failedCharts = failedCharts,
+                    items = insertItems,
+                    ms = timer.elapsed()
+                )
+            )
         }
         close()
     }
 
-    private suspend fun DefaultWebSocketServerSession.unzipFiles(encUpload: EncUpload): List<File> {
+    private fun unzipFiles(encUpload: EncUpload): List<File> {
         val retVal = mutableListOf<File>()
         letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
             files.forEach { zipFile ->
@@ -146,9 +157,6 @@ class ChartWebSocketHandler(
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
                             if (!entry.name.startsWith("__MACOSX")) {
-                                sendMessage(
-                                    WsMsg.Info("extracting file: ${entry.name}")
-                                )
                                 val outFile = File(dir, entry.name)
                                 outFile.parentFile?.let {
                                     if (!it.exists()) {
@@ -194,5 +202,12 @@ class ChartWebSocketHandler(
 
     companion object {
         val exLayers = setOf("DSID", "IsolatedNode", "ConnectedNode", "Edge", "Face")
+    }
+}
+
+class TimeTracker {
+    val time = System.currentTimeMillis()
+    fun elapsed(): Long {
+        return System.currentTimeMillis() - time
     }
 }

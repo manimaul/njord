@@ -1,47 +1,51 @@
 import {Admin} from "./Admin";
 import {EncUpload} from "./components/ChartInstall";
 
-export type WsFatalError = {
+export type WsError = {
     message: string
+    isFatal: boolean
 }
 
 export type WsInfo = {
-    message: string
+    num: number
+    total: number
+    name: string
+    layer: string
+    featureCount: number
 }
 
-export type WsInsertionStatus = {
-    chartName: string
-    message: string
-    isError: boolean
+
+export type WsCompletionReport = {
+    totalFeatureCount: number
+    totalChartCount: number
+    items: Array<InsertItem>
+    failedCharts: Array<string>
+    ms: number
 }
 
-export type WsInsertion = {
+export type InsertItem = {
+    layerName: string
     chartName: string
-    message: string
-    isError: boolean
+    featureCount: number
 }
 
 export function handleMessage(
     msg: string,
-    fatal: (arg: WsFatalError) => void,
+    error: (arg: WsError) => void,
     info: (arg: WsInfo) => void,
-    insStatus: (arg: WsInsertionStatus) => void,
-    insertion: (arg: WsInsertion) => void,
+    completion: (arg: WsCompletionReport) => void,
 ) {
     let m = JSON.parse(msg)
     let t = m["type"]
     switch (t) {
-        case "FatalError":
-            fatal(m as WsFatalError)
+        case "Error":
+            error(m as WsError)
             break;
         case "Info":
             info(m as WsInfo)
             break;
-        case "InsertionStatus":
-            insStatus(m as WsInsertionStatus)
-            break;
-        case "Insertion":
-            insertion(m as WsInsertion)
+        case "CompletionReport":
+            completion(m as WsCompletionReport)
             break;
     }
 }

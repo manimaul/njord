@@ -48,9 +48,11 @@ class GeoJsonDao : Dao() {
             setString(1, layerName)
             setLong(2, chartId)
         }
-        stmt.executeQuery().featureRecords().fold(FeatureCollection()) { acc, feature ->
-            acc.apply {
-                addFeature(feature)
+        stmt.executeQuery().use {
+            it.featureRecords().fold(FeatureCollection()) { acc, feature ->
+                acc.apply {
+                    addFeature(feature)
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.madrona.njord.endpoints
 
+import io.ktor.server.request.*
 import io.ktor.server.util.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
@@ -41,9 +42,11 @@ class ChartWebSocketHandler(
             ws.call.request.queryParameters.getAll("file")
         ) { uuid, files ->
             scope.launch {
+                log.info("processing files for uuid = $uuid")
                 ws.processFiles(EncUpload(files, uuid))
             }
         } ?: run {
+            log.error("ws invalid query params ${ws.call.request.queryString()}")
             ws.sendMessage(
                 WsMsg.FatalError(
                     message = "invalid query params",
@@ -57,8 +60,8 @@ class ChartWebSocketHandler(
                 is Frame.Text -> {
                     log.info("ws received ${frame.readText()}")
                 }
-
                 else -> {
+                    log.error("ws received unknown frame")
                 }
             }
         }
@@ -110,7 +113,8 @@ class ChartWebSocketHandler(
                             )
                         )
                     }
-                    s57.layerGeoJsonSequence(exLayers).forEach { (name, fc) ->
+                    val layersToInsert = s57.layerGeoJsonSequence(exLayers)
+                    layersToInsert.forEach { (name, fc) ->
                         val count = geoJsonDao.insertAsync(
                             FeatureInsert(
                                 layerName = name,

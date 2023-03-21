@@ -14,23 +14,21 @@ class FeatureDao : Dao() {
             """SELECT ST_AsText(ST_Centroid(geom)), props, charts.name, charts.zoom
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE layer = ?; 
             """.trimIndent()
-        ).apply { setString(1, layer) }.executeQuery().let {
-            sequence {
-                while (it.next()) {
+        ).apply { setString(1, layer) }.executeQuery().use {
+            generateSequence {
+                if (it.next()) {
                     val wkt = it.getString(1)
                     val coord = WKTReader().read(wkt).coordinate
-                    yield(
-                        LayerQueryResult(
-                            lat = coord.y,
-                            lng = coord.x,
-                            zoom = it.getFloat(4),
-                            props = objectMapper.readValue(it.getString(2)),
-                            chartName = it.getString(3)
-                        )
+                    LayerQueryResult(
+                        lat = coord.y,
+                        lng = coord.x,
+                        zoom = it.getFloat(4),
+                        props = objectMapper.readValue(it.getString(2)),
+                        chartName = it.getString(3)
                     )
-                }
-            }
-        }.toList()
+                } else null
+            }.toList()
+        }
     }
 
     /**
@@ -44,25 +42,23 @@ class FeatureDao : Dao() {
                 FROM features WHERE props->'LNAM' = to_jsonb(?::text);""".trimIndent()
         ).apply {
             setString(1, lnam)
-        }.executeQuery().featureRecord().firstOrNull()
+        }.executeQuery().use { it.featureRecord().firstOrNull() }
     }
 
     private fun ResultSet.featureRecord(): Sequence<FeatureRecord> {
-        return sequence {
-            while (next()) {
+        return generateSequence {
+            if (next()) {
                 var i = 0
-                yield(
-                    FeatureRecord(
-                        id = getLong(++i),
-                        layer = getString(++i),
-                        geom = objectMapper.readValue(getString(++i)),
-                        props = objectMapper.readValue(getString(++i)),
-                        chartId = getLong(++i),
-                        zoomMax = getInt(++i),
-                        zoomMin = getInt(++i),
-                    )
+                FeatureRecord(
+                    id = getLong(++i),
+                    layer = getString(++i),
+                    geom = objectMapper.readValue(getString(++i)),
+                    props = objectMapper.readValue(getString(++i)),
+                    chartId = getLong(++i),
+                    zoomMax = getInt(++i),
+                    zoomMin = getInt(++i),
                 )
-            }
+            } else null
         }
     }
 }

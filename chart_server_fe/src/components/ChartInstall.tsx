@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {Admin, useAdmin} from "../Admin";
 import Loading from "./Loading";
+import {handleMessage, WsFatalError, WsInfo, WsInsertion, WsInsertionStatus, wsUri} from "../WsMsg";
 
 type ChartFormProps = {
     onSubmit: (data: FormData) => void
@@ -27,18 +28,19 @@ function ChartInstallForm(props: ChartFormProps) {
     </>
 }
 
-type EncUpload = {
+export type EncUpload = {
     files: string[],
     uuid: string
 }
 
-function queryParams(upload: EncUpload, admin: Admin | null) : string {
+function queryParams(upload: EncUpload, admin: Admin | null): string {
     let files = ""
     upload.files.forEach(ea => {
-        files = files +`&file=${encodeURIComponent(ea)}`
+        files = files + `&file=${encodeURIComponent(ea)}`
     })
     return `?uuid=${encodeURIComponent(upload.uuid)}&signature=${encodeURIComponent(admin?.signatureEncoded ?? "")}${files}`
 }
+
 export function ChartInstall() {
     const [websocket, setWebsocket] = useState<WebSocket | null>(null)
     const [message, setMessage] = useState<string | null>(null)
@@ -46,24 +48,42 @@ export function ChartInstall() {
     const [upload, setUpload] = useState<EncUpload | null>(null)
     const [admin] = useAdmin()
 
+    function wsFatalError(msg: WsFatalError) {
+        console.log(`insertionError ${JSON.stringify(msg)}`)
+    }
+
+    function wsInfo(msg: WsInfo) {
+        console.log(`insertionInfo ${JSON.stringify(msg)}`)
+    }
+
+    function wsInsertionStatus(msg: WsInsertionStatus) {
+        console.log(`insertionStatus ${JSON.stringify(msg)}`)
+    }
+
+    function wsInsertion(msg: WsInsertion) {
+        console.log(`insertion ${JSON.stringify(msg)}`)
+    }
+
     function setupWs(eu: EncUpload) {
-        let baseUri = (window.location.protocol === 'https:' && 'wss://' || 'ws://') + window.location.hostname + ":9000";
-        let uri = `${baseUri}/v1/ws/enc_process${queryParams(eu, admin)}`
-        let ws = new WebSocket(uri)
+        let ws = new WebSocket(wsUri(eu, admin))
         ws.onclose = (event) => {
+            console.log(`ws close ${JSON.stringify(event)}`)
             setWebsocket(null)
             setUpload(null)
         }
-        ws.onerror= (event) => {
+        ws.onerror = (event) => {
+            console.log(`ws error ${JSON.stringify(event)}`)
             setWebsocket(null)
             setMessage("ERROR")
             setUpload(null)
         }
-        ws.onopen= (event) => {
+        ws.onopen = (event) => {
+            console.log(`ws open ${JSON.stringify(event)}`)
             setWebsocket(ws)
         }
-        ws.onmessage= (event) => {
-            setMessage(JSON.stringify(event.data))
+        ws.onmessage = (event) => {
+            console.log(`ws message ${JSON.stringify(event)}`)
+            handleMessage(event.data, wsFatalError, wsInfo, wsInsertionStatus, wsInsertion)
         }
     }
     async function upLoad(data: FormData) {
@@ -93,12 +113,12 @@ export function ChartInstall() {
         </>
         }
         {loading &&
-            <Loading />
+            <Loading/>
         }
         {upload &&
-           <p >upload uuid: {`${upload.uuid}`}</p>
+            <p>upload uuid: {`${upload.uuid}`}</p>
         }
-        { message &&
+        {message &&
             <p> message: {`${message}`}</p>
         }
     </div>

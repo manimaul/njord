@@ -20,29 +20,27 @@ class ChartDao(
     private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
 ) : Dao() {
 
-    private fun ResultSet.chart(layers: List<String>) = sequence {
-        while (next()) {
+    private fun ResultSet.chart(layers: List<String>) = generateSequence {
+        if (next()) {
             var i = 0
-            yield(
-                Chart(
-                    id = getLong(++i),
-                    name = getString(++i),
-                    scale = getInt(++i),
-                    fileName = getString(++i),
-                    updated = getString(++i),
-                    issued = getString(++i),
-                    zoom = getInt(++i),
-                    covr = Feature().apply { geometry = objectMapper.readValue(getString(++i)) },
-                    bounds = getBytes(++i).let {
-                        val env = WKBReader().read(it).envelopeInternal
-                        Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
-                    },
-                    layers = layers,
-                    dsidProps = objectMapper.readValue(getString(++i)),
-                    chartTxt = objectMapper.readValue(getString(++i)),
-                )
+            Chart(
+                id = getLong(++i),
+                name = getString(++i),
+                scale = getInt(++i),
+                fileName = getString(++i),
+                updated = getString(++i),
+                issued = getString(++i),
+                zoom = getInt(++i),
+                covr = Feature().apply { geometry = objectMapper.readValue(getString(++i)) },
+                bounds = getBytes(++i).let {
+                    val env = WKBReader().read(it).envelopeInternal
+                    Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
+                },
+                layers = layers,
+                dsidProps = objectMapper.readValue(getString(++i)),
+                chartTxt = objectMapper.readValue(getString(++i)),
             )
-        }
+        } else null
     }
 
     fun findChartsWithLayerAsync(layer: String): Deferred<List<Chart>?> = sqlOpAsync { conn ->
@@ -64,12 +62,16 @@ class ChartDao(
         ).apply {
             setLong(1, id)
         }.executeQuery().let {
-            sequence {
-                while (it.next()) {
-                    yield(it.getString(1))
-                }
+            it.use {
+                generateSequence {
+                    if (it.next()) {
+                        it.getString(1)
+                    } else {
+                        null
+                    }
+                }.toList()
             }
-        }.toList()
+        }
     }
 
     /**
@@ -105,17 +107,17 @@ class ChartDao(
                 setLong(++i, chartId)
                 setInt(++i, z)
             }.executeQuery().let { rs ->
-                sequence {
-                    while (rs.next()) {
-                        yield(
+                rs.use {
+                    generateSequence {
+                        if (rs.next()) {
                             ChartFeature(
                                 geomWKB = rs.getBytes(1),
                                 props = objectMapper.readValue(rs.getString(2)),
                                 layer = rs.getString(3)
                             )
-                        )
-                    }
-                }.toList()
+                        } else null
+                    }.toList()
+                }
             }
             tCtx.stop()
             result
@@ -137,19 +139,19 @@ class ChartDao(
         ).apply {
             setBytes(1, WKBWriter().write(polygon))
         }.executeQuery()?.let { rs ->
-            val result = sequence {
-                while (rs.next()) {
-                    val id = rs.getLong(1)
-                    yield(
+            val result = rs.use {
+                generateSequence {
+                    if (rs.next()) {
+                        val id = rs.getLong(1)
                         ChartInfo(
                             id = id,
                             scale = rs.getInt(2),
                             zoom = rs.getInt(3),
                             covrWKB = rs.getBytes(4)
                         )
-                    )
-                }
-            }.toList()
+                    } else null
+                }.toList()
+            }
             tCtx.stop()
             result
         }
@@ -176,7 +178,7 @@ class ChartDao(
         ).apply {
             setLong(1, id)
         }
-        stmt.executeQuery().chart(findLayers(id, conn)).firstOrNull()
+        stmt.executeQuery().use { it.chart(findLayers(id, conn)).firstOrNull()  }
     }
 
     fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
@@ -223,9 +225,9 @@ class ChartDao(
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
             stmt.generatedKeys.use { rs ->
-                rs.chart(layers = emptyList())
+                rs.use { it.chart(layers = emptyList()).firstOrNull() }
             }
-        }?.firstOrNull()
+        }
     }
 
 

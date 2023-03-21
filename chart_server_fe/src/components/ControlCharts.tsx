@@ -1,28 +1,23 @@
 import React, {useState} from "react";
 import {useRequest} from "../Effects";
 import {Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import {useAdmin} from "./Admin";
+import {useAdmin} from "../Admin";
 import Form from "react-bootstrap/Form";
 
 type ChartProps = {
     id: number;
     name: string;
+    featureCount: number;
 };
-
-export type Bounds = {
-    leftLng: number;
-    topLat: number;
-    rightLng: number;
-    bottomLat: number;
-}
 
 export function ControlCharts() {
     const [filter, setFilter] = useState("")
     const [charts, setCharts] = useState<Array<ChartProps>>([])
     const [reload] = useRequest("/v1/chart_catalog", setCharts)
     const [admin] = useAdmin()
+    let navigate = useNavigate();
 
     async function deleteChart(ids: number[]) {
         setCharts([])
@@ -52,13 +47,19 @@ export function ControlCharts() {
         <div>
             <h2>Installed S57 ENCs</h2>
             {admin &&
-                <Form.Control
-                    autoFocus
-                    className="my-2"
-                    placeholder="Type to filter name..."
-                    onChange={(e) => setFilter(e.target.value)}
-                    value={filter}
-                />
+                <>
+                    <Button variant="outline-success" onClick={() => {
+                        navigate('/chart/install')
+                    }}>Install charts
+                    </Button>
+                    <Form.Control
+                        autoFocus
+                        className="my-2"
+                        placeholder="Type to filter name..."
+                        onChange={(e) => setFilter(e.target.value)}
+                        value={filter}
+                    />
+                </>
             }
             {
                 admin && filter.length > 0 &&
@@ -66,8 +67,8 @@ export function ControlCharts() {
                     <Button
                         variant="outline-danger"
                         size="sm" onClick={() => {
-                            let toDelete = filteredCharts().map(each => each.id)
-                            deleteChart(toDelete)
+                        let toDelete = filteredCharts().map(each => each.id)
+                        deleteChart(toDelete)
                     }
                     }>Delete All
                     </Button>
@@ -79,9 +80,8 @@ export function ControlCharts() {
                 <thead>
                 <tr>
                     <th>Record ID</th>
-                    <th>
-                        Chart Name
-                    </th>
+                    <th>Chart Name</th>
+                    <th>Geometry Count</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -89,18 +89,8 @@ export function ControlCharts() {
                     return (
                         <tr key={i}>
                             <td>{each.id}</td>
-                            <td>
-                                <Link to={`/chart/${each.id}`}>{each.name}</Link>{' '}
-                                {admin &&
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm" onClick={() => {
-                                        deleteChart([each.id])
-                                    }
-                                    }>Delete
-                                    </Button>
-                                }
-                            </td>
+                            <td><Link to={`/chart/${each.id}`}>{each.name}</Link></td>
+                            <td>{each.featureCount}</td>
                         </tr>
                     )
                 })}

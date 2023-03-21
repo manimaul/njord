@@ -15,7 +15,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import ChartQuery from './ChartQuery';
 import {MapLibreEvent, MapMouseEvent, Map, MapGeoJSONFeature} from "maplibre-gl";
 import {DepthUnit} from "../App";
-import {Bounds} from "./ControlCharts";
+import {Bounds} from "./Chartinfo";
 
 maplibregl.workerClass = MapLibreWorker;
 

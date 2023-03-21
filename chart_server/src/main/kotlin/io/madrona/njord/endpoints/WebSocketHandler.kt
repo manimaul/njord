@@ -14,6 +14,8 @@ import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.FeatureInsert
+import io.madrona.njord.model.ws.WsMsg
+import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -42,7 +44,11 @@ class ChartWebSocketHandler(
                 ws.processFiles(EncUpload(files, uuid))
             }
         } ?: run {
-            ws.send("invalid query params")
+            ws.sendMessage(
+                WsMsg.FatalError(
+                    message = "invalid query params",
+                )
+            )
             ws.close(CloseReason(CloseReason.Codes.NORMAL, "uuid and or files not provided"))
         }
 
@@ -51,6 +57,7 @@ class ChartWebSocketHandler(
                 is Frame.Text -> {
                     log.info("ws received ${frame.readText()}")
                 }
+
                 else -> {
                 }
             }
@@ -70,20 +77,38 @@ class ChartWebSocketHandler(
             unzipFiles(encUpload).filter {
                 it.name.endsWith(".000")
             }.map {
-                send("reading ${it.name}")
+                sendMessage(
+                    WsMsg.InsertionStatus(
+                        message = "reading file",
+                        chartName = it.name,
+                        isError = false
+                    )
+                )
                 S57(it)
             }.forEach { s57 ->
                 when (val insert = s57.chartInsertInfo()) {
                     is InsertError -> {
                         scope.launch {
-                            send("error creating chart ${s57.file.name} msg = ${insert.msg}")
+                            sendMessage(
+                                WsMsg.InsertionStatus(
+                                    message = insert.msg,
+                                    chartName = s57.file.name,
+                                    isError = true
+                                )
+                            )
                         }
                         null
                     }
+
                     is InsertSuccess -> chartDao.insertAsync(insert.value).await()
                 }?.let { chart ->
                     scope.launch {
-                        send("created chart id=${chart.id}")
+                        sendMessage(
+                            WsMsg.InsertionStatus(
+                                chartName = chart.name,
+                                message = "created chart id=${chart.id}"
+                            )
+                        )
                     }
                     s57.layerGeoJsonSequence(exLayers).forEach { (name, fc) ->
                         val count = geoJsonDao.insertAsync(
@@ -94,7 +119,12 @@ class ChartWebSocketHandler(
                             )
                         ).await()
                         scope.launch {
-                            send("created $count records for layer $name")
+                            sendMessage(
+                                WsMsg.Insertion(
+                                    chartName = chart.name,
+                                    featureCount = count ?: 0,
+                                )
+                            )
                         }
                     }
                 }
@@ -112,7 +142,9 @@ class ChartWebSocketHandler(
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
                             if (!entry.name.startsWith("__MACOSX")) {
-                                send("extracting file: ${entry.name}")
+                                sendMessage(
+                                    WsMsg.Info("extracting file: ${entry.name}")
+                                )
                                 val outFile = File(dir, entry.name)
                                 outFile.parentFile?.let {
                                     if (!it.exists()) {

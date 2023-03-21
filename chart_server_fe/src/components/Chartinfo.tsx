@@ -5,7 +5,6 @@ import Loading from "./Loading";
 import {Table} from "react-bootstrap";
 import {setDestination} from "./Enc";
 import Button from "react-bootstrap/Button";
-import {Bounds} from "./ControlCharts";
 
 export type ChartInfoResponse = {
     id: number;
@@ -20,6 +19,13 @@ export type ChartInfoResponse = {
     layers: Array<string>;
     chart_txt: Record<string, string>;
     dsid_props: Record<string, string | number>;
+}
+
+export type Bounds = {
+    leftLng: number;
+    topLat: number;
+    rightLng: number;
+    bottomLat: number;
 }
 export default function ChartInfo() {
     let {id} = useParams();

@@ -7,6 +7,7 @@ import {ControlPanel} from "./components/ControlPanel";
 import ChartInfo from "./components/Chartinfo";
 import {LayerLocate} from "./components/LayerLocate";
 import HomeAbout from "./components/HomeAbout";
+import {ChartInstall} from "./components/ChartInstall";
 
 const NoMatch = () => <header className="App Header">
     <p>Page not found!</p>
@@ -48,6 +49,7 @@ function App() {
                     <Route index element={<HomeAbout/>}/>
                     <Route path="enc" element={<Enc depths={depths}/>}/>
                     <Route path="chart/:id" element={<ChartInfo/>}/>
+                    <Route path="chart/install" element={<ChartInstall/>}/>
                     <Route path="layer/:layer" element={<LayerLocate/>}/>
                     <Route path="control/:page" element={<ControlPanel/>}>
                         <Route path=":object" element={<ControlPanel/>}>

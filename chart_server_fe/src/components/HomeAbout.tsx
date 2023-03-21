@@ -4,7 +4,7 @@ import njord from "../njord.png";
 import {Table} from "react-bootstrap";
 import Footer from "./Footer";
 import "../App.css"
-import {useAdmin} from "./Admin";
+import {useAdmin} from "../Admin";
 
 export default function HomeAbout() {
     const [apiInfo, initVersion] = useState({

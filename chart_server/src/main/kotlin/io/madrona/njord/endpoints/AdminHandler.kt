@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
@@ -43,7 +42,7 @@ class AdminUtil(
         val signature = createSignature()
         return AdminResponse(
             signature = signature,
-            signatureEncoded = Base64.getEncoder().encodeToString(objectMapper.writeValueAsBytes(signature))
+            signatureEncoded = Base64.getUrlEncoder().encodeToString(objectMapper.writeValueAsBytes(signature))
         )
     }
 
@@ -59,7 +58,7 @@ class AdminUtil(
         hmac.update(config.externalBaseUrl.toByteArray())
         hmac.update(dateString.toByteArray())
         hmac.update(uuid.toByteArray())
-        val signature = Base64.getEncoder().encodeToString(hmac.doFinal())
+        val signature = Base64.getUrlEncoder().encodeToString(hmac.doFinal())
         return AdminSignature(
             date = dateString,
             signature = signature,
@@ -69,7 +68,7 @@ class AdminUtil(
     }
 
     fun veryifySignature(query: String): Boolean {
-        val data = Base64.getDecoder().decode(query)
+        val data = Base64.getUrlDecoder().decode(query)
         return verifySignature(objectMapper.readValue(data))
     }
 
@@ -85,7 +84,7 @@ class AdminUtil(
         hmac.update(config.externalBaseUrl.toByteArray())
         hmac.update(signature.date.toByteArray())
         hmac.update(signature.uuid.toByteArray())
-        val checkSignature = Base64.getEncoder().encodeToString(hmac.doFinal())
+        val checkSignature = Base64.getUrlEncoder().encodeToString(hmac.doFinal())
         return checkSignature.equals(signature.signature)
     }
 }

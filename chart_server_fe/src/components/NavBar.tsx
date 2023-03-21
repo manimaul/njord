@@ -7,7 +7,7 @@ import {NavDropdown} from "react-bootstrap";
 import {DepthUnit} from "../App";
 import '../App.css';
 import Button from "react-bootstrap/Button";
-import {useAdmin} from "./Admin";
+import {useAdmin} from "../Admin";
 
 type NavLinkProps = {
     path: string,

@@ -182,10 +182,9 @@ class ChartDao(
     fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
         val stmt = conn.prepareStatement(
             """
-            SELECT
-                id, 
-                name
-            FROM charts;
+            SELECT charts.id, charts.name, COUNT(features.id) FROM charts
+            LEFT JOIN features ON features.chart_id = charts.id
+            GROUP BY charts.id;
             """.trimIndent()
         )
         stmt.executeQuery().let {
@@ -195,6 +194,7 @@ class ChartDao(
                     ChartItem(
                         id = it.getLong(1),
                         name = it.getString(2),
+                        featureCount = it.getInt(3),
                     )
                 )
             }

@@ -1,13 +1,8 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {useAdmin} from "../Admin";
-import Loading from "./Loading";
-import {
-    handleMessage, InsertItem, WsCompletionReport, WsError,
-    WsInfo,
-    wsUri
-} from "../WsMsg";
+import {InsertItem, WsCompletionReport} from "../WsMsg";
+import useChartInstallViewModel from "../viewmodel/ChartInstallViewModel";
 import {ProgressBar} from "react-bootstrap";
 
 type ChartFormProps = {
@@ -33,109 +28,53 @@ function ChartInstallForm(props: ChartFormProps) {
     </>
 }
 
-export type EncUpload = {
-    files: string[],
-    uuid: string
-}
-
 export function ChartInstall() {
-    const [websocket, setWebsocket] = useState<WebSocket | null>(null)
-    const [info, setInfo] = useState<WsInfo | null>(null)
-    const [error, setError] = useState<WsError | null>(null)
-    const [loading, setLoading] = useState(false)
-    const [upload, setUpload] = useState<EncUpload | null>(null)
-    const [admin] = useAdmin()
-    const [completion, setCompletion] = useState<WsCompletionReport | null>(null)
-    const [progress, setProgress] = useState<number>(-1)
-
-    function setupWs(eu: EncUpload) {
-        let ws = new WebSocket(wsUri(eu, admin))
-        ws.onclose = (event) => {
-            console.log(`ws close ${JSON.stringify(event)}`)
-            setWebsocket(null)
-            setUpload(null)
-        }
-        ws.onerror = (event) => {
-            console.log(`ws error ${JSON.stringify(event)}`)
-            setWebsocket(null)
-            setUpload(null)
-        }
-        ws.onopen = (event) => {
-            console.log(`ws open ${JSON.stringify(event)}`)
-            setWebsocket(ws)
-        }
-        ws.onmessage = (event) => {
-            console.log(`ws message ${JSON.stringify(event)}`)
-            handleMessage(event.data, setError, (inf) => {
-                let pct = Math.round((inf.num / inf.total) * 100)
-                setProgress(pct)
-                setInfo(inf)
-            }, (completion) => {
-                setProgress(100)
-                setCompletion(completion)
-            })
-        }
-    }
-
-    async function upLoad(data: FormData) {
-        let response = await fetch(`/v1/enc_save?signature=${admin?.signatureEncoded}`, {
-            method: 'POST',
-            body: data
-        });
-        try {
-            let encUpload: EncUpload = JSON.parse(await response.text())
-            setUpload(encUpload)
-            setupWs(encUpload)
-        } catch (e) {
-            console.log("error uploading data")
-        }
-        setLoading(false)
-    }
+    const [state, upload, reload] = useChartInstallViewModel()
 
     return <div className="container Content">
-        <h2>Install S57 ENCs</h2>
-        {!loading && !websocket && !completion && <>
+        {!(state.uploadProgress >= 0) && state.admin && <>
             <ChartInstallForm onSubmit={(data) => {
-                setLoading(true)
+                // setLoading(true)
                 console.log("submitted")
-                upLoad(data)
+                upload(data)
             }
             }/>
         </>
         }
-        {loading &&
-            <Loading/>
-        }
-        {progress >= 0 &&
+        {!state.admin &&
             <>
-                <ProgressBar variant="success" now={progress}
-                             label={`${progress}%`}/>
+                <p>Admin access required!</p>
             </>
         }
-        {
-            error && <>
-                <h5>Error: {error.message}</h5>
-            </>
-        }
-        {upload && progress < 0 &&
+        {state.uploadProgress >= 0 &&
             <>
-                <h4>Unzipping...</h4>
-                <p>upload uuid: {`${upload.uuid}`}</p>
+                <ProgressBar variant="success" min={0} max={1.0} now={state.uploadProgress} />
+                <p>Uploading file...</p>
             </>
         }
-        {upload && progress > 0 &&
-            <p>upload uuid: {`${upload.uuid}`}</p>
-        }
-        {info && !completion &&
+        {state.extractProgress >= 0 &&
             <>
-                <p>S57 {info.num} of {info.total}</p>
-                <p>{info.name}</p>
-                <p>features: {info.featureCount}</p>
-                <p>layer: {info.layer}</p>
+                <ProgressBar variant="success" min={0} max={1.0} now={state.extractProgress} />
+                <p>Extracting file(s)...</p>
             </>
         }
-        {
-            !loading && completion && <ChartTable report={completion}/>
+        {state.installProgress >= 0 &&
+            <>
+                <ProgressBar variant="success" min={0} max={1.0} now={state.installProgress} />
+                <p>Installing ENC geometries...</p>
+            </>
+        }
+        {state.info &&
+            <>
+                <p>S57 {state.info.num} of {state.info.total}</p>
+                <p>{state.info.message}</p>
+            </>
+        }
+        {state.report &&
+            <>
+               <Button variant="outline-secondary" size="sm" onClick={reload}>Reload</Button>
+               <ChartTable report={state.report}  />
+            </>
         }
     </div>
 }
@@ -157,7 +96,7 @@ function ChartTable(props: ChartTableProps) {
         <p>Total Elapsed Time (Seconds) {props.report.ms / 1000}</p>
         {
             (props.report.failedCharts.length > 0) && <>
-                <h5>Failed Charts</h5>
+                <h1>Failed Charts</h1>
                 {props.report.failedCharts.map(name => <p>{name}</p>)}
             </>
         }

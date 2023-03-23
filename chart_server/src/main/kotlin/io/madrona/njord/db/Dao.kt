@@ -3,30 +3,26 @@ package io.madrona.njord.db
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import java.sql.Connection
 import java.sql.SQLException
 import javax.sql.DataSource
+import kotlin.coroutines.CoroutineContext
 
 abstract class Dao(
     protected val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val ds: DataSource = Singletons.ds,
-    private val scope: CoroutineScope = Singletons.ioScope
 ) {
     protected val log = logger()
 
-    fun <T> sqlOpAsync(msg: String = "error", block: suspend (conn: Connection) -> T): Deferred<T?> {
-        return scope.async {
-            try {
-                ds.connection.use {
-                    block(it)
-                }
-            } catch (e: SQLException) {
-                log.error(msg, e)
-                null
+    suspend fun <T> sqlOpAsync(msg: String = "error", block: suspend (conn: Connection) -> T): T? {
+        return try {
+            ds.connection.use {
+                block(it)
             }
+        } catch (e: SQLException) {
+            log.error(msg, e)
+            null
         }
     }
 }

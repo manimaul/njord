@@ -49,7 +49,6 @@ function App() {
                     <Route index element={<HomeAbout/>}/>
                     <Route path="enc" element={<Enc depths={depths}/>}/>
                     <Route path="chart/:id" element={<ChartInfo/>}/>
-                    <Route path="chart/install" element={<ChartInstall/>}/>
                     <Route path="layer/:layer" element={<LayerLocate/>}/>
                     <Route path="control/:page" element={<ControlPanel/>}>
                         <Route path=":object" element={<ControlPanel/>}>

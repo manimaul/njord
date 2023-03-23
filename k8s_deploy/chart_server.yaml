@@ -79,6 +79,7 @@ data:
         pgHost=njord-postgis-svc.njord.svc.cluster.local
         pgPort=5432
         pgDatabase=s57server
+        pgConnectionPoolSize=10 
 
         host = "0.0.0.0"
         port = 80

@@ -2,10 +2,10 @@ package io.madrona.njord.db
 
 import com.codahale.metrics.Timer
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.madrona.njord.ChartCatalog
 import io.madrona.njord.ChartItem
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.*
-import kotlinx.coroutines.Deferred
 import mil.nga.sf.geojson.Feature
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.Polygon
@@ -18,6 +18,7 @@ import java.sql.Statement
 class ChartDao(
     private val findInfoAsyncTimer: Timer = Singletons.metrics.timer("findInfoAsync"),
     private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
+    private val featureDao: FeatureDao = FeatureDao(),
 ) : Dao() {
 
     private fun ResultSet.chart(layers: List<String>) = generateSequence {
@@ -43,7 +44,7 @@ class ChartDao(
         } else null
     }
 
-    fun findChartsWithLayerAsync(layer: String): Deferred<List<Chart>?> = sqlOpAsync { conn ->
+    suspend fun findChartsWithLayerAsync(layer: String): List<Chart>? = sqlOpAsync { conn ->
         val statement = conn.prepareStatement("SELECT chart_id FROM features WHERE layer = ?;").apply {
             setString(1, layer)
         }
@@ -53,7 +54,7 @@ class ChartDao(
                 result.add(it.getLong(1))
             }
         }
-        result.mapNotNull { findAsync(it).await() }
+        result.mapNotNull { findAsync(it) }
     }
 
     private fun findLayers(id: Long, conn: Connection): List<String> {
@@ -77,13 +78,13 @@ class ChartDao(
     /**
      * https://postgis.net/docs/reference.html
      */
-    fun findChartFeaturesAsync(
+    suspend fun findChartFeaturesAsync(
         covered: Geometry,
         x: Int,
         y: Int,
         z: Int,
         chartId: Long
-    ): Deferred<List<ChartFeature>?> =
+    ): List<ChartFeature>? =
         sqlOpAsync { conn ->
             val tCtx = findChartFeaturesAsyncTimer.time()
             val result = conn.prepareStatement(
@@ -123,7 +124,7 @@ class ChartDao(
             result
         }
 
-    fun findInfoAsync(polygon: Polygon): Deferred<List<ChartInfo>?> = sqlOpAsync { conn ->
+    suspend fun findInfoAsync(polygon: Polygon): List<ChartInfo>? = sqlOpAsync { conn ->
         val tCtx = findInfoAsyncTimer.time()
         conn.prepareStatement(
             """
@@ -157,7 +158,7 @@ class ChartDao(
         }
     }
 
-    fun findAsync(id: Long): Deferred<Chart?> = sqlOpAsync { conn ->
+    suspend fun findAsync(id: Long): Chart? = sqlOpAsync { conn ->
         val stmt = conn.prepareStatement(
             """
             SELECT
@@ -181,32 +182,50 @@ class ChartDao(
         stmt.executeQuery().use { it.chart(findLayers(id, conn)).firstOrNull() }
     }
 
-    fun listAsync(): Deferred<List<ChartItem>?> = sqlOpAsync { conn ->
-        val stmt = conn.prepareStatement(
-            """
-            SELECT charts.id, charts.name, COUNT(features.id) FROM charts
-            LEFT JOIN features ON features.chart_id = charts.id
-            GROUP BY charts.id;
-            """.trimIndent()
-        )
-        stmt.executeQuery().let {
-            val result = mutableListOf<ChartItem>()
-            while (it.next()) {
-                result.add(
-                    ChartItem(
-                        id = it.getLong(1),
-                        name = it.getString(2),
-                        featureCount = it.getInt(3),
-                    )
-                )
-            }
-            result
+    private fun chartCount(conn: Connection): Int {
+        return conn.prepareStatement("SELECT COUNT(id) FROM charts;").executeQuery().use {
+            if (it.next()) it.getInt(1) else 0
         }
     }
 
-    fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Deferred<Chart?> = sqlOpAsync { conn ->
+    suspend fun listAsync(nextPageId: Long? = null): ChartCatalog? = sqlOpAsync { conn ->
+        val totalCount = chartCount(conn)
+        val stmt = conn.prepareStatement(
+            """SELECT id, name FROM charts WHERE id >= ? ORDER BY id LIMIT ${PAGE_SIZE + 1};
+            """.trimIndent()
+        ).apply {
+            setLong(1, nextPageId ?: 0L)
+        }
+        stmt.executeQuery().use {
+            val page = mutableListOf<ChartItem>()
+            var num = 0
+            var nextId: Long? = null
+            while (it.next() && num <= PAGE_SIZE) {
+                val id = it.getLong(1)
+                if (++num > PAGE_SIZE) {
+                    nextId = id
+                } else {
+                    val count = featureDao.featureCount(id)
+                    page.add(
+                        ChartItem(
+                            id = id,
+                            name = it.getString(2),
+                            featureCount = count,
+                        )
+                    )
+                }
+            }
+            ChartCatalog(
+                totalChartCount = totalCount,
+                nextId = nextId,
+                page = page
+            )
+        }
+    }
+
+    suspend fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Chart? = sqlOpAsync { conn ->
         if (overwrite) {
-            deleteAsync(name = chartInsert.name).await()
+            delete(name = chartInsert.name, conn)
         }
         val stmt = conn.prepareStatement(
             """
@@ -227,15 +246,14 @@ class ChartDao(
         }
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
-            stmt.generatedKeys.use { rs ->
-                rs.use { it.chart(layers = emptyList()).firstOrNull() }
+            stmt.generatedKeys?.use { rs ->
+                rs.chart(layers = emptyList()).firstOrNull()
             }
         }
     }
 
-
-    fun deleteAsync(name: String): Deferred<Boolean?> = sqlOpAsync { conn ->
-        conn.prepareStatement(
+    private fun delete(name: String, conn: Connection): Boolean {
+        return conn.prepareStatement(
             """
                 DELETE from features WHERE features.chart_id IN
                 (SELECT id from charts where name = ?);
@@ -248,7 +266,7 @@ class ChartDao(
         }.executeUpdate() > 0
     }
 
-    fun deleteAsync(id: Long): Deferred<Boolean?> = sqlOpAsync { conn ->
+    suspend fun deleteAsync(id: Long): Boolean? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """
                 DELETE FROM features WHERE chart_id=?;
@@ -260,5 +278,8 @@ class ChartDao(
             setLong(2, id)
         }.executeUpdate() > 0
     }
-}
 
+    companion object {
+        const val PAGE_SIZE = 10
+    }
+}

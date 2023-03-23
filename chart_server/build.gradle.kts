@@ -5,7 +5,7 @@ plugins {
     application
     kotlin(module = "jvm") version ktVersion
     kotlin(module = "kapt") version ktVersion
-    id("io.ktor.plugin") version "2.2.1"
+    id("io.ktor.plugin") version ktorVersion
 }
 
 repositories {
@@ -28,9 +28,6 @@ tasks.compileJava {
    sourceCompatibility = "17"
 }
 
-val kotlinVersion = "1.8.0"
-val ktorVersion = "2.2.1"
-
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -47,17 +44,22 @@ dependencies {
     implementation("io.ktor:ktor-serialization-jackson-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-cors:${ktorVersion})")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0")
-    implementation("ch.qos.logback:logback-classic:1.2.9")
+    implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("com.google.protobuf:protobuf-java:3.19.6")
-    implementation("org.locationtech.jts:jts-core:1.18.2")
-    implementation("mil.nga.sf:sf-geojson:2.0.4")
-    implementation("org.postgresql:postgresql:42.2.27")
-    implementation("com.zaxxer:HikariCP:5.0.0")
-    implementation("io.dropwizard.metrics:metrics-core:4.2.4")
+    implementation("org.locationtech.jts:jts-core:1.19.0")
+    implementation("mil.nga.sf:sf-geojson:3.3.2")
+    implementation("org.postgresql:postgresql:42.5.4")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("io.dropwizard.metrics:metrics-core:4.2.17")
 
-    testImplementation("org.mockito:mockito-core:2.18.3")
+    testImplementation("org.mockito:mockito-core:5.2.0")
     testImplementation("org.hamcrest:hamcrest-all:1.3")
+}
+
+tasks {
+    test {
+        jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
+    }
 }
 
 tasks.named<JavaExec>("run") {

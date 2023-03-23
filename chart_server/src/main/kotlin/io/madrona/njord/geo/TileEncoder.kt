@@ -76,11 +76,11 @@ class TileEncoder(
         val ctx = timer.time()
         var include: Geometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
         var covered: Geometry = geometryFactory.createPolygon()
-        chartDao.findInfoAsync(tileEnvelope).await()?.let { charts ->
+        chartDao.findInfoAsync(tileEnvelope)?.let { charts ->
             charts.forEach { chart ->
                 val chartGeo = WKBReader().read(chart.covrWKB)
                 if (!include.isEmpty && chart.zoom in 0..z) {
-                    chartDao.findChartFeaturesAsync(covered, x, y, z, chart.id).await()?.filter {
+                    chartDao.findChartFeaturesAsync(covered, x, y, z, chart.id)?.filter {
                         it.geomWKB != null
                     }?.forEach { feature ->
                         val tileGeo = WKBReader().read(feature.geomWKB)

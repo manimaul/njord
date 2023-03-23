@@ -39,7 +39,7 @@ export function NavBar(props: NavBarProps) {
                     <Nav className="me-auto">
                         <NavLink path="/" label="About"/>
                         <NavLink path="/enc" label="ENC"/>
-                        <NavLink path="/control/charts" label="Control Panel"/>
+                        <NavLink path="/control/charts_catalog" label="Control Panel"/>
                         <NavDropdown title={"Depths: " + props.depths.toUpperCase()}
                                      id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() => {

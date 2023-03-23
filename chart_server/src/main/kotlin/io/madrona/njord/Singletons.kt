@@ -2,12 +2,9 @@ package io.madrona.njord
 
 import com.codahale.metrics.ConsoleReporter
 import com.codahale.metrics.MetricRegistry
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
@@ -18,9 +15,6 @@ import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.SpriteSheet
 import io.madrona.njord.util.ZFinder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.gdal.osr.SpatialReference
 import org.locationtech.jts.geom.GeometryFactory
 import java.util.concurrent.TimeUnit
@@ -38,14 +32,6 @@ object Singletons {
         }
     }
 
-    val yamlMapper: ObjectMapper by lazy {
-        ObjectMapper(
-            YAMLFactory()
-        ).registerKotlinModule()
-    }
-
-    val ioScope by lazy { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
-
     val config by lazy { ChartsConfig() }
 
     val spriteSheet by lazy { SpriteSheet() }
@@ -58,6 +44,9 @@ object Singletons {
         hc.addDataSourceProperty("cachePrepStmts", "true")
         hc.addDataSourceProperty("prepStmtCacheSize", "250")
         hc.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
+        hc.maximumPoolSize = config.pgConnectionPoolSize
+        hc.connectionTimeout = 120000
+        hc.leakDetectionThreshold = 300000
         HikariDataSource(hc)
     }
 
@@ -77,7 +66,7 @@ object Singletons {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build()
-                .start(30, TimeUnit.SECONDS)
+                .start(5, TimeUnit.MINUTES)
         }
     }
 

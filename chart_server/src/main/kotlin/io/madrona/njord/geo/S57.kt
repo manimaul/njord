@@ -8,6 +8,7 @@ import io.madrona.njord.db.Insertable
 import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.util.ZFinder
+import kotlinx.coroutines.*
 import mil.nga.sf.geojson.FeatureCollection
 import mil.nga.sf.geojson.FeatureConverter
 import org.gdal.gdal.Dataset
@@ -18,28 +19,47 @@ import org.gdal.ogr.Layer
 import org.gdal.ogr.ogrConstants.*
 import org.gdal.osr.SpatialReference
 import java.io.File
+import java.util.concurrent.Executors
 
 class S57(
     val file: File,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val zFinder: ZFinder = Singletons.zFinder,
-) {
-    private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
+    private val dispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
+) : CoroutineScope by CoroutineScope(dispatcher + SupervisorJob()) {
 
-    val layerNames: List<String> by lazy {
+    private val dataSet by lazy {
+        runBlocking { dataSourceAccess { gdal.OpenEx(file.absolutePath) } }
+    }
+
+    private suspend fun <R> dataSourceAccess(block: suspend CoroutineScope.() -> R): R {
+        return coroutineScope {
+            async(dispatcher) {
+                block()
+            }.await()
+        }
+    }
+
+    suspend fun layerNames(): List<String> {
+        return dataSourceAccess { layers }
+    }
+
+    private val layers: List<String> by lazy {
         dataSet.layers().map { it.GetName() }.toList()
     }
 
-    fun findLayer(name: String): FeatureCollection? {
-        return dataSet.GetLayer(name)?.featureCollection()
+    suspend fun findLayer(name: String): FeatureCollection? {
+        return dataSourceAccess {
+            dataSet.GetLayer(name)?.featureCollection()
+        }
     }
 
-    fun chartInsertInfo(): Insertable<ChartInsert> {
+    suspend fun chartInsertInfo(): Insertable<ChartInsert> {
         val chartTxt = file.parentFile.listFiles { _: File, name: String ->
             name.endsWith(".TXT", true)
         }?.map {
-            it.name to it.readText()
+            it.name to it.readText().replace('\u0000', ' ')
         }?.toMap() ?: emptyMap()
 
         val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
@@ -64,10 +84,12 @@ class S57(
         )
     }
 
-    fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<Pair<String, FeatureCollection>> {
-        return dataSet.layers().mapNotNull { layer ->
-            layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
-                it to layer.featureCollection()
+    suspend fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<Pair<String, FeatureCollection>> {
+        return dataSourceAccess {
+            dataSet.layers().mapNotNull { layer ->
+                layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
+                    it to layer.featureCollection()
+                }
             }
         }
     }
@@ -79,7 +101,7 @@ class S57(
      * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/DSID.json $(pwd)/US5WA22M.000 DSID
      * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/M_COVR.json $(pwd)/US5WA22M.000 M_COVR
      */
-    fun renderGeoJson(
+    suspend fun renderGeoJson(
         outDir: File = file.parentFile,
         exLayers: Set<String>? = null,
         msg: (String) -> Unit
@@ -136,8 +158,10 @@ class S57(
             OFTDateTime,
             OFTWideString,
             OFTString -> GetFieldAsString(id)
+
             OFTStringList,
             OFTWideStringList -> GetFieldAsStringList(id)
+
             OFTBinary -> GetFieldAsBinary(id)
             OFTInteger64 -> GetFieldAsInteger64(id)
             OFTInteger64List -> GetFieldAsStringList(id)
@@ -204,6 +228,21 @@ class S57(
         init {
             gdal.AllRegister()
             gdal.SetConfigOption(OGR_S57_OPTIONS_K, OGR_S57_OPTIONS_V)
+        }
+
+        fun from(file: File): S57? {
+            return file.takeIf { it.name.endsWith(".000") }?.let {
+                try {
+                    S57(it).takeIf {
+                        it.layers.isNotEmpty()
+                    }?: run {
+                        log.warn("empty layers in file ${file.absolutePath}")
+                        null
+                    }
+                } catch (e: Exception) {
+                    null
+                }
+            }
         }
     }
 }

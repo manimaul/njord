@@ -3,6 +3,7 @@ package io.madrona.njord.model.ws
 import com.fasterxml.jackson.annotation.JsonInclude
 import io.ktor.websocket.*
 import io.madrona.njord.Singletons
+
 /*
 s57 1 of 10
 US5WA26M
@@ -24,9 +25,7 @@ sealed class WsMsg {
     data class Info(
         val num: Int,
         val total: Int,
-        val name: String,
-        val layer: String,
-        val featureCount: Int,
+        val message: String,
     ) : WsMsg()
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,10 +39,16 @@ sealed class WsMsg {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     data class InsertItem(
-        val layerName: String,
         val chartName: String,
         val featureCount: Int,
     )
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    data class Extracting(
+        val step: Int,
+        val progress: Float,
+        val steps: Int = 2,
+    ) : WsMsg()
 }
 
 

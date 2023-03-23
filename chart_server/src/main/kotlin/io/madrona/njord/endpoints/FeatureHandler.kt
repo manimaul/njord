@@ -13,11 +13,11 @@ class FeatureHandler(
 
     override suspend fun handleGet(call: ApplicationCall) {
         call.request.queryParameters["layer"]?.let { layer ->
-            featureDao.findLayerPositions(layer).await()?.let {
+            featureDao.findLayerPositions(layer)?.let {
                 call.respond(it)
             }
         } ?: call.request.queryParameters["lnam"]?.let {
-            featureDao.findFeature(it).await()?.let { record ->
+            featureDao.findFeature(it)?.let { record ->
                 call.respond(record)
             }
         } ?: call.respond(HttpStatusCode.NotFound)

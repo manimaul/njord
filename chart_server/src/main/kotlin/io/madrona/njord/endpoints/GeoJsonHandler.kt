@@ -22,7 +22,7 @@ class GeoJsonHandler(
             call.request.queryParameters["chart_id"]?.toLongOrNull(),
             call.request.queryParameters["layer_name"]
         ) { id, name ->
-            geoJsonDao.fetchAsync(id, name).await()
+            geoJsonDao.fetchAsync(id, name)
         }?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.NotFound)
@@ -34,7 +34,7 @@ class GeoJsonHandler(
             call.request.queryParameters["chart_id"]?.toLongOrNull(),
             call.request.queryParameters["layer_name"]
         ) { id, name ->
-            chartDao.findAsync(id).await()?.let { chart ->
+            chartDao.findAsync(id)?.let { chart ->
                 FeatureInsert(
                     name,
                     chart,
@@ -42,7 +42,7 @@ class GeoJsonHandler(
                 )
             }
         }?.let { fi ->
-            geoJsonDao.insertAsync(fi).await()?.let { it to fi }
+            geoJsonDao.insertAsync(fi)?.let { it to fi }
         }?.let {
             if (it.first > 0) {
                 call.respond(HttpStatusCode.OK, it)

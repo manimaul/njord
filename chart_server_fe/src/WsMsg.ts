@@ -1,17 +1,21 @@
 import {Admin} from "./Admin";
-import {EncUpload} from "./components/ChartInstall";
+import {EncUpload} from "./viewmodel/ChartInstallViewModel";
 
 export type WsError = {
     message: string
     isFatal: boolean
 }
 
+export type WsExtracting = {
+    step: number
+    steps: number
+    progress: number
+}
+
 export type WsInfo = {
     num: number
     total: number
-    name: string
-    layer: string
-    featureCount: number
+    message: string
 }
 
 
@@ -24,7 +28,6 @@ export type WsCompletionReport = {
 }
 
 export type InsertItem = {
-    layerName: string
     chartName: string
     featureCount: number
 }
@@ -33,6 +36,7 @@ export function handleMessage(
     msg: string,
     error: (arg: WsError) => void,
     info: (arg: WsInfo) => void,
+    extracting: (arg: WsExtracting) => void,
     completion: (arg: WsCompletionReport) => void,
 ) {
     let m = JSON.parse(msg)
@@ -46,6 +50,9 @@ export function handleMessage(
             break;
         case "CompletionReport":
             completion(m as WsCompletionReport)
+            break;
+        case "Extracting":
+            extracting(m as WsExtracting)
             break;
     }
 }

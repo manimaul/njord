@@ -13,13 +13,13 @@ internal class TileSystemTest {
         val y = 2871
         val wgsGeom = subject.createTileClipPolygon(x, y, z)
         assertEquals(
-            WKTReader().read("POLYGON ((-122.4755859375 47.3090342477478, -122.431640625 47.3090342477478, -122.431640625 47.27922900257082, -122.4755859375 47.27922900257082, -122.4755859375 47.3090342477478))"),
+            WKTReader().read("POLYGON ((-122.4755859375 47.27922900257082, -122.431640625 47.27922900257082, -122.431640625 47.3090342477478, -122.4755859375 47.3090342477478, -122.4755859375 47.27922900257082))"),
             wgsGeom
         )
 
         val tileGeom = subject.tileGeometry(wgsGeom, x, y, z)
         assertEquals(
-            WKTReader().read("POLYGON ((0 0, 4096 0, 4096 4096, 0 4096, 0 0))"),
+            WKTReader().read("POLYGON ((0 4096, 4096 4096, 4096 0, 0 0, 0 4096))"),
             tileGeom
         )
     }

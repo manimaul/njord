@@ -9,7 +9,7 @@ import java.sql.ResultSet
 
 class FeatureDao : Dao() {
 
-    fun findLayerPositions(layer: String): Deferred<List<LayerQueryResult>?> = sqlOpAsync { conn ->
+    suspend fun findLayerPositions(layer: String): List<LayerQueryResult>? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """SELECT ST_AsText(ST_Centroid(geom)), props, charts.name, charts.zoom
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE layer = ?; 
@@ -36,7 +36,7 @@ class FeatureDao : Dao() {
      *
      * LNAM Long name.  An encoding of AGEN, FIDN and FIDS used to uniquely identify this features within an S-57 file.
      */
-    fun findFeature(lnam: String): Deferred<FeatureRecord?> = sqlOpAsync { conn ->
+    suspend fun findFeature(lnam: String): FeatureRecord? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, lower(z_range), upper(z_range)
                 FROM features WHERE props->'LNAM' = to_jsonb(?::text);""".trimIndent()
@@ -44,6 +44,14 @@ class FeatureDao : Dao() {
             setString(1, lnam)
         }.executeQuery().use { it.featureRecord().firstOrNull() }
     }
+
+    suspend fun featureCount(chartId: Long): Int = sqlOpAsync { conn ->
+        conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
+            setLong(1, chartId)
+        }.executeQuery().use {
+            if (it.next()) it.getInt(1) else 0
+        }
+    } ?: 0
 
     private fun ResultSet.featureRecord(): Sequence<FeatureRecord> {
         return generateSequence {

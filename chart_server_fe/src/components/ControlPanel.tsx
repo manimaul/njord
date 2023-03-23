@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Tab, Tabs} from "react-bootstrap";
 import ChartSymbols from "./ControlSymbols";
 import {useNavigate} from "react-router";
@@ -6,6 +6,8 @@ import {useParams} from 'react-router-dom';
 import {Sprites} from "./Sprites";
 import {ControlCharts} from "./ControlCharts";
 import {ControlEndpoints} from "./ControlEndpoints";
+import {ChartInstall} from "./ChartInstall";
+import {useAdmin} from "../Admin";
 
 
 export function ControlPanel() {
@@ -17,6 +19,7 @@ export function ControlPanel() {
         setTabState(page)
     }, [page])
     let [tabState, setTabState] = useState(page)
+    let [admin] = useAdmin()
 
     return (
         <div className="container Content">
@@ -29,8 +32,12 @@ export function ControlPanel() {
                     setTabState(`${k}`)
                 }}
                 className="mb-3">
-                <Tab eventKey="charts" title="Charts">
+                <Tab eventKey="charts_catalog" title="Chart Catalog">
                     <ControlCharts/>
+                </Tab>
+                <Tab eventKey="charts_installer" title="Chart Installer">
+                    {admin && <ChartInstall/>}
+                    {!admin && <p>Admin access required</p>}
                 </Tab>
                 <Tab eventKey="symbols" title="Symbols">
                     <ChartSymbols object={object} attribute={attribute}/>

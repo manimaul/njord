@@ -15,7 +15,7 @@ class ChartHandler(
 
     override suspend fun handleGet(call: ApplicationCall) {
         call.request.queryParameters["id"]?.toLongOrNull()?.let {
-            dao.findAsync(it).await()?.let { chart ->
+            dao.findAsync(it)?.let { chart ->
                 call.respond(chart)
             } ?: call.respond(HttpStatusCode.NotFound)
         } ?: call.respond(HttpStatusCode.BadRequest)
@@ -23,7 +23,7 @@ class ChartHandler(
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val chart = call.receive<ChartInsert>()
-        dao.insertAsync(chart, true).await()?.let {
+        dao.insertAsync(chart, true)?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.BadRequest)
     }
@@ -31,7 +31,7 @@ class ChartHandler(
     override suspend fun handleDelete(call: ApplicationCall) = call.requireSignature {
         when (
             call.request.queryParameters["id"]?.toLongOrNull()?.let {
-                dao.deleteAsync(it).await()
+                dao.deleteAsync(it)
             }
         ) {
             true -> call.respond(HttpStatusCode.Accepted)

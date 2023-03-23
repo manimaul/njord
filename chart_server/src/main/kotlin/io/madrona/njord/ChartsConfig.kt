@@ -45,5 +45,6 @@ class ChartsConfig(
     val pgPassword: String = config.getString("pgPassword")
     val pgHost: String = config.getString("pgHost")
     val pgPort: Int = config.getInt("pgPort")
+    val pgConnectionPoolSize: Int = config.getInt("pgConnectionPoolSize")
     val pgDatabase: String = config.getString("pgDatabase")
 }

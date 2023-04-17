@@ -73,7 +73,6 @@ export function ControlCharts() {
                 <tr>
                     <th>Record ID</th>
                     <th>Chart Name</th>
-                    <th>Geometry Count</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,7 +81,6 @@ export function ControlCharts() {
                         <tr key={i}>
                             <td>{each.id}</td>
                             <td><Link to={`/chart/${each.id}`}>{each.name}</Link></td>
-                            <td>{each.featureCount}</td>
                         </tr>
                     )
                 })}

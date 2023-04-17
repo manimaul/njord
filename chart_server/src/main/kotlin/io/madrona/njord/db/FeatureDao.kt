@@ -3,8 +3,8 @@ package io.madrona.njord.db
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.model.FeatureRecord
 import io.madrona.njord.model.LayerQueryResult
-import kotlinx.coroutines.Deferred
 import org.locationtech.jts.io.WKTReader
+import java.sql.Connection
 import java.sql.ResultSet
 
 class FeatureDao : Dao() {
@@ -45,13 +45,13 @@ class FeatureDao : Dao() {
         }.executeQuery().use { it.featureRecord().firstOrNull() }
     }
 
-    suspend fun featureCount(chartId: Long): Int = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
+    fun featureCount(conn: Connection, chartId: Long): Int {
+        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
             setLong(1, chartId)
         }.executeQuery().use {
             if (it.next()) it.getInt(1) else 0
         }
-    } ?: 0
+    }
 
     private fun ResultSet.featureRecord(): Sequence<FeatureRecord> {
         return generateSequence {

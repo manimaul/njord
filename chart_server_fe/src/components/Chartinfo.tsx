@@ -19,6 +19,7 @@ export type ChartInfoResponse = {
     layers: Array<string>;
     chart_txt: Record<string, string>;
     dsid_props: Record<string, string | number>;
+    featureCount: number;
 }
 
 export type Bounds = {
@@ -60,6 +61,10 @@ export default function ChartInfo() {
                                             }}
                                     >ENC Zoom to</Button>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>Feature Count</td>
+                                <td>{chartInfo.featureCount}</td>
                             </tr>
                             <tr>
                                 <td>Updated</td>

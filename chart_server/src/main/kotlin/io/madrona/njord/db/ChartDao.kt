@@ -21,7 +21,7 @@ class ChartDao(
     private val featureDao: FeatureDao = FeatureDao(),
 ) : Dao() {
 
-    private fun ResultSet.chart(layers: List<String>) = generateSequence {
+    private fun ResultSet.chart(layers: List<String>, featureCount: Int) = generateSequence {
         if (next()) {
             var i = 0
             Chart(
@@ -40,6 +40,7 @@ class ChartDao(
                 layers = layers,
                 dsidProps = objectMapper.readValue(getString(++i)),
                 chartTxt = objectMapper.readValue(getString(++i)),
+                featureCount = featureCount,
             )
         } else null
     }
@@ -179,7 +180,7 @@ class ChartDao(
         ).apply {
             setLong(1, id)
         }
-        stmt.executeQuery().use { it.chart(findLayers(id, conn)).firstOrNull() }
+        stmt.executeQuery().use { it.chart(findLayers(id, conn), featureDao.featureCount(conn, id)).firstOrNull() }
     }
 
     private fun chartCount(conn: Connection): Int {
@@ -205,12 +206,10 @@ class ChartDao(
                 if (++num > PAGE_SIZE) {
                     nextId = id
                 } else {
-                    val count = featureDao.featureCount(id)
                     page.add(
                         ChartItem(
                             id = id,
                             name = it.getString(2),
-                            featureCount = count,
                         )
                     )
                 }
@@ -247,7 +246,7 @@ class ChartDao(
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {
             stmt.generatedKeys?.use { rs ->
-                rs.chart(layers = emptyList()).firstOrNull()
+                rs.chart(layers = emptyList(), 0).firstOrNull()
             }
         }
     }
@@ -280,6 +279,6 @@ class ChartDao(
     }
 
     companion object {
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 100
     }
 }

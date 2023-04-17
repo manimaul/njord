@@ -38,6 +38,7 @@ data class Chart(
     val layers: List<String>,
     @JsonProperty("dsid_props") val dsidProps: Map<String, Any>,
     @JsonProperty("chart_txt") val chartTxt: Map<String, String>,
+    val featureCount: Int,
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

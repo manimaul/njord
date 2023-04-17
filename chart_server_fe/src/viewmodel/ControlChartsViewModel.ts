@@ -1,11 +1,9 @@
 import {useEffect, useState} from "react";
 import {Admin, useAdmin} from "../Admin";
-import {useRequest} from "../Effects";
 
 export type ChartItem = {
     id: number;
     name: string;
-    featureCount: number;
 };
 
 export type ChartCatalog = {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useRequest} from "../Effects";
-import njord from "../njord.png";
+import njord from "../njord.jpg";
 import {Table} from "react-bootstrap";
 import Footer from "./Footer";
 import "../App.css"

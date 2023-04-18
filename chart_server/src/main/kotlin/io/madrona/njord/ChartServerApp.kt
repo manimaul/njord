@@ -63,6 +63,9 @@ fun Application.njord() {
         // curl https://openenc.com/v1/style/meters | jq
         StyleHandler(),
 
+        // sig=$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} http://localhost:9000/v1/admin | jq -r .signatureEncoded)
+        // curl -v "http://localhost:9000/v1/enc_save?signature=$sig" | jq
+        // curl -v -X DELETE "http://localhost:9000/v1/enc_save?signature=$sig&uuid="
         // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
         EncSaveHandler(),
 

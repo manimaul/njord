@@ -7,6 +7,7 @@ import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.db.Insertable
 import io.madrona.njord.geo.symbols.*
 import io.madrona.njord.model.ChartInsert
+import io.madrona.njord.model.LayerGeoJson
 import io.madrona.njord.util.ZFinder
 import kotlinx.coroutines.*
 import mil.nga.sf.geojson.FeatureCollection
@@ -84,11 +85,11 @@ class S57(
         )
     }
 
-    suspend fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<Pair<String, FeatureCollection>> {
+    suspend fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
         return dataSourceAccess {
             dataSet.layers().mapNotNull { layer ->
                 layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
-                    it to layer.featureCollection()
+                    LayerGeoJson(it, layer.featureCollection())
                 }
             }
         }
@@ -107,9 +108,9 @@ class S57(
         msg: (String) -> Unit
     ) {
         layerGeoJsonSequence(exLayers).forEach {
-            val name = "${it.first}.json"
+            val name = "${it.layer}.json"
             msg(name)
-            objectMapper.writeValue(File(outDir, name), it.second)
+            objectMapper.writeValue(File(outDir, name), it.featureCollection)
         }
     }
 
@@ -220,10 +221,8 @@ class S57(
         /**
          * https://gdal.org/drivers/vector/s57.html#s-57-export
          */
-        private const val OGR_S57_EXPORT_MIN = "RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON"
-
         private const val OGR_S57_OPTIONS_V =
-            "${OGR_S57_EXPORT_MIN}:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
+            "RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON:ADD_SOUNDG_DEPTH=ON"
 
         init {
             gdal.AllRegister()

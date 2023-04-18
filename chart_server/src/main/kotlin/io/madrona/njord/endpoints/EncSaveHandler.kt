@@ -20,6 +20,25 @@ class EncSaveHandler(
     private val log = logger()
     private val charDir = config.chartTempData
 
+    override suspend fun handleGet(call: ApplicationCall) = call.requireSignature {
+        call.respond(
+            charDir.listFiles()?.map { each ->
+                val files = each.listFiles()?.map { it.name }?.filter { it.endsWith(".zip") }?.toList() ?: emptyList()
+                EncUpload(
+                    files = files,
+                    uuid = each.name
+                )
+            } ?: emptyList()
+        )
+    }
+
+    override suspend fun handleDelete(call: ApplicationCall) = call.requireSignature {
+        call.request.queryParameters["uuid"]?.let {
+            File(charDir, it).takeIf { it.exists() }?.deleteRecursively()
+            call.respond(HttpStatusCode.OK)
+        } ?: call.respond(HttpStatusCode.NotFound)
+    }
+
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val multipartData = call.receiveMultipart()
         val uuid = UUID.randomUUID().toString()
@@ -31,12 +50,14 @@ class EncSaveHandler(
                     is PartData.FormItem -> {
                         log.info("file description = ${part.value}")
                     }
+
                     is PartData.FileItem -> {
                         val fileName = part.originalFileName as String
                         val fileBytes = part.streamProvider().readBytes()
                         files.add(fileName)
                         File(tempDir, fileName).writeBytes(fileBytes)
                     }
+
                     else -> {
                     }
                 }

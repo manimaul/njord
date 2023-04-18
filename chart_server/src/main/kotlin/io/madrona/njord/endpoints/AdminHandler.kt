@@ -67,9 +67,9 @@ class AdminUtil(
         )
     }
 
-    fun veryifySignature(query: String): Boolean {
+    fun verifySignature(query: String): Boolean {
         val data = Base64.getUrlDecoder().decode(query)
-        return verifySignature(objectMapper.readValue(data))
+        return verifySignature(objectMapper.readValue<AdminSignature>(data))
     }
 
     fun verifySignature(signature: AdminSignature): Boolean {
@@ -92,7 +92,7 @@ class AdminUtil(
 suspend fun ApplicationCall.requireSignature(onAuthorized: suspend () -> Unit) {
     val adminUti = Singletons.adminUtil
     val valid = request.queryParameters["signature"]?.let {
-        adminUti.veryifySignature(it)
+        adminUti.verifySignature(it)
     } ?: false
     if (valid) {
         onAuthorized()

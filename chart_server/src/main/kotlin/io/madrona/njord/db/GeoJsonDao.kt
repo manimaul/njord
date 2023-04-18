@@ -1,7 +1,9 @@
 package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.madrona.njord.model.Chart
 import io.madrona.njord.model.FeatureInsert
+import io.madrona.njord.model.LayerGeoJson
 import mil.nga.sf.geojson.Feature
 import mil.nga.sf.geojson.FeatureCollection
 import mil.nga.sf.geojson.Geometry
@@ -57,15 +59,8 @@ class GeoJsonDao : Dao() {
         }
     }
 
-    suspend fun withConnectionDo(block: suspend (conn: Connection) -> Unit) = sqlOpAsync(block = block)
-    suspend fun <T> withConnection(block: suspend (conn: Connection) -> T): T? = sqlOpAsync(block = block)
-
     suspend fun insertAsync(featureInsert: FeatureInsert): Int? = sqlOpAsync("error inserting feature") {
         featureInsert.insert(it)
-    }
-
-    fun insert(conn: Connection, insert: FeatureInsert): Int {
-        return insert.insert(conn)
     }
 
     private fun FeatureInsert.insert(conn: Connection): Int {

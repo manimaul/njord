@@ -155,29 +155,34 @@ class ChartIngest(
     }
 
     private suspend fun installChart(chart: Chart, s57: S57, report: Report) {
-        report.chartInstallCount.incrementAndGet()
-        s57.layerGeoJsonSequence(exLayers).toList().map { (layerName, geo) ->
-            val count = geoJsonDao.insertAsync(
-                FeatureInsert(
-                    layerName = layerName, chart = chart, geo = geo
-                )
-            ) ?: 0
-            if (count == 0) {
-                log.error("error inserting feature with layer = $layerName geo feature count = ${geo.numFeatures()}")
-                log.error("geo json = \n${objectMapper.writeValueAsString(geo)}")
-            }
-            report.featureCountTotal.getAndUpdate { it + count }
-            report.add(chart.name, count)
+        withContext(Dispatchers.IO) {
+            s57.layerGeoJsonSequence(exLayers).map { (layerName, geo) ->
+                async {
+                    val count = geoJsonDao.insertAsync(
+                        FeatureInsert(
+                            layerName = layerName, chart = chart, geo = geo
+                        )
+                    ) ?: 0
+                    if (count == 0) {
+                        log.error("error inserting feature with layer = $layerName geo feature count = ${geo.numFeatures()}")
+                        log.error("geo json = \n${objectMapper.writeValueAsString(geo)}")
+                    }
+                    report.featureCountTotal.getAndUpdate { it + count }
+                    report.add(chart.name, count)
+
+                    val num = report.chartInstallCount.get()
+                    val total = report.totalChartCount.get()
+                    webSocketSession.sendMessage(
+                        WsMsg.Info(
+                            num = num,
+                            total = total,
+                            message = "$num charts and ${report.featureCountTotal.get()} features installed",
+                        )
+                    )
+                }
+            }.toList().awaitAll()
+            report.chartInstallCount.incrementAndGet()
         }
-        val num = report.chartInstallCount.get()
-        val total = report.totalChartCount.get()
-        webSocketSession.sendMessage(
-            WsMsg.Info(
-                num = num,
-                total = total,
-                message = "$num charts and ${report.featureCountTotal.get()} features installed",
-            )
-        )
     }
 
     private fun EncUpload.cacheFiles(): List<File> {

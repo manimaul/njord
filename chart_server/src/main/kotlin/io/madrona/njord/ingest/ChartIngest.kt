@@ -8,7 +8,6 @@ import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.GeoJsonDao
 import io.madrona.njord.db.InsertError
 import io.madrona.njord.db.InsertSuccess
-import io.madrona.njord.endpoints.ChartWebSocketHandler
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
 import io.madrona.njord.model.Chart
@@ -18,8 +17,10 @@ import io.madrona.njord.model.FeatureInsert
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger

@@ -3,10 +3,10 @@
 
 Build Gdal with Java Bindings
 ```
-version=3.6.2
+version=3.7.0
 wget http://download.osgeo.org/gdal/$version/gdal-$version.tar.xz
 tar -xf gdal-$version.tar.xz
-cd gdal
+cd gdal-$version
 cmake -S . -B build \
 	-DCMAKE_INSTALL_RPATH=/opt/gdal \
 	-DBUILD_JAVA_BINDINGS=ON \

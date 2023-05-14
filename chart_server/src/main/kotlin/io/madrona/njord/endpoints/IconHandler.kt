@@ -23,7 +23,7 @@ class IconHandler(
     }
 }
 
-private fun String.stripExt() : String {
+private fun String.stripExt(): String {
     return lastIndexOf('.').takeIf { it > 0 }?.let {
         substring(0, it)
     } ?: this

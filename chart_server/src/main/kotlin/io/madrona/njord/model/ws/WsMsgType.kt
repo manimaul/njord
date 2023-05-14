@@ -1,6 +1,7 @@
 package io.madrona.njord.model.ws
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import io.madrona.njord.Singletons
 

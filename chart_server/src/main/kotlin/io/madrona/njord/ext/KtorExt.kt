@@ -43,6 +43,7 @@ fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
                     head(handler.route) { handler.handleHead(call) }
                     options(handler.route) { handler.handleOptions(call) }
                 }
+
                 is KtorWebsocket -> {
                     webSocket(handler.route) {
                         handler.handle(this)

@@ -29,6 +29,7 @@ class AboutHandler(
                     gdalVersion = gdal.VersionInfo() ?: "NONE"
                 )
             )
+
             "/s57objects" -> call.respondJson(s57ObjectLibrary.objects)
             "/s57attributes" -> call.respondJson(s57ObjectLibrary.attributes)
             "/expectedInput" -> call.respondJson(s57ObjectLibrary.expectedInput)

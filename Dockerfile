@@ -11,10 +11,11 @@ ENV JAVA_INCLUDE="-I/usr/lib/jvm/java-17-openjdk-amd64/include -I/usr/lib/jvm/ja
 
 
 WORKDIR /build
-ADD http://download.osgeo.org/gdal/3.6.2/gdal-3.6.2.tar.xz .
-RUN tar -xf ./gdal-3.6.2.tar.xz 
+ENV GDAL_VERSION=3.7.0
+ADD http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.xz .
+RUN tar -xf ./gdal-$GDAL_VERSION.tar.xz
 
-WORKDIR /build/gdal-3.6.2
+WORKDIR /build/gdal-$GDAL_VERSION
 RUN cmake -S . -B build \
 	-DCMAKE_INSTALL_RPATH=/opt/gdal \
 	-DBUILD_JAVA_BINDINGS=ON \

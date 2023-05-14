@@ -38,7 +38,7 @@ class AdminUtil(
 ) {
     private var formatter = DateTimeFormatter.ISO_INSTANT
 
-    fun createSignatureResponse() : AdminResponse {
+    fun createSignatureResponse(): AdminResponse {
         val signature = createSignature()
         return AdminResponse(
             signature = signature,

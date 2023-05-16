@@ -19,6 +19,7 @@ class VersionPlugin : Plugin<Project> {
         val genBuildDir = File(target.buildDir, "generated/source/version")
         (target.properties["sourceSets"] as? SourceSetContainer)?.getByName("main")?.java?.srcDir(genBuildDir)
         target.task(taskName) {
+            it.mustRunAfter("clean")
             target.buildDir
             genBuildDir.mkdirs()
             val versionFile = File(genBuildDir, "VersionInfo.kt")

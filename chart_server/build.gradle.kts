@@ -61,14 +61,16 @@ tasks {
     test {
         jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
     }
-}
-
-tasks.named<JavaExec>("run") {
-    //./gradlew :chart_server:run -Pskip
-    if (project.hasProperty("skip")) {
-        println("skipping web build")
-    } else {
-        dependsOn(":chart_server_fe:build")
+//    named<Sync>("installDist") {
+//        dependsOn("makeVersionFile")
+//    }
+    named<JavaExec>("run") {
+        //./gradlew :chart_server:run -Pskip
+        if (project.hasProperty("skip")) {
+            println("skipping web build")
+        } else {
+            dependsOn(":chart_server_fe:build")
+        }
+        jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
     }
-    jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
 }

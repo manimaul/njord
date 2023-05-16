@@ -1,5 +1,3 @@
-import io.madrona.njord.build.GitInfo.gitBranch
-import io.madrona.njord.build.GitInfo.gitShortHash
 import io.madrona.njord.build.K8S
 import java.util.UUID
 
@@ -11,19 +9,10 @@ task("version") {
 }
 
 /**
- * Convenience task for running the PostGIS database with docker-compose
- * eg `./gradlew :runPostGis`
- */
-task<Exec>("runPostgis") {
-    workingDir("chart_server_db")
-    commandLine("docker-compose", "up")
-}
-
-/**
  * Build the container image. This much faster than a multi-stage docker build.
  * eg `./gradlew :buildImage`
  */
-task<Exec>("buildImage") {
+task<Exec>("makeImg") {
     dependsOn(":chart_server_fe:build", ":chart_server:installDist")
     commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
@@ -32,20 +21,22 @@ task<Exec>("buildImage") {
  * Build the container image. This much faster than a multi-stage docker build.
  * eg `./gradlew :buildImage`
  */
-task<Exec>("publishImage") {
+task<Exec>("pubImg") {
+    mustRunAfter(":makeImg")
     commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
 }
 
 /**
  * Deploy to Kubernetes
  */
-task<Exec>("deploy") {
+task<Exec>("k8sApply") {
+    mustRunAfter(":pubImg")
     val adminKey = if (project.hasProperty("adminKey")) {
         "${project.property("adminKey")}"
     } else {
         UUID.randomUUID().toString()
     }
-    val yaml = K8S.chartServerDeployment(rootProject.projectDir,"${project.version}", adminKey)
+    val yaml = K8S.chartServerDeployment(rootProject.projectDir, "${project.version}", adminKey)
     commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
 }
 
@@ -53,13 +44,22 @@ task<Exec>("deploy") {
  * Cycle K8S Pods
  */
 task<Exec>("cyclePods") {
+    mustRunAfter(":k8sApply", ":pubImg", ":holdOn")
     commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc")
+}
+
+/**
+ * Cycle K8S Pods
+ */
+task<Exec>("holdOn") {
+    mustRunAfter(":pubImg")
+    commandLine("bash", "-c", "echo 'hold on' && sleep 5")
 }
 
 /**
  * Builds container image, deploys image to registry and deploys changes to Kubernetes
  * eg `./gradlew :buildPublishDeploy`
  */
-tasks.register<GradleBuild>("buildPublishDeploy") {
-    tasks = listOf(":buildImage", ":publishImage", ":deploy", ":cyclePods")
+tasks.register<GradleBuild>("deploy") {
+    tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":cyclePods")
 }

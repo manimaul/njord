@@ -9,7 +9,10 @@ import {useAdmin} from "../Admin";
 export default function HomeAbout() {
     const [apiInfo, initVersion] = useState({
         version: "",
-        gdalVersion: ""
+        gdalVersion: "",
+        gitHash: "",
+        gitBranch: "",
+        buildDate: "",
     })
 
     useRequest("/v1/about/version", initVersion)
@@ -39,12 +42,16 @@ export default function HomeAbout() {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>UI Version</td>
-                            <td>{process.env.REACT_APP_VERSION}</td>
+                            <td>Njord Version</td>
+                            <td>
+                                {apiInfo.version}
+                            </td>
                         </tr>
                         <tr>
-                            <td>API Version</td>
-                            <td>{apiInfo.version}</td>
+                            <td>Git Commit</td>
+                            <td>
+                                <a href={`https://github.com/manimaul/njord/commit/${apiInfo.gitHash}`}>{apiInfo.gitHash}</a>
+                            </td>
                         </tr>
                         <tr>
                             <td>Gdal Version</td>

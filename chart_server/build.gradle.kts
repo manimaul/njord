@@ -1,4 +1,4 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+import io.madrona.njord.build.VersionPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
 }
 
+apply<VersionPlugin>()
 
 application {
     mainClass.set("io.madrona.njord.ChartServerAppKt")
@@ -69,7 +70,5 @@ tasks.named<JavaExec>("run") {
     } else {
         dependsOn(":chart_server_fe:build")
     }
-    if (Os.isFamily(Os.FAMILY_MAC)) {
-        jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
-    }
+    jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
 }

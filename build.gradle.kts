@@ -1,3 +1,5 @@
+import io.madrona.njord.build.GitInfo.gitBranch
+import io.madrona.njord.build.GitInfo.gitShortHash
 import io.madrona.njord.build.K8S
 import java.util.UUID
 
@@ -32,6 +34,11 @@ task<Exec>("buildImage") {
  */
 task<Exec>("publishImage") {
     commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
+}
+
+task("versionInfo") {
+    println("version=${project.version}")
+    println("git hash=${project.gitShortHash()} branch=${project.gitBranch()}")
 }
 
 /**

@@ -20,6 +20,6 @@ cmake --build build
 sudo mkdir -p /opt/gdal
 sudo chown -R $(whoami) /opt/gdal
 cmake --install build
-cp /opt/gdal/share/java/gdal-$version.jar $(pwd)../../njord/chart_server/libs
+cp /opt/gdal/share/java/gdal-$version.jar $(pwd)/../../../chart_server/libs
 ```
 

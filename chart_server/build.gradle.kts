@@ -44,7 +44,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
-    implementation(files("libs/gdal-3.6.2.jar"))
+    implementation(files("libs/gdal-3.7.0.jar"))
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("com.google.protobuf:protobuf-java:3.19.6")
     implementation("org.locationtech.jts:jts-core:1.19.0")

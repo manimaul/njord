@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
 import io.madrona.njord.layers.attributehelpers.Restrn
-import io.madrona.njord.layers.attributehelpers.restrn
+import io.madrona.njord.layers.attributehelpers.Restrn.Companion.restrn
 import io.madrona.njord.model.*
 
 /**
@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
  */
 class Resare : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        feature.props.restrn().also { restrictions ->
+        feature.restrn().also { restrictions ->
             restrictions.firstOrNull {
                 it == Restrn.ENTRY_RESTRICTED
                         || it == Restrn.ENTRY_PROHIBITED

@@ -1,109 +1,65 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.intValue
+import io.madrona.njord.layers.attributehelpers.Catmor
+import io.madrona.njord.layers.attributehelpers.Catmor.Companion.catmor
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Mooring/warping facility
+ *
+ * Acronym: MORFAC
+ *
+ * Code: 84
+ */
 class Morfac : Layerable() {
 
     override fun preTileEncode(feature: ChartFeature) {
-        /* https://openenc.com/control/symbols/MORFAC/CATMOR
-        Enum
-        1	dolphin
-        2	deviation dolphin
-        3	bollard
-        4	tie-up wall
-        5	post or pile
-        6	chain/wire/cable
-        7	mooring buoy
-         */
-        val category = feature.props.intValue("CATMOR") ?: 0
-        val sy =  when (category) {
-            1 -> "MORFAC03"
-            2 -> "MORFAC04"
-            3 -> "PILPNT02"
-            5 -> "PILPNT02"
-            7 -> "BOYMOR11"
-            else -> "MORFAC03"
+        val sprite = when (feature.catmor()) {
+            Catmor.DOLPHIN -> Sprite.MORFAC03
+            Catmor.DEVIATION_DOLPHIN -> Sprite.MORFAC04
+            Catmor.BOLLARD -> Sprite.PILPNT02
+            Catmor.POST_OR_PILE -> Sprite.PILPNT02
+            Catmor.MOORING_BUOY -> Sprite.BOYMOR11
+            Catmor.TIE_UP_WALL,
+            Catmor.CHAIN_WIRE_CABLE,
+            null -> Sprite.MORFAC03
         }
-        feature.props["SY"] = sy
+        feature.pointSymbol(sprite)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_area_fill",
-            type = LayerType.FILL,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                fillColor = colorFrom("CHBRN")
-            )
-        ),
-        Layer(
-            id = "${key}_area_line",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                lineColor = colorFrom("CHBLK"),
-                lineWidth = 1f
-            )
-        ),
-        Layer(
-            id = "${key}_line_tie_up_wall",
-            type = LayerType.LINE,
-            sourceLayer = key,
+        areaLayerWithFillColor(color = Color.CHBRN),
+        lineLayerWithColor(color = Color.CHBRN, width = 1f),
+        lineLayerWithColor(
+            color = Color.CSTLN, width = 2f,
             filter = listOf(
                 Filters.all,
                 Filters.eqTypeLineString,
-                listOf(Filters.eq, "CATMOR", 4)
+                Catmor.TIE_UP_WALL.filterEq()
             ),
-            paint = Paint(
-                lineColor = colorFrom("CSTLN"),
-                lineWidth = 2f
-            )
         ),
-        Layer(
-            id = "${key}_line_chain_wire_cable",
-            type = LayerType.LINE,
-            sourceLayer = key,
+        lineLayerWithColor(
+            color = Color.CHMGF,
+            width = 1f,
+            style = LineStyle.CustomDash(5f, 5f),
             filter = listOf(
                 Filters.all,
                 Filters.eqTypeLineString,
-                listOf(Filters.eq, "CATMOR", 6)
+                Catmor.CHAIN_WIRE_CABLE.filterEq()
             ),
-            paint = Paint(
-                lineColor = colorFrom("CHMGF"),
-                lineWidth = 1f,
-                lineDashArray = listOf(5f, 5f)
-            )
         ),
-        Layer(
-            id = "${key}_line_default",
-            type = LayerType.LINE,
-            sourceLayer = key,
+        lineLayerWithColor(
+            color = Color.CSTLN,
+            width = 2f,
             filter = listOf(
                 Filters.all,
                 Filters.eqTypeLineString,
-                listOf(Filters.notEq, "CATMOR", 6),
-                listOf(Filters.notEq, "CATMOR", 4),
+                Catmor.CHAIN_WIRE_CABLE.filterNotEq(),
+                Catmor.TIE_UP_WALL.filterNotEq()
             ),
-            paint = Paint(
-                lineColor = colorFrom("CSTLN"),
-                lineWidth = 2f,
-            )
         ),
-        Layer(
-            id = "${key}_point",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = Filters.eqTypePoint,
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.BOTTOM,
-                iconAllowOverlap = true,
-                iconKeepUpright = true,
-            )
-        )
+        pointLayerFromSymbol(iconKeepUpright = true),
     )
 }

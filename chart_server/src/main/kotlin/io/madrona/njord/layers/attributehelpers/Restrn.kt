@@ -1,7 +1,7 @@
 package io.madrona.njord.layers.attributehelpers
 
-import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValues
+import io.madrona.njord.model.ChartFeature
 
 /**
  * https://openenc.com/control/symbols/RESARE/RESTRN
@@ -25,27 +25,27 @@ enum class Restrn {
     CONSTRUCTION_PROHIBITED;
 
     companion object {
-        fun fromId(id: Int): Restrn? = when (id) {
-            1 -> ANCHORING_PROHIBITED
-            2 -> ANCHORING_RESTRICTED
-            3 -> FISHING_PROHIBITED
-            4 -> FISHING_RESTRICTED
-            5 -> TRAWLING_PROHIBITED
-            6 -> TRAWLING_RESTRICTED
-            7 -> ENTRY_PROHIBITED
-            8 -> ENTRY_RESTRICTED
-            9 -> DREDGING_PROHIBITED
-            10 -> DREDGING_RESTRICTED
-            11 -> DIVING_PROHIBITED
-            12 -> DIVING_RESTRICTED
-            13 -> NO_WAKE
-            14 -> AREA_TO_BE_AVOIDED
-            15 -> CONSTRUCTION_PROHIBITED
-            else -> null
+        fun ChartFeature.restrn(): List<Restrn> {
+            return props.intValues("RESTRN").mapNotNull {
+                when (it) {
+                    1 -> ANCHORING_PROHIBITED
+                    2 -> ANCHORING_RESTRICTED
+                    3 -> FISHING_PROHIBITED
+                    4 -> FISHING_RESTRICTED
+                    5 -> TRAWLING_PROHIBITED
+                    6 -> TRAWLING_RESTRICTED
+                    7 -> ENTRY_PROHIBITED
+                    8 -> ENTRY_RESTRICTED
+                    9 -> DREDGING_PROHIBITED
+                    10 -> DREDGING_RESTRICTED
+                    11 -> DIVING_PROHIBITED
+                    12 -> DIVING_RESTRICTED
+                    13 -> NO_WAKE
+                    14 -> AREA_TO_BE_AVOIDED
+                    15 -> CONSTRUCTION_PROHIBITED
+                    else -> null
+                }
+            }
         }
     }
-}
-
-fun S57Prop.restrn(): List<Restrn> {
-    return intValues("RESTRN").mapNotNull { Restrn.fromId(it) }
 }

@@ -1,7 +1,5 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.layers.attributehelpers.Restrn
-import io.madrona.njord.layers.attributehelpers.restrn
 import io.madrona.njord.model.*
 
 /**

@@ -1,7 +1,7 @@
 package io.madrona.njord.layers.attributehelpers
 
-import io.madrona.njord.geo.symbols.S57Prop
 import io.madrona.njord.geo.symbols.intValue
+import io.madrona.njord.model.ChartFeature
 
 /**
  * https://openenc.com/control/symbols/SILTNK/CATSIL
@@ -18,16 +18,14 @@ enum class Catsil {
     WATER_TOWER;
 
     companion object {
-        fun fromId(id: Int): Catsil? = when (id) {
-            1 -> SILO_IN_GENERAL
-            2 -> TANK_IN_GENERAL
-            3 -> GRAIN_ELEVATOR
-            4 -> WATER_TOWER
-            else -> null
+        fun ChartFeature.catsil(): Catsil? {
+            return when (props.intValue("CATSIL")) {
+                1 -> SILO_IN_GENERAL
+                2 -> TANK_IN_GENERAL
+                3 -> GRAIN_ELEVATOR
+                4 -> WATER_TOWER
+                else -> null
+            }
         }
     }
-}
-
-fun S57Prop.catsil() : Catsil? {
-    return intValue("CATSIL")?.let { Catsil.fromId(it) }
 }

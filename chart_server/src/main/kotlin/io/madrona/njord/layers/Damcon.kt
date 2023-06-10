@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Dam
+ *
+ * Acronym: DAMCON
+ *
+ * Code: 38
+ */
 class Damcon : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.CHINFO06)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        lineLayerWithColor(Color.CSTLN),
+        areaLayerWithFillColor(Color.LANDF)
+    )
 }

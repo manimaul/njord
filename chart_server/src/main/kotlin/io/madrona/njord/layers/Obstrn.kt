@@ -3,10 +3,16 @@ package io.madrona.njord.layers
 import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.floatValue
-import io.madrona.njord.geo.symbols.intValue
-import io.madrona.njord.geo.symbols.intValues
-import io.madrona.njord.layers.attributehelpers.*
-import io.madrona.njord.model.*
+import io.madrona.njord.layers.attributehelpers.Catobs
+import io.madrona.njord.layers.attributehelpers.Catobs.Companion.catobs
+import io.madrona.njord.layers.attributehelpers.DepthColor
+import io.madrona.njord.layers.attributehelpers.Quasou
+import io.madrona.njord.layers.attributehelpers.Quasou.Companion.quasou
+import io.madrona.njord.layers.attributehelpers.Watlev
+import io.madrona.njord.layers.attributehelpers.Watlev.Companion.watlev
+import io.madrona.njord.model.Anchor
+import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Layer
 import io.madrona.njord.util.logger
 
 
@@ -14,62 +20,11 @@ class Obstrn : Soundg() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         val textLayers = super.layers(options)
         return sequenceOf(
-            Layer(
-                id = "${key}_fill_color",
-                type = LayerType.FILL,
-                sourceLayer = key,
-                filter = Filters.eqTypePolyGon,
-                paint = Paint(
-                    fillColor = Filters.areaFillColor
-                )
-            ),
-            Layer(
-                id = "${key}_fill_pattern",
-                type = LayerType.FILL,
-                sourceLayer = key,
-                filter = Filters.eqTypePolyGon,
-                paint = Paint(
-                    fillPattern = listOf("get", "AP")
-                )
-            ),
-        ) + sequenceOf(
-            Layer(
-                id = "${key}_line",
-                type = LayerType.LINE,
-                sourceLayer = key,
-                filter = Filters.eqTypeLineStringOrPolygon,
-                paint = Paint(
-                    lineColor = colorFrom("CHGRD"),
-                    lineWidth = 2f,
-                    lineDashArray = listOf(1f, 2f),
-                )
-            ),
-            Layer(
-                id = "${key}_point",
-                type = LayerType.SYMBOL,
-                sourceLayer = key,
-                filter = Filters.eqTypePoint,
-                layout = Layout(
-                    symbolPlacement = Placement.POINT,
-                    iconImage = listOf("get", "SY"),
-                    iconAnchor = Anchor.CENTER,
-                    iconAllowOverlap = true,
-                    iconKeepUpright = false,
-                ),
-            ),
-            Layer(
-                id = "${key}_area_point",
-                type = LayerType.SYMBOL,
-                sourceLayer = key,
-                filter = listOf(Filters.all,Filters.eqTypePolyGon, listOf("!=", "EA", true)),
-                layout = Layout(
-                    symbolPlacement = Placement.POINT,
-                    iconImage = listOf("get", "SY"),
-                    iconAnchor = Anchor.CENTER,
-                    iconAllowOverlap = true,
-                    iconKeepUpright = false,
-                ),
-            )
+            areaLayerWithFillColor(),
+            areaLayerWithFillPattern(),
+            lineLayerWithColor(color = Color.CHGRD, style = LineStyle.DashLine),
+            pointLayerFromSymbol(anchor = Anchor.CENTER),
+            areaLayerWithPointSymbol()
         ) + textLayers
     }
 
@@ -86,29 +41,29 @@ class Obstrn : Soundg() {
             Catobs.DIFFUSER,
             Catobs.CRIB -> {
                 if (!state.usableDepthValue) {
-                    feature.props["SY"] = "ISODGR51"
+                    feature.pointSymbol(Sprite.ISODGR51)
                     sySet = true
                     showDepth = false
                 }
             }
 
             Catobs.FISH_HAVEN -> {
-                feature.props["SY"] = "FSHHAV01"
+                feature.pointSymbol(Sprite.FSHHAV01)
                 sySet = true
                 showDepth = false
             }
 
             Catobs.FOUL_AREA,
-            Catobs.FOUL_GROUND -> feature.props["AP"] = "FOULAR01"
+            Catobs.FOUL_GROUND -> feature.areaPattern(Sprite.FOULAR01)
 
             Catobs.GROUND_TACKLE -> {
-                feature.props["SY"] = "ACHARE02"
+                feature.pointSymbol(Sprite.ACHARE02)
                 sySet = true
                 showDepth = false
             }
 
             Catobs.ICE_BOOM,
-            Catobs.BOOM -> feature.props["SY"] = "FLTHAZ02"
+            Catobs.BOOM -> feature.pointSymbol(Sprite.FLTHAZ02)
 
             null -> {}
         }
@@ -118,33 +73,33 @@ class Obstrn : Soundg() {
             when (state.waterLevelEffect) {
                 Watlev.COVERS_AND_UNCOVERS -> {
                     checkAccuracy = false
-                    feature.props["EA"] = true // exclude symbol from area geometry
-                    feature.props["SY"] = "OBSTRN03"
+                    feature.excludeAreaPointSymbol() // exclude symbol from area geometry
+                    feature.pointSymbol(Sprite.OBSTRN03)
                 }
 
                 Watlev.ALWAYS_DRY -> {
                     checkAccuracy = false
-                    feature.props["EA"] = true
-                    feature.props["SY"] = "OBSTRN11"
+                    feature.excludeAreaPointSymbol()
+                    feature.pointSymbol(Sprite.OBSTRN11)
                 }
 
                 Watlev.ALWAYS_UNDER_WATER_SUBMERGED -> {
                     when (state.depthColor) {
                         DepthColor.DEEP_WATER,
                         DepthColor.MEDIUM_DEPTH -> {
-                            feature.props["EA"] = true
-                            feature.props["SY"] = if (showDepth) "DANGER02" else "OBSTRN02"
+                            feature.excludeAreaPointSymbol()
+                            feature.pointSymbol(if (showDepth) Sprite.DANGER02 else Sprite.OBSTRN02)
                         }
 
                         DepthColor.SAFETY_DEPTH,
                         DepthColor.VERY_SHALLOW -> {
-                            feature.props["EA"] = true
-                            feature.props["SY"] = if (showDepth) "DANGER01" else "OBSTRN01"
+                            feature.excludeAreaPointSymbol()
+                            feature.pointSymbol(if (showDepth) Sprite.DANGER01 else Sprite.OBSTRN01)
                         }
 
                         DepthColor.COVERS_UNCOVERS -> {
-                            feature.props["EA"] = true
-                            feature.props["SY"] = if (showDepth) "DANGER03" else "OBSTRN03"
+                            feature.excludeAreaPointSymbol()
+                            feature.pointSymbol(if (showDepth) Sprite.DANGER03 else Sprite.OBSTRN03)
                         }
                     }
                 }
@@ -152,7 +107,7 @@ class Obstrn : Soundg() {
                 Watlev.FLOATING -> {
                     showDepth = false
                     fillDepthColor = false
-                    feature.props["SY"] = "FLTHAZ02"
+                    feature.pointSymbol(Sprite.FLTHAZ02)
                 }
 
                 Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
@@ -160,7 +115,7 @@ class Obstrn : Soundg() {
                 Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
                 null -> {
                     checkAccuracy = false
-                    feature.props["SY"] = "ISODGR51"
+                    feature.pointSymbol(Sprite.ISODGR51)
                 }
             }
         }
@@ -170,11 +125,11 @@ class Obstrn : Soundg() {
                         || it == Quasou.UNRELIABLE_SOUNDING
             } != null) {
             showDepth = false
-            feature.props["SY"] = "LOWACC01"
+            feature.pointSymbol(Sprite.LOWACC01)
         }
 
         if (fillDepthColor) {
-            feature.props["AC"] = state.depthColor.code
+            feature.areaColor(state.depthColor.color)
         }
         state.meters?.takeIf { showDepth }?.let { meters ->
             feature.props.addSoundingConversions(meters.toDouble())
@@ -185,9 +140,9 @@ class Obstrn : Soundg() {
 class ObstrnState(feature: ChartFeature) {
     val log = logger()
     val meters: Float? = feature.props.floatValue("VALSOU")
-    val category = feature.props.catobs()
-    val waterLevelEffect = feature.props.watlev()
-    val qualityOfSounding = feature.props.quasou()
+    val category = feature.catobs()
+    val waterLevelEffect = feature.watlev()
+    val qualityOfSounding = feature.quasou()
     val usableDepthValue: Boolean = qualityOfSounding.firstOrNull {
         when (it) {
             Quasou.DEPTH_KNOWN,

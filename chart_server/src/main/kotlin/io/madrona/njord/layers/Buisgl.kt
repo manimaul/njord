@@ -10,5 +10,5 @@ package io.madrona.njord.layers
  * Code: 12
  */
 class Buisgl : Lndare() {
-        override val areaColor = "LANDF"
+    override val areaColor = Color.LANDF
 }

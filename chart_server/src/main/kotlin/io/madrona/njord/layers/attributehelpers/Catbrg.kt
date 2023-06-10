@@ -1,7 +1,9 @@
 package io.madrona.njord.layers.attributehelpers
 
 import io.madrona.njord.geo.symbols.S57Prop
+import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
+import io.madrona.njord.model.ChartFeature
 
 /**
  * https://openenc.com/control/symbols/BRIDGE/CATBRG
@@ -22,24 +24,25 @@ enum class Catbrg {
     SUSPENSION_BRIDGE;
 
     companion object {
-        fun fromId(id: Int): Catbrg? = when (id) {
-            1 -> FIXED_BRIDGE
-            2 -> OPENING_BRIDGE
-            3 -> SWING_BRIDGE
-            4 -> LIFTING_BRIDGE
-            5 -> BASCULE_BRIDGE
-            6 -> PONTOON_BRIDGE
-            7 -> DRAW_BRIDGE
-            8 -> TRANSPORTER_BRIDGE
-            9 -> FOOTBRIDGE
-            10 -> VIADUCT
-            11 -> AQUEDUCT
-            12 -> SUSPENSION_BRIDGE
-            else -> null
+
+        fun ChartFeature.catbrg(): List<Catbrg> {
+            return props.intValues("CATBRG").mapNotNull {
+                when (it) {
+                    1 -> FIXED_BRIDGE
+                    2 -> OPENING_BRIDGE
+                    3 -> SWING_BRIDGE
+                    4 -> LIFTING_BRIDGE
+                    5 -> BASCULE_BRIDGE
+                    6 -> PONTOON_BRIDGE
+                    7 -> DRAW_BRIDGE
+                    8 -> TRANSPORTER_BRIDGE
+                    9 -> FOOTBRIDGE
+                    10 -> VIADUCT
+                    11 -> AQUEDUCT
+                    12 -> SUSPENSION_BRIDGE
+                    else -> null
+                }
+            }
         }
     }
-}
-
-fun S57Prop.catbrg() : List<Catbrg> {
-    return intValues("CATBRG").mapNotNull { Catbrg.fromId(it) }
 }

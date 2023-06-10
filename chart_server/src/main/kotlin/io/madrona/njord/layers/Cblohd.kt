@@ -1,7 +1,5 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
-
 /**
  * Geometry Primitives: Line
  *
@@ -11,16 +9,10 @@ import io.madrona.njord.model.*
  */
 class Cblohd : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_line",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypeLineStringOrPolygon,
-            paint = Paint(
-                lineColor = colorFrom("CHBLK"),
-                lineWidth = 0.5f,
-                lineDashArray = listOf(10f, 5f)
-            ),
+        lineLayerWithColor(
+            color = Color.CHBLK,
+            width = 0.5f,
+            style = LineStyle.CustomDash(10f, 5f)
         )
     )
 }

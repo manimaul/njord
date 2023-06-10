@@ -4,22 +4,12 @@ import io.madrona.njord.model.*
 
 class Coalne : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        feature.props["LC"] = "CSTLN"
+        feature.lineColor(Color.CSTLN)
     }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            Layer(
-                id = "${key}_line",
-                type = LayerType.LINE,
-                sourceLayer = key,
-                filter = Filters.eqTypeLineString,
-                paint = Paint(
-                    lineColor = Filters.lineColor,
-                    lineWidth = 1f,
-                    lineDashArray = listOf(5f, 5f)
-                )
-            )
+            lineLayerWithColor(width = 1f, style = LineStyle.CustomDash(5f, 5f))
         )
     }
 }

@@ -2,11 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Oilbar : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Oil barrier
+ *
+ * Acronym: OILBAR
+ *
+ * Code: 89
+ */
+class Oilbar : Layerable() {
+    private val lineColor = Color.CHBLK
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(lineColor, style = LineStyle.DashLine)
+    )
 }

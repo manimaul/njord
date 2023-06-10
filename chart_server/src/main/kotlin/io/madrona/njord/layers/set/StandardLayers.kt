@@ -153,12 +153,13 @@ class StandardLayers {
         Dwrtcl(),
         Docare(),
         Flodoc(),
-        //todo: below layers need completion
         Gatcon(),
         Lokbsn(),
+        Lokbsn("lokbsn"),
         Logpon(),
         Ofsplf(),
         Oilbar(),
+        //todo: below layers need completion
         Pylons(),
         Areas(),
         Notmrk(),

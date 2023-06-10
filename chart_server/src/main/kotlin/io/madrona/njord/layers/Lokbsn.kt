@@ -1,12 +1,27 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
+import io.madrona.njord.model.ChartFeature
 
-class Lokbsn : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Lock basin
+ *
+ * Acronym: LOKBSN
+ *
+ * Code: 79
+ */
+open class Lokbsn(customKey: String? = null) : Layerable(customKey) {
+    private val areaColor = Color.DEPVS
+    private val lineColor = Color.CHBLK
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(areaColor)
+        feature.lineColor(lineColor)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        areaLayerWithFillColor(areaColor),
+        lineLayerWithColor(lineColor, width = 1f)
+    )
 }

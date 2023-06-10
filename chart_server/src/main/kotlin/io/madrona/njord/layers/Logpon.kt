@@ -12,35 +12,19 @@ import io.madrona.njord.model.*
  * Code: 80
  */
 class Logpon : Layerable() {
+    private val lineColor = Color.CHBLK
+
     override fun preTileEncode(feature: ChartFeature) {
-        feature.props["SY"] = "FLTHAZ02"
+        feature.pointSymbol(Sprite.FLTHAZ02)
+        feature.lineColor(lineColor)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_point",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.BOTTOM,
-                iconAllowOverlap = true,
-                iconKeepUpright = false,
-            )
-        ),
-        Layer(
-            id = "${key}_line_dash",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypeLineStringOrPolygon,
-            paint = Paint(
-                lineColor = colorFrom("CHBLK"),
-                lineWidth = 1f,
-                lineDashArray = listOf(3f, 4f),
-            ),
+        pointLayerFromSymbol(),
+        lineLayerWithColor(
+            color = lineColor,
+            width = 1f,
+            style = LineStyle.CustomDash(3f, 4f)
         ),
     )
-
 }

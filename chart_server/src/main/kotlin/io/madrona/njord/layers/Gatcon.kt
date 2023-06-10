@@ -1,12 +1,38 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.layers.attributehelpers.Catgat
+import io.madrona.njord.layers.attributehelpers.Catgat.Companion.catgat
 import io.madrona.njord.model.*
 
-class Gatcon : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Gate
+ *
+ * Acronym: GATCON
+ *
+ * Code: 61
+ */
+class Gatcon : Layerable() {
+    private val areaColor = Color.CHBRN
+    private val lineColor = Color.CSTLN
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.catgat()?.let {
+            when(it) {
+                Catgat.FLOOD_BARRAGE_GATE,
+                Catgat.CAISSON ->  feature.pointSymbol(Sprite.GATCON04)
+                Catgat.LOCK_GATE -> feature.pointSymbol(Sprite.GATCON03)
+                Catgat.DYKE_GATE -> Unit
+            }
+        }
+        feature.areaColor(areaColor)
+        feature.lineColor(lineColor)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        areaLayerWithFillColor(color = areaColor),
+        lineLayerWithColor(color = lineColor, width = 2f)
+    )
 }

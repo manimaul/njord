@@ -3,10 +3,12 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
 
-abstract class Layerable {
+abstract class Layerable(
+    customKey: String? = null
+) {
     val log = logger()
-    open val key = javaClass.simpleName.uppercase()
     abstract fun layers(options: LayerableOptions): Sequence<Layer>
+    val key: String = customKey ?: javaClass.simpleName.uppercase()
 
     open fun preTileEncode(feature: ChartFeature) {
         log.warn("layer $key preTileEncode not handled")

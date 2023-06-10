@@ -150,10 +150,10 @@ class StandardLayers {
         Canals(),
         Convyr(),
         Damcon(),
-        //todo: below layers need completion
         Dwrtcl(),
         Docare(),
         Flodoc(),
+        //todo: below layers need completion
         Gatcon(),
         Lokbsn(),
         Logpon(),

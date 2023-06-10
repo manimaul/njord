@@ -2,10 +2,26 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Flodoc : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: Floating dock
+ *
+ * Acronym: FLODOC
+ *
+ * Code: 57
+ */
+class Flodoc : Layerable() {
+    private val areaColor = Color.CHBRN
+    private val lineColor = Color.CSTLN
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(areaColor)
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        areaLayerWithFillColor(areaColor),
+        lineLayerWithColor(lineColor)
+    )
 }

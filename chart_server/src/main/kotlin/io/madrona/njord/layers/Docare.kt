@@ -1,12 +1,27 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
+import io.madrona.njord.model.ChartFeature
 
-class Docare : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Dock area
+ *
+ * Acronym: DOCARE
+ *
+ * Code: 45
+ */
+class Docare : Layerable() {
+    private val areaColor = Color.DEPVS
+    private val lineColor = Color.CHGRD
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(areaColor)
+        feature.lineColor(lineColor)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        areaLayerWithFillColor(color = areaColor),
+        lineLayerWithColor(color = lineColor, width = 0.5f),
+    )
 }

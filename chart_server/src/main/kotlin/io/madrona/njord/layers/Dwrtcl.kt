@@ -1,11 +1,24 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
+import io.madrona.njord.model.ChartFeature
 
-class Dwrtcl : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Deep water route centerline
+ *
+ * Acronym: DWRTCL
+ *
+ * Code: 40
+ */
+class Dwrtcl : Layerable() {
+    private val lineColor = Color.CHBLK
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(lineColor)
+    )
 }

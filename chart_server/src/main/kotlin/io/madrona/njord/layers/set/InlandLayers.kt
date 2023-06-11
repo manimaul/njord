@@ -11,6 +11,7 @@ import io.madrona.njord.layers.*
  * lock basin part (LKBSPT)
  * lock basin (LOKBSN)
  * exceptional navigation structure (EXCNST) (note: IENC only)
+ * anchor berth (ACHBRT)
  */
 class InlandLayers {
     val layers = sequenceOf(
@@ -21,5 +22,6 @@ class InlandLayers {
         Notmrk(),
         Lkbspt(),
         Excnst(),
+        Achbrt("achbrt")
     )
 }

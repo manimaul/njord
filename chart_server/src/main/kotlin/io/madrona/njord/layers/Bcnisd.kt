@@ -2,10 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Bcnisd : LayerableTodo() {
-        //todo:
-        override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Beacon, isolated danger
+ *
+ * Acronym: BCNISD
+ *
+ * Code: 6
+ */
+class Bcnisd : Layerable() {
 
-        //todo:
-        override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.BCNISD21)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+    )
 }

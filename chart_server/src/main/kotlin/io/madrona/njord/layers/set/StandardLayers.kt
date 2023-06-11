@@ -18,9 +18,6 @@ import io.madrona.njord.layers.*
  * cable overhead (CBLOHD)
  * canal (CANALS)
  * conveyor (CONVYR)
- *
- * <TODO:>
- *
  * dam (DAMCON)
  * deep water route centerline (DWRTCL)
  * dock area (DOCARE)
@@ -33,10 +30,6 @@ import io.madrona.njord.layers.*
  * pylon/bridge support (PYLONS)
  * shoreline construction (SLCONS)
  * cartographic area ($AREAS)
- * notice mark (NOTMRK)
- * harbour basin (HRBBSN)
- * lock basin part (LKBSPT)
- * exceptional navigation structure (EXCNST) (note: IENC only)
  * airport / airfield (AIRARE)
  * anchor berth (ACHBRT)
  * anchorage area (ACHARE)
@@ -155,17 +148,11 @@ class StandardLayers {
         Flodoc(),
         Gatcon(),
         Lokbsn(),
-        Lokbsn("lokbsn"),
         Logpon(),
         Ofsplf(),
         Oilbar(),
-        //todo: below layers need completion
         Pylons(),
-        Areas(),
-        Notmrk(),
-        Hrbbsn(),
-        Lkbspt(),
-        Excnst(),
+        //todo: below layers need completion
         Airare(),
         Achbrt(),
         Achare(),

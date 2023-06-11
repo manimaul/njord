@@ -2,11 +2,6 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Lkbspt : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
-
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
-
+class Lkbspt : Layerable() {
+    override fun layers(options: LayerableOptions) = emptySequence<Layer>()
 }

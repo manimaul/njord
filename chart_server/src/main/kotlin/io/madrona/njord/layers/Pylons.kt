@@ -2,11 +2,28 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Pylons : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point, Area
+ *
+ * Object: Pylon/bridge support
+ *
+ * Acronym: PYLONS
+ *
+ * Code: 98
+ */
+class Pylons : Layerable() {
+    private val areaColor = Color.CHBRN
+    private val lineColor = Color.CSTLN
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(areaColor)
+        feature.lineColor(lineColor)
+        feature.pointSymbol(Sprite.POSGEN03)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        areaLayerWithFillColor(areaColor),
+        lineLayerWithColor(lineColor, width = 2f)
+    )
 }

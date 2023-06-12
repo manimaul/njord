@@ -16,12 +16,18 @@ abstract class Layerable(
     }
 
     private var pointLayerFromSymbolId = 0
+
+    /**
+     *
+     */
     fun pointLayerFromSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.BOTTOM,
         iconOffset: List<Float>? = null,
         iconAllowOverlap: Boolean = true,
-        iconKeepUpright: Boolean = false
+        iconKeepUpright: Boolean = false,
+        iconRotate: Any? = null,
+        iconRotationAlignment: IconRotationAlignment? = null,
     ): Layer {
         return Layer(
             id = "${key}_point_${++pointLayerFromSymbolId}",
@@ -35,6 +41,8 @@ abstract class Layerable(
                 iconOffset = iconOffset,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = iconKeepUpright,
+                iconRotate = iconRotate,
+                iconRotationAlignment = iconRotationAlignment,
             )
         )
     }

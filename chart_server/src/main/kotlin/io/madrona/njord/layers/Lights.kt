@@ -30,7 +30,8 @@ class Lights : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconOffset = listOf(-10f, 10f),
+//            iconOffset = listOf(10f, 0f),
+            anchor = Anchor.TOP_LEFT,
             iconAllowOverlap = true,
             iconKeepUpright = true,
         )

@@ -24,9 +24,8 @@ open class Bcnlat : Layerable() {
                 when (feature.colors().firstOrNull()) {
                     Color.Red -> feature.pointSymbol(Sprite.BCNLAT21) //red tall beacon
                     Color.Green -> feature.pointSymbol(Sprite.BCNLAT22) //green tall beacon
-                    Color.Amber,
-                    Color.Yellow -> feature.pointSymbol(Sprite.BCNSPP21) //yellow tall beacon
-                    else -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
+                    Color.Black -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
+                    else  -> feature.pointSymbol(Sprite.BCNSPP21) //yellow tall beacon
                 }
             }
             Bcnshp.BEACON_TOWER,
@@ -35,9 +34,8 @@ open class Bcnlat : Layerable() {
                 when (feature.colors().firstOrNull()) {
                     Color.Red -> feature.pointSymbol(Sprite.BCNLAT15) //red short beacon
                     Color.Green -> feature.pointSymbol(Sprite.BCNLAT15) //green short beacon
-                    Color.Amber,
-                    Color.Yellow -> feature.pointSymbol(Sprite.BCNSPP13) //yellow short beacon
-                    else -> feature.pointSymbol(Sprite.BCNSAW13) //black short beacon
+                    Color.Black -> feature.pointSymbol(Sprite.BCNSAW13) //black short beacon
+                    else -> feature.pointSymbol(Sprite.BCNSPP13) //yellow short beacon
                 }
             }
             Bcnshp.CAIRN -> {

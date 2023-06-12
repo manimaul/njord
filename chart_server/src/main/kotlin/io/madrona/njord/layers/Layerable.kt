@@ -2,6 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
+import java.awt.Point
 
 abstract class Layerable(
     customKey: String? = null
@@ -18,6 +19,7 @@ abstract class Layerable(
     fun pointLayerFromSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.BOTTOM,
+        iconOffset: List<Float>? = null,
         iconAllowOverlap: Boolean = true,
         iconKeepUpright: Boolean = false
     ): Layer {
@@ -30,6 +32,7 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol ?: listOf("get", "SY"),
                 iconAnchor = anchor,
+                iconOffset = iconOffset,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = iconKeepUpright,
             )

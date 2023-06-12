@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg14012"
+   width="3.0001104mm"
+   height="5mm"
+   version="1.1"
+   viewBox="0 0 11.338999 18.897639"
+   sodipodi:docname="LIGHTDEF.svg"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   inkscape:export-filename="LIGHTDEF3.png"
+   inkscape:export-xdpi="76.199997"
+   inkscape:export-ydpi="76.199997"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7138" />
+  <sodipodi:namedview
+     id="namedview7136"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="45.254834"
+     inkscape:cx="8.9935144"
+     inkscape:cy="4.8613591"
+     inkscape:window-width="1309"
+     inkscape:window-height="456"
+     inkscape:window-x="412"
+     inkscape:window-y="200"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg14012"
+     inkscape:document-units="mm" />
+  <g
+     id="g16173"
+     transform="matrix(1.1778,0,0,1.1778,1.5472394,-1.1778)"
+     style="stroke-width:0.849041">
+    <g
+       id="g16177"
+       style="stroke-width:0.849041">
+      <path
+         id="path7591-2"
+         style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.254713;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1.24724;stroke-opacity:1"
+         d="m 3.5006069,1.1273566 a 2.4656303,2.4667758 0 0 0 -2.4663105,2.4674565 2.4656303,2.4667758 0 0 0 0.055606,0.4925095 h -0.00981 L 3.5006069,16.915476 5.9113112,4.0873226 A 2.4656303,2.4667758 0 0 0 5.9652823,3.5948131 2.4656303,2.4667758 0 0 0 3.5006069,1.1273566 Z" />
+    </g>
+  </g>
+</svg>

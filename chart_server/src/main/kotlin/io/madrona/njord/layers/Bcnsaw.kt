@@ -1,11 +1,13 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.model.*
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Beacon, safe water
+ *
+ * Acronym: BCNSAW
+ *
+ * Code: 8
+ */
+class Bcnsaw : Bcnlat()
 
-class Bcnsaw : LayerableTodo() {
-        //todo:
-        override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
-
-        //todo:
-        override fun layers(options: LayerableOptions) = super.layers(options)
-}

@@ -1,5 +1,7 @@
 package io.madrona.njord.geo.symbols
 
+import io.madrona.njord.model.ChartFeature
+
 /**
  * COLOUR Attribute
  * ID	Meaning	INT 1	S-4
@@ -17,25 +19,40 @@ package io.madrona.njord.geo.symbols
  * 12	magenta
  * 13	pink
  */
-enum class Color(val code: Int) {
-    White(1),
-    Black(2),
-    Red(3),
-    Green(4),
-    Blue(5),
-    Yellow(6),
-    Grey(7),
-    Brown(8),
-    Amber(9),
-    Violet(10),
-    Orange(11),
-    Magenta(12),
-    Pink(13);
+enum class Color {
+    White,
+    Black,
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Grey,
+    Brown,
+    Amber,
+    Violet,
+    Orange,
+    Magenta,
+    Pink;
 
     companion object {
-        fun fromProp(prop: S57Prop?): List<Color> {
-            return prop.listFrom("COLOUR") { code ->
-                values().firstOrNull { it.code == code }
+        fun ChartFeature.colors(): List<Color> {
+            return props.intValues("COLOUR").mapNotNull {
+                when (it) {
+                    1 -> White
+                    2 -> Black
+                    3 -> Red
+                    4 -> Green
+                    5 -> Blue
+                    6 -> Yellow
+                    7 -> Grey
+                    8 -> Brown
+                    9 -> Amber
+                    10 -> Violet
+                    11 -> Orange
+                    12 -> Magenta
+                    13 -> Pink
+                    else -> null
+                }
             }
         }
     }

@@ -12,34 +12,19 @@ import io.madrona.njord.model.*
  * Code: 20
  */
 class Cblare : Layerable() {
+    private val lineColor = Color.CHMGD
     override fun preTileEncode(feature: ChartFeature) {
-        feature.props["SY"] = "CBLARE51"
+        feature.pointSymbol(Sprite.CBLARE51)
+        feature.lineColor(lineColor)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_line_dash",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                lineColor = colorFrom("CHMGD"),
-                lineWidth = 2f,
-                lineDashArray = listOf(3f, 2f),
-            ),
+        lineLayerWithColor(
+            color = lineColor,
+            style = LineStyle.CustomDash(3f, 2f)
         ),
-        Layer(
-            id = "${key}_area_symbol",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconOffset = listOf(30f, 30f), // give room for resare
-                iconAnchor = Anchor.CENTER,
-                iconKeepUpright = false,
-            )
-        ),
+        areaLayerWithSingleSymbol(
+            iconOffset = listOf(30f, 30f), // give room for resare
+        )
     )
 }

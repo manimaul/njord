@@ -136,7 +136,6 @@ class StandardLayers {
         Coalne(),
         Hulkes(),
         Ponton(),
-        Obstrn(),
         Morfac(),
         Bridge(),
         Cblohd(),
@@ -151,26 +150,34 @@ class StandardLayers {
         Logpon(),
         Ofsplf(),
         Oilbar(),
-        Pylons(),
         Airare(),
         Achbrt(),
         Achare(),
+        Cblare(),
+        Cblsub(),
+
+        // obstuctions
+        Pylons(),
+        Obstrn(),
+
+        // buoys
+        Fogsig(),
         Bcncar(),
         Bcnisd(),
         Bcnlat(),
         Bcnsaw(),
         Bcnspp(),
         Boycar(),
-        Fogsig(),
+
+        // lights
         Lights(),
+
         //todo: below layers need completion
         Boyinb(),
         Boyisd(),
         Boylat(),
         Boysaw(),
         Boyspp(),
-        Cblare(),
-        Cblsub(),
         Ctsare(),
         Causwy(),
         Ctnare(),

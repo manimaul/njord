@@ -2,10 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Cblsub : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Cable, submarine
+ *
+ * Acronym: CBLSUB
+ *
+ * Code: 22
+ */
+class Cblsub : Layerable() {
+    private val lineColor = Color.CHMGD
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine)
+    )
 }

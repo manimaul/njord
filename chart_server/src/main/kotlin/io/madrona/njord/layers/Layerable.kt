@@ -109,6 +109,26 @@ abstract class Layerable(
         )
     }
 
+    private var areaLayerWithSingleSymbolId = 0
+    fun areaLayerWithSingleSymbol(
+        symbol: Sprite? = null,
+        iconOffset: List<Float>? = null
+    ) : Layer {
+        return Layer(
+            id = "${key}_area_symbol${++areaLayerWithSingleSymbolId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = Filters.eqTypePolyGon,
+            layout = Layout(
+                symbolPlacement = Placement.POINT,
+                iconImage = symbol ?: listOf("get", "SY"),
+                iconOffset = iconOffset,
+                iconAnchor = Anchor.CENTER,
+                iconKeepUpright = false,
+            )
+        )
+    }
+
     fun areaLayerWithPointSymbol(symbol: Sprite? = null, anchor: Anchor = Anchor.CENTER): Layer {
         return Layer(
             id = "${key}_area_point",

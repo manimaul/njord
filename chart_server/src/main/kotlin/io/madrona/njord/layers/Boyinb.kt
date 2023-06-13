@@ -2,10 +2,21 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Boyinb : LayerableTodo() {
-        //todo:
-        override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Buoy, installation
+ *
+ * Acronym: BOYINB
+ *
+ * Code: 15
+ */
+class Boyinb : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.BOYMOR11)
+    }
 
-        //todo:
-        override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol()
+    )
 }

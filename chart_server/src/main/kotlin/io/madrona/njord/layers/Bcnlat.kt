@@ -33,7 +33,7 @@ open class Bcnlat : Layerable() {
             Bcnshp.PILE_BEACON -> {
                 when (feature.colors().firstOrNull()) {
                     Color.Red -> feature.pointSymbol(Sprite.BCNLAT15) //red short beacon
-                    Color.Green -> feature.pointSymbol(Sprite.BCNLAT15) //green short beacon
+                    Color.Green -> feature.pointSymbol(Sprite.BCNLAT16) //green short beacon
                     Color.Black -> feature.pointSymbol(Sprite.BCNSAW13) //black short beacon
                     else -> feature.pointSymbol(Sprite.BCNSPP13) //yellow short beacon
                 }

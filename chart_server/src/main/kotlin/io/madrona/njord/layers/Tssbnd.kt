@@ -12,17 +12,13 @@ import io.madrona.njord.model.*
  * Code: 146
  */
 class Tssbnd : Layerable() {
+    private val lineColor = Color.TRFCF
+
+    override fun preTileEncode(feature: ChartFeature) {
+       feature.lineColor(lineColor)
+    }
+
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_line_dash",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypeLineString,
-            paint = Paint(
-                lineColor = colorFrom("TRFCF"),
-                lineWidth = 2f,
-                lineDashArray = listOf(3f, 2f),
-            ),
-        ),
+        lineLayerWithColor(color = lineColor, style = LineStyle.CustomDash(3f, 2f))
     )
 }

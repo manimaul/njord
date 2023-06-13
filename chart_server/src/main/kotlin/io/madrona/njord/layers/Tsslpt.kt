@@ -15,24 +15,14 @@ import io.madrona.njord.model.*
 class Tsslpt : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.props.floatValue("ORIENT")?.let {
-            feature.props["SY"] = "RCTLPT52"
+            feature.pointSymbol(Sprite.RCTLPT52)
         }
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_area_symbol",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = Filters.eqTypePointOrPolygon,
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconRotate = listOf("get", "ORIENT"),
-                iconRotationAlignment = IconRotationAlignment.MAP,
-                iconAnchor = Anchor.CENTER,
-                iconKeepUpright = false,
-            )
-        )
+        areaLayerWithPointSymbol(
+            iconRotate = listOf("get", "ORIENT"),
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
     )
 }

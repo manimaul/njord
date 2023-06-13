@@ -129,7 +129,12 @@ abstract class Layerable(
         )
     }
 
-    fun areaLayerWithPointSymbol(symbol: Sprite? = null, anchor: Anchor = Anchor.CENTER): Layer {
+    fun areaLayerWithPointSymbol(
+        symbol: Sprite? = null,
+        anchor: Anchor = Anchor.CENTER,
+        iconRotate: Any? = null,
+        iconRotationAlignment: IconRotationAlignment? = null
+    ): Layer {
         return Layer(
             id = "${key}_area_point",
             type = LayerType.SYMBOL,

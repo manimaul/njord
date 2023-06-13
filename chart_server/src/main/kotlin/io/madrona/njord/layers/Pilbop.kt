@@ -2,11 +2,27 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Pilbop : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point, Area
+ *
+ * Object: Pilot boarding place
+ *
+ * Acronym: PILBOP
+ *
+ * Code: 91
+ */
+class Pilbop : Layerable() {
+    private val lineColor = Color.TRFCF
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.PILBOP02)
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine),
+        areaLayerWithSingleSymbol()
+    )
 
 }

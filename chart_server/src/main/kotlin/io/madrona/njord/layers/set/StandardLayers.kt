@@ -140,6 +140,7 @@ class StandardLayers {
 
         // water boundary layers
         Tssbnd(),
+        Tselne(),
         Dwrtpt(),
         Dwrtcl(),
         Mipare(),
@@ -168,6 +169,7 @@ class StandardLayers {
         Cranes(),
         Pylons(),
         Daymar(),
+        Pilbop(),
         Obstrn(),
 
         // buoys and markers
@@ -206,7 +208,6 @@ class StandardLayers {
         Navlne(),
         Ospare(),
         Pilpnt(),
-        Pilbop(),
         Pipare(),
         Prcare(),
         Prdare(),
@@ -233,7 +234,6 @@ class StandardLayers {
         Swpare(),
 //        $texts(),
         Topmar(),
-        Tselne(),
         Tsscrs(),
         Tsslpt(),
         Tssron(),

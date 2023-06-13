@@ -18,6 +18,6 @@ class Cblsub : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine)
+        lineLayerWithColor(color = lineColor, width = 1f, style = LineStyle.DashLine)
     )
 }

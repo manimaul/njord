@@ -2,10 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Tselne : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Traffic Separation Line
+ *
+ * Acronym: TSELNE
+ *
+ * Code: 145
+ */
+class Tselne : Layerable() {
+    private val lineColor = Color.TRFCF
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor, width = 6f)
+    )
 }

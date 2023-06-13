@@ -13,7 +13,7 @@ import io.madrona.njord.model.ChartFeature
  */
 class Airare : Layerable() {
     private val areaColor = Color.LANDA
-    private val lineColor = Color.CHMGF
+    private val lineColor = Color.LANDF
 
     override fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)

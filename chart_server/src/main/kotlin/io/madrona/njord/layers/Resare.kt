@@ -2,7 +2,7 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.layers.attributehelpers.Restrn
 import io.madrona.njord.layers.attributehelpers.Restrn.Companion.restrn
-import io.madrona.njord.model.*
+import io.madrona.njord.model.ChartFeature
 
 /**
  * Geometry Primitives: Area
@@ -14,46 +14,28 @@ import io.madrona.njord.model.*
  * Code: 112
  */
 class Resare : Layerable() {
+    private val lineColor = Color.CHMGD
+
     override fun preTileEncode(feature: ChartFeature) {
         feature.restrn().also { restrictions ->
             restrictions.firstOrNull {
                 it == Restrn.ENTRY_RESTRICTED
                         || it == Restrn.ENTRY_PROHIBITED
             }?.let {
-                feature.props["SY"] = "ENTRES51"
+                feature.pointSymbol(Sprite.ENTRES51)
             }
             restrictions.firstOrNull {
                 it == Restrn.ANCHORING_PROHIBITED
                         || it == Restrn.ANCHORING_RESTRICTED
             }?.let {
-                feature.props["SY"] = "ACHRES51"
+                feature.pointSymbol(Sprite.ACHRES51)
             }
         }
+        feature.lineColor(lineColor)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_line_dash",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                lineColor = colorFrom("CHMGD"),
-                lineWidth = 2f,
-                lineDashArray = listOf(3f, 2f),
-            ),
-        ),
-        Layer(
-            id = "${key}_area_symbol",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.CENTER,
-                iconKeepUpright = false,
-            )
-        ),
+       lineLayerWithColor(color = lineColor, style = LineStyle.CustomDash(3f, 2f)) ,
+        pointLayerFromSymbol(),
     )
 }

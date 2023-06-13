@@ -137,6 +137,7 @@ class StandardLayers {
         Causwy(),
         Canals(),
         Lokbsn(),
+        Airare(),
 
         // water boundary layers
         Tssbnd(),
@@ -150,6 +151,10 @@ class StandardLayers {
         Cblare(),
         Cblsub(),
         Cblohd(),
+        Resare(),
+        Ctnare(),
+        Ctsare(),
+        Wedklp(),
 
         // obstructions
         Hulkes(),
@@ -163,9 +168,6 @@ class StandardLayers {
         Gatcon(),
         Ofsplf(),
         Oilbar(),
-        Airare(),
-        Ctsare(),
-        Ctnare(),
         Cranes(),
         Pylons(),
         Daymar(),
@@ -196,7 +198,6 @@ class StandardLayers {
         Fairwy(),
         Fnclne(),
         Feryrt(),
-//        feryrt(),
         Fshgrd(),
         Forstc(),
         Icnare(),
@@ -219,7 +220,6 @@ class StandardLayers {
         Rcrtcl(),
         Rectrc(),
         Rctlpt(),
-        Resare(),
         Retrfl(),
         Rivers(),
         Runway(),
@@ -232,7 +232,6 @@ class StandardLayers {
         Slogrd(),
         Subtln(),
         Swpare(),
-//        $texts(),
         Topmar(),
         Tsscrs(),
         Tsslpt(),
@@ -242,7 +241,8 @@ class StandardLayers {
         Twrtpt(),
         Unsare(),
         Newobj(),
-//        M_nsys(),
+//    $texts(),
+//    M_nsys(),
 //    $csymb(),
 //    $texts(),
     )

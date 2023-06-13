@@ -113,7 +113,7 @@ abstract class Layerable(
     fun areaLayerWithSingleSymbol(
         symbol: Sprite? = null,
         iconOffset: List<Float>? = null
-    ) : Layer {
+    ): Layer {
         return Layer(
             id = "${key}_area_symbol${++areaLayerWithSingleSymbolId}",
             type = LayerType.SYMBOL,
@@ -133,7 +133,9 @@ abstract class Layerable(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.CENTER,
         iconRotate: Any? = null,
-        iconRotationAlignment: IconRotationAlignment? = null
+        iconRotationAlignment: IconRotationAlignment? = null,
+        iconAllowOverlap: Boolean = true,
+        iconOffset: List<Float>? = null,
     ): Layer {
         return Layer(
             id = "${key}_area_point",
@@ -146,8 +148,9 @@ abstract class Layerable(
                 iconAnchor = anchor,
                 iconRotate = iconRotate,
                 iconRotationAlignment = iconRotationAlignment,
-                iconAllowOverlap = true,
+                iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = false,
+                iconOffset = iconOffset,
             )
         )
     }

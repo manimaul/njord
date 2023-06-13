@@ -134,6 +134,7 @@ class StandardLayers {
         Drgare(),
         Iceare(),
         Coalne(),
+        Causwy(),
         Hulkes(),
         Ponton(),
         Morfac(),
@@ -155,6 +156,7 @@ class StandardLayers {
         Achare(),
         Cblare(),
         Cblsub(),
+        Ctsare(),
 
         // obstuctions
         Pylons(),
@@ -178,8 +180,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Ctsare(),
-        Causwy(),
         Ctnare(),
         Cranes(),
         Daymar(),

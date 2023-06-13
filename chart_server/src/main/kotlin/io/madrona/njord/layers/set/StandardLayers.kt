@@ -185,6 +185,7 @@ class StandardLayers {
         Boylat(),
         Boysaw(),
         Boyspp(),
+        Lndmrk(),
 
         // lights
         Lights(),
@@ -201,7 +202,6 @@ class StandardLayers {
         Icnare(),
         Istzne(),
         Lakshr(),
-        Lndmrk(),
         Litflt(),
         Litves(),
         Marcul(),

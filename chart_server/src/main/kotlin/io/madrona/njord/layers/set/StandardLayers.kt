@@ -158,6 +158,7 @@ class StandardLayers {
         Cblare(),
         Cblsub(),
         Ctsare(),
+        Ctnare(),
 
         // obstuctions
         Pylons(),
@@ -181,7 +182,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Ctnare(),
         Cranes(),
         Daymar(),
         Dwrtpt(),

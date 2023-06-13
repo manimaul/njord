@@ -171,13 +171,13 @@ class StandardLayers {
         Boyinb(),
         Boyisd(),
         Boylat(),
+        Boysaw(),
+        Boyspp(),
 
         // lights
         Lights(),
 
         //todo: below layers need completion
-        Boysaw(),
-        Boyspp(),
         Ctsare(),
         Causwy(),
         Ctnare(),

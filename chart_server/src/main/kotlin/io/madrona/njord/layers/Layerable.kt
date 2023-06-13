@@ -142,8 +142,10 @@ abstract class Layerable(
             filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)),
             layout = Layout(
                 symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.CENTER,
+                iconImage = symbol ?: listOf("get", "SY"),
+                iconAnchor = anchor,
+                iconRotate = iconRotate,
+                iconRotationAlignment = iconRotationAlignment,
                 iconAllowOverlap = true,
                 iconKeepUpright = false,
             )

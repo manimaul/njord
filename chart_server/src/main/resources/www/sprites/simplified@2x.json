@@ -517,640 +517,654 @@
         "y": 567,
         "pixelRatio": 1
     },
+    "DWRUTE51": {
+        "width": 20,
+        "height": 44,
+        "x": 324,
+        "y": 567,
+        "pixelRatio": 1
+    },
     "EBBSTR01": {
         "width": 7,
         "height": 26,
-        "x": 324,
+        "x": 405,
         "y": 567,
         "pixelRatio": 1
     },
     "ENTRES51": {
         "width": 31,
         "height": 31,
-        "x": 405,
+        "x": 486,
         "y": 567,
         "pixelRatio": 1
     },
     "FLASTK01": {
         "width": 10,
         "height": 19,
-        "x": 486,
+        "x": 567,
         "y": 567,
         "pixelRatio": 1
     },
     "FLASTK11": {
         "width": 10,
         "height": 19,
-        "x": 567,
+        "x": 648,
         "y": 567,
         "pixelRatio": 1
     },
     "FLDSTR01": {
         "width": 7,
         "height": 27,
-        "x": 648,
+        "x": 729,
         "y": 567,
         "pixelRatio": 1
     },
     "FLGSTF01": {
         "width": 10,
         "height": 16,
-        "x": 729,
-        "y": 567,
+        "x": 0,
+        "y": 648,
         "pixelRatio": 1
     },
     "FLTHAZ02": {
         "width": 24,
         "height": 24,
-        "x": 0,
+        "x": 81,
         "y": 648,
         "pixelRatio": 1
     },
     "FOGSIG01": {
         "width": 12,
         "height": 13,
-        "x": 81,
+        "x": 162,
         "y": 648,
         "pixelRatio": 1
     },
     "FORSTC01": {
         "width": 13,
         "height": 13,
-        "x": 162,
+        "x": 243,
         "y": 648,
         "pixelRatio": 1
     },
     "FORSTC11": {
         "width": 13,
         "height": 13,
-        "x": 243,
+        "x": 324,
         "y": 648,
         "pixelRatio": 1
     },
     "FOULAR01": {
         "width": 20,
         "height": 24,
-        "x": 324,
+        "x": 405,
         "y": 648,
         "pixelRatio": 1
     },
     "FOULGND1": {
         "width": 12,
         "height": 10,
-        "x": 405,
+        "x": 486,
         "y": 648,
         "pixelRatio": 1
     },
     "FSHFAC02": {
         "width": 16,
         "height": 14,
-        "x": 486,
+        "x": 567,
         "y": 648,
         "pixelRatio": 1
     },
     "FSHFAC03": {
         "width": 19,
         "height": 6,
-        "x": 567,
+        "x": 648,
         "y": 648,
         "pixelRatio": 1
     },
     "FSHHAV01": {
         "width": 29,
         "height": 19,
-        "x": 648,
+        "x": 729,
         "y": 648,
         "pixelRatio": 1
     },
     "GATCON03": {
         "width": 21,
         "height": 21,
-        "x": 729,
-        "y": 648,
+        "x": 0,
+        "y": 729,
         "pixelRatio": 1
     },
     "GATCON04": {
         "width": 21,
         "height": 21,
-        "x": 0,
+        "x": 81,
         "y": 729,
         "pixelRatio": 1
     },
     "HILTOP01": {
         "width": 30,
         "height": 25,
-        "x": 81,
+        "x": 162,
         "y": 729,
         "pixelRatio": 1
     },
     "HILTOP11": {
         "width": 30,
         "height": 25,
-        "x": 162,
+        "x": 243,
         "y": 729,
         "pixelRatio": 1
     },
     "HRBFAC09": {
         "width": 18,
         "height": 18,
-        "x": 243,
+        "x": 324,
         "y": 729,
         "pixelRatio": 1
     },
     "HULKES01": {
         "width": 15,
         "height": 9,
-        "x": 324,
+        "x": 405,
         "y": 729,
         "pixelRatio": 1
     },
     "ICEARE04": {
         "width": 81,
         "height": 77,
-        "x": 405,
+        "x": 486,
         "y": 729,
         "pixelRatio": 3
     },
     "ISODGR51": {
         "width": 19,
         "height": 19,
-        "x": 486,
+        "x": 567,
         "y": 729,
         "pixelRatio": 1
     },
     "LIGHTDEF1": {
         "width": 11,
         "height": 11,
-        "x": 567,
+        "x": 648,
         "y": 729,
         "pixelRatio": 1
     },
     "LIGHTDEF11": {
         "width": 11,
         "height": 11,
-        "x": 648,
+        "x": 729,
         "y": 729,
         "pixelRatio": 1
     },
     "LIGHTDEF12": {
         "width": 11,
         "height": 11,
-        "x": 729,
-        "y": 729,
+        "x": 0,
+        "y": 810,
         "pixelRatio": 1
     },
     "LIGHTDEF3": {
         "width": 11,
         "height": 11,
-        "x": 0,
+        "x": 81,
         "y": 810,
         "pixelRatio": 1
     },
     "LIGHTDEF4": {
         "width": 11,
         "height": 11,
-        "x": 81,
+        "x": 162,
         "y": 810,
         "pixelRatio": 1
     },
     "LIGHTDEF6": {
         "width": 11,
         "height": 11,
-        "x": 162,
+        "x": 243,
         "y": 810,
         "pixelRatio": 1
     },
     "LITFLT02": {
         "width": 19,
         "height": 8,
-        "x": 243,
+        "x": 324,
         "y": 810,
         "pixelRatio": 1
     },
     "LITVES02": {
         "width": 23,
         "height": 12,
-        "x": 324,
+        "x": 405,
         "y": 810,
         "pixelRatio": 1
     },
     "LNDARE01": {
         "width": 7,
         "height": 7,
-        "x": 405,
+        "x": 486,
         "y": 810,
         "pixelRatio": 1
     },
     "LOCMAG01": {
         "width": 7,
         "height": 28,
-        "x": 486,
+        "x": 567,
         "y": 810,
         "pixelRatio": 1
     },
     "LOWACC01": {
         "width": 34,
         "height": 37,
-        "x": 567,
+        "x": 648,
         "y": 810,
         "pixelRatio": 1
     },
     "MAGVAR01": {
         "width": 7,
         "height": 27,
-        "x": 648,
+        "x": 729,
         "y": 810,
         "pixelRatio": 1
     },
     "MARCUL02": {
         "width": 21,
         "height": 13,
-        "x": 729,
-        "y": 810,
+        "x": 0,
+        "y": 891,
         "pixelRatio": 1
     },
     "MARSHES1": {
         "width": 27,
         "height": 27,
-        "x": 0,
+        "x": 81,
         "y": 891,
         "pixelRatio": 1
     },
     "MONUMT12": {
         "width": 13,
         "height": 13,
-        "x": 81,
+        "x": 162,
         "y": 891,
         "pixelRatio": 1
     },
     "MORFAC03": {
         "width": 9,
         "height": 9,
-        "x": 162,
+        "x": 243,
         "y": 891,
         "pixelRatio": 1
     },
     "MORFAC04": {
         "width": 11,
         "height": 16,
-        "x": 243,
+        "x": 324,
         "y": 891,
         "pixelRatio": 1
     },
     "MSTCON04": {
         "width": 10,
         "height": 20,
-        "x": 324,
+        "x": 405,
         "y": 891,
         "pixelRatio": 1
     },
     "MSTCON14": {
         "width": 10,
         "height": 20,
-        "x": 405,
+        "x": 486,
         "y": 891,
         "pixelRatio": 1
     },
     "NEWOBJ01": {
         "width": 16,
         "height": 16,
-        "x": 486,
+        "x": 567,
         "y": 891,
         "pixelRatio": 1
     },
     "NOTBRD11": {
         "width": 12,
         "height": 18,
-        "x": 567,
+        "x": 648,
         "y": 891,
         "pixelRatio": 1
     },
     "OBSTRN01": {
         "width": 13,
         "height": 13,
-        "x": 648,
+        "x": 729,
         "y": 891,
         "pixelRatio": 1
     },
     "OBSTRN02": {
         "width": 13,
         "height": 13,
-        "x": 729,
-        "y": 891,
+        "x": 0,
+        "y": 972,
         "pixelRatio": 1
     },
     "OBSTRN03": {
         "width": 13,
         "height": 13,
-        "x": 0,
+        "x": 81,
         "y": 972,
         "pixelRatio": 1
     },
     "OBSTRN11": {
         "width": 9,
         "height": 9,
-        "x": 81,
+        "x": 162,
         "y": 972,
         "pixelRatio": 1
     },
     "OFSPLF01": {
         "width": 13,
         "height": 13,
-        "x": 162,
+        "x": 243,
         "y": 972,
         "pixelRatio": 1
     },
     "PILBOP02": {
         "width": 17,
         "height": 17,
-        "x": 243,
+        "x": 324,
         "y": 972,
         "pixelRatio": 1
     },
     "PILPNT02": {
         "width": 7,
         "height": 7,
-        "x": 324,
+        "x": 405,
         "y": 972,
         "pixelRatio": 1
     },
     "POSGEN01": {
         "width": 13,
         "height": 13,
-        "x": 405,
+        "x": 486,
         "y": 972,
         "pixelRatio": 1
     },
     "POSGEN03": {
         "width": 13,
         "height": 13,
-        "x": 486,
+        "x": 567,
         "y": 972,
         "pixelRatio": 1
     },
     "POSGEN04": {
         "width": 7,
         "height": 7,
-        "x": 567,
+        "x": 648,
         "y": 972,
         "pixelRatio": 1
     },
     "PRCARE12": {
         "width": 16,
         "height": 16,
-        "x": 648,
+        "x": 729,
         "y": 972,
         "pixelRatio": 1
     },
     "PRDINS02": {
         "width": 16,
         "height": 13,
-        "x": 729,
-        "y": 972,
+        "x": 0,
+        "y": 1053,
         "pixelRatio": 1
     },
     "QUESMRK1": {
         "width": 8,
         "height": 14,
-        "x": 0,
+        "x": 81,
         "y": 1053,
         "pixelRatio": 1
     },
     "RACNSP01": {
         "width": 19,
         "height": 19,
-        "x": 81,
+        "x": 162,
         "y": 1053,
         "pixelRatio": 1
     },
     "RADRFL03": {
         "width": 19,
         "height": 19,
-        "x": 162,
+        "x": 243,
         "y": 1053,
         "pixelRatio": 1
     },
     "RASCAN01": {
         "width": 13,
         "height": 17,
-        "x": 243,
+        "x": 324,
         "y": 1053,
         "pixelRatio": 1
     },
     "RASCAN11": {
         "width": 13,
         "height": 17,
-        "x": 324,
+        "x": 405,
         "y": 1053,
         "pixelRatio": 1
     },
     "RCLDEF01": {
         "width": 36,
         "height": 31,
-        "x": 405,
+        "x": 486,
         "y": 1053,
         "pixelRatio": 1
     },
     "RCTLPT52": {
         "width": 18,
         "height": 41,
-        "x": 486,
+        "x": 567,
         "y": 1053,
         "pixelRatio": 1
     },
     "RDOCAL02": {
         "width": 14,
         "height": 22,
-        "x": 567,
+        "x": 648,
         "y": 1053,
         "pixelRatio": 1
     },
     "RDOCAL03": {
         "width": 14,
         "height": 31,
-        "x": 648,
+        "x": 729,
         "y": 1053,
         "pixelRatio": 1
     },
     "RDOSTA02": {
         "width": 18,
         "height": 18,
-        "x": 729,
-        "y": 1053,
+        "x": 0,
+        "y": 1134,
         "pixelRatio": 1
     },
     "RETRFL02": {
         "width": 7,
         "height": 11,
-        "x": 0,
+        "x": 81,
         "y": 1134,
         "pixelRatio": 1
     },
     "ROLROL01": {
         "width": 24,
         "height": 10,
-        "x": 81,
+        "x": 162,
         "y": 1134,
         "pixelRatio": 1
     },
     "RSCSTA02": {
         "width": 22,
         "height": 21,
-        "x": 162,
+        "x": 243,
         "y": 1134,
         "pixelRatio": 1
     },
     "RTLDEF51": {
         "width": 35,
         "height": 41,
-        "x": 243,
+        "x": 324,
         "y": 1134,
         "pixelRatio": 1
     },
     "RTPBCN02": {
         "width": 20,
         "height": 19,
-        "x": 324,
+        "x": 405,
         "y": 1134,
         "pixelRatio": 1
     },
     "SILBUI01": {
         "width": 10,
         "height": 10,
-        "x": 405,
+        "x": 486,
         "y": 1134,
         "pixelRatio": 1
     },
     "SILBUI11": {
         "width": 10,
         "height": 10,
-        "x": 486,
+        "x": 567,
         "y": 1134,
         "pixelRatio": 1
     },
     "SISTAT02": {
         "width": 20,
         "height": 13,
-        "x": 567,
+        "x": 648,
         "y": 1134,
         "pixelRatio": 1
     },
     "SMCFAC02": {
         "width": 21,
         "height": 21,
-        "x": 648,
+        "x": 729,
         "y": 1134,
         "pixelRatio": 1
     },
     "SNDWAV02": {
         "width": 35,
         "height": 6,
-        "x": 729,
-        "y": 1134,
+        "x": 0,
+        "y": 1215,
         "pixelRatio": 1
     },
     "SPRING02": {
         "width": 10,
         "height": 11,
-        "x": 0,
+        "x": 81,
         "y": 1215,
         "pixelRatio": 1
     },
     "TIDEHT01": {
         "width": 27,
         "height": 11,
-        "x": 81,
+        "x": 162,
         "y": 1215,
         "pixelRatio": 1
     },
     "TIDSTR01": {
         "width": 17,
         "height": 17,
-        "x": 162,
+        "x": 243,
         "y": 1215,
         "pixelRatio": 1
     },
     "TMBYRD01": {
         "width": 13,
         "height": 13,
-        "x": 243,
+        "x": 324,
         "y": 1215,
         "pixelRatio": 1
     },
     "TNKCON02": {
         "width": 9,
         "height": 9,
-        "x": 324,
+        "x": 405,
         "y": 1215,
         "pixelRatio": 1
     },
     "TNKCON12": {
         "width": 9,
         "height": 9,
-        "x": 405,
+        "x": 486,
         "y": 1215,
         "pixelRatio": 1
     },
     "TOWERS01": {
         "width": 14,
         "height": 26,
-        "x": 486,
+        "x": 567,
         "y": 1215,
         "pixelRatio": 1
     },
     "TOWERS02": {
         "width": 14,
         "height": 26,
-        "x": 567,
+        "x": 648,
         "y": 1215,
         "pixelRatio": 1
     },
     "TOWERS03": {
         "width": 14,
         "height": 26,
-        "x": 648,
+        "x": 729,
         "y": 1215,
         "pixelRatio": 1
     },
     "TOWERS12": {
         "width": 14,
         "height": 26,
-        "x": 729,
-        "y": 1215,
+        "x": 0,
+        "y": 1296,
+        "pixelRatio": 1
+    },
+    "TSSLPT51": {
+        "width": 19,
+        "height": 43,
+        "x": 81,
+        "y": 1296,
         "pixelRatio": 1
     },
     "WATTUR02": {
         "width": 44,
         "height": 10,
-        "x": 0,
+        "x": 162,
         "y": 1296,
         "pixelRatio": 1
     },
     "WEDKLP03": {
         "width": 30,
         "height": 8,
-        "x": 81,
+        "x": 243,
         "y": 1296,
         "pixelRatio": 1
     },
     "WIMCON01": {
         "width": 12,
         "height": 20,
-        "x": 162,
+        "x": 324,
         "y": 1296,
         "pixelRatio": 1
     },
     "WIMCON11": {
         "width": 12,
         "height": 20,
-        "x": 243,
+        "x": 405,
         "y": 1296,
         "pixelRatio": 1
     },
     "WNDMIL12": {
         "width": 10,
         "height": 13,
-        "x": 324,
+        "x": 486,
         "y": 1296,
         "pixelRatio": 1
     }

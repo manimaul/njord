@@ -1,11 +1,32 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.layers.attributehelpers.Convis
+import io.madrona.njord.layers.attributehelpers.Convis.Companion.convis
 import io.madrona.njord.model.*
 
-class Fnclne : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Fence/wall
+ *
+ * Acronym: FNCLNE
+ *
+ * Code: 52
+ */
+class Fnclne : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        when (feature.convis()) {
+            Convis.VISUAL_CONSPICUOUS -> feature.lineColor(Color.CHBLK)
+            Convis.NOT_VISUAL_CONSPICUOUS,
+            null -> feature.lineColor(Color.LANDF)
+        }
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions): Sequence<Layer> {
+        return sequenceOf(
+            lineLayerWithColor(
+                width = 1f,
+            ),
+        )
+    }
 }

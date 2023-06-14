@@ -83,6 +83,28 @@ abstract class Layerable(
         )
     }
 
+    private var lineLayerWithTextId = 0
+    fun lineLayerWithText(textKey: String): Layer {
+       return Layer(
+            id = "${key}_label${++lineLayerWithTextId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = Filters.eqTypeLineString,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", textKey),
+                textSize = 14f,
+                symbolPlacement = Placement.LINE,
+            ),
+            paint = Paint(
+                textColor = colorFrom("CHBLK"),
+                textHaloColor = colorFrom("CHWHT"),
+                textHaloWidth = 2.5f
+            )
+        )
+    }
+
     private var areaLayerWithFillColorId = 0
     fun areaLayerWithFillColor(color: Color? = null): Layer {
         return Layer(

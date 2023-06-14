@@ -2,10 +2,24 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Fshgrd : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Fishing ground
+ *
+ * Acronym: FSHGRD
+ *
+ * Code: 56
+ */
+class Fshgrd : Layerable() {
+    private val lineColor = Color.CHMGD
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.FSHGRD01)
+        feature.lineColor(lineColor)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor),
+        areaLayerWithSingleSymbol()
+    )
 }

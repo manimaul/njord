@@ -2,10 +2,27 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Feryrt : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: Ferry route
+ *
+ * Acronym: FERYRT
+ *
+ * Code: 53
+ */
+class Feryrt : Layerable() {
+    private val lineColor = Color.CHBLK
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+        feature.linePattern(Sprite.FRYARE51)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(
+            color = lineColor,
+            style = LineStyle.CustomDash(6f, 2f)
+        ),
+        lineLayerWithPattern(Sprite.FRYARE51)
+    )
 }

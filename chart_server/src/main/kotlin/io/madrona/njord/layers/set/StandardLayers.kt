@@ -155,6 +155,11 @@ class StandardLayers {
         Ctnare(),
         Ctsare(),
         Wedklp(),
+        Fairwy(),
+        Fnclne(),
+        Feryrt(),
+        Fshgrd(),
+        Forstc(),
 
         // obstructions
         Hulkes(),
@@ -195,11 +200,6 @@ class StandardLayers {
         //todo: below layers need completion
         Dmpgrd(),
         Dykcon(),
-        Fairwy(),
-        Fnclne(),
-        Feryrt(),
-        Fshgrd(),
-        Forstc(),
         Icnare(),
         Istzne(),
         Lakshr(),

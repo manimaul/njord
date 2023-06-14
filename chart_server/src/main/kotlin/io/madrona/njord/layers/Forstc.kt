@@ -1,21 +1,38 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.layers.attributehelpers.Convis
+import io.madrona.njord.layers.attributehelpers.Convis.Companion.convis
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Fortified structure
+ *
+ * Acronym: FORSTC
+ *
+ * Code: 59
+ */
 class Forstc : Layerable() {
+    override fun preTileEncode(feature: ChartFeature) {
+        when (feature.convis()) {
+            Convis.VISUAL_CONSPICUOUS -> {
+                feature.pointSymbol(Sprite.FORSTC11)
+                feature.lineColor(Color.CHBLK)
+                feature.areaColor(Color.CHBRN)
+            }
+            Convis.NOT_VISUAL_CONSPICUOUS,
+            null -> {
+                feature.pointSymbol(Sprite.FORSTC11)
+                feature.lineColor(Color.LANDF)
+                feature.areaColor(Color.CHBRN)
+            }
+        }
+    }
+
     override fun layers(options: LayerableOptions) = sequenceOf(
-            Layer(
-                    id = "${key}_point",
-                    type = LayerType.SYMBOL,
-                    sourceLayer = key,
-                    filter = listOf(Filters.any, Filters.eqTypePoint),
-                    layout = Layout(
-                            symbolPlacement = Placement.POINT,
-                            iconImage = listOf("get", "SY"),
-                            iconAnchor = Anchor.BOTTOM,
-                            iconAllowOverlap = true,
-                            iconKeepUpright = true,
-                    )
-            )
+        pointLayerFromSymbol(),
+        areaLayerWithFillColor(),
+        lineLayerWithColor(),
     )
 }

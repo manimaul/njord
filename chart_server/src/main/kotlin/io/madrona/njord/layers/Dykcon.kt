@@ -2,10 +2,26 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Dykcon : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: Dyke
+ *
+ * Acronym: DYKCON
+ *
+ * Code: 49
+ */
+class Dykcon : Layerable() {
+    private val lineColor = Color.LANDF
+    private val areaColor = Color.CHBRN
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(color = areaColor)
+        feature.lineColor(color = lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor),
+        areaLayerWithFillColor(color = areaColor)
+    )
 }

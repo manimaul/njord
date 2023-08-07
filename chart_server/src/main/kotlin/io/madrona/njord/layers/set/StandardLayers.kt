@@ -138,6 +138,7 @@ class StandardLayers {
         Canals(),
         Lokbsn(),
         Airare(),
+        Dykcon(),
 
         // water boundary layers
         Tssbnd(),
@@ -160,6 +161,8 @@ class StandardLayers {
         Feryrt(),
         Fshgrd(),
         Forstc(),
+        Dmpgrd(),
+        Pipare(),
 
         // obstructions
         Hulkes(),
@@ -198,8 +201,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Dmpgrd(),
-        Dykcon(),
         Icnare(),
         Istzne(),
         Lakshr(),
@@ -209,7 +210,6 @@ class StandardLayers {
         Navlne(),
         Ospare(),
         Pilpnt(),
-        Pipare(),
         Prcare(),
         Prdare(),
         Radlne(),

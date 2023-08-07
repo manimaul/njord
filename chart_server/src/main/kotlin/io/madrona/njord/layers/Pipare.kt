@@ -1,18 +1,12 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.whenAny
 import io.madrona.njord.layers.attributehelpers.Catpip
 import io.madrona.njord.layers.attributehelpers.Catpip.Companion.catpip
 import io.madrona.njord.layers.attributehelpers.Prodct
 import io.madrona.njord.layers.attributehelpers.Prodct.Companion.prodct
 import io.madrona.njord.model.*
 
-public inline fun <T, R> Iterable<T>.whenAny(predicate: (T) -> Boolean, perform: () -> R): R? {
-    return if (any(predicate)) {
-        perform()
-    } else {
-        null
-    }
-}
 
 /**
  * Geometry Primitives: Point, Area

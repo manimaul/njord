@@ -160,6 +160,7 @@ class StandardLayers {
         Fnclne(),
         Feryrt(),
         Fshgrd(),
+        Marcul(),
         Forstc(),
         Dmpgrd(),
         Pipare(),
@@ -180,6 +181,7 @@ class StandardLayers {
         Pylons(),
         Daymar(),
         Pilbop(),
+        Pilpnt(),
         Obstrn(),
 
         // buoys and markers
@@ -206,10 +208,8 @@ class StandardLayers {
         Lakshr(),
         Litflt(),
         Litves(),
-        Marcul(),
         Navlne(),
         Ospare(),
-        Pilpnt(),
         Prcare(),
         Prdare(),
         Radlne(),

@@ -2,10 +2,26 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Marcul : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Marine farm/culture
+ *
+ * Acronym: MARCUL
+ *
+ * Code: 82
+ */
+class Marcul : Layerable() {
+    private val lineColor = Color.CHGRD
+    private val symbol = Sprite.MARCUL02
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+        feature.areaPattern(symbol)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine, width = 2f),
+        pointLayerFromSymbol(symbol = symbol),
+        areaLayerWithSingleSymbol(symbol = symbol),
+    )
 }

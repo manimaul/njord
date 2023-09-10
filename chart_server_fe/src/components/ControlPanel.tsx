@@ -4,6 +4,7 @@ import ChartSymbols from "./ControlSymbols";
 import {useNavigate} from "react-router";
 import {useParams} from 'react-router-dom';
 import {Sprites} from "./Sprites";
+import {Colors} from "./Colors";
 import {ControlCharts} from "./ControlCharts";
 import {ControlEndpoints} from "./ControlEndpoints";
 import {ChartInstall} from "./ChartInstall";
@@ -44,6 +45,9 @@ export function ControlPanel() {
                 </Tab>
                 <Tab eventKey="sprites" title="Sprites">
                     <Sprites/>
+                </Tab>
+                <Tab eventKey="colors" title="Colors">
+                    <Colors/>
                 </Tab>
                 <Tab eventKey="endpoints" title="Endpoints">
                     <ControlEndpoints/>

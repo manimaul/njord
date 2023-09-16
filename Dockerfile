@@ -11,7 +11,7 @@ ENV JAVA_INCLUDE="-I/usr/lib/jvm/java-17-openjdk-amd64/include -I/usr/lib/jvm/ja
 
 
 WORKDIR /build
-ENV GDAL_VERSION=3.7.0
+ENV GDAL_VERSION=3.7.2
 ADD http://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.xz .
 RUN tar -xf ./gdal-$GDAL_VERSION.tar.xz
 

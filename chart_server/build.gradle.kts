@@ -10,6 +10,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven(url = "https://maven.ecc.no/releases")
 }
 
 apply<VersionPlugin>()
@@ -43,6 +44,7 @@ dependencies {
     implementation("io.ktor:ktor-server-cors:${ktorVersion}")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    implementation("no.ecc.vectortile:java-vector-tile:1.3.23")
 
     implementation(files("libs/gdal-3.7.0.jar"))
     implementation("ch.qos.logback:logback-classic:1.4.6")

@@ -90,15 +90,15 @@ class ChartDao(
             val tCtx = findChartFeaturesAsyncTimer.time()
             val result = conn.prepareStatement(
                 """
-              WITH exclude AS (VALUES (st_geomfromwkb(?, 4326))),
-                   tile AS (VALUES (st_transform(st_tileenvelope(?,?,?), 4326)))
-              SELECT st_asbinary(st_asmvtgeom(st_difference(geom, (table exclude)), (table tile))), 
-                     props, 
-                     layer
-              FROM features
-              WHERE chart_id=?
-                AND ? <@ z_range
-                AND st_intersects(geom, (table tile));
+                WITH exclude AS (VALUES (st_transform(st_geomfromwkb(?,4326), 3857))),
+                    tile AS (VALUES (st_tileenvelope(?,?,?)))
+                SELECT st_asbinary(st_asmvtgeom(st_difference(st_transform(geom, 3857), (table exclude)), (table tile))), 
+                    props, 
+                    layer
+                FROM features
+                WHERE chart_id=?
+                    AND ? <@ z_range
+                    AND st_intersects(geom, st_transform((table tile), 4326));
           """.trimIndent()
             ).apply {
                 var i = 0

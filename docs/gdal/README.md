@@ -1,8 +1,18 @@
-# Developing on MacOS
+# Developing on Linux
 
 
 Build Gdal with Java Bindings
 ```
+sudo apt install -y build-essential cmake swig libproj-dev \
+                    libjson-c-dev openjdk-17-jdk-headless \
+		    openjdk-17-source ant
+export JAVA_HOME=$(dirname $(dirname $(readlink -e /usr/bin/javac))) 
+export JAVADOC="${JAVA_HOME}/bin/javadoc"
+export JAVAC="${JAVA_HOME}/bin/javac"
+export JAVA="${JAVA_HOME}/bin/java"
+export JAR="${JAVA_HOME}/bin/jar"
+export JAVA_INCLUDE="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux"
+
 version=3.7.0
 wget http://download.osgeo.org/gdal/$version/gdal-$version.tar.xz
 tar -xf gdal-$version.tar.xz

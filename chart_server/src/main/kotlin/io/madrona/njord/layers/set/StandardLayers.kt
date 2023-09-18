@@ -126,6 +126,7 @@ class StandardLayers {
 
         //land / base layers
         Lndare(),
+        Lakshr(),
         Buisgl(),
         Buaare(),
         Slcons(),
@@ -147,6 +148,7 @@ class StandardLayers {
         Dwrtcl(),
         Mipare(),
         Logpon(),
+        Icnare(),
         Achbrt(),
         Achare(),
         Cblare(),
@@ -164,6 +166,7 @@ class StandardLayers {
         Forstc(),
         Dmpgrd(),
         Pipare(),
+        Istzne(),
 
         // obstructions
         Hulkes(),
@@ -203,9 +206,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Icnare(),
-        Istzne(),
-        Lakshr(),
         Litflt(),
         Litves(),
         Navlne(),

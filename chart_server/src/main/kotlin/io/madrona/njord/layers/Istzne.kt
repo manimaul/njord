@@ -2,10 +2,22 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Istzne : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Inshore traffic zone
+ *
+ * Acronym: ISTZNE
+ *
+ * Code: 68
+ */
+class Istzne : Layerable() {
+    private val lineColor = Color.TRFCD
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine, width = 1f),
+    )
 }

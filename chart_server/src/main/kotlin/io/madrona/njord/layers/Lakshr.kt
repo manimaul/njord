@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Lakshr : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line, Area
+ *
+ * Object: Lake shore
+ *
+ * Acronym: LAKSHR
+ *
+ * Code: 70
+ */
+class Lakshr : Layerable() {
+    private val lineColor = Color.CSTLN
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = lineColor, style = LineStyle.Solid, width = 1f),
+    )
 }

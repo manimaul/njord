@@ -82,6 +82,8 @@ data class Layout(
         @JsonProperty("icon-ignore-placement") val iconIgnorePlacement: Boolean? = null,
         @JsonProperty("icon-keep-upright") val iconKeepUpright: Boolean? = null,
         @JsonProperty("icon-rotate") val iconRotate: Any? = null,
+        @JsonProperty("icon-size") val iconSize: Float? = null,
+        @JsonProperty("symbol-spacing") val symbolSpacing: Float? = null,
         @JsonProperty("icon-rotation-alignment") val iconRotationAlignment: IconRotationAlignment? = null,
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,

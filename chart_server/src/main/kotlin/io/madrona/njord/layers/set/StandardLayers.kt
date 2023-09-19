@@ -4,7 +4,7 @@ import io.madrona.njord.layers.*
 
 
 /**
- * http://localhost:9000/v1/about/s57objects
+ * https://openenc.com/v1/about/s57objects
  *
  * bridge (BRIDGE)
  * coastline (COALNE)
@@ -167,6 +167,7 @@ class StandardLayers {
         Dmpgrd(),
         Pipare(),
         Istzne(),
+        Rectrc(),
 
         // obstructions
         Hulkes(),
@@ -218,7 +219,6 @@ class StandardLayers {
         Rtpbcn(),
         Rdocal(),
         Rcrtcl(),
-        Rectrc(),
         Rctlpt(),
         Retrfl(),
         Rivers(),

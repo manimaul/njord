@@ -2,7 +2,6 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
-import java.awt.Point
 
 abstract class Layerable(
     customKey: String? = null
@@ -79,6 +78,31 @@ abstract class Layerable(
                 iconImage = symbol?.name ?: listOf("get", "LP"),
                 iconAnchor = Anchor.CENTER,
                 iconKeepUpright = false,
+            )
+        )
+    }
+
+    private var lineLayerWithPattern2Id = 0
+    fun lineLayerWithPattern(
+        symbol: Sprite? = null,
+        iconRotate: Any? = null,
+        iconSize: Float? = null,
+        spacing: Float? = null,
+        allowOverlap: Boolean,
+    ): Layer {
+        return Layer(
+            id = "${key}_line_symbol_${++lineLayerWithPattern2Id}",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = Filters.eqTypeLineStringOrPolygon,
+            layout = Layout(
+                symbolPlacement = Placement.LINE,
+                iconImage = symbol?.name ?: listOf("get", "LP"),
+                iconRotate = iconRotate,
+                iconRotationAlignment = IconRotationAlignment.MAP,
+                iconAllowOverlap = allowOverlap,
+                iconSize = iconSize,
+                symbolSpacing = spacing,
             )
         )
     }

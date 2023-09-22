@@ -46,9 +46,8 @@ class Rectrc : Layerable() {
             // https://maplibre.org/maplibre-style-spec/layers/#layout-symbol-icon-rotation-alignment
             // map orientation aligns x-axis with line
             iconRotate = 90f, //listOf("get", "ORIENT"),
-            iconSize = 2f,
-            spacing = 30f,
-            allowOverlap = true
+            spacing = 15f,
+            allowOverlap = false
         ),
     )
 }

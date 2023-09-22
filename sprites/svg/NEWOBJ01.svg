@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="6mm"
-   height="6mm"
-   viewBox="0 0 6 6"
+   width="4.4979167mm"
+   height="4.4979167mm"
+   viewBox="0 0 4.4979167 4.4979167"
    version="1.1"
    id="svg5"
-   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="NEWOBJ01.svg"
    inkscape:export-filename="NEWOBJ01.png"
    inkscape:export-xdpi="67.730003"
@@ -25,27 +25,33 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:document-units="mm"
+     inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="19.028871"
-     inkscape:cx="2.3122759"
-     inkscape:cy="13.426966"
-     inkscape:window-width="1783"
+     inkscape:cx="-3.3107587"
+     inkscape:cy="13.453242"
+     inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:pageshadow="2"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <defs
      id="defs2" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(1.3890362e-4,1.3890362e-4)">
     <path
        id="path17109"
-       style="fill:#ddadf4;fill-opacity:1;stroke:#ddadf4;stroke-width:0.300001;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 2.9998169,0.14986165 C 1.4258401,0.14988603 0.14988592,1.4258402 0.14986165,2.9998169 0.14988595,4.5737936 1.4258401,5.8497477 2.9998169,5.8497721 4.5737937,5.8497477 5.8497478,4.5737936 5.8497721,2.9998169 5.8497478,1.4258402 4.5737937,0.14988606 2.9998169,0.14986165 Z M 2.5001058,0.70021566 h 0.999939 L 3.5,4.021 h -1 z M 2.5,4.3 h 1 v 1 h -1 z"
+       style="fill:#ddadf4;fill-opacity:1;stroke:#ddadf4;stroke-width:0.2249;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 2.2488195,0.1123111 C 1.068866,0.11232938 0.1123293,1.0688661 0.1123111,2.2488195 0.11232932,3.4287729 1.068866,4.3853096 2.2488195,4.3853279 3.428773,4.3853096 4.3853097,3.4287729 4.3853279,2.2488195 4.3853097,1.0688661 3.428773,0.1123294 2.2488195,0.1123111 Z M 1.8742042,0.5248916 h 0.7496181 l -3.36e-5,2.489472 H 1.8741248 Z m -7.94e-5,2.6986282 H 2.6237887 V 3.9731836 H 1.8741248 Z"
        sodipodi:nodetypes="ccccccccccccccc" />
   </g>
 </svg>

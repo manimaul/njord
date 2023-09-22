@@ -4,56 +4,62 @@ import json
 import math
 import os
 import os.path
+from dataclasses import dataclass
+from typing import Any
 
 from PIL import Image
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
 sprites = os.path.join(base_dir, "simplified")
+sprites2x = os.path.join(base_dir, "simplified2x")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
 
 
-pixelRatios = {
-    "ICEARE04": 3
-}
+@dataclass
+class Frame:
+    name: str
+    cell: Any
+    pixel_ratio: int
 
 
-def pixelRatio(name: str):
-    if name in pixelRatios:
-        return pixelRatios[name]
-    else:
-        return 1
-
-
-def find_tile_wh(frames):
+def find_tile_wh(frames: [Frame]):
     width = 0
     height = 0
     for each in frames:
-        cell = each[1]
-        width = max(width, cell.size[0])
-        height = max(width, cell.size[1])
+        width = max(width, each.cell.size[0])
+        height = max(height, each.cell.size[1])
 
     return width, height
 
 
 def save_sprite_sheet(retna: bool):
-    max_frames_row = 10.0
+    max_frames_row = 10
     frames = []
 
-    files = os.listdir(sprites)
-    files.sort()
+    files = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites)))
+    files2x = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites2x)))
+
+    if retna:
+        for each in files2x:
+            if each not in files:
+                raise Exception('missing 1x file: ' + each)
 
     for current_file in files:
+        png_path = os.path.join(sprites, current_file)
+        pixel_ratio = 1
+
+        if retna and current_file in files2x:
+            png_path = os.path.join(sprites2x, current_file)
+            pixel_ratio = 2
+
         try:
-            with Image.open(os.path.join(sprites, current_file)) as im:
-                if not retna:
-                    w, h = im.size
-                    w, h = int(float(w) / 2.0), int(float(h) / 2.0)
-                    im = im.resize((w, h), Image.ANTIALIAS)
-                frames.append((current_file[:-4], im.getdata()))
+            with Image.open(png_path) as im:
+                frames.append(Frame(current_file[:-4], im.getdata(), pixel_ratio))
         except:
             print(current_file + " is not a valid image")
 
     tile_width, tile_height = find_tile_wh(frames)
+    frames = sorted(frames, key=lambda x: x.cell.size[1])
 
     if len(frames) > max_frames_row:
         spritesheet_width = tile_width * max_frames_row
@@ -67,25 +73,31 @@ def save_sprite_sheet(retna: bool):
 
     sprite_json = dict()
 
-    for i, (name, current_frame) in enumerate(frames):
-        top = tile_height * math.floor(i / max_frames_row)
-        left = tile_width * (i % max_frames_row)
+    row = -1
+    for i, each in enumerate(frames):
+        top = tile_height * row
+        column = int(i % max_frames_row)
+        if column == 0:
+            row += 1
+        left = tile_width * column
         bottom = top + tile_height
         right = left + tile_width
 
         box = (left, top, right, bottom)
         box = [int(i) for i in box]
-        cut_frame = current_frame.crop((0, 0, tile_width, tile_height))
-        width, height = current_frame.size
+        cut_frame = each.cell.crop((0, 0, tile_width, tile_height))
+        width, height = each.cell.size
 
         spritesheet.paste(cut_frame, box)
-        sprite_json[name] = {
+        sprite_json[each.name] = {
             "width": width,
             "height": height,
             "x": int(left),
             "y": int(top),
-            "pixelRatio": pixelRatio(name)
+            "pixelRatio": each.pixel_ratio
         }
+        print("tile_width={}, tile_height={}".format(tile_width, tile_height))
+        print("column={}, row={}, name={}, width={}, height={}".format(column, row, each.name, width, height))
 
     name = "simplified"
     if retna:

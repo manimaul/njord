@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="10mm"
-   height="10mm"
-   viewBox="0 0 10 10"
+   width="30"
+   height="30"
+   viewBox="0 0 7.9374997 7.9374997"
    version="1.1"
    id="svg5"
-   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="MARSHES1.svg"
    inkscape:export-filename="MARSHES1.png"
    inkscape:export-xdpi="76.199997"
@@ -28,14 +28,16 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="13.385285"
-     inkscape:cx="3.9969263"
-     inkscape:cy="16.473313"
-     inkscape:window-width="1440"
-     inkscape:window-height="847"
+     inkscape:cx="4.0342809"
+     inkscape:cy="16.435959"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
      inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:pageshadow="2"
+     units="px" />
   <defs
      id="defs2" />
   <g
@@ -44,7 +46,7 @@
      id="layer1">
     <g
        id="g8391"
-       transform="translate(0.42093308,0.39560584)">
+       transform="matrix(0.78207208,0,0,0.78207208,0.38139961,0.36589961)">
       <path
          style="fill:none;stroke:#b19139;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="M 0.30000001,2.6423625 H 3.6879178"
@@ -73,7 +75,7 @@
     </g>
     <g
        id="g8391-4"
-       transform="translate(5.5674035,5.6804433)">
+       transform="matrix(0.78207208,0,0,0.78207208,4.4063105,4.4990235)">
       <path
          style="fill:none;stroke:#b19139;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="M 0.30000001,2.6423625 H 3.6879178"

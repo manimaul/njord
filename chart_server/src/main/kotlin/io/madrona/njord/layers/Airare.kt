@@ -14,18 +14,18 @@ import io.madrona.njord.model.ChartFeature
 class Airare : Layerable() {
     private val areaColor = Color.LANDA
     private val lineColor = Color.LANDF
+    private val symbol = Sprite.AIRARE02
 
     override fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)
         feature.lineColor(lineColor)
-        feature.areaPattern(Sprite.AIRARE02)
-        feature.pointSymbol(Sprite.AIRARE02)
+        feature.pointSymbol(symbol)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         areaLayerWithFillColor(areaColor),
-        areaLayerWithFillPattern(),
+        areaLayerWithPointSymbol(symbol),
         lineLayerWithColor(lineColor, width = 1f)
     )
 }

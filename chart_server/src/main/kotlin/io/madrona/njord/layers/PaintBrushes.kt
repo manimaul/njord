@@ -7,7 +7,7 @@ sealed interface Label {
         override var label: Any? = text;
     }
     class Property(name: String): Label{
-        override var label: Any? = listOf("GET", name);
+        override var label: Any? = listOf("get", name);
     }
 }
 sealed interface LineStyle {

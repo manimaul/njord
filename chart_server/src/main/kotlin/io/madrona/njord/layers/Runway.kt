@@ -2,10 +2,29 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Runway : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point, Line, Area
+ *
+ * Object: Runway
+ *
+ * Acronym: RUNWAY
+ *
+ * Code: 117
+ */
+class Runway : Layerable() {
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    private val areaColor = Color.CHBRN
+    private val lineColor = Color.CHBLK
+    private val symbol = Sprite.AIRARE02
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+        feature.areaColor(areaColor)
+        feature.pointSymbol(symbol)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(lineColor),
+        areaLayerWithFillColor(areaColor),
+        pointLayerFromSymbol(symbol),
+    )
 }

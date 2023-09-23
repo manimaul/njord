@@ -139,6 +139,7 @@ class StandardLayers {
         Canals(),
         Lokbsn(),
         Airare(),
+        Runway(),
         Dykcon(),
 
         // water boundary layers
@@ -222,7 +223,6 @@ class StandardLayers {
         Rctlpt(),
         Retrfl(),
         Rivers(),
-        Runway(),
         Sndwav(),
         Seaare(),
         Splare(),

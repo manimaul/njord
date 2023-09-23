@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Litflt : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Light float
+ *
+ * Acronym: LITFLT
+ *
+ * Code: 76
+ */
+class Litflt : Layerable() {
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    private val symbol = Sprite.LITFLT02
+    override fun preTileEncode(feature: ChartFeature) {
+       feature.pointSymbol(symbol)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(symbol)
+    )
 }

@@ -1,5 +1,15 @@
 package io.madrona.njord.layers
 
+sealed interface Label {
+    var label: Any?
+
+    class Text(text: String): Label{
+        override var label: Any? = text;
+    }
+    class Property(name: String): Label{
+        override var label: Any? = listOf("GET", name);
+    }
+}
 sealed interface LineStyle {
     var lineDashArray: List<Float>?
 

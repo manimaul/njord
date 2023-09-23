@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Light vessel
+ *
+ * Acronym: LITVES
+ *
+ * Code: 77
+ */
 class Litves : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    private val symbol = Sprite.LITVES02
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(symbol)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(symbol)
+    )
 }

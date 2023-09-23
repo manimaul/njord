@@ -66,6 +66,32 @@ abstract class Layerable(
         )
     }
 
+    private var lineLayerWithLabelId = 0
+    fun lineLayerWithLabel(
+        label: Label,
+        labelColor: Color = Color.CHBLK,
+        highlightColor: Color = Color.CHWHT,
+    ) : Layer {
+        return Layer(
+            id = "${key}_label_${++lineLayerWithLabelId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = Filters.eqTypeLineStringOrPolygon,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textJustify = Anchor.CENTER,
+                textField = label.label,
+                textSize = 14f,
+                symbolPlacement = Placement.LINE,
+            ),
+            paint = Paint(
+                textColor = colorFrom(labelColor.name),
+                textHaloColor = colorFrom(highlightColor.name),
+                textHaloWidth = 2.5f
+            )
+        )
+    }
+
     private var lineLayerWithPatternId = 0
     fun lineLayerWithPattern(symbol: Sprite? = null): Layer {
         return Layer(

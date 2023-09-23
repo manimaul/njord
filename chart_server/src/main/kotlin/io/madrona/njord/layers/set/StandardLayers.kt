@@ -168,6 +168,7 @@ class StandardLayers {
         Pipare(),
         Istzne(),
         Rectrc(),
+        Navlne(),
 
         // obstructions
         Hulkes(),
@@ -204,12 +205,11 @@ class StandardLayers {
         Lndmrk(),
 
         // lights
+        Litflt(),
+        Litves(),
         Lights(),
 
         //todo: below layers need completion
-        Litflt(),
-        Litves(),
-        Navlne(),
         Ospare(),
         Prcare(),
         Prdare(),

@@ -88,7 +88,7 @@ data class Layout(
         @JsonProperty("text-font") val textFont: List<Font>? = null,
         @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
         @JsonProperty("text-justify") val textJustify: Anchor? = null,
-        @JsonProperty("text-field") val textField: List<Any>? = null,
+        @JsonProperty("text-field") val textField: Any? = null,
         @JsonProperty("text-offset") val textOffset: List<Float>? = null,
 
         /**

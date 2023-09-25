@@ -2,11 +2,25 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Ospare : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Offshore production area
+ *
+ * Acronym: OSPARE
+ *
+ * Code: 88
+ */
+class Ospare : Layerable() {
+    private val symbol = Sprite.CTYARE51
+    private val color = Color.CHMGD
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(symbol)
+    }
 
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(color = color, style = LineStyle.DashLine, width = 2f),
+        pointLayerFromSymbol(symbol),
+    )
 }

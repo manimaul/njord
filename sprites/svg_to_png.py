@@ -7,6 +7,7 @@ svg = os.path.join(base_dir, "svg")
 sprites = os.path.join(base_dir, "simplified")
 sprites2x = os.path.join(base_dir, "simplified2x")
 
+dpi = 63
 cmd = """inkscape
 -o {} 
 --export-dpi={}
@@ -14,7 +15,7 @@ cmd = """inkscape
 {}
 """
 
-for dpi, dir in [(90, sprites), (180, sprites2x)]:
+for dpi, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
     for each in os.listdir(svg):
         if each.endswith('.svg'):
             png = os.path.join(dir, each[:-3] + 'png')

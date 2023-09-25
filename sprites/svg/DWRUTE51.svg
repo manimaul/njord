@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    id="svg30590"
-   width="5.5562515mm"
-   height="12.439535mm"
+   width="5.999784mm"
+   height="13.929023mm"
    version="1.1"
-   viewBox="0 0 21.000006 47.015566"
+   viewBox="0 0 22.67635 52.645126"
    sodipodi:docname="DWRUTE51.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   inkscape:export-filename="DWRUTE51.png"
+   inkscape:export-filename="TSSLPT51.png"
    inkscape:export-xdpi="163.18097"
    inkscape:export-ydpi="163.18097"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -26,16 +26,16 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="12.716802"
-     inkscape:cx="9.8295153"
-     inkscape:cy="21.074481"
+     inkscape:zoom="13.261673"
+     inkscape:cx="10.405927"
+     inkscape:cy="28.804812"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg30590"
-     inkscape:document-units="mm"
+     inkscape:document-units="px"
      inkscape:pageshadow="2"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -43,7 +43,6 @@
      fit-margin-bottom="0" />
   <path
      id="path30584"
-     d="M 1.2745551,14.632837 10.195716,1.2955278 19.324548,14.632837 h -4.505015 v 17.664741 h 4.801395 L 10.403542,45.724225 1.3640491,32.297578 H 5.7801178 L 5.7798435,14.632837 Z"
-     style="fill:none;fill-opacity:1;stroke:#ddadf4;stroke-width:1.45207;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:5.08224, 2.35234;stroke-dashoffset:1.45207;stroke-opacity:1"
-     sodipodi:nodetypes="ccccccccccc" />
+     style="fill:#c545c3;fill-opacity:0.747532;stroke:#c545c3;stroke-width:1.39718;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0.8;stroke-opacity:0.999566"
+     d="M 11.216104,0.69853916 0.6985255,15.68682 H 6.0090724 V 36.958304 H 0.6985255 L 11.460245,51.946586 21.977823,36.958304 H 16.667276 V 15.68682 h 5.310547 z" />
 </svg>

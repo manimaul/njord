@@ -153,6 +153,7 @@ enum class Sprite {
     CHINFO11,
     CHKPNT01,
     CRANES01,
+    CTYARE51,
     CURDEF01,
     CURENT01,
     DANGER01,

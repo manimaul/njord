@@ -189,6 +189,7 @@ class StandardLayers {
         Pilbop(),
         Pilpnt(),
         Obstrn(),
+        Ospare(),
 
         // buoys and markers
         Fogsig(),
@@ -211,7 +212,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Ospare(),
         Prcare(),
         Prdare(),
         Radlne(),

@@ -1,11 +1,34 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.layers.attributehelpers.Trafic
 import io.madrona.njord.model.*
+import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
 
-class Twrtpt : LayerableTodo() {
-    //todo:
-    override fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+class Twrtpt : Layerable() {
+    private val lineColor = Color.TRFCF
+    override fun preTileEncode(feature: ChartFeature) {
+        when(feature.trafic()) {
+            Trafic.INBOUND,
+            Trafic.OUTBOUND,
+            Trafic.ONE_WAY -> feature.pointSymbol(Sprite.TWRTPT53)
+            Trafic.TWO_WAY -> feature.pointSymbol(Sprite.TWRTPT52)
+            null -> feature.pointSymbol(Sprite.TWRDEF51)
+        }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        lineLayerWithColor(
+            color = lineColor,
+            width = 2f,
+            style = LineStyle.CustomDash(3f, 2f)
+        ),
+        areaLayerWithPointSymbol(
+            iconRotate = listOf("get", "ORIENT"),
+            iconRotationAlignment = IconRotationAlignment.MAP,
+            iconAllowOverlap = false,
+        ),
+    )
 }

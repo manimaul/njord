@@ -12,33 +12,26 @@ import io.madrona.njord.model.*
  * Code: 96
  */
 class Prcare : Layerable() {
+
+    private val lineColor = Color.TRFCF
+    private val symbol = Sprite.PRCARE12
     override fun preTileEncode(feature: ChartFeature) {
-        feature.props["SY"] = "PRCARE12"
+        feature.pointSymbol(symbol)
+        feature.lineColor(lineColor)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_line_dash",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                lineColor = colorFrom("TRFCF"),
-                lineWidth = 2f,
-                lineDashArray = listOf(3f, 2f),
-            ),
-        ), Layer(
-            id = "${key}_area_symbol",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = Filters.eqTypePointOrPolygon,
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.CENTER,
-                iconOffset = listOf(30f, 30f), // give room for lights / buoys
-                iconKeepUpright = false,
-            )
-        )
+        pointLayerFromSymbol(
+            symbol  = symbol
+        ),
+        lineLayerWithColor(
+            color = lineColor,
+            width = 2f,
+            style = LineStyle.CustomDash(3f, 2f)
+        ),
+        areaLayerWithPointSymbol(
+            symbol = symbol,
+            iconOffset = listOf(30f, 30f), // give room for lights / buoys
+        ),
     )
 }

@@ -22,7 +22,6 @@ class Dwrtpt : Layerable() {
                 Trafic.INBOUND,
                 Trafic.OUTBOUND,
                 Trafic.ONE_WAY -> feature.pointSymbol(Sprite.TSSLPT51)
-
                 Trafic.TWO_WAY -> feature.pointSymbol(Sprite.DWRUTE51)
                 null -> {}
             }
@@ -33,6 +32,7 @@ class Dwrtpt : Layerable() {
         areaLayerWithPointSymbol(
             iconRotate = listOf("get", "ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
+            iconAllowOverlap = false,
         ),
     )
 }

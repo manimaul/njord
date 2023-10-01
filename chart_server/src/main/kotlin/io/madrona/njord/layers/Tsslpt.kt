@@ -23,6 +23,7 @@ class Tsslpt : Layerable() {
         areaLayerWithPointSymbol(
             iconRotate = listOf("get", "ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
+            iconAllowOverlap = false
         ),
     )
 }

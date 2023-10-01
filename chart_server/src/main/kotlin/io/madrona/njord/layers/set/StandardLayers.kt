@@ -143,6 +143,7 @@ class StandardLayers {
         Dykcon(),
 
         // water boundary layers
+        Tsslpt(),
         Tssbnd(),
         Tselne(),
         Dwrtpt(),
@@ -170,6 +171,7 @@ class StandardLayers {
         Istzne(),
         Rectrc(),
         Navlne(),
+        Prcare(),
 
         // obstructions
         Hulkes(),
@@ -212,7 +214,6 @@ class StandardLayers {
         Lights(),
 
         //todo: below layers need completion
-        Prcare(),
         Prdare(),
         Radlne(),
         Radrng(),
@@ -234,7 +235,6 @@ class StandardLayers {
         Swpare(),
         Topmar(),
         Tsscrs(),
-        Tsslpt(),
         Tssron(),
         Tsezne(),
         Tunnel(),

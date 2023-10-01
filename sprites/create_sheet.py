@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 
 import math
@@ -6,6 +7,7 @@ import os
 import os.path
 from dataclasses import dataclass
 from typing import Any
+import subprocess
 
 from PIL import Image
 
@@ -108,6 +110,36 @@ def save_sprite_sheet(retna: bool):
     spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
+def svg_to_png():
+
+    dpi = 63
+    cmd = """inkscape
+    -o {} 
+    --export-dpi={}
+    --export-background-opacity=0 
+    {}
+    """
+    svg = os.path.join(base_dir, "svg")
+
+    for dpi, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
+        for each in os.listdir(svg):
+            if each.endswith('.svg'):
+                png = os.path.join(dir, each[:-3] + 'png')
+                s = os.path.join(svg, each)
+                c = cmd.format(png, dpi, s).split()
+                print(subprocess.check_output(c))
+
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+                    prog='create_sheet',
+                    description='Create sprite sheet optionally generating PNGs from SVGs')
+    # parser.add_argument("-svg", "--svg", help="process SVGs into PNGs", default=False, type=bool)
+    parser.add_argument("--svg", help="process SVGs into PNGs", action='store_true')
+    args = parser.parse_args()
+    if args.svg:
+        svg_to_png()
+        print('rendered SVGs to PNGs')
+
     save_sprite_sheet(False)
     save_sprite_sheet(True)

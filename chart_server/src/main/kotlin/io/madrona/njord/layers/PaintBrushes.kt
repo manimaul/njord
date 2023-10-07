@@ -94,6 +94,7 @@ enum class Color {
 
 enum class Sprite {
     ACHARE02,
+    ACHARE51,
     ACHBRT07,
     ACHRES51,
     AIRARE02,

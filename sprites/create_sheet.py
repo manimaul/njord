@@ -8,6 +8,7 @@ import os.path
 from dataclasses import dataclass
 from typing import Any
 import subprocess
+import hashlib
 
 from PIL import Image
 
@@ -110,7 +111,7 @@ def save_sprite_sheet(retna: bool):
     spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
-def svg_to_png():
+def svg_to_png(filter: set):
 
     dpi = 63
     cmd = """inkscape
@@ -123,23 +124,61 @@ def svg_to_png():
 
     for dpi, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
         for each in os.listdir(svg):
-            if each.endswith('.svg'):
+            print("each: {}, filter: {}".format(each, filter))
+            if each in filter: # each.endswith('.svg'):
                 png = os.path.join(dir, each[:-3] + 'png')
                 s = os.path.join(svg, each)
                 c = cmd.format(png, dpi, s).split()
                 print(subprocess.check_output(c))
 
 
+def md5_sum(p: str):
+    with open(p, 'rb') as fp:
+        return hashlib.md5(fp.read()).hexdigest()
+
+
+class SvgCheck:
+    all = dict()
+    new = set()
+    svg = os.path.join(base_dir, "svg")
+    svg_data = os.path.join(svg, 'svg.json')
+
+    def __init__(self):
+        print("dry run")
+        if os.path.exists(self.svg_data):
+            self.all = json.load(open(self.svg_data, "r"))
+
+        for each in os.listdir(self.svg):
+            if each.endswith('.svg'):
+                sum = md5_sum(os.path.join(self.svg, each))
+                if  each not in self.all.keys():
+                    self.new.add(each)
+                self.all[each] = sum
+
+    def svg_check(self):
+        print("new files: {}".format(self.new))
+
+    def save(self):
+        with open(self.svg_data, "w") as fp:
+            fp.write(json.dumps(self.all, indent=4))
+
+
 if __name__ == '__main__':
+    check = SvgCheck()
     parser = argparse.ArgumentParser(
                     prog='create_sheet',
                     description='Create sprite sheet optionally generating PNGs from SVGs')
     # parser.add_argument("-svg", "--svg", help="process SVGs into PNGs", default=False, type=bool)
     parser.add_argument("--svg", help="process SVGs into PNGs", action='store_true')
+    parser.add_argument("--dry", help="dry run", action='store_true')
     args = parser.parse_args()
-    if args.svg:
-        svg_to_png()
-        print('rendered SVGs to PNGs')
+    if args.dry:
+        check.svg_check()
+    else:
+        if args.svg:
+            svg_to_png(check.new)
+            check.save()
+            print('rendered SVGs to PNGs')
 
-    save_sprite_sheet(False)
-    save_sprite_sheet(True)
+        save_sprite_sheet(False)
+        save_sprite_sheet(True)

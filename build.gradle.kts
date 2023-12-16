@@ -14,6 +14,7 @@ task("version") {
  */
 task<Exec>("makeImg") {
     dependsOn(":chart_server_fe:build", ":chart_server:installDist")
+    mustRunAfter(":chart_server_fe:build", ":chart_server:installDist")
     commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
@@ -22,6 +23,7 @@ task<Exec>("makeImg") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("pubImg") {
+    dependsOn(":makeImg")
     mustRunAfter(":makeImg")
     commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
 }
@@ -36,8 +38,11 @@ task<Exec>("k8sApply") {
     } else {
         UUID.randomUUID().toString()
     }
-    val yaml = K8S.chartServerDeployment(rootProject.projectDir, "${project.version}", adminKey)
-    commandLine("bash", "-c", "echo '${yaml}' | kubectl apply -f -")
+    val userName = "${project.property("adminUserName")}"
+    val password = "${project.property("adminPassword")}"
+
+    val yaml = K8S.chartServerDeploymentWrite(rootProject.projectDir, "${project.version}", adminKey, userName, password)
+    commandLine("bash", "-c", "istioctl kube-inject -f '${yaml.absolutePath}' | kubectl apply -f -")
 }
 
 /**

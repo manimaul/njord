@@ -105,82 +105,91 @@ data:
         debugTile = false
     }
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: cert-manager.io/v1
+kind: Certificate
 metadata:
-  name: njord-ingress-auth
-  namespace: njord
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    haproxy.org/ssl-redirect: "true"
-    haproxy.org/auth-type: basic-auth
-    haproxy.org/auth-secret: njord/haproxy-credentials
-
+  name: oe-cert
+  #referenced Secret must exist in the namespace of the istio-ingressgateway
+  namespace: istio-system
 spec:
-  rules:
-    - host: openenc.com
-      http:
-        paths:
-          - backend:
-              service:
-                name: njord-chart-svc
-                port:
-                  number: 80
-            path: /v1/admin
-            pathType: Exact
-  tls:
-    - hosts:
-        - openenc.com
-      secretName: njord-openenc-cert
+  secretName: njord-cert
+  commonName: openenc.com
+  dnsNames:
+    - openenc.com
+    - www.openenc.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
 metadata:
-  name: njord-ingress
+  name: oe-gateway
   namespace: njord
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    haproxy.org/ssl-redirect: "true"
 spec:
-  rules:
-    - host: openenc.com
-      http:
-        paths:
-          - backend:
-              service:
-                name: njord-chart-svc
-                port:
-                  number: 80
-            path: /
-            pathType: Prefix
-  tls:
-    - hosts:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
         - openenc.com
-      secretName: njord-openenc-cert
+        - www.openenc.com
+      tls:
+        httpsRedirect: true
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      hosts:
+        - openenc.com
+        - www.openenc.com
+      tls:
+        mode: SIMPLE
+        #referenced Secret must exist in the namespace of the istio-ingressgateway
+        credentialName: njord-cert
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
 metadata:
-  name: njord-ingress-redirect
+  name: oe-virt-svc
   namespace: njord
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    haproxy.org/ssl-redirect: "true"
-    haproxy.org/request-redirect: openenc.com
-    haproxy.org/request-redirect-code: "302"
 spec:
-  rules:
-    - host: s57dev.mxmariner.com
-      http:
-        paths:
-          - backend:
-              service:
-                name: njord-chart-svc
-                port:
-                  number: 80
-            path: /
-            pathType: Prefix
-  tls:
-    - hosts:
-        - s57dev.mxmariner.com
-      secretName: njord-cert
+  hosts:
+    - openenc.com
+    - www.openenc.com
+  gateways:
+    - oe-gateway
+  http:
+    - match:
+        - uri:
+            exact: /v1/admin
+          headers:
+            Authorization:
+              exact: "Basic {BASIC_AUTH}"
+      route:
+        - destination:
+            host: njord-chart-svc
+            port:
+              number: 80
+      timeout: 3s
+    - match:
+        - uri:
+            exact: /v1/admin
+      directResponse:
+        status: 401
+      headers:
+        response:
+          set:
+            Www-Authenticate: 'Basic realm="Authentication Required"'
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: njord-chart-svc
+            port:
+              number: 80
+---

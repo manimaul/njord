@@ -12,7 +12,7 @@ docker push "ghcr.io/manimaul/njord-chart-server:latest"
 
 Deploy
 ```shell
-kubectl apply -f chart_server.yaml
+kubectl apply -f .chart_server.yaml
 ```
 
 ------------------
@@ -29,14 +29,15 @@ docker push "ghcr.io/manimaul/njord-init-postgis:latest"
 Add Github container registry secrets to njord namespace
 ```shell
 cd k8s
-./k8s_create_reg_sec.sh
+./k8s_create_reg_sec.sh k8s_login
+./k8s_create_reg_sec.sh istio_inject 
 ```
 
 Deploy postgis service
 ```shell
 cd k8s
-kubectl apply -f postgis_volume.yaml
-kubectl apply -f postgis.yaml
+istioctl kube-inject -f postgis_volume.yaml | kubectl apply -f -
+istioctl kube-inject -f postgis.yaml | kubectl apply -f -
 # wait
 kubectl apply -f postgis_init.yaml
 ```

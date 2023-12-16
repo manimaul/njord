@@ -6,14 +6,18 @@ function k8s_login() {
     --docker-server=ghcr.io --docker-username=$GH_USER --docker-password=$GH_TOKEN --docker-email=$GH_EMAIL
 }
 
-print_token() {
+function print_token() {
   echo "user = $GH_USER"
   echo "token = $GH_TOKEN"
   echo "email = $GH_EMAIL"
 }
 
-docker_login() {
+function docker_login() {
   echo "$GH_TOKEN" | docker login ghcr.io -u manimaul --password-stdin
+}
+
+function istio_inject() {
+  kubectl label namespace njord istio-injection=enable
 }
 
 help() {
@@ -23,6 +27,7 @@ help() {
    echo "print_token  Print the token"
    echo "docker_login Login to docker"
    echo "k8s_login    Add k8s container pull credential secret to the njord namespace"
+   echo "istio_inject Add iostio inject label to the njord namespace"
    echo "help         Print this Help."
    echo
 }

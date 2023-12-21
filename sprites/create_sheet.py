@@ -151,7 +151,7 @@ class SvgCheck:
         for each in os.listdir(self.svg):
             if each.endswith('.svg'):
                 sum = md5_sum(os.path.join(self.svg, each))
-                if  each not in self.all.keys():
+                if each not in self.all.keys() or sum != self.all[each]:
                     self.new.add(each)
                 self.all[each] = sum
 

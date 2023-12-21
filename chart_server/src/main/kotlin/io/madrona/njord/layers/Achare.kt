@@ -23,6 +23,25 @@ class Achare(
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         lineLayerWithColor(color = lineColor, width = 2f, style = LineStyle.CustomDash(3f, 4f)),
-        lineLayerWithPattern()
+        lineLayerWithPattern(),
+        lineLayerWithLabel(label = Label.Property("OBJNAM")),
     )
+
+//    private val color = Color.CHMGF
+//    private val pattern = Sprite.ACHARE51
+//    private val symbol = Sprite.ACHARE02
+//    override fun preTileEncode(feature: ChartFeature) {
+//        feature.pointSymbol(symbol)
+//        feature.linePattern(pattern)
+//    }
+//    override fun layers(options: LayerableOptions) = sequenceOf(
+//        pointLayerFromSymbol(symbol),
+//        lineLayerWithPattern(
+//            pattern,
+//            // https://maplibre.org/maplibre-style-spec/layers/#layout-symbol-icon-rotation-alignment
+//            // map orientation aligns x-axis with line
+//            spacing = 1f,
+//            allowOverlap = false
+//        ),
+//    )
 }

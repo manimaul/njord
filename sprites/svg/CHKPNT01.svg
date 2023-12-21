@@ -1,68 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="3.4395833mm"
-   height="3.4395828mm"
-   viewBox="0 0 3.4395833 3.4395828"
-   version="1.1"
-   id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="CHKPNT01.svg"
-   inkscape:export-filename="CHKPNT01.png"
-   inkscape:export-xdpi="76.199997"
-   inkscape:export-ydpi="76.199997"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="26.910887"
-     inkscape:cx="17.167773"
-     inkscape:cy="14.678074"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     inkscape:pageshadow="2" />
-  <defs
-     id="defs2" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       id="g12"
-       transform="scale(0.85989571)">
-      <ellipse
-         style="fill:none;fill-opacity:1;stroke:#8b661f;stroke-width:0.300001;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         id="path17109"
-         cx="2.0000002"
-         cy="2.0000002"
-         rx="1.8499998"
-         ry="1.8499995" />
-      <path
-         style="fill:none;stroke:#8b661f;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0.28033633,1.35 H 3.7688848"
-         id="path2528"
-         sodipodi:nodetypes="cc" />
-      <path
-         style="fill:none;stroke:#8b661f;stroke-width:0.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0.25084084,2.65 H 3.759053"
-         id="path3305"
-         sodipodi:nodetypes="cc" />
-    </g>
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="4.32mm" height="4.32mm" viewBox="-2.16 -2.16 4.32 4.32">
+  <title>CHKPNT01</title>
+  <desc>checkpoint symbol</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="-2" y="-2" height="4" width="4"/>
+  <rect class="svgBox layout" fill="none" x="-2" y="-2" height="4" width="4"/>
+  <circle class="f0 sLANDF" style="stroke-width: 0.32;" cx="0" cy="0" r="1.95"/>
+  <path d=" M -1.6,0.5 L 1.6,0.5" class="sl f0 sLANDF" style="stroke-width: 0.32;"/>
+  <path d=" M -1.6,-0.5 L 1.6,-0.5" class="sl f0 sLANDF" style="stroke-width: 0.32;"/>
+  <circle class="pivotPoint layout" fill="none" cx="0" cy="0" r="1"/>
 </svg>

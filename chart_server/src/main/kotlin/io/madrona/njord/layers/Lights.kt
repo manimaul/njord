@@ -17,23 +17,23 @@ class Lights : Layerable() {
 
     override fun preTileEncode(feature: ChartFeature) {
         when(feature.colors().firstOrNull()) {
-            Color.White -> feature.pointSymbol(Sprite.LIGHTDEF1)
-            Color.Red -> feature.pointSymbol(Sprite.LIGHTDEF3)
-            Color.Green -> feature.pointSymbol(Sprite.LIGHTDEF4)
-            Color.Yellow -> feature.pointSymbol(Sprite.LIGHTDEF6)
+            Color.Red -> feature.pointSymbol(Sprite.LIGHTS11)
+            Color.Green -> feature.pointSymbol(Sprite.LIGHTS12)
+            Color.Yellow -> feature.pointSymbol(Sprite.LIGHTS13)
+            Color.White,
             Color.Amber,
-            Color.Orange -> feature.pointSymbol(Sprite.LIGHTDEF11)
-            Color.Magenta -> feature.pointSymbol(Sprite.LIGHTDEF12)
-            else -> feature.pointSymbol(Sprite.LIGHTDEF6)
+            Color.Orange,
+            Color.Magenta -> feature.pointSymbol(Sprite.LITDEF11)
+            else -> feature.pointSymbol(Sprite.LITDEF11)
         }
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-//            iconOffset = listOf(10f, 0f),
-            anchor = Anchor.TOP_LEFT,
+            anchor = Anchor.BOTTOM,
             iconAllowOverlap = true,
             iconKeepUpright = true,
+            iconRotate = 135f,
         )
     )
 }

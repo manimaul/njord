@@ -13,6 +13,8 @@ import hashlib
 from PIL import Image
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
+svg_dir = os.path.join(base_dir, "svg")
+svg_t_dir = os.path.join(svg_dir, "tmp")
 sprites = os.path.join(base_dir, "simplified")
 sprites2x = os.path.join(base_dir, "simplified2x")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
@@ -111,23 +113,37 @@ def save_sprite_sheet(retna: bool):
     spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
-def svg_to_png(filter: set):
+def temp_svg(css: str, svg: str, theme: str):
+    orig = os.path.join(svg_dir, svg)
+    temp = os.path.join(svg_t_dir, "{}_{}".format(theme, svg))
+    with open(orig, "r") as fp:
+        data = fp.read()
+        with open(temp, "w+") as tfp:
+            tfp.write(data.replace("</svg>", "<defs><style>{}</style></defs></svg>".format(css)))
+            tfp.close()
+        fp.close()
 
-    dpi = 63
+    return temp
+
+
+def svg_to_png(filter: set, theme: str):
+    dpi = 96
     cmd = """inkscape
     -o {} 
     --export-dpi={}
     --export-background-opacity=0 
     {}
     """
-    svg = os.path.join(base_dir, "svg")
+    with open(os.path.join(svg_dir, "{}SvgStyle.css".format(theme)), "r") as fp:
+        css = fp.read()
+        fp.close()
 
     for dpi, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
-        for each in os.listdir(svg):
-            print("each: {}, filter: {}".format(each, filter))
-            if each in filter: # each.endswith('.svg'):
+        for each in os.listdir(svg_dir):
+            print("each: {}".format(each))
+            if each in filter:
                 png = os.path.join(dir, each[:-3] + 'png')
-                s = os.path.join(svg, each)
+                s = temp_svg(css, each, theme)
                 c = cmd.format(png, dpi, s).split()
                 print(subprocess.check_output(c))
 
@@ -170,13 +186,19 @@ if __name__ == '__main__':
                     description='Create sprite sheet optionally generating PNGs from SVGs')
     # parser.add_argument("-svg", "--svg", help="process SVGs into PNGs", default=False, type=bool)
     parser.add_argument("--svg", help="process SVGs into PNGs", action='store_true')
+    parser.add_argument("--theme", help="CSS theme to apply to SVGs which can be (day dusk or night)")
     parser.add_argument("--dry", help="dry run", action='store_true')
     args = parser.parse_args()
+    theme = "day"
+    if args.theme == "dusk":
+        theme = "dusk"
+    if args.theme == "night":
+        theme = "night"
     if args.dry:
         check.svg_check()
     else:
         if args.svg:
-            svg_to_png(check.new)
+            svg_to_png(check.new, theme)
             check.save()
             print('rendered SVGs to PNGs')
 

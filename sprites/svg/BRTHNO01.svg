@@ -1,54 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="5.8208332mm"
-   height="5.8208327mm"
-   viewBox="0 0 5.8208332 5.8208327"
-   version="1.1"
-   id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="BRTHNO01.svg"
-   inkscape:export-filename="BRTHNO01.png"
-   inkscape:export-xdpi="90.714287"
-   inkscape:export-ydpi="90.714287"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="26.910887"
-     inkscape:cx="17.130613"
-     inkscape:cy="14.640915"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     inkscape:pageshadow="2" />
-  <defs
-     id="defs2" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <ellipse
-       style="fill:none;fill-opacity:1;stroke:#c545c3;stroke-width:0.249465;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       id="path17109"
-       cx="2.9104168"
-       cy="2.9104166"
-       rx="2.7856841"
-       ry="2.7856839" />
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="7.32mm" height="7.32mm" viewBox="-3.66 -3.66 7.32 7.32">
+  <title>BRTHNO01</title>
+  <desc>berth number symbol</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="-3.5" y="-3.5" height="7" width="7"/>
+  <rect class="svgBox layout" fill="none" x="-3.5" y="-3.5" height="7" width="7"/>
+  <circle class="f0 sCHMGD" style="stroke-width: 0.32;" cx="0" cy="0" r="3.5"/>
+  <circle class="pivotPoint layout" fill="none" cx="0" cy="0" r="1"/>
 </svg>

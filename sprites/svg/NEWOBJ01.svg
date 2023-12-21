@@ -1,68 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="18mm"
-   height="4mm"
-   viewBox="0 0 340.15748 75.590551"
-   version="1.1"
-   id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="NEWOBJ01.svg"
-   inkscape:export-filename="NEWOBJ01.png"
-   inkscape:export-xdpi="67.730003"
-   inkscape:export-ydpi="67.730003"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     inkscape:document-units="px"
-     showgrid="false"
-     inkscape:zoom="2.3786089"
-     inkscape:cx="63.482484"
-     inkscape:cy="68.947863"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     inkscape:pageshadow="2"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0" />
-  <defs
-     id="defs2" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(1.3890362e-4,1.3890362e-4)">
-    <path
-       id="path882"
-       style="fill:#c545c3;fill-opacity:1;stroke:none;stroke-width:26.8535;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 115.6101,-1.3890362e-4 A 37.5,37.5 0 0 0 78.110097,37.499861 a 37.5,37.5 0 0 0 37.500003,37.5 37.5,37.5 0 0 0 37.5,-37.5 37.5,37.5 0 0 0 -37.5,-37.49999990362 z m 0,7.99804700362 a 6.22385,6.22385 0 0 1 6.2207,6.2304689 v 27.27539 a 6.22385,6.22385 0 0 1 -6.2207,6.220704 6.22385,6.22385 0 0 1 -6.2207,-6.220704 v -27.27539 a 6.22385,6.22385 0 0 1 6.2207,-6.2304689 z m 0,47.4511729 a 6.225,6.2250005 0 0 1 6.2207,6.23047 6.225,6.2250005 0 0 1 -6.2207,6.2207 6.225,6.2250005 0 0 1 -6.2207,-6.2207 6.225,6.2250005 0 0 1 6.2207,-6.23047 z" />
-    <path
-       style="fill:none;stroke:#c545c3;stroke-width:12.4476;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 225.47562,35.665319 H 180.73705"
-       id="path14896-6" />
-    <path
-       style="fill:none;stroke:#c545c3;stroke-width:12.4476;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 302.79216,35.665319 H 258.05358"
-       id="path14896-6-6" />
-    <path
-       style="fill:none;stroke:#c545c3;stroke-width:12.4476;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 51.660487,35.86181 H 6.9219111"
-       id="path14896-6-6-4" />
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="6.32mm" height="6.32mm" viewBox="-3.16 -3.16 6.32 6.32">
+  <title>NEWOBJ01</title>
+  <desc>new object</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="-3" y="-3" height="6" width="6"/>
+  <rect class="svgBox layout" fill="none" x="-3" y="-3" height="6" width="6"/>
+  <circle class="fCHMGD" cx="0" cy="0" r="3"/>
+  <circle class="pivotPoint layout" fill="none" cx="0" cy="0" r="1"/>
 </svg>

@@ -1,53 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   id="svg32"
-   width="33"
-   height="32.995735"
-   version="1.1"
-   viewBox="0 0 32.999999 32.995735"
-   sodipodi:docname="ENTRES51.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   inkscape:export-filename="ENTRES51.png"
-   inkscape:export-xdpi="95.987114"
-   inkscape:export-ydpi="95.987114"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs148" />
-  <sodipodi:namedview
-     id="namedview146"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     showgrid="false"
-     inkscape:zoom="24.355418"
-     inkscape:cx="9.2176616"
-     inkscape:cy="22.992831"
-     inkscape:window-width="2560"
-     inkscape:window-height="1371"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg32"
-     inkscape:pageshadow="2"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0" />
-  <path
-     id="path6"
-     d="M 23.508692,16.527379 H 9.4970915"
-     style="fill:none;fill-opacity:1;stroke:#c545c3;stroke-width:0.994183;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  <circle
-     style="fill:none;fill-rule:evenodd;stroke:#c545c3;stroke-width:0.976;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="path40"
-     cx="16.500004"
-     cy="16.500004"
-     r="16.011852" />
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="20.85mm" height="10.9mm" viewBox="-20.37 -9.23 20.85 10.9">
+  <title>ENTRES51</title>
+  <desc>area where entry is prohibited or restricted or "to be avoided"</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="-19.89" y="-8.75" height="9.94" width="9.94"/>
+  <rect class="svgBox layout" fill="none" x="-19.89" y="-8.75" height="9.94" width="19.89"/>
+  <path d=" M -12.45,-3.77 L -17.07,-3.77" class="sl f0 sTRFCF" style="stroke-width: 0.96;"/>
+  <circle class="f0 sTRFCF" style="stroke-width: 0.64;" cx="-14.92" cy="-3.78" r="4.97"/>
+  <circle class="pivotPoint layout" fill="none" cx="0" cy="0" r="1"/>
 </svg>

@@ -1,55 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="25.500006"
-   height="20.343666"
-   viewBox="0 0 6.7468765 5.3825949"
-   version="1.1"
-   id="svg5"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   sodipodi:docname="DANGER02.svg"
-   inkscape:export-filename="DANGER02.png"
-   inkscape:export-xdpi="95.150002"
-   inkscape:export-ydpi="95.150002"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="26.910887"
-     inkscape:cx="10.293232"
-     inkscape:cy="8.6953656"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     inkscape:pageshadow="2" />
-  <defs
-     id="defs2" />
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0.02896591,0.02385273)">
-    <ellipse
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.318366;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:0.0636732, 0.795916;stroke-dashoffset:0.350203;stroke-opacity:1"
-       id="path17109"
-       cx="3.3711493"
-       cy="2.6688824"
-       rx="3.2409322"
-       ry="2.5389788" />
-  </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="8.32mm" height="6.6mm" viewBox="-4.21 -3.44 8.32 6.6">
+  <title>DANGER02</title>
+  <desc>underwater hazard with depth greater than 20 metres</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="-4.05" y="-3.28" height="6.28" width="8"/>
+  <rect class="svgBox layout" fill="none" x="-4.05" y="-3.28" height="6.28" width="8"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-2.43" cy="-2.72" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-3.3" cy="-1.91" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-3.96" cy="-0.97" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-4.05" cy="0.22" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-3.55" cy="1.22" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-2.8" cy="2" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-1.9" cy="2.59" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-0.9" cy="2.97" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="0.51" cy="3" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="1.54" cy="2.72" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="2.51" cy="2.22" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="3.29" cy="1.47" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="3.95" cy="0.53" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="3.95" cy="-0.66" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="3.45" cy="-1.66" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="2.76" cy="-2.44" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="1.79" cy="-3" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="0.76" cy="-3.28" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-0.77" cy="-3.28" r="0.16"/>
+  <circle class="f0 sCHBLK" style="stroke-width: 0.32;" cx="-1.71" cy="-3.03" r="0.16"/>
+  <circle class="pivotPoint layout" fill="none" cx="0" cy="0" r="1"/>
 </svg>

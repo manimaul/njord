@@ -5,6 +5,7 @@ import json
 import math
 import os
 import os.path
+import sys
 from dataclasses import dataclass
 from typing import Any
 import subprocess
@@ -113,7 +114,7 @@ def save_sprite_sheet(retna: bool):
     spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
-def temp_svg(css: str, svg: str, theme: str):
+def temp_svg(css: str, svg: str, theme: str, svg_dir: str, svg_t_dir: str):
     orig = os.path.join(svg_dir, svg)
     temp = os.path.join(svg_t_dir, "{}_{}".format(theme, svg))
     with open(orig, "r") as fp:
@@ -124,6 +125,20 @@ def temp_svg(css: str, svg: str, theme: str):
         fp.close()
 
     return temp
+
+
+def svg_unused_to_png(theme: str):
+    svg_u_dir = os.path.join(base_dir, "svg_unused")
+    svg_t_dir = os.path.join(svg_u_dir, "tmp")
+    os.makedirs(svg_t_dir, exist_ok=True)
+    with open(os.path.join(svg_dir, "{}SvgStyle.css".format(theme)), "r") as fp:
+        css = fp.read()
+        fp.close()
+
+    for each in os.listdir(svg_u_dir):
+        if each.endswith(".svg"):
+            print("each: {}".format(each))
+            temp_svg(css, each, theme, svg_u_dir, svg_t_dir)
 
 
 def svg_to_png(filter: set, theme: str):
@@ -138,13 +153,15 @@ def svg_to_png(filter: set, theme: str):
         css = fp.read()
         fp.close()
 
-    for dpi, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
-        for each in os.listdir(svg_dir):
+    for each in os.listdir(svg_dir):
+        if not each.endswith(".svg"):
+            continue
+        s = temp_svg(css, each, theme, svg_dir, svg_t_dir)
+        for d, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
             print("each: {}".format(each))
             if each in filter:
                 png = os.path.join(dir, each[:-3] + 'png')
-                s = temp_svg(css, each, theme)
-                c = cmd.format(png, dpi, s).split()
+                c = cmd.format(png, d, s).split()
                 print(subprocess.check_output(c))
 
 
@@ -167,7 +184,9 @@ class SvgCheck:
         for each in os.listdir(self.svg):
             if each.endswith('.svg'):
                 sum = md5_sum(os.path.join(self.svg, each))
-                if each not in self.all.keys() or sum != self.all[each]:
+                png = each[:-4] + ".png"
+                pngs_exists = os.path.exists(os.path.join(sprites, png)) and os.path.exists(os.path.join(sprites2x, png))
+                if each not in self.all.keys() or sum != self.all[each] or not pngs_exists:
                     self.new.add(each)
                 self.all[each] = sum
 
@@ -186,6 +205,7 @@ if __name__ == '__main__':
                     description='Create sprite sheet optionally generating PNGs from SVGs')
     # parser.add_argument("-svg", "--svg", help="process SVGs into PNGs", default=False, type=bool)
     parser.add_argument("--svg", help="process SVGs into PNGs", action='store_true')
+    parser.add_argument("--svg_unused", help="process unused SVGs into PNGs", action='store_true')
     parser.add_argument("--theme", help="CSS theme to apply to SVGs which can be (day dusk or night)")
     parser.add_argument("--dry", help="dry run", action='store_true')
     args = parser.parse_args()
@@ -194,13 +214,20 @@ if __name__ == '__main__':
         theme = "dusk"
     if args.theme == "night":
         theme = "night"
+
+    if args.svg_unused:
+        svg_unused_to_png(theme)
+        sys.exit(0)
+
     if args.dry:
         check.svg_check()
-    else:
-        if args.svg:
-            svg_to_png(check.new, theme)
-            check.save()
-            print('rendered SVGs to PNGs')
+        sys.exit(0)
 
-        save_sprite_sheet(False)
-        save_sprite_sheet(True)
+    if args.svg:
+        svg_to_png(check.new, theme)
+        check.save()
+        print('rendered SVGs to PNGs')
+
+    save_sprite_sheet(False)
+    save_sprite_sheet(True)
+

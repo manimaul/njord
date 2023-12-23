@@ -8,7 +8,7 @@ class Lndrgn : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.POSGEN04)
         feature.catlnd().firstOrNull{ it == Catlnd.SWAMP || it == Catlnd.MARSH }?.let {
-            feature.areaPattern(Sprite.MARSHES1)
+            feature.areaPattern(Sprite.MARSHES1P)
         }
     }
 

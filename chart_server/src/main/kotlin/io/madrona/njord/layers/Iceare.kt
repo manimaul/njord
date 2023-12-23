@@ -13,7 +13,7 @@ import io.madrona.njord.model.*
  */
 class Iceare : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
-        feature.pointSymbol(Sprite.ICEARE04)
+        feature.pointSymbol(Sprite.ICEARE04P)
     }
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(

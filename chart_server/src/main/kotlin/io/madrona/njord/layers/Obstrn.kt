@@ -41,7 +41,7 @@ class Obstrn : Soundg() {
             Catobs.DIFFUSER,
             Catobs.CRIB -> {
                 if (!state.usableDepthValue) {
-                    feature.pointSymbol(Sprite.ISODGR51)
+                    feature.pointSymbol(Sprite.ISODGR01)
                     sySet = true
                     showDepth = false
                 }
@@ -54,7 +54,7 @@ class Obstrn : Soundg() {
             }
 
             Catobs.FOUL_AREA,
-            Catobs.FOUL_GROUND -> feature.areaPattern(Sprite.FOULAR01)
+            Catobs.FOUL_GROUND -> feature.areaPattern(Sprite.FOULAR01P)
 
             Catobs.GROUND_TACKLE -> {
                 feature.pointSymbol(Sprite.ACHARE02)
@@ -115,7 +115,7 @@ class Obstrn : Soundg() {
                 Watlev.SUBJECT_TO_INUNDATION_OR_FLOODING,
                 null -> {
                     checkAccuracy = false
-                    feature.pointSymbol(Sprite.ISODGR51)
+                    feature.pointSymbol(Sprite.ISODGR01)
                 }
             }
         }

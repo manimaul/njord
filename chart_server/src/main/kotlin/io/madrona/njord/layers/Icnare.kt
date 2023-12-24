@@ -21,7 +21,7 @@ class Icnare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine, width = 1f),
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine, width = 1f),
         pointLayerFromSymbol(symbol = symbol),
         areaLayerWithSingleSymbol(symbol = symbol),
     )

@@ -20,8 +20,12 @@ class Navlne : Layerable() {
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            lineLayerWithColor(lineColor, width = 1f, style = LineStyle.CustomDash(10f, 5f)),
-            lineLayerWithLabel(Label.Property("INFORM")),
+            lineLayerWithColor(
+                theme = options.theme,
+                color = lineColor,
+                width = 1f,
+                style = LineStyle.CustomDash(10f, 5f)),
+            lineLayerWithLabel(theme = options.theme, label = Label.Property("INFORM")),
         )
     }
 }

@@ -35,7 +35,7 @@ class Resare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-       lineLayerWithColor(color = lineColor, style = LineStyle.CustomDash(3f, 2f)) ,
+       lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.CustomDash(3f, 2f)) ,
         pointLayerFromSymbol(),
     )
 }

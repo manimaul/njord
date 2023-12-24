@@ -27,7 +27,11 @@ class LayerFactory(
     }
 
     private val layers: Map<LayerableOptions, Sequence<Layer>> by lazy {
-        Depth.values().map { LayerableOptions(it) }.associateWith { options ->
+        Depth.values().map { depth ->
+            Theme.values().map { theme ->
+                LayerableOptions(depth, theme)
+            }
+        }.flatten().associateWith { options ->
             layerables.map {
                 it.layers(options)
             }.flatten()

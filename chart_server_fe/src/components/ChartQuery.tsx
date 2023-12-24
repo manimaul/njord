@@ -126,7 +126,7 @@ export default function ChartQuery(props: Query) {
         if (name) {
             let objMap = new Map<String, S57Object>(Object.keys(responses[0]).map(key => [key, responses[0][key]]));
             let atts = new Map(Object.keys(responses[1]).map(key => [key, responses[1][key]]));
-            let colors = new Map<String, String>(Object.keys(responses[3]["DAY_BRIGHT"]).map(key => [key,responses[3]["DAY_BRIGHT"][key]]))
+            let colors = new Map<String, String>(Object.keys(responses[3]["DAY"]).map(key => [key,responses[3]["DAY"][key]]))
             let qs: QueryState = {
                 obj: objMap.get(name!),
                 att: atts,

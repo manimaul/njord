@@ -1,5 +1,7 @@
 package io.madrona.njord.layers
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 sealed interface Label {
     var label: Any?
 

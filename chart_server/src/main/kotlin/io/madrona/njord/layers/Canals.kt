@@ -19,7 +19,7 @@ open class Canals : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = Color.CHBLK, width = 0.5f),
-        areaLayerWithFillColor(color = fillColor)
+        lineLayerWithColor(theme = options.theme, color = Color.CHBLK, width = 0.5f),
+        areaLayerWithFillColor(theme = options.theme, color = fillColor)
     )
 }

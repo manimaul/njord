@@ -17,12 +17,14 @@ import io.madrona.njord.util.logger
 
 
 class Obstrn : Soundg() {
+
+    private val areaFillColors = DepthColor.values().map { it.color }.toSet()
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         val textLayers = super.layers(options)
         return sequenceOf(
-            areaLayerWithFillColor(),
+            areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
             areaLayerWithFillPattern(),
-            lineLayerWithColor(color = Color.CHGRD, style = LineStyle.DashLine),
+            lineLayerWithColor(theme = options.theme, color = Color.CHGRD, style = LineStyle.DashLine),
             pointLayerFromSymbol(anchor = Anchor.CENTER),
             areaLayerWithPointSymbol()
         ) + textLayers

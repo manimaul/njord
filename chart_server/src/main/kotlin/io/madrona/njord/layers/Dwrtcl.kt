@@ -19,6 +19,6 @@ class Dwrtcl : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(lineColor)
+        lineLayerWithColor(theme = options.theme, color = lineColor)
     )
 }

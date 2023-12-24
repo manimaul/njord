@@ -20,6 +20,7 @@ class Fairwy : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             lineLayerWithColor(
+                theme = options.theme,
                 color = lineColor,
                 width = 0.5f,
                 style = LineStyle.CustomDash(10f, 5f)

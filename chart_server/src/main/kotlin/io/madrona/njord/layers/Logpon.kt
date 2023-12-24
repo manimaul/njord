@@ -22,6 +22,7 @@ class Logpon : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         lineLayerWithColor(
+            theme = options.theme,
             color = lineColor,
             width = 1f,
             style = LineStyle.CustomDash(3f, 4f)

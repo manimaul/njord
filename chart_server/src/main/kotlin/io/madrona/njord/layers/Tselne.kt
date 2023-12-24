@@ -18,6 +18,6 @@ class Tselne : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor, width = 6f)
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 6f)
     )
 }

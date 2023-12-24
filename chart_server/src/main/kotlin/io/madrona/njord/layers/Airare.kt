@@ -24,8 +24,8 @@ class Airare : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        areaLayerWithFillColor(areaColor),
+        areaLayerWithFillColor(color = areaColor, theme = options.theme),
         areaLayerWithPointSymbol(symbol),
-        lineLayerWithColor(lineColor, width = 1f)
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 1f)
     )
 }

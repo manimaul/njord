@@ -23,7 +23,7 @@ class Pylons : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        areaLayerWithFillColor(areaColor),
-        lineLayerWithColor(lineColor, width = 2f)
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 2f)
     )
 }

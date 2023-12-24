@@ -21,7 +21,7 @@ class Flodoc : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(areaColor),
-        lineLayerWithColor(lineColor)
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor)
     )
 }

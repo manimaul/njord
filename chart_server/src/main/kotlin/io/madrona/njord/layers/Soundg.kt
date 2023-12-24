@@ -29,6 +29,7 @@ open class Soundg(
     private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
 
+    private val textSize = 16f
     override fun preTileEncode(feature: ChartFeature) {
         feature.props.doubleValue("METERS")?.let { meters ->
             feature.props.addSoundingConversions(meters)
@@ -36,28 +37,28 @@ open class Soundg(
     }
 
     override fun layers(options: LayerableOptions) = when (options.depth) {
-        Depth.FATHOMS -> fathoms()
-        Depth.METERS -> meters()
-        Depth.FEET -> feet()
+        Depth.FATHOMS -> fathoms(theme = options.theme)
+        Depth.METERS -> meters(theme = options.theme)
+        Depth.FEET -> feet(theme = options.theme)
     }
 
-    private fun fathoms() = sequenceOf(
-        singleText(id = "${key}_fathoms", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
-        primaryTextLayer(id = "${key}_fathoms_offset", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
-        subTextLayer(id = "${key}_fathoms_feet_offset", textKey = "FATHOMS_FT"),
+    private fun fathoms(theme: Theme) = sequenceOf(
+        singleText(theme = theme, id = "${key}_fathoms", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
+        primaryTextLayer(theme = theme, id = "${key}_fathoms_offset", textKey = "FATHOMS", subTextKey = "FATHOMS_FT"),
+        subTextLayer(theme = theme, id = "${key}_fathoms_feet_offset", textKey = "FATHOMS_FT"),
     )
 
-    private fun feet() = sequenceOf(
-        singleText(id = "${key}_feet", textKey = "FEET"),
+    private fun feet(theme: Theme) = sequenceOf(
+        singleText(theme = theme, id = "${key}_feet", textKey = "FEET"),
     )
 
-    private fun meters() = sequenceOf(
-        singleText(id = "${key}_meters", textKey = "METERS_W", subTextKey = "METERS_T"),
-        primaryTextLayer(id = "${key}_meters_offset", textKey = "METERS_W", subTextKey = "METERS_T"),
-        subTextLayer(id = "${key}_meters_tenths_offset", textKey = "METERS_T"),
+    private fun meters(theme: Theme) = sequenceOf(
+        singleText(theme = theme, id = "${key}_meters", textKey = "METERS_W", subTextKey = "METERS_T"),
+        primaryTextLayer(theme = theme, id = "${key}_meters_offset", textKey = "METERS_W", subTextKey = "METERS_T"),
+        subTextLayer(theme = theme, id = "${key}_meters_tenths_offset", textKey = "METERS_T"),
     )
 
-    private fun singleText(id: String, textKey: String, subTextKey: String? = null) = Layer(
+    private fun singleText(theme: Theme, id: String, textKey: String, subTextKey: String? = null) = Layer(
         id = id,
         type = LayerType.SYMBOL,
         sourceLayer = key,
@@ -79,17 +80,17 @@ open class Soundg(
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = true,
-            textSize = 11f,
+            textSize = textSize,
             symbolPlacement = Placement.POINT,
         ),
         paint = Paint(
-            textColor = textColor,
-            textHaloColor = colorFrom("CHWHT"),
+            textColor = textColor(theme),
+            textHaloColor = colorFrom(Color.DEPDW, theme),
             textHaloWidth = 1.5f
         )
     )
 
-    private fun primaryTextLayer(id: String, textKey: String, subTextKey: String) = Layer(
+    private fun primaryTextLayer(theme: Theme, id: String, textKey: String, subTextKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
         sourceLayer = key,
@@ -108,17 +109,17 @@ open class Soundg(
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = true,
-            textSize = 11f,
+            textSize = textSize,
             symbolPlacement = Placement.POINT,
         ),
         paint = Paint(
-            textColor = textColor,
-            textHaloColor = colorFrom("CHWHT"),
+            textColor = textColor(theme),
+            textHaloColor = colorFrom(Color.DEPDW, theme),
             textHaloWidth = 1.5f
         )
     )
 
-    private fun subTextLayer(id: String, textKey: String) = Layer(
+    private fun subTextLayer(theme: Theme, id: String, textKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
         sourceLayer = key,
@@ -137,17 +138,19 @@ open class Soundg(
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = true,
-            textSize = 9f,
+            textSize = textSize - 4f,
             symbolPlacement = Placement.POINT,
         ),
         paint = Paint(
-            textColor = textColor,
+            textColor = textColor(theme),
+            textHaloColor = colorFrom(Color.DEPDW, theme),
+            textHaloWidth = 1.5f
         )
     )
 
-    private val textColor = listOf(
+    private fun textColor(theme: Theme) = listOf(
         "case", listOf("<=", listOf("get", "METERS"), config.deepDepth),
-        colorFrom("SNDG2"), // dark
-        colorFrom("SNDG1")  // light
+        colorFrom(Color.SNDG2, theme),
+        colorFrom(Color.SNDG1, theme)
     )
 }

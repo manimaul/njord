@@ -22,9 +22,17 @@ class Achare(
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        lineLayerWithColor(color = lineColor, width = 2f, style = LineStyle.CustomDash(3f, 4f)),
+        lineLayerWithColor(
+            theme = options.theme,
+            color = lineColor,
+            width = 2f,
+            style = LineStyle.CustomDash(3f, 4f)
+        ),
         lineLayerWithPattern(),
-        lineLayerWithLabel(label = Label.Property("OBJNAM")),
+        lineLayerWithLabel(
+            theme = options.theme,
+            label = Label.Property("OBJNAM")
+        ),
     )
 
 //    private val color = Color.CHMGF

@@ -25,6 +25,7 @@ class Prcare : Layerable() {
             symbol  = symbol
         ),
         lineLayerWithColor(
+            theme = options.theme,
             color = lineColor,
             width = 2f,
             style = LineStyle.CustomDash(3f, 2f)

@@ -19,6 +19,6 @@ class Lakshr : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor, style = LineStyle.Solid, width = 1f),
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.Solid, width = 1f),
     )
 }

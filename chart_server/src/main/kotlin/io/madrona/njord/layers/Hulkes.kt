@@ -9,8 +9,8 @@ class Hulkes : Layerable() {
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            areaLayerWithFillColor(Color.CHBRN),
-            lineLayerWithColor(color = Color.CSTLN, width = 2f),
+            areaLayerWithFillColor(theme = options.theme, color = Color.CHBRN),
+            lineLayerWithColor(theme = options.theme, color = Color.CSTLN, width = 2f),
             pointLayerFromSymbol(
                 symbol = Sprite.HULKES01,
                 anchor = Anchor.CENTER,

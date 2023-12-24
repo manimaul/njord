@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.MapSerializer
 import io.madrona.njord.Singletons
+import io.madrona.njord.layers.Color
+import io.madrona.njord.layers.Theme
 
 
 class ColorLibrary(
@@ -19,9 +21,10 @@ class ColorLibrary(
 
 @JsonInclude(JsonInclude.Include.ALWAYS)
 data class Colors(
-        @JsonSerialize(keyUsing = MapSerializer::class) val library: Map<String, Map<String, String>>
+        @JsonSerialize(keyUsing = MapSerializer::class) val library: Map<Theme, Map<Color, String>>
 )
 
 
-fun colorFrom(key: String): String = Singletons.colorLibrary.colorMap.library["DAY_BRIGHT"]!![key]
-        ?: throw RuntimeException("color key not found $key")
+
+fun colorFrom(color: Color, theme: Theme): String = Singletons.colorLibrary.colorMap.library[theme]!![color]
+        ?: throw RuntimeException("color key not found ${color.name}")

@@ -21,7 +21,7 @@ class Dykcon : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor),
-        areaLayerWithFillColor(color = areaColor)
+        lineLayerWithColor(theme = options.theme, color = lineColor),
+        areaLayerWithFillColor(theme = options.theme, color = areaColor)
     )
 }

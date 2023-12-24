@@ -19,7 +19,7 @@ class Fshgrd : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor),
         areaLayerWithSingleSymbol()
     )
 }

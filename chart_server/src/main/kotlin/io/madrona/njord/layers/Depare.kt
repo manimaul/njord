@@ -4,6 +4,7 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.model.*
+import java.util.Collections
 
 /**
  * Geometry Primitives: Line, Area
@@ -17,12 +18,21 @@ import io.madrona.njord.model.*
 open class Depare(
     private val config: ChartsConfig = Singletons.config
 ) : Layerable() {
+
+    private val areaFillColors = setOf(
+        Color.DEPIT,
+        Color.DEPVS,
+        Color.DEPMS,
+        Color.DEPMD,
+        Color.DEPDW,
+    )
+
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             //DRVAL1 is lower (sometimes negative) (shallower) end of range
             //DRVAL2 is higher (deeper) end of range
-            areaLayerWithFillColor(),
-            lineLayerWithColor(width = 0.5f),
+            areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
+            lineLayerWithColor(theme = options.theme, width = 0.5f, options = Collections.singleton(Color.CHGRD)),
         )
     }
 
@@ -38,7 +48,6 @@ open class Depare(
                     shallowRange > config.deepDepth -> Color.DEPDW
                     else -> throw IllegalStateException("unexpected DRVAL1 $shallowRange")
                 }
-                log.debug("finding area fill color for $key $ac DRVAL1=$shallowRange DRVAL2=$deepRange")
             }
         }
         feature.areaColor(ac)

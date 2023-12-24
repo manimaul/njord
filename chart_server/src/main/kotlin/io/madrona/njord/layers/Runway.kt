@@ -23,8 +23,8 @@ class Runway : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(lineColor),
-        areaLayerWithFillColor(areaColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor),
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
         pointLayerFromSymbol(symbol),
     )
 }

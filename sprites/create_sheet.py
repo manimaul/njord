@@ -38,12 +38,17 @@ def find_tile_wh(frames: [Frame]):
     return width, height
 
 
-def save_sprite_sheet(retna: bool):
+def save_sprite_sheet(retna: bool, theme: str):
     max_frames_row = 10
     frames = []
 
-    files = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites)))
-    files2x = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites2x)))
+    sprites_t = os.path.join(sprites, theme)
+    os.makedirs(sprites_t, exist_ok=True)
+    sprites2x_t = os.path.join(sprites2x, theme)
+    os.makedirs(sprites2x_t, exist_ok=True)
+
+    files = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites_t)))
+    files2x = set(filter(lambda x: x.endswith('.png'), os.listdir(sprites2x_t)))
 
     if retna:
         for each in files2x:
@@ -51,11 +56,11 @@ def save_sprite_sheet(retna: bool):
                 raise Exception('missing 1x file: ' + each)
 
     for current_file in files:
-        png_path = os.path.join(sprites, current_file)
+        png_path = os.path.join(sprites_t, current_file)
         pixel_ratio = 1
 
         if retna and current_file in files2x:
-            png_path = os.path.join(sprites2x, current_file)
+            png_path = os.path.join(sprites2x_t, current_file)
             pixel_ratio = 2
 
         try:
@@ -105,7 +110,7 @@ def save_sprite_sheet(retna: bool):
         print("tile_width={}, tile_height={}".format(tile_width, tile_height))
         print("column={}, row={}, name={}, width={}, height={}".format(column, row, each.name, width, height))
 
-    name = "simplified"
+    name = "{}_simplified".format(theme)
     if retna:
         name = name + "@2x"
     with open(os.path.join(sprite_sheet_dir, "{}.json".format(name)), "w") as fp:
@@ -153,11 +158,15 @@ def svg_to_png(filter: set, theme: str):
         css = fp.read()
         fp.close()
 
+    sprites_t = os.path.join(sprites, theme)
+    os.makedirs(sprites_t, exist_ok=True)
+    sprites2x_t = os.path.join(sprites2x, theme)
+    os.makedirs(sprites2x_t, exist_ok=True)
     for each in os.listdir(svg_dir):
         if not each.endswith(".svg"):
             continue
         s = temp_svg(css, each, theme, svg_dir, svg_t_dir)
-        for d, dir in [(dpi, sprites), (dpi*2, sprites2x)]:
+        for d, dir in [(dpi, sprites_t), (dpi*2, sprites2x_t)]:
             print("each: {}".format(each))
             if each in filter:
                 png = os.path.join(dir, each[:-3] + 'png')
@@ -228,6 +237,6 @@ if __name__ == '__main__':
         check.save()
         print('rendered SVGs to PNGs')
 
-    save_sprite_sheet(False)
-    save_sprite_sheet(True)
+    save_sprite_sheet(False, theme)
+    save_sprite_sheet(True, theme)
 

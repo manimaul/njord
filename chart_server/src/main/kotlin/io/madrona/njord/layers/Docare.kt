@@ -21,7 +21,7 @@ class Docare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(color = areaColor),
-        lineLayerWithColor(color = lineColor, width = 0.5f),
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 0.5f),
     )
 }

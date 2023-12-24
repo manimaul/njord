@@ -16,6 +16,10 @@ import io.madrona.njord.model.*
 class Causwy : Layerable() {
     private val lineColor = Color.CSTLN
 
+    private val areaFillColors = setOf(
+       Color.CHBRN, Color.DEPIT
+    )
+
     override fun preTileEncode(feature: ChartFeature) {
         when (feature.watlev()) {
             Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
@@ -30,7 +34,7 @@ class Causwy : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(),
-        lineLayerWithColor(lineColor, style = LineStyle.DashLine)
+        areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine)
     )
 }

@@ -18,6 +18,7 @@ import io.madrona.njord.model.*
  * Code: 74
  */
 class Lndmrk : Layerable() {
+    private val lineColors = setOf(Color.LANDF, Color.CHBLK)
     override fun preTileEncode(feature: ChartFeature) {
         val functn = feature.functn()
         var viz = false
@@ -150,9 +151,9 @@ class Lndmrk : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(),
+        areaLayerWithFillColor(color = Color.CHBRN, theme = options.theme),
         areaLayerWithSingleSymbol(),
-        lineLayerWithColor(width = 1f),
+        lineLayerWithColor(options = lineColors, theme = options.theme, width = 1f),
         pointLayerFromSymbol(),
     )
 }

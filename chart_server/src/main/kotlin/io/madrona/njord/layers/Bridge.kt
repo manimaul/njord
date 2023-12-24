@@ -22,7 +22,7 @@ class Bridge : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = Color.CHGRD, width = 4f),
+        lineLayerWithColor(theme = options.theme, color = Color.CHGRD, width = 4f),
         pointLayerFromSymbol(iconKeepUpright = true),
         lineLayerWithPattern(),
     )

@@ -21,6 +21,7 @@ class Twrtpt : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         lineLayerWithColor(
+            theme = options.theme,
             color = lineColor,
             width = 2f,
             style = LineStyle.CustomDash(3f, 2f)

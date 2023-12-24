@@ -30,9 +30,10 @@ class Morfac : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(color = Color.CHBRN),
-        lineLayerWithColor(color = Color.CHBRN, width = 1f),
+        areaLayerWithFillColor(theme = options.theme, color = Color.CHBRN),
+        lineLayerWithColor(theme = options.theme, color = Color.CHBRN, width = 1f),
         lineLayerWithColor(
+            theme = options.theme,
             color = Color.CSTLN, width = 2f,
             filter = listOf(
                 Filters.all,
@@ -41,6 +42,7 @@ class Morfac : Layerable() {
             ),
         ),
         lineLayerWithColor(
+            theme = options.theme,
             color = Color.CHMGF,
             width = 1f,
             style = LineStyle.CustomDash(5f, 5f),
@@ -51,6 +53,7 @@ class Morfac : Layerable() {
             ),
         ),
         lineLayerWithColor(
+            theme = options.theme,
             color = Color.CSTLN,
             width = 2f,
             filter = listOf(

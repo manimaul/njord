@@ -19,6 +19,6 @@ class Oilbar : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(lineColor, style = LineStyle.DashLine)
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine)
     )
 }

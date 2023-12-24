@@ -21,8 +21,8 @@ open class Lndare : Layerable() {
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            areaLayerWithFillColor(areaColor),
-            lineLayerWithColor(color = Color.CSTLN, width = 2f),
+            areaLayerWithFillColor(theme = options.theme, color = areaColor),
+            lineLayerWithColor(theme = options.theme, color = Color.CSTLN, width = 2f),
             pointLayerFromSymbol(anchor = Anchor.CENTER, iconAllowOverlap = true, iconKeepUpright = false),
         )
     }

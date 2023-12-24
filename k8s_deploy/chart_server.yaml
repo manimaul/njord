@@ -91,9 +91,6 @@ data:
         chartMinZoom = 0
         chartMaxZoom = 30
         
-        chartSymbols = simplified_symbol_rules.yaml
-        chartSymbolSprites = simplified
-
         chartTempData = /tmp/njord/data
 
         webStaticContent=/opt/chart_server/public

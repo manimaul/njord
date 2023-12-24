@@ -14,7 +14,7 @@ class Ply : Layerable() {
                                 Filters.eqTypeLineString
                         ),
                         paint = Paint(
-                                lineColor = colorFrom("CHRED"),
+                                lineColor = colorFrom(Color.CHRED, options.theme),
                                 lineWidth = 2f
                         )
                 )

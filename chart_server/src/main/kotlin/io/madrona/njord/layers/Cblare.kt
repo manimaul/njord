@@ -20,6 +20,7 @@ class Cblare : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(
+            theme = options.theme,
             color = lineColor,
             style = LineStyle.CustomDash(3f, 2f)
         ),

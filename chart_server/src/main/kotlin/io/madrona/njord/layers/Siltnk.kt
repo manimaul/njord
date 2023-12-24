@@ -5,6 +5,7 @@ import io.madrona.njord.layers.attributehelpers.Catsil.Companion.catsil
 import io.madrona.njord.layers.attributehelpers.Convis
 import io.madrona.njord.layers.attributehelpers.Convis.Companion.convis
 import io.madrona.njord.model.*
+import java.util.Collections
 
 /**
  * Geometry Primitives: Point, Area
@@ -21,40 +22,40 @@ class Siltnk : Layerable() {
         when (feature.catsil()) {
             Catsil.SILO_IN_GENERAL -> {
                 when (convis) {
-                    Convis.VISUAL_CONSPICUOUS -> feature.props["SY"] = "SILBUI11"
+                    Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.SILBUI11)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.props["SY"] = "SILBUI01"
+                    null -> feature.pointSymbol(Sprite.SILBUI01)
                 }
             }
 
             Catsil.TANK_IN_GENERAL -> {
                 when (convis) {
-                    Convis.VISUAL_CONSPICUOUS -> feature.props["SY"] = "TNKCON12"
+                    Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.TNKCON12)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.props["SY"] = "TNKCON02"
+                    null -> feature.pointSymbol(Sprite.TNKCON02)
                 }
             }
 
             Catsil.GRAIN_ELEVATOR -> {
                 when (convis) {
-                    Convis.VISUAL_CONSPICUOUS -> feature.props["SY"] = "TOWERS03"
+                    Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.TOWERS03)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.props["SY"] = "TOWERS01"
+                    null -> feature.pointSymbol(Sprite.TOWERS01)
                 }
             }
 
             Catsil.WATER_TOWER -> {
                 when (convis) {
-                    Convis.VISUAL_CONSPICUOUS -> feature.props["SY"] = "TOWERS02"
+                    Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.TOWERS02)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.props["SY"] = "TOWERS12"
+                    null -> feature.pointSymbol(Sprite.TOWERS12)
                 }
             }
 
-            null -> feature.props["SY"] = "SILBUI01"
+            null -> feature.pointSymbol(Sprite.SILBUI01)
         }
         when (convis) {
-            Convis.VISUAL_CONSPICUOUS -> feature.props["AC"] = "LANDF"
+            Convis.VISUAL_CONSPICUOUS -> feature.areaColor(Color.LANDF)
             Convis.NOT_VISUAL_CONSPICUOUS,
             null -> Unit
         }
@@ -67,7 +68,7 @@ class Siltnk : Layerable() {
             sourceLayer = key,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = Filters.areaFillColor
+                fillColor = Filters.areaFillColor(options = Collections.singleton(Color.LANDF), theme = options.theme)
             ),
         ),
         Layer(
@@ -76,7 +77,7 @@ class Siltnk : Layerable() {
             sourceLayer = key,
             filter = Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
-                lineColor = colorFrom("CHBLK"),
+                lineColor = colorFrom(Color.CHBLK, options.theme),
                 lineWidth = 2f,
             ),
         ),

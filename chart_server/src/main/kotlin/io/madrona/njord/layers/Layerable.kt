@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
 
@@ -48,7 +49,8 @@ abstract class Layerable(
 
     private var lineLayerWithColorId = 0
     fun lineLayerWithColor(
-        color: Color? = null,
+        theme: Theme,
+        color: Color,
         style: LineStyle = LineStyle.Solid,
         width: Float = 2f,
         filter: List<Any>? = null,
@@ -59,7 +61,27 @@ abstract class Layerable(
             sourceLayer = key,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
-                lineColor = color?.let { colorFrom(color.name) } ?: Filters.lineColor,
+                lineColor = colorFrom(color, theme),
+                lineWidth = width,
+                lineDashArray = style.lineDashArray
+            )
+        )
+    }
+
+    fun lineLayerWithColor(
+        options: Set<Color>,
+        theme: Theme,
+        style: LineStyle = LineStyle.Solid,
+        width: Float = 2f,
+        filter: List<Any>? = null,
+    ): Layer {
+        return Layer(
+            id = "${key}_line_${++lineLayerWithColorId}",
+            type = LayerType.LINE,
+            sourceLayer = key,
+            filter = filter ?: Filters.eqTypeLineStringOrPolygon,
+            paint = Paint(
+                lineColor = Filters.lineColor(options = options, theme = theme),
                 lineWidth = width,
                 lineDashArray = style.lineDashArray
             )
@@ -69,9 +91,10 @@ abstract class Layerable(
     private var lineLayerWithLabelId = 0
     fun lineLayerWithLabel(
         label: Label,
-        labelColor: Color = Color.CHBLK,
-        highlightColor: Color = Color.CHWHT,
-    ) : Layer {
+        theme: Theme,
+        labelColor: Color = Color.SNDG2,
+        highlightColor: Color = Color.DEPDW,
+    ): Layer {
         return Layer(
             id = "${key}_label_${++lineLayerWithLabelId}",
             type = LayerType.SYMBOL,
@@ -85,8 +108,8 @@ abstract class Layerable(
                 symbolPlacement = Placement.LINE,
             ),
             paint = Paint(
-                textColor = colorFrom(labelColor.name),
-                textHaloColor = colorFrom(highlightColor.name),
+                textColor = colorFrom(labelColor, theme),
+                textHaloColor = colorFrom(highlightColor, theme),
                 textHaloWidth = 2.5f
             )
         )
@@ -134,8 +157,8 @@ abstract class Layerable(
     }
 
     private var lineLayerWithTextId = 0
-    fun lineLayerWithText(textKey: String): Layer {
-       return Layer(
+    fun lineLayerWithText(textKey: String, theme: Theme): Layer {
+        return Layer(
             id = "${key}_label${++lineLayerWithTextId}",
             type = LayerType.SYMBOL,
             sourceLayer = key,
@@ -148,22 +171,40 @@ abstract class Layerable(
                 symbolPlacement = Placement.LINE,
             ),
             paint = Paint(
-                textColor = colorFrom("CHBLK"),
-                textHaloColor = colorFrom("CHWHT"),
+                textColor = colorFrom(Color.CHBLK, theme),
+                textHaloColor = colorFrom(Color.CHWHT, theme),
                 textHaloWidth = 2.5f
             )
         )
     }
 
     private var areaLayerWithFillColorId = 0
-    fun areaLayerWithFillColor(color: Color? = null): Layer {
+    fun areaLayerWithFillColor(
+        options: Set<Color>,
+        theme: Theme
+    ): Layer {
         return Layer(
             id = "${key}_fill_${++areaLayerWithFillColorId}",
             type = LayerType.FILL,
             sourceLayer = key,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = color?.let { colorFrom(it.name) } ?: Filters.areaFillColor
+                fillColor = Filters.areaFillColor(options = options, theme = theme)
+            ),
+        )
+    }
+
+    fun areaLayerWithFillColor(
+        color: Color,
+        theme: Theme
+    ): Layer {
+        return Layer(
+            id = "${key}_fill_${++areaLayerWithFillColorId}",
+            type = LayerType.FILL,
+            sourceLayer = key,
+            filter = Filters.eqTypePolyGon,
+            paint = Paint(
+                fillColor = colorFrom(color, theme)
             ),
         )
     }
@@ -228,8 +269,15 @@ abstract class Layerable(
     }
 }
 
+enum class Theme {
+    @JsonProperty("DAY") Day,
+    @JsonProperty("DUSK") Dusk,
+    @JsonProperty("NIGHT") Night;
+}
+
 data class LayerableOptions(
-    val depth: Depth
+    val depth: Depth,
+    val theme: Theme
 )
 
 fun ChartFeature.excludeAreaPointSymbol() {
@@ -265,10 +313,10 @@ abstract class LayerableTodo : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(Color.RADLO),
+        areaLayerWithFillColor(color = Color.RADLO, theme = options.theme),
         areaLayerWithFillPattern(),
-        lineLayerWithColor(color = Color.CHBLK),
-        lineLayerWithColor(color = Color.LITRD, LineStyle.DashLine),
+        lineLayerWithColor(options.theme, color = Color.CHBLK),
+        lineLayerWithColor(options.theme, color = Color.LITRD, LineStyle.DashLine),
         lineLayerWithPattern(),
         pointLayerFromSymbol(),
     ).also {

@@ -1,5 +1,7 @@
 package io.madrona.njord.ext
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import io.madrona.njord.layers.Theme
 import io.madrona.njord.model.Depth
 import kotlin.test.*
 
@@ -21,6 +23,7 @@ internal class EnumExtTest {
     fun testLetFromStrings() {
         letFromStrings("meters", "day") { depths: Depth, theme: Theme ->
             assertEquals(Depth.METERS, depths)
+            assertEquals(Theme.Day, theme)
         } ?: fail()
 
         val passed = letFromStrings<Depth, Theme, Boolean>("meters", "foo") { _, _ ->
@@ -28,10 +31,4 @@ internal class EnumExtTest {
         } ?: true
         assertTrue(passed)
     }
-}
-
-enum class Theme {
-    Day,
-    Dusk,
-    Dark;
 }

@@ -14,6 +14,7 @@ import io.madrona.njord.model.*
  * Code: 59
  */
 class Forstc : Layerable() {
+    private val lineColors = setOf(Color.LANDF, Color.CHBLK)
     override fun preTileEncode(feature: ChartFeature) {
         when (feature.convis()) {
             Convis.VISUAL_CONSPICUOUS -> {
@@ -32,7 +33,7 @@ class Forstc : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        areaLayerWithFillColor(),
-        lineLayerWithColor(),
+        areaLayerWithFillColor(color = Color.CHBRN, theme = options.theme),
+        lineLayerWithColor(options = lineColors, theme = options.theme),
     )
 }

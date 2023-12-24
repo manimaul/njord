@@ -9,6 +9,7 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.layers.LayerableOptions
+import io.madrona.njord.layers.Theme
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Source
 import io.madrona.njord.model.SourceType
@@ -18,26 +19,28 @@ class StyleHandler(
     private val config: ChartsConfig = Singletons.config,
     private val layerFactory: LayerFactory = Singletons.layerFactory
 ) : KtorHandler {
-    override val route = "/v1/style/{depth}"
+    override val route = "/v1/style/{depth}/{theme}"
 
     override suspend fun handleGet(call: ApplicationCall) {
         fromString<Depth>(call.parameters["depth"])?.let { depth ->
-            call.respond(
-                Style(
-                    name = config.chartSymbolSprites,
-                    glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
-                    spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/${config.chartSymbolSprites}",
-                    sources = mapOf(
-                        Source.SENC to Source(
-                            type = SourceType.VECTOR,
-                            tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
-                        )
-                    ),
-
-                    layers = layerFactory.layers(LayerableOptions(depth)),
-                    version = 8
+            fromString<Theme>(call.parameters["theme"])?.let { theme ->
+                val name = "${theme.name.lowercase()}_simplified"
+                call.respond(
+                    Style(
+                        name = name,
+                        glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
+                        spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/$name",
+                        sources = mapOf(
+                            Source.SENC to Source(
+                                type = SourceType.VECTOR,
+                                tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
+                            )
+                        ),
+                        layers = layerFactory.layers(LayerableOptions(depth, theme)),
+                        version = 8
+                    )
                 )
-            )
+            }
         } ?: call.respond(HttpStatusCode.NotFound, Any())
     }
 }

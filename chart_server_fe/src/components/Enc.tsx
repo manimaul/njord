@@ -6,7 +6,7 @@ import maplibregl from '!maplibre-gl';
 //eslint-disable-next-line import/no-webpack-loader-syntax
 import MapLibreWorker from '!maplibre-gl/dist/maplibre-gl-csp-worker';
 
-import React, {useRef, useEffect, useState} from "react";
+import {useRef, useEffect, useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
@@ -14,7 +14,7 @@ import '../App.css'
 import 'maplibre-gl/dist/maplibre-gl.css';
 import ChartQuery from './ChartQuery';
 import {MapLibreEvent, MapMouseEvent, Map, MapGeoJSONFeature} from "maplibre-gl";
-import {DepthUnit} from "../App";
+import {DepthUnit, Theme} from "../App";
 import {Bounds} from "./Chartinfo";
 
 maplibregl.workerClass = MapLibreWorker;
@@ -39,7 +39,8 @@ export function setDestination(bounds: Bounds) {
 }
 
 type EncProps = {
-    depths: DepthUnit
+    depths: DepthUnit,
+    theme: Theme
 }
 
 export function Enc(props: EncProps) {
@@ -55,7 +56,7 @@ export function Enc(props: EncProps) {
     useEffect(() => {
         let cMap: Map | null = map.current
         if (cMap) {
-            let url = `/v1/style/${props.depths}`
+            let url = `/v1/style/${props.depths}/${props.theme}`
             console.log(`loading style url ${url}`)
             cMap?.setStyle(url)
             return; //stops map from intializing more than once
@@ -64,7 +65,7 @@ export function Enc(props: EncProps) {
         let encState = new EncState();
         let newMap = new maplibregl.Map({
             container: mapContainer.current,
-            style: `/v1/style/${props.depths}`,
+            style: `/v1/style/${props.depths}/${props.theme}`,
             center: [encState.lng, encState.lat],
             zoom: encState.zoom
         });

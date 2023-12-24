@@ -22,6 +22,6 @@ class Wedklp : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         areaLayerWithSingleSymbol(),
-        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine, width = 1f)
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine, width = 1f)
     )
 }

@@ -57,7 +57,7 @@ class Pipare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = lineColor, style = LineStyle.DashLine),
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine),
         pointLayerFromSymbol(symbol = symbol),
     )
 }

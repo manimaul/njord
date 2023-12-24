@@ -10,7 +10,7 @@ class Background : Layerable() {
             Layer(
                     id = "background",
                     paint = Paint(
-                            backgroundColor = colorFrom("NODTA"),
+                            backgroundColor = colorFrom(Color.NODTA, options.theme),
                             backgroundOpacity = 1
                     ),
                     type = LayerType.BACKGROUND,

@@ -19,6 +19,25 @@ export enum DepthUnit {
     meters = 'meters'
 }
 
+export enum Theme {
+    day = 'day',
+    dusk = 'dusk',
+    night = 'night'
+}
+
+function getTheme(): Theme {
+    switch (window.localStorage.getItem("theme")) {
+        case 'day':
+            return Theme.day 
+        case 'dusk':
+            return Theme.dusk 
+        case 'night':
+            return Theme.night
+        default:
+            return Theme.day 
+    }
+}
+
 function depthUnit(): DepthUnit {
     switch (window.localStorage.getItem("depthUnit")) {
         case 'feet':
@@ -39,15 +58,21 @@ function App() {
         window.localStorage.setItem("depthUnit", d);
         console.log(`stored depth units= ${d}`)
     }
+    const [theme, setTheme] = useState(getTheme());
+    const themeUpdater = (t: Theme) => {
+        setTheme(t);
+        window.localStorage.setItem("theme", t);
+        console.log(`stored theme= ${t}`)
+    }
 
     return (
         <div className="App Column">
-            <NavBar depths={depths} updater={depthUpdater}/>
+            <NavBar theme={theme} depths={depths} depthsUpdater={depthUpdater} themeUpdater={themeUpdater}/>
             <div className="Wrap Warning bg-danger text-white">EXPERIMENTAL! - NOT FOR NAVIGATION</div>
             <Routes>
                 <Route path="/" element={<Outlet/>}>
                     <Route index element={<HomeAbout/>}/>
-                    <Route path="enc" element={<Enc depths={depths}/>}/>
+                    <Route path="enc" element={<Enc depths={depths} theme={theme}/>}/>
                     <Route path="chart/:id" element={<ChartInfo/>}/>
                     <Route path="layer/:layer" element={<LayerLocate/>}/>
                     <Route path="control/:page" element={<ControlPanel/>}>

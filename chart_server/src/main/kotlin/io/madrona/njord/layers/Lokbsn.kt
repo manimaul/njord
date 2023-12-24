@@ -21,7 +21,7 @@ open class Lokbsn(customKey: String? = null) : Layerable(customKey) {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(areaColor),
-        lineLayerWithColor(lineColor, width = 1f)
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 1f)
     )
 }

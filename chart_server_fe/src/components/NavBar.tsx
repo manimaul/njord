@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {Link} from "react-router-dom";
 import {NavDropdown} from "react-bootstrap";
-import {DepthUnit} from "../App";
+import {DepthUnit, Theme} from "../App";
 import '../App.css';
 import Button from "react-bootstrap/Button";
 import {useAdmin} from "../Admin";
@@ -21,8 +21,10 @@ function NavLink(props: NavLinkProps) {
 }
 
 type NavBarProps = {
+    theme: Theme,
     depths: DepthUnit,
-    updater: (depths: DepthUnit) => void,
+    depthsUpdater: (depths: DepthUnit) => void,
+    themeUpdater: (theme: Theme) => void,
 }
 
 export function NavBar(props: NavBarProps) {
@@ -43,14 +45,26 @@ export function NavBar(props: NavBarProps) {
                         <NavDropdown title={"Depths: " + props.depths.toUpperCase()}
                                      id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() => {
-                                props.updater(DepthUnit.meters);
+                                props.depthsUpdater(DepthUnit.meters);
                             }}>Meters</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => {
-                                props.updater(DepthUnit.fathoms);
+                                props.depthsUpdater(DepthUnit.fathoms);
                             }}>Fathoms & Feet</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => {
-                                props.updater(DepthUnit.feet);
+                                props.depthsUpdater(DepthUnit.feet);
                             }}>Feet</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title={"Theme: " + props.theme.toUpperCase()}
+                                     id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() => {
+                                props.themeUpdater(Theme.day);
+                            }}>Day</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => {
+                                props.themeUpdater(Theme.dusk);
+                            }}>Dusk</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => {
+                                props.themeUpdater(Theme.night);
+                            }}>Night</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     {admin && <Button

@@ -9,7 +9,12 @@ class Coalne : Layerable() {
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            lineLayerWithColor(width = 1f, style = LineStyle.CustomDash(5f, 5f))
+            lineLayerWithColor(
+                theme = options.theme,
+                color = Color.CSTLN,
+                width = 1f,
+                style = LineStyle.CustomDash(5f, 5f),
+            )
         )
     }
 }

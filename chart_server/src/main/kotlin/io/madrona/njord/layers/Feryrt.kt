@@ -20,6 +20,7 @@ class Feryrt : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(
+            theme = options.theme,
             color = lineColor,
             style = LineStyle.CustomDash(6f, 2f)
         ),

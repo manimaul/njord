@@ -18,7 +18,7 @@ class Damcon : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        lineLayerWithColor(Color.CSTLN),
-        areaLayerWithFillColor(Color.LANDF)
+        lineLayerWithColor(theme = options.theme, color = Color.CSTLN),
+        areaLayerWithFillColor(theme = options.theme, color = Color.LANDF)
     )
 }

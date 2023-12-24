@@ -15,7 +15,7 @@ import io.madrona.njord.model.ChartFeature
  */
 class Convyr : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(color = Color.CHGRD, width = 0.5f),
+        lineLayerWithColor(theme = options.theme, color = Color.CHGRD, width = 0.5f),
         lineLayerWithPattern(),
     )
 

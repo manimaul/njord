@@ -24,8 +24,8 @@ class Cranes : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
-        areaLayerWithFillColor(areaColor),
+        areaLayerWithFillColor(theme = options.theme, color = areaColor),
         areaLayerWithPointSymbol(),
-        lineLayerWithColor(color = lineColor)
+        lineLayerWithColor(theme = options.theme, color = lineColor)
     )
 }

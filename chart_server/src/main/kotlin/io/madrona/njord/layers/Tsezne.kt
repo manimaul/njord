@@ -21,7 +21,7 @@ class Tsezne : Layerable() {
             sourceLayer = key,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = colorFrom("TRFCF")
+                fillColor = colorFrom(Color.TRFCF, options.theme)
             ),
         ),
     )

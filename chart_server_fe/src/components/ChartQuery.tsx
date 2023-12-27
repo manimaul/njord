@@ -140,6 +140,7 @@ export default function ChartQuery(props: Query) {
     let imageSymbol = qs?.properties?.["SY"]
     let areaColor = qs?.properties?.["AC"]
     let lineColor = qs?.properties?.["LC"]
+    let linePattern = qs?.properties?.["LP"]
     let areaPattern = qs?.properties?.["AP"]
 
     if (qs) {
@@ -169,6 +170,11 @@ export default function ChartQuery(props: Query) {
                             <pre>
                                 <strong>Line Color: </strong><span>LC {lineColor} </span><SvgCircle color={qs.colors.get(lineColor)} />
                             </pre>
+                        </>}
+                        {linePattern && <>
+                            <p>
+                                <strong>Line pattern: </strong>LP {linePattern} <img src={`/v1/icon/${linePattern}.png`} alt={linePattern}/>
+                            </p>
                         </>}
                         <ChartProps qs={qs}/>
                     </Accordion.Body>

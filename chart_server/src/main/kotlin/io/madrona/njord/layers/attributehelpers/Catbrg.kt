@@ -1,7 +1,5 @@
 package io.madrona.njord.layers.attributehelpers
 
-import io.madrona.njord.geo.symbols.S57Prop
-import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.intValues
 import io.madrona.njord.model.ChartFeature
 

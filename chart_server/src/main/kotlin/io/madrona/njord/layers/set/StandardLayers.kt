@@ -212,9 +212,9 @@ class StandardLayers {
         Litflt(),
         Litves(),
         Lights(),
+        Prdare(),
 
         //todo: below layers need completion
-        Prdare(),
         Radlne(),
         Radrng(),
         Radrfl(),

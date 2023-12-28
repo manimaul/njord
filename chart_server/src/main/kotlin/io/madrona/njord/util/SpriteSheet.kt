@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.IconInfo
 import io.madrona.njord.Singletons
-import io.madrona.njord.endpoints.IconHandler
+import io.madrona.njord.layers.Sprite
 import io.madrona.njord.layers.Theme
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -25,15 +25,15 @@ class SpriteSheet(
         }
     }
 
-    private val spriteSheetJson: Map<Theme, Map<String, IconInfo>> by lazy {
+    val spritesByTheme: Map<Theme, Map<Sprite, IconInfo>> by lazy {
         Theme.values().associateWith { theme ->
             val sheet = resourceAsString("${resNameBase(theme)}.json")
-            objectMapper.readValue(sheet, object : TypeReference<Map<String, IconInfo>>() {})
+            objectMapper.readValue(sheet, object : TypeReference<Map<Sprite, IconInfo>>() {})
         }
     }
 
-    fun spriteImage(theme: Theme, name: String): ByteArray? {
-        return spriteSheetJson[theme]?.let { it[name] }?.let {
+    fun spriteImage(theme: Theme, name: Sprite): ByteArray? {
+        return spritesByTheme[theme]?.let { it[name] }?.let {
             val subImage = spriteSheetImage(theme).getSubimage(
                 it.x,
                 it.y,

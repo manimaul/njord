@@ -1,17 +1,17 @@
 package io.madrona.njord.layers
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 sealed interface Label {
     var label: Any?
 
-    class Text(text: String): Label{
-        override var label: Any? = text;
+    class Text(text: String) : Label {
+        override var label: Any? = text
     }
-    class Property(name: String): Label{
+
+    class Property(name: String) : Label {
         override var label: Any? = listOf("get", name);
     }
 }
+
 sealed interface LineStyle {
     var lineDashArray: List<Float>?
 
@@ -92,6 +92,10 @@ enum class Color {
     RES03,
     BKAJ1,
     BKAJ2,
+    MARBL,
+    MARCY,
+    MARMG,
+    MARWH,
 }
 
 enum class Sprite {
@@ -168,8 +172,8 @@ enum class Sprite {
     DNGHILIT,
     DOMES001,
     DOMES011,
-    DWRUTE51,
     DSHAER11,
+    DWRUTE51,
     EBBSTR01,
     ENTRES51,
     FLASTK01,
@@ -182,11 +186,11 @@ enum class Sprite {
     FORSTC11,
     FOULAR01P,
     FOULGND1,
+    FRYARE51,
     FSHFAC02,
     FSHFAC03,
     FSHGRD01,
     FSHHAV01,
-    FRYARE51,
     GATCON03,
     GATCON04,
     HILTOP01,
@@ -198,6 +202,8 @@ enum class Sprite {
     LIGHTS11,
     LIGHTS12,
     LIGHTS13,
+    LIGHTS81,
+    LIGHTS82,
     LITDEF11,
     LITFLT02,
     LITVES02,
@@ -232,18 +238,18 @@ enum class Sprite {
     RADRFL03,
     RASCAN01,
     RASCAN11,
-    RECDEF51,
-    RECTRC55,
-    RECTRC56,
-    RECTRC57,
-    RECTRC58,
-    RFNERY11,
     RCLDEF01,
     RCTLPT52,
     RDOCAL02,
     RDOCAL03,
     RDOSTA02,
+    RECDEF51,
+    RECTRC55,
+    RECTRC56,
+    RECTRC57,
+    RECTRC58,
     RETRFL02,
+    RFNERY11,
     ROLROL01,
     RSCSTA02,
     RTLDEF51,

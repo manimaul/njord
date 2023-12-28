@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.Color
-import io.madrona.njord.geo.symbols.Color.Companion.colors
+import io.madrona.njord.geo.symbols.Colour
+import io.madrona.njord.geo.symbols.Colour.Companion.colors
 import io.madrona.njord.model.ChartFeature
 
 /**
@@ -16,7 +16,7 @@ import io.madrona.njord.model.ChartFeature
 class Boysaw : Layerable() {
     override fun preTileEncode(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.BOYSAW12)
+            Colour.Red -> feature.pointSymbol(Sprite.BOYSAW12)
             else -> feature.pointSymbol(Sprite.BOYSPP11)
         }
     }

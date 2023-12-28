@@ -19,6 +19,7 @@ svg_t_dir = os.path.join(svg_dir, "tmp")
 sprites = os.path.join(base_dir, "simplified")
 sprites2x = os.path.join(base_dir, "simplified2x")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
+colors = os.path.join(base_dir, "../chart_server/src/main/resources/colors.json")
 
 
 @dataclass
@@ -166,7 +167,7 @@ def svg_to_png(filter: set, theme: str):
         if not each.endswith(".svg"):
             continue
         s = temp_svg(css, each, theme, svg_dir, svg_t_dir)
-        for d, dir in [(dpi, sprites_t), (dpi*2, sprites2x_t)]:
+        for d, dir in [(dpi, sprites_t), (dpi * 2, sprites2x_t)]:
             print("each: {}".format(each))
             if each in filter:
                 png = os.path.join(dir, each[:-3] + 'png')
@@ -194,7 +195,8 @@ class SvgCheck:
             if each.endswith('.svg'):
                 sum = md5_sum(os.path.join(self.svg, each))
                 png = each[:-4] + ".png"
-                pngs_exists = os.path.exists(os.path.join(sprites, png)) and os.path.exists(os.path.join(sprites2x, png))
+                pngs_exists = os.path.exists(os.path.join(sprites, png)) and os.path.exists(
+                    os.path.join(sprites2x, png))
                 if each not in self.all.keys() or sum != self.all[each] or not pngs_exists:
                     self.new.add(each)
                 self.all[each] = sum
@@ -207,11 +209,40 @@ class SvgCheck:
             fp.write(json.dumps(self.all, indent=4))
 
 
+css_template = """svg {{
+    background-color: {bgcol};
+    color: {col};
+}}
+.layout {{display:none}}  /* used to control visibility of symbolBox, svgBox, pivotPoint (none or inline) */
+.symbolBox {{stroke:black;stroke-width:0.32;}}  /* show the cover of the symbol graphics */
+.svgBox {{stroke:blue;stroke-width:0.32;}}  /* show the entire SVG cover */
+.pivotPoint {{stroke:red;stroke-width:0.64;}}  /* show the pivot/anchor point, 0,0 */
+.sl {{stroke-linecap:round;stroke-linejoin:round}} /* default line style elements */
+.f0 {{fill:none}}  /* no fill */
+"""
+
+
+def write_css(theme: str):
+    with open(colors, "r") as fp:
+        c: dict = json.load(fp)['library'][theme.upper()]
+    with open(os.path.join(svg_dir, "{}SvgStyle.css".format(theme)), "w+") as fp:
+        header = css_template.format(bgcol=c['NODTA'], col=c['CURSR'])
+        fp.write(header)
+        codes = list(c.keys())
+        codes.sort()
+        for ea in codes:
+            lines = list()
+            lines.append(".s{code} {{stroke:{col}}}\n".format(code=ea, col=c[ea]))
+            lines.append(".f{code} {{fill:{col}}}\n".format(code=ea, col=c[ea]))
+            fp.writelines(lines)
+        fp.close()
+
+
 if __name__ == '__main__':
     check = SvgCheck()
     parser = argparse.ArgumentParser(
-                    prog='create_sheet',
-                    description='Create sprite sheet optionally generating PNGs from SVGs')
+        prog='create_sheet',
+        description='Create sprite sheet optionally generating PNGs from SVGs')
     # parser.add_argument("-svg", "--svg", help="process SVGs into PNGs", default=False, type=bool)
     parser.add_argument("--svg", help="process SVGs into PNGs", action='store_true')
     parser.add_argument("--svg_unused", help="process unused SVGs into PNGs", action='store_true')
@@ -223,6 +254,8 @@ if __name__ == '__main__':
         theme = "dusk"
     if args.theme == "night":
         theme = "night"
+
+    write_css(theme)
 
     if args.svg_unused:
         svg_unused_to_png(theme)
@@ -239,4 +272,3 @@ if __name__ == '__main__':
 
     save_sprite_sheet(False, theme)
     save_sprite_sheet(True, theme)
-

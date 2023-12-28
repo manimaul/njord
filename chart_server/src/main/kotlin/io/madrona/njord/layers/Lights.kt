@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.Color
-import io.madrona.njord.geo.symbols.Color.Companion.colors
+import io.madrona.njord.geo.symbols.Colour
+import io.madrona.njord.geo.symbols.Colour.Companion.colors
 import io.madrona.njord.model.*
 
 /**
@@ -17,13 +17,13 @@ class Lights : Layerable() {
 
     override fun preTileEncode(feature: ChartFeature) {
         when(feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.LIGHTS11)
-            Color.Green -> feature.pointSymbol(Sprite.LIGHTS12)
-            Color.Yellow -> feature.pointSymbol(Sprite.LIGHTS13)
-            Color.White,
-            Color.Amber,
-            Color.Orange,
-            Color.Magenta -> feature.pointSymbol(Sprite.LITDEF11)
+            Colour.Red -> feature.pointSymbol(Sprite.LIGHTS11)
+            Colour.Green -> feature.pointSymbol(Sprite.LIGHTS12)
+            Colour.Yellow -> feature.pointSymbol(Sprite.LIGHTS13)
+            Colour.White,
+            Colour.Amber,
+            Colour.Orange,
+            Colour.Magenta -> feature.pointSymbol(Sprite.LITDEF11)
             else -> feature.pointSymbol(Sprite.LITDEF11)
         }
     }

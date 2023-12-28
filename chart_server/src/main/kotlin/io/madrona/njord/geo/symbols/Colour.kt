@@ -19,7 +19,7 @@ import io.madrona.njord.model.ChartFeature
  * 12	magenta
  * 13	pink
  */
-enum class Color {
+enum class Colour {
     White,
     Black,
     Red,
@@ -35,7 +35,7 @@ enum class Color {
     Pink;
 
     companion object {
-        fun ChartFeature.colors(): List<Color> {
+        fun ChartFeature.colors(): List<Colour> {
             return props.intValues("COLOUR").mapNotNull {
                 when (it) {
                     1 -> White

@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.Color
-import io.madrona.njord.geo.symbols.Color.Companion.colors
+import io.madrona.njord.geo.symbols.Colour
+import io.madrona.njord.geo.symbols.Colour.Companion.colors
 import io.madrona.njord.layers.attributehelpers.Boyshp
 import io.madrona.njord.layers.attributehelpers.Boyshp.Companion.boyshp
 import io.madrona.njord.layers.attributehelpers.Catlam
@@ -20,32 +20,32 @@ import io.madrona.njord.model.*
 open class Boylat : Layerable() {
     fun halfTriangle(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.BOYLAT14)
-            Color.Green -> feature.pointSymbol(Sprite.BOYLAT13)
+            Colour.Red -> feature.pointSymbol(Sprite.BOYLAT14)
+            Colour.Green -> feature.pointSymbol(Sprite.BOYLAT13)
             else -> feature.pointSymbol(Sprite.BOYSPP15)
         }
     }
 
     fun rhomboid(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.BOYLAT24)
-            Color.Green -> feature.pointSymbol(Sprite.BOYLAT23)
+            Colour.Red -> feature.pointSymbol(Sprite.BOYLAT24)
+            Colour.Green -> feature.pointSymbol(Sprite.BOYLAT23)
             else -> feature.pointSymbol(Sprite.BOYSPP25)
         }
     }
 
     fun circle(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.BOYSAW12)
+            Colour.Red -> feature.pointSymbol(Sprite.BOYSAW12)
             else -> feature.pointSymbol(Sprite.BOYSPP11)
         }
     }
 
     fun stake(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
-            Color.Red -> feature.pointSymbol(Sprite.BCNLAT21) //red tall beacon
-            Color.Green -> feature.pointSymbol(Sprite.BCNLAT22) //green tall beacon
-            Color.Black -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
+            Colour.Red -> feature.pointSymbol(Sprite.BCNLAT21) //red tall beacon
+            Colour.Green -> feature.pointSymbol(Sprite.BCNLAT22) //green tall beacon
+            Colour.Black -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
             else  -> feature.pointSymbol(Sprite.BCNSPP21) //yellow tall beacon
         }
     }

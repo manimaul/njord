@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
-import io.madrona.njord.geo.symbols.Color
-import io.madrona.njord.geo.symbols.Color.Companion.colors
+import io.madrona.njord.geo.symbols.Colour
+import io.madrona.njord.geo.symbols.Colour.Companion.colors
 import io.madrona.njord.layers.attributehelpers.Bcnshp
 import io.madrona.njord.layers.attributehelpers.Bcnshp.Companion.bcnshp
 import io.madrona.njord.model.ChartFeature
@@ -22,9 +22,9 @@ open class Bcnlat : Layerable() {
             Bcnshp.STAKE_POLE_PERCH_POST,
             Bcnshp.WHITY -> {
                 when (feature.colors().firstOrNull()) {
-                    Color.Red -> feature.pointSymbol(Sprite.BCNLAT21) //red tall beacon
-                    Color.Green -> feature.pointSymbol(Sprite.BCNLAT22) //green tall beacon
-                    Color.Black -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
+                    Colour.Red -> feature.pointSymbol(Sprite.BCNLAT21) //red tall beacon
+                    Colour.Green -> feature.pointSymbol(Sprite.BCNLAT22) //green tall beacon
+                    Colour.Black -> feature.pointSymbol(Sprite.BCNSAW21) //black tall beacon
                     else  -> feature.pointSymbol(Sprite.BCNSPP21) //yellow tall beacon
                 }
             }
@@ -32,9 +32,9 @@ open class Bcnlat : Layerable() {
             Bcnshp.LATTICE_BEACON,
             Bcnshp.PILE_BEACON -> {
                 when (feature.colors().firstOrNull()) {
-                    Color.Red -> feature.pointSymbol(Sprite.BCNLAT15) //red short beacon
-                    Color.Green -> feature.pointSymbol(Sprite.BCNLAT16) //green short beacon
-                    Color.Black -> feature.pointSymbol(Sprite.BCNSAW13) //black short beacon
+                    Colour.Red -> feature.pointSymbol(Sprite.BCNLAT15) //red short beacon
+                    Colour.Green -> feature.pointSymbol(Sprite.BCNLAT16) //green short beacon
+                    Colour.Black -> feature.pointSymbol(Sprite.BCNSAW13) //black short beacon
                     else -> feature.pointSymbol(Sprite.BCNSPP13) //yellow short beacon
                 }
             }

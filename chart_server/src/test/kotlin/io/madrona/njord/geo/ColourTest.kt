@@ -4,7 +4,7 @@ import io.madrona.njord.layers.Color
 import io.madrona.njord.layers.Theme
 import kotlin.test.*
 
-class ColorTest {
+class ColourTest {
 
     @Test
     fun testColors() {

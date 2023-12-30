@@ -4,6 +4,15 @@ import io.madrona.njord.layers.attributehelpers.Trafic
 import io.madrona.njord.model.*
 import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
 
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Two-way route part
+ *
+ * Acronym: TWRTPT
+ *
+ * Code: 152
+ */
 class Twrtpt : Layerable() {
     private val lineColor = Color.TRFCF
     override fun preTileEncode(feature: ChartFeature) {
@@ -19,7 +28,6 @@ class Twrtpt : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(),
         lineLayerWithColor(
             theme = options.theme,
             color = lineColor,

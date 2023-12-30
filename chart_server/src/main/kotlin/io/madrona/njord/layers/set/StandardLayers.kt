@@ -170,6 +170,7 @@ class StandardLayers {
         Pipare(),
         Istzne(),
         Rectrc(),
+        Rctlpt(),
         Navlne(),
         Prcare(),
 
@@ -221,7 +222,6 @@ class StandardLayers {
         Rtpbcn(),
         Rdocal(),
         Rcrtcl(),
-        Rctlpt(),
         Retrfl(),
         Rivers(),
         Sndwav(),

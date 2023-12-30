@@ -27,6 +27,8 @@ class Daymar : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol()
+        pointLayerFromSymbol(
+            iconOffset = listOf(0f, -18f)
+        )
     )
 }

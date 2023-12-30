@@ -17,9 +17,12 @@ class SpriteSheetTest {
         ThemeMode.values().forEach {
             val sprites = spriteSheet[it]
             assertNotNull(sprites)
-            assertEquals(spriteKeys, sprites.keys)
+            assertEquals(spriteKeys, sprites.keys, "theme, ${it.name} ${spriteKeys diff sprites.keys}")
         }
     }
+
+    private infix fun <T> Set<T>.diff(that: Set<T>): Set<T> = (this - that) + (that - this)
+
 
     @Test
     fun spriteImage() {

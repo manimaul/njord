@@ -17,6 +17,9 @@ import java.util.Collections
  * Code: 125
  */
 class Siltnk : Layerable() {
+    private val ac = Color.CHBRN
+    private val lineColors = setOf(Color.CHBLK, Color.LANDF)
+
     override fun preTileEncode(feature: ChartFeature) {
         val convis = feature.convis()
         when (feature.catsil()) {
@@ -55,44 +58,20 @@ class Siltnk : Layerable() {
             null -> feature.pointSymbol(Sprite.SILBUI01)
         }
         when (convis) {
-            Convis.VISUAL_CONSPICUOUS -> feature.areaColor(Color.LANDF)
+            Convis.VISUAL_CONSPICUOUS -> feature.lineColor(Color.CHBLK)
             Convis.NOT_VISUAL_CONSPICUOUS,
-            null -> Unit
+            null -> feature.lineColor(Color.LANDF)
         }
+        feature.areaColor(ac)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_fill",
-            type = LayerType.FILL,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                fillColor = Filters.areaFillColor(options = Collections.singleton(Color.LANDF), theme = options.theme)
-            ),
-        ),
-        Layer(
-            id = "${key}_line",
-            type = LayerType.LINE,
-            sourceLayer = key,
-            filter = Filters.eqTypeLineStringOrPolygon,
-            paint = Paint(
-                lineColor = colorFrom(Color.CHBLK, options.theme),
-                lineWidth = 2f,
-            ),
-        ),
-        Layer(
-            id = "${key}_point",
-            type = LayerType.SYMBOL,
-            sourceLayer = key,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
-            layout = Layout(
-                symbolPlacement = Placement.POINT,
-                iconImage = listOf("get", "SY"),
-                iconAnchor = Anchor.BOTTOM,
-                iconAllowOverlap = true,
-                iconKeepUpright = false,
-            )
+        areaLayerWithFillColor(ac, options.theme),
+        lineLayerWithColor(lineColors, options.theme),
+        pointLayerFromSymbol(
+            anchor = Anchor.BOTTOM,
+            iconAllowOverlap = true,
+            iconKeepUpright = false,
         ),
     )
 }

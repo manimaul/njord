@@ -12,17 +12,12 @@ import io.madrona.njord.model.*
  * Code: 150
  */
 class Tsezne : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) { }
+    private val ac = Color.TRFCF
+    override fun preTileEncode(feature: ChartFeature) {
+        feature.areaColor(ac)
+    }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        Layer(
-            id = "${key}_fill",
-            type = LayerType.FILL,
-            sourceLayer = key,
-            filter = Filters.eqTypePolyGon,
-            paint = Paint(
-                fillColor = colorFrom(Color.TRFCF, options.theme)
-            ),
-        ),
+        areaLayerWithFillColor(ac, options.theme),
     )
 }

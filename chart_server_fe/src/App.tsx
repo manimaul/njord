@@ -64,15 +64,21 @@ function App() {
         window.localStorage.setItem("theme", t);
         console.log(`stored theme= ${t}`)
     }
+    const [custom, setCustom] = useState(window.localStorage.getItem("custom"));
+    const customUpdater = (c: string) => {
+        setCustom(c)
+        window.localStorage.setItem("custom", c);
+        console.log(`stored custom= ${c}`)
+    }
 
     return (
         <div className="App Column">
-            <NavBar theme={theme} depths={depths} depthsUpdater={depthUpdater} themeUpdater={themeUpdater}/>
+            <NavBar theme={theme} depths={depths} custom={custom} depthsUpdater={depthUpdater} themeUpdater={themeUpdater} customUpdater={customUpdater}/>
             <div className="Wrap Warning bg-danger text-white">EXPERIMENTAL! - NOT FOR NAVIGATION</div>
             <Routes>
                 <Route path="/" element={<Outlet/>}>
                     <Route index element={<HomeAbout/>}/>
-                    <Route path="enc" element={<Enc depths={depths} theme={theme}/>}/>
+                    <Route path="enc" element={<Enc depths={depths} theme={theme} custom={custom}/>}/>
                     <Route path="chart/:id" element={<ChartInfo/>}/>
                     <Route path="layer/:layer" element={<LayerLocate/>}/>
                     <Route path="control/:page" element={<ControlPanel/>}>

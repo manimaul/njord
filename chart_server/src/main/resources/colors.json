@@ -207,5 +207,29 @@
       "MARMG": "#3F1333",
       "MARWH": "#202522"
     }
+  },
+  "custom": {
+    "sweden": {
+      "DAY": {
+        "NODTA": "#d0d8d9",
+        "CHBRN": "#d7bb72",
+        "LITRD": "#fa5050",
+        "LANDA": "#faf1a3",
+        "LANDF": "#d7bb72",
+        "DEPDW": "#fafafa",
+        "DEPMD": "#ebf3ff",
+        "DEPMS": "#c7e1ff",
+        "DEPVS": "#9ec6fd"
+      }
+    },
+    "shom": {
+      "DAY": {
+        "LANDA": "#ffe0b7",
+        "NODTA": "#e1e0de",
+        "DEPDW": "#fff9f5",
+        "LANDF": "#ffc87d",
+        "CHBRN": "#e2c09c"
+      }
+    }
   }
 }

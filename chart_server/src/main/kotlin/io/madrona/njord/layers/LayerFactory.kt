@@ -6,6 +6,7 @@ import io.madrona.njord.layers.set.ExtraLayers
 import io.madrona.njord.layers.set.InlandLayers
 import io.madrona.njord.layers.set.StandardLayers
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
 
@@ -14,6 +15,7 @@ class LayerFactory(
     private val inlandLayers: InlandLayers = InlandLayers(),
     private val extraLayers: ExtraLayers = ExtraLayers(),
     private val config: ChartsConfig = Singletons.config,
+    private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
 ) {
 
     private val layerables by lazy {
@@ -27,11 +29,19 @@ class LayerFactory(
     }
 
     private val layers: Map<LayerableOptions, Sequence<Layer>> by lazy {
-        Depth.values().map { depth ->
-            Theme.values().map { theme ->
+        val optionList = Depth.values().map { depth ->
+            ThemeMode.values().map { theme ->
                 LayerableOptions(depth, theme)
             }
-        }.flatten().associateWith { options ->
+        }.flatten() + colorLibrary.colorMap.custom.keys.map { name ->
+            Depth.values().map { depth ->
+                ThemeMode.values().map { themeMode ->
+                    LayerableOptions(depth, CustomTheme(themeMode, name))
+                }
+            }.flatten()
+        }.flatten()
+
+        optionList.associateWith { options ->
             layerables.map {
                 it.layers(options)
             }.flatten()

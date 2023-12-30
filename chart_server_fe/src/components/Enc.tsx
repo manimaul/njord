@@ -40,7 +40,8 @@ export function setDestination(bounds: Bounds) {
 
 type EncProps = {
     depths: DepthUnit,
-    theme: Theme
+    theme: Theme,
+    custom: string | null,
 }
 
 export function Enc(props: EncProps) {
@@ -56,7 +57,7 @@ export function Enc(props: EncProps) {
     useEffect(() => {
         let cMap: Map | null = map.current
         if (cMap) {
-            let url = `/v1/style/${props.depths}/${props.theme}`
+            let url = `/v1/style/${props.depths}/${props.theme}?c=${props.custom}`
             console.log(`loading style url ${url}`)
             cMap?.setStyle(url)
             return; //stops map from intializing more than once
@@ -65,7 +66,7 @@ export function Enc(props: EncProps) {
         let encState = new EncState();
         let newMap = new maplibregl.Map({
             container: mapContainer.current,
-            style: `/v1/style/${props.depths}/${props.theme}`,
+            style: `/v1/style/${props.depths}/${props.theme}?c=${props.custom}`,
             center: [encState.lng, encState.lat],
             zoom: encState.zoom
         });

@@ -23,8 +23,10 @@ function NavLink(props: NavLinkProps) {
 type NavBarProps = {
     theme: Theme,
     depths: DepthUnit,
+    custom: string | null,
     depthsUpdater: (depths: DepthUnit) => void,
     themeUpdater: (theme: Theme) => void,
+    customUpdater: (custom: string) => void,
 }
 
 export function NavBar(props: NavBarProps) {
@@ -65,6 +67,18 @@ export function NavBar(props: NavBarProps) {
                             <NavDropdown.Item onClick={() => {
                                 props.themeUpdater(Theme.night);
                             }}>Night</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title={"Colors: " + (props.custom?.toUpperCase() ?? "DEFAULT")}
+                                     id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() => {
+                                props.customUpdater("default");
+                            }}>Default</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => {
+                                props.customUpdater("shom");
+                            }}>SHOM</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => {
+                                props.customUpdater("sweden");
+                            }}>Sweden</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     {admin && <Button

@@ -7,24 +7,26 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
-import io.madrona.njord.layers.LayerFactory
-import io.madrona.njord.layers.LayerableOptions
-import io.madrona.njord.layers.Theme
-import io.madrona.njord.model.Depth
-import io.madrona.njord.model.Source
-import io.madrona.njord.model.SourceType
-import io.madrona.njord.model.Style
+import io.madrona.njord.layers.*
+import io.madrona.njord.model.*
+import kotlin.math.sin
 
 class StyleHandler(
     private val config: ChartsConfig = Singletons.config,
-    private val layerFactory: LayerFactory = Singletons.layerFactory
+    private val layerFactory: LayerFactory = Singletons.layerFactory,
+    private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
 ) : KtorHandler {
     override val route = "/v1/style/{depth}/{theme}"
 
     override suspend fun handleGet(call: ApplicationCall) {
         fromString<Depth>(call.parameters["depth"])?.let { depth ->
-            fromString<Theme>(call.parameters["theme"])?.let { theme ->
-                val name = "${theme.name.lowercase()}_simplified"
+            fromString<ThemeMode>(call.parameters["theme"])?.let { themeMode ->
+                val theme = call.request.queryParameters["c"]?.takeIf {
+                    colorLibrary.hasCustom(it)
+                }?.let {
+                   CustomTheme(themeMode, it)
+                } ?: themeMode
+                val name = "${themeMode.name.lowercase()}_simplified"
                 call.respond(
                     Style(
                         name = name,

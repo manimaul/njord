@@ -269,11 +269,18 @@ abstract class Layerable(
     }
 }
 
-enum class Theme {
+enum class ThemeMode: Theme {
     @JsonProperty("DAY") Day,
     @JsonProperty("DUSK") Dusk,
     @JsonProperty("NIGHT") Night;
 }
+
+data class CustomTheme(
+    val mode: ThemeMode,
+    val name: String
+) : Theme
+
+sealed interface Theme
 
 data class LayerableOptions(
     val depth: Depth,

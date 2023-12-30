@@ -44,17 +44,17 @@ object Filters {
     val eqTypePoint = listOf(eq, "\$type", "Point")
 
     fun areaFillColor(options: Set<Color>? = null, theme: Theme) =
-        listOf("case") + Singletons.colorLibrary.colorMap.library[theme]!!.filter {
-            options?.contains(it.key) ?: true
+        listOf("case") + Singletons.colorLibrary.colors(theme).filter {
+            options?.contains(it.color) ?: true
         }.map {
-            listOf(listOf("==", listOf("get", "AC"), it.key), it.value)
+            listOf(listOf("==", listOf("get", "AC"), it.color), it.hex)
         }.flatten() + listOf("rgba(255, 255, 255, 0)")
 
     fun lineColor(options: Set<Color>? = null, theme: Theme) =
-        listOf("case") + Singletons.colorLibrary.colorMap.library[theme]!!.filter {
-            options?.contains(it.key) ?: true
+        listOf("case") + Singletons.colorLibrary.colors(theme).filter {
+            options?.contains(it.color) ?: true
         }.map {
-            listOf(listOf("==", listOf("get", "LC"), it.key), it.value)
+            listOf(listOf("==", listOf("get", "LC"), it.color), it.hex)
         }.flatten() + listOf("rgba(255, 255, 255, 0)")
 }
 

@@ -17,7 +17,7 @@ import io.madrona.njord.model.ChartFeature
  */
 open class Bcnlat : Layerable() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.bcnshp()) {
             Bcnshp.STAKE_POLE_PERCH_POST,
             Bcnshp.WHITY -> {

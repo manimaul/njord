@@ -13,7 +13,7 @@ import io.madrona.njord.model.*
  */
 class Cblare : Layerable() {
     private val lineColor = Color.CHMGD
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CBLARE51)
         feature.lineColor(lineColor)
     }

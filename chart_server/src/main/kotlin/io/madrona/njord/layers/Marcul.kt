@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Marcul : Layerable() {
     private val lineColor = Color.CHGRD
     private val symbol = Sprite.MARCUL02
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
         feature.areaPattern(symbol)
     }

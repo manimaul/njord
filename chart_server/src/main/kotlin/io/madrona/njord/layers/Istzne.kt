@@ -13,7 +13,7 @@ import io.madrona.njord.model.*
  */
 class Istzne : Layerable() {
     private val lineColor = Color.TRFCD
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
     }
 

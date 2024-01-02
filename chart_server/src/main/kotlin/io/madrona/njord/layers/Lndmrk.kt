@@ -19,7 +19,7 @@ import io.madrona.njord.model.*
  */
 class Lndmrk : Layerable() {
     private val lineColors = setOf(Color.LANDF, Color.CHBLK)
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val functn = feature.functn()
         var viz = false
         when (feature.convis()) {

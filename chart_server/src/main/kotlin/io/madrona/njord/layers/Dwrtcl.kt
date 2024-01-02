@@ -14,7 +14,7 @@ import io.madrona.njord.model.ChartFeature
 class Dwrtcl : Layerable() {
     private val lineColor = Color.CHBLK
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
     }
 

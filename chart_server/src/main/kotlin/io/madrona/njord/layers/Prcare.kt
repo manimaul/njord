@@ -15,7 +15,7 @@ class Prcare : Layerable() {
 
     private val lineColor = Color.TRFCF
     private val symbol = Sprite.PRCARE12
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(symbol)
         feature.lineColor(lineColor)
     }

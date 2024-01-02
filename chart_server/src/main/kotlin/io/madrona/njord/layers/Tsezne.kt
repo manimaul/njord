@@ -13,7 +13,7 @@ import io.madrona.njord.model.*
  */
 class Tsezne : Layerable() {
     private val ac = Color.TRFCF
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(ac)
     }
 

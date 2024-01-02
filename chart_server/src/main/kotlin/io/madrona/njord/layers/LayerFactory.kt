@@ -52,7 +52,7 @@ class LayerFactory(
         "layers not available for options $options"
     )
 
-    fun preTileEncode(feature: ChartFeature) {
+    suspend fun preTileEncode(feature: ChartFeature) {
         layerables.forEach {
             if (feature.layer == it.key) {
                 it.preTileEncode(feature)

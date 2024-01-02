@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
  */
 class Morfac : Layerable() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val sprite = when (feature.catmor()) {
             Catmor.DOLPHIN -> Sprite.MORFAC03
             Catmor.DEVIATION_DOLPHIN -> Sprite.MORFAC04

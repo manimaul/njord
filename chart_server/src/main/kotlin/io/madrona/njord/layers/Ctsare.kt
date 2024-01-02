@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Ctsare : Layerable() {
     private val lineColor = Color.CHMGF
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CHINFO07)
         feature.lineColor(lineColor)
     }

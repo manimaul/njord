@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
  * Code: 39
  */
 class Daymar : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.topshp()) {
             Topshp.SQUARE,
             Topshp.RECTANGLE_HORIZONTAL,

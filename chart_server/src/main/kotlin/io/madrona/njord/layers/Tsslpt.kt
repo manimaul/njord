@@ -13,7 +13,7 @@ import io.madrona.njord.model.*
  * Code: 148
  */
 class Tsslpt : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.props.floatValue("ORIENT")?.let {
             feature.pointSymbol(Sprite.RCTLPT52)
         }

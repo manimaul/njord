@@ -6,7 +6,7 @@ import io.madrona.njord.model.*
 
 
 class Bridge : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val categories = feature.catbrg()
         categories.firstOrNull{
             it == Catbrg.OPENING_BRIDGE

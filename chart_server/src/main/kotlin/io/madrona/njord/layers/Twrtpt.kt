@@ -15,7 +15,7 @@ import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
  */
 class Twrtpt : Layerable() {
     private val lineColor = Color.TRFCF
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when(feature.trafic()) {
             Trafic.INBOUND,
             Trafic.OUTBOUND,

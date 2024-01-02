@@ -12,7 +12,7 @@ import io.madrona.njord.model.*
  * Code: 16
  */
 class Boyisd : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.BOYISD12)
     }
 

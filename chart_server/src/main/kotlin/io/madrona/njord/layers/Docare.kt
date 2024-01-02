@@ -15,7 +15,7 @@ class Docare : Layerable() {
     private val areaColor = Color.DEPVS
     private val lineColor = Color.CHGRD
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)
         feature.lineColor(lineColor)
     }

@@ -16,7 +16,7 @@ class Runway : Layerable() {
     private val areaColor = Color.CHBRN
     private val lineColor = Color.CHBLK
     private val symbol = Sprite.AIRARE02
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
         feature.areaColor(areaColor)
         feature.pointSymbol(symbol)

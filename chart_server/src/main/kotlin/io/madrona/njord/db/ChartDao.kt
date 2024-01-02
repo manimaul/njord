@@ -18,7 +18,7 @@ import java.sql.Statement
 class ChartDao(
     private val findInfoAsyncTimer: Timer = Singletons.metrics.timer("findInfoAsync"),
     private val findChartFeaturesAsyncTimer: Timer = Singletons.metrics.timer("findChartFeaturesAsync"),
-    private val featureDao: FeatureDao = FeatureDao(),
+    private val featureDao: FeatureDao = Singletons.featureDao,
 ) : Dao() {
 
     private fun ResultSet.chart(layers: List<String>, featureCount: Int) = generateSequence {

@@ -16,7 +16,7 @@ import io.madrona.njord.model.*
  * Code: 97
  */
 class Prdare : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val lineColor = when(feature.convis()) {
             Convis.VISUAL_CONSPICUOUS -> Color.CHBLK
             Convis.NOT_VISUAL_CONSPICUOUS,

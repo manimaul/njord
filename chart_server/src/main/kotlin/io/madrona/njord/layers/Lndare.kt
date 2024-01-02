@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 open class Lndare : Layerable() {
     open val areaColor = Color.LANDA
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.LNDARE01)
         feature.areaColor(areaColor)
     }

@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Litves : LayerableTodo() {
 
     private val symbol = Sprite.LITVES02
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(symbol)
     }
 

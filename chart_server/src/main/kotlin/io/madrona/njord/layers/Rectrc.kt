@@ -16,7 +16,7 @@ import io.madrona.njord.model.ChartFeature
  * Code: 109
  */
 class Rectrc : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.cattrk()) {
             Cattrk.BASED_ON_A_SYSTEM_OF_MARKS -> {
                 when (feature.trafic()) {

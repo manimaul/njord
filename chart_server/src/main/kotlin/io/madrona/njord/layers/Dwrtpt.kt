@@ -16,7 +16,7 @@ import io.madrona.njord.model.*
  */
 class Dwrtpt : Layerable() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.props.floatValue("ORIENT")?.let {
             when (feature.trafic()) {
                 Trafic.INBOUND,

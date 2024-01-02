@@ -30,7 +30,7 @@ class Obstrn : Soundg() {
         ) + textLayers
     }
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val state = ObstrnState(feature)
 
         var sySet = false

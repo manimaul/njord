@@ -66,7 +66,7 @@ open class Boylat : Layerable() {
         }
     }
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.catlam()) {
             Catlam.PORT_HAND_LATERAL_MARK -> rhomboid(feature)
             Catlam.STARBOARD_HAND_LATERAL_MARK -> halfTriangle(feature)

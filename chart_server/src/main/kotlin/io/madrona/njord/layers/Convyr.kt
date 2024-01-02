@@ -19,7 +19,7 @@ class Convyr : Layerable() {
         lineLayerWithPattern(),
     )
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.conrad()) {
             Conrad.RADAR_CONSPICUOUS,
             Conrad.RADAR_CONSPICUOUS_HAS_RADAR_REFLECTOR -> {

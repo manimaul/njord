@@ -36,7 +36,7 @@ open class Depare(
         )
     }
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         var ac = Color.CHBLK
         feature.props.floatValue("DRVAL1")?.let { shallowRange ->
             feature.props.floatValue("DRVAL2")?.let { deepRange ->

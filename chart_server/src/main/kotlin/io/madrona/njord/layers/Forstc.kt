@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
  */
 class Forstc : Layerable() {
     private val lineColors = setOf(Color.LANDF, Color.CHBLK)
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.convis()) {
             Convis.VISUAL_CONSPICUOUS -> {
                 feature.pointSymbol(Sprite.FORSTC11)

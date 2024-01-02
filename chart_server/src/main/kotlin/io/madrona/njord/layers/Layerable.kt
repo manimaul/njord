@@ -11,7 +11,7 @@ abstract class Layerable(
     abstract fun layers(options: LayerableOptions): Sequence<Layer>
     val key: String = customKey ?: javaClass.simpleName.uppercase()
 
-    open fun preTileEncode(feature: ChartFeature) {
+    open suspend fun preTileEncode(feature: ChartFeature) {
         log.warn("layer $key preTileEncode not handled")
     }
 
@@ -23,7 +23,7 @@ abstract class Layerable(
     fun pointLayerFromSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.BOTTOM,
-        iconOffset: List<Float>? = null,
+        iconOffset: List<Any>? = null,
         iconAllowOverlap: Boolean = true,
         iconKeepUpright: Boolean = false,
         iconRotate: Any? = null,
@@ -312,7 +312,7 @@ fun ChartFeature.lineColor(color: Color) {
 }
 
 abstract class LayerableTodo : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         log.warn("layer $key preTileEncode not handled")
         feature.pointSymbol(Sprite.QUESMRK1)
         feature.areaPattern(Sprite.QUESMRK1)

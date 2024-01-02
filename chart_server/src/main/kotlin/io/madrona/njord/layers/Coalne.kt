@@ -3,7 +3,7 @@ package io.madrona.njord.layers
 import io.madrona.njord.model.*
 
 class Coalne : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(Color.CSTLN)
     }
 

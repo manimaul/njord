@@ -1,11 +1,13 @@
 package io.madrona.njord.db
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.madrona.njord.layers.TopmarData
 import io.madrona.njord.model.FeatureRecord
 import io.madrona.njord.model.LayerQueryResult
 import org.locationtech.jts.io.WKTReader
 import java.sql.Connection
 import java.sql.ResultSet
+import kotlin.math.ln
 
 class FeatureDao : Dao() {
 
@@ -15,21 +17,43 @@ class FeatureDao : Dao() {
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE layer = ?; 
             """.trimIndent()
         ).apply { setString(1, layer) }.executeQuery().use {
-            generateSequence {
-                if (it.next()) {
-                    val wkt = it.getString(1)
-                    val coord = WKTReader().read(wkt).coordinate
+            val result = mutableListOf<LayerQueryResult>()
+            while (it.next()) {
+                val wkt = it.getString(1)
+                val coord = WKTReader().read(wkt).coordinate
+                val props: Map<String, Any?> = if (layer == "TOPMAR") {
+                    objectMapper.readValue<Map<String, Any?>>(it.getString(2)).toMutableMap().apply {
+                        val assoc = findAssociatedLayerNames(this["LNAM"].toString())
+                        TopmarData.fromAssoc(assoc).addTo(this)
+                    }
+                } else {
+                    objectMapper.readValue(it.getString(2))
+                }
+                result.add(
                     LayerQueryResult(
                         lat = coord.y,
                         lng = coord.x,
                         zoom = it.getFloat(4),
-                        props = objectMapper.readValue(it.getString(2)),
+                        props = props,
                         chartName = it.getString(3)
                     )
+                )
+            }
+            result
+        }
+    }
+
+    suspend fun findAssociatedLayerNames(lnam: String): List<String> = sqlOpAsync { conn ->
+        conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE (props->'LNAM_REFS')::jsonb ?? ?;").apply {
+            setString(1, lnam)
+        }.executeQuery().use {
+            generateSequence {
+                if (it.next()) {
+                    it.getString(1)
                 } else null
             }.toList()
         }
-    }
+    } ?: emptyList()
 
     /**
      * Find feature using its LNAM .

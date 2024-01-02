@@ -14,7 +14,7 @@ import io.madrona.njord.model.ChartFeature
  * Code: 19
  */
 class Boyspp : Boylat() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.catspm()) {
             Catspm.LANBY_LARGE_AUTOMATIC_NAVIGATIONAL_BUOY -> feature.pointSymbol(Sprite.BOYSUP02)
             Catspm.MARK_WITH_UNKNOWN_PURPOSE -> feature.pointSymbol(Sprite.BOYDEF03)

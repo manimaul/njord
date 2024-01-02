@@ -12,7 +12,7 @@ import io.madrona.njord.model.*
  * Code: 38
  */
 class Damcon : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CHINFO06)
     }
 

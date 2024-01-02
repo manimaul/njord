@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Achbrt(customKey: String? = null) : Layerable(customKey) {
     private val lineColor = Color.CHMGF
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
         feature.pointSymbol(Sprite.ACHBRT07)
     }

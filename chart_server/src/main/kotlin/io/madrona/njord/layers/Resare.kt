@@ -16,7 +16,7 @@ import io.madrona.njord.model.ChartFeature
 class Resare : Layerable() {
     private val lineColor = Color.CHMGD
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.restrn().also { restrictions ->
             restrictions.firstOrNull {
                 it == Restrn.ENTRY_RESTRICTED

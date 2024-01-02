@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
 class Ctnare : Layerable() {
     private val lineColor = Color.TRFCD
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CHINFO06)
 
     }

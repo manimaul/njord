@@ -22,7 +22,7 @@ class Pipare : Layerable() {
     private val lineColor = Color.CHMGD
     private val symbol = Sprite.CHINFO07
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val catpip = feature.catpip()
         val color = catpip.whenAny(
             { it == Catpip.OUTFALL_PIPE || it == Catpip.INTAKE_PIPE },

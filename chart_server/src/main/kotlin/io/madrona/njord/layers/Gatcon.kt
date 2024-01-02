@@ -17,7 +17,7 @@ class Gatcon : Layerable() {
     private val areaColor = Color.CHBRN
     private val lineColor = Color.CSTLN
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.catgat()?.let {
             when(it) {
                 Catgat.FLOOD_BARRAGE_GATE,

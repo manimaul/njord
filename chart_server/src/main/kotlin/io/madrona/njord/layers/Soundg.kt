@@ -30,7 +30,7 @@ open class Soundg(
 ) : Layerable() {
 
     private val textSize = 16f
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.props.doubleValue("METERS")?.let { meters ->
             feature.props.addSoundingConversions(meters)
         }

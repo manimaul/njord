@@ -16,7 +16,7 @@ import io.madrona.njord.model.*
 class Fnclne : Layerable() {
 
     private val lineColors = setOf(Color.CHBLK, Color.LANDF)
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.convis()) {
             Convis.VISUAL_CONSPICUOUS -> feature.lineColor(Color.CHBLK)
             Convis.NOT_VISUAL_CONSPICUOUS,

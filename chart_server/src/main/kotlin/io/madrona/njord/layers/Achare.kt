@@ -15,7 +15,7 @@ class Achare(
     customKey: String? = null
 ) : Layerable(customKey) {
     private val lineColor = Color.CHMGF
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.ACHARE02)
         feature.linePattern(Sprite.ACHARE02)
     }
@@ -38,7 +38,7 @@ class Achare(
 //    private val color = Color.CHMGF
 //    private val pattern = Sprite.ACHARE51
 //    private val symbol = Sprite.ACHARE02
-//    override fun preTileEncode(feature: ChartFeature) {
+//    override suspend fun preTileEncode(feature: ChartFeature) {
 //        feature.pointSymbol(symbol)
 //        feature.linePattern(pattern)
 //    }

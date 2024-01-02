@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Pilbop : Layerable() {
     private val lineColor = Color.TRFCF
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.PILBOP02)
         feature.lineColor(lineColor)
     }

@@ -15,7 +15,7 @@ class Flodoc : Layerable() {
     private val areaColor = Color.CHBRN
     private val lineColor = Color.CSTLN
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)
         feature.lineColor(lineColor)
     }

@@ -15,7 +15,7 @@ import io.madrona.njord.model.ChartFeature
  */
 class Bcnspp : Bcnlat() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.catspm()) {
             Catspm.NOTICE_MARK -> {
                 feature.pointSymbol(Sprite.NOTBRD11)

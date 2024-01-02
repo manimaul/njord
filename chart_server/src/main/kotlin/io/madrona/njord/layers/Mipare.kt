@@ -14,7 +14,7 @@ import io.madrona.njord.model.ChartFeature
 class Mipare : Layerable() {
     private val lineColor = Color.CHMGD
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CHINFO06)
         feature.lineColor(lineColor)
     }

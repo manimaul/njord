@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Wedklp : Layerable() {
     private val lineColor = Color.CHGRF
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.WEDKLP03)
         feature.lineColor(lineColor)
     }

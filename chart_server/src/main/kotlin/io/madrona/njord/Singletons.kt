@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.db.FeatureDao
 import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
@@ -25,6 +26,8 @@ object Singletons {
     val adminUtil by lazy { AdminUtil() }
 
     val chartDao by lazy { ChartDao() }
+
+    val featureDao by lazy { FeatureDao() }
 
     val objectMapper: JsonMapper by lazy {
         jsonMapper {

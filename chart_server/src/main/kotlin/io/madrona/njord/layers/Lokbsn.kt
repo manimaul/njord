@@ -15,7 +15,7 @@ open class Lokbsn(customKey: String? = null) : Layerable(customKey) {
     private val areaColor = Color.DEPVS
     private val lineColor = Color.CHBLK
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)
         feature.lineColor(lineColor)
     }

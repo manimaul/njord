@@ -15,7 +15,7 @@ class Ospare : Layerable() {
     private val symbol = Sprite.CTYARE51
     private val color = Color.CHMGD
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(symbol)
     }
 

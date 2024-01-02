@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Navlne : Layerable() {
 
     private val lineColor = Color.CHGRD
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
     }
 

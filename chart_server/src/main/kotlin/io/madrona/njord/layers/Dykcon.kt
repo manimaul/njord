@@ -15,7 +15,7 @@ class Dykcon : Layerable() {
     private val lineColor = Color.LANDF
     private val areaColor = Color.CHBRN
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(color = areaColor)
         feature.lineColor(color = lineColor)
     }

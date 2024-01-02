@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
  */
 class Lights : Layerable() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when(feature.colors().firstOrNull()) {
             Colour.Red -> feature.pointSymbol(Sprite.LIGHTS11)
             Colour.Green -> feature.pointSymbol(Sprite.LIGHTS12)

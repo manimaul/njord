@@ -14,7 +14,7 @@ import io.madrona.njord.model.ChartFeature
  * Code: 18
  */
 class Boysaw : Layerable() {
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.colors().firstOrNull()) {
             Colour.Red -> feature.pointSymbol(Sprite.BOYSAW12)
             else -> feature.pointSymbol(Sprite.BOYSPP11)

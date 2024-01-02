@@ -20,7 +20,7 @@ class Siltnk : Layerable() {
     private val ac = Color.CHBRN
     private val lineColors = setOf(Color.CHBLK, Color.LANDF)
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         val convis = feature.convis()
         when (feature.catsil()) {
             Catsil.SILO_IN_GENERAL -> {

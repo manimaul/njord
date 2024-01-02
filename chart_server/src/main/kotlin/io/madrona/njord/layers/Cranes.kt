@@ -16,7 +16,7 @@ class Cranes : Layerable() {
     private val lineColor = Color.CHBLK
     private val areaColor = Color.CHBRN
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.CRANES01)
         feature.lineColor(lineColor)
         feature.areaColor(areaColor)

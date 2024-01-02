@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Logpon : Layerable() {
     private val lineColor = Color.CHBLK
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.FLTHAZ02)
         feature.lineColor(lineColor)
     }

@@ -14,7 +14,7 @@ import io.madrona.njord.model.*
 class Litflt : Layerable() {
 
     private val symbol = Sprite.LITFLT02
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
        feature.pointSymbol(symbol)
     }
 

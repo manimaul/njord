@@ -15,7 +15,7 @@ import io.madrona.njord.model.ChartFeature
  */
 class Boycar : Bcnlat() {
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.catcam()) {
             Catcam.NORTH_CARDINAL_MARK -> feature.pointSymbol(Sprite.BOYCAR01)
             Catcam.EAST_CARDINAL_MARK -> feature.pointSymbol(Sprite.BOYCAR02)

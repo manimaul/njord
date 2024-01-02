@@ -20,7 +20,7 @@ class Causwy : Layerable() {
        Color.CHBRN, Color.DEPIT
     )
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         when (feature.watlev()) {
             Watlev.PARTLY_SUBMERGED_AT_HIGH_WATER,
             Watlev.ALWAYS_UNDER_WATER_SUBMERGED,

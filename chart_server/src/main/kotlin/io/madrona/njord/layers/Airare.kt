@@ -16,7 +16,7 @@ class Airare : Layerable() {
     private val lineColor = Color.LANDF
     private val symbol = Sprite.AIRARE02
 
-    override fun preTileEncode(feature: ChartFeature) {
+    override suspend fun preTileEncode(feature: ChartFeature) {
         feature.areaColor(areaColor)
         feature.lineColor(lineColor)
         feature.pointSymbol(symbol)

@@ -256,6 +256,8 @@ enum class Sprite {
     RTPBCN02,
     SILBUI01,
     SILBUI11,
+    SISTAT03,
+    SISTAW03,
     SMCFAC02,
     SNDWAV02,
     SPRING02,

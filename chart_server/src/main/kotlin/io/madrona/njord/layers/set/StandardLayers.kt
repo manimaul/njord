@@ -197,6 +197,8 @@ class StandardLayers {
         Pilpnt(),
         Obstrn(),
         Ospare(),
+        Sistat(),
+        Sistaw(),
 
         // buoys and markers
         Fogsig(),
@@ -212,6 +214,7 @@ class StandardLayers {
         Boysaw(),
         Boyspp(),
         Lndmrk(),
+        Topmar(),
 
         // lights
         Litflt(),
@@ -230,12 +233,9 @@ class StandardLayers {
         Sndwav(),
         Seaare(),
         Splare(),
-        Sistat(),
-        Sistaw(),
         Slogrd(),
         Subtln(),
         Swpare(),
-        Topmar(),
         Tsscrs(),
         Tssron(),
         Tunnel(),

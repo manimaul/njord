@@ -2,10 +2,21 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Sistaw : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Signal station, warning
+ *
+ * Acronym: SISTAW
+ *
+ * Code: 124
+ */
+class Sistaw : Layerable() {
+    override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.SISTAW03)
+    }
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+    )
 }

@@ -222,6 +222,10 @@ class StandardLayers {
         Lights(),
         Prdare(),
 
+        //labels
+        Soundg(),
+        Seaare(),
+
         //todo: below layers need completion
         Radlne(),
         Radrng(),
@@ -231,7 +235,6 @@ class StandardLayers {
         Rcrtcl(),
         Retrfl(),
         Sndwav(),
-        Seaare(),
         Splare(),
         Slogrd(),
         Subtln(),

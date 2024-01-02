@@ -159,7 +159,7 @@ abstract class Layerable(
     private var lineLayerWithTextId = 0
     fun lineLayerWithText(textKey: String, theme: Theme): Layer {
         return Layer(
-            id = "${key}_label${++lineLayerWithTextId}",
+            id = "${key}_line_label${++lineLayerWithTextId}",
             type = LayerType.SYMBOL,
             sourceLayer = key,
             filter = Filters.eqTypeLineString,
@@ -242,6 +242,8 @@ abstract class Layerable(
         )
     }
 
+
+    private var areaLayerWithPointSymbolId = 0
     fun areaLayerWithPointSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.CENTER,
@@ -251,7 +253,7 @@ abstract class Layerable(
         iconOffset: List<Float>? = null,
     ): Layer {
         return Layer(
-            id = "${key}_area_point",
+            id = "${key}_area_point${++areaLayerWithPointSymbolId}",
             type = LayerType.SYMBOL,
             sourceLayer = key,
             filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)),
@@ -264,6 +266,28 @@ abstract class Layerable(
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = false,
                 iconOffset = iconOffset,
+            )
+        )
+    }
+
+    private var areaLayerWithTextId = 0
+    fun areaLayerWithText(textKey: String, theme: Theme): Layer {
+        return Layer(
+            id = "${key}_area_label${++areaLayerWithTextId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = key,
+            filter = Filters.eqTypePointOrPolygon,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textJustify = Anchor.CENTER,
+                textField = listOf("get", textKey),
+                textSize = 14f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = colorFrom(Color.CHBLK, theme),
+                textHaloColor = colorFrom(Color.CHWHT, theme),
+                textHaloWidth = 2.5f
             )
         )
     }

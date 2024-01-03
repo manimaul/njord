@@ -178,6 +178,9 @@ class StandardLayers {
         Navlne(),
         Prcare(),
 
+        //low pri labels
+        Seaare(),
+
         // obstructions
         Hulkes(),
         Ponton(),
@@ -222,9 +225,8 @@ class StandardLayers {
         Lights(),
         Prdare(),
 
-        //labels
+        //high pri labels
         Soundg(),
-        Seaare(),
 
         //todo: below layers need completion
         Radlne(),

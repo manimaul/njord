@@ -11,6 +11,8 @@ abstract class Layerable(
     abstract fun layers(options: LayerableOptions): Sequence<Layer>
     val key: String = customKey ?: javaClass.simpleName.uppercase()
 
+    open val sourceLayer: String = key
+
     open suspend fun preTileEncode(feature: ChartFeature) {
         log.warn("layer $key preTileEncode not handled")
     }
@@ -32,7 +34,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_point_${++pointLayerFromSymbolId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = listOf(Filters.any, Filters.eqTypePoint),
             layout = Layout(
                 symbolPlacement = Placement.POINT,
@@ -58,7 +60,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_line_${++lineLayerWithColorId}",
             type = LayerType.LINE,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
                 lineColor = colorFrom(color, theme),
@@ -78,7 +80,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_line_${++lineLayerWithColorId}",
             type = LayerType.LINE,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
                 lineColor = Filters.lineColor(options = options, theme = theme),
@@ -98,7 +100,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_label_${++lineLayerWithLabelId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
@@ -120,7 +122,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_line_symbol_${++lineLayerWithPatternId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.LINE,
@@ -142,7 +144,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_line_symbol_${++lineLayerWithPattern2Id}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.LINE,
@@ -161,7 +163,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_line_label${++lineLayerWithTextId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineString,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
@@ -186,7 +188,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_fill_${++areaLayerWithFillColorId}",
             type = LayerType.FILL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
                 fillColor = Filters.areaFillColor(options = options, theme = theme)
@@ -201,7 +203,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_fill_${++areaLayerWithFillColorId}",
             type = LayerType.FILL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
                 fillColor = colorFrom(color, theme)
@@ -214,7 +216,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_fill_pattern_${++areaLayerWithFillColorId}",
             type = LayerType.FILL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
                 fillPattern = symbol?.name ?: listOf("get", "AP")
@@ -230,7 +232,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_area_symbol${++areaLayerWithSingleSymbolId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
@@ -255,7 +257,7 @@ abstract class Layerable(
         return Layer(
             id = "${key}_area_point${++areaLayerWithPointSymbolId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)),
             layout = Layout(
                 symbolPlacement = Placement.POINT,
@@ -271,11 +273,16 @@ abstract class Layerable(
     }
 
     private var areaLayerWithTextId = 0
-    fun areaLayerWithText(textKey: String, theme: Theme): Layer {
+    fun areaLayerWithText(
+       textKey: String,
+       theme: Theme,
+       textColor: Color = Color.CHBLK,
+       haloColor: Color = Color.CHWHT,
+    ): Layer {
         return Layer(
             id = "${key}_area_label${++areaLayerWithTextId}",
             type = LayerType.SYMBOL,
-            sourceLayer = key,
+            sourceLayer = sourceLayer,
             filter = Filters.eqTypePointOrPolygon,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
@@ -285,8 +292,8 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
             ),
             paint = Paint(
-                textColor = colorFrom(Color.CHBLK, theme),
-                textHaloColor = colorFrom(Color.CHWHT, theme),
+                textColor = colorFrom(textColor, theme),
+                textHaloColor = colorFrom(haloColor, theme),
                 textHaloWidth = 2.5f
             )
         )

@@ -8,7 +8,7 @@ class Ply : Layerable() {
                 Layer(
                         id = "${key}_line",
                         type = LayerType.LINE,
-                        sourceLayer = key,
+                        sourceLayer = sourceLayer,
                         filter = listOf(
                                 Filters.any,
                                 Filters.eqTypeLineString

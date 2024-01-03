@@ -12,12 +12,15 @@ import io.madrona.njord.model.*
  * Code: 119
  */
 class Seaare : Layerable() {
-//    override suspend fun preTileEncode(feature: ChartFeature) {
-//    }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            areaLayerWithText("OBJNAM", options.theme),
+            areaLayerWithText(
+                "OBJNAM",
+                theme = options.theme,
+                textColor = Color.SNDG2,
+                haloColor = Color.DEPDW
+            ),
         )
     }
 }

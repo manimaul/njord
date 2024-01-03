@@ -179,6 +179,7 @@ class StandardLayers {
         Prcare(),
 
         //low pri labels
+        LndareLabel(),
         Seaare(),
 
         // obstructions
@@ -229,6 +230,18 @@ class StandardLayers {
         Soundg(),
 
         //todo: below layers need completion
+        Fshfac(),
+        Dismar(),
+        Curent(),
+        Ctrpnt(),
+        Chkpnt(),
+        Cgusta(),
+        Buirel(),
+        Berths(),
+        Achpnt(),
+
+
+        // todo:
         Radlne(),
         Radrng(),
         Radrfl(),

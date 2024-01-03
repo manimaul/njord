@@ -26,7 +26,7 @@ class Depcnt : Layerable() {
                 Layer(
                         id = "depth_contour",
                         type = LayerType.LINE,
-                        sourceLayer = key,
+                        sourceLayer = sourceLayer,
                         filter = listOf(
                                 Filters.all,
                                 Filters.eqTypeLineString

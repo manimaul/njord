@@ -23,7 +23,7 @@ class Pilpnt : Layerable() {
             Layer(
                 id = "${key}_point",
                 type = LayerType.CIRCLE,
-                sourceLayer = key,
+                sourceLayer = sourceLayer,
                 filter = listOf(
                     Filters.any,
                     Filters.eqTypePoint,

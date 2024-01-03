@@ -7,7 +7,7 @@ class Dismar : Layerable() {
             Layer(
                     id = "${key}_point",
                     type = LayerType.SYMBOL,
-                    sourceLayer = key,
+                    sourceLayer = sourceLayer,
                     filter = listOf(Filters.any, Filters.eqTypePoint),
                     layout = Layout(
                             symbolPlacement = Placement.POINT,

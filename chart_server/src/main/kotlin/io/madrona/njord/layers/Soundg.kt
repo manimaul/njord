@@ -61,7 +61,7 @@ open class Soundg(
     private fun singleText(theme: Theme, id: String, textKey: String, subTextKey: String? = null) = Layer(
         id = id,
         type = LayerType.SYMBOL,
-        sourceLayer = key,
+        sourceLayer = sourceLayer,
         filter = subTextKey?.let {
             listOf(
                 Filters.all,
@@ -93,7 +93,7 @@ open class Soundg(
     private fun primaryTextLayer(theme: Theme, id: String, textKey: String, subTextKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
-        sourceLayer = key,
+        sourceLayer = sourceLayer,
         filter = listOf(
             Filters.all,
             Filters.eqTypePoint,
@@ -122,7 +122,7 @@ open class Soundg(
     private fun subTextLayer(theme: Theme, id: String, textKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
-        sourceLayer = key,
+        sourceLayer = sourceLayer,
         filter = listOf(
             Filters.all,
             Filters.eqTypePoint,

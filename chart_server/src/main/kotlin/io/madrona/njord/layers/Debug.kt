@@ -7,7 +7,7 @@ class Debug : Layerable() {
             Layer(
                     id = "debug-msg",
                     type = LayerType.SYMBOL,
-                    sourceLayer = key,
+                    sourceLayer = sourceLayer,
                     filter = listOf(
                             "any", Filters.eqTypePoint
                     ),
@@ -25,7 +25,7 @@ class Debug : Layerable() {
             Layer(
                     id = "debug-line",
                     type = LayerType.LINE,
-                    sourceLayer = key,
+                    sourceLayer = sourceLayer,
                     filter = listOf(
                             Filters.all,
                             Filters.eqTypeLineString

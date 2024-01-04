@@ -168,6 +168,7 @@ class StandardLayers {
         Fnclne(),
         Feryrt(),
         Fshgrd(),
+        Fshfac(),
         Marcul(),
         Forstc(),
         Dmpgrd(),
@@ -176,6 +177,7 @@ class StandardLayers {
         Rectrc(),
         Rctlpt(),
         Navlne(),
+        Dismar(),
         Prcare(),
 
         //low pri labels
@@ -230,8 +232,6 @@ class StandardLayers {
         Soundg(),
 
         //todo: below layers need completion
-        Fshfac(),
-        Dismar(),
         Curent(),
         Ctrpnt(),
         Chkpnt(),
@@ -239,7 +239,6 @@ class StandardLayers {
         Buirel(),
         Berths(),
         Achpnt(),
-
 
         // todo:
         Radlne(),

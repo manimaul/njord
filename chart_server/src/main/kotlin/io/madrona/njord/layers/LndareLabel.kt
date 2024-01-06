@@ -16,7 +16,11 @@ open class LndareLabel : Layerable() {
     override val sourceLayer: String = "LNDARE"
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            areaLayerWithText("OBJNAM", theme = options.theme, haloColor = Color.LANDA),
+            areaLayerWithText(
+                label = Label.Property("OBJNAM"),
+                theme = options.theme,
+                haloColor = Color.LANDA
+            ),
         )
     }
 }

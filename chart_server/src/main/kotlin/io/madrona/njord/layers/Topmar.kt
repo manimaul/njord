@@ -147,12 +147,12 @@ class Topmar(
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconOffset = listOf(
-                "case",
-                listOf("==", listOf("get", "_PTFM"), TopmarPlatform.RIGID.name),
-                listOf("literal", listOf(0f, 0f)), // RIGID
-                listOf("literal", listOf(0f, -8f)) // FLOATING
-            ),
+            iconOffset = Offset.EvalEq(
+                key = "_PTFM",
+                value = TopmarPlatform.RIGID.name,
+                eq = Offset.Coord(x = 0f, y = 0f), // RIGID
+                neq = Offset.Coord(x = 0f, y = -8f), // FLOATING
+            )
         ),
     )
 }

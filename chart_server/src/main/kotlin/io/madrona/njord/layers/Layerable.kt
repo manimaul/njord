@@ -3,6 +3,7 @@ package io.madrona.njord.layers
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
+import org.w3c.dom.Text
 
 abstract class Layerable(
     customKey: String? = null
@@ -25,7 +26,7 @@ abstract class Layerable(
     fun pointLayerFromSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.BOTTOM,
-        iconOffset: List<Any>? = null,
+        iconOffset: Offset? = null,
         iconAllowOverlap: Boolean = true,
         iconKeepUpright: Boolean = false,
         iconRotate: Any? = null,
@@ -40,11 +41,43 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol ?: listOf("get", "SY"),
                 iconAnchor = anchor,
-                iconOffset = iconOffset,
+                iconOffset = iconOffset?.property,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = iconKeepUpright,
                 iconRotate = iconRotate,
                 iconRotationAlignment = iconRotationAlignment,
+            )
+        )
+    }
+
+    private var pointLayerWithLabelId = 0
+    fun pointLayerWithLabel(
+        label: Label,
+        theme: Theme,
+        labelColor: Color = Color.SNDG2,
+        highlightColor: Color = Color.DEPDW,
+        textAnchor: Anchor? = null,
+        textJustify: TextJustify = TextJustify.CENTER,
+        textOffset: Offset? = null
+    ): Layer {
+        return Layer(
+            id = "${key}_label_${++lineLayerWithLabelId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = sourceLayer,
+            filter = Filters.eqTypePoint,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = textAnchor,
+                textJustify = textJustify,
+                textField = label.label,
+                textSize = 14f,
+                textOffset = textOffset?.property,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = colorFrom(labelColor, theme),
+                textHaloColor = colorFrom(highlightColor, theme),
+                textHaloWidth = 2.5f
             )
         )
     }
@@ -104,7 +137,7 @@ abstract class Layerable(
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
-                textJustify = Anchor.CENTER,
+                textJustify = TextJustify.CENTER,
                 textField = label.label,
                 textSize = 14f,
                 symbolPlacement = Placement.LINE,
@@ -167,7 +200,7 @@ abstract class Layerable(
             filter = Filters.eqTypeLineString,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
-                textJustify = Anchor.CENTER,
+                textJustify = TextJustify.CENTER,
                 textField = listOf("get", textKey),
                 textSize = 14f,
                 symbolPlacement = Placement.LINE,
@@ -274,10 +307,11 @@ abstract class Layerable(
 
     private var areaLayerWithTextId = 0
     fun areaLayerWithText(
-       textKey: String,
+       label: Label,
        theme: Theme,
        textColor: Color = Color.CHBLK,
        haloColor: Color = Color.CHWHT,
+       textJustify: TextJustify = TextJustify.CENTER,
     ): Layer {
         return Layer(
             id = "${key}_area_label${++areaLayerWithTextId}",
@@ -286,10 +320,10 @@ abstract class Layerable(
             filter = Filters.eqTypePointOrPolygon,
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
-                textJustify = Anchor.CENTER,
-                textField = listOf("get", textKey),
+                textJustify = textJustify,
+                textField = label.label,
                 textSize = 14f,
-                symbolPlacement = Placement.POINT,
+//                symbolPlacement = Placement.POINT,
             ),
             paint = Paint(
                 textColor = colorFrom(textColor, theme),

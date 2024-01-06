@@ -18,7 +18,7 @@ class Sistaw : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconOffset = listOf(0f, -24f)
+            iconOffset = Offset.Coord(x = 0f, y = -24f)
         ),
     )
 }

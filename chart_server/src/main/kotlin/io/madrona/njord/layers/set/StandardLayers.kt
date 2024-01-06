@@ -179,6 +179,7 @@ class StandardLayers {
         Navlne(),
         Dismar(),
         Prcare(),
+        Sndwav(),
 
         //low pri labels
         LndareLabel(),
@@ -230,9 +231,9 @@ class StandardLayers {
 
         //high pri labels
         Soundg(),
+        Curent(),
 
         //todo: below layers need completion
-        Curent(),
         Ctrpnt(),
         Chkpnt(),
         Cgusta(),
@@ -248,7 +249,6 @@ class StandardLayers {
         Rdocal(),
         Rcrtcl(),
         Retrfl(),
-        Sndwav(),
         Splare(),
         Slogrd(),
         Subtln(),

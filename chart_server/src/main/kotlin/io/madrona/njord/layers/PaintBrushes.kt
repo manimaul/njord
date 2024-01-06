@@ -11,6 +11,21 @@ sealed interface Label {
         override var label: Any? = listOf("get", name);
     }
 }
+sealed interface Offset {
+    val property: Any?
+    data class Coord(val x: Float = 0f, val y: Float = 0f) : Offset {
+        override val property: List<Float> = listOf(x, y)
+    }
+
+    class EvalEq(key: String, value: String, eq: Coord, neq: Coord ) : Offset {
+        override val property = listOf(
+            "case",
+            listOf("==", listOf("get", key), value),
+            listOf("literal", eq.property),
+            listOf("literal", neq.property)
+        )
+    }
+}
 
 sealed interface LineStyle {
     var lineDashArray: List<Float>?
@@ -262,6 +277,7 @@ enum class Sprite {
     SISTAT03,
     SISTAW03,
     SMCFAC02,
+    SNDWAV01P,
     SNDWAV02,
     SPRING02,
     TIDEHT01,

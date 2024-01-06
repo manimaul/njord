@@ -19,7 +19,7 @@ class Fogsig : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconOffset = listOf(-10f, 10f),
+            iconOffset = Offset.Coord(x = -10f, y = 10f),
             iconAllowOverlap = true,
             iconKeepUpright = true,
         )

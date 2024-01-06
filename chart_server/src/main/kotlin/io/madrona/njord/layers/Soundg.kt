@@ -76,7 +76,7 @@ open class Soundg(
         layout = Layout(
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.CENTER,
-            textJustify = Anchor.CENTER,
+            textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = false,
@@ -86,7 +86,7 @@ open class Soundg(
         paint = Paint(
             textColor = textColor(theme),
             textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 1.5f
+            textHaloWidth = 2.5f
         )
     )
 
@@ -105,7 +105,7 @@ open class Soundg(
             textAnchor = Anchor.BOTTOM_RIGHT,
             //x (neg left / pos right), y (neg up / pos down)
             textOffset = listOf(0.0f, 0.6f),
-            textJustify = Anchor.CENTER,
+            textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = false,
@@ -115,7 +115,7 @@ open class Soundg(
         paint = Paint(
             textColor = textColor(theme),
             textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 1.5f
+            textHaloWidth = 2.5f
         )
     )
 
@@ -134,7 +134,7 @@ open class Soundg(
             textAnchor = Anchor.TOP_LEFT,
             //x (neg left / pos right), y (neg up / pos down)
             textOffset = listOf(0.1f, 0.0f),
-            textJustify = Anchor.CENTER,
+            textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey),
             textAllowOverlap = true,
             textIgnorePlacement = false,
@@ -144,7 +144,7 @@ open class Soundg(
         paint = Paint(
             textColor = textColor(theme),
             textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 1.5f
+            textHaloWidth = 2.5f
         )
     )
 

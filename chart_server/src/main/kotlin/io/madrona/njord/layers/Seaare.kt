@@ -16,10 +16,11 @@ class Seaare : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
             areaLayerWithText(
-                "OBJNAM",
+                label = Label.Property("OBJNAM"),
                 theme = options.theme,
                 textColor = Color.SNDG2,
-                haloColor = Color.DEPDW
+                haloColor = Color.DEPDW,
+                textJustify = TextJustify.LEFT,
             ),
         )
     }

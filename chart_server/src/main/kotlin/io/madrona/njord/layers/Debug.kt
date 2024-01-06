@@ -14,7 +14,7 @@ class Debug : Layerable() {
                     layout = Layout(
                             textFont = listOf(Font.ROBOTO_BOLD),
                             textAnchor = Anchor.CENTER,
-                            textJustify = Anchor.CENTER,
+                            textJustify = TextJustify.CENTER,
                             textField = listOf("get", "DMSG"),
                             textAllowOverlap = true,
                             textIgnorePlacement = true,

@@ -97,14 +97,14 @@ data class Layout(
     @JsonProperty("icon-rotation-alignment") val iconRotationAlignment: IconRotationAlignment? = null,
     @JsonProperty("text-font") val textFont: List<Font>? = null,
     @JsonProperty("text-anchor") val textAnchor: Anchor? = null,
-    @JsonProperty("text-justify") val textJustify: Anchor? = null,
+    @JsonProperty("text-justify") val textJustify: TextJustify? = null,
     @JsonProperty("text-field") val textField: Any? = null,
-    @JsonProperty("text-offset") val textOffset: List<Float>? = null,
+    @JsonProperty("text-offset") val textOffset: Any? = null,
 
     /**
      * Positive values indicate right and down, while negative values indicate left and up.
      */
-    @JsonProperty("icon-offset") val iconOffset: List<Any>? = null,
+    @JsonProperty("icon-offset") val iconOffset: Any? = null,
     @JsonProperty("text-allow-overlap") val textAllowOverlap: Boolean? = null,
     @JsonProperty("text-ignore-placement") val textIgnorePlacement: Boolean? = null,
     @JsonProperty("text-max-width") val textMaxWidthEms: Float? = null,
@@ -122,6 +122,16 @@ enum class Placement {
     LINE_CENTER,
 }
 
+enum class TextJustify {
+    @JsonProperty("auto")
+    AUTO,
+    @JsonProperty("left")
+    LEFT,
+    @JsonProperty("center")
+    CENTER,
+    @JsonProperty("right")
+    RIGHT,
+}
 enum class Anchor {
     @JsonProperty("center")
     CENTER,

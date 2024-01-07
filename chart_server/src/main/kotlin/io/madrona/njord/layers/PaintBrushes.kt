@@ -184,7 +184,7 @@ enum class Sprite {
     DAYSQR01,
     DAYTRI01,
     DAYTRI05,
-    DISMAR04,
+    DISMAR06,
     DNGHILIT,
     DOMES001,
     DOMES011,

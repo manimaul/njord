@@ -15,7 +15,7 @@ import io.madrona.njord.model.*
  */
 class Dismar : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
-        feature.pointSymbol(Sprite.DISMAR04)
+        feature.pointSymbol(Sprite.DISMAR06)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(

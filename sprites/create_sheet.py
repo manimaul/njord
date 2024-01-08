@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from typing import Any
 import subprocess
 import hashlib
+import functools
 
 from PIL import Image
 
@@ -187,19 +188,21 @@ class SvgCheck:
     svg_data = os.path.join(svg, 'svg.json')
 
     def __init__(self):
-        print("dry run")
         if os.path.exists(self.svg_data):
             self.all = json.load(open(self.svg_data, "r"))
 
         for each in os.listdir(self.svg):
             if each.endswith('.svg'):
-                sum = md5_sum(os.path.join(self.svg, each))
+                svg_sum = md5_sum(os.path.join(self.svg, each))
                 png = each[:-4] + ".png"
-                pngs_exists = os.path.exists(os.path.join(sprites, png)) and os.path.exists(
-                    os.path.join(sprites2x, png))
-                if each not in self.all.keys() or sum != self.all[each] or not pngs_exists:
+                themes = ['day', 'dusk', 'night']
+                dirs = (list(map(lambda ea: os.path.join(sprites, ea, png), themes)) +
+                        list(map(lambda ea: os.path.join(sprites2x, ea, png), themes)))
+                pngs_exists = functools.reduce(lambda acc, d: acc and os.path.exists(d), dirs, True)
+
+                if each not in self.all.keys() or svg_sum != self.all[each] or not pngs_exists:
                     self.new.add(each)
-                self.all[each] = sum
+                self.all[each] = svg_sum
 
     def svg_check(self):
         print("new files: {}".format(self.new))

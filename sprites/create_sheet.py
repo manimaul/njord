@@ -22,6 +22,34 @@ sprites2x = os.path.join(base_dir, "simplified2x")
 sprite_sheet_dir = os.path.join(base_dir, "../chart_server/src/main/resources/www/sprites")
 colors = os.path.join(base_dir, "../chart_server/src/main/resources/colors.json")
 
+# https://registry.iho.int/portrayal/list.do?type=5
+
+standard_pattern = [
+    [1, 0],
+    [0, 1],
+]
+
+wide_pattern = [
+    [0, 0],
+    [0, 1],
+    [0, 0],
+    [0, 0],
+]
+
+patterns = {"VEGATN04P": standard_pattern,
+            "VEGATN03P": standard_pattern,
+            "NODATA03P": standard_pattern,
+            "SNDWAV01P": wide_pattern,
+            "QUESMRK1P": standard_pattern,
+            "PRTSUR01P": standard_pattern,
+            "MARSHES1P": standard_pattern,
+            "MARCUL01P": standard_pattern,
+            "MARCUL02P": standard_pattern,
+            "FSHHAV02P": standard_pattern,
+            "FSHFAC04P": standard_pattern,
+            "FSHFAC03P": standard_pattern,
+            }
+
 
 @dataclass
 class Frame:
@@ -121,6 +149,25 @@ def save_sprite_sheet(retna: bool, theme: str):
     spritesheet.save(os.path.join(sprite_sheet_dir, "{}.png".format(name)), "PNG")
 
 
+def pattern_png(png_path, matrix):
+    with Image.open(png_path) as im:
+        w = len(matrix[0])
+        h = len(matrix)
+        sz_w = w * im.width
+        sz_h = h * im.height
+        pattern = Image.new("RGBA", size=(sz_w, sz_h))
+        for i in range(0, w):
+            for ii in range(0, h):
+                if matrix[ii][i] == 1:
+                    top = i * im.height
+                    left = ii * im.width
+                    right = left + im.width
+                    bottom = top + im.height
+                    box = (left, top, right, bottom)
+                    pattern.paste(im, box=box)
+        pattern.save(png_path, format="PNG")
+
+
 def temp_svg(css: str, svg: str, theme: str, svg_dir: str, svg_t_dir: str):
     orig = os.path.join(svg_dir, svg)
     temp = os.path.join(svg_t_dir, "{}_{}".format(theme, svg))
@@ -170,10 +217,13 @@ def svg_to_png(filter: set, theme: str):
         s = temp_svg(css, each, theme, svg_dir, svg_t_dir)
         for d, dir in [(dpi, sprites_t), (dpi * 2, sprites2x_t)]:
             print("each: {}".format(each))
+            name = each[:-4]
             if each in filter:
-                png = os.path.join(dir, each[:-3] + 'png')
+                png = os.path.join(dir, name + '.png')
                 c = cmd.format(png, d, s).split()
                 print(subprocess.check_output(c))
+                if name in patterns.keys():
+                    pattern_png(png, patterns[name])
 
 
 def md5_sum(p: str):
@@ -194,13 +244,14 @@ class SvgCheck:
         for each in os.listdir(self.svg):
             if each.endswith('.svg'):
                 svg_sum = md5_sum(os.path.join(self.svg, each))
-                png = each[:-4] + ".png"
+                name = each[:-4]
+                png = name + ".png"
                 themes = ['day', 'dusk', 'night']
                 dirs = (list(map(lambda ea: os.path.join(sprites, ea, png), themes)) +
                         list(map(lambda ea: os.path.join(sprites2x, ea, png), themes)))
                 pngs_exists = functools.reduce(lambda acc, d: acc and os.path.exists(d), dirs, True)
 
-                if each not in self.all.keys() or svg_sum != self.all[each] or not pngs_exists:
+                if each not in self.all.keys() or svg_sum != self.all[each] or not pngs_exists or name in patterns.keys():
                     self.new.add(each)
                 self.all[each] = svg_sum
 
@@ -252,26 +303,23 @@ if __name__ == '__main__':
     parser.add_argument("--theme", help="CSS theme to apply to SVGs which can be (day dusk or night)")
     parser.add_argument("--dry", help="dry run", action='store_true')
     args = parser.parse_args()
-    theme = "day"
-    if args.theme == "dusk":
-        theme = "dusk"
-    if args.theme == "night":
-        theme = "night"
-
-    write_css(theme)
-
-    if args.svg_unused:
-        svg_unused_to_png(theme)
-        sys.exit(0)
 
     if args.dry:
         check.svg_check()
         sys.exit(0)
 
-    if args.svg:
-        svg_to_png(check.new, theme)
-        check.save()
-        print('rendered SVGs to PNGs')
+    themes = args.theme.split(",")
+    for theme in themes:
+        write_css(theme)
 
-    save_sprite_sheet(False, theme)
-    save_sprite_sheet(True, theme)
+        if args.svg_unused:
+            svg_unused_to_png(theme)
+            sys.exit(0)
+
+        if args.svg:
+            svg_to_png(check.new, theme)
+            check.save()
+            print('rendered SVGs to PNGs')
+
+        save_sprite_sheet(False, theme)
+        save_sprite_sheet(True, theme)

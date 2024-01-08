@@ -143,6 +143,7 @@ class StandardLayers {
         Runway(),
         Dykcon(),
         Siltnk(),
+        Ctrpnt(),
 
         // water boundary layers
         Tsslpt(),
@@ -180,10 +181,8 @@ class StandardLayers {
         Dismar(),
         Prcare(),
         Sndwav(),
+        Unsare(),
 
-        //low pri labels
-        LndareLabel(),
-        Seaare(),
 
         // obstructions
         Hulkes(),
@@ -206,6 +205,10 @@ class StandardLayers {
         Ospare(),
         Sistat(),
         Sistaw(),
+
+        //low pri labels
+        LndareLabel(),
+        Seaare(),
 
         // buoys and markers
         Fogsig(),
@@ -234,7 +237,6 @@ class StandardLayers {
         Curent(),
 
         //todo: below layers need completion
-        Ctrpnt(),
         Chkpnt(),
         Cgusta(),
         Buirel(),
@@ -256,7 +258,6 @@ class StandardLayers {
         Tsscrs(),
         Tssron(),
         Tunnel(),
-        Unsare(),
         Newobj(),
 //    $texts(),
 //    M_nsys(),

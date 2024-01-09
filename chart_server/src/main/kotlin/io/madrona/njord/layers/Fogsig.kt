@@ -21,7 +21,6 @@ class Fogsig : Layerable() {
         pointLayerFromSymbol(
             iconOffset = Offset.Coord(x = -10f, y = 10f),
             iconAllowOverlap = true,
-            iconKeepUpright = true,
         )
     )
 }

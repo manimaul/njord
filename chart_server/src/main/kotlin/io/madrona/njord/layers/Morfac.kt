@@ -63,6 +63,9 @@ class Morfac : Layerable() {
                 Catmor.TIE_UP_WALL.filterNotEq()
             ),
         ),
-        pointLayerFromSymbol(iconKeepUpright = true),
+        pointLayerFromSymbol(
+            iconKeepUpright = false,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
     )
 }

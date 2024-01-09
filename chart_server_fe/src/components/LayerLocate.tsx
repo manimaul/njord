@@ -10,7 +10,8 @@ type LayerQueryResult = {
     lng: number,
     zoom: number,
     props: Record<string, string | number>,
-    chartName: string
+    chartName: string,
+    geomType: string,
 }
 
 const liStyle = {
@@ -31,7 +32,7 @@ export function LayerLocate() {
             <ol>
                 {result && result.map((each, i) => {
                     return <li style={liStyle} key={i}>
-                        {each.chartName}, {each.lat}, {each.lng}, {each.zoom} <Button size="sm"
+                        {each.chartName}, {each.lat}, {each.lng}, {each.zoom}, {each.geomType} <Button size="sm"
                                                                                       variant="outline-success"
                                                                                       onClick={() => {
                                                                                           storeEncState({

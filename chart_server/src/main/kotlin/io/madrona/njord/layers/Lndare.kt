@@ -23,7 +23,12 @@ open class Lndare : Layerable() {
         return sequenceOf(
             areaLayerWithFillColor(theme = options.theme, color = areaColor),
             lineLayerWithColor(theme = options.theme, color = Color.CSTLN, width = 2f),
-            pointLayerFromSymbol(anchor = Anchor.CENTER, iconAllowOverlap = true, iconKeepUpright = false),
+            pointLayerFromSymbol(
+                anchor = Anchor.CENTER,
+                iconAllowOverlap = true,
+                iconKeepUpright = false,
+                iconRotationAlignment = IconRotationAlignment.MAP,
+            ),
         )
     }
 }

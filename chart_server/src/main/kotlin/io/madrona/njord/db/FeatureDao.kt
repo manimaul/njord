@@ -13,7 +13,7 @@ class FeatureDao : Dao() {
 
     suspend fun findLayerPositions(layer: String): List<LayerQueryResult>? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """SELECT ST_AsText(ST_Centroid(geom)), props, charts.name, charts.zoom
+            """SELECT ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE layer = ?; 
             """.trimIndent()
         ).apply { setString(1, layer) }.executeQuery().use {
@@ -22,20 +22,21 @@ class FeatureDao : Dao() {
                 val wkt = it.getString(1)
                 val coord = WKTReader().read(wkt).coordinate
                 val props: Map<String, Any?> = if (layer == "TOPMAR") {
-                    objectMapper.readValue<Map<String, Any?>>(it.getString(2)).toMutableMap().apply {
+                    objectMapper.readValue<Map<String, Any?>>(it.getString(3)).toMutableMap().apply {
                         val assoc = findAssociatedLayerNames(this["LNAM"].toString())
                         TopmarData.fromAssoc(assoc).addTo(this)
                     }
                 } else {
-                    objectMapper.readValue(it.getString(2))
+                    objectMapper.readValue(it.getString(3))
                 }
                 result.add(
                     LayerQueryResult(
                         lat = coord.y,
                         lng = coord.x,
-                        zoom = it.getFloat(4),
+                        zoom = it.getFloat(5),
                         props = props,
-                        chartName = it.getString(3)
+                        chartName = it.getString(4),
+                        geomType = it.getString(2).replace("ST_", ""),
                     )
                 )
             }

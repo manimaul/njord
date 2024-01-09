@@ -72,6 +72,7 @@ class Siltnk : Layerable() {
             anchor = Anchor.BOTTOM,
             iconAllowOverlap = true,
             iconKeepUpright = false,
+            iconRotationAlignment = IconRotationAlignment.MAP,
         ),
     )
 }

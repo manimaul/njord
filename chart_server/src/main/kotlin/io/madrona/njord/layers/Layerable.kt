@@ -28,7 +28,7 @@ abstract class Layerable(
         anchor: Anchor = Anchor.BOTTOM,
         iconOffset: Offset? = null,
         iconAllowOverlap: Boolean = true,
-        iconKeepUpright: Boolean = false,
+        iconKeepUpright: Boolean = true,
         iconRotate: Any? = null,
         iconRotationAlignment: IconRotationAlignment? = null,
     ): Layer {

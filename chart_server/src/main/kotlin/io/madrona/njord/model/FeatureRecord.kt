@@ -29,4 +29,5 @@ data class LayerQueryResult(
     val zoom: Float,
     val props: Map<String, Any?>,
     val chartName: String,
+    val geomType: String,
 )

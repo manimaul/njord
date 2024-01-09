@@ -125,13 +125,13 @@ class StandardLayers {
         Background(),
 
         //land / base layers
+        Depare(),
         Lndare(),
         Lakshr(),
         Buisgl(),
         Buaare(),
         Slcons(),
         Lndrgn(), // has area patterns - should be above other land layers
-        Depare(),
         Drgare(),
         Iceare(),
         Coalne(),

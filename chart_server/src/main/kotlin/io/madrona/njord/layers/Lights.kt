@@ -32,7 +32,6 @@ class Lights : Layerable() {
         pointLayerFromSymbol(
             anchor = Anchor.BOTTOM,
             iconAllowOverlap = true,
-            iconKeepUpright = true,
             iconRotate = 135f,
         )
     )

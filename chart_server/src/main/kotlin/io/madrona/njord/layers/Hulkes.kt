@@ -2,6 +2,15 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Area
+ *
+ * Object: Hulk
+ *
+ * Acronym: HULKES
+ *
+ * Code: 65
+ */
 class Hulkes : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.HULKES01)
@@ -15,7 +24,8 @@ class Hulkes : Layerable() {
                 symbol = Sprite.HULKES01,
                 anchor = Anchor.CENTER,
                 iconAllowOverlap = true,
-                iconKeepUpright = false
+                iconKeepUpright = false,
+                iconRotationAlignment = IconRotationAlignment.MAP,
             ),
         )
     }

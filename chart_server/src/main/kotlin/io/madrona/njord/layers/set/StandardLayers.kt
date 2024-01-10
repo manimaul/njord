@@ -180,6 +180,7 @@ class StandardLayers {
         Rctlpt(),
         Navlne(),
         Dismar(),
+        Chkpnt(),
         Prcare(),
         Sndwav(),
         Unsare(),
@@ -238,7 +239,6 @@ class StandardLayers {
         Curent(),
 
         //todo: below layers need completion
-        Chkpnt(),
         Cgusta(),
         Buirel(),
         Berths(),

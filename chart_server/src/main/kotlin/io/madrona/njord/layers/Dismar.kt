@@ -19,6 +19,9 @@ class Dismar : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(),
+        pointLayerFromSymbol(
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
     )
 }

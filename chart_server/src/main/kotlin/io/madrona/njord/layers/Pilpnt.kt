@@ -20,19 +20,10 @@ class Pilpnt : Layerable() {
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-            Layer(
-                id = "${key}_point",
-                type = LayerType.CIRCLE,
-                sourceLayer = sourceLayer,
-                filter = listOf(
-                    Filters.any,
-                    Filters.eqTypePoint,
-                ),
-                paint = Paint(
-                    circleColor = colorFrom(Color.CHBLK, options.theme),
-                    circleRadius = 2.5f
-                )
-            )
+            pointLayerFromSymbol(
+                anchor = Anchor.CENTER,
+                iconRotationAlignment = IconRotationAlignment.MAP,
+            ),
         )
     }
 }

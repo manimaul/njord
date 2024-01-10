@@ -26,6 +26,8 @@ class Cblare : Layerable() {
         ),
         areaLayerWithSingleSymbol(
             iconOffset = listOf(30f, 30f), // give room for resare
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
         )
     )
 }

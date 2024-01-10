@@ -257,7 +257,9 @@ abstract class Layerable(
     private var areaLayerWithSingleSymbolId = 0
     fun areaLayerWithSingleSymbol(
         symbol: Sprite? = null,
-        iconOffset: List<Float>? = null
+        iconOffset: List<Float>? = null,
+        anchor: Anchor = Anchor.CENTER,
+        iconRotationAlignment: IconRotationAlignment = IconRotationAlignment.MAP,
     ): Layer {
         return Layer(
             id = "${key}_area_symbol${++areaLayerWithSingleSymbolId}",
@@ -268,8 +270,8 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol ?: listOf("get", "SY"),
                 iconOffset = iconOffset,
-                iconAnchor = Anchor.CENTER,
-                iconKeepUpright = false,
+                iconAnchor = anchor,
+                iconRotationAlignment = iconRotationAlignment,
             )
         )
     }

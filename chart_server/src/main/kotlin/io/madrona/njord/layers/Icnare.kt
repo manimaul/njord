@@ -24,6 +24,8 @@ class Icnare : Layerable() {
         lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine, width = 1f),
         pointLayerFromSymbol(
             symbol = Symbol.Sprite(symbol),
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
         ),
         areaLayerWithSingleSymbol(symbol = symbol),
     )

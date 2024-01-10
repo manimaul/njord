@@ -2,7 +2,9 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.layers.attributehelpers.Restrn
 import io.madrona.njord.layers.attributehelpers.Restrn.Companion.restrn
+import io.madrona.njord.model.Anchor
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.IconRotationAlignment
 
 /**
  * Geometry Primitives: Area
@@ -36,6 +38,9 @@ class Resare : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.CustomDash(3f, 2f)) ,
-        pointLayerFromSymbol(),
+        pointLayerFromSymbol(
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
     )
 }

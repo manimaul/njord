@@ -20,7 +20,10 @@ class Ctsare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(),
+        pointLayerFromSymbol(
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
         lineLayerWithColor(
             theme = options.theme,
             color = lineColor,

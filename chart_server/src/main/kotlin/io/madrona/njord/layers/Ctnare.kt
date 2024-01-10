@@ -21,8 +21,14 @@ class Ctnare : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(),
-        areaLayerWithPointSymbol(),
+        pointLayerFromSymbol(
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
+        areaLayerWithPointSymbol(
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
         lineLayerWithColor(
             theme = options.theme,
             color = lineColor,

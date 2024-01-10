@@ -60,6 +60,8 @@ class Pipare : Layerable() {
         lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine),
         pointLayerFromSymbol(
             symbol = Symbol.Sprite(symbol),
+            anchor = Anchor.CENTER,
+            iconRotationAlignment = IconRotationAlignment.MAP,
         ),
     )
 }

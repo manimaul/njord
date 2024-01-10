@@ -32,7 +32,7 @@ class Lights : Layerable() {
         pointLayerFromSymbol(
             anchor = Anchor.BOTTOM,
             iconAllowOverlap = true,
-            iconRotate = 135f,
+            iconRotate = IconRot.Degrees(135f),
         )
     )
 }

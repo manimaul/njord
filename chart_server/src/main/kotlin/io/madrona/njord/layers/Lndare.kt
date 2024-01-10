@@ -26,7 +26,6 @@ open class Lndare : Layerable() {
             pointLayerFromSymbol(
                 anchor = Anchor.CENTER,
                 iconAllowOverlap = true,
-                iconKeepUpright = false,
                 iconRotationAlignment = IconRotationAlignment.MAP,
             ),
         )

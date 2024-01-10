@@ -130,6 +130,7 @@ class StandardLayers {
         Lakshr(),
         Buisgl(),
         Buaare(),
+        ObstrnArea(),
         Slcons(),
         Lndrgn(), // has area patterns - should be above other land layers
         Drgare(),

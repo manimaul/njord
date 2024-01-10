@@ -21,7 +21,9 @@ class Marcul : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.DashLine, width = 2f),
-        pointLayerFromSymbol(symbol = symbol),
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+        ),
         areaLayerWithSingleSymbol(symbol = symbol),
     )
 }

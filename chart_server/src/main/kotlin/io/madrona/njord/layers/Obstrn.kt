@@ -12,21 +12,38 @@ import io.madrona.njord.layers.attributehelpers.Watlev
 import io.madrona.njord.layers.attributehelpers.Watlev.Companion.watlev
 import io.madrona.njord.model.Anchor
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.IconRotationAlignment
 import io.madrona.njord.model.Layer
 import io.madrona.njord.util.logger
 
 
+private val areaFillColors = DepthColor.values().map { it.color }.toSet()
+class ObstrnArea : Layerable() {
+
+    override val sourceLayer = "OBSTRN"
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        areaLayerWithFillColor(
+            theme = options.theme,
+            options = areaFillColors
+        ),
+        areaLayerWithFillPattern(),
+        lineLayerWithColor(theme = options.theme, color = Color.CHGRD, style = LineStyle.DashLine),
+    )
+}
+
 class Obstrn : Soundg() {
 
-    private val areaFillColors = DepthColor.values().map { it.color }.toSet()
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         val textLayers = super.layers(options)
         return sequenceOf(
-            areaLayerWithFillColor(theme = options.theme, options = areaFillColors),
-            areaLayerWithFillPattern(),
-            lineLayerWithColor(theme = options.theme, color = Color.CHGRD, style = LineStyle.DashLine),
-            pointLayerFromSymbol(anchor = Anchor.CENTER),
-            areaLayerWithPointSymbol()
+            pointLayerFromSymbol(
+                anchor = Anchor.CENTER,
+                iconRotationAlignment = IconRotationAlignment.MAP,
+            ),
+            areaLayerWithPointSymbol(
+                iconRotationAlignment = IconRotationAlignment.MAP,
+            )
         ) + textLayers
     }
 

@@ -21,10 +21,9 @@ class Hulkes : Layerable() {
             areaLayerWithFillColor(theme = options.theme, color = Color.CHBRN),
             lineLayerWithColor(theme = options.theme, color = Color.CSTLN, width = 2f),
             pointLayerFromSymbol(
-                symbol = Sprite.HULKES01,
+                symbol = Symbol.Sprite(Sprite.HULKES01),
                 anchor = Anchor.CENTER,
                 iconAllowOverlap = true,
-                iconKeepUpright = false,
                 iconRotationAlignment = IconRotationAlignment.MAP,
             ),
         )

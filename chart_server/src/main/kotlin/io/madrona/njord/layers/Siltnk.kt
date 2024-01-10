@@ -43,7 +43,9 @@ class Siltnk : Layerable() {
                 when (convis) {
                     Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.TOWERS03)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.pointSymbol(Sprite.TOWERS01)
+                    null -> {
+                        feature.pointSymbol(Sprite.TOWERS01, 2)
+                    }
                 }
             }
 
@@ -51,7 +53,9 @@ class Siltnk : Layerable() {
                 when (convis) {
                     Convis.VISUAL_CONSPICUOUS -> feature.pointSymbol(Sprite.TOWERS02)
                     Convis.NOT_VISUAL_CONSPICUOUS,
-                    null -> feature.pointSymbol(Sprite.TOWERS12)
+                    null -> {
+                        feature.pointSymbol(Sprite.TOWERS12, 2)
+                    }
                 }
             }
 
@@ -69,10 +73,16 @@ class Siltnk : Layerable() {
         areaLayerWithFillColor(ac, options.theme),
         lineLayerWithColor(lineColors, options.theme),
         pointLayerFromSymbol(
+            symbol = Symbol.Property(),
             anchor = Anchor.BOTTOM,
             iconAllowOverlap = true,
-            iconKeepUpright = false,
             iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
+        pointLayerFromSymbol(
+            symbol = Symbol.Property(2),
+            anchor = Anchor.BOTTOM,
+            iconAllowOverlap = true,
+            iconRotationAlignment = IconRotationAlignment.VIEWPORT,
         ),
     )
 }

@@ -19,6 +19,8 @@ class Litves : LayerableTodo() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(symbol)
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+        )
     )
 }

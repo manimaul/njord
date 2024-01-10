@@ -21,6 +21,8 @@ class Ospare : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(theme = options.theme, color = color, style = LineStyle.DashLine, width = 2f),
-        pointLayerFromSymbol(symbol),
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+        ),
     )
 }

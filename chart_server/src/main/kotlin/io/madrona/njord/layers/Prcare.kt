@@ -22,7 +22,7 @@ class Prcare : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            symbol  = symbol
+            symbol = Symbol.Sprite(symbol),
         ),
         lineLayerWithColor(
             theme = options.theme,

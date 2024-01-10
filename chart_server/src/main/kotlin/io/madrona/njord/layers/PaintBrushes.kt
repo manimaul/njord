@@ -1,23 +1,76 @@
 package io.madrona.njord.layers
 
+sealed interface Symbol {
+    var property: Any?
+
+    class Sprite(sprite: io.madrona.njord.layers.Sprite) : Symbol {
+        override var property: Any? = sprite
+    }
+
+    class Property(num: Int? = null) : Symbol {
+        override var property: Any? = listOf("get", num?.let { "SY$it" } ?: "SY");
+    }
+}
+
 sealed interface Label {
-    var label: Any?
+    var property: Any?
 
     class Text(text: String) : Label {
-        override var label: Any? = text
+        override var property: Any? = text
     }
 
     class Property(name: String) : Label {
-        override var label: Any? = listOf("get", name);
+        override var property: Any? = listOf("get", name);
     }
 }
+
+sealed interface IconRot {
+    val property: Any?
+
+    data class Degrees(val deg: Float) : IconRot {
+        override val property = deg
+    }
+
+    class Property(name: String) : IconRot {
+        override var property = listOf("get", name);
+    }
+}
+//sealed interface IconRotAlign {
+//    val property: Any?
+//
+//    object Map : IconRotAlign {
+//        override val property = IconRotationAlignment.MAP
+//    }
+//    object ViewPort: IconRotAlign {
+//        override val property = IconRotationAlignment.VIEWPORT
+//    }
+//    object Auto: IconRotAlign {
+//        override val property = IconRotationAlignment.AUTO
+//    }
+//    data class IfValueEq(
+//        val key: String,
+//        val value: String,
+//        val eq: IconRotationAlignment,
+//        val nEq: IconRotationAlignment,
+//    ) : IconRotAlign {
+//        override val property: Any
+//            get() = listOf(
+//                "case",
+//                listOf("==", listOf("get", key), value),
+//                listOf("literal", eq),
+//                listOf("literal", nEq)
+//            )
+//    }
+//}
+
 sealed interface Offset {
     val property: Any?
+
     data class Coord(val x: Float = 0f, val y: Float = 0f) : Offset {
         override val property: List<Float> = listOf(x, y)
     }
 
-    class EvalEq(key: String, value: String, eq: Coord, neq: Coord ) : Offset {
+    class EvalEq(key: String, value: String, eq: Coord, neq: Coord) : Offset {
         override val property = listOf(
             "case",
             listOf("==", listOf("get", key), value),

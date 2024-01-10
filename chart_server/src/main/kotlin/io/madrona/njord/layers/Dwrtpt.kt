@@ -30,7 +30,7 @@ class Dwrtpt : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         areaLayerWithPointSymbol(
-            iconRotate = listOf("get", "ORIENT"),
+            iconRotate = IconRot.Property("ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
             iconAllowOverlap = false,
         ),

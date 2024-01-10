@@ -3,7 +3,6 @@ package io.madrona.njord.layers
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
-import org.w3c.dom.Text
 
 abstract class Layerable(
     customKey: String? = null
@@ -24,12 +23,11 @@ abstract class Layerable(
      *
      */
     fun pointLayerFromSymbol(
-        symbol: Sprite? = null,
+        symbol: Symbol = Symbol.Property(),
         anchor: Anchor = Anchor.BOTTOM,
         iconOffset: Offset? = null,
         iconAllowOverlap: Boolean = true,
-        iconKeepUpright: Boolean = true,
-        iconRotate: Any? = null,
+        iconRotate: IconRot? = null,
         iconRotationAlignment: IconRotationAlignment? = null,
     ): Layer {
         return Layer(
@@ -39,12 +37,11 @@ abstract class Layerable(
             filter = listOf(Filters.any, Filters.eqTypePoint),
             layout = Layout(
                 symbolPlacement = Placement.POINT,
-                iconImage = symbol ?: listOf("get", "SY"),
+                iconImage = symbol.property,
                 iconAnchor = anchor,
                 iconOffset = iconOffset?.property,
                 iconAllowOverlap = iconAllowOverlap,
-                iconKeepUpright = iconKeepUpright,
-                iconRotate = iconRotate,
+                iconRotate = iconRotate?.property,
                 iconRotationAlignment = iconRotationAlignment,
             )
         )
@@ -69,7 +66,7 @@ abstract class Layerable(
                 textFont = listOf(Font.ROBOTO_BOLD),
                 textAnchor = textAnchor,
                 textJustify = textJustify,
-                textField = label.label,
+                textField = label.property,
                 textSize = 14f,
                 textOffset = textOffset?.property,
                 symbolPlacement = Placement.POINT,
@@ -138,7 +135,7 @@ abstract class Layerable(
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
                 textJustify = TextJustify.CENTER,
-                textField = label.label,
+                textField = label.property,
                 textSize = 14f,
                 symbolPlacement = Placement.LINE,
             ),
@@ -282,7 +279,7 @@ abstract class Layerable(
     fun areaLayerWithPointSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.CENTER,
-        iconRotate: Any? = null,
+        iconRotate: IconRot? = null,
         iconRotationAlignment: IconRotationAlignment? = null,
         iconAllowOverlap: Boolean = true,
         iconOffset: List<Float>? = null,
@@ -296,7 +293,7 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol ?: listOf("get", "SY"),
                 iconAnchor = anchor,
-                iconRotate = iconRotate,
+                iconRotate = iconRotate?.property,
                 iconRotationAlignment = iconRotationAlignment,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = false,
@@ -321,9 +318,8 @@ abstract class Layerable(
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
                 textJustify = textJustify,
-                textField = label.label,
+                textField = label.property,
                 textSize = 14f,
-//                symbolPlacement = Placement.POINT,
             ),
             paint = Paint(
                 textColor = colorFrom(textColor, theme),
@@ -358,6 +354,10 @@ fun ChartFeature.excludeAreaPointSymbol() {
 
 fun ChartFeature.pointSymbol(symbol: Sprite) {
     props["SY"] = symbol.name
+}
+
+fun ChartFeature.pointSymbol(symbol: Sprite, num: Int) {
+    props["SY$num"] = symbol.name
 }
 
 fun ChartFeature.areaPattern(pattern: Sprite) {

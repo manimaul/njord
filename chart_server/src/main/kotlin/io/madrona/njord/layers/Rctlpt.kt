@@ -22,12 +22,12 @@ class Rctlpt : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconRotate = listOf("get", "ORIENT"),
+            iconRotate = IconRot.Property("ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
             iconAllowOverlap = false
         ),
         areaLayerWithPointSymbol(
-            iconRotate = listOf("get", "ORIENT"),
+            iconRotate = IconRot.Property("ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
             iconAllowOverlap = false,
         ),

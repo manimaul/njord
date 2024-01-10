@@ -15,10 +15,12 @@ class Litflt : Layerable() {
 
     private val symbol = Sprite.LITFLT02
     override suspend fun preTileEncode(feature: ChartFeature) {
-       feature.pointSymbol(symbol)
+        feature.pointSymbol(symbol)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        pointLayerFromSymbol(symbol)
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+        )
     )
 }

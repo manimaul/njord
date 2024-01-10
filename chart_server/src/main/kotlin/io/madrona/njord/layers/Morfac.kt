@@ -16,17 +16,16 @@ import io.madrona.njord.model.*
 class Morfac : Layerable() {
 
     override suspend fun preTileEncode(feature: ChartFeature) {
-        val sprite = when (feature.catmor()) {
-            Catmor.DOLPHIN -> Sprite.MORFAC03
-            Catmor.DEVIATION_DOLPHIN -> Sprite.MORFAC04
-            Catmor.BOLLARD -> Sprite.PILPNT02
-            Catmor.POST_OR_PILE -> Sprite.PILPNT02
-            Catmor.MOORING_BUOY -> Sprite.BOYMOR11
+        when (feature.catmor()) {
+            Catmor.DOLPHIN -> feature.pointSymbol(Sprite.MORFAC03)
+            Catmor.DEVIATION_DOLPHIN -> feature.pointSymbol(Sprite.MORFAC04)
+            Catmor.BOLLARD -> feature.pointSymbol(Sprite.PILPNT02)
+            Catmor.POST_OR_PILE -> feature.pointSymbol(Sprite.PILPNT02)
+            Catmor.MOORING_BUOY -> feature.pointSymbol(Sprite.BOYMOR11, 2)
             Catmor.TIE_UP_WALL,
             Catmor.CHAIN_WIRE_CABLE,
-            null -> Sprite.MORFAC03
+            null -> feature.pointSymbol(Sprite.MORFAC03)
         }
-        feature.pointSymbol(sprite)
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
@@ -64,8 +63,12 @@ class Morfac : Layerable() {
             ),
         ),
         pointLayerFromSymbol(
-            iconKeepUpright = false,
+            symbol = Symbol.Property(),
             iconRotationAlignment = IconRotationAlignment.MAP,
+        ),
+        pointLayerFromSymbol(
+            symbol = Symbol.Property(2),
+            iconRotationAlignment = IconRotationAlignment.VIEWPORT,
         ),
     )
 }

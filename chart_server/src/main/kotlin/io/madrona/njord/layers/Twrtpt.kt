@@ -35,7 +35,7 @@ class Twrtpt : Layerable() {
             style = LineStyle.CustomDash(3f, 2f)
         ),
         areaLayerWithPointSymbol(
-            iconRotate = listOf("get", "ORIENT"),
+            iconRotate = IconRot.Property("ORIENT"),
             iconRotationAlignment = IconRotationAlignment.MAP,
             iconAllowOverlap = false,
         ),

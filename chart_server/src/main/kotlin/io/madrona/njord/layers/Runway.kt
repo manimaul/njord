@@ -25,6 +25,8 @@ class Runway : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(theme = options.theme, color = lineColor),
         areaLayerWithFillColor(theme = options.theme, color = areaColor),
-        pointLayerFromSymbol(symbol),
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+        ),
     )
 }

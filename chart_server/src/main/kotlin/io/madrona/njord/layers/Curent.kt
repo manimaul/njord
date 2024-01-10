@@ -36,7 +36,7 @@ class Curent : Layerable() {
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(
-            iconRotate = listOf("get", "ORIENT"),
+            iconRotate = IconRot.Property("ORIENT"),
         ),
         pointLayerWithLabel(
             label = Label.Property("INFORM"),

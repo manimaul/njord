@@ -11,7 +11,7 @@ import io.madrona.njord.model.*
  *
  * Code: 77
  */
-class Litves : LayerableTodo() {
+class Litves : Layerable() {
 
     private val symbol = Sprite.LITVES02
     override suspend fun preTileEncode(feature: ChartFeature) {

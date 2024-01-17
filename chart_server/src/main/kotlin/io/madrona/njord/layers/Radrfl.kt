@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Radrfl : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Radar reflector
+ *
+ * Acronym: RADRFL
+ *
+ * Code: 101
+ */
+class Radrfl : Layerable() {
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(Sprite.RADRFL03)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(),
+        areaLayerWithPointSymbol(),
+    )
 }

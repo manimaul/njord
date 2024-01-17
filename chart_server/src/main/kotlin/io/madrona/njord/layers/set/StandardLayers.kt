@@ -145,6 +145,7 @@ class StandardLayers {
         Dykcon(),
         Siltnk(),
         Ctrpnt(),
+        Cgusta(),
 
         // water boundary layers
         Tsslpt(),
@@ -179,12 +180,17 @@ class StandardLayers {
         Rectrc(),
         Rctlpt(),
         Navlne(),
+        Radlne(),
+        Radrng(),
+        Radrfl(),
+        Rtpbcn(),
+        Rdocal(),
         Dismar(),
         Chkpnt(),
         Prcare(),
         Sndwav(),
         Unsare(),
-
+        Berths(),
 
         // obstructions
         Hulkes(),
@@ -239,30 +245,19 @@ class StandardLayers {
         Curent(),
 
         //todo: below layers need completion
-        Cgusta(),
-        Buirel(),
-        Berths(),
         Achpnt(),
 
         // todo:
-        Radlne(),
-        Radrng(),
-        Radrfl(),
-        Rtpbcn(),
-        Rdocal(),
         Rcrtcl(),
         Retrfl(),
         Splare(),
         Slogrd(),
         Subtln(),
         Swpare(),
+        Tctlpt(),
         Tsscrs(),
         Tssron(),
         Tunnel(),
         Newobj(),
-//    $texts(),
-//    M_nsys(),
-//    $csymb(),
-//    $texts(),
     )
 }

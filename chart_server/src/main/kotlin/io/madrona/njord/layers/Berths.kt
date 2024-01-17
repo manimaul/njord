@@ -28,11 +28,15 @@ class Berths : Layerable() {
         ),
         areaLayerWithText(
             label = Label.Property("OBJNAM"),
-            theme = options.theme
+            theme = options.theme,
+            textColor = Color.CHBLK,
+            haloColor = Color.CHWHT,
         ),
         pointLayerWithLabel(
             label = Label.Property("OBJNAM"),
-            theme = options.theme
+            theme = options.theme,
+            labelColor = Color.CHBLK,
+            highlightColor = Color.CHWHT,
         )
     )
 }

@@ -13,9 +13,7 @@ abstract class Layerable(
 
     open val sourceLayer: String = key
 
-    open suspend fun preTileEncode(feature: ChartFeature) {
-        log.warn("layer $key preTileEncode not handled")
-    }
+    open suspend fun preTileEncode(feature: ChartFeature) {}
 
     private var pointLayerFromSymbolId = 0
 

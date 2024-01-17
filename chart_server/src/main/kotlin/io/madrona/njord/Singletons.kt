@@ -9,6 +9,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.FeatureDao
+import io.madrona.njord.db.TileDao
 import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.TileSystem
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
@@ -28,6 +29,8 @@ object Singletons {
     val chartDao by lazy { ChartDao() }
 
     val featureDao by lazy { FeatureDao() }
+
+    val tileDao by lazy { TileDao() }
 
     val objectMapper: JsonMapper by lazy {
         jsonMapper {

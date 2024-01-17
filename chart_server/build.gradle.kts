@@ -47,13 +47,14 @@ dependencies {
     implementation("no.ecc.vectortile:java-vector-tile:1.3.23")
 
     implementation(files("libs/gdal-3.7.2.jar"))
-    implementation("ch.qos.logback:logback-classic:1.4.6")
+    implementation("ch.qos.logback:logback-classic:1.4.12")
     implementation("com.google.protobuf:protobuf-java:3.19.6")
     implementation("org.locationtech.jts:jts-core:1.19.0")
     implementation("mil.nga.sf:sf-geojson:3.3.2")
     implementation("org.postgresql:postgresql:42.5.4")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("io.dropwizard.metrics:metrics-core:4.2.17")
+    implementation("com.googlecode.xmemcached:xmemcached:2.4.8")
 
     testImplementation("org.mockito:mockito-core:5.2.0")
     testImplementation("org.hamcrest:hamcrest-all:1.3")

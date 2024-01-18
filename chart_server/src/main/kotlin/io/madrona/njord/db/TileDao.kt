@@ -32,6 +32,10 @@ class TileDao(
         counter.dec(counter.count)
     }
 
+    fun logStats() {
+        log.info( "${cache.stats}")
+    }
+
     suspend fun getTileInfo(z: Int, x: Int, y: Int): List<ChartFeatureInfo> {
         return TileEncoder(x, y, z)
             .addCharts(true)

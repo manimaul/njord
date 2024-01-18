@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
-import io.madrona.njord.db.ChartDao
-import io.madrona.njord.db.GeoJsonDao
-import io.madrona.njord.db.InsertError
-import io.madrona.njord.db.InsertSuccess
+import io.madrona.njord.db.*
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
 import io.madrona.njord.model.Chart
@@ -17,12 +14,10 @@ import io.madrona.njord.model.FeatureInsert
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipFile
 
@@ -32,6 +27,7 @@ class ChartIngest(
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val objectMapper: ObjectMapper = Singletons.objectMapper,
+    private val tileDao: TileDao = Singletons.tileDao,
 ) {
 
     private val charDir = config.chartTempData
@@ -65,9 +61,14 @@ class ChartIngest(
         webSocketSession.sendMessage(
             report.message()
         )
+
         withContext(Dispatchers.IO) {
             encUpload.uuidDir()?.deleteRecursively()
         }
+        log.info("clearing tile cache")
+        tileDao.logStats()
+        tileDao.clearCache()
+        tileDao.logStats()
     }
 
     private suspend fun step1UnzipFiles(
@@ -140,19 +141,33 @@ class ChartIngest(
     }
 
     private suspend fun step3(
-        data: List<Pair<S57, InsertSuccess<ChartInsert>>>, report: Report
+        data: List<Pair<S57, InsertSuccess<ChartInsert>>>,
+        report: Report
     ) {
+        val queue = ConcurrentLinkedDeque(data)
+        val working = AtomicInteger(0)
+
         withContext(Dispatchers.IO) {
-            data.map { (s57, insert) ->
-                async {
-                    chartDao.insertAsync(insert.value, true)?.let { chart ->
-                        installChart(chart, s57, report)
-                    } ?: run {
-                        report.failedCharts.add("${s57.file.name} (step3)")
+            while (queue.isNotEmpty()) {
+                if (working.get() >= 100) {
+                    delay(500)
+                } else {
+                    val (s57, insert) = queue.poll()
+                    log.info("installing chart ${s57.file} ${working.incrementAndGet()}")
+                    launch {
+                        chartDao.insertAsync(insert.value, true)?.let { chart ->
+                            installChart(chart, s57, report)
+                        } ?: run {
+                            val msg = "${s57.file.name} (step3)"
+                            log.warn(msg)
+                            report.failedCharts.add(msg)
+                        }
+                        log.info("completed chart ${s57.file} ${working.decrementAndGet()}")
                     }
                 }
-            }.awaitAll()
+            }
         }
+        log.info("step 3 completed")
     }
 
     private suspend fun installChart(chart: Chart, s57: S57, report: Report) {
@@ -165,8 +180,8 @@ class ChartIngest(
                         )
                     ) ?: 0
                     if (count == 0) {
-                        log.error("error inserting feature with layer = $layerName geo feature count = ${geo.numFeatures()}")
-                        log.error("geo json = \n${objectMapper.writeValueAsString(geo)}")
+                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.numFeatures()}")
+                        log.debug("geo json = \n${objectMapper.writeValueAsString(geo)}")
                     }
                     report.featureCountTotal.getAndUpdate { it + count }
                     report.add(chart.name, count)

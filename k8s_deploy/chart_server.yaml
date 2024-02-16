@@ -130,15 +130,6 @@ spec:
     istio: ingressgateway
   servers:
     - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - openenc.com
-        - www.openenc.com
-      tls:
-        httpsRedirect: true
-    - port:
         number: 443
         name: https
         protocol: HTTPS

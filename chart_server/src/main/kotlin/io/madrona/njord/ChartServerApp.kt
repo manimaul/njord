@@ -11,6 +11,7 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.websocket.*
+import io.madrona.njord.db.DbMigrations
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandlers
 import org.slf4j.event.Level
@@ -113,4 +114,5 @@ fun Application.njord() {
             call.respondText(File(Singletons.config.webStaticContent, "index.html").readText(), ContentType.Text.Html)
         }
     }
+    DbMigrations.checkVersion()
 }

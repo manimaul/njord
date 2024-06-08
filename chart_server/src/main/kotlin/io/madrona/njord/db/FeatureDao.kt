@@ -4,48 +4,59 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.layers.TopmarData
 import io.madrona.njord.model.FeatureRecord
 import io.madrona.njord.model.LayerQueryResult
+import io.madrona.njord.model.LayerQueryResultPage
 import org.locationtech.jts.io.WKTReader
 import java.sql.Connection
 import java.sql.ResultSet
-import kotlin.math.ln
+import kotlin.math.max
 
 class FeatureDao : Dao() {
 
-    suspend fun findLayerPositions(layer: String): List<LayerQueryResult>? = sqlOpAsync { conn ->
+    suspend fun findLayerPositionsPage(layer: String, startId: Long): LayerQueryResultPage? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """SELECT ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
-                FROM features JOIN charts ON features.chart_id = charts.id WHERE layer = ?; 
+            """SELECT features.id, ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
+                FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > ? AND features.layer = ? ORDER BY features.id LIMIT 5; 
             """.trimIndent()
-        ).apply { setString(1, layer) }.executeQuery().use {
+        ).apply {
+            setLong(1, startId)
+            setString(2, layer)
+        }.executeQuery().use {
             val result = mutableListOf<LayerQueryResult>()
+            var lastId = 0L
             while (it.next()) {
-                val wkt = it.getString(1)
+                val id = it.getLong(1)
+                lastId = max(lastId, id)
+                val wkt = it.getString(2)
                 val coord = WKTReader().read(wkt).coordinate
                 val props: Map<String, Any?> = if (layer == "TOPMAR") {
-                    objectMapper.readValue<Map<String, Any?>>(it.getString(3)).toMutableMap().apply {
+                    objectMapper.readValue<Map<String, Any?>>(it.getString(4)).toMutableMap().apply {
                         val assoc = findAssociatedLayerNames(this["LNAM"].toString())
                         TopmarData.fromAssoc(assoc).addTo(this)
                     }
                 } else {
-                    objectMapper.readValue(it.getString(3))
+                    objectMapper.readValue(it.getString(4))
                 }
                 result.add(
                     LayerQueryResult(
+                        id = id,
                         lat = coord.y,
                         lng = coord.x,
-                        zoom = it.getFloat(5),
+                        zoom = it.getFloat(6),
                         props = props,
-                        chartName = it.getString(4),
-                        geomType = it.getString(2).replace("ST_", ""),
+                        chartName = it.getString(5),
+                        geomType = it.getString(3).replace("ST_", ""),
                     )
                 )
             }
-            result
+            LayerQueryResultPage(
+                lastId = lastId,
+                items = result
+            )
         }
     }
 
     suspend fun findAssociatedLayerNames(lnam: String): List<String> = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE (props->'LNAM_REFS')::jsonb ?? ?;").apply {
+        conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE ?=ANY(lnam_refs);").apply {
             setString(1, lnam)
         }.executeQuery().use {
             generateSequence {

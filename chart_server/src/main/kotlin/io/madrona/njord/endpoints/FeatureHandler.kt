@@ -9,17 +9,32 @@ import io.madrona.njord.ext.KtorHandler
 class FeatureHandler(
     private val featureDao: FeatureDao = FeatureDao(),
 ) : KtorHandler {
-    override val route = "/v1/feature"
+    override val route = "/v1/feature/{by}/{arg}"
+
 
     override suspend fun handleGet(call: ApplicationCall) {
-        call.request.queryParameters["layer"]?.let { layer ->
-            featureDao.findLayerPositions(layer)?.let {
-                call.respond(it)
+        when (call.parameters["by"]) {
+            "layer" -> call.respondLayer()
+            "lnam" -> call.respondLnam()
+            else -> call.respond(HttpStatusCode.NotFound)
+        }
+
+    }
+
+    private suspend fun ApplicationCall.respondLayer() {
+        val id = request.queryParameters["start_id"]?.toLongOrNull() ?: 0L
+        parameters["arg"]?.let { layer ->
+            featureDao.findLayerPositionsPage(layer, id)?.let {
+                respond(it)
             }
-        } ?: call.request.queryParameters["lnam"]?.let {
+        }  ?: respond(HttpStatusCode.NotFound)
+    }
+
+    private suspend fun ApplicationCall.respondLnam() {
+        parameters["arg"]?.let {
             featureDao.findFeature(it)?.let { record ->
-                call.respond(record)
+                respond(record)
             }
-        } ?: call.respond(HttpStatusCode.NotFound)
+        } ?: respond(HttpStatusCode.NotFound)
     }
 }

@@ -23,7 +23,14 @@ data class FeatureRecord(
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+data class LayerQueryResultPage(
+    val lastId: Long,
+    val items: List<LayerQueryResult>,
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class LayerQueryResult(
+    val id: Long,
     val lat: Double,
     val lng: Double,
     val zoom: Float,

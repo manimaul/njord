@@ -45,7 +45,7 @@ Bring up api
 ./gradlew :chart_server:run
 ```
 
-Brin up front end with hot-reload
+Bring up front end with hot-reload
 ```shell
 cd chart_server_fe
 npm start

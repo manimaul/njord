@@ -97,7 +97,8 @@ fun Application.njord() {
         // https://openenc.com/v1/content/upload.html
         StaticResourceContentHandler(),
 
-        // curl https://openenc.com/v1/feature?lnam=02260F22BF31214F | jq
+        // curl https://openenc.com/v1/feature/lnam/02260F22BF31214F | jq
+        // curl 'https://openenc.com/v1/feature/layer/LNDARE?start_id=0' | jq
         FeatureHandler(),
 
         // curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin

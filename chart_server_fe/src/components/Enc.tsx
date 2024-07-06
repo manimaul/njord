@@ -44,6 +44,19 @@ type EncProps = {
     custom: string | null,
 }
 
+function scaleUnit(depths: DepthUnit) {
+    switch (depths) {
+        case DepthUnit.meters:
+            return "metric"
+        case DepthUnit.feet:
+            return "nautical"
+        case DepthUnit.fathoms:
+            return "nautical"
+        default:
+            return "nautical"
+    }
+}
+
 export function Enc(props: EncProps) {
     const mapContainer = useRef(null);
     const map = useRef<Map | null>(null);
@@ -71,6 +84,7 @@ export function Enc(props: EncProps) {
             zoom: encState.zoom
         });
         newMap.addControl(new maplibregl.NavigationControl(), 'top-right');
+        newMap.addControl(new maplibregl.ScaleControl({unit: scaleUnit(props.depths)}));
         new maplibregl.Marker({color: "#FF0000"})
             .setLngLat([-122.4002, 47.27984])
             .addTo(newMap);

@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {InsertItem, WsCompletionReport} from "../WsMsg";
@@ -9,6 +9,29 @@ type ChartFormProps = {
     onSubmit: (data: FormData) => void
 }
 
+type ChartFormUrlProps = {
+    onSubmit: (url: String) => void
+}
+function ChartInstallFormUrl(props: ChartFormUrlProps) {
+    const [url, setUrl] = useState("")
+    return <>
+        <Form>
+            <Form.Group className="mb-3" controlId="encUrl">
+                <Form.Label>ENC Chart Zip File Url</Form.Label>
+                <Form.Control type="text" size="sm" onChange={(e) => {
+                    console.log(e.target.value)
+                    setUrl(e.target.value)
+                }} />
+            </Form.Group>
+            <Button variant="primary" type="submit" onClick={(e) => {
+                e.preventDefault()
+                props.onSubmit(url)
+            }}>
+                Submit
+            </Button>
+        </Form>
+    </>
+}
 function ChartInstallForm(props: ChartFormProps) {
     const formElem = useRef(null)
     return <>
@@ -29,14 +52,18 @@ function ChartInstallForm(props: ChartFormProps) {
 }
 
 export function ChartInstall() {
-    const [state, upload, reload] = useChartInstallViewModel()
+    const [state, upload, uploadUrl, reload] = useChartInstallViewModel()
 
     return <div className="container Content">
         {!(state.uploadProgress >= 0) && state.admin && <>
             <ChartInstallForm onSubmit={(data) => {
-                // setLoading(true)
                 console.log("submitted")
                 upload(data)
+            }
+            }/>
+            <ChartInstallFormUrl onSubmit={(url) => {
+                console.log(`submitted ${url}`)
+                uploadUrl(url)
             }
             }/>
         </>

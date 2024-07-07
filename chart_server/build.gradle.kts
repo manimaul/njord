@@ -42,6 +42,11 @@ dependencies {
     implementation("io.ktor:ktor-serialization-jackson-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:${ktorVersion}")
     implementation("io.ktor:ktor-server-cors:${ktorVersion}")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
+
+
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     implementation("no.ecc.vectortile:java-vector-tile:1.3.23")

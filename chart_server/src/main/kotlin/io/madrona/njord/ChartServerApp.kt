@@ -70,6 +70,8 @@ fun Application.njord() {
         // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
         EncSaveHandler(),
 
+        EncSaveUrlHandler(),
+
         ChartWebSocketHandler(),
 
         //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' https://openenc.com/v1/chart

@@ -16,7 +16,8 @@ export type ChartInstallState = {
     admin: Admin | null,
     err: WsError | null,
 }
-export default function useChartInstallViewModel(): [ChartInstallState, (upload: FormData) => void, () => void] {
+
+export default function useChartInstallViewModel(): [ChartInstallState, (upload: FormData) => void, (uploadUrl: String) => void, () => void] {
     const [admin] = useAdmin()
     const [state, setState] = useState<ChartInstallState>(defaultState())
 
@@ -117,5 +118,20 @@ export default function useChartInstallViewModel(): [ChartInstallState, (upload:
         setState(defaultState())
     }
 
-    return [state, uploadData, reload]
+    function uploadUrl(zipUrl: String) {
+        setState(old => {
+            return {...old, uploadProgress: 100, extractProgress: 0, installProgress: 0}
+        })
+        let url = `/v1/enc_save_url?signature=${admin?.signatureEncoded}`
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', () => {
+            let encUpload: EncUpload = JSON.parse(xhr.responseText)
+            setupWs(encUpload)
+        })
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify(zipUrl));
+    }
+
+    return [state, uploadData, uploadUrl, reload]
 }

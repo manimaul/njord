@@ -20,6 +20,8 @@ services:
       - overlay
     ports:
       - "11211:11211"
+    command: memcached -I 128m -m 512
+  #docker run --name memcached -d -p 11211:11211 memcached memcached -m 512 -I 128m
 
   postgres:
     image: 'postgis/postgis:13-3.1'
@@ -38,25 +40,25 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: s57server
 
-  postgressetup:
-    build:
-      context: ./postgres_init
-      dockerfile: Dockerfile
-    depends_on:
-      - postgres
-    networks:
-      - overlay
-    restart: "no"
-    volumes:
-      - ./postgres_init/scripts:/postgres_init
-    environment:
-      PGUSER: admin
-      PGPASSWORD: mysecretpassword
-      PGHOST: postgres
-      PGPORT: 5432
-      PGDATABASE: s57server
+  # postgressetup:
+  #   build:
+  #     context: ./postgres_init
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - overlay
+  #   restart: "no"
+  #   volumes:
+  #     - ./postgres_init/scripts:/postgres_init
+  #   environment:
+  #     PGUSER: admin
+  #     PGPASSWORD: mysecretpassword
+  #     PGHOST: postgres
+  #     PGPORT: 5432
+  #     PGDATABASE: s57server
 
-    entrypoint: [ "/postgres_init/postgres_init.sh" ]
+  #   entrypoint: [ "/postgres_init/postgres_init.sh" ]
 
 
 networks:

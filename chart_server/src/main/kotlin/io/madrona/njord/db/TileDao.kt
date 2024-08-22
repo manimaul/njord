@@ -9,6 +9,7 @@ import io.madrona.njord.model.ChartFeatureInfo
 import io.madrona.njord.util.logger
 import net.rubyeye.xmemcached.XMemcachedClientBuilder
 import net.rubyeye.xmemcached.command.BinaryCommandFactory
+import net.rubyeye.xmemcached.transcoders.SerializingTranscoder
 import java.net.InetSocketAddress
 
 class TileDao(
@@ -25,6 +26,7 @@ class TileDao(
             it.isEnableHealSession = true
             it.healSessionInterval = 2000
             it.commandFactory = BinaryCommandFactory()
+            it.transcoder = SerializingTranscoder(10*1024*1024)   // memcached -I 10M -m 1024
         }.build()
 
     fun clearCache() {

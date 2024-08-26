@@ -16,6 +16,7 @@ class FeatureHandler(
         when (call.parameters["by"]) {
             "layer" -> call.respondLayer()
             "lnam" -> call.respondLnam()
+            "objnam" -> call.respondObjnam()
             else -> call.respond(HttpStatusCode.NotFound)
         }
 
@@ -33,6 +34,14 @@ class FeatureHandler(
     private suspend fun ApplicationCall.respondLnam() {
         parameters["arg"]?.let {
             featureDao.findFeature(it)?.let { record ->
+                respond(record)
+            }
+        } ?: respond(HttpStatusCode.NotFound)
+    }
+
+    private suspend fun ApplicationCall.respondObjnam() {
+        parameters["arg"]?.let {
+            featureDao.findFeatureByName(it)?.let { record ->
                 respond(record)
             }
         } ?: respond(HttpStatusCode.NotFound)

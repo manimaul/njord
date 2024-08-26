@@ -81,6 +81,21 @@ class FeatureDao : Dao() {
         }.executeQuery().use { it.featureRecord().firstOrNull() }
     }
 
+    /**
+     * Find feature using its LNAM .
+     *
+     * LNAM Long name.  An encoding of AGEN, FIDN and FIDS used to uniquely identify this features within an S-57 file.
+     */
+    suspend fun findFeatureByName(objnam: String): List<FeatureRecord>? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """ SELECT id, layer, ST_AsGeoJSON(ST_Centroid(geom)) AS centroid, props, chart_id, lower(z_range), upper(z_range)
+                FROM features WHERE props->>'OBJNAM'::text ilike ?
+                Limit 10;""".trimIndent()
+        ).apply {
+            setString(1, "%$objnam%")
+        }.executeQuery().use { it.featureRecord().toList() }
+    }
+
     fun featureCount(conn: Connection, chartId: Long): Int {
         return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
             setLong(1, chartId)

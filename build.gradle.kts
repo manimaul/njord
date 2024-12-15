@@ -42,7 +42,7 @@ task<Exec>("k8sApply") {
     val password = "${project.property("adminPassword")}"
 
     val yaml = K8S.chartServerDeploymentWrite(rootProject.projectDir, "${project.version}", adminKey, userName, password)
-    commandLine("bash", "-c", "istioctl kube-inject -f '${yaml.absolutePath}' | kubectl apply -f -")
+    commandLine("bash", "-c", "kubectl apply -f '${yaml.absolutePath}'")
 }
 
 /**

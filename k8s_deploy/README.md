@@ -30,14 +30,14 @@ Add Github container registry secrets to njord namespace
 ```shell
 cd k8s
 ./k8s_create_reg_sec.sh k8s_login
-./k8s_create_reg_sec.sh istio_inject 
+./k8s_create_basic_auth.sh
 ```
 
 Deploy postgis service
 ```shell
 cd k8s
-istioctl kube-inject -f postgis_volume.yaml | kubectl apply -f -
-istioctl kube-inject -f postgis.yaml | kubectl apply -f -
+kubectl apply -f postgis_volume.yaml
+kubectl apply -f postgis.yaml
 # wait
 kubectl apply -f postgis_init.yaml
 ```

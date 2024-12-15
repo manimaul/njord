@@ -64,9 +64,21 @@ class S57(
         }?.toMap() ?: emptyMap()
 
         val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
-        val mcovr = findLayer("M_COVR")?.features?.firstOrNull {
+        val mcovr = findLayer("M_COVR")?.features?.filter {
             it.s57Props().intValue("CATCOV") == 1
         } ?: return InsertError("M_COVR is missing")
+        val combinedCoverage = if (mcovr.size == 1) {
+            mcovr.first()
+        } else {
+            // Multiple coverage polygons - merge them into a single multipolygon
+            val polygons = mcovr.mapNotNull { feature ->
+                feature.geometry as? mil.nga.sf.geojson.Polygon
+            }
+            val multiPolygon = mil.nga.sf.geojson.MultiPolygon(polygons)
+            mil.nga.sf.geojson.Feature().apply {
+                this.geometry = multiPolygon
+            }
+        }
         val props = dsid.features?.firstOrNull()?.s57Props() ?: return InsertError("DSID props are missing")
         val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
 
@@ -78,7 +90,7 @@ class S57(
                 updated = props.stringValue("DSID_UADT") ?: "",
                 issued = props.stringValue("DSID_ISDT") ?: "",
                 zoom = zFinder.findZoom(scale),
-                covr = mcovr,
+                covr = combinedCoverage,
                 dsidProps = props,
                 chartTxt = chartTxt
             )

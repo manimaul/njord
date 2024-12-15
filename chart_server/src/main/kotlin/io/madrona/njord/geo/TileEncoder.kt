@@ -4,7 +4,7 @@ import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
-import no.ecc.vectortile.VectorTileEncoder;
+import no.ecc.vectortile.VectorTileEncoder
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
 import org.locationtech.jts.geom.Geometry
@@ -103,8 +103,9 @@ class TileEncoder(
     }
 
     private fun addPly(chartGeo: Geometry) {
-        (chartGeo as? Polygon)?.let { ply ->
-            val plyTile = tileSystem.tileGeometry(ply.exteriorRing, x, y, z)
+        (0 until chartGeo.numGeometries).forEach { i ->
+            val polygon = chartGeo.getGeometryN(i) as Polygon
+            val plyTile = tileSystem.tileGeometry(polygon.exteriorRing, x, y, z)
             encoder.addFeature("PLY", emptyMap<String, Any?>(), plyTile)
         }
     }

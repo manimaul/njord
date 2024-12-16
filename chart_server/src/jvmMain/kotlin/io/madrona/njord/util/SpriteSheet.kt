@@ -1,19 +1,15 @@
 package io.madrona.njord.util
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.madrona.njord.IconInfo
-import io.madrona.njord.Singletons
-import io.madrona.njord.layers.Sprite
-import io.madrona.njord.layers.Theme
-import io.madrona.njord.layers.ThemeMode
+import io.madrona.njord.model.IconInfo
+import io.madrona.njord.model.Sprite
+import io.madrona.njord.model.ThemeMode
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.json.Json
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
-class SpriteSheet(
-    private val objectMapper: ObjectMapper = Singletons.objectMapper,
-) {
+class SpriteSheet {
 
     private fun resNameBase(theme: ThemeMode): String {
         return "www/sprites/${theme.name.lowercase()}_simplified@2x"
@@ -27,9 +23,10 @@ class SpriteSheet(
     }
 
     val spritesByTheme: Map<ThemeMode, Map<Sprite, IconInfo>> by lazy {
-        ThemeMode.values().associateWith { theme ->
-            val sheet = resourceAsString("${resNameBase(theme)}.json")
-            objectMapper.readValue(sheet, object : TypeReference<Map<Sprite, IconInfo>>() {})
+        ThemeMode.entries.associateWith { theme ->
+            resourceAsString("${resNameBase(theme)}.json")?.let { sheet ->
+                Json.decodeFromString(MapSerializer(Sprite.serializer(), IconInfo.serializer()), sheet)
+            } ?: emptyMap()
         }
     }
 

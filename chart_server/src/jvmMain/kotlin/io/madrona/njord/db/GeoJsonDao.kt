@@ -1,19 +1,21 @@
 package io.madrona.njord.db
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import io.madrona.njord.model.Chart
+import io.madrona.njord.ext.jsonStr
+import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.FeatureCollection
+import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.model.FeatureInsert
-import io.madrona.njord.model.LayerGeoJson
-import mil.nga.sf.geojson.Feature
-import mil.nga.sf.geojson.FeatureCollection
-import mil.nga.sf.geojson.Geometry
+import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.Json.Default.encodeToString
+import kotlinx.serialization.json.JsonObject
 import java.sql.Connection
 import java.sql.ResultSet
+import java.sql.SQLException
 
 class GeoJsonDao : Dao() {
 
     private fun ResultSet.featureRecord() = if (next()) {
-        objectMapper.readValue<Feature>(getString(1))
+        decodeFromString<Feature>(getString(1))
     } else {
         null
     }
@@ -51,11 +53,7 @@ class GeoJsonDao : Dao() {
             setLong(2, chartId)
         }
         stmt.executeQuery().use {
-            it.featureRecords().fold(FeatureCollection()) { acc, feature ->
-                acc.apply {
-                    addFeature(feature)
-                }
-            }
+            FeatureCollection(features = it.featureRecords().toList())
         }
     }
 
@@ -64,25 +62,34 @@ class GeoJsonDao : Dao() {
     }
 
     private fun FeatureInsert.insert(conn: Connection): Int {
-        return when (geo) {
+        return when (val geoJson = geo) {
             is Geometry -> FeatureRecord(
                 chartId = chart.id,
                 layerName = layerName,
-                geoJson = objectMapper.writeValueAsString(geo)
-            ).takeIf { geo.geometry != null }?.insert(conn) ?: 0
+                geoJson = geoJson.jsonStr()
+            ).insert(conn)
+
             //https://iho.int/iho_pubs/standard/S-57Ed3.1/S-57%20Appendix%20B.1%20Annex%20A%20UOC%20Edition%204.1.0_Jan18_EN.pdf
             //C_AGGR, C_ASSO do not have geometry / primitive is N/A
 
-            is Feature -> FeatureRecord(
-                chartId = chart.id,
-                layerName = layerName,
-                geoJson = objectMapper.writeValueAsString(geo.geometry),
-                jsonProps = geo.propertyJson(),
-                zoomRange = geo.minZ()..geo.maxZ(),
-            ).takeIf { geo.geometry != null }?.insert(conn) ?: 0
+            is Feature -> {
+                val jsonProps = geoJson.propertyJson()
+                geoJson.geometry?.let { geometry ->
+                   FeatureRecord(
+                       chartId = chart.id,
+                       layerName = layerName,
+                       geoJson = geometry.jsonStr(),
+                       jsonProps = jsonProps,
+                       zoomRange = geoJson.minZ()..geoJson.maxZ(),
+                   ).insert(conn)
+               } ?: run {
+                   log.warn("skipping inserting layer $layerName chart id ${chart.id} props $jsonProps")
+                   0
+               }
+            }
 
             is FeatureCollection -> {
-                geo.features.fold(0) { acc, feature ->
+                geoJson.features.fold(0) { acc, feature ->
                     acc + copy(
                         geo = feature
                     ).insert(conn)
@@ -94,20 +101,21 @@ class GeoJsonDao : Dao() {
     }
 
     private fun Feature.minZ(): Int {
-        return properties?.get("MINZ")?.toString()?.toIntOrNull() ?: 0
+        return properties["MINZ"]?.toString()?.toIntOrNull() ?: 0
     }
 
     private fun Feature.maxZ(): Int {
-        return properties?.get("MAXZ")?.toString()?.toIntOrNull() ?: 32
+        return properties["MAXZ"]?.toString()?.toIntOrNull() ?: 32
     }
 
     private fun Feature.propertyJson(): String {
-        return properties?.let { objectMapper.writeValueAsString(it) } ?: "{}"
+        return encodeToString(JsonObject.serializer(), properties)
     }
 
     private fun FeatureRecord.insert(conn: Connection): Int {
-        return conn.prepareStatement(
-            """
+        try {
+            return conn.prepareStatement(
+                """
                 INSERT INTO features (layer, geom, props, chart_id, z_range)
                 VALUES (
                     ?,
@@ -117,22 +125,25 @@ class GeoJsonDao : Dao() {
                     int4range(?,?)
                 );
             """.trimIndent()
-        ).apply {
-            setString(1, layerName)
-            setString(2, geoJson)
-            setString(3, jsonProps)
-            setLong(4, chartId)
-            setInt(5, zoomRange.first)
-            setInt(6, zoomRange.last)
-        }.executeUpdate() //todo: invalid geojson representation error inserting feature
-        //org.postgresql.util.PSQLException: ERROR: invalid GeoJSON representation
+            ).apply {
+                setString(1, layerName)
+                setString(2, geoJson)
+                setString(3, jsonProps)
+                setLong(4, chartId)
+                setInt(5, zoomRange.first)
+                setInt(6, zoomRange.last)
+            }.executeUpdate()
+        } catch (e: SQLException) {
+            log.error("error inserting json $geoJson layer $layerName chart id $chartId props $jsonProps", e)
+            return 0
+        }
     }
 }
 
 private data class FeatureRecord(
     val chartId: Long,
     val layerName: String,
-    val geoJson: String = "{}",
+    val geoJson: String,
     val jsonProps: String = "{}",
     val zoomRange: IntRange = 0..32,
 )

@@ -5,6 +5,7 @@ import io.madrona.njord.geo.symbols.Colour.Companion.colors
 import io.madrona.njord.layers.attributehelpers.Bcnshp
 import io.madrona.njord.layers.attributehelpers.Bcnshp.Companion.bcnshp
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Sprite
 
 /**
  * Geometry Primitives: Point

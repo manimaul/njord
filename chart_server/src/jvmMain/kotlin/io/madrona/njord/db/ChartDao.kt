@@ -1,12 +1,11 @@
 package io.madrona.njord.db
 
 import com.codahale.metrics.Timer
-import com.fasterxml.jackson.module.kotlin.readValue
-import io.madrona.njord.ChartCatalog
-import io.madrona.njord.ChartItem
 import io.madrona.njord.Singletons
+import io.madrona.njord.ext.jsonStr
+import io.madrona.njord.geojson.FeatureBuilder
 import io.madrona.njord.model.*
-import mil.nga.sf.geojson.Feature
+import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBReader
@@ -32,14 +31,14 @@ class ChartDao(
                 updated = getString(++i),
                 issued = getString(++i),
                 zoom = getInt(++i),
-                covr = Feature().apply { geometry = objectMapper.readValue(getString(++i)) },
+                covr = FeatureBuilder(geometryJson = getString(++i)).build(),
                 bounds = getBytes(++i).let {
                     val env = WKBReader().read(it).envelopeInternal
                     Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
                 },
                 layers = layers,
-                dsidProps = objectMapper.readValue(getString(++i)),
-                chartTxt = objectMapper.readValue(getString(++i)),
+                dsidProps = decodeFromString(getString(++i)),
+                chartTxt = decodeFromString(getString(++i)),
                 featureCount = featureCount,
             )
         } else null
@@ -114,7 +113,7 @@ class ChartDao(
                         if (rs.next()) {
                             ChartFeature(
                                 geomWKB = rs.getBytes(1),
-                                props = objectMapper.readValue(rs.getString(2)),
+                                props = decodeFromString(rs.getString(2)),
                                 layer = rs.getString(3)
                             )
                         } else null
@@ -239,9 +238,9 @@ class ChartDao(
             setString(4, chartInsert.updated)
             setString(5, chartInsert.issued)
             setInt(6, chartInsert.zoom)
-            setString(7, objectMapper.writeValueAsString(chartInsert.covr.geometry))
-            setObject(8, objectMapper.writeValueAsString(chartInsert.dsidProps))
-            setObject(9, objectMapper.writeValueAsString(chartInsert.chartTxt))
+            setString(7, chartInsert.covr.geometry?.jsonStr())
+            setObject(8, chartInsert.dsidProps.jsonStr())
+            setObject(9, chartInsert.chartTxt.jsonStr())
         }
 
         stmt.executeUpdate().takeIf { it == 1 }?.let {

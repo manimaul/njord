@@ -1,6 +1,6 @@
 package io.madrona.njord.layers.attributehelpers
 
-import io.madrona.njord.geo.symbols.intValue
+import io.madrona.njord.geo.symbols.intValues
 import io.madrona.njord.model.ChartFeature
 
 /**
@@ -69,8 +69,8 @@ enum class Catspm {
 
     companion object {
 
-        fun ChartFeature.catspm(): Catspm? {
-            return props.intValue("CATSPM").let {
+        fun ChartFeature.catspm(): List<Catspm> {
+            return props.intValues("CATSPM").mapNotNull {
                 when (it) {
                     1 -> FIRING_DANGER_AREA_MARK
                     2 -> TARGET_MARK

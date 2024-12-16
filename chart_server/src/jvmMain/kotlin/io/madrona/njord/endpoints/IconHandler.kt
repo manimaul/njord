@@ -6,8 +6,8 @@ import io.ktor.server.response.*
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
-import io.madrona.njord.layers.Sprite
-import io.madrona.njord.layers.ThemeMode
+import io.madrona.njord.model.Sprite
+import io.madrona.njord.model.ThemeMode
 import io.madrona.njord.util.SpriteSheet
 
 

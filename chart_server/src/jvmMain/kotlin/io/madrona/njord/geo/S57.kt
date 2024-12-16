@@ -1,17 +1,21 @@
 package io.madrona.njord.geo
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.InsertError
 import io.madrona.njord.db.InsertSuccess
 import io.madrona.njord.db.Insertable
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.*
+import io.madrona.njord.geojson.FeatureBuilder
+import io.madrona.njord.geojson.FeatureCollection
+import io.madrona.njord.geojson.intValue
+import io.madrona.njord.geojson.stringValue
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.model.LayerGeoJson
 import io.madrona.njord.util.ZFinder
 import kotlinx.coroutines.*
-import mil.nga.sf.geojson.FeatureCollection
-import mil.nga.sf.geojson.FeatureConverter
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import org.gdal.gdal.Dataset
 import org.gdal.gdal.gdal
 import org.gdal.ogr.Feature
@@ -25,7 +29,6 @@ import java.util.concurrent.Executors
 class S57(
     val file: File,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
-    private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val zFinder: ZFinder = Singletons.zFinder,
     private val dispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
 ) : CoroutineScope by CoroutineScope(dispatcher + SupervisorJob()) {
@@ -65,21 +68,21 @@ class S57(
 
         val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
         val mcovr = findLayer("M_COVR")?.features?.filter {
-            it.s57Props().intValue("CATCOV") == 1
+            it.properties.intValue("CATCOV") == 1
         } ?: return InsertError("M_COVR is missing")
         val combinedCoverage = if (mcovr.size == 1) {
             mcovr.first()
         } else {
             // Multiple coverage polygons - merge them into a single multipolygon
             val polygons = mcovr.mapNotNull { feature ->
-                feature.geometry as? mil.nga.sf.geojson.Polygon
+                feature.geometry as? io.madrona.njord.geojson.Polygon
             }
-            val multiPolygon = mil.nga.sf.geojson.MultiPolygon(polygons)
-            mil.nga.sf.geojson.Feature().apply {
-                this.geometry = multiPolygon
-            }
+            val multiPolygon = io.madrona.njord.geojson.MultiPolygon(polygons)
+            io.madrona.njord.geojson.Feature(
+                geometry = multiPolygon
+            )
         }
-        val props = dsid.features?.firstOrNull()?.s57Props() ?: return InsertError("DSID props are missing")
+        val props = dsid.features?.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
         val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
 
         return InsertSuccess(
@@ -107,48 +110,19 @@ class S57(
         }
     }
 
-    /**
-     * export OGR_S57_OPTIONS="RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON:UPDATES:APPLY,SPLIT_MULTIPOINT:ON,RECODE_BY_DSSI:ON:ADD_SOUNDG_DEPTH=ON"
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/SOUNDG.json $(pwd)/US5WA22M.000 SOUNDG
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/BOYSPP.json $(pwd)/US3WA46M.000 BOYSPP
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/DSID.json $(pwd)/US5WA22M.000 DSID
-     * ogr2ogr -t_srs 'EPSG:4326' -f GeoJSON $(pwd)/M_COVR.json $(pwd)/US5WA22M.000 M_COVR
-     */
-    suspend fun renderGeoJson(
-        outDir: File = file.parentFile,
-        exLayers: Set<String>? = null,
-        msg: (String) -> Unit
-    ) {
-        layerGeoJsonSequence(exLayers).forEach {
-            val name = "${it.layer}.json"
-            msg(name)
-            objectMapper.writeValue(File(outDir, name), it.featureCollection)
-        }
-    }
-
-    private fun Feature.geoJsonFeature(): mil.nga.sf.geojson.Feature? {
-        return GetGeometryRef()?.let { geom ->
-            geom.geoJson()?.let { geoJson ->
-                mil.nga.sf.geojson.Feature().also { feat ->
-                    feat.geometry = FeatureConverter.toGeometry(geoJson)
-                    feat.properties = fields().apply {
-                        intValue("SCAMIN")?.takeIf { it > 0 }?.let {
-                            put("MINZ", zFinder.findZoom(it))
-                        }
-                        intValue("SCAMAX")?.takeIf { it > 0 }?.let {
-                            put("MAXZ", zFinder.findZoom(it))
-                        }
-                    }
+    private fun Feature.geoJsonFeature(soundg: Boolean = false): io.madrona.njord.geojson.Feature? {
+        return FeatureBuilder(GetGeometryRef()?.geoJson()).also { featureBuilder ->
+            fields().also { props ->
+                featureBuilder.addAll(props)
+                props.intValue("SCAMIN")?.takeIf { it > 0 }?.let {
+                    featureBuilder.addProperty("MINZ", zFinder.findZoom(it))
+                }
+                props.intValue("SCAMAX")?.takeIf { it > 0 }?.let {
+                    featureBuilder.addProperty("MAXZ", zFinder.findZoom(it))
                 }
             }
-        } ?: run {
-            fields().takeIf { it.isNotEmpty() }?.let { fields ->
-                mil.nga.sf.geojson.Feature().also {
-                    it.geometry = null
-                    it.properties = fields
-                }
-            }
-        }
+            if (soundg) featureBuilder.addSounding()
+        }.build()
     }
 
     private fun Feature.fields(): S57Prop {
@@ -160,39 +134,34 @@ class S57(
         }.toMap().toMutableMap()
     }
 
-    private fun Feature.value(type: Int, id: Int): Any? {
+    private fun Feature.value(type: Int, id: Int): JsonElement {
         return when (type) {
-            OFTInteger -> GetFieldAsInteger(id)
-            OFTIntegerList -> GetFieldAsIntegerList(id)
-            OFTReal -> GetFieldAsDouble(id)
-            OFTRealList -> GetFieldAsDoubleList(id)
+            OFTInteger -> GetFieldAsInteger(id).json
+            OFTIntegerList -> GetFieldAsIntegerList(id).json
+            OFTReal -> GetFieldAsDouble(id).json
+            OFTRealList -> GetFieldAsDoubleList(id).json
             OFTDate,
             OFTTime,
             OFTDateTime,
             OFTWideString,
-            OFTString -> GetFieldAsString(id)
+            OFTString -> GetFieldAsString(id).json
 
             OFTStringList,
-            OFTWideStringList -> GetFieldAsStringList(id)
+            OFTWideStringList -> GetFieldAsStringList(id).json
 
-            OFTBinary -> GetFieldAsBinary(id)
-            OFTInteger64 -> GetFieldAsInteger64(id)
-            OFTInteger64List -> GetFieldAsStringList(id)
-            else -> null
+            OFTBinary -> GetFieldAsBinary(id).json
+            OFTInteger64 -> GetFieldAsInteger64(id).json
+            OFTInteger64List -> GetFieldAsStringList(id).mapNotNull { it.toLongOrNull() }.json
+            else -> JsonNull
         }
     }
 
     private fun Layer.featureCollection(): FeatureCollection {
-        return FeatureCollection().also { fc ->
-            val name = GetName()
-            fc.addFeatures(features().mapNotNull { feat ->
-                feat.geoJsonFeature()?.apply {
-                    when (name) {
-                        "SOUNDG" -> addSounding()
-                    }
-                }
+        val name = GetName()
+        return FeatureCollection(
+            features = features().mapNotNull {
+                it.geoJsonFeature("SOUNDG".equals(name, ignoreCase = false))
             }.toList())
-        }
     }
 
     private fun Layer.features(): Sequence<Feature> {
@@ -246,7 +215,7 @@ class S57(
                 try {
                     S57(it).takeIf {
                         it.layers.isNotEmpty()
-                    }?: run {
+                    } ?: run {
                         log.warn("empty layers in file ${file.absolutePath}")
                         null
                     }

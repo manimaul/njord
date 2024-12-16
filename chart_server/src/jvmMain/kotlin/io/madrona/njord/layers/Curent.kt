@@ -1,9 +1,11 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.geo.symbols.stringValue
 import io.madrona.njord.model.Anchor
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Sprite
 import io.madrona.njord.model.TextJustify
 
 /**
@@ -24,14 +26,14 @@ class Curent : Layerable() {
 
         StringBuilder(feature.props.stringValue("OBJNAM") ?: "").apply {
             feature.props.floatValue("CURVEL")?.takeIf { it > 0f }?.let { currentVelocity ->
-                if (isNotEmpty()) { append(' ') }
+                if (isNotEmpty()) {
+                    append(' ')
+                }
                 append("$currentVelocity kts (max)")
             }
         }.takeIf { it.isNotBlank() }?.let { pointLabel ->
-                feature.props["_PL"] = pointLabel
+            feature.props["_PL"] = pointLabel.toString().json
         }
-
-
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(

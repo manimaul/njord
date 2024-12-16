@@ -1,9 +1,11 @@
 package io.madrona.njord.model
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import mil.nga.sf.geojson.Feature
+import io.madrona.njord.geojson.Feature
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
+@Serializable
 class ChartInfo(
     val id: Long,
     val scale: Int,
@@ -11,37 +13,38 @@ class ChartInfo(
     val covrWKB: ByteArray
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 class ChartFeatureInfo(
     val layer: String,
-    val props: MutableMap<String, Any?>,
+    val props: Map<String, JsonElement>,
     val geom: String?,
 )
 
+@Serializable
 class ChartFeature(
     val layer: String,
     val geomWKB: ByteArray?,
-    val props: MutableMap<String, Any?>
+    val props: MutableMap<String, JsonElement>
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class Chart(
     val id: Long,
     val name: String,
     val scale: Int,
-    @JsonProperty("file_name") val fileName: String,
+    @SerialName("file_name") val fileName: String,
     val updated: String,
     val issued: String,
     val zoom: Int,
     val covr: Feature,
     val bounds: Bounds,
     val layers: List<String>,
-    @JsonProperty("dsid_props") val dsidProps: Map<String, Any>,
-    @JsonProperty("chart_txt") val chartTxt: Map<String, String>,
+    @SerialName("dsid_props") val dsidProps: Map<String, JsonElement>,
+    @SerialName("chart_txt") val chartTxt: Map<String, String>,
     val featureCount: Int,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class Bounds(
     val leftLng: Double,
     val topLat: Double,
@@ -49,15 +52,15 @@ data class Bounds(
     val bottomLat: Double,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class ChartInsert(
     val name: String,
     val scale: Int,
-    @JsonProperty("file_name") val fileName: String,
+    @SerialName("file_name") val fileName: String,
     val updated: String,
     val issued: String,
     val zoom: Int,
     val covr: Feature,
-    @JsonProperty("dsid_props") val dsidProps: Map<String, Any?>,
-    @JsonProperty("chart_txt") val chartTxt: Map<String, String>,
+    @SerialName("dsid_props") val dsidProps: Map<String, JsonElement>,
+    @SerialName("chart_txt") val chartTxt: Map<String, String>,
 )

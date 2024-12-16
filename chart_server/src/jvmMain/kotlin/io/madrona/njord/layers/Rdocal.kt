@@ -1,8 +1,10 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.stringValue
 import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
-import io.madrona.njord.model.*
+import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Sprite
 
 /**
  * Geometry Primitives: Point, Line
@@ -21,7 +23,7 @@ class Rdocal : Layerable() {
             feature.pointSymbol(Sprite.RCLDEF01)
         }
         feature.props.stringValue("COMCHA")?.let {
-            feature.props["_L"] = "ch $it"
+            feature.props["_L"] = "ch $it".json
         }
     }
 

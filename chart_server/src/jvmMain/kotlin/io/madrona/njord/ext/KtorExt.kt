@@ -51,9 +51,7 @@ fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
                 }
             }
         }
-        static("/") {
-            staticRootFolder = Singletons.config.webStaticContent
-            files(".")
-        }
+
+        staticFiles("/", Singletons.config.webStaticContent)
     }
 }

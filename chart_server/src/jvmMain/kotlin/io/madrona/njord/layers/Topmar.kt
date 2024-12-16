@@ -2,10 +2,12 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.FeatureDao
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.stringValue
 import io.madrona.njord.layers.attributehelpers.Topshp
 import io.madrona.njord.layers.attributehelpers.Topshp.Companion.topshp
 import io.madrona.njord.model.*
+import kotlinx.serialization.json.JsonElement
 
 /**
  * S-52_PresLib_v4.0
@@ -29,9 +31,9 @@ data class TopmarData(
     val assoc: List<String>
 ) {
 
-    fun addTo(props: MutableMap<String, Any?>) {
-        props["_PTFM"] = platform.name
-        props["_ASOC"] = assoc
+    fun addTo(props: MutableMap<String, JsonElement>) {
+        props["_PTFM"] = platform.name.json
+        props["_ASOC"] = assoc.json
     }
 
     companion object {

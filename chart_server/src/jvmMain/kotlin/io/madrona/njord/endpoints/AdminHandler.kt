@@ -1,16 +1,19 @@
 package io.madrona.njord.endpoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
+import io.ktor.util.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
-import io.madrona.njord.ext.respondJson
 import io.madrona.njord.model.AdminResponse
 import io.madrona.njord.model.AdminSignature
+import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.Json.Default.encodeToString
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -28,13 +31,12 @@ class AdminHandler(
      * Returns an authorization signature for other mutating calls that require a valid signature.
      */
     override suspend fun handleGet(call: ApplicationCall) {
-        call.respondJson(util.createSignatureResponse())
+        call.respond(util.createSignatureResponse())
     }
 }
 
 class AdminUtil(
     private val config: ChartsConfig = Singletons.config,
-    private val objectMapper: ObjectMapper = Singletons.objectMapper
 ) {
     private var formatter = DateTimeFormatter.ISO_INSTANT
 
@@ -42,7 +44,7 @@ class AdminUtil(
         val signature = createSignature()
         return AdminResponse(
             signature = signature,
-            signatureEncoded = Base64.getUrlEncoder().encodeToString(objectMapper.writeValueAsBytes(signature))
+            signatureEncoded = URLEncoder.encode(encodeToString(AdminSignature.serializer(), signature).encodeBase64(), StandardCharsets.UTF_8)
         )
     }
 
@@ -68,8 +70,9 @@ class AdminUtil(
     }
 
     fun verifySignature(query: String): Boolean {
-        val data = Base64.getUrlDecoder().decode(query)
-        return verifySignature(objectMapper.readValue<AdminSignature>(data))
+        val data = URLDecoder.decode(query, StandardCharsets.UTF_8).decodeBase64String()
+        val sig = decodeFromString<AdminSignature>(data)
+        return verifySignature(sig)
     }
 
     fun verifySignature(signature: AdminSignature): Boolean {

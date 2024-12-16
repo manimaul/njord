@@ -4,9 +4,11 @@ import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
-import no.ecc.vectortile.VectorTileEncoder
+import io.madrona.njord.geo.symbols.toAny
+import no.ecc.vectortile.VectorTileEncoder;
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
+import kotlinx.serialization.json.*
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Polygon
@@ -43,29 +45,30 @@ class TileEncoder(
         mutableListOf<ChartFeatureInfo>()
     }
 
-    private fun MutableMap<String, Any?>.filtered() : MutableMap<String, Any?>{
+    private fun MutableMap<String, JsonElement>.filtered(): MutableMap<String, JsonElement> {
         iterator().also { itor ->
             while (itor.hasNext()) {
                 itor.next().also { entry ->
-                    entry.value?.let { value ->
-                        when(value) {
-                            is String -> {
-                               if (value.isBlank()) {
-                                   itor.remove()
-                               }
+                    when (val jp = entry.value) {
+                        is JsonPrimitive -> {
+                            if (jp.isString && jp.content.isBlank()) {
+                                itor.remove()
                             }
-                            is Int -> {
-                                if (value == 0 && s57ObjectLibrary.attributes[entry.key]?.attributeType == "E") {
-                                    itor.remove()
-                                }
-                            }
-                            is ArrayList<*> -> {
-                                if (value.isEmpty()) {
-                                    itor.remove()
-                                }
+                            if (jp.content == "0" && s57ObjectLibrary.attributes[entry.key]?.attributeType == "E") {
+                                itor.remove()
                             }
                         }
-                    } ?: itor.remove()
+
+                        is JsonArray -> {
+                            if (jp.isEmpty()) {
+                                itor.remove()
+                            }
+                        }
+
+                        else -> {
+                            error("unable to filter unexpected element type ${jp::class.simpleName}")
+                        }
+                    }
                 }
             }
         }
@@ -86,9 +89,17 @@ class TileEncoder(
                         val tileGeo = WKBReader().read(feature.geomWKB)
                         layerFactory.preTileEncode(feature)
                         if (info) {
-                            infoFeatures.add(ChartFeatureInfo(feature.layer, feature.props.filtered(), tileGeo::class.simpleName))
+                            infoFeatures.add(
+                                ChartFeatureInfo(
+                                    feature.layer,
+                                    feature.props.filtered(),
+                                    tileGeo::class.simpleName
+                                )
+                            )
                         }
-                        encoder.addFeature(feature.layer, feature.props.filtered(), tileGeo)
+                        encoder.addFeature(feature.layer, feature.props.filtered().mapValues { entry ->
+                            entry.value.toAny()
+                        }, tileGeo)
                     }
                     chartGeo?.let { geo ->
                         covered = covered.union(geo)
@@ -102,10 +113,10 @@ class TileEncoder(
         return this
     }
 
+
     private fun addPly(chartGeo: Geometry) {
-        (0 until chartGeo.numGeometries).forEach { i ->
-            val polygon = chartGeo.getGeometryN(i) as Polygon
-            val plyTile = tileSystem.tileGeometry(polygon.exteriorRing, x, y, z)
+        (chartGeo as? Polygon)?.let { ply ->
+            val plyTile = tileSystem.tileGeometry(ply.exteriorRing, x, y, z)
             encoder.addFeature("PLY", emptyMap<String, Any?>(), plyTile)
         }
     }

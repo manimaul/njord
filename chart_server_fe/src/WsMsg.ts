@@ -42,16 +42,16 @@ export function handleMessage(
     let m = JSON.parse(msg)
     let t = m["type"]
     switch (t) {
-        case "Error":
+        case "io.madrona.njord.model.ws.WsMsg.Error":
             error(m as WsError)
             break;
-        case "Info":
+        case "io.madrona.njord.model.ws.WsMsg.Info":
             info(m as WsInfo)
             break;
-        case "CompletionReport":
+        case "io.madrona.njord.model.ws.WsMsg.CompletionReport":
             completion(m as WsCompletionReport)
             break;
-        case "Extracting":
+        case "io.madrona.njord.model.ws.WsMsg.Extracting":
             extracting(m as WsExtracting)
             break;
     }

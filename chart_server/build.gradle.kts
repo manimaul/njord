@@ -1,5 +1,4 @@
 import io.madrona.njord.build.VersionPlugin
-import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
     kotlin("multiplatform")
@@ -39,10 +38,13 @@ kotlin {
         val jvmMain by getting {
             kotlin.srcDir("build/generated/source/version")
             dependencies {
+                implementation(project(":shared"))
                 implementation("io.ktor:ktor-server-core-jvm")
                 implementation("io.ktor:ktor-server-netty-jvm")
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
+                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-server-auth:$ktorVersion")
                 implementation("io.ktor:ktor-server-compression:$ktorVersion")
 
@@ -50,7 +52,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-host-common-jvm:${ktorVersion}")
                 implementation("io.ktor:ktor-server-call-logging-jvm:${ktorVersion}")
                 implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
-                implementation("io.ktor:ktor-serialization-jackson-jvm:${ktorVersion}")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-server-content-negotiation-jvm:${ktorVersion}")
                 implementation("io.ktor:ktor-server-cors:${ktorVersion}")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -60,9 +62,8 @@ kotlin {
 
                 implementation(files("libs/gdal-3.10.0.jar"))
                 implementation("ch.qos.logback:logback-classic:1.4.12")
-                implementation("com.google.protobuf:protobuf-java:3.19.6")
+                implementation("com.google.protobuf:protobuf-java:3.22.3")
                 implementation("org.locationtech.jts:jts-core:1.19.0")
-                implementation("mil.nga.sf:sf-geojson:3.3.2")
                 implementation("org.postgresql:postgresql:42.7.3")
                 implementation("com.zaxxer:HikariCP:5.0.1")
                 implementation("io.dropwizard.metrics:metrics-core:4.2.17")

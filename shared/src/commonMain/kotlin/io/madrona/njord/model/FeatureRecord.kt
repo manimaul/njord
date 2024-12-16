@@ -1,40 +1,41 @@
 package io.madrona.njord.model
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import mil.nga.sf.geojson.GeoJsonObject
+import io.madrona.njord.geojson.GeoJsonObject
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class FeatureInsert(
-    @JsonProperty("layer_name") val layerName: String,
+    @SerialName("layer_name") val layerName: String,
     val chart: Chart,
     val geo: GeoJsonObject,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class FeatureRecord(
     val id: Long,
     val layer: String,
-    val props: Map<String, Any?>,
+    val props: Map<String, JsonElement>,
     val geom: GeoJsonObject,
-    @JsonProperty("chart_id") val chartId: Long,
+    @SerialName("chart_id") val chartId: Long,
     val zoomMin: Int,
     val zoomMax: Int,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class LayerQueryResultPage(
     val lastId: Long,
     val items: List<LayerQueryResult>,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class LayerQueryResult(
     val id: Long,
     val lat: Double,
     val lng: Double,
     val zoom: Float,
-    val props: Map<String, Any?>,
+    val props: Map<String, JsonElement>,
     val chartName: String,
     val geomType: String,
 )

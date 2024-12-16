@@ -10,14 +10,11 @@ import io.madrona.njord.layers.attributehelpers.Quasou
 import io.madrona.njord.layers.attributehelpers.Quasou.Companion.quasou
 import io.madrona.njord.layers.attributehelpers.Watlev
 import io.madrona.njord.layers.attributehelpers.Watlev.Companion.watlev
-import io.madrona.njord.model.Anchor
-import io.madrona.njord.model.ChartFeature
-import io.madrona.njord.model.IconRotationAlignment
-import io.madrona.njord.model.Layer
+import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
 
 
-private val areaFillColors = DepthColor.values().map { it.color }.toSet()
+private val areaFillColors = DepthColor.entries.map { it.color }.toSet()
 class ObstrnArea : Layerable() {
 
     override val sourceLayer = "OBSTRN"

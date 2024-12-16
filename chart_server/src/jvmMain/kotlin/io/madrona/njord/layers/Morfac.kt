@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.layers.attributehelpers.Catmor
 import io.madrona.njord.layers.attributehelpers.Catmor.Companion.catmor
 import io.madrona.njord.model.*
@@ -38,7 +39,7 @@ class Morfac : Layerable() {
                 Filters.all,
                 Filters.eqTypeLineString,
                 Catmor.TIE_UP_WALL.filterEq()
-            ),
+            ).json,
         ),
         lineLayerWithColor(
             theme = options.theme,
@@ -49,7 +50,7 @@ class Morfac : Layerable() {
                 Filters.all,
                 Filters.eqTypeLineString,
                 Catmor.CHAIN_WIRE_CABLE.filterEq()
-            ),
+            ).json,
         ),
         lineLayerWithColor(
             theme = options.theme,
@@ -60,7 +61,7 @@ class Morfac : Layerable() {
                 Filters.eqTypeLineString,
                 Catmor.CHAIN_WIRE_CABLE.filterNotEq(),
                 Catmor.TIE_UP_WALL.filterNotEq()
-            ),
+            ).json,
         ),
         pointLayerFromSymbol(
             symbol = Symbol.Property(),

@@ -12,10 +12,9 @@ class SpriteSheetTest {
 
     @Test
     fun testSprites() {
-
         val spriteSheet = Singletons.spriteSheet.spritesByTheme
-        val spriteKeys = Sprite.entries.toSet()
-        ThemeMode.entries.forEach {
+        val spriteKeys = Sprite.values().toSet()
+        ThemeMode.values().forEach {
             val sprites = spriteSheet[it]
             assertNotNull(sprites)
             assertEquals(spriteKeys, sprites.keys, "theme, ${it.name} ${spriteKeys diff sprites.keys}")

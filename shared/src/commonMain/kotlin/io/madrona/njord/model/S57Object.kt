@@ -1,67 +1,71 @@
-package io.madrona.njord
+package io.madrona.njord.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class S57Object(
 
     /**
      * Unique code for the object.
      */
-    @JsonProperty("Code") val code: Int,
+    @SerialName("Code") val code: Int,
 
     /**
      * Human-readable description of the object.
      */
-    @JsonProperty("ObjectClass") val objectClass: String,
+    @SerialName("ObjectClass") val objectClass: String,
 
     /**
      * Six character acronym key for the object.
      */
-    @JsonProperty("Acronym") val acronym: String,
+    @SerialName("Acronym") val acronym: String,
 
     /**
      * Attributes in this subset define the individual characteristics of the object.
      */
-    @JsonProperty("Attribute_A") val attributeA: List<String>,
+    @SerialName("Attribute_A") val attributeA: List<String>,
 
     /**
      * Attributes in this subset provide information relevant to the use of the data, e.g. for presentation or for an
      * information system.
      */
-    @JsonProperty("Attribute_B") val attributeB: List<String>,
+    @SerialName("Attribute_B") val attributeB: List<String>,
 
     /**
      * Attributes in this subset provide administrative information about the object and data describing it.
      */
-    @JsonProperty("Attribute_C") val attributeC: List<String>,
+    @SerialName("Attribute_C") val attributeC: List<String>,
 
 
     /**
      * todo: (what do these mean?) G= M= C= $= <empty>=
      */
-    @JsonProperty("Class") val cls: String,
+    @SerialName("Class") val cls: String,
 
     /**
      * The geometric primitives allowed for the object are P=point L=line A=area N=none
      */
-    @JsonProperty("Primitives") val primitives: List<String>
+    @SerialName("Primitives") val primitives: List<String>
 )
 
+@Serializable
 data class S57Attribute(
     /**
      * Unique code for the attribute.
      */
-    @JsonProperty("Code") val code: Int,
+    @SerialName("Code") val code: Int,
 
     /**
      * Human-readable description of the attribute.
      */
-    @JsonProperty("Attribute") val attribute: String,
+    @SerialName("Attribute") val attribute: String,
 
     /**
      * Six character acronym key for the attribute.
      */
-    @JsonProperty("Acronym") val acronym: String,
+    @SerialName("Acronym") val acronym: String,
 
     /**
      * Attribute type: one-character code for the attribute type - there are six possible types:
@@ -72,19 +76,20 @@ data class S57Attribute(
      * Coded String ("A") - the expected input is a string of ASCII characters in a predefined format; the information is encoded according to defined coding systems.
      * Free Text ("S") - the expected input is a free-format alphanumeric string; it may be a file name which points to a text or graphic file.
      */
-    @JsonProperty("Attributetype") val attributeType: String,
+    @SerialName("Attributetype") val attributeType: String,
 
     /**
      * todo: (what do these mean?) F= $= N= S= ?=
      */
-    @JsonProperty("Class") val cls: String,
+    @SerialName("Class") val cls: String,
 )
 
+@Serializable
 data class S57ExpectedInput(
     /**
      * The corresponding [S57Attribute.code]
      */
-    @JsonProperty("Code") val code: Int,
+    @SerialName("Code") val code: Int,
 
     /**
      * Value in the [S57Object]'s [S57Attribute]
@@ -92,11 +97,11 @@ data class S57ExpectedInput(
      * CATSPM has id 66 so the [S57ExpectedInput] with Code: 66 and ID: 27 has the [S57ExpectedInput.meaning]: "general warning mark"
     },
      */
-    @JsonProperty("ID") val id: Int,
+    @SerialName("ID") val id: Int,
 
     /**
      * Human readable description
      */
-    @JsonProperty("Meaning") val meaning: String,
+    @SerialName("Meaning") val meaning: String,
 
     )

@@ -2,9 +2,6 @@ package io.madrona.njord
 
 import com.codahale.metrics.ConsoleReporter
 import com.codahale.metrics.MetricRegistry
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.module.kotlin.jsonMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.madrona.njord.db.ChartDao
@@ -31,12 +28,6 @@ object Singletons {
     val featureDao by lazy { FeatureDao() }
 
     val tileDao by lazy { TileDao() }
-
-    val objectMapper: JsonMapper by lazy {
-        jsonMapper {
-            addModule(kotlinModule())
-        }
-    }
 
     val config by lazy { ChartsConfig() }
 

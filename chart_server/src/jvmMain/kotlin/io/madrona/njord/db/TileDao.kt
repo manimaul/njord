@@ -34,6 +34,8 @@ class TileDao(
         counter.dec(counter.count)
     }
 
+    fun cacheStatsMap() = cache.stats
+
     fun logStats() {
         log.info( "${cache.stats}")
     }

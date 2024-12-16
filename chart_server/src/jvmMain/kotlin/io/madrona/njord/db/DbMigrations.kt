@@ -1,7 +1,7 @@
 package io.madrona.njord.db
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.*
+import kotlinx.serialization.json.Json.Default.decodeFromString
 
 object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
@@ -56,7 +56,7 @@ object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
                     while (it.next()) {
                         log.info("lnam ref migration update ${++num}")
                         val id = it.getLong(1)
-                        val ra = objectMapper.readValue<List<String>>(it.getString(2))
+                        val ra = decodeFromString<List<String>>(it.getString(2))
                         val refs = conn.createArrayOf("VARCHAR", ra.toTypedArray())
                         val stmt = conn.prepareStatement("UPDATE features SET lnam_refs =? WHERE id =?").apply {
                             setArray(1, refs)

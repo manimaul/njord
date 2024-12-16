@@ -3,6 +3,7 @@ package io.madrona.njord.layers
 import io.madrona.njord.layers.attributehelpers.Catcam
 import io.madrona.njord.layers.attributehelpers.Catcam.Companion.catcam
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Sprite
 
 /**
  * Geometry Primitives: Point

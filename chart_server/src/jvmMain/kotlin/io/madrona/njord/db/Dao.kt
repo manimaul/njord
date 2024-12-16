@@ -1,16 +1,13 @@
 package io.madrona.njord.db
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import java.sql.Connection
 import java.sql.SQLException
 import javax.sql.DataSource
-import kotlin.coroutines.CoroutineContext
 
 abstract class Dao(
-    protected val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val ds: DataSource = Singletons.ds,
 ) {
     protected val log = logger()

@@ -5,6 +5,7 @@ import io.madrona.njord.layers.attributehelpers.Cattrk.Companion.cattrk
 import io.madrona.njord.layers.attributehelpers.Trafic
 import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
 import io.madrona.njord.model.ChartFeature
+import io.madrona.njord.model.Sprite
 
 /**
  * Geometry Primitives: Line, Area

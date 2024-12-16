@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.model.*
 
@@ -16,8 +17,7 @@ class Radlne : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(Color.TRFCD)
         feature.props.intValue("ORIENT")?.let { deg ->
-            feature.props["_L"] = "$$deg deg"
-
+            feature.props["_L"] = "$$deg deg".json
         }
     }
 

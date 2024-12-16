@@ -2,9 +2,11 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.doubleValue
 import io.madrona.njord.model.*
+import kotlinx.serialization.json.JsonElement
 
 /**
  * Sounding SOUNDG
@@ -71,13 +73,13 @@ open class Soundg(
                     listOf(">=", "METERS", config.deepDepth),
                     listOf("==", subTextKey, 0),
                 ),
-            )
+            ).json
         } ?: Filters.eqTypePoint,
         layout = Layout(
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.CENTER,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey),
+            textField = listOf("get", textKey).json,
             textAllowOverlap = true,
             textIgnorePlacement = false,
             textSize = textSize,
@@ -99,14 +101,14 @@ open class Soundg(
             Filters.eqTypePoint,
             listOf(">", subTextKey, 0),
             listOf("<", "METERS", config.deepDepth),
-        ),
+        ).json,
         layout = Layout(
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.BOTTOM_RIGHT,
             //x (neg left / pos right), y (neg up / pos down)
-            textOffset = listOf(0.0f, 0.6f),
+            textOffset = listOf(0.0f, 0.6f).json,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey),
+            textField = listOf("get", textKey).json,
             textAllowOverlap = true,
             textIgnorePlacement = false,
             textSize = textSize,
@@ -128,14 +130,14 @@ open class Soundg(
             Filters.eqTypePoint,
             listOf(">", textKey, 0),
             listOf("<", "METERS", config.deepDepth),
-        ),
+        ).json,
         layout = Layout(
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.TOP_LEFT,
             //x (neg left / pos right), y (neg up / pos down)
-            textOffset = listOf(0.1f, 0.0f),
+            textOffset = listOf(0.1f, 0.0f).json,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey),
+            textField = listOf("get", textKey).json,
             textAllowOverlap = true,
             textIgnorePlacement = false,
             textSize = textSize - 4f,
@@ -148,9 +150,10 @@ open class Soundg(
         )
     )
 
-    private fun textColor(theme: Theme) = listOf(
-        "case", listOf("<=", listOf("get", "METERS"), config.deepDepth),
+    private fun textColor(theme: Theme): JsonElement = listOf(
+        "case",
+        listOf("<=", listOf("get", "METERS"), config.deepDepth),
         colorFrom(Color.SNDG2, theme),
         colorFrom(Color.SNDG1, theme)
-    )
+    ).json
 }

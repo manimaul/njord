@@ -1,13 +1,12 @@
 package io.madrona.njord.geo.symbols
 
+import io.madrona.njord.ext.json
+import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.FeatureBuilder
+import io.madrona.njord.geojson.Point
+import io.madrona.njord.geojson.Position
 import io.madrona.njord.util.logger
-import mil.nga.sf.geojson.Feature
-import mil.nga.sf.geojson.Point
-import mil.nga.sf.geojson.Position
-
-//private val FORMAT = DecimalFormat("#.#").apply {
-//    roundingMode = RoundingMode.DOWN
-//}
+import kotlinx.serialization.json.JsonElement
 
 val log by lazy {
     logger<Feature>()
@@ -43,23 +42,22 @@ fun displayDepths(meters: Double) : DisplayDepths {
     )
 }
 
-fun MutableMap<String, Any?>.addSoundingConversions(meters: Double) {
+fun MutableMap<String, JsonElement>.addSoundingConversions(meters: Double) {
     val depths = displayDepths(meters)
-    this["METERS"] = meters // need to add to /control/symbols/OBSTRN/VALSOU
-    this["METERS_W"] = depths.metersWhole
-    this["METERS_T"] = depths.metersTenths
-    this["FEET"] = depths.feet
-    this["FATHOMS"] = depths.fathoms
-    this["FATHOMS_FT"] = depths.fathomsFeet
+    this["METERS"] = meters.json // need to add to /control/symbols/OBSTRN/VALSOU
+    this["METERS_W"] = depths.metersWhole.json
+    this["METERS_T"] = depths.metersTenths.json
+    this["FEET"] = depths.feet.json
+    this["FATHOMS"] = depths.fathoms.json
+    this["FATHOMS_FT"] = depths.fathomsFeet.json
 }
 
-fun Feature.addSounding() {
-    (geometry as? Point)?.let {
-        val meters = it.coordinates.z ?: 0.0
-        properties["METERS"] = meters
-        it.coordinates = Position(it.coordinates.x, it.coordinates.y)
-        geometry = it
+fun FeatureBuilder.addSounding() {
+    (geo as? Point)?.let {
+        val meters = it.position.z ?: 0.0
+        addProperty("METERS", meters)
+        geo = Point(Position(it.position.longitude, it.position.latitude))
     } ?: run {
-        log.error("unexpected geometry point $geometryType")
+        log.error("unexpected geometry point ${geo?.type}")
     }
 }

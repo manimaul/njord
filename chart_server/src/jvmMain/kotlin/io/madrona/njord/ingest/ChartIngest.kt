@@ -1,6 +1,5 @@
 package io.madrona.njord.ingest
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
@@ -26,7 +25,6 @@ class ChartIngest(
     config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
-    private val objectMapper: ObjectMapper = Singletons.objectMapper,
     private val tileDao: TileDao = Singletons.tileDao,
 ) {
 
@@ -126,7 +124,7 @@ class ChartIngest(
             val all = s57Files.size.toFloat()
             when (val insert = s57.chartInsertInfo()) {
                 is InsertError -> {
-                    report.failedCharts.add("${s57.file.name} (step2)")
+                    report.failedCharts.add("${s57.file.name} (step2) ${insert.msg}")
                     null
                 }
 
@@ -180,8 +178,8 @@ class ChartIngest(
                         )
                     ) ?: 0
                     if (count == 0) {
-                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.numFeatures()}")
-                        log.debug("geo json = \n${objectMapper.writeValueAsString(geo)}")
+                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                        log.debug("geo json = \n${geo}")
                     }
                     report.featureCountTotal.getAndUpdate { it + count }
                     report.add(chart.name, count)

@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.model.*
 
 /**
@@ -23,19 +24,19 @@ import io.madrona.njord.model.*
 class Depcnt : Layerable() {
     override fun layers(options: LayerableOptions): Sequence<Layer> {
         return sequenceOf(
-                Layer(
-                        id = "depth_contour",
-                        type = LayerType.LINE,
-                        sourceLayer = sourceLayer,
-                        filter = listOf(
-                                Filters.all,
-                                Filters.eqTypeLineString
-                        ),
-                        paint = Paint(
-                                lineColor = colorFrom(Color.CSTLN, options.theme),
-                                lineWidth = 0.5f
-                        )
+            Layer(
+                id = "depth_contour",
+                type = LayerType.LINE,
+                sourceLayer = sourceLayer,
+                filter = listOf(
+                    Filters.all,
+                    Filters.eqTypeLineString
+                ).json,
+                paint = Paint(
+                    lineColor = colorFrom(Color.CSTLN, options.theme).json,
+                    lineWidth = 0.5f
                 )
+            )
         )
     }
 }

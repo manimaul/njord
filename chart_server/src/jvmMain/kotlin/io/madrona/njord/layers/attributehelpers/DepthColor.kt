@@ -1,6 +1,7 @@
 package io.madrona.njord.layers.attributehelpers
 
-import io.madrona.njord.layers.Color
+import io.madrona.njord.model.Color
+
 
 enum class DepthColor(val color: Color) {
     DEEP_WATER(Color.DEPDW), // deep water

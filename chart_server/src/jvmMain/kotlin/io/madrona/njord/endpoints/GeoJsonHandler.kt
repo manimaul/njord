@@ -8,8 +8,8 @@ import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.GeoJsonDao
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.letTwo
+import io.madrona.njord.geojson.GeoJsonObject
 import io.madrona.njord.model.FeatureInsert
-import mil.nga.sf.geojson.GeoJsonObject
 
 class GeoJsonHandler(
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),

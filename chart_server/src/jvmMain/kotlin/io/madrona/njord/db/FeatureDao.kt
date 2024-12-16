@@ -1,10 +1,11 @@
 package io.madrona.njord.db
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import io.madrona.njord.layers.TopmarData
 import io.madrona.njord.model.FeatureRecord
 import io.madrona.njord.model.LayerQueryResult
 import io.madrona.njord.model.LayerQueryResultPage
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.locationtech.jts.io.WKTReader
 import java.sql.Connection
 import java.sql.ResultSet
@@ -28,13 +29,14 @@ class FeatureDao : Dao() {
                 lastId = max(lastId, id)
                 val wkt = it.getString(2)
                 val coord = WKTReader().read(wkt).coordinate
-                val props: Map<String, Any?> = if (layer == "TOPMAR") {
-                    objectMapper.readValue<Map<String, Any?>>(it.getString(4)).toMutableMap().apply {
+                val props: Map<String, JsonElement> = if (layer == "TOPMAR") {
+                    decodeFromString<Map<String, JsonElement>>(it.getString(4)).toMutableMap().apply {
                         val assoc = findAssociatedLayerNames(this["LNAM"].toString())
                         TopmarData.fromAssoc(assoc).addTo(this)
                     }
+                    decodeFromString<Map<String, JsonElement>>(it.getString(4))
                 } else {
-                    objectMapper.readValue(it.getString(4))
+                    decodeFromString<Map<String, JsonElement>>(it.getString(4))
                 }
                 result.add(
                     LayerQueryResult(
@@ -81,21 +83,6 @@ class FeatureDao : Dao() {
         }.executeQuery().use { it.featureRecord().firstOrNull() }
     }
 
-    /**
-     * Find feature using its LNAM .
-     *
-     * LNAM Long name.  An encoding of AGEN, FIDN and FIDS used to uniquely identify this features within an S-57 file.
-     */
-    suspend fun findFeatureByName(objnam: String): List<FeatureRecord>? = sqlOpAsync { conn ->
-        conn.prepareStatement(
-            """ SELECT id, layer, ST_AsGeoJSON(ST_Centroid(geom)) AS centroid, props, chart_id, lower(z_range), upper(z_range)
-                FROM features WHERE props->>'OBJNAM'::text ilike ?
-                Limit 10;""".trimIndent()
-        ).apply {
-            setString(1, "%$objnam%")
-        }.executeQuery().use { it.featureRecord().toList() }
-    }
-
     fun featureCount(conn: Connection, chartId: Long): Int {
         return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
             setLong(1, chartId)
@@ -111,8 +98,8 @@ class FeatureDao : Dao() {
                 FeatureRecord(
                     id = getLong(++i),
                     layer = getString(++i),
-                    geom = objectMapper.readValue(getString(++i)),
-                    props = objectMapper.readValue(getString(++i)),
+                    geom = decodeFromString(getString(++i)),
+                    props = decodeFromString(getString(++i)),
                     chartId = getLong(++i),
                     zoomMax = getInt(++i),
                     zoomMin = getInt(++i),

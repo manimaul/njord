@@ -1,14 +1,14 @@
 package io.madrona.njord.model
 
-import com.fasterxml.jackson.annotation.JsonInclude
+import kotlinx.serialization.Serializable
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class AdminResponse(
     val signature: AdminSignature,
     val signatureEncoded: String,
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Serializable
 data class AdminSignature(
     val date: String,
     val signature: String,

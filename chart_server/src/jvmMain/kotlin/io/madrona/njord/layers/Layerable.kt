@@ -1,8 +1,10 @@
 package io.madrona.njord.layers
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import io.madrona.njord.ext.json
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
+import kotlinx.serialization.json.Json.Default.encodeToJsonElement
+import kotlinx.serialization.json.JsonElement
 
 abstract class Layerable(
     customKey: String? = null
@@ -32,7 +34,7 @@ abstract class Layerable(
             id = "${key}_point_${++pointLayerFromSymbolId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
-            filter = listOf(Filters.any, Filters.eqTypePoint),
+            filter = listOf(Filters.any, Filters.eqTypePoint).json,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol.property,
@@ -40,7 +42,7 @@ abstract class Layerable(
                 iconOffset = iconOffset?.property,
                 iconAllowOverlap = iconAllowOverlap,
                 iconRotate = iconRotate?.property,
-                iconRotationAlignment = iconRotationAlignment,
+                iconRotationAlignment = iconRotationAlignment?.let {  encodeToJsonElement(IconRotationAlignment.serializer(), iconRotationAlignment) },
             )
         )
     }
@@ -70,7 +72,7 @@ abstract class Layerable(
                 symbolPlacement = Placement.POINT,
             ),
             paint = Paint(
-                textColor = colorFrom(labelColor, theme),
+                textColor = colorFrom(labelColor, theme).json,
                 textHaloColor = colorFrom(highlightColor, theme),
                 textHaloWidth = 2.5f
             )
@@ -83,7 +85,7 @@ abstract class Layerable(
         color: Color,
         style: LineStyle = LineStyle.Solid,
         width: Float = 2f,
-        filter: List<Any>? = null,
+        filter: JsonElement? = null,
     ): Layer {
         return Layer(
             id = "${key}_line_${++lineLayerWithColorId}",
@@ -91,7 +93,7 @@ abstract class Layerable(
             sourceLayer = sourceLayer,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
-                lineColor = colorFrom(color, theme),
+                lineColor = colorFrom(color, theme).json,
                 lineWidth = width,
                 lineDashArray = style.lineDashArray
             )
@@ -103,13 +105,13 @@ abstract class Layerable(
         theme: Theme,
         style: LineStyle = LineStyle.Solid,
         width: Float = 2f,
-        filter: List<Any>? = null,
+        filter: List<JsonElement>? = null,
     ): Layer {
         return Layer(
             id = "${key}_line_${++lineLayerWithColorId}",
             type = LayerType.LINE,
             sourceLayer = sourceLayer,
-            filter = filter ?: Filters.eqTypeLineStringOrPolygon,
+            filter = filter?.json ?: Filters.eqTypeLineStringOrPolygon,
             paint = Paint(
                 lineColor = Filters.lineColor(options = options, theme = theme),
                 lineWidth = width,
@@ -138,7 +140,7 @@ abstract class Layerable(
                 symbolPlacement = Placement.LINE,
             ),
             paint = Paint(
-                textColor = colorFrom(labelColor, theme),
+                textColor = colorFrom(labelColor, theme).json,
                 textHaloColor = colorFrom(highlightColor, theme),
                 textHaloWidth = 2.5f
             )
@@ -154,7 +156,7 @@ abstract class Layerable(
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.LINE,
-                iconImage = symbol?.name ?: listOf("get", "LP"),
+                iconImage = symbol?.name?.json ?: listOf("get", "LP").json,
                 iconAnchor = Anchor.CENTER,
                 iconKeepUpright = false,
             )
@@ -164,7 +166,7 @@ abstract class Layerable(
     private var lineLayerWithPattern2Id = 0
     fun lineLayerWithPattern(
         symbol: Sprite? = null,
-        iconRotate: Any? = null,
+        iconRotate: Float? = null,
         iconSize: Float? = null,
         spacing: Float? = null,
         allowOverlap: Boolean,
@@ -176,9 +178,9 @@ abstract class Layerable(
             filter = Filters.eqTypeLineStringOrPolygon,
             layout = Layout(
                 symbolPlacement = Placement.LINE,
-                iconImage = symbol?.name ?: listOf("get", "LP"),
-                iconRotate = iconRotate,
-                iconRotationAlignment = IconRotationAlignment.MAP,
+                iconImage = symbol?.name?.json ?: listOf("get", "LP").json,
+                iconRotate = iconRotate?.json,
+                iconRotationAlignment = IconRotationAlignment.MAP.json,
                 iconAllowOverlap = allowOverlap,
                 iconSize = iconSize,
                 symbolSpacing = spacing,
@@ -196,12 +198,12 @@ abstract class Layerable(
             layout = Layout(
                 textFont = listOf(Font.ROBOTO_BOLD),
                 textJustify = TextJustify.CENTER,
-                textField = listOf("get", textKey),
+                textField = listOf("get".json, textKey.json).json,
                 textSize = 14f,
                 symbolPlacement = Placement.LINE,
             ),
             paint = Paint(
-                textColor = colorFrom(Color.CHBLK, theme),
+                textColor = colorFrom(Color.CHBLK, theme).json,
                 textHaloColor = colorFrom(Color.CHWHT, theme),
                 textHaloWidth = 2.5f
             )
@@ -234,7 +236,7 @@ abstract class Layerable(
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillColor = colorFrom(color, theme)
+                fillColor = colorFrom(color, theme).json
             ),
         )
     }
@@ -247,7 +249,7 @@ abstract class Layerable(
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
             paint = Paint(
-                fillPattern = symbol?.name ?: listOf("get", "AP")
+                fillPattern = symbol?.name?.json ?: listOf("get", "AP").json
             )
         )
     }
@@ -266,10 +268,10 @@ abstract class Layerable(
             filter = Filters.eqTypePolyGon,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
-                iconImage = symbol ?: listOf("get", "SY"),
-                iconOffset = iconOffset,
+                iconImage = symbol?.json ?: listOf("get", "SY").json,
+                iconOffset = iconOffset?.map{ it.json }?.json,
                 iconAnchor = anchor,
-                iconRotationAlignment = iconRotationAlignment,
+                iconRotationAlignment = iconRotationAlignment.json,
             )
         )
     }
@@ -288,16 +290,16 @@ abstract class Layerable(
             id = "${key}_area_point${++areaLayerWithPointSymbolId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
-            filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)),
+            filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)).json,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
-                iconImage = symbol ?: listOf("get", "SY"),
+                iconImage = symbol?.json ?: listOf("get", "SY").json,
                 iconAnchor = anchor,
                 iconRotate = iconRotate?.property,
-                iconRotationAlignment = iconRotationAlignment,
+                iconRotationAlignment = iconRotationAlignment?.json,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = false,
-                iconOffset = iconOffset,
+                iconOffset = iconOffset?.map{ it.json }?.json,
             )
         )
     }
@@ -309,6 +311,7 @@ abstract class Layerable(
        textColor: Color = Color.CHBLK,
        haloColor: Color = Color.CHWHT,
        textJustify: TextJustify = TextJustify.CENTER,
+       textOffset: Offset? = null
     ): Layer {
         return Layer(
             id = "${key}_area_label${++areaLayerWithTextId}",
@@ -320,9 +323,10 @@ abstract class Layerable(
                 textJustify = textJustify,
                 textField = label.property,
                 textSize = 14f,
+                textOffset = textOffset?.property,
             ),
             paint = Paint(
-                textColor = colorFrom(textColor, theme),
+                textColor = colorFrom(textColor, theme).json,
                 textHaloColor = colorFrom(haloColor, theme),
                 textHaloWidth = 2.5f
             )
@@ -330,18 +334,6 @@ abstract class Layerable(
     }
 }
 
-enum class ThemeMode: Theme {
-    @JsonProperty("DAY") Day,
-    @JsonProperty("DUSK") Dusk,
-    @JsonProperty("NIGHT") Night;
-}
-
-data class CustomTheme(
-    val mode: ThemeMode,
-    val name: String
-) : Theme
-
-sealed interface Theme
 
 data class LayerableOptions(
     val depth: Depth,
@@ -349,31 +341,31 @@ data class LayerableOptions(
 )
 
 fun ChartFeature.excludeAreaPointSymbol() {
-    props["EA"] = true
+    props["EA"] = true.json
 }
 
 fun ChartFeature.pointSymbol(symbol: Sprite) {
-    props["SY"] = symbol.name
+    props["SY"] = symbol.name.json
 }
 
 fun ChartFeature.pointSymbol(symbol: Sprite, num: Int) {
-    props["SY$num"] = symbol.name
+    props["SY$num"] = symbol.name.json
 }
 
 fun ChartFeature.areaPattern(pattern: Sprite) {
-    props["AP"] = pattern.name
+    props["AP"] = pattern.name.json
 }
 
 fun ChartFeature.areaColor(color: Color) {
-    props["AC"] = color.name
+    props["AC"] = color.name.json
 }
 
 fun ChartFeature.linePattern(pattern: Sprite) {
-    props["LP"] = pattern.name
+    props["LP"] = pattern.name.json
 }
 
 fun ChartFeature.lineColor(color: Color) {
-    props["LC"] = color.name
+    props["LC"] = color.name.json
 }
 
 abstract class LayerableTodo : Layerable() {

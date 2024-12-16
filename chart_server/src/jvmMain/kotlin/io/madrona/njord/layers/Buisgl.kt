@@ -1,5 +1,7 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.model.Color
+
 /**
  * Geometry Primitives: Point, Area
  *

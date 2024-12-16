@@ -9,7 +9,8 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
 import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
-import kotlin.math.sin
+import kotlinx.serialization.json.Json.Default.encodeToString
+
 
 class StyleHandler(
     private val config: ChartsConfig = Singletons.config,
@@ -24,25 +25,30 @@ class StyleHandler(
                 val theme = call.request.queryParameters["c"]?.takeIf {
                     colorLibrary.hasCustom(it)
                 }?.let {
-                   CustomTheme(themeMode, it)
+                    CustomTheme(themeMode, it)
                 } ?: themeMode
                 val name = "${themeMode.name.lowercase()}_simplified"
-                call.respond(
-                    Style(
-                        name = name,
-                        glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
-                        spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/$name",
-                        sources = mapOf(
-                            Source.SENC to Source(
-                                type = SourceType.VECTOR,
-                                tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
-                            )
-                        ),
-                        layers = layerFactory.layers(LayerableOptions(depth, theme)),
-                        version = 8
-                    )
-                )
+                call.respondText(styleString(name, depth, theme), ContentType.Application.Json, HttpStatusCode.OK)
             }
         } ?: call.respond(HttpStatusCode.NotFound, Any())
+    }
+
+    private fun styleString(name: String, depth: Depth, theme: Theme): String {
+        return encodeToString(
+            Style.serializer(),
+            Style(
+                name = name,
+                glyphsUrl = "${config.externalBaseUrl}/v1/content/fonts/{fontstack}/{range}.pbf",
+                spriteUrl = "${config.externalBaseUrl}/v1/content/sprites/$name",
+                sources = mapOf(
+                    Source.SENC to Source(
+                        type = SourceType.VECTOR,
+                        tileJsonUrl = "${config.externalBaseUrl}/v1/tile_json"
+                    )
+                ),
+                layers = layerFactory.layers(LayerableOptions(depth, theme)),
+                version = 8
+            )
+        )
     }
 }

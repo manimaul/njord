@@ -1,11 +1,12 @@
 package io.madrona.njord
 
 import io.ktor.http.*
-import io.ktor.serialization.jackson.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
@@ -35,10 +36,9 @@ fun main() {
 }
 
 fun Application.njord() {
+    install(Compression)
     install(ContentNegotiation) {
-        jackson {
-            Singletons.objectMapper
-        }
+        json()
     }
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
@@ -89,6 +89,9 @@ fun Application.njord() {
 
         // curl -v "https://openenc.com/v1/tile/0/0/0"
         TileHandler(),
+
+        // curl -v "https://openenc.com/v1/cache"
+        CacheHandler(),
 
         // https://openenc.com/v1/icon/<name>.png
         IconHandler(),

@@ -3,11 +3,10 @@ package io.madrona.njord.endpoints
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
-import io.madrona.njord.AboutJson
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
-import io.madrona.njord.ext.respondJson
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
+import io.madrona.njord.model.AboutJson
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.buildDate
 import io.madrona.njord.util.gitBranch
@@ -27,11 +26,11 @@ class AboutHandler(
         }.toString()
 
         when (aboutPath) {
-            "/version" -> call.respondJson(about())
-            "/s57objects" -> call.respondJson(s57ObjectLibrary.objects)
-            "/s57attributes" -> call.respondJson(s57ObjectLibrary.attributes)
-            "/expectedInput" -> call.respondJson(s57ObjectLibrary.expectedInput)
-            "/colors" -> call.respondJson(colorLibrary.colorMap.library)
+            "/version" -> call.respond(about())
+            "/s57objects" -> call.respond(s57ObjectLibrary.objects)
+            "/s57attributes" -> call.respond(s57ObjectLibrary.attributes)
+            "/expectedInput" -> call.respond(s57ObjectLibrary.expectedInput)
+            "/colors" -> call.respond(colorLibrary.colorMap.library)
             else -> call.respond(HttpStatusCode.NotFound)
         }
 

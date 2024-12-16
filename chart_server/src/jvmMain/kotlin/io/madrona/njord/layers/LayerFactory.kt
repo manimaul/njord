@@ -5,10 +5,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.layers.set.ExtraLayers
 import io.madrona.njord.layers.set.InlandLayers
 import io.madrona.njord.layers.set.StandardLayers
-import io.madrona.njord.model.ChartFeature
-import io.madrona.njord.model.ColorLibrary
-import io.madrona.njord.model.Depth
-import io.madrona.njord.model.Layer
+import io.madrona.njord.model.*
 
 class LayerFactory(
     private val standardLayers: StandardLayers = StandardLayers(),
@@ -29,13 +26,13 @@ class LayerFactory(
     }
 
     private val layers: Map<LayerableOptions, Sequence<Layer>> by lazy {
-        val optionList = Depth.values().map { depth ->
-            ThemeMode.values().map { theme ->
+        val optionList = Depth.entries.map { depth ->
+            ThemeMode.entries.map { theme ->
                 LayerableOptions(depth, theme)
             }
         }.flatten() + colorLibrary.colorMap.custom.keys.map { name ->
-            Depth.values().map { depth ->
-                ThemeMode.values().map { themeMode ->
+            Depth.entries.map { depth ->
+                ThemeMode.entries.map { themeMode ->
                     LayerableOptions(depth, CustomTheme(themeMode, name))
                 }
             }.flatten()

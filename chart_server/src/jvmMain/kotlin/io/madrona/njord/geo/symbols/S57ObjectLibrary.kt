@@ -1,27 +1,23 @@
 package io.madrona.njord.geo.symbols
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.madrona.njord.S57Attribute
-import io.madrona.njord.S57ExpectedInput
-import io.madrona.njord.S57Object
-import io.madrona.njord.Singletons
+import io.madrona.njord.model.S57Attribute
+import io.madrona.njord.model.S57ExpectedInput
+import io.madrona.njord.model.S57Object
 import io.madrona.njord.util.resourceAsString
+import kotlinx.serialization.json.Json.Default.decodeFromString
 
-class S57ObjectLibrary(
-    private val objectMapper: ObjectMapper = Singletons.objectMapper,
-) {
+class S57ObjectLibrary {
 
     val expectedInput: Map<String, List<S57ExpectedInput>> by lazy {
-        objectMapper.readValue(resourceAsString("s57expectedinput.json")!!, object: TypeReference<Map<String, List<S57ExpectedInput>>>() {})
+        decodeFromString(resourceAsString("s57expectedinput.json")!!)
     }
 
     val attributes: Map<String, S57Attribute> by lazy {
-        objectMapper.readValue(resourceAsString("s57attributes.json")!!, object: TypeReference<Map<String, S57Attribute>>() {})
+        decodeFromString(resourceAsString("s57attributes.json")!!)
     }
 
     val objects: Map<String, S57Object> by lazy {
-        objectMapper.readValue(resourceAsString("s57objectclasses.json")!!, object: TypeReference<Map<String, S57Object>>() {})
+        decodeFromString(resourceAsString("s57objectclasses.json")!!)
     }
 }
 

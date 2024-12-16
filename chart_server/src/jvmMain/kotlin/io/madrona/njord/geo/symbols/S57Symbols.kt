@@ -1,38 +1,37 @@
 package io.madrona.njord.geo.symbols
 
-import mil.nga.sf.geojson.Feature
+import kotlinx.serialization.json.*
 
-typealias S57Prop = MutableMap<String, Any?>
 
-inline fun <R : Any> S57Prop?.listFrom(key: String, transform: (Int) -> R?) : List<R> {
-    return this?.intValues(key)?.mapNotNull {
-        transform(it)
-    }?.toList() ?: emptyList()
+typealias S57Prop = MutableMap<String, JsonElement>
+
+fun S57Prop.stringValue(key: String): String? = get(key)?.jsonPrimitive?.contentOrNull
+fun S57Prop.intValue(key: String): Int? = get(key)?.jsonPrimitive?.contentOrNull?.toIntOrNull()
+fun S57Prop.stringValues(key: String): List<String>? = get(key)?.jsonArray?.map { it.jsonPrimitive.content }
+fun S57Prop.intValues(key: String): List<Int> = stringValues(key)?.mapNotNull { it.toIntOrNull() } ?: emptyList()
+fun S57Prop.floatValue(key: String): Float? = get(key)?.jsonPrimitive?.contentOrNull?.toFloatOrNull()
+fun S57Prop.doubleValue(key: String): Double? = get(key)?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+
+fun JsonElement.toAny(): Any {
+    return when (this) {
+        is JsonPrimitive -> {
+            val value = if (isString) {
+                content
+            } else if (content.contains(".")) {
+                content.toDoubleOrNull()
+            } else if ("true" == content) {
+                true
+            } else if ("false" == content) {
+                false
+            } else {
+                content.toIntOrNull()
+            }
+            value ?: content
+        }
+
+        is JsonArray -> toString()
+        is JsonObject -> toString()
+        JsonNull -> "null"
+        else -> toString()
+    }
 }
-
-fun S57Prop.intValues(key: String) : List<Int> {
-    return (this[key] as? Iterable<*>)?.mapNotNull {
-        it?.toString()?.toIntOrNull()
-    } ?: intValue(key)?.let { listOf(it) } ?: emptyList()
-}
-
-fun S57Prop.intValueSet(key: String) : Set<Int> {
-    return (this[key] as? Iterable<*>)?.asSequence()?.mapNotNull {
-        it?.toString()?.toIntOrNull()
-    }?.toSet() ?: intValue(key)?.let { setOf(it) } ?: emptySet()
-}
-
-fun S57Prop.stringValues(key: String) : List<String> {
-    return (this[key] as? Iterable<*>)?.mapNotNull {
-        it?.toString()
-    } ?: stringValue(key)?.let { listOf(it) } ?: emptyList()
-}
-
-fun Feature.s57Props(): S57Prop {
-    return properties
-}
-
-fun S57Prop.stringValue(key: String) = get(key)?.toString()
-fun S57Prop.intValue(key: String) = get(key)?.toString()?.toIntOrNull()
-fun S57Prop.floatValue(key: String) = get(key)?.toString()?.toFloatOrNull()
-fun S57Prop.doubleValue(key: String) = get(key)?.toString()?.toDoubleOrNull()

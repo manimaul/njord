@@ -1,9 +1,10 @@
 package io.madrona.njord.layers.attributehelpers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.intValue
-import io.madrona.njord.geo.symbols.intValues
 import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.Filters
+import kotlinx.serialization.json.JsonElement
 
 /**
  * https://openenc.com/control/symbols/MORFAC/CATMOR
@@ -18,12 +19,12 @@ enum class Catmor {
     CHAIN_WIRE_CABLE,
     MOORING_BUOY;
 
-    fun filterEq() : List<Any> {
-        return listOf(Filters.eq, "CATMOR", ordinal + 1)
+    fun filterEq() : JsonElement {
+        return listOf(Filters.eq, "CATMOR", ordinal + 1).json
     }
 
-    fun filterNotEq() : List<Any> {
-        return listOf(Filters.notEq, "CATMOR", ordinal + 1)
+    fun filterNotEq() : JsonElement {
+        return listOf(Filters.notEq, "CATMOR", ordinal + 1).json
     }
 
     companion object {

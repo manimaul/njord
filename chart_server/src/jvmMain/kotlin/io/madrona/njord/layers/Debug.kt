@@ -1,5 +1,6 @@
 package io.madrona.njord.layers
 
+import io.madrona.njord.ext.json
 import io.madrona.njord.model.*
 
 class Debug : Layerable() {
@@ -10,12 +11,12 @@ class Debug : Layerable() {
                     sourceLayer = sourceLayer,
                     filter = listOf(
                             "any", Filters.eqTypePoint
-                    ),
+                    ).json,
                     layout = Layout(
                             textFont = listOf(Font.ROBOTO_BOLD),
                             textAnchor = Anchor.CENTER,
                             textJustify = TextJustify.CENTER,
-                            textField = listOf("get", "DMSG"),
+                            textField = listOf("get", "DMSG").json,
                             textAllowOverlap = true,
                             textIgnorePlacement = true,
                             textSize = 11f,
@@ -29,9 +30,9 @@ class Debug : Layerable() {
                     filter = listOf(
                             Filters.all,
                             Filters.eqTypeLineString
-                    ),
+                    ).json,
                     paint = Paint(
-                            lineColor = colorFrom(Color.CSTLN, options.theme),
+                            lineColor = colorFrom(Color.CSTLN, options.theme).json,
                             lineWidth = 3f
                     )
             )

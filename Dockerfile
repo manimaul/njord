@@ -36,7 +36,7 @@ RUN apt update && apt install -y openjdk-17-jre-headless libcurl3-gnutls libdefl
 
 COPY chart_server/build/install /opt
 
-ENV JAVA_OPTS="-Dconfig.file=/opt/chart_server/application.conf -Dcharts.webStaticContent=/opt/chart_server/public -Djava.library.path=/opt/gdal/share/java"
+ENV JAVA_OPTS="-Dconfig.file=/opt/chart_server/application.conf -Dcharts.webStaticContent=/opt/chart_server/public -Djava.library.path=/opt/gdal/jni"
 
 COPY chart_server/src/main/resources/application.conf /opt/chart_server/application.conf
 COPY chart_server_fe/build /opt/chart_server/public

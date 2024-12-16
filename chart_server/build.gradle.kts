@@ -1,4 +1,5 @@
 import io.madrona.njord.build.VersionPlugin
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
     kotlin("multiplatform")
@@ -29,7 +30,7 @@ kotlin {
         withJava()
         testRuns.named("test") {
             executionTask.configure {
-                useJUnitPlatform()
+                jvmArgs = listOf("-Djava.library.path=/opt/gdal/jni")
             }
         }
     }
@@ -71,20 +72,15 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-tests-jvm")
-                implementation(kotlin("test-junit5"))
+                implementation(kotlin("test"))
                 implementation("org.mockito:mockito-core:5.2.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
             }
         }
     }
 }
 
 tasks {
-    test {
-        jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
-    }
-//    named<Sync>("installDist") {
-//        dependsOn("makeVersionFile")
-//    }
     named<JavaExec>("run") {
         //./gradlew :chart_server:run -Pskip
         if (project.hasProperty("skip")) {

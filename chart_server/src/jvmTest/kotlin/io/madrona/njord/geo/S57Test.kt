@@ -6,24 +6,31 @@ import io.madrona.njord.geo.symbols.intValue
 import io.madrona.njord.geo.symbols.s57Props
 import io.madrona.njord.geo.symbols.stringValue
 import io.madrona.njord.model.ChartInsert
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
 import mil.nga.sf.geojson.Point
 import java.io.File
+import java.util.concurrent.Executors
 import kotlin.test.*
 
 internal class S57Test {
+
     @Test
     fun testOpen() {
-        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
         S57(f)
     }
 
     @Test
     fun testProperties() = runBlocking {
-        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
-        val s57 = S57(f)
+        val s57 = S57(f, dispatcher = Dispatchers.Default)
         assertEquals(67, s57.layerNames().size)
 
         val dsid = s57.findLayer("DSID")
@@ -40,10 +47,10 @@ internal class S57Test {
 
     @Test
     fun testChartInfo() = runBlocking {
-        val f = File("src/test/data/US5WA22M/US5WA22M.000")
+        val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
 
-        val s57 = S57(f)
+        val s57 = S57(f, dispatcher = Dispatchers.Default)
         val info = s57.chartInsertInfo()
         assertTrue(info is InsertSuccess<ChartInsert>)
     }
@@ -51,9 +58,9 @@ internal class S57Test {
     @Test
     fun testSoundings() {
         runBlocking {
-            val f = File("src/test/data/US5WA22M/US5WA22M.000")
+            val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
             assertTrue(f.exists())
-            val s57 = S57(f)
+            val s57 = S57(f, dispatcher = Dispatchers.Default)
 
             val fc = s57.findLayer("SOUNDG")
 
@@ -80,9 +87,9 @@ internal class S57Test {
     @Test
     fun testBoySpp() {
         runBlocking {
-            val f = File("src/test/data/US5WA22M/US5WA22M.000")
+            val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
             assertTrue(f.exists())
-            val s57 = S57(f)
+            val s57 = S57(f, dispatcher = Dispatchers.Default)
 
             val fc = s57.findLayer("BOYSPP")
             assertNotNull(fc)
@@ -92,9 +99,9 @@ internal class S57Test {
     @Test
     fun testLnDare() {
         runBlocking {
-            val f = File("src/test/data/US5WA22M/US5WA22M.000")
+            val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
             assertTrue(f.exists())
-            val s57 = S57(f)
+            val s57 = S57(f, dispatcher = Dispatchers.Default)
 
             val fc = s57.findLayer("LNDARE")
             assertNotNull(fc)

@@ -19,8 +19,8 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
-group = "com.mxmariner.regatta"
-version = "${properties.get("version")}"
+group = "io.madrona.njord"
+version = "${properties["version"]}"
 
 kotlin {
     jvmToolchain(17)

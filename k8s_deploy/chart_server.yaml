@@ -62,7 +62,7 @@ spec:
           configMap:
             name: njord-config
 ---
-# kubectl -n njord create configmap njord-config --from-file=/Users/williamkamp/source/madrona/njord/chart_server/src/main/resources/application.conf
+# kubectl -n njord create configmap njord-config --from-file=/Users/williamkamp/source/madrona/njord/chart_server/src/jvmMain/resources/application.conf
 apiVersion: v1
 kind: ConfigMap
 metadata:

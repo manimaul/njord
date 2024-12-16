@@ -2,20 +2,20 @@
 version: '3.8'
 services:
 
-  s57server:
-    image: ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT
-    networks:
-      - overlay
-    ports:
-      - "9000:9000"
-    environment:
-      JAVA_OPTS: "-Dconfig.file=/opt/chart_server/application.conf \
-      -Dcharts.webStaticContent=/opt/chart_server/public \
-      -Djava.library.path=/opt/gdal/jni \
-      -Dcharts.pgHost=postgres -Dcharts.memcacheHost=memcached"
-    depends_on:
-      - postgres
-      - memcached
+#  s57server:
+#    image: ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT
+#    networks:
+#      - overlay
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      JAVA_OPTS: "-Dconfig.file=/opt/chart_server/application.conf \
+#      -Dcharts.webStaticContent=/opt/chart_server/public \
+#      -Djava.library.path=/opt/gdal/jni \
+#      -Dcharts.pgHost=postgres -Dcharts.memcacheHost=memcached"
+#    depends_on:
+#      - postgres
+#      - memcached
 
   memcached:
     image: memcached:1.6

@@ -1,5 +1,17 @@
 import io.madrona.njord.build.K8S
-import java.util.UUID
+import java.util.*
+
+plugins {
+    kotlin("jvm") version kotlinVersion apply false
+    kotlin("multiplatform") version kotlinVersion apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
 task("version") {
     doLast {

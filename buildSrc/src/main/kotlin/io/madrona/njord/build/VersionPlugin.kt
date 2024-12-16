@@ -5,7 +5,6 @@ import io.madrona.njord.build.GitInfo.gitShortHash
 import io.madrona.njord.build.GitInfo.gitUntracked
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSetContainer
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,15 +16,14 @@ class VersionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         val genBuildDir = File(target.buildDir, "generated/source/version")
-        (target.properties["sourceSets"] as? SourceSetContainer)?.getByName("main")?.java?.srcDir(genBuildDir)
+//        (target.properties["sourceSets"] as? SourceSetContainer)?.getByName("main")?.java?.srcDir(genBuildDir)
         target.task(taskName) {
             it.mustRunAfter("clean")
-            target.buildDir
             genBuildDir.mkdirs()
             val versionFile = File(genBuildDir, "VersionInfo.kt")
             versionFile.writeText(versionSource(target))
         }
-        target.tasks.getByName("compileKotlin") {
+        target.tasks.getByName("compileJava") {
             it.dependsOn(taskName)
         }
     }

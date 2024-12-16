@@ -51,7 +51,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     implementation("no.ecc.vectortile:java-vector-tile:1.3.23")
 
-    implementation(files("libs/gdal-3.7.2.jar"))
+    implementation(files("libs/gdal-3.10.0.jar"))
     implementation("ch.qos.logback:logback-classic:1.4.12")
     implementation("com.google.protobuf:protobuf-java:3.19.6")
     implementation("org.locationtech.jts:jts-core:1.19.0")

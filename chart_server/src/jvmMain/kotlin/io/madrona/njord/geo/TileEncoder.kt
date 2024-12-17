@@ -11,6 +11,7 @@ import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.geom.MultiPolygon
 import org.locationtech.jts.geom.Polygon
 import org.locationtech.jts.io.WKBReader
 
@@ -118,6 +119,11 @@ class TileEncoder(
         (chartGeo as? Polygon)?.let { ply ->
             val plyTile = tileSystem.tileGeometry(ply.exteriorRing, x, y, z)
             encoder.addFeature("PLY", emptyMap<String, Any?>(), plyTile)
+        }
+        (chartGeo as? MultiPolygon)?.let { ply ->
+            for (i in 0..<ply.numGeometries) {
+                addPly(ply.getGeometryN(i))
+            }
         }
     }
 

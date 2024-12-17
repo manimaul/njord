@@ -1,9 +1,7 @@
-package io.madrona.njord.viewmodel.utils
-
-import io.madrona.njord.viewmodel.Route
+package io.madrona.njord.routing
 
 
-class RouteMatcher private constructor(
+internal class RouteMatcher private constructor(
     val route: Route,
     private val pathPattern: Regex,
     private val keywords: List<String>

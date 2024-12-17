@@ -4,10 +4,6 @@ import androidx.compose.runtime.Composable
 import io.madrona.njord.viewmodel.utils.Fail
 
 @Composable
-actual fun NavBar() {
-}
-
-@Composable
 actual fun LoadingSpinner() {
 }
 

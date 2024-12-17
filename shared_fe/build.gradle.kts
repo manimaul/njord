@@ -28,6 +28,7 @@ kotlin {
                 api(compose.html.core)
                 api(compose.html.svg)
                 api(npm("maplibre-gl", "4.7.1"))
+                api(npm("bootstrap", "5.3.3"))
             }
         }
 

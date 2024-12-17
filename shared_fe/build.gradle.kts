@@ -27,6 +27,7 @@ kotlin {
             dependencies {
                 api(compose.html.core)
                 api(compose.html.svg)
+                api(npm("maplibre-gl", "4.7.1"))
             }
         }
 

@@ -23,3 +23,6 @@ expect fun LoadingSpinner()
 
 @Composable
 expect fun <A> ErrorDisplay(event: Fail<A>, function: () -> Unit)
+
+@Composable
+expect fun ChartView()

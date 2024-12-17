@@ -7,7 +7,7 @@ import org.jetbrains.compose.web.dom.Div
 actual fun AppBox(content: @Composable () -> Unit) {
     Div(
         attrs = {
-            classes("container_fluid")
+            classes("App", "Column")
         }
     ) {
         content()

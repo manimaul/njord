@@ -15,7 +15,7 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
         when (state.current.route) {
             Route.About -> RouteContent { Home() }
             Route.NotFound -> RouteContent { NotFound() }
-            Route.Enc -> NotFound()
+            Route.Enc -> ChartView()
             Route.ControlPanel -> RouteContent {
                 println("args = ${state.current.args}")
                 NotFound()

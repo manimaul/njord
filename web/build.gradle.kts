@@ -10,15 +10,17 @@ kotlin {
         moduleName = "njord"
         browser {
             commonWebpackConfig {
+                cssSupport { enabled.set(true) } // Add this
+                scssSupport { enabled.set(true) } // Add this
                 outputFileName = "njord.js"
             }
-            testTask(Action {
+            testTask {
                 testLogging.showStandardStreams = true
                 useKarma {
                     useChromeHeadless()
                     useFirefox()
                 }
-            })
+            }
         }
         binaries.executable()
     }

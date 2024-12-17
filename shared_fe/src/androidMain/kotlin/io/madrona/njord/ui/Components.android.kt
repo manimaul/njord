@@ -30,3 +30,7 @@ actual fun <A> ErrorDisplay(event: Fail<A>, function: () -> Unit) {
 @Composable
 actual fun RouteContent(content: @Composable () -> Unit) {
 }
+
+@Composable
+actual fun ChartView() {
+}

@@ -31,7 +31,7 @@ code {
 
 .Fill {
   /* grow shrink basis*/
-  flex: 1 initial fit-content;
+  flex: 1 1 fit-content;
 }
 
 .Footer {

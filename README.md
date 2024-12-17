@@ -47,10 +47,12 @@ Bring up api
 
 Bring up front end with hot-reload
 ```shell
-cd chart_server_fe
-npm start
+./gradlew :web:jsRun --continuous
 ```
 
+```shell
+./gradlew :web:jsBrowserDistribution
+```
 ----------
 
 # Docs

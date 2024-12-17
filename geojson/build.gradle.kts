@@ -13,11 +13,6 @@ kotlin {
 
     jvm {
         withJava()
-        testRuns.named("test") {
-            executionTask.configure {
-                useJUnitPlatform()
-            }
-        }
     }
 
     js {
@@ -35,12 +30,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit5"))
-                implementation("org.mockito:mockito-core:5.2.0")
             }
         }
     }

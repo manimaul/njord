@@ -1,5 +1,7 @@
 package io.madrona.njord.viewmodel.utils
 
+import io.madrona.njord.network.NetworkResponse
+
 
 sealed class Async<out T>(
     val complete: Boolean,

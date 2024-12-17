@@ -1,4 +1,4 @@
-package io.madrona.njord.viewmodel.utils
+package io.madrona.njord.network
 
 actual suspend inline fun <reified T> Network.get(
     api: String,

@@ -12,14 +12,14 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
     val state by viewModel.flow.collectAsState()
     AppBox {
         NavBar()
-            when (state.current.route) {
-                Route.About -> RouteContent {  Home() }
-                Route.NotFound -> RouteContent {  NotFound() }
-                Route.Enc -> NotFound()
-                Route.ControlPanel -> RouteContent {
-                    println("args = ${state.current.args}")
-                    NotFound()
-                }
+        when (state.current.route) {
+            Route.About -> RouteContent { Home() }
+            Route.NotFound -> RouteContent { NotFound() }
+            Route.Enc -> NotFound()
+            Route.ControlPanel -> RouteContent {
+                println("args = ${state.current.args}")
+                NotFound()
             }
+        }
     }
 }

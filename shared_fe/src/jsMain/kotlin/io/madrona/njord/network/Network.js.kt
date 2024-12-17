@@ -1,4 +1,4 @@
-package io.madrona.njord.viewmodel.utils
+package io.madrona.njord.network
 
 import io.madrona.njord.model.LoginResponse
 import kotlinx.browser.window

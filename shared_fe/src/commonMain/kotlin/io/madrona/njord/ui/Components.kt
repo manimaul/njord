@@ -13,6 +13,9 @@ expect fun Home()
 expect fun AppBox(content: @Composable () -> Unit)
 
 @Composable
+expect fun RouteContent(content: @Composable () -> Unit)
+
+@Composable
 expect fun NavBar()
 
 @Composable

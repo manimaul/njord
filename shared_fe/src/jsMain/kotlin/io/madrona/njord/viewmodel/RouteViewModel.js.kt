@@ -1,15 +1,9 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.routing.Routing
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URL
-
-actual fun queryString(): String? {
-    val url = window.location.href
-    return url.lastIndexOf('?').takeIf { it > 0 }?.let { qs ->
-        url.substring(qs + 1)
-    }
-}
 
 actual fun currentHref(): String {
     return window.location.href

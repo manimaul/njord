@@ -26,3 +26,7 @@ actual fun LoadingSpinner() {
 @Composable
 actual fun <A> ErrorDisplay(event: Fail<A>, function: () -> Unit) {
 }
+
+@Composable
+actual fun RouteContent(content: @Composable () -> Unit) {
+}

@@ -29,6 +29,12 @@ kotlin {
                 api(compose.html.svg)
             }
         }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
 

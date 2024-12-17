@@ -1,6 +1,7 @@
 package io.madrona.njord.viewmodel
 
-actual fun queryString(): String? = null
+import io.madrona.njord.routing.Routing
+
 actual fun currentHref(): String = ""
 
 actual fun currentRouting(): Routing {

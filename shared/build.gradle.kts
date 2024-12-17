@@ -5,7 +5,7 @@ plugins {
 
 
 group = "com.mxmariner.regatta"
-version = "${properties["version"]}"
+version = "${properties.get("version")}"
 
 
 kotlin {

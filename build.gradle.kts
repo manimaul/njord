@@ -1,10 +1,14 @@
 import io.madrona.njord.build.K8S
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import java.util.*
 
 plugins {
     kotlin("jvm") version kotlinVersion apply false
     kotlin("multiplatform") version kotlinVersion apply false
+    kotlin("plugin.compose") version kotlinVersion apply false
+    id("org.jetbrains.compose") version composeVersion apply false
     kotlin("plugin.serialization") version kotlinVersion apply false
+    id("com.android.library") version agpVersion apply false
 }
 
 allprojects {
@@ -80,4 +84,15 @@ task<Exec>("holdOn") {
  */
 tasks.register<GradleBuild>("deploy") {
     tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":cyclePods")
+}
+
+tasks.findByPath(":web:jsBrowserProductionWebpack")?.let { it as? KotlinWebpack }?.apply {
+    doFirst {
+        File("web/webpack.config.d/dev_server_config.js")
+            .renameTo(File("web/webpack.config.d/dev_server_config"))
+    }
+    doLast {
+        File("web/webpack.config.d/dev_server_config")
+            .renameTo(File("web/webpack.config.d/dev_server_config.js"))
+    }
 }

@@ -75,7 +75,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-tests-jvm")
                 implementation(kotlin("test"))
                 implementation("org.mockito:mockito-core:5.2.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
             }
         }
     }
@@ -87,7 +87,7 @@ tasks {
         if (project.hasProperty("skip")) {
             println("skipping web build")
         } else {
-            dependsOn(":chart_server_fe:build")
+            dependsOn(":web:jsBrowserDistribution")
         }
         jvmArgs = listOf("-Djava.library.path=/opt/gdal/share/java")
     }

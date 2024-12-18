@@ -2,6 +2,8 @@ package io.madrona.njord.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffectResult
+import androidx.compose.runtime.remember
+import io.madrona.njord.viewmodel.ChartViewModel
 import io.madrona.njord.viewmodel.utils.Fail
 import org.jetbrains.compose.web.dom.Div
 
@@ -13,22 +15,23 @@ actual fun LoadingSpinner() {
 actual fun <A> ErrorDisplay(event: Fail<A>, function: () -> Unit) {
 }
 
-object NoopDER : DisposableEffectResult {
-    override fun dispose() {}
-}
-
-
-//external fun require(module: String): dynamic
-
 @Composable
 actual fun ChartView() {
-//    require("maplibre-gl/dist/maplibre-gl.css")
+    val viewModel = remember { ChartViewModel() }
     Div(
         attrs = {
             classes("Fill")
-            ref {
-                MapLibre.Map(mapLibreArgs(it))
-                NoopDER
+            ref { element ->
+                println("creating map view")
+                viewModel.controller.mapView = MapLibre.Map(
+                    mapLibreArgs(element, viewModel.flow.value.location)
+                )
+                object : DisposableEffectResult {
+                    override fun dispose() {
+                        println("destroying map view")
+                        viewModel.controller.mapView = null
+                    }
+                }
             }
         })
 }

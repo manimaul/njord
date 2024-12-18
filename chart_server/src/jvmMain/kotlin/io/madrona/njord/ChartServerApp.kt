@@ -50,7 +50,7 @@ fun Application.njord() {
         level = Level.INFO
     }
     install(CORS) {
-        allowHost("localhost:3000")
+        allowHost("localhost:8080")
     }
     addHandlers(
         // curl https://openenc.com/v1/about/version | jq

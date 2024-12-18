@@ -1,14 +1,60 @@
 package io.madrona.njord.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import io.madrona.njord.model.Depth
+import io.madrona.njord.viewmodel.chartViewModel
 import io.madrona.njord.viewmodel.routeViewModel
 import org.jetbrains.compose.web.dom.*
 
 @Composable
+fun <T> NavDropdown(
+    selected: T,
+    title: (T) -> String,
+    options: List<T>,
+    callback: (T) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    fun expand() = if (expanded) "show" else "hide"
+    Div(attrs = {
+        onClick {
+            println("menu item clicked")
+            expanded = !expanded
+        }
+        classes("nav-item", "dropdown", expand())
+    }) {
+        A(href = "#", attrs = {
+            classes("dropdown-toggle", "nav-link")
+            tabIndex(0)
+            attr("aria-expanded", "$expanded")
+            attr("role", "button")
+        }) {
+            Text(title(selected))
+        }
+        Div(attrs = {
+            classes("dropdown-menu", expand())
+            attr("aria-labelledby", "basic-nav-dropdown")
+            attr("data-bs-popper", "static")
+        }) {
+            options.forEachIndexed { i, option ->
+                A(href = "#", attrs = {
+                    onClick {
+                        callback(option)
+                    }
+                    attr("data-rr-ui-dropdown-item", "")
+                    classes("dropdown-item")
+                    tabIndex(i)
+                }) { Text("$option") }
+
+            }
+        }
+
+    }
+}
+
+@Composable
 actual fun NavBar() {
     val state by routeViewModel.flow.collectAsState()
+    val chartState by chartViewModel.flow.collectAsState()
     Nav(attrs = {
         classes(
             "navbar",
@@ -56,6 +102,9 @@ actual fun NavBar() {
                                 Text(routing.route.title)
                             }
                         }
+                    }
+                    NavDropdown(chartState.depth, { "Depths: $it" }, Depth.entries.toList()) {
+                        chartViewModel.setDepth(it)
                     }
                     Li(attrs = { classes("nav-item") }) {
                         Button(attrs = {

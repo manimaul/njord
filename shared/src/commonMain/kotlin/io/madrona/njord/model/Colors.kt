@@ -31,6 +31,15 @@ data class CustomTheme(
 
 @Serializable
 sealed interface Theme
+
+fun stylePath(theme: Theme, depth: Depth): String {
+    val tail = when(theme) {
+        is CustomTheme -> "${theme.mode.name.lowercase()}?c=${theme.name}"
+        is ThemeMode -> theme.name.lowercase()
+    }
+    return "/v1/style/${depth.name.lowercase()}/$tail"
+}
+
 @Serializable
 enum class Color {
     NODTA,

@@ -30,8 +30,8 @@ task("version") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-    dependsOn(":chart_server_fe:build", ":chart_server:installDist")
-    mustRunAfter(":chart_server_fe:build", ":chart_server:installDist")
+    dependsOn(":web:jsBrowserDistribution", ":chart_server:installDist")
+    mustRunAfter(":web:jsBrowserDistribution", ":chart_server:installDist")
     commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 

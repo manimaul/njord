@@ -4,9 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffectResult
 import io.madrona.njord.viewmodel.chartViewModel
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Text
 
 @Composable
 actual fun ChartView() {
+    Div(attrs = { classes("Wrap","Warning","bg-danger", "text-white") }) {
+        Text("EXPERIMENTAL! - NOT FOR NAVIGATION")
+    }
     Div(
         attrs = {
             classes("Fill")

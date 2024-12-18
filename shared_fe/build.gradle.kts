@@ -30,6 +30,7 @@ kotlin {
                 api(compose.html.svg)
                 api(npm("maplibre-gl", "4.7.1"))
                 api(npm("bootstrap", "5.3.3"))
+                api(npm("@popperjs/core", "2.11.8"))
             }
         }
 

@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.compose") version kotlinVersion
     id("org.jetbrains.compose") version composeVersion
+    kotlin("plugin.serialization")
     id("com.android.library")
 }
 

@@ -1,9 +1,7 @@
 package io.madrona.njord.viewmodel
 
 import io.madrona.njord.geojson.GeoJsonObject
-import io.madrona.njord.model.Depth
-import io.madrona.njord.model.Theme
-import io.madrona.njord.model.ThemeMode
+import io.madrona.njord.model.*
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
 import kotlinx.coroutines.flow.map
@@ -87,8 +85,27 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
     fun setDepth(depth: Depth) {
         localStoreSet(depth)
         setState {
-            controller.setStyle(this.theme, depth)
+            controller.setStyle(theme, depth)
             copy(depth = depth)
+        }
+    }
+
+    fun setCustomColor(color: String) {
+        withState {
+            val newTheme: Theme = if (color == "Default") {
+                it.theme.mode()
+            } else {
+                CustomTheme(it.theme.mode(), color)
+            }
+            setTheme(newTheme)
+        }
+    }
+
+    fun setTheme(theme: Theme) {
+        localStoreSet(theme)
+        setState {
+            controller.setStyle(theme, depth)
+            copy(theme = theme)
         }
     }
 }

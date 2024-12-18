@@ -18,7 +18,7 @@ data class RouteState(
     val navBarRoutes: List<Routing> = listOf(
         Routing.from(Route.About),
         Routing.from(Route.Enc),
-        Route.controlPanel(),
+//        Route.controlPanel(),
     ),
 ) : VmState
 

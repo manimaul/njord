@@ -24,4 +24,5 @@ internal expect suspend fun Network.delete(api: String, params: Map<String, Stri
 
 object Network {
     suspend fun getAbout() : NetworkResponse<AboutJson> = get("about/version")
+    suspend fun getCustomColors() : NetworkResponse<Map<String, Map<String, Map<String, String>>>> = get("about/colors/custom")
 }

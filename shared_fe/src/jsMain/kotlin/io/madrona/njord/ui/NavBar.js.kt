@@ -2,6 +2,10 @@ package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
 import io.madrona.njord.model.Depth
+import io.madrona.njord.model.ThemeMode
+import io.madrona.njord.model.colorName
+import io.madrona.njord.model.mode
+import io.madrona.njord.viewmodel.NavBarViewModel
 import io.madrona.njord.viewmodel.chartViewModel
 import io.madrona.njord.viewmodel.routeViewModel
 import org.jetbrains.compose.web.dom.*
@@ -52,8 +56,10 @@ fun <T> NavDropdown(
 }
 
 @Composable
-actual fun NavBar() {
-    val state by routeViewModel.flow.collectAsState()
+actual fun NavBar( ) {
+    val viewModel: NavBarViewModel = remember { NavBarViewModel() }
+    val state by viewModel.flow.collectAsState()
+    val routeState by routeViewModel.flow.collectAsState()
     val chartState by chartViewModel.flow.collectAsState()
     Nav(attrs = {
         classes(
@@ -85,12 +91,12 @@ actual fun NavBar() {
                 classes("collapse", "navbar-collapse")
             }) {
                 Ul(attrs = { classes("navbar-nav") }) {
-                    state.navBarRoutes.forEach { routing ->
+                    routeState.navBarRoutes.forEach { routing ->
                         Li(attrs = { classes("nav-item") }) {
                             Button(attrs = {
                                 attr("data-bs-toggle", "collapse")
                                 attr("data-bs-target", "#navbarNavDropdown")
-                                if (routing.route == state.current.route) {
+                                if (routing.route == routeState.current.route) {
                                     classes("nav-link", "active")
                                 } else {
                                     classes("nav-link")
@@ -106,16 +112,24 @@ actual fun NavBar() {
                     NavDropdown(chartState.depth, { "Depths: $it" }, Depth.entries.toList()) {
                         chartViewModel.setDepth(it)
                     }
-                    Li(attrs = { classes("nav-item") }) {
-                        Button(attrs = {
-                            classes("nav-link")
-                            onClick {
-                                println("todo")
-                            }
-                        }) {
-                            Text("Admin")
+                    NavDropdown(chartState.theme, { "Theme: ${it.mode()}" }, ThemeMode.entries.toList()) {
+                        chartViewModel.setTheme(it)
+                    }
+                    state.customColors.value?.let { cc ->
+                        NavDropdown(chartState.theme.colorName(), { "Colors: $it" }, cc) {
+                            chartViewModel.setCustomColor(it)
                         }
                     }
+//                    Li(attrs = { classes("nav-item") }) {
+//                        Button(attrs = {
+//                            classes("nav-link")
+//                            onClick {
+//                                println("todo")
+//                            }
+//                        }) {
+//                            Text("Admin")
+//                        }
+//                    }
                 }
             }
         }

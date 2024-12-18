@@ -31,6 +31,7 @@ class AboutHandler(
             "/s57attributes" -> call.respond(s57ObjectLibrary.attributes)
             "/expectedInput" -> call.respond(s57ObjectLibrary.expectedInput)
             "/colors" -> call.respond(colorLibrary.colorMap.library)
+            "/colors/custom" -> call.respond(colorLibrary.colorMap.custom)
             else -> call.respond(HttpStatusCode.NotFound)
         }
 

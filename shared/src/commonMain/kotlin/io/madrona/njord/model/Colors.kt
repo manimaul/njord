@@ -32,6 +32,20 @@ data class CustomTheme(
 @Serializable
 sealed interface Theme
 
+fun Theme.colorName() : String {
+    return when (this) {
+        is CustomTheme -> this.name
+        is ThemeMode -> "Default"
+    }
+}
+
+fun Theme.mode() : ThemeMode {
+   return when (this) {
+       is CustomTheme -> this.mode
+       is ThemeMode -> this
+   }
+}
+
 fun stylePath(theme: Theme, depth: Depth): String {
     val tail = when(theme) {
         is CustomTheme -> "${theme.mode.name.lowercase()}?c=${theme.name}"

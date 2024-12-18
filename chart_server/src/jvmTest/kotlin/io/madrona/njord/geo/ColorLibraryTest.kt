@@ -1,8 +1,8 @@
 package io.madrona.njord.geo
 import io.madrona.njord.Singletons
-import io.madrona.njord.layers.Color
-import io.madrona.njord.layers.CustomTheme
-import io.madrona.njord.layers.ThemeMode
+import io.madrona.njord.model.Color
+import io.madrona.njord.model.CustomTheme
+import io.madrona.njord.model.ThemeMode
 import kotlin.test.*
 
 class ColorLibraryTest {
@@ -10,8 +10,8 @@ class ColorLibraryTest {
     @Test
     fun testColors() {
         val colors = Singletons.colorLibrary.colorMap
-        val colorKeys = Color.values().toSet()
-        ThemeMode.values().forEach {
+        val colorKeys = Color.entries.toSet()
+        ThemeMode.entries.forEach {
             val themeColors = colors.library[it]?.keys
             assertNotNull(themeColors)
             assertEquals(colorKeys, themeColors)

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import io.madrona.njord.viewmodel.AboutViewModel
+import io.madrona.njord.viewmodel.complete
 import org.jetbrains.compose.web.attributes.colspan
 import org.jetbrains.compose.web.dom.*
 
@@ -17,34 +18,40 @@ actual fun Home() {
                 Img(src = "/njord.jpg") { classes("img-fluid", "w-25") }
             }
             Div(attrs = { classes("Center") }) {
-                Table(attrs = { classes("w-50", "table", "table-striped", "table-bordered", "table-hover") }) {
-                    Thead {
-                        Tr {
-                            Th(attrs = { colspan(2) }) {
-                                Text("Njord Electronic Navigation Chart Server")
-                            }
-                        }
-                        Tr {
-                            Td { Text("Njord Version") }
-                            Td { Text(state.value.response.value?.version ?: "...") }
-                        }
-                        Tr {
-                            Td { Text("Git Commit") }
-                            Td {
-                                state.value.response.value?.gitHash?.let {
-                                    A(href = "https://github.com/manimaul/njord/commit/$it") { Text(it) }
+                state.value.response.complete(viewModel) { info ->
+                    Table(attrs = { classes("w-50", "table", "table-striped", "table-bordered", "table-hover") }) {
+                        Thead {
+                            Tr {
+                                Th(attrs = { colspan(2) }) {
+                                    Text("Njord Electronic Navigation Chart Server")
                                 }
                             }
+                            Tr {
+                                Td { Text("Njord Version") }
+                                Td {
+                                    Text(info.version)
+                                }
+                            }
+                            Tr {
+                                Td { Text("Git Commit") }
+                                Td {
+                                    A(href = "https://github.com/manimaul/njord/commit/${info.gitHash}") { Text(info.gitHash) }
+                                }
+                            }
+                            Tr {
+                                Td { Text("Gdal Version") }
+                                Td {
+                                    Text(info.gdalVersion)
+                                }
+                            }
+                            Tr {
+                                Td { Text("Build Date") }
+                                Td {
+                                    Text(info.buildDate)
+                                }
+                            }
+                            //todo: add admin is logged in check
                         }
-                        Tr {
-                            Td { Text("Gdal Version") }
-                            Td { Text(state.value.response.value?.gdalVersion ?: "...") }
-                        }
-                        Tr {
-                            Td { Text("Build Date") }
-                            Td { Text(state.value.response.value?.buildDate ?: "...") }
-                        }
-                        //todo: add admin is logged in check
                     }
                 }
             }

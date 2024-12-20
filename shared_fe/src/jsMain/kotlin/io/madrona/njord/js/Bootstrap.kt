@@ -14,4 +14,12 @@ external class Bootstrap {
             fun getOrCreateInstance(name: Element): Modal?
         }
     }
+    class Collapse {
+        fun toggle()
+        companion object {
+            fun getOrCreateInstance(name: Element): Collapse?
+            fun getOrCreateInstance(name: String): Collapse?
+        }
+
+    }
 }

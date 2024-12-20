@@ -1,11 +1,13 @@
 package io.madrona.njord.viewmodel
 
 import io.madrona.njord.geojson.GeoJsonObject
-import io.madrona.njord.model.*
-import io.madrona.njord.ui.MapLibre
-import io.madrona.njord.ui.moveEnd
-import io.madrona.njord.ui.onClick
-import io.madrona.njord.ui.renderedFeatures
+import io.madrona.njord.js.MapLibre
+import io.madrona.njord.js.moveEnd
+import io.madrona.njord.js.onClick
+import io.madrona.njord.js.renderedFeatures
+import io.madrona.njord.model.Depth
+import io.madrona.njord.model.Theme
+import io.madrona.njord.model.stylePath
 
 actual class ChartViewController actual constructor() {
     var mapView: MapLibre.Map? = null
@@ -26,8 +28,8 @@ actual class ChartViewController actual constructor() {
 
     actual fun queryRenderedFeatures(
         topLeft: MapPoint, bottomRight: MapPoint
-    ): GeoJsonObject? {
-        return mapView?.renderedFeatures(topLeft, bottomRight)
+    ): List<GeoJsonObject> {
+        return mapView?.renderedFeatures(topLeft, bottomRight) ?: emptyList()
     }
 
     actual fun setStyle(theme: Theme, depth: Depth) {

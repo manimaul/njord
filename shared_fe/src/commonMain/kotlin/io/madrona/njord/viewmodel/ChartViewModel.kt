@@ -12,7 +12,7 @@ data class ChartState(
     val location: MapLocation = localStoreGet<MapLocation>() ?: MapLocation(),
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
-    val query: GeoJsonObject? = null,
+    val query: List<GeoJsonObject> = emptyList(),
 ) : VmState
 
 @Serializable
@@ -30,17 +30,16 @@ data class MapBounds(
 )
 
 data class MapPoint(
-    val x: Double,
-    val y: Double,
+    val x: Int,
+    val y: Int,
 )
-
 
 expect class ChartViewController() {
     var onMoveEnd: ((MapLocation) -> Unit)?
     var onClick: ((MapPoint) -> Unit)?
     fun move(location: MapLocation)
     fun fitBounds(bounds: MapLocation)
-    fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): GeoJsonObject?
+    fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<GeoJsonObject>
     fun setStyle(theme: Theme, depth: Depth)
 }
 
@@ -107,5 +106,9 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
             controller.setStyle(theme, depth)
             copy(theme = theme)
         }
+    }
+
+    fun clearQuery() {
+        setState { copy(query = emptyList()) }
     }
 }

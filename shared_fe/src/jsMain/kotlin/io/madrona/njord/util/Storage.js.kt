@@ -2,9 +2,6 @@ package io.madrona.njord.util
 
 import kotlinx.browser.window
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-
-val json = Json { useArrayPolymorphism = true }
 
 actual inline fun <reified T> localStoreSet(item: T?) {
     T::class.simpleName?.let { key ->

@@ -1,8 +1,6 @@
 package io.madrona.njord.ui
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import io.madrona.njord.viewmodel.AboutViewModel
 import io.madrona.njord.viewmodel.complete
 import org.jetbrains.compose.web.attributes.colspan

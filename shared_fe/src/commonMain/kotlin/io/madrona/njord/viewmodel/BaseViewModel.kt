@@ -23,6 +23,7 @@ abstract class BaseViewModel<T : VmState>(
     protected fun <A> withState(handler: (T) -> A): A {
         return handler(internalState.value)
     }
+
     protected suspend fun <A> withStateAsync(handler: suspend (T) -> A): A {
         return handler(internalState.value)
     }
@@ -60,6 +61,24 @@ abstract class BaseViewModel<T : VmState>(
 
     abstract fun reload()
 
+}
+
+@Composable
+fun <A, B> asyncComplete(
+    viewModel: BaseViewModel<*>,
+    one: Async<A>,
+    two: Async<B>,
+    complete: @Composable (A, B) -> Unit
+) {
+    if (one is Complete && two is Complete) {
+        complete(one.value, two.value)
+    } else if (one is Loading || two is Loading) {
+        LoadingSpinner()
+    } else if (one is Fail) {
+        ErrorDisplay(one) { viewModel.reload() }
+    } else if (two is Fail) {
+        ErrorDisplay(two) { viewModel.reload() }
+    }
 }
 
 @Composable

@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import com.codahale.metrics.Timer
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
+import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.geo.symbols.toAny
 import no.ecc.vectortile.VectorTileEncoder;
@@ -98,7 +99,9 @@ class TileEncoder(
                                 )
                             )
                         }
-                        encoder.addFeature(feature.layer, feature.props.filtered().mapValues { entry ->
+                        encoder.addFeature(feature.layer, feature.props.filtered().also {
+                            it["CID"] = chart.id.json
+                        }.mapValues { entry ->
                             entry.value.toAny()
                         }, tileGeo)
                     }

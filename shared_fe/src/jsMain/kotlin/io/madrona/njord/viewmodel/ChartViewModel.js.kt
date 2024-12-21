@@ -6,6 +6,7 @@ import io.madrona.njord.js.moveEnd
 import io.madrona.njord.js.onClick
 import io.madrona.njord.js.renderedFeatures
 import io.madrona.njord.model.Depth
+import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.Theme
 import io.madrona.njord.model.stylePath
 
@@ -28,7 +29,7 @@ actual class ChartViewController actual constructor() {
 
     actual fun queryRenderedFeatures(
         topLeft: MapPoint, bottomRight: MapPoint
-    ): List<GeoJsonObject> {
+    ): List<MapGeoJsonFeature> {
         return mapView?.renderedFeatures(topLeft, bottomRight) ?: emptyList()
     }
 

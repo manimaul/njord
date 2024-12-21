@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 data class NavBarState(
     val customColors: Async<List<String>> = Uninitialized,
-) : VmState
+)
 
 class NavBarViewModel : BaseViewModel<NavBarState>(NavBarState()) {
     init {

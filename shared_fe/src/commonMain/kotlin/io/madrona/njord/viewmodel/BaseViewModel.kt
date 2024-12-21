@@ -11,9 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-interface VmState
-
-abstract class BaseViewModel<T : VmState>(
+abstract class BaseViewModel<T>(
     initialState: T,
 ) : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
     private val internalState = MutableStateFlow(initialState)

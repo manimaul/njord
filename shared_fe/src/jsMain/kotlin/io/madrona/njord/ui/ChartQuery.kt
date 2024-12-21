@@ -7,6 +7,7 @@ import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.Color
 import io.madrona.njord.model.MapGeoJsonFeature
+import io.madrona.njord.model.ThemeMode
 import io.madrona.njord.viewmodel.asyncComplete
 import io.madrona.njord.viewmodel.chartObjectsViewModel
 import io.madrona.njord.viewmodel.complete
@@ -16,7 +17,7 @@ import org.jetbrains.compose.web.ExperimentalComposeWebSvgApi
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.svg.*
 
-private val skipKeys = setOf("SY", "AP", "AC", "LC", "SORIND", "CID")
+private val skipKeys = setOf("SY", "AP", "AC", "LC", "CID")
 private fun JsonElement.valueStr() = (this as? JsonPrimitive)?.content ?: toString()
 
 @Composable
@@ -25,10 +26,11 @@ fun ChartQuery(
 ) {
     val state by chartObjectsViewModel.flow.collectAsState()
     val colorState by chartObjectsViewModel.colorSelectionFlow.collectAsState()
-    state.s57Objects.complete(chartObjectsViewModel) { obj ->
+    asyncComplete(chartObjectsViewModel, state.s57Objects, colorState.themeColors) { obj, colors ->
         Accordion(content) { builder ->
             val feature = builder.item
-            builder.title = obj[feature.sourceLayer]?.objectClass?.let { "${feature.sourceLayer} - ($it)" } ?: feature.sourceLayer
+            builder.title =
+                obj[feature.sourceLayer]?.objectClass?.let { "${feature.sourceLayer} - ($it)" } ?: feature.sourceLayer
             builder.body = {
                 Div {
                     P {
@@ -60,42 +62,34 @@ fun ChartQuery(
                         }
                     }
                     feature.properties["AC"]?.valueStr()?.let { symbol ->
+                        DisplayColor("AC", "Area Color", symbol, colorState.mode, colors)
+                    }
+                    feature.properties["LC"]?.valueStr()?.let { symbol ->
+                        DisplayColor("LC", "Line Color", symbol, colorState.mode, colors)
+                    }
+                    feature.properties["LP"]?.valueStr()?.let { symbol ->
                         P {
-                            B { Text("Area Color: ") }
-                            Text("AC $symbol ")
-                            SvgCircle(symbol)
+                            B { Text("Line Pattern: ") }
+                            Text("LP $symbol ")
+                            Img(src = "/v1/icon/${symbol}.png", alt = symbol)
                         }
                     }
-                    colorState.themeColors.complete(chartObjectsViewModel) { colors ->
-                        feature.properties["LC"]?.valueStr()?.let { symbol ->
-                            colors[Color.valueOf(symbol)]?.let { color ->
-                                P {
-                                    B { Text("Line Color: ") }
-                                    Text("LC $symbol")
-                                    B { Text(" (${colorState.mode})") }
-                                    Text(" $color ")
+                }
 
-                                    SvgCircle(color)
-                                }
+                state.attributes.complete(chartObjectsViewModel) { att ->
+                    feature.properties.keys.filter { !skipKeys.contains(it) }.forEach { key ->
+                        att[key]?.let {
+                            Li {
+                                B { Text(key) }
+                                Text(" - ${it.attribute}")
+                                Text(": ")
+                                I { Text("${feature.properties[key]}") }
                             }
-                        }
-                    }
 
-                    state.attributes.complete(chartObjectsViewModel) { att ->
-                        feature.properties.keys.filter { !skipKeys.contains(it) }.forEach { key ->
-                            att[key]?.let {
-                                Li {
-                                    B { Text(key) }
-                                    Text(" - ${it.attribute}")
-                                    Text(": ")
-                                    I { Text("${feature.properties[key]}") }
-                                }
-
-                            } ?: Li {
-                                Text(key)
-                                Text(":")
-                                Text("${feature.properties[key]}")
-                            }
+                        } ?: Li {
+                            Text(key)
+                            Text(":")
+                            Text("${feature.properties[key]}")
                         }
                     }
                 }
@@ -104,6 +98,24 @@ fun ChartQuery(
     }
 }
 
+@Composable
+fun DisplayColor(
+    key: String,
+    desc: String,
+    symbol: String,
+    mode: ThemeMode,
+    colors: Map<Color, String>) {
+    colors[Color.valueOf(symbol)]?.let { hex ->
+        Li {
+            B { Text(key) }
+            Text(" - $desc $symbol ($mode) $hex ")
+            SvgCircle(hex)
+        }
+    } ?: Li {
+        B { Text(key) }
+        Text(" ERROR! finding $desc $symbol")
+    }
+}
 
 @Composable
 fun LatLng(geo: Geometry?) {

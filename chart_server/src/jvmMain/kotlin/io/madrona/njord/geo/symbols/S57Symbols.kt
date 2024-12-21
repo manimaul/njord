@@ -24,14 +24,14 @@ fun JsonElement.toAny(): Any {
             } else if ("false" == content) {
                 false
             } else {
-                content.toIntOrNull()
+                content.toLongOrNull()
             }
             value ?: content
         }
 
-        is JsonArray -> toString()
-        is JsonObject -> toString()
+        is JsonArray -> map { it.toAny() }
+        is JsonObject -> mapValues { it.value.toAny() }
         JsonNull -> "null"
-        else -> toString()
+        else -> this
     }
 }

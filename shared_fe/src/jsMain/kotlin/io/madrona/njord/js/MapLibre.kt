@@ -1,7 +1,6 @@
 package io.madrona.njord.js
 
-import io.madrona.njord.geojson.Feature
-import io.madrona.njord.geojson.GeoJsonObject
+import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.stylePath
 import io.madrona.njord.util.json
 import io.madrona.njord.viewmodel.ChartState
@@ -34,7 +33,7 @@ fun MapLibre.Map.moveEnd(callback: (MapLocation) -> Unit) {
     }
 }
 
-fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<GeoJsonObject> {
+fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature> {
     println("renderedFeatures $topLeft $bottomRight")
     val top = topLeft.x
     val bottom = bottomRight.x
@@ -46,12 +45,7 @@ fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): Lis
     )
     val f: String = JSON.stringify(queryRenderedFeatures(box))
     val geoList = Json.parseToJsonElement(f)
-    //todo: additional fields
-//    val layer: JsonObject?, //Layer
-//    val source: String?,
-//    val sourceLayer: String?,
-//    val state: JsonObject?
-    val retVal = json.decodeFromJsonElement(ListSerializer(Feature.serializer()), geoList)
+    val retVal = json.decodeFromJsonElement(ListSerializer(MapGeoJsonFeature.serializer()), geoList)
     return retVal
 }
 

@@ -1,6 +1,8 @@
 package io.madrona.njord.viewmodel
 
-import io.madrona.njord.geojson.GeoJsonObject
+import io.madrona.njord.model.Depth
+import io.madrona.njord.model.MapGeoJsonFeature
+import io.madrona.njord.model.Theme
 
 actual class ChartViewController actual constructor() {
     actual var onMoveEnd: ((MapLocation) -> Unit)? = null
@@ -15,7 +17,10 @@ actual class ChartViewController actual constructor() {
     actual fun queryRenderedFeatures(
         topLeft: MapPoint,
         bottomRight: MapPoint
-    ): GeoJsonObject? {
-        return null
+    ): List<MapGeoJsonFeature> {
+        return emptyList()
+    }
+
+    actual fun setStyle(theme: Theme, depth: Depth) {
     }
 }

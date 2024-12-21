@@ -6,6 +6,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.TileDao
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.CacheInfo
+import kotlinx.coroutines.delay
 
 class CacheHandler(
     private val tileDao: TileDao = Singletons.tileDao
@@ -14,6 +15,7 @@ class CacheHandler(
 
     override suspend fun handlePost(call: ApplicationCall) {
         tileDao.clearCache()
+        delay(100)
         call.respond(getInfo())
     }
 

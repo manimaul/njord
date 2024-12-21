@@ -1,6 +1,5 @@
 package io.madrona.njord.viewmodel
 
-import io.madrona.njord.geojson.GeoJsonObject
 import io.madrona.njord.model.*
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
@@ -12,7 +11,7 @@ data class ChartState(
     val location: MapLocation = localStoreGet<MapLocation>() ?: MapLocation(),
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
-    val query: List<GeoJsonObject> = emptyList(),
+    val query: List<MapGeoJsonFeature> = emptyList(),
 ) : VmState
 
 @Serializable
@@ -39,11 +38,13 @@ expect class ChartViewController() {
     var onClick: ((MapPoint) -> Unit)?
     fun move(location: MapLocation)
     fun fitBounds(bounds: MapLocation)
-    fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<GeoJsonObject>
+    fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature>
     fun setStyle(theme: Theme, depth: Depth)
 }
 
 val chartViewModel = ChartViewModel()
+
+fun currentThemeMode() = chartViewModel.flow.value.theme.mode()
 
 class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
     var controller: ChartViewController = ChartViewController()

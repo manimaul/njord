@@ -20,7 +20,7 @@ data class RouteState(
         Routing.from(Route.Enc),
 //        Route.controlPanel(),
     ),
-) : VmState
+)
 
 class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
 

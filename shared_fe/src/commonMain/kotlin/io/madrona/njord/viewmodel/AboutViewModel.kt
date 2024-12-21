@@ -9,7 +9,7 @@ import io.madrona.njord.viewmodel.utils.toAsync
 
 data class AboutState(
     val response: Async<AboutJson> = Uninitialized
-) : VmState
+)
 
 class AboutViewModel : BaseViewModel<AboutState>(AboutState()) {
     init { reload() }

@@ -12,7 +12,7 @@ data class ChartState(
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
     val query: List<MapGeoJsonFeature> = emptyList(),
-) : VmState
+)
 
 @Serializable
 data class MapLocation(

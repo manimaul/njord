@@ -18,8 +18,7 @@ data class ChartObjectsState(
     val attributes: Async<Map<String, S57Attribute>> = Uninitialized,
     val expectedInputs: Async<Map<String, List<S57ExpectedInput>>> = Uninitialized,
     val colors: Async<Map<ThemeMode, Map<Color, String>>> = Uninitialized,
-) : VmState
-
+)
 
 val chartObjectsViewModel = ChartObjectsViewModel()
 

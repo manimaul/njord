@@ -17,6 +17,23 @@ interface AccordionBuilder<T> {
 private var num = 0
 
 @Composable
+inline fun <reified A, reified B> Accordion(
+    itemsA: List<A>,
+    itemsB: List<B>,
+    crossinline itemComponentA: (AccordionBuilder<A>) -> Unit,
+    crossinline itemComponentB: (AccordionBuilder<B>) -> Unit,
+) {
+    Accordion(itemsA + itemsB) { builder ->
+        if (builder.item is A) {
+            itemComponentA(builder as AccordionBuilder<A>)
+        } else {
+            itemComponentB(builder as AccordionBuilder<B>)
+        }
+
+    }
+}
+
+@Composable
 fun <T> Accordion(
     items: List<T>,
     itemComponent: (AccordionBuilder<T>) -> Unit,

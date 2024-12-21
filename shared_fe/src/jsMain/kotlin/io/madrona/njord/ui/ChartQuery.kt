@@ -8,6 +8,7 @@ import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.Color
 import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.ThemeMode
+import io.madrona.njord.viewmodel.ChartInfoViewModel
 import io.madrona.njord.viewmodel.asyncComplete
 import io.madrona.njord.viewmodel.chartObjectsViewModel
 import io.madrona.njord.viewmodel.complete
@@ -17,7 +18,7 @@ import org.jetbrains.compose.web.ExperimentalComposeWebSvgApi
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.svg.*
 
-private val skipKeys = setOf("SY", "AP", "AC", "LC", "CID")
+private val skipKeys = setOf("SY", "AP", "AC", "LC")
 private fun JsonElement.valueStr() = (this as? JsonPrimitive)?.content ?: toString()
 
 @Composable
@@ -26,8 +27,14 @@ fun ChartQuery(
 ) {
     val state by chartObjectsViewModel.flow.collectAsState()
     val colorState by chartObjectsViewModel.colorSelectionFlow.collectAsState()
+    val charts =
+        content.mapNotNull { it.properties["CID"]?.valueStr() }.distinct().map { ChartInfoViewModel(it) }
+    println("num charts = ${charts.size}")
     asyncComplete(chartObjectsViewModel, state.s57Objects, colorState.themeColors) { obj, colors ->
-        Accordion(content) { builder ->
+        Accordion(charts, content, { builder ->
+            builder.title = "Chart id:(${builder.item.id})"
+            builder.body = { ChartInfo(builder.item) }
+        }, { builder ->
             val feature = builder.item
             builder.title =
                 obj[feature.sourceLayer]?.objectClass?.let { "${feature.sourceLayer} - ($it)" } ?: feature.sourceLayer
@@ -40,13 +47,7 @@ fun ChartQuery(
                         Text("${feature.geometry?.type ?: "?"}")
                     }
                     LatLng(feature.geometry)
-                    feature.properties["SORIND"]?.valueStr()?.let { symbol ->
-                        P {
-                            B { Text("Chart: ") }
-                            Text(symbol)
-                        }
-                    }
-
+                    B { Text("Properties:") }
                     feature.properties["SY"]?.valueStr()?.let { symbol ->
                         P {
                             B { Text("Symbol: ") }
@@ -94,7 +95,7 @@ fun ChartQuery(
                     }
                 }
             }
-        }
+        })
     }
 }
 
@@ -104,7 +105,8 @@ fun DisplayColor(
     desc: String,
     symbol: String,
     mode: ThemeMode,
-    colors: Map<Color, String>) {
+    colors: Map<Color, String>
+) {
     colors[Color.valueOf(symbol)]?.let { hex ->
         Li {
             B { Text(key) }
@@ -114,6 +116,46 @@ fun DisplayColor(
     } ?: Li {
         B { Text(key) }
         Text(" ERROR! finding $desc $symbol")
+    }
+}
+
+@Composable
+fun ChartInfo(
+    viewModel: ChartInfoViewModel
+) {
+    val state by viewModel.flow.collectAsState()
+    state.info.complete(viewModel) { chart ->
+        Ol {
+            Li {
+                //todo: link to full chart information
+                B { Text("id: ") }
+                Text(chart.id.toString())
+            }
+            Li {
+                B { Text("File name: ") }
+                Text(chart.fileName)
+            }
+            Li {
+                B { Text("Scale: ") }
+                Text(chart.scale.toString())
+            }
+            Li {
+                B { Text("Updated: ") }
+                Text(chart.updated)
+            }
+            Li {
+                B { Text("Issued: ") }
+                Text(chart.issued)
+            }
+            Li {
+                B { Text("Calculated zoom: ") }
+                Text(chart.zoom.toString())
+            }
+            Li {
+                B { Text("Feature count: ") }
+                Text(chart.featureCount.toString())
+            }
+        }
     }
 }
 

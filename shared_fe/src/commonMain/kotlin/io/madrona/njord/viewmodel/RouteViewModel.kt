@@ -18,7 +18,7 @@ data class RouteState(
     val navBarRoutes: List<Routing> = listOf(
         Routing.from(Route.About),
         Routing.from(Route.Enc),
-//        Route.controlPanel(),
+        Route.controlPanel(),
     ),
 )
 
@@ -56,6 +56,7 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
     }
 
     fun pushRoute(path: String) {
+        println("push route $path")
         if (path != flow.value.current.path) {
             setState {
                 copy(

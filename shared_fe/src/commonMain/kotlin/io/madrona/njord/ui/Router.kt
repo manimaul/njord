@@ -17,8 +17,11 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
             Route.NotFound -> RouteContent { NotFound() }
             Route.Enc -> ChartView()
             Route.ControlPanel -> RouteContent {
-                println("args = ${state.current.args}")
-                NotFound()
+                state.current.args?.get("tab")?.let { tab ->
+                    state.current.args?.get("path")?.let { path ->
+                        ControlPanel(tab, path)
+                    } ?: ControlPanel(tab, "")
+                } ?: NotFound()
             }
         }
     }

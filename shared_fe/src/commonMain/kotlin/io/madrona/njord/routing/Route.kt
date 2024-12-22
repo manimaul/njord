@@ -6,11 +6,11 @@ enum class Route(
 ) {
     About("/", "About"),
     Enc("/enc", "ENC"),
-    ControlPanel("/control/:tab/:selection", "ControlPanel"),
+    ControlPanel("/control/:tab/:*path", "ControlPanel"),
     NotFound("/404", "Not Found");
 
     companion object {
-        fun controlPanel(tab: String = "charts_catalog", selection: String = "none") =
+        fun controlPanel(tab: String = "charts_catalog", selection: String = "n") =
             Routing.from("/control/$tab/$selection")
     }
 }

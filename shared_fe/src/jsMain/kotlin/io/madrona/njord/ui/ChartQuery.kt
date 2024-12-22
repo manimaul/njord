@@ -18,7 +18,7 @@ import org.jetbrains.compose.web.ExperimentalComposeWebSvgApi
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.svg.*
 
-private val skipKeys = setOf("SY", "AP", "AC", "LC")
+private val skipKeys = setOf("SY", "AP", "AC", "LC", "LP")
 private fun JsonElement.valueStr() = (this as? JsonPrimitive)?.content ?: toString()
 
 @Composable
@@ -49,18 +49,10 @@ fun ChartQuery(
                     LatLng(feature.geometry)
                     B { Text("Properties:") }
                     feature.properties["SY"]?.valueStr()?.let { symbol ->
-                        P {
-                            B { Text("Symbol: ") }
-                            Text("SY $symbol ")
-                            Img(src = "/v1/icon/${symbol}.png", alt = symbol)
-                        }
+                        DisplaySymbol("SY", "Symbol", symbol)
                     }
                     feature.properties["AP"]?.valueStr()?.let { symbol ->
-                        P {
-                            B { Text("Area Pattern: ") }
-                            Text("AP $symbol ")
-                            Img(src = "/v1/icon/${symbol}.png", alt = symbol)
-                        }
+                        DisplaySymbol("AP", "Area Pattern", symbol)
                     }
                     feature.properties["AC"]?.valueStr()?.let { symbol ->
                         DisplayColor("AC", "Area Color", symbol, colorState.mode, colors)
@@ -69,11 +61,7 @@ fun ChartQuery(
                         DisplayColor("LC", "Line Color", symbol, colorState.mode, colors)
                     }
                     feature.properties["LP"]?.valueStr()?.let { symbol ->
-                        P {
-                            B { Text("Line Pattern: ") }
-                            Text("LP $symbol ")
-                            Img(src = "/v1/icon/${symbol}.png", alt = symbol)
-                        }
+                        DisplaySymbol("LP", "Line Pattern", symbol)
                     }
                 }
 
@@ -96,6 +84,19 @@ fun ChartQuery(
                 }
             }
         })
+    }
+}
+
+@Composable
+fun DisplaySymbol(
+    key: String,
+    desc: String,
+    symbol: String,
+) {
+    Li {
+        B { Text(key) }
+        Text(" - $desc $symbol ")
+        Img(src = "/v1/icon/${symbol}.png", alt = symbol)
     }
 }
 

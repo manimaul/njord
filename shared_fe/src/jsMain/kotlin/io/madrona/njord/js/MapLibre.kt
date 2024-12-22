@@ -6,8 +6,10 @@ import io.madrona.njord.util.json
 import io.madrona.njord.viewmodel.ChartState
 import io.madrona.njord.viewmodel.MapLocation
 import io.madrona.njord.viewmodel.MapPoint
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.w3c.dom.HTMLDivElement
 
 
@@ -45,8 +47,22 @@ fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): Lis
     )
     val f: String = JSON.stringify(queryRenderedFeatures(box))
     val geoList = Json.parseToJsonElement(f)
-    val retVal = json.decodeFromJsonElement(ListSerializer(MapGeoJsonFeature.serializer()), geoList)
-    return retVal
+    return (geoList as? JsonArray)?.let {
+        it.mapNotNull {
+            try {
+                json.decodeFromJsonElement(MapGeoJsonFeature.serializer(), it)
+            } catch (e: Exception) {
+                println("error deserializing feature $e")
+                println("$it")
+                MapGeoJsonFeature(
+                    sourceLayer = "Error",
+                    properties = JsonObject(mapOf(
+                        "ERROR" to JsonPrimitive("${e.message}")
+                    ))
+                )
+            }
+        }
+    } ?: emptyList()
 }
 
 fun MapLibre.Map.onClick(callback: (MapPoint) -> Unit) {

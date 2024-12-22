@@ -11,9 +11,11 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class MultiLineString(
-    override val coordinates: List<LineString>,
+    override val coordinates: List<List<Position>>,
     override val bbox: BoundingBox? = null,
 ) : Geometry {
+
+    constructor(vararg lineString: LineString) : this(lineString.toList().map { it.coordinates })
 
     override val crs: CoordinateReferenceSystem? = null
 

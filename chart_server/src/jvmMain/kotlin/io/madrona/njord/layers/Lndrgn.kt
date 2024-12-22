@@ -4,6 +4,15 @@ import io.madrona.njord.layers.attributehelpers.Catlnd
 import io.madrona.njord.layers.attributehelpers.Catlnd.Companion.catlnd
 import io.madrona.njord.model.*
 
+/**
+ * Geometry Primitives: Point, Area
+ *
+ * Object: Land region
+ *
+ * Acronym: LNDRGN
+ *
+ * Code: 73
+ */
 class Lndrgn : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.pointSymbol(Sprite.POSGEN04)
@@ -18,5 +27,11 @@ class Lndrgn : Layerable() {
             iconRotationAlignment = IconRotationAlignment.MAP,
         ),
         areaLayerWithFillPattern(),
+        areaLayerWithText(
+            label = Label.Property("OBJNAM"),
+            theme = options.theme,
+            textColor = Color.CHBLK,
+            haloColor = Color.CHWHT,
+        ),
     )
 }

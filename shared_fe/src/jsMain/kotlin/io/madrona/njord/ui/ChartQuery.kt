@@ -33,7 +33,7 @@ fun ChartQuery(
     asyncComplete(chartObjectsViewModel, state.s57Objects, colorState.themeColors) { obj, colors ->
         Accordion(charts, content, { builder ->
             builder.title = "Chart id:(${builder.item.id})"
-            builder.body = { ChartInfo(builder.item) }
+            builder.body = { ChartInfoList(builder.item) }
         }, { builder ->
             val feature = builder.item
             builder.title =
@@ -120,45 +120,6 @@ fun DisplayColor(
     }
 }
 
-@Composable
-fun ChartInfo(
-    viewModel: ChartInfoViewModel
-) {
-    val state by viewModel.flow.collectAsState()
-    state.info.complete(viewModel) { chart ->
-        Ol {
-            Li {
-                //todo: link to full chart information
-                B { Text("id: ") }
-                Text(chart.id.toString())
-            }
-            Li {
-                B { Text("File name: ") }
-                Text(chart.fileName)
-            }
-            Li {
-                B { Text("Scale: ") }
-                Text(chart.scale.toString())
-            }
-            Li {
-                B { Text("Updated: ") }
-                Text(chart.updated)
-            }
-            Li {
-                B { Text("Issued: ") }
-                Text(chart.issued)
-            }
-            Li {
-                B { Text("Calculated zoom: ") }
-                Text(chart.zoom.toString())
-            }
-            Li {
-                B { Text("Feature count: ") }
-                Text(chart.featureCount.toString())
-            }
-        }
-    }
-}
 
 @Composable
 fun LatLng(geo: Geometry?) {

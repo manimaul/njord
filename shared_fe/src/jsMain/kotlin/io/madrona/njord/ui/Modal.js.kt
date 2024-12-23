@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffectResult
 import androidx.compose.runtime.remember
 import io.madrona.njord.js.Bootstrap
+import io.madrona.njord.viewmodel.BaseViewModel
 import kotlinx.browser.document
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,14 +20,59 @@ import org.w3c.dom.events.EventListener
 
 private var num = 0
 
+data class ModalState(
+    val shown: Boolean = false,
+    val modal: Bootstrap.Modal? = null
+)
+
+val modalViewModel = ModalViewModel()
+
+class ModalViewModel : BaseViewModel<ModalState>(ModalState())  {
+    override fun reload() { }
+    init {
+        launch {
+            flow.collect {
+                println("modal state: $it")
+            }
+        }
+    }
+
+    fun modalCreated(id: String) {
+        document.querySelector("#$id")?.let { element ->
+            element.addEventListener("hidden.bs.modal", EventListener {
+                setState { copy(shown = false) }
+            })
+            element.addEventListener("shown.bs.modal", EventListener {
+                setState { copy(shown = true) }
+            })
+            Bootstrap.Modal.getOrCreateInstance(element)?.let { modal ->
+                setState { copy(modal = modal) }
+            }
+        }
+    }
+
+    fun modalDestroyed() {
+        setState {
+            modal?.let { println("destroyed modal: $it shown $shown") }
+            ModalState()
+        }
+    }
+
+    fun show() {
+        withState { if (!it.shown) it.modal?.show() }
+    }
+
+    fun hide() {
+        withState { if (it.shown) it.modal?.hide() }
+    }
+}
+
 @Composable
 fun Modal(
     title: String,
     onClose: () -> Unit,
-    showHideFlow: Flow<Boolean>,
     content: ContentBuilder<HTMLDivElement>,
 ) {
-    val scope = CoroutineScope(Dispatchers.Default)
     val id = remember { "modal-${++num}" }
     Div(attrs = {
         id(id)
@@ -35,31 +81,10 @@ fun Modal(
         attr("aria-labelledby", "$id-title")
         attr("aria-hidden", "true")
         ref {
-            document.querySelector("#$id")?.let { element ->
-                println("bootstrap modal id $id $element")
-                var num = 0
-                element.addEventListener("hidden.bs.modal", EventListener {
-                    println("bootstrap modal id $id hidden ${++num}")
-                    onClose()
-                })
-                println("finding bootstrap modal id $id instance")
-                Bootstrap.Modal.getOrCreateInstance(element)?.let { modal ->
-                    println("bootstrap modal id $id instance $modal")
-                    scope.launch {
-                        showHideFlow.collect {
-                            if (it) {
-                                modal.show()
-                            } else {
-                                modal.hide()
-                            }
-                        }
-                    }
-                }
-            }
+            modalViewModel.modalCreated(id)
             object : DisposableEffectResult {
                 override fun dispose() {
-                    println("bootstrap modal id $id disposed")
-                    scope.cancel()
+                    modalViewModel.modalDestroyed()
                 }
             }
         }

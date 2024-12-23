@@ -23,6 +23,12 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
                     } ?: ControlPanel(tab, "")
                 } ?: NotFound()
             }
+
+            Route.Chart -> RouteContent {
+                state.current.args?.get("id")?.let { id ->
+                    ChartInfoPage(id)
+                } ?: NotFound()
+            }
         }
     }
 }

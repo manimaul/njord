@@ -4,12 +4,30 @@ import androidx.compose.runtime.*
 import io.madrona.njord.js.MapLibre
 import io.madrona.njord.js.mapLibreArgs
 import io.madrona.njord.viewmodel.chartViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
-import org.jetbrains.compose.web.dom.*
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Text
 
 @Composable
 actual fun ChartView() {
     val state by chartViewModel.flow.collectAsState()
+    remember {
+        CoroutineScope(Dispatchers.Default).apply{
+            launch {
+                chartViewModel.flow.map { it.query }.collect {
+                    if (it.isNotEmpty()) {
+                        modalViewModel.show()
+                    } else {
+                        modalViewModel.hide()
+                    }
+                }
+
+            }
+        }
+    }
     Div(attrs = { classes("Wrap", "Warning", "bg-danger", "text-white") }) {
         Text("EXPERIMENTAL! - NOT FOR NAVIGATION")
     }
@@ -30,11 +48,9 @@ actual fun ChartView() {
                 }
             }
         })
-    val showHide = chartViewModel.flow.map { it.query.isNotEmpty() }
     Modal(
         title = "Chart Query",
         onClose = { chartViewModel.clearQuery() },
-        showHideFlow = showHide
     ) {
         ChartQuery(state.query)
     }

@@ -6,7 +6,8 @@ enum class Route(
 ) {
     About("/", "About"),
     Enc("/enc", "ENC"),
-    ControlPanel("/control/:tab/:*path", "ControlPanel"),
+    ControlPanel("/control/:tab/:*path", "Control Panel"),
+    Chart("/chart/:id", "Chart"),
     NotFound("/404", "Not Found");
 
     companion object {

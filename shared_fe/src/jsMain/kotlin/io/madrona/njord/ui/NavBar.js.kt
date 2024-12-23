@@ -133,7 +133,7 @@ actual fun NavBar() {
         when (adminState.adminSignature) {
             is Complete -> {
                 Button(attrs = {
-                    classes("btn", "btn-danger", "btn-sm")
+                    classes("btn", "btn-danger", "btn-sm", "mx-3")
                     onClick {
                         adminViewModel.logout()
                     }
@@ -146,7 +146,7 @@ actual fun NavBar() {
             is Fail,
             Uninitialized -> {
                 Button(attrs = {
-                    classes("btn", "btn-info", "btn-sm")
+                    classes("btn", "btn-info", "btn-sm", "mx-3")
                     onClick {
                         adminViewModel.login()
                     }

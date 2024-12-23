@@ -29,7 +29,6 @@ fun ChartQuery(
     val colorState by chartObjectsViewModel.colorSelectionFlow.collectAsState()
     val charts =
         content.mapNotNull { it.properties["CID"]?.valueStr() }.distinct().map { ChartInfoViewModel(it) }
-    println("num charts = ${charts.size}")
     asyncComplete(chartObjectsViewModel, state.s57Objects, colorState.themeColors) { obj, colors ->
         Accordion(charts, content, { builder ->
             builder.title = "Chart id:(${builder.item.id})"

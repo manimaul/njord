@@ -29,13 +29,6 @@ val modalViewModel = ModalViewModel()
 
 class ModalViewModel : BaseViewModel<ModalState>(ModalState())  {
     override fun reload() { }
-    init {
-        launch {
-            flow.collect {
-                println("modal state: $it")
-            }
-        }
-    }
 
     fun modalCreated(id: String) {
         document.querySelector("#$id")?.let { element ->
@@ -53,7 +46,6 @@ class ModalViewModel : BaseViewModel<ModalState>(ModalState())  {
 
     fun modalDestroyed() {
         setState {
-            modal?.let { println("destroyed modal: $it shown $shown") }
             ModalState()
         }
     }

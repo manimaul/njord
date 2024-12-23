@@ -16,12 +16,9 @@ actual fun RouteViewModel.initialize() {
 
     launch {
         flow.collect {
-            println("state = $it")
             if (it.replace) {
-                println("replacing history state ${it.current.path}")
                 window.history.replaceState(null, it.current.route.name, it.current.pathAndParams())
             } else {
-                println("pushing history state ${it.current.path}")
                 window.history.pushState(null, it.current.route.name, it.current.pathAndParams())
             }
         }

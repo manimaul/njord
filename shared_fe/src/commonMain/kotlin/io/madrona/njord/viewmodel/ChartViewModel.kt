@@ -55,7 +55,6 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
             setState { copy(location = location) }
         }
         controller.onClick = { point ->
-            println("clicked point: $point")
             launch {
                 setState {
                     copy(
@@ -69,11 +68,7 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         }
         launch {
             flow.map { it.location }.collect {
-                println("storing location: $it")
                 localStoreSet(it)
-            }
-            flow.map { it.query }.collect {
-                println("query set to : $it")
             }
         }
     }

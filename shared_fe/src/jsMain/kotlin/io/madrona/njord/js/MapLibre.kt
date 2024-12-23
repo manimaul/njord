@@ -36,7 +36,6 @@ fun MapLibre.Map.moveEnd(callback: (MapLocation) -> Unit) {
 }
 
 fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature> {
-    println("renderedFeatures $topLeft $bottomRight")
     val top = topLeft.x
     val bottom = bottomRight.x
     val right = bottomRight.y
@@ -52,8 +51,6 @@ fun MapLibre.Map.renderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): Lis
             try {
                 json.decodeFromJsonElement(MapGeoJsonFeature.serializer(), it)
             } catch (e: Exception) {
-                println("error deserializing feature $e")
-                println("$it")
                 MapGeoJsonFeature(
                     sourceLayer = "Error",
                     properties = JsonObject(mapOf(

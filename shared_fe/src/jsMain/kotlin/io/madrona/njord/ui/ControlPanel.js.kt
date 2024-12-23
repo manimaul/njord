@@ -21,7 +21,7 @@ actual fun ControlPanel(tab: String, path: String) {
                 TabData(
                     tabKey = "charts_installer",
                     title = "Chart Installer",
-                    selectionContent = { H1 { Text("hello installer") } }
+                    selectionContent = { ChartInstaller() }
                 ),
                 TabData(
                     tabKey = "symbols",

@@ -18,7 +18,7 @@ fun Link(
                 modalViewModel.hide()
             }
         },
-        href = "#"
+        href = path
     ) {
         Text(label)
     }

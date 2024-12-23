@@ -8,6 +8,7 @@ import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Loading
 import io.madrona.njord.viewmodel.utils.Uninitialized
 import kotlinx.browser.window
+import kotlinx.serialization.json.Json
 import org.w3c.dom.WebSocket
 import org.w3c.dom.events.EventListener
 import org.w3c.xhr.FormData
@@ -60,16 +61,19 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
     }
 
     private fun startUpload(formData: FormData) {
+        println("startUpload ${JSON.stringify(formData)}")
         setState { copy(encUpload = Loading()) }
         val xhr = XMLHttpRequest();
         xhr.upload.addEventListener("progress", EventListener {
             val loaded = it.asDynamic().loaded as Double
             val total = it.asDynamic().total as Double
             val percent = ((loaded / total) * 100).toInt()
+            println("encUpload progress: $percent")
             setState { copy(uploadProgress = percent) }
         })
         xhr.addEventListener("load", EventListener {
-            val encUpload = json.decodeFromString<EncUpload>(xhr.responseText)
+            val encUpload = Json.decodeFromString<EncUpload>(xhr.responseText)
+            println("encUpload complete: $encUpload")
             setState {
                 copy(
                     encUpload = Complete(encUpload),
@@ -96,8 +100,13 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
                 setState { copy(webSocket = ws) }
             }
             ws.onmessage = { event ->
-                (event.data as? String)?.let { json.decodeFromString<WsMsg>(it) }?.let {
-                    setState { copy(info = it) }
+                try {
+                    (event.data as? String)?.let { Json.decodeFromString<WsMsg>(it) }?.let {
+                        setState { copy(info = it) }
+                    }
+                } catch (e: Exception) {
+                    println("error: ${e.message}")
+                    println("event: ${event.data}")
                 }
             }
         }

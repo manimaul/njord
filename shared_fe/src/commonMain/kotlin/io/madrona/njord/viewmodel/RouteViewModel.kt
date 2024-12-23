@@ -56,7 +56,6 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
     }
 
     fun pushRoute(path: String) {
-        println("push route $path")
         if (path != flow.value.current.path) {
             setState {
                 copy(
@@ -65,8 +64,6 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
                     replace = false,
                 )
             }
-        } else {
-            println("already at route path $path")
         }
     }
 
@@ -79,8 +76,6 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
                     replace = false,
                 )
             }
-        } else {
-            println("already at route $route")
         }
     }
 }

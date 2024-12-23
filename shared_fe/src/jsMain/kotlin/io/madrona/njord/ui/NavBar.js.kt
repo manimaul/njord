@@ -26,7 +26,6 @@ fun <T> NavDropdown(
     fun expand() = if (expanded) "show" else "hide"
     Div(attrs = {
         onClick {
-            println("menu item clicked")
             expanded = !expanded
         }
         classes("nav-item", "dropdown", expand())

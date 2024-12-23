@@ -14,7 +14,6 @@ data class QueryParams(
     val queryString: String? = queryString()
 ) {
     val values: Map<String, String?>? by lazy {
-        println("url = $queryString")
         queryString?.let {
             val retVal = mutableMapOf<String, String?>()
             queryString.split('&').forEach { qp ->

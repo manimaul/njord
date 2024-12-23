@@ -35,13 +35,11 @@ actual fun ChartView() {
         attrs = {
             classes("Fill")
             ref { element ->
-                println("creating map view")
                 chartViewModel.controller.mapView = MapLibre.Map(
                     mapLibreArgs(element, chartViewModel.flow.value)
                 )
                 object : DisposableEffectResult {
                     override fun dispose() {
-                        println("destroying map view")
                         chartViewModel.controller.mapView?.remove()
                         chartViewModel.controller.mapView = null
                     }

@@ -35,7 +35,6 @@ actual class ChartViewController actual constructor() {
 
     actual fun setStyle(theme: Theme, depth: Depth) {
         val style = stylePath(theme, depth)
-        println("setting style $style")
         mapView?.setStyle(style)
     }
 }

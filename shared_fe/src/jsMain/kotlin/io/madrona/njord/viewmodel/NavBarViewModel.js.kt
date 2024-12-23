@@ -15,12 +15,8 @@ data class NavBarState(
 class NavBarViewModel : BaseViewModel<NavBarState>(NavBarState()) {
     init {
         reload()
-        launch {
-            flow.collect {
-                println("NavBarViewModel state: $it")
-            }
-        }
     }
+
     override fun reload() {
         launch {
             setState { copy(customColors = Loading()) }

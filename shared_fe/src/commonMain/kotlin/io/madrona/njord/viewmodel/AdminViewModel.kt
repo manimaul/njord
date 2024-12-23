@@ -14,7 +14,17 @@ data class AdminState(
 val adminViewModel = AdminViewModel()
 
 class AdminViewModel : BaseViewModel<AdminState>(AdminState()) {
+    init {
+        setState {
+            copy(adminSignature = adminSignature.flatMap {
+                Network.verifyAdmin(it.signature).toAsync(Uninitialized)
+            })
+        }
+    }
     override fun reload() {}
+
+    val signature: AdminResponse?
+        get() = flow.value.adminSignature.value
 
     fun login() {
         setState {
@@ -22,7 +32,6 @@ class AdminViewModel : BaseViewModel<AdminState>(AdminState()) {
                 Network.verifyAdmin(it.signature).toAsync()
             }
             signature.value?.let { localStoreSet<AdminResponse>(it) }
-            println("setting signature $signature")
             copy(adminSignature = signature)
         }
 

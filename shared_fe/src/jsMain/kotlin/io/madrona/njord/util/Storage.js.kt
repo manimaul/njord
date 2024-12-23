@@ -13,7 +13,6 @@ actual inline fun <reified T> localStoreSet(item: T?) {
                 null
             }
         } ?: ""
-        println("setting key: $key $value")
         window.localStorage.setItem(key, value)
     }
 }

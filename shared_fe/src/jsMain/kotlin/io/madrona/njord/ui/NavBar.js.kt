@@ -6,8 +6,13 @@ import io.madrona.njord.model.ThemeMode
 import io.madrona.njord.model.colorName
 import io.madrona.njord.model.mode
 import io.madrona.njord.viewmodel.NavBarViewModel
+import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.chartViewModel
 import io.madrona.njord.viewmodel.routeViewModel
+import io.madrona.njord.viewmodel.utils.Complete
+import io.madrona.njord.viewmodel.utils.Fail
+import io.madrona.njord.viewmodel.utils.Loading
+import io.madrona.njord.viewmodel.utils.Uninitialized
 import org.jetbrains.compose.web.dom.*
 
 @Composable
@@ -56,11 +61,12 @@ fun <T> NavDropdown(
 }
 
 @Composable
-actual fun NavBar( ) {
+actual fun NavBar() {
     val viewModel: NavBarViewModel = remember { NavBarViewModel() }
     val state by viewModel.flow.collectAsState()
     val routeState by routeViewModel.flow.collectAsState()
     val chartState by chartViewModel.flow.collectAsState()
+    val adminState by adminViewModel.flow.collectAsState()
     Nav(attrs = {
         classes(
             "navbar",
@@ -120,16 +126,33 @@ actual fun NavBar( ) {
                             chartViewModel.setCustomColor(it)
                         }
                     }
-//                    Li(attrs = { classes("nav-item") }) {
-//                        Button(attrs = {
-//                            classes("nav-link")
-//                            onClick {
-//                                println("todo")
-//                            }
-//                        }) {
-//                            Text("Admin")
-//                        }
-//                    }
+                }
+
+            }
+        }
+
+        when (adminState.adminSignature) {
+            is Complete -> {
+                Button(attrs = {
+                    classes("btn", "btn-danger", "btn-sm")
+                    onClick {
+                        adminViewModel.logout()
+                    }
+                }) {
+                    Text("Logout")
+                }
+            }
+
+            is Loading -> {}
+            is Fail,
+            Uninitialized -> {
+                Button(attrs = {
+                    classes("btn", "btn-info", "btn-sm")
+                    onClick {
+                        adminViewModel.login()
+                    }
+                }) {
+                    Text("Login")
                 }
             }
         }

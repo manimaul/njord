@@ -2,6 +2,7 @@ package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
 import io.madrona.njord.viewmodel.AboutViewModel
+import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.complete
 import org.jetbrains.compose.web.attributes.colspan
 import org.jetbrains.compose.web.dom.*
@@ -10,6 +11,7 @@ import org.jetbrains.compose.web.dom.*
 actual fun Home() {
     val viewModel = remember { AboutViewModel() }
     val state = viewModel.flow.collectAsState()
+    val adminState by adminViewModel.flow.collectAsState()
     Div(attrs = { classes("Column", "Fill") }) {
         Div(attrs = { classes("Container", "Fill") }) {
             Header(attrs = { classes("Header") }) {
@@ -48,7 +50,15 @@ actual fun Home() {
                                     Text(info.buildDate)
                                 }
                             }
-                            //todo: add admin is logged in check
+
+                            adminState.adminSignature.value?.let {
+                                Tr {
+                                    Td { Text("Admin") }
+                                    Td {
+                                        Text(it.signature.expirationDate)
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import io.madrona.njord.viewmodel.chartCatalogViewModel
-import io.madrona.njord.viewmodel.complete
+import io.madrona.njord.viewmodel.utils.Complete
+import io.madrona.njord.viewmodel.utils.Loading
 import org.jetbrains.compose.web.dom.*
 
 @Composable
 fun ChartCatalog() {
     val state by chartCatalogViewModel.flow.collectAsState()
 
-    state.catalog.complete(chartCatalogViewModel) { catalog ->
+    state.catalog.value?.let { catalog ->
         Div {
             H1 { Text("Installed S57 ENCs: ${catalog.totalChartCount}") }
             Table(
@@ -38,6 +39,13 @@ fun ChartCatalog() {
                         }
                     }
                 }
+            }
+            if (state.catalog is Complete && catalog.page.size < catalog.totalChartCount) {
+                Button(attrs = {
+                    classes("btn", "btn-primary")
+                }) { Text("Load More...") }
+            } else if (state.catalog is Loading) {
+                LoadingSpinner()
             }
         }
 

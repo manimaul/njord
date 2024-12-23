@@ -32,4 +32,6 @@ object Network {
     suspend fun getChartInfo(id: String) : NetworkResponse<Chart> = get("chart", mapOf("id" to id))
     suspend fun getCustomColors() : NetworkResponse<Map<String, Map<String, Map<String, String>>>> = get("about/colors/custom")
     suspend fun getChartCatalog(id: Long): NetworkResponse<ChartCatalog> = get("chart_catalog", mapOf("id" to "$id"))
+    suspend fun getAdmin(): NetworkResponse<AdminResponse> = get("/admin")
+    suspend fun verifyAdmin(signature: AdminSignature): NetworkResponse<AdminResponse> = post("/admin/verify", signature)
 }

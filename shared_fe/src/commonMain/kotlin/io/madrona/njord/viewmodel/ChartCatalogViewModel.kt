@@ -7,7 +7,7 @@ import io.madrona.njord.viewmodel.utils.*
 import kotlinx.coroutines.launch
 
 data class ChartCatalogState(
-    val pageIndex: Int = 0,
+    val deleteProgress: Int? = null,
     val catalog: Async<ChartCatalog> = Uninitialized,
     val filter: String? = null,
     val filtered: List<ChartItem> = emptyList(),
@@ -66,10 +66,6 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
         }
     }
 
-    fun setPageIndex(pageIndex: Int) {
-        setState { copy(pageIndex = pageIndex) }
-    }
-
     fun filter(value: String) {
         println("setting filter: $value")
         val f = value.takeIf { it.isNotBlank() }
@@ -78,6 +74,25 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
                 filter = f,
                 filtered = catalog.value?.page?.let { filterItems(f, it) } ?: emptyList()
             )
+        }
+    }
+
+    fun deleteAll() {
+        adminViewModel.signature?.let { sig ->
+            val delete = withState {
+               it.filtered
+            }
+            setState {
+                copy(deleteProgress = 0)
+            }
+            launch {
+                delete.forEach { item ->
+                    Network.deleteChart(sig, item.id)
+                    
+                    setState { copy(deleteProgress = 0) }
+                }
+            }
+            reload()
         }
     }
 }

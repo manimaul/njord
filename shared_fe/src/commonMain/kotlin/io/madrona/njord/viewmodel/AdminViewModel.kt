@@ -9,7 +9,10 @@ import io.madrona.njord.viewmodel.utils.*
 
 data class AdminState(
     val adminSignature: Async<AdminResponse> = localStoreGet<AdminResponse>()?.let { Complete(it) } ?: Uninitialized,
-)
+) {
+    val isLoggedIn: Boolean
+        get() = adminSignature is Complete
+}
 
 val adminViewModel = AdminViewModel()
 
@@ -21,6 +24,7 @@ class AdminViewModel : BaseViewModel<AdminState>(AdminState()) {
             })
         }
     }
+
     override fun reload() {}
 
     val signature: AdminResponse?

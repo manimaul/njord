@@ -24,6 +24,7 @@ internal expect suspend fun Network.delete(api: String, params: Map<String, Stri
 
 object Network {
 
+
     suspend fun getS57Objects(): NetworkResponse<Map<String, S57Object>> = get("about/s57objects")
     suspend fun getAttributes(): NetworkResponse<Map<String, S57Attribute>> = get("about/s57attributes")
     suspend fun getExpectedInputs(): NetworkResponse<Map<String, List<S57ExpectedInput>>> = get("about/expectedInput")
@@ -34,4 +35,5 @@ object Network {
     suspend fun getChartCatalog(id: Long): NetworkResponse<ChartCatalog> = get("chart_catalog", mapOf("id" to "$id"))
     suspend fun getAdmin(): NetworkResponse<AdminResponse> = get("/admin")
     suspend fun verifyAdmin(signature: AdminSignature): NetworkResponse<AdminResponse> = post("/admin/verify", signature)
+    suspend fun deleteChart(signature: AdminResponse, id: Long): NetworkResponse<Unit> = delete("/chart", mapOf("id" to "$id", "signature" to signature.signatureEncoded))
 }

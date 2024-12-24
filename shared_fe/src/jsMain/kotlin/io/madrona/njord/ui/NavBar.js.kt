@@ -1,6 +1,7 @@
 package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
+import io.madrona.njord.js.Bootstrap
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.ThemeMode
 import io.madrona.njord.model.colorName
@@ -83,11 +84,9 @@ actual fun NavBar() {
             }
             Button(attrs = {
                 classes("navbar-toggler")
-                attr("data-bs-toggle", "collapse")
-                attr("data-bs-target", "#navbarNavDropdown")
-                attr("aria-controls", "navbarNavDropdown")
-                attr("aria-expanded", "false")
-                attr("aria-label", "Toggle navigation")
+                onClick {
+                    Bootstrap.Collapse.getOrCreateInstance("#navbarNavDropdown")?.toggle()
+                }
             }) {
                 Span(attrs = { classes("navbar-toggler-icon") }) { }
             }
@@ -99,8 +98,6 @@ actual fun NavBar() {
                     routeState.navBarRoutes.forEach { routing ->
                         Li(attrs = { classes("nav-item") }) {
                             Button(attrs = {
-                                attr("data-bs-toggle", "collapse")
-                                attr("data-bs-target", "#navbarNavDropdown")
                                 if (routing.route == routeState.current.route) {
                                     classes("nav-link", "active")
                                 } else {
@@ -133,7 +130,7 @@ actual fun NavBar() {
         when (adminState.adminSignature) {
             is Complete -> {
                 Button(attrs = {
-                    classes("btn", "btn-danger", "btn-sm", "mx-3")
+                    classes("btn", "btn-danger", "btn-sm", "mx-2")
                     onClick {
                         adminViewModel.logout()
                     }
@@ -146,7 +143,7 @@ actual fun NavBar() {
             is Fail,
             Uninitialized -> {
                 Button(attrs = {
-                    classes("btn", "btn-info", "btn-sm", "mx-3")
+                    classes("btn", "btn-info", "btn-sm", "mx-2")
                     onClick {
                         adminViewModel.login()
                     }

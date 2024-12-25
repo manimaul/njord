@@ -13,6 +13,7 @@ import io.madrona.njord.geojson.stringValue
 import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.model.LayerGeoJson
 import io.madrona.njord.util.ZFinder
+import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -194,6 +195,8 @@ class S57(
     }
 
     companion object {
+
+        val log = logger()
         /**
          * https://gdal.org/drivers/vector/s57.html
          */

@@ -4,6 +4,7 @@ import com.codahale.metrics.ConsoleReporter
 import com.codahale.metrics.MetricRegistry
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.util.logging.*
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.FeatureDao
 import io.madrona.njord.db.TileDao
@@ -20,6 +21,8 @@ import java.util.concurrent.TimeUnit
 import javax.sql.DataSource
 
 object Singletons {
+
+    lateinit var genLog: Logger
 
     val adminUtil by lazy { AdminUtil() }
 

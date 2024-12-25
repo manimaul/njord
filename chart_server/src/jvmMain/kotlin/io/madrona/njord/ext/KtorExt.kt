@@ -30,28 +30,22 @@ interface KtorWebsocket : KtorBaseHandler {
     suspend fun handle(ws: DefaultWebSocketServerSession)
 }
 
-fun Application.addHandlers(vararg handlers: KtorBaseHandler) {
-    routing {
-        handlers.forEach { handler ->
-            when (handler) {
-                is KtorHandler -> {
-                    get(handler.route) { handler.handleGet(call) }
-                    post(handler.route) { handler.handlePost(call) }
-                    put(handler.route) { handler.handlePut(call) }
-                    patch(handler.route) { handler.handlePatch(call) }
-                    delete(handler.route) { handler.handleDelete(call) }
-                    head(handler.route) { handler.handleHead(call) }
-                    options(handler.route) { handler.handleOptions(call) }
-                }
-
-                is KtorWebsocket -> {
-                    webSocket(handler.route) {
-                        handler.handle(this)
-                    }
-                }
-            }
+fun Route.addHandler(handler: KtorBaseHandler) {
+    when (handler) {
+        is KtorHandler -> {
+            get(handler.route) { handler.handleGet(call) }
+            post(handler.route) { handler.handlePost(call) }
+            put(handler.route) { handler.handlePut(call) }
+            patch(handler.route) { handler.handlePatch(call) }
+            delete(handler.route) { handler.handleDelete(call) }
+            head(handler.route) { handler.handleHead(call) }
+            options(handler.route) { handler.handleOptions(call) }
         }
 
-        staticFiles("/", Singletons.config.webStaticContent)
+        is KtorWebsocket -> {
+            webSocket(handler.route) {
+                handler.handle(this)
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package io.madrona.njord.endpoints
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.util.*
 import io.madrona.njord.ChartsConfig
@@ -9,6 +10,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.AdminResponse
 import io.madrona.njord.model.AdminSignature
+import io.madrona.njord.util.logger
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlinx.serialization.json.Json.Default.encodeToString
 import java.net.URLDecoder
@@ -21,6 +23,10 @@ import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
+fun ApplicationCall.isAdminAuthorized(): Boolean {
+    return principal<UserIdPrincipal>()?.name == Singletons.config.adminUser
+}
+
 class AdminHandler(
     private val util: AdminUtil = Singletons.adminUtil,
 ) : KtorHandler {
@@ -31,7 +37,11 @@ class AdminHandler(
      * Returns an authorization signature for other mutating calls that require a valid signature.
      */
     override suspend fun handleGet(call: ApplicationCall) {
-        call.respond(util.createSignatureResponse())
+        if (call.isAdminAuthorized()) {
+            call.respond(util.createSignatureResponse())
+        } else {
+            call.respond(HttpStatusCode.Unauthorized)
+        }
     }
 }
 
@@ -39,6 +49,7 @@ class AdminUtil(
     private val config: ChartsConfig = Singletons.config,
 ) {
     private var formatter = DateTimeFormatter.ISO_INSTANT
+    val log = logger()
 
     fun createSignatureResponse(): AdminResponse {
         val signature = createSignature()
@@ -78,7 +89,9 @@ class AdminUtil(
     fun verifySignature(signature: AdminSignature): Boolean {
         val now = Instant.now()
         val then = Instant.from(formatter.parse(signature.date))
-        if (now.epochSecond - then.epochSecond > config.adminExpirationSeconds) {
+        val elapsed = then.until(now, ChronoUnit.SECONDS)
+        log.info("then=$then now=$now elapsed=$elapsed max=${config.adminExpirationSeconds}")
+        if (elapsed > config.adminExpirationSeconds) {
             return false
         }
         val secretKey = SecretKeySpec(config.adminKey.toByteArray(), "HmacSHA256")
@@ -88,7 +101,9 @@ class AdminUtil(
         hmac.update(signature.date.toByteArray())
         hmac.update(signature.uuid.toByteArray())
         val checkSignature = Base64.getUrlEncoder().encodeToString(hmac.doFinal())
-        return checkSignature.equals(signature.signature)
+        val match = checkSignature.equals(signature.signature)
+        log.info("match=$match expected=$checkSignature got=${signature.signature}")
+        return match
     }
 }
 

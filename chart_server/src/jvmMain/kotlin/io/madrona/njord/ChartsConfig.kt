@@ -12,6 +12,8 @@ class ChartsConfig(
     private val externalHostName: String = config.getString("externalHostName")
     private val externalPort: Int = config.getInt("externalPort")
 
+    val adminUser: String = config.getString("adminUser")
+    val adminPass: String = config.getString("adminPass")
     val adminKey: String = config.getString("adminKey")
     val adminExpirationSeconds: Long = config.getLong("adminExpirationSeconds")
     val host: String = config.getString("host")
@@ -38,6 +40,7 @@ class ChartsConfig(
         }
     }
     val externalBaseUrl = "${externalScheme}://${externalHostName}:${externalPort}"
+    val allowHosts: List<String> = config.getStringList("allowHosts")
 
     val pgUser: String = config.getString("pgUser")
     val pgPassword: String = config.getString("pgPassword")

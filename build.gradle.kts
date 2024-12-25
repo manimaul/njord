@@ -1,4 +1,6 @@
-import io.madrona.njord.build.K8S
+import io.madrona.njord.build.*
+import io.madrona.njord.build.GitInfo.gitBranch
+import io.madrona.njord.build.GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import java.util.*
 
@@ -22,6 +24,28 @@ task("version") {
     doLast {
         println("version: ${project.version}")
         println("group: ${project.group}")
+        println("git branch: ${gitBranch()}")
+        println("git hash: ${gitShortHash()}")
+    }
+}
+
+/**
+ * Writes k8s secret with CHART_SERVER_OPTS (adminKey, adminUser, adminPass)
+ */
+task("secret") {
+    doLast {
+        println(k8sApplySecret())
+    }
+}
+
+/**
+ * Shows GPG encrypted secrets in [Secret]
+ */
+task("showSecret") {
+    doLast {
+        println("admin key: ${adminKey()}")
+        println("admin user: ${user()}")
+        println("admin pass: ${password()}")
     }
 }
 
@@ -50,15 +74,7 @@ task<Exec>("pubImg") {
  */
 task<Exec>("k8sApply") {
     mustRunAfter(":pubImg")
-    val adminKey = if (project.hasProperty("adminKey")) {
-        "${project.property("adminKey")}"
-    } else {
-        UUID.randomUUID().toString()
-    }
-    val userName = "${project.property("adminUserName")}"
-    val password = "${project.property("adminPassword")}"
-
-    val yaml = K8S.chartServerDeploymentWrite(rootProject.projectDir, "${project.version}", adminKey, userName, password)
+    val yaml = K8S.chartServerDeploymentWrite(rootProject.projectDir, "${project.version}")
     commandLine("bash", "-c", "kubectl apply -f '${yaml.absolutePath}'")
 }
 

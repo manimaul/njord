@@ -1,16 +1,11 @@
 package io.madrona.njord.geo.symbols
 
+import io.madrona.njord.Singletons.genLog
 import io.madrona.njord.ext.json
-import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.FeatureBuilder
 import io.madrona.njord.geojson.Point
 import io.madrona.njord.geojson.Position
-import io.madrona.njord.util.logger
 import kotlinx.serialization.json.JsonElement
-
-val log by lazy {
-    logger<Feature>()
-}
 
 data class DisplayDepths(
     val meters: Double,
@@ -58,6 +53,6 @@ fun FeatureBuilder.addSounding() {
         addProperty("METERS", meters)
         geo = Point(Position(it.position.longitude, it.position.latitude))
     } ?: run {
-        log.error("unexpected geometry point ${geo?.type}")
+        genLog.error("unexpected geometry point ${geo?.type}")
     }
 }

@@ -57,6 +57,11 @@ spec:
           env:
             - name: JAVA_OPTS
               value: "-Dconfig.file=/etc/chart_server/application.conf -Djava.library.path=/opt/gdal/jni"
+            - name: CHART_SERVER_OPTS
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret
+                  key: chart_server_opts
       volumes:
         - name: njord-confic-vol
           configMap:
@@ -71,7 +76,6 @@ metadata:
 data:
   application.conf: |
     charts {
-        adminKey = {ADMIN_KEY} 
         adminExpirationSeconds = 604800 // 60 * 60 * 24 * 7days
     
         pgUser=admin
@@ -88,6 +92,7 @@ data:
 
         externalScheme = "https"
         externalHostName = "openenc.com"
+        allowHosts = ["www.openenc.com", "openenc.com"]
         externalPort = 443
 
         chartMinZoom = 0
@@ -118,43 +123,6 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: njord-ingress-admin
-  namespace: njord
-  annotations:
-    haproxy.org/auth-type: basic-auth
-    haproxy.org/auth-secret: njord/haproxy-credentials
-spec:
-  ingressClassName: haproxy
-  rules:
-    - host: openenc.com
-      http:
-        paths:
-          - path: /v1/admin
-            pathType: Exact
-            backend:
-              service:
-                name: njord-chart-svc
-                port:
-                  number: 80
-    - host: www.openenc.com
-      http:
-        paths:
-          - path: /v1/admin
-            pathType: Exact
-            backend:
-              service:
-                name: njord-chart-svc
-                port:
-                  number: 80
-  tls:
-    - hosts:
-        - openenc.com
-        - www.openenc.com
-      secretName: njord-cert
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

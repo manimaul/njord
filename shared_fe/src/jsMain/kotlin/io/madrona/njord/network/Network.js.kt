@@ -1,6 +1,5 @@
 package io.madrona.njord.network
 
-import io.madrona.njord.model.LoginResponse
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.serialization.json.Json
@@ -42,11 +41,6 @@ inline fun <reified T> localStoreGetEncoded(): String? {
     }
 }
 
-
-fun token(): String {
-    return localStoreGetEncoded<LoginResponse>() ?: "none"
-}
-
 actual suspend inline fun <reified T> Network.get(api: String, params: Map<String, String>?): NetworkResponse<T> {
     val response = window.fetch(
         api.versionedApi(params = params),
@@ -54,7 +48,6 @@ actual suspend inline fun <reified T> Network.get(api: String, params: Map<Strin
             method = "GET",
             headers = json(
                 "Accept" to "application/json",
-                "Authorization" to "Bearer ${token()}"
             ),
         )
     ).await()
@@ -69,7 +62,6 @@ actual suspend inline fun <reified T, reified R> Network.post(api: String, item:
             headers = json(
                 "Content-Type" to "application/json",
                 "Accept" to "application/json",
-                "Authorization" to "Bearer ${token()}"
             ),
             body = Json.encodeToJsonElement(item)
         )
@@ -81,7 +73,6 @@ actual suspend fun Network.delete(api: String, params: Map<String, String>): Net
     val response = window.fetch(
         api.versionedApi(params = params), RequestInit(
             method = "DELETE",
-            headers = json("Authorization" to "Bearer ${token()}"),
         )
     ).await()
     return response.networkResponse(Unit)

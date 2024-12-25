@@ -30,7 +30,8 @@ Add Github container registry secrets to njord namespace
 ```shell
 cd k8s
 ./k8s_create_reg_sec.sh k8s_login
-./k8s_create_basic_auth.sh
+cd ..
+./gradlew secret
 ```
 
 Deploy postgis service

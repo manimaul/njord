@@ -50,9 +50,18 @@ Bring up front end with hot-reload
 ./gradlew :web:jsRun --continuous
 ```
 
+----------
+
+## Prod Dry run with install dist
+
 ```shell
+export JAVA_OPTS="-Dcharts.webStaticContent=$HOME/source/njord/web/build/dist/js/productionExecutable -Djava.library.path=/opt/gdal/jni"
+export CHART_SERVER_OPTS="-Dcharts.adminUser=test"
+./gradlew :chart_server:installDist
 ./gradlew :web:jsBrowserDistribution
+./chart_server/build/install/chart_server/bin/chart_server
 ```
+
 ----------
 
 # Docs

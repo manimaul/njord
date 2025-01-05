@@ -9,6 +9,8 @@ import io.madrona.njord.viewmodel.utils.Fail
 import io.madrona.njord.viewmodel.utils.Loading
 import io.madrona.njord.viewmodel.utils.Uninitialized
 import org.jetbrains.compose.web.attributes.*
+import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.*
 import org.w3c.dom.HTMLFormElement
 import org.w3c.xhr.FormData
@@ -65,6 +67,7 @@ fun Progress(
         attr("aria-valuemax", "100")
     }) {
         Div(attrs = {
+            style { width(progress.percent) }
             classes("progress-bar", "w-$progress")
         })
     }

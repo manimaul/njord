@@ -61,6 +61,7 @@ class ModalViewModel : BaseViewModel<ModalState>(ModalState())  {
 
 @Composable
 fun Modal(
+    id: String = "modal-${++num}",
     title: String,
     onClose: () -> Unit,
     content: ContentBuilder<HTMLDivElement>,

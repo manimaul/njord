@@ -4,6 +4,8 @@ import io.madrona.njord.model.ChartCatalog
 import io.madrona.njord.model.ChartItem
 import io.madrona.njord.network.Network
 import io.madrona.njord.viewmodel.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 data class ChartCatalogState(
@@ -22,8 +24,7 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
     }
 
     override fun reload() {
-        setState { copy(catalog = Loading()) }
-
+        setState { ChartCatalogState(catalog = Loading()) }
         setState {
             val cat = Network.getChartCatalog(0).toAsync()
             copy(
@@ -77,22 +78,26 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
         }
     }
 
+    fun progress(n: Int, total: Int) : Int {
+        return (n.toFloat() / total.toFloat() * 100).toInt()
+    }
+
     fun deleteAll() {
         adminViewModel.signature?.let { sig ->
             val delete = withState {
                it.filtered
             }
             setState {
-                copy(deleteProgress = 0)
+                copy(deleteProgress = 1)
             }
             launch {
-                delete.forEach { item ->
+                delete.forEachIndexed { i, item->
                     Network.deleteChart(sig, item.id)
-                    
-                    setState { copy(deleteProgress = 0) }
+                    setState {
+                        copy(deleteProgress = progress(i + 1, delete.size))
+                    }
                 }
             }
-            reload()
         }
     }
 }

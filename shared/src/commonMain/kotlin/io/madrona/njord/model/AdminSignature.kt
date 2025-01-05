@@ -1,5 +1,6 @@
 package io.madrona.njord.model
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,8 +11,8 @@ data class AdminResponse(
 
 @Serializable
 data class AdminSignature(
-    val date: String,
+    val date: Instant,
     val signature: String,
     val uuid: String,
-    val expirationDate: String,
+    val expirationDate: Instant,
 )

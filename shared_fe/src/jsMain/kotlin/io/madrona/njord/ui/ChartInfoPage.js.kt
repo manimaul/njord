@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import io.madrona.njord.viewmodel.ChartInfoViewModel
 import io.madrona.njord.viewmodel.complete
-import io.madrona.njord.viewmodel.routeViewModel
 import org.jetbrains.compose.web.dom.*
 
 @Composable

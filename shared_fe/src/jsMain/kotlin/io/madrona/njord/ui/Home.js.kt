@@ -50,12 +50,11 @@ actual fun Home() {
                                     Text(info.buildDate)
                                 }
                             }
-
-                            adminState.adminSignature.value?.let {
+                            adminState.adminSignatureRemaining?.let {
                                 Tr {
                                     Td { Text("Admin") }
                                     Td {
-                                        Text(it.signature.expirationDate)
+                                        Text(it.toString())
                                     }
                                 }
                             }

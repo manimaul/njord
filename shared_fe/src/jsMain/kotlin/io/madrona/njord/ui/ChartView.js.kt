@@ -6,6 +6,7 @@ import io.madrona.njord.js.mapLibreArgs
 import io.madrona.njord.viewmodel.chartViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.dom.Div
@@ -17,7 +18,7 @@ actual fun ChartView() {
     remember {
         CoroutineScope(Dispatchers.Default).apply{
             launch {
-                chartViewModel.flow.map { it.query }.collect {
+                chartViewModel.flow.map { it.query }.distinctUntilChanged().collect {
                     if (it.isNotEmpty()) {
                         modalViewModel.show()
                     } else {

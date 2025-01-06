@@ -55,6 +55,7 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
             setState { copy(location = location) }
         }
         controller.onClick = { point ->
+            println("click point: $point")
             launch {
                 setState {
                     copy(

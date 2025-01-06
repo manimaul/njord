@@ -34,6 +34,7 @@ object Network {
     suspend fun getCustomColors() : NetworkResponse<Map<String, Map<String, Map<String, String>>>> = get("about/colors/custom")
     suspend fun getChartCatalog(id: Long): NetworkResponse<ChartCatalog> = get("chart_catalog", mapOf("id" to "$id"))
     suspend fun getAdmin(): NetworkResponse<AdminResponse> = get("admin")
+    suspend fun getSpriteSheet(themeMode: ThemeMode): NetworkResponse<Map<Sprite, IconInfo>> = get("content/sprites/${themeMode.name.lowercase()}_simplified@2x.json")
     suspend fun verifyAdmin(signature: AdminSignature): NetworkResponse<AdminResponse> = post("admin/verify", signature)
     suspend fun deleteChart(signature: AdminResponse, id: Long): NetworkResponse<Unit> = delete("/chart", mapOf("id" to "$id", "signature" to signature.signatureEncoded))
 }

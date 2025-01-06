@@ -31,17 +31,12 @@ actual fun ControlPanel(tab: String, path: String) {
                 TabData(
                     tabKey = "sprites",
                     title = "Sprites",
-                    selectionContent = { H1 { Text("hello sprites") } }
+                    selectionContent = { Sprites() }
                 ),
                 TabData(
                     tabKey = "colors",
                     title = "Colors",
-                    selectionContent = { H1 { Text("hello colors") } }
-                ),
-                TabData(
-                    tabKey = "endpoints",
-                    title = "Endpoints",
-                    selectionContent = { H1 { Text("hello endpoints") } }
+                    selectionContent = { Colors() }
                 ),
             )
         )

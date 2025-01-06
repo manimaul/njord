@@ -8,6 +8,7 @@ enum class Route(
     Enc("/enc", "ENC"),
     ControlPanel("/control/:tab/:*path", "Control Panel"),
     Chart("/chart/:id", "Chart"),
+    Layer("/layer/:name", "Layer"),
     NotFound("/404", "Not Found");
 
     companion object {

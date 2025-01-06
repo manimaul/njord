@@ -108,4 +108,11 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
     fun clearQuery() {
         setState { copy(query = emptyList()) }
     }
+
+    fun setLocation(mapLocation: MapLocation) {
+        setState {
+            controller.move(mapLocation)
+            copy(location = mapLocation)
+        }
+    }
 }

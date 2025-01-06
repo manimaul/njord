@@ -80,20 +80,21 @@ fun <A, B> asyncComplete(
 }
 
 @Composable
-fun <A> Async<A>.complete(viewModel: BaseViewModel<*>, handler: @Composable (A) -> Unit) =
-    this.complete(viewModel, { LoadingSpinner() }, handler)
+fun <A> Async<A>.complete(viewModel: BaseViewModel<*>? = null, handler: @Composable (A) -> Unit) =
+    this.complete(viewModel, complete = handler)
 
 @Composable
 fun <A> Async<A>.complete(
-    viewModel: BaseViewModel<*>,
-    loading: @Composable () -> Unit,
-    complete: @Composable (A) -> Unit
+    viewModel: BaseViewModel<*>? = null,
+    initial: (@Composable () -> Unit)? = null,
+    loading: @Composable () -> Unit = { LoadingSpinner() },
+    complete: @Composable (A) -> Unit,
 ) {
     when (val event = this) {
         is Complete -> complete(event.value)
-        is Fail -> ErrorDisplay(event) { viewModel.reload() }
+        is Fail -> ErrorDisplay(event) { viewModel?.reload() }
         is Loading -> loading()
-        Uninitialized -> Unit
+        Uninitialized -> initial?.invoke()
     }
 }
 

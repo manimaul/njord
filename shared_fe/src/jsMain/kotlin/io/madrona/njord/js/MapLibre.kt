@@ -22,7 +22,15 @@ external class MapLibre {
         fun queryRenderedFeatures(box: Array<Array<Int>>): dynamic
         fun setStyle(url: String)
         fun remove()
+        fun jumpTo(options: dynamic)
     }
+}
+
+fun MapLibre.Map.jumpToLocation(location: MapLocation) {
+    val options = js("{}")
+    options.center = arrayOf(location.longitude, location.latitude)
+    options.zoom = location.zoom
+    jumpTo(options)
 }
 
 fun MapLibre.Map.moveEnd(callback: (MapLocation) -> Unit) {

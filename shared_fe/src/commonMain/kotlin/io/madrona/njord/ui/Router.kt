@@ -29,6 +29,11 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
                     ChartInfoPage(id)
                 } ?: NotFound()
             }
+            Route.Layer -> RouteContent {
+                state.current.args?.get("name")?.let { name ->
+                    LayerPage(name)
+                } ?: NotFound()
+            }
         }
     }
 }

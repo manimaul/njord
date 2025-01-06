@@ -1,6 +1,7 @@
 package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
+import io.madrona.njord.viewmodel.symbolViewModel
 import org.jetbrains.compose.web.dom.*
 
 @Composable
@@ -26,7 +27,8 @@ actual fun ControlPanel(tab: String, path: String) {
                 TabData(
                     tabKey = "symbols",
                     title = "Symbols",
-                    selectionContent = { H1 { Text("Unimplemented") } }
+                    subPath = "ADMARE",
+                    selectionContent = { Symbols() }
                 ),
                 TabData(
                     tabKey = "sprites",

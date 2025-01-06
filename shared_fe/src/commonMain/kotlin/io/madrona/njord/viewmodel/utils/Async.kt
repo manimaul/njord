@@ -29,11 +29,21 @@ sealed class Async<out T>(
 }
 
 suspend fun <T, R> Async<T>.flatMap(handler: suspend (T) -> Async<R>) : Async<R> {
-    return value?.let { handler(it) } ?: Fail()
+    return when (this) {
+        is Complete -> handler(value)
+        is Fail -> Fail.from(this)
+        is Loading -> Loading()
+        Uninitialized -> Uninitialized
+    }
 }
 
 suspend fun <T, R> Async<T>.map(handler: suspend (T) -> R) : Async<R> {
-    return value?.let { Complete(handler(it)) } ?: Fail()
+    return when (this) {
+        is Complete -> Complete(handler(value))
+        is Fail -> Fail.from(this)
+        is Loading -> Loading()
+        Uninitialized -> Uninitialized
+    }
 }
 
 suspend fun <T> Async<T>.andThen(handler: suspend (T) -> Unit) : Async<T> {
@@ -42,14 +52,11 @@ suspend fun <T> Async<T>.andThen(handler: suspend (T) -> Unit) : Async<T> {
 }
 
 suspend fun <T, R> Async<T>.mapNotNull(handler: suspend (T) -> R?) : Async<R> {
-    return value?.let { handler(it)?.let { Complete(it) } } ?: Fail()
-}
-
-fun <T> Async<T>.mapErrorMessage(handler: (Fail<T>) -> String) : Async<T> {
-    return if (this is Fail) {
-        Fail(value, error, handler(this))
-    } else {
-        this
+    return when (this) {
+        is Complete -> value?.let { handler(it) }?.let { Complete(it) } ?: Loading()
+        is Fail -> Fail.from(this)
+        is Loading -> Loading()
+        Uninitialized -> Uninitialized
     }
 }
 
@@ -77,6 +84,9 @@ data class Fail<out T>(
     val message: String = defaultErrorMessage,
 ) : Async<T>(true, value) {
     companion object {
+        fun <T> from(other: Fail<*>): Fail<T> {
+            return Fail(message = other.message, error = other.error)
+        }
         fun <T> from(vararg errors: Throwable?,  value: T? = null, message: String = defaultErrorMessage) : Fail<T> {
             val error = errors.filterNotNull()
             return Fail(value, error, message)

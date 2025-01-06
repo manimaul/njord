@@ -2,7 +2,6 @@ package io.madrona.njord.viewmodel
 
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.ws.WsMsg
-import io.madrona.njord.util.json
 import io.madrona.njord.viewmodel.utils.Async
 import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Loading

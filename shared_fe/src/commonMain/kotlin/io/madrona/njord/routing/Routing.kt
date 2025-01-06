@@ -2,7 +2,7 @@ package io.madrona.njord.routing
 
 data class Routing(
     val route: Route,
-    val path: String, //here
+    val path: String,
     val args: Map<String, String>? = null,
     val params: QueryParams? = null,
 ) {
@@ -11,6 +11,10 @@ data class Routing(
         return params?.queryString?.let {
             "$path?$it"
         } ?: path
+    }
+
+    val pathSegments by lazy {
+        path.split('/').filter { it.isNotBlank() }
     }
 
     companion object {

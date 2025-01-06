@@ -1,9 +1,6 @@
 package io.madrona.njord.viewmodel
 
-import io.madrona.njord.js.MapLibre
-import io.madrona.njord.js.moveEnd
-import io.madrona.njord.js.onClick
-import io.madrona.njord.js.renderedFeatures
+import io.madrona.njord.js.*
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.Theme
@@ -21,6 +18,7 @@ actual class ChartViewController actual constructor() {
     actual var onClick: ((MapPoint) -> Unit)? = null
 
     actual fun move(location: MapLocation) {
+        mapView?.jumpToLocation(location)
     }
 
     actual fun fitBounds(bounds: MapLocation) {

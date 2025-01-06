@@ -1,7 +1,6 @@
 package io.madrona.njord.viewmodel
 
 import io.madrona.njord.model.AdminResponse
-import io.madrona.njord.model.AdminSignature
 import io.madrona.njord.network.Network
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
@@ -65,7 +64,7 @@ class AdminViewModel : BaseViewModel<AdminState>(AdminState()) {
     }
 
     fun logout() {
-        localStoreSet<AdminSignature>(null)
+        localStoreSet<AdminResponse>(null)
         setState { copy(adminSignature = Uninitialized) }
     }
 }

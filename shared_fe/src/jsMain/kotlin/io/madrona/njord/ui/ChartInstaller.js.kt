@@ -3,6 +3,7 @@ package io.madrona.njord.ui
 import androidx.compose.runtime.*
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.viewmodel.ChartInstallState
+import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.chartInstallViewModel
 import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Fail
@@ -18,11 +19,16 @@ import org.w3c.xhr.FormData
 @Composable
 fun ChartInstaller() {
     val state by chartInstallViewModel.flow.collectAsState()
-    when (val upload = state.encUpload) {
-        is Complete -> ChartInstallProgress(state)
-        is Fail -> ErrorDisplay(upload) { }
-        is Loading -> Progress("Uploading chart file", state.uploadProgress)
-        Uninitialized -> ChartInstallForm()
+    val adminState by adminViewModel.flow.collectAsState()
+    if (adminState.isLoggedIn) {
+        when (val upload = state.encUpload) {
+            is Complete -> ChartInstallProgress(state)
+            is Fail -> ErrorDisplay(upload) { }
+            is Loading -> Progress("Uploading chart file", state.uploadProgress)
+            Uninitialized -> ChartInstallForm()
+        }
+    } else {
+        Text("Admin access required")
     }
 }
 

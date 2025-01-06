@@ -11,7 +11,7 @@ enum class Route(
     NotFound("/404", "Not Found");
 
     companion object {
-        fun controlPanel(tab: String = "charts_catalog", selection: String = "n") =
+        fun controlPanel(tab: String = "charts_catalog", selection: String = "") =
             Routing.from("/control/$tab/$selection")
     }
 }

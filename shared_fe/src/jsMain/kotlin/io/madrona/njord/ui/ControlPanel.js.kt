@@ -26,7 +26,7 @@ actual fun ControlPanel(tab: String, path: String) {
                 TabData(
                     tabKey = "symbols",
                     title = "Symbols",
-                    selectionContent = { H1 { Text("hello symbols") } }
+                    selectionContent = { H1 { Text("Unimplemented") } }
                 ),
                 TabData(
                     tabKey = "sprites",

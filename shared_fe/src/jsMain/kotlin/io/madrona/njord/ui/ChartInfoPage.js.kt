@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import io.madrona.njord.viewmodel.ChartInfoViewModel
-import io.madrona.njord.viewmodel.complete
+import io.madrona.njord.routing.Route
+import io.madrona.njord.viewmodel.*
 import org.jetbrains.compose.web.dom.*
 
 @Composable
@@ -29,6 +29,22 @@ actual fun ChartInfoPage(id: String) {
                     Tr {
                         Td { Text("ID") }
                         Td { Text("${chart.id}") }
+                    }
+                    Tr {
+                        Td { Text("Name") }
+                        Td {
+                            Text("${chart.name} ")
+                            Button(attrs = {
+                                classes("btn", "btn-outline-secondary", "btn-sm")
+                                onClick {
+                                    chartViewModel.pendingBounds = chart.bounds
+                                    routeViewModel.pushRoute(Route.Enc)
+                                }
+                            }) {
+                                Text("ENC Zoom")
+                            }
+                        }
+
                     }
                     Tr {
                         Td { Text("Feature Count") }

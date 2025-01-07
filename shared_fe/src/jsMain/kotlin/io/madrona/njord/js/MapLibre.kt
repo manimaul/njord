@@ -1,11 +1,13 @@
 package io.madrona.njord.js
 
+import io.madrona.njord.model.Bounds
 import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.stylePath
 import io.madrona.njord.util.json
 import io.madrona.njord.viewmodel.ChartState
 import io.madrona.njord.viewmodel.MapLocation
 import io.madrona.njord.viewmodel.MapPoint
+import io.madrona.njord.viewmodel.chartViewModel
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -23,7 +25,14 @@ external class MapLibre {
         fun setStyle(url: String)
         fun remove()
         fun jumpTo(options: dynamic)
+        fun fitBounds(bounds: Array<Array<Double>>)
     }
+}
+
+fun MapLibre.Map.fitToBounds(bounds: Bounds) {
+    val topLeft = arrayOf(bounds.leftLng, bounds.topLat)
+    val botRight = arrayOf(bounds.rightLng, bounds.bottomLat)
+    fitBounds(arrayOf(topLeft, botRight))
 }
 
 fun MapLibre.Map.jumpToLocation(location: MapLocation) {
@@ -78,10 +87,17 @@ fun MapLibre.Map.onClick(callback: (MapPoint) -> Unit) {
     }
 }
 
+fun createMapLibre(container: HTMLDivElement) : MapLibre.Map {
+   return MapLibre.Map(mapLibreArgs(container)).also { mapLibre ->
+       chartViewModel.pendingBounds?.let { mapLibre.fitToBounds(it) }
+       chartViewModel.pendingBounds = null
+   }
+}
+
 fun mapLibreArgs(
     container: HTMLDivElement,
-    state: ChartState,
 ): dynamic {
+    val state = chartViewModel.flow.value
     val obj = js("{}")
     obj["container"] = container
     obj["style"] = stylePath(state.theme, state.depth)

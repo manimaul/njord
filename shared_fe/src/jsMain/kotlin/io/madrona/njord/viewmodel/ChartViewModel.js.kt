@@ -1,10 +1,7 @@
 package io.madrona.njord.viewmodel
 
 import io.madrona.njord.js.*
-import io.madrona.njord.model.Depth
-import io.madrona.njord.model.MapGeoJsonFeature
-import io.madrona.njord.model.Theme
-import io.madrona.njord.model.stylePath
+import io.madrona.njord.model.*
 
 actual class ChartViewController actual constructor() {
     var mapView: MapLibre.Map? = null
@@ -21,7 +18,8 @@ actual class ChartViewController actual constructor() {
         mapView?.jumpToLocation(location)
     }
 
-    actual fun fitBounds(bounds: MapLocation) {
+    actual fun fitBounds(bounds: Bounds) {
+        mapView?.fitToBounds(bounds)
     }
 
     actual fun queryRenderedFeatures(

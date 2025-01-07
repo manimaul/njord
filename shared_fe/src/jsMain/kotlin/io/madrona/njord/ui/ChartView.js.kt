@@ -1,8 +1,7 @@
 package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
-import io.madrona.njord.js.MapLibre
-import io.madrona.njord.js.mapLibreArgs
+import io.madrona.njord.js.createMapLibre
 import io.madrona.njord.viewmodel.chartViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,9 +35,7 @@ actual fun ChartView() {
         attrs = {
             classes("Fill")
             ref { element ->
-                chartViewModel.controller.mapView = MapLibre.Map(
-                    mapLibreArgs(element, chartViewModel.flow.value)
-                )
+                chartViewModel.controller.mapView = createMapLibre(element)
                 object : DisposableEffectResult {
                     override fun dispose() {
                         chartViewModel.controller.mapView?.remove()

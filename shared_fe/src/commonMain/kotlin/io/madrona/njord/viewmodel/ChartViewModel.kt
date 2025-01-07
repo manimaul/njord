@@ -21,13 +21,6 @@ data class MapLocation(
     val zoom: Double = 12.0,
 )
 
-data class MapBounds(
-    val leftLng: Double,
-    val topLat: Double,
-    val rightLng: Double,
-    val bottomLat: Double,
-)
-
 data class MapPoint(
     val x: Int,
     val y: Int,
@@ -37,7 +30,7 @@ expect class ChartViewController() {
     var onMoveEnd: ((MapLocation) -> Unit)?
     var onClick: ((MapPoint) -> Unit)?
     fun move(location: MapLocation)
-    fun fitBounds(bounds: MapLocation)
+    fun fitBounds(bounds: Bounds)
     fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature>
     fun setStyle(theme: Theme, depth: Depth)
 }
@@ -115,4 +108,10 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
             copy(location = mapLocation)
         }
     }
+
+    var pendingBounds: Bounds? = null
+        set(value) {
+            value?.let { controller.fitBounds(it) }
+            field = value
+        }
 }

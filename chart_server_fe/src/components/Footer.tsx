@@ -11,7 +11,8 @@ export default function Footer() {
                 </p>
                 <a className="text-white" href="https://github.com/manimaul/njord">
                     <img style={{width:25, height:25}} src={github} />
-                </a> <a className="text-white" href="https://github.com/manimaul/njord/blob/master/LICENSE">
+                </a>
+                <a className="text-white" href="https://github.com/manimaul/njord/blob/master/LICENSE">
                     <img  src={apache_2_badge} />
                 </a>
             </div>

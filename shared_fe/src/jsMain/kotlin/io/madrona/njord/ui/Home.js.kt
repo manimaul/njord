@@ -4,7 +4,12 @@ import androidx.compose.runtime.*
 import io.madrona.njord.viewmodel.AboutViewModel
 import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.complete
+import kotlinx.datetime.Clock
+import kotlinx.datetime.toJSDate
 import org.jetbrains.compose.web.attributes.colspan
+import org.jetbrains.compose.web.css.height
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.*
 
 @Composable
@@ -23,7 +28,11 @@ actual fun Home() {
                         Thead {
                             Tr {
                                 Th(attrs = { colspan(2) }) {
-                                    Text("Njord Electronic Navigation Chart Server")
+                                    Text(
+                                        "Njord Electronic Navigation Chart Server ©${
+                                            Clock.System.now().toJSDate().getFullYear()
+                                        }"
+                                    )
                                 }
                             }
                             Tr {
@@ -35,7 +44,12 @@ actual fun Home() {
                             Tr {
                                 Td { Text("Git Commit") }
                                 Td {
-                                    A(href = "https://github.com/manimaul/njord/commit/${info.gitHash}") { Text(info.gitHash) }
+                                    A(
+                                        attrs = { classes("link-secondary", "link-underline-opacity-75") },
+                                        href = "https://github.com/manimaul/njord/commit/${info.gitHash}"
+                                    ) {
+                                        Text(info.gitHash)
+                                    }
                                 }
                             }
                             Tr {
@@ -55,6 +69,42 @@ actual fun Home() {
                                     Td { Text("Admin") }
                                     Td {
                                         Text(it.toString())
+                                    }
+                                }
+                            }
+                            Tr {
+                                Td {
+                                    Text("License")
+                                }
+                                Td {
+                                    A(
+                                        href = "https://github.com/manimaul/njord/blob/master/LICENSE"
+                                    ) {
+                                        Img(src = "/apache_2_badge.svg")
+                                    }
+                                }
+                            }
+                            Tr {
+                                Td {
+                                    Text("Source")
+                                }
+                                Td {
+                                    A(
+                                        href = "https://github.com/manimaul/njord"
+                                    ) {
+                                        Img(src = "/github.svg", attrs = {
+                                            style {
+                                                width(25.px)
+                                                height(25.px)
+                                            }
+                                        })
+                                    }
+                                    Text(" ")
+                                    A(
+                                        attrs = { classes("link-secondary", "link-underline-opacity-75") },
+                                        href = "https://github.com/manimaul/njord"
+                                    ) {
+                                        Text(" https://github.com/manimaul/njord")
                                     }
                                 }
                             }

@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 
 data class ChartState(
     val location: MapLocation = localStoreGet<MapLocation>() ?: MapLocation(),
+    val bounds: Bounds? = null,
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
     val query: List<MapGeoJsonFeature> = emptyList(),
@@ -26,21 +27,13 @@ data class MapPoint(
     val y: Int,
 )
 
-expect class ChartViewController() {
-    var onMoveEnd: ((MapLocation) -> Unit)?
-    var onClick: ((MapPoint) -> Unit)?
-    fun move(location: MapLocation)
-    fun fitBounds(bounds: Bounds)
-    fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature>
-    fun setStyle(theme: Theme, depth: Depth)
-}
 
 val chartViewModel = ChartViewModel()
 
 fun currentThemeMode() = chartViewModel.flow.value.theme.mode()
 
 class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
-    var controller: ChartViewController = ChartViewController()
+    var controller: ChartController = ChartController()
 
     init {
         controller.onMoveEnd = { location ->
@@ -109,9 +102,10 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         }
     }
 
-    var pendingBounds: Bounds? = null
-        set(value) {
-            value?.let { controller.fitBounds(it) }
-            field = value
+    fun setBounds(bounds: Bounds?) {
+        setState {
+            bounds?.let { controller.fitBounds(it) }
+            copy(bounds = bounds)
         }
+    }
 }

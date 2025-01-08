@@ -23,7 +23,7 @@ actual fun LayerPage(name: String) {
     val viewModel = remember { LayerPageViewModel(name) }
     val state by viewModel.flow.collectAsState()
     H1 {
-        Text("Chart Locations for layer $name page")
+        Text("Chart Locations for layer $name")
     }
     state.pages.complete(viewModel) { pages ->
         val items = pages.map { it.items }.flatten()

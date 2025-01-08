@@ -5,7 +5,7 @@ import io.madrona.njord.model.Depth
 import io.madrona.njord.model.MapGeoJsonFeature
 import io.madrona.njord.model.Theme
 
-actual class ChartViewController actual constructor() {
+actual class ChartController actual constructor() {
     actual var onMoveEnd: ((MapLocation) -> Unit)? = null
     actual var onClick: ((MapPoint) -> Unit)? = null
 

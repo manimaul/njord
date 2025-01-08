@@ -75,7 +75,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-tests-jvm")
                 implementation(kotlin("test"))
                 implementation("org.mockito:mockito-core:5.2.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
     }

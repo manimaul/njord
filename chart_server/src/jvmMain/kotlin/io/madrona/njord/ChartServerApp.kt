@@ -7,7 +7,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.engine.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.callloging.*
+import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
@@ -20,7 +20,7 @@ import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
 import org.slf4j.event.Level
 import java.io.File
-import java.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 
 class ChartServerApp {
@@ -44,8 +44,8 @@ fun Application.njord() {
         json()
     }
     install(WebSockets) {
-        pingPeriod = Duration.ofSeconds(15)
-        timeout = Duration.ofSeconds(15)
+        pingPeriod = 15.seconds
+        timeout = 15.seconds
         maxFrameSize = Long.MAX_VALUE
         masking = false
     }

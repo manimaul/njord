@@ -1,5 +1,6 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.geojson.Feature
 import io.madrona.njord.model.Bounds
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.MapGeoJsonFeature
@@ -23,5 +24,12 @@ actual class ChartController actual constructor() {
     }
 
     actual fun setStyle(theme: Theme, depth: Depth) {
+    }
+
+    actual fun highlight(feature: Feature) {
+    }
+
+    actual fun project(mapLocation: MapLocation): MapPoint? {
+        return null
     }
 }

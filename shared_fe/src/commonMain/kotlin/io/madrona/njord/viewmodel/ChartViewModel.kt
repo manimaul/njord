@@ -1,5 +1,6 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.geojson.*
 import io.madrona.njord.model.*
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
@@ -10,6 +11,7 @@ import kotlinx.serialization.Serializable
 data class ChartState(
     val location: MapLocation = localStoreGet<MapLocation>() ?: MapLocation(),
     val bounds: Bounds? = null,
+    val highlight: Feature? = null,
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
     val query: List<MapGeoJsonFeature> = emptyList(),
@@ -95,17 +97,24 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         setState { copy(query = emptyList()) }
     }
 
-    fun setLocation(mapLocation: MapLocation) {
+    fun setLocation(mapLocation: MapLocation, highLightLocation: Boolean = false) {
         setState {
             controller.move(mapLocation)
-            copy(location = mapLocation)
+            val highlight = if (highLightLocation) {
+                Feature(geometry = Point(mapLocation.longitude, mapLocation.latitude))
+            } else {
+                null
+            }
+            highlight?.let { controller.highlight(it) }
+            copy(location = mapLocation, highlight = highlight)
         }
     }
 
-    fun setBounds(bounds: Bounds?) {
+    fun setBounds(bounds: Bounds?, highlight: Feature? = null) {
         setState {
             bounds?.let { controller.fitBounds(it) }
-            copy(bounds = bounds)
+            highlight?.let { controller.highlight(it) }
+            copy(bounds = bounds, highlight = highlight)
         }
     }
 }

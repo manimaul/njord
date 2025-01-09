@@ -11,5 +11,8 @@ external class MapLibre {
         fun remove()
         fun jumpTo(options: dynamic)
         fun fitBounds(bounds: Array<Array<Double>>)
+        fun addLayer(options: dynamic)
+        fun addSource(id: String, source: dynamic)
+        fun project(lngLat: Array<Double>): dynamic
     }
 }

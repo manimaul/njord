@@ -46,7 +46,7 @@ actual fun LayerPage(name: String) {
                     Button(attrs = {
                         classes("btn", "btn-outline-secondary", "btn-sm")
                         onClick {
-                            chartViewModel.setLocation(MapLocation(latitude = item.lat, longitude = item.lng, zoom = item.zoom.toDouble()))
+                            chartViewModel.setLocation(MapLocation(latitude = item.lat, longitude = item.lng, zoom = item.zoom.toDouble()), true)
                             routeViewModel.pushRoute(Route.Enc)
                         }
                     }){

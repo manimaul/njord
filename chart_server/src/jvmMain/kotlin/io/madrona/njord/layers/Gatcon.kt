@@ -19,10 +19,18 @@ class Gatcon : Layerable() {
 
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.catgat()?.let {
-            when(it) {
+            when (it) {
                 Catgat.FLOOD_BARRAGE_GATE,
-                Catgat.CAISSON ->  feature.pointSymbol(Sprite.GATCON04)
-                Catgat.LOCK_GATE -> feature.pointSymbol(Sprite.GATCON03)
+                Catgat.CAISSON -> {
+                    feature.pointSymbol(Sprite.GATCON04)
+                    feature.linePattern(Sprite.GATCON04)
+                }
+
+                Catgat.LOCK_GATE -> {
+                    feature.pointSymbol(Sprite.GATCON03)
+                    feature.linePattern(Sprite.GATCON03)
+                }
+
                 Catgat.DYKE_GATE -> Unit
             }
         }
@@ -33,6 +41,11 @@ class Gatcon : Layerable() {
     override fun layers(options: LayerableOptions) = sequenceOf(
         pointLayerFromSymbol(),
         areaLayerWithFillColor(theme = options.theme, color = areaColor),
-        lineLayerWithColor(theme = options.theme, color = lineColor, width = 2f)
+        lineLayerWithColor(theme = options.theme, color = lineColor, width = 2f),
+        lineLayerWithPattern(
+            includePolygonLines = false,
+            symbolPlacement = Placement.LINE_CENTER,
+            iconRotationAlignment = IconRotationAlignment.VIEWPORT,
+        )
     )
 }

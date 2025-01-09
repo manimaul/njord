@@ -139,7 +139,6 @@ class StandardLayers {
         Causwy(),
         Canals(),
         Rivers(),
-        Lokbsn(),
         Airare(),
         Runway(),
         Dykcon(),
@@ -148,6 +147,8 @@ class StandardLayers {
         Cgusta(),
 
         // water boundary layers
+        Unsare(),
+        Lokbsn(),
         Tsslpt(),
         Tssbnd(),
         Tselne(),
@@ -189,7 +190,6 @@ class StandardLayers {
         Chkpnt(),
         Prcare(),
         Sndwav(),
-        Unsare(),
         Berths(),
 
         // obstructions

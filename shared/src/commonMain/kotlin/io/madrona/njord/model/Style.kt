@@ -73,7 +73,7 @@ data class Layout(
     @SerialName("icon-rotate") val iconRotate: JsonElement? = null,
     @SerialName("icon-size") val iconSize: Float? = null,
     @SerialName("symbol-spacing") val symbolSpacing: Float? = null,
-    @SerialName("icon-rotation-alignment") val iconRotationAlignment: JsonElement? = null,
+    @SerialName("icon-rotation-alignment") val iconRotationAlignment: IconRotationAlignment? = null,
     @SerialName("text-font") val textFont: List<Font>? = null,
     @SerialName("text-anchor") val textAnchor: Anchor? = null,
     @SerialName("text-justify") val textJustify: TextJustify? = null,

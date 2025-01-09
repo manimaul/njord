@@ -3,7 +3,6 @@ package io.madrona.njord.layers
 import io.madrona.njord.ext.json
 import io.madrona.njord.model.*
 import io.madrona.njord.util.logger
-import kotlinx.serialization.json.Json.Default.encodeToJsonElement
 import kotlinx.serialization.json.JsonElement
 
 abstract class Layerable(
@@ -42,7 +41,7 @@ abstract class Layerable(
                 iconOffset = iconOffset?.property,
                 iconAllowOverlap = iconAllowOverlap,
                 iconRotate = iconRotate?.property,
-                iconRotationAlignment = iconRotationAlignment?.let {  encodeToJsonElement(IconRotationAlignment.serializer(), iconRotationAlignment) },
+                iconRotationAlignment = iconRotationAlignment,
             )
         )
     }
@@ -148,16 +147,22 @@ abstract class Layerable(
     }
 
     private var lineLayerWithPatternId = 0
-    fun lineLayerWithPattern(symbol: Sprite? = null): Layer {
+    fun lineLayerWithPattern(
+        symbol: Sprite? = null,
+        includePolygonLines: Boolean = true,
+        symbolPlacement: Placement = Placement.LINE,
+        iconRotationAlignment: IconRotationAlignment? = null, //defaults to auto
+    ): Layer {
         return Layer(
             id = "${key}_line_symbol_${++lineLayerWithPatternId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
-            filter = Filters.eqTypeLineStringOrPolygon,
+            filter = if (includePolygonLines) Filters.eqTypeLineStringOrPolygon else Filters.eqTypeLineString,
             layout = Layout(
-                symbolPlacement = Placement.LINE,
+                symbolPlacement = symbolPlacement,
                 iconImage = symbol?.name?.json ?: listOf("get", "LP").json,
                 iconAnchor = Anchor.CENTER,
+                iconRotationAlignment = iconRotationAlignment,
                 iconKeepUpright = false,
             )
         )
@@ -180,7 +185,7 @@ abstract class Layerable(
                 symbolPlacement = Placement.LINE,
                 iconImage = symbol?.name?.json ?: listOf("get", "LP").json,
                 iconRotate = iconRotate?.json,
-                iconRotationAlignment = IconRotationAlignment.MAP.json,
+                iconRotationAlignment = IconRotationAlignment.MAP,
                 iconAllowOverlap = allowOverlap,
                 iconSize = iconSize,
                 symbolSpacing = spacing,
@@ -269,9 +274,9 @@ abstract class Layerable(
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol?.json ?: listOf("get", "SY").json,
-                iconOffset = iconOffset?.map{ it.json }?.json,
+                iconOffset = iconOffset?.map { it.json }?.json,
                 iconAnchor = anchor,
-                iconRotationAlignment = iconRotationAlignment.json,
+                iconRotationAlignment = iconRotationAlignment,
             )
         )
     }
@@ -296,22 +301,22 @@ abstract class Layerable(
                 iconImage = symbol?.json ?: listOf("get", "SY").json,
                 iconAnchor = anchor,
                 iconRotate = iconRotate?.property,
-                iconRotationAlignment = iconRotationAlignment?.json,
+                iconRotationAlignment = iconRotationAlignment,
                 iconAllowOverlap = iconAllowOverlap,
                 iconKeepUpright = false,
-                iconOffset = iconOffset?.map{ it.json }?.json,
+                iconOffset = iconOffset?.map { it.json }?.json,
             )
         )
     }
 
     private var areaLayerWithTextId = 0
     fun areaLayerWithText(
-       label: Label,
-       theme: Theme,
-       textColor: Color = Color.CHBLK,
-       haloColor: Color = Color.CHWHT,
-       textJustify: TextJustify = TextJustify.CENTER,
-       textOffset: Offset? = null
+        label: Label,
+        theme: Theme,
+        textColor: Color = Color.CHBLK,
+        haloColor: Color = Color.CHWHT,
+        textJustify: TextJustify = TextJustify.CENTER,
+        textOffset: Offset? = null
     ): Layer {
         return Layer(
             id = "${key}_area_label${++areaLayerWithTextId}",

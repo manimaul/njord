@@ -16,7 +16,7 @@ Ok, here's how Njord processes the S57 files:
 * The remaining features in each of the layers in each S57 file are read and converted to a GeoJson FeatureCollection and stored in the "features" table. Note that we convert all geometries to 4326
   (schema: https://github.com/manimaul/njord/blob/master/chart_server_db/postgres_init/scripts/up.sql )
 
-You can see the corresponding endpoints here: https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/ChartServerApp.kt such as StyleHandler
+You can see the corresponding endpoints here: https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/ChartServerApp.kt such as StyleHandler
 
 ## MVT Tiles
 When a tile is fetched we do the following:
@@ -24,8 +24,8 @@ When a tile is fetched we do the following:
 * Lookup features within the tile geometry for each chart id
 * Clip each geometry based on what was already encoded (covered).
 * Add clipped geometry and key value properties to the encoded MVT tile.
-  https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/endpoints/TileHandler.kt
-  https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/geo/TileEncoder.kt#L38
+  https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/endpoints/TileHandler.kt
+  https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/geo/TileEncoder.kt#L38
 
 ## Styling
 
@@ -33,7 +33,7 @@ Here are all the style json layers: https://github.com/manimaul/njord/tree/maste
 Not all of these are complete and there are more S57 objects to add.
 
 You may have noticed that the TileEncoder looks up layer symbols and adds them to the encoded tile feature(s) properties:
-https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/geo/TileEncoder.kt#L50
+https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/geo/TileEncoder.kt#L50
 
 You can see the corresponding symbol lookups in the style json: https://openenc.com//v1/style/day/meters
 eg icon-image: `["get","SY"]`
@@ -42,8 +42,8 @@ So, SY is added to the S57 feature properties.
 You can view features by chart and layer as geojson: https://openenc.com/v1/geojson?chart_id=1&layer_name=BOYSPP
 This endpoint isn't really necessary for the chart display but can help debug. Note that SY is not added to the geojson.
 
-Other layers like LNDARE https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/layers/Lndare.kt just use the corresponding S57 object and has fill and line style rules.
+Other layers like LNDARE https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/layers/Lndare.kt just use the corresponding S57 object and has fill and line style rules.
 
-The DEPARE layer https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/layers/Depare.kt can choose colors based on the depth.
+The DEPARE layer https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/layers/Depare.kt can choose colors based on the depth.
 
-Another interesting Mabox layer style is SOUNDG https://github.com/manimaul/njord/blob/master/chart_server/src/main/kotlin/io/madrona/njord/layers/Soundg.kt. 
+Another interesting Mabox layer style is SOUNDG https://github.com/manimaul/njord/blob/master/chart_server/src/jvmMain/kotlin/io/madrona/njord/layers/Soundg.kt. 

@@ -1,5 +1,6 @@
 package io.madrona.njord.model
 
+import io.madrona.njord.geojson.Feature
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
@@ -40,11 +41,14 @@ data class Paint(
     @SerialName("fill-color") val fillColor: JsonElement? = null,
     @SerialName("fill-pattern") val fillPattern: JsonElement? = null, //List<String> or String>
     @SerialName("line-color") val lineColor: JsonElement? = null,
-    @SerialName("circle-color") val circleColor: String? = null,
     @SerialName("line-width") val lineWidth: Float? = null,
     @SerialName("line-dasharray") val lineDashArray: List<Float>? = null,
     @SerialName("line-pattern") val linePattern: JsonElement? = null, //List<String> or String>
+    @SerialName("circle-opacity") val circleOpacity: Float? = null,
+    @SerialName("circle-color") val circleColor: JsonElement? = null,
+    @SerialName("circle-stroke-color") val circleStrokeColor: JsonElement? = null,
     @SerialName("circle-radius") val circleRadius: Float? = null,
+    @SerialName("circle-stroke-width") val circleStrokeWidth: Float? = null,
 )
 
 @Serializable
@@ -75,6 +79,8 @@ data class Layout(
     @SerialName("text-justify") val textJustify: TextJustify? = null,
     @SerialName("text-field") val textField: JsonElement? = null,
     @SerialName("text-offset") val textOffset: JsonElement? = null,
+    @SerialName("line-join") val lineJoin: LineJoin? = null,
+    @SerialName("line-cap") val lineCap: LineCap? = null,
 
     /**
      * Positive values indicate right and down, while negative values indicate left and up.
@@ -87,6 +93,30 @@ data class Layout(
     @SerialName("text-padding") val textPadding: Float? = null,
     @SerialName("symbol-placement") val symbolPlacement: Placement? = null,
 )
+
+@Serializable
+enum class LineCap {
+    @SerialName("butt")
+    BUTT,
+
+    @SerialName("round")
+    ROUND,
+
+    @SerialName("square")
+    SQUARE,
+}
+
+@Serializable
+enum class LineJoin{
+    @SerialName("bevel")
+    BEVEL,
+
+    @SerialName("round")
+    ROUND,
+
+    @SerialName("miter")
+    MITER,
+}
 
 @Serializable
 enum class Placement {
@@ -188,12 +218,15 @@ enum class LayerType {
 }
 
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
 data class Source(
 
-    @OptIn(ExperimentalSerializationApi::class)
     @EncodeDefault
     val type: SourceType = SourceType.VECTOR,
-    @SerialName("url") val tileJsonUrl: String // "https://localhost:9000/v1/tile_json"
+
+    @SerialName("url") val tileJsonUrl: String? = null, // "https://localhost:9000/v1/tile_json"
+
+    val data: Feature? = null,
 ) {
     companion object {
         const val SENC = "src_senc"
@@ -204,4 +237,6 @@ data class Source(
 enum class SourceType {
     @SerialName("vector")
     VECTOR,
+    @SerialName("geojson")
+    GEOJSON,
 }

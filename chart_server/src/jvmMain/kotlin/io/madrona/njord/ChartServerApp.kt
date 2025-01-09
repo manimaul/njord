@@ -89,7 +89,7 @@ fun Application.njord() {
             // curl https://openenc.com/v1/tile_json | jq
             TileJsonHandler(),
 
-            // curl https://openenc.com/v1/style/meters | jq
+            // curl https://openenc.com/v1/style/meters/day | jq
             StyleHandler(),
 
             // sig=$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} http://localhost:9000/v1/admin | jq -r .signatureEncoded)

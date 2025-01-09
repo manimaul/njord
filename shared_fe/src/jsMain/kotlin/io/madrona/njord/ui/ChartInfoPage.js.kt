@@ -37,7 +37,7 @@ actual fun ChartInfoPage(id: String) {
                             Button(attrs = {
                                 classes("btn", "btn-outline-secondary", "btn-sm")
                                 onClick {
-                                    chartViewModel.setBounds(chart.bounds)
+                                    chartViewModel.setBounds(chart.bounds, chart.covr)
                                     routeViewModel.pushRoute(Route.Enc)
                                 }
                             }) {

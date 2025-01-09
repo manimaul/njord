@@ -1,5 +1,7 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.model.Bounds
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.MapGeoJsonFeature
@@ -12,4 +14,6 @@ expect class ChartController() {
     fun fitBounds(bounds: Bounds)
     fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature>
     fun setStyle(theme: Theme, depth: Depth)
+    fun highlight(feature: Feature)
+    fun project(mapLocation: MapLocation): MapPoint?
 }

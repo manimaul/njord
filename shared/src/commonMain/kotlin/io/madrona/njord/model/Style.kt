@@ -79,6 +79,7 @@ data class Layout(
     @SerialName("text-justify") val textJustify: TextJustify? = null,
     @SerialName("text-field") val textField: JsonElement? = null,
     @SerialName("text-offset") val textOffset: JsonElement? = null,
+    @SerialName("text-optional") val textOptional: Boolean? = null,
     @SerialName("line-join") val lineJoin: LineJoin? = null,
     @SerialName("line-cap") val lineCap: LineCap? = null,
 

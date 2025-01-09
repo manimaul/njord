@@ -21,7 +21,8 @@ class Seaare : Layerable() {
                 textColor = Color.SNDG2,
                 haloColor = Color.DEPDW,
                 textJustify = TextJustify.LEFT,
-                textOffset = Offset.Coord(x = 4f, y = 2f)
+                textOffset = Offset.Coord(x = 4f, y = 2f),
+                textOptional = true,
             ),
         )
     }

@@ -46,6 +46,7 @@ class Gatcon : Layerable() {
             includePolygonLines = false,
             symbolPlacement = Placement.LINE_CENTER,
             iconRotationAlignment = IconRotationAlignment.VIEWPORT,
+            iconAllowOverlap = true,
         )
     )
 }

@@ -19,7 +19,8 @@ open class LndareLabel : Layerable() {
             areaLayerWithText(
                 label = Label.Property("OBJNAM"),
                 theme = options.theme,
-                haloColor = Color.LANDA
+                haloColor = Color.LANDA,
+                textOptional = true,
             ),
         )
     }

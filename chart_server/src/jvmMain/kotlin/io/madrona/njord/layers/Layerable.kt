@@ -152,6 +152,7 @@ abstract class Layerable(
         includePolygonLines: Boolean = true,
         symbolPlacement: Placement = Placement.LINE,
         iconRotationAlignment: IconRotationAlignment? = null, //defaults to auto
+        iconAllowOverlap: Boolean? = null,
     ): Layer {
         return Layer(
             id = "${key}_line_symbol_${++lineLayerWithPatternId}",
@@ -164,6 +165,7 @@ abstract class Layerable(
                 iconAnchor = Anchor.CENTER,
                 iconRotationAlignment = iconRotationAlignment,
                 iconKeepUpright = false,
+                iconAllowOverlap = iconAllowOverlap,
             )
         )
     }
@@ -316,7 +318,8 @@ abstract class Layerable(
         textColor: Color = Color.CHBLK,
         haloColor: Color = Color.CHWHT,
         textJustify: TextJustify = TextJustify.CENTER,
-        textOffset: Offset? = null
+        textOffset: Offset? = null,
+        textOptional: Boolean? = null,
     ): Layer {
         return Layer(
             id = "${key}_area_label${++areaLayerWithTextId}",
@@ -329,6 +332,7 @@ abstract class Layerable(
                 textField = label.property,
                 textSize = 14f,
                 textOffset = textOffset?.property,
+                textOptional = textOptional,
             ),
             paint = Paint(
                 textColor = colorFrom(textColor, theme).json,

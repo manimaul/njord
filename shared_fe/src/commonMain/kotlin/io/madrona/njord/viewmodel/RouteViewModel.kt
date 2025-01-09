@@ -45,14 +45,18 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
         }
     }
 
-    fun replaceRoute(path: String) {
+    fun replaceRoute(routing: Routing) {
         setState {
             copy(
-                current = Routing.from(path),
+                current = routing,
                 href = currentHref(),
                 replace = true,
             )
         }
+    }
+
+    fun replaceRoute(path: String) {
+        replaceRoute(Routing.from(path))
     }
 
     fun pushRoute(path: String) {

@@ -1,15 +1,34 @@
 package io.madrona.njord.viewmodel
 
-import io.madrona.njord.geojson.*
+import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.*
+import io.madrona.njord.routing.QueryParams
+import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.Routing
 import io.madrona.njord.util.localStoreGet
 import io.madrona.njord.util.localStoreSet
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
+private fun mapLocation(): MapLocation? {
+    return routeViewModel.flow.value.current.takeIf {
+        it.route == Route.Enc
+    }?.let { it.params?.values }?.let {
+        val lng = it["lng"]?.toDoubleOrNull()
+        val lat = it["lat"]?.toDoubleOrNull()
+        val z = it["z"]?.toDoubleOrNull()
+        if (lng != null && lat != null && z != null) {
+            MapLocation(lng, lat, z)
+        } else {
+            null
+        }
+    } ?: localStoreGet<MapLocation>()
+}
+
 data class ChartState(
-    val location: MapLocation = localStoreGet<MapLocation>() ?: MapLocation(),
+    val location: MapLocation = mapLocation() ?: MapLocation(),
     val bounds: Bounds? = null,
     val highlight: Feature? = null,
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
@@ -57,6 +76,14 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         }
         launch {
             flow.map { it.location }.collect {
+                if (routeViewModel.flow.value.current.route == Route.Enc) {
+                    routeViewModel.replaceRoute(
+                        Routing.from(
+                            "/enc",
+                            QueryParams("lat=${it.latitude}&lng=${it.longitude}&z=${it.zoom}")
+                        )
+                    )
+                }
                 localStoreSet(it)
             }
         }

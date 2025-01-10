@@ -25,7 +25,7 @@ fun websocketUri(upload: EncUpload): String? {
                 it
             }
         }
-        val base = if (window.location.protocol == "https") {
+        val base = if (window.location.protocol == "https:") {
             "wss://$loc"
         } else {
             "ws://$loc"

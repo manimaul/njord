@@ -17,6 +17,7 @@ import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
 import org.gdal.gdal.Dataset
 import org.gdal.gdal.gdal
 import org.gdal.ogr.Feature
@@ -25,7 +26,9 @@ import org.gdal.ogr.Layer
 import org.gdal.ogr.ogrConstants.*
 import org.gdal.osr.SpatialReference
 import java.io.File
+import java.nio.charset.Charset
 import java.util.concurrent.Executors
+
 
 class S57(
     val file: File,
@@ -60,14 +63,26 @@ class S57(
         }
     }
 
+    private fun JsonObject.findCharsetFromDsidProps() : Charset {
+        return when (intValue("DSSI_NALL") ?: intValue("DSSI_AALL")) {
+            0 -> Charsets.US_ASCII
+            1 -> Charsets.ISO_8859_1
+            else -> Charsets.UTF_8
+        }
+    }
+
     suspend fun chartInsertInfo(): Insertable<ChartInsert> {
+
+        val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
+        val props = dsid.features.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
+        val charSet = props.findCharsetFromDsidProps()
+
         val chartTxt = file.parentFile.listFiles { _: File, name: String ->
             name.endsWith(".TXT", true)
         }?.map {
-            it.name to it.readText().replace('\u0000', ' ')
+            it.name to it.readText(charSet)
         }?.toMap() ?: emptyMap()
 
-        val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
         val mcovr = findLayer("M_COVR")?.features?.filter {
             it.properties.intValue("CATCOV") == 1
         } ?: return InsertError("M_COVR is missing")
@@ -83,7 +98,6 @@ class S57(
                 geometry = multiPolygon
             )
         }
-        val props = dsid.features?.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
         val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
 
         return InsertSuccess(

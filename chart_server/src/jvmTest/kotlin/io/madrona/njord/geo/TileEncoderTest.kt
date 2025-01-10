@@ -3,11 +3,9 @@ package io.madrona.njord.geo
 import io.madrona.njord.ext.json
 import io.madrona.njord.model.ChartFeature
 import no.ecc.vectortile.VectorTileEncoder
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
+import kotlin.test.Test
 
 class TileEncoderTest {
 
@@ -21,11 +19,11 @@ class TileEncoderTest {
             geomWKB = null,
             props = mutableMapOf(
                 "key" to true.json,
-                "key0" to 1.j,
-                "key1" to 1.0f.j,
-                "key2" to 1.0.j,
-                "key2" to "value".j,
-                "key3" to listOf("a".j, "b".j, "c".j).j
+                "key0" to 1.json,
+                "key1" to 1.0f.json,
+                "key2" to 1.0.json,
+                "key2" to "value".json,
+                "key3" to listOf("a", "b", "c").json
                 )
         )
         val geo =GeometryFactory().createPoint(Coordinate(0.0, 0.0))

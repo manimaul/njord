@@ -1,7 +1,7 @@
 package io.madrona.njord.ext
 
-import io.madrona.njord.layers.ThemeMode
 import io.madrona.njord.model.Depth
+import io.madrona.njord.model.ThemeMode
 import kotlin.test.*
 
 internal class EnumExtTest {

@@ -2,6 +2,7 @@ import io.madrona.njord.build.VersionPlugin
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("io.ktor.plugin") version ktorVersion
 }
 
@@ -72,7 +73,6 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.ktor:ktor-server-tests-jvm")
                 implementation(kotlin("test"))
                 implementation("org.mockito:mockito-core:5.2.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")

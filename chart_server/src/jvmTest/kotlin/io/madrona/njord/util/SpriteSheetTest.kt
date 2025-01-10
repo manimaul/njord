@@ -1,8 +1,8 @@
 package io.madrona.njord.util
 
 import io.madrona.njord.Singletons
-import io.madrona.njord.layers.Sprite
-import io.madrona.njord.layers.ThemeMode
+import io.madrona.njord.model.Sprite
+import io.madrona.njord.model.ThemeMode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

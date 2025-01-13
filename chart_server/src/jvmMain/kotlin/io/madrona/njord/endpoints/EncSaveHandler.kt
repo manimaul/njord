@@ -41,7 +41,7 @@ class EncSaveHandler(
     }
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
-        val multipartData = call.receiveMultipart()
+        val multipartData = call.receiveMultipart(formFieldLimit = Long.MAX_VALUE)
         val uuid = UUID.randomUUID().toString()
         val tempDir = File(charDir, uuid)
         val files = mutableListOf<String>()

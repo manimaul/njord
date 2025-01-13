@@ -40,8 +40,8 @@ kotlin {
             kotlin.srcDir("build/generated/source/version")
             dependencies {
                 implementation(project(":shared"))
-                implementation("io.ktor:ktor-server-core-jvm")
-                implementation("io.ktor:ktor-server-netty-jvm")
+                implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+                implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")

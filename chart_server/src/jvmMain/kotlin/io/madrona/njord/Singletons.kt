@@ -2,6 +2,7 @@ package io.madrona.njord
 
 import com.codahale.metrics.ConsoleReporter
 import com.codahale.metrics.MetricRegistry
+import com.codahale.metrics.jmx.JmxReporter
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.util.logging.*
@@ -62,11 +63,18 @@ object Singletons {
 
     val metrics by lazy {
         MetricRegistry().also {
+
             ConsoleReporter.forRegistry(it)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build()
                 .start(5, TimeUnit.MINUTES)
+
+            JmxReporter.forRegistry(it)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build()
+                .start()
         }
     }
 

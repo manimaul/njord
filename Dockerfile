@@ -35,6 +35,7 @@ COPY --from=builder /opt/gdal /opt/gdal
 RUN apt update && apt install -y openjdk-17-jre-headless libcurl3-gnutls libdeflate0 libtiff6 libproj25 libjson-c5
 
 COPY chart_server/build/install /opt
+ADD https://github.com/prometheus/jmx_exporter/releases/download/1.1.0/jmx_prometheus_javaagent-1.1.0.jar /opt/chart_server/jmx-agent.jar
 
 ENV JAVA_OPTS="-Dconfig.file=/opt/chart_server/application.conf -Dcharts.webStaticContent=/opt/chart_server/public -Djava.library.path=/opt/gdal/jni"
 

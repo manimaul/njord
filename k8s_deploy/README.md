@@ -4,15 +4,14 @@
 
 ## Chart Server
 
-Build & Publish container image
-```shell
-docker build -t "ghcr.io/manimaul/njord-chart-server:latest" .
-docker push "ghcr.io/manimaul/njord-chart-server:latest"
-```
-
 Deploy
 ```shell
-kubectl apply -f .chart_server.yaml
+./gradlew deploy
+```
+
+Logs
+```shell
+kubectl -n njord logs $(kubectl get pods -n njord -l app=njord-chart-svc -o jsonpath='{.items[*].metadata.name}')
 ```
 
 ------------------

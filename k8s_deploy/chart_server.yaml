@@ -51,21 +51,36 @@ spec:
             requests:
               cpu: 100m
           volumeMounts:
-            - name: njord-confic-vol
+            - name: njord-config-vol
               mountPath: /etc/chart_server
               readOnly: true
           env:
             - name: JAVA_OPTS
-              value: "-Dconfig.file=/etc/chart_server/application.conf -Djava.library.path=/opt/gdal/jni"
+              value: "-javaagent:/opt/chart_server/jmx-agent.jar=5000:/etc/chart_server/jmx_exporter.yaml -Dconfig.file=/etc/chart_server/application.conf -Djava.library.path=/opt/gdal/jni"
             - name: CHART_SERVER_OPTS
               valueFrom:
                 secretKeyRef:
                   name: admin-secret
                   key: chart_server_opts
       volumes:
-        - name: njord-confic-vol
+        - name: njord-config-vol
           configMap:
             name: njord-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmx-njord
+  namespace: njord
+spec:
+  selector:
+    app: jmx-njord
+  ports:
+  - name: jmx
+    protocol: TCP
+    port: 5000
+    targetPort: 5000
+  type: ClusterIP
 ---
 # kubectl -n njord create configmap njord-config --from-file=/Users/williamkamp/source/madrona/njord/chart_server/src/jvmMain/resources/application.conf
 apiVersion: v1
@@ -108,6 +123,13 @@ data:
     
         debugTile = false
     }
+  jmx_exporter.yaml: |
+    openTelemetry:
+      endpoint: http://kube-prom-stack-kube-prome-prometheus.monitoring.svc.cluster.local:9090/api/v1/otlp
+      protocol: http/protobuf
+      interval: 60
+    rules:
+      - pattern: ".*"
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate

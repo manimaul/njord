@@ -16,10 +16,12 @@ import kotlin.test.*
 
 internal class S57Test {
     @Test
-    fun testOpen() {
+    fun testOpen() = runBlocking {
         val f = File("src/jvmTest/data/US5WA22M/US5WA22M.000")
         assertTrue(f.exists())
-        S57(f)
+        val s57 = S57(f, dispatcher = Dispatchers.Default)
+        val count = s57.featureCount()
+        assertEquals(5164, count)
     }
 
     @Test

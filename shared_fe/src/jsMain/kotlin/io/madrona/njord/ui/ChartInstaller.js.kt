@@ -48,8 +48,8 @@ fun ChartInstallProgress(state: ChartInstallState) {
             Progress("Extracting chart file ${wsMsg.step} of ${wsMsg.steps}", progress)
         }
         is WsMsg.Info -> {
-            val progress = ((wsMsg.num.toDouble() / wsMsg.total.toDouble()) * 100.0).toInt()
-            Progress(wsMsg.message, progress)
+            val progress = ((wsMsg.feature.toDouble() / wsMsg.totalFeatures.toDouble()) * 100.0).toInt()
+            Progress("Feature ${wsMsg.feature} of ${wsMsg.totalFeatures}", progress)
         }
         null -> {
             println("null wsMsg")

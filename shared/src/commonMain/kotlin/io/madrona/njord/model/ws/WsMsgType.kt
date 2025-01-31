@@ -13,15 +13,16 @@ sealed class WsMsg {
 
     @Serializable
     data class Info(
-        val num: Int,
-        val total: Int,
-        val message: String,
+        val feature: Long,
+        val totalFeatures: Long,
+        val chart: Int,
+        val totalCharts: Long,
     ) : WsMsg()
 
     @Serializable
     data class CompletionReport(
-        val totalFeatureCount: Int,
-        val totalChartCount: Int,
+        val totalFeatureCount: Long,
+        val totalChartCount: Long,
         val items: List<InsertItem>,
         val failedCharts: List<String>,
         val ms: Long,

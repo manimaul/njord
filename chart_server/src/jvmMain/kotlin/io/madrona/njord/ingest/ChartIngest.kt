@@ -18,6 +18,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import java.util.zip.ZipFile
 
 class ChartIngest(
@@ -32,33 +33,20 @@ class ChartIngest(
     private val log = logger()
 
     suspend fun ingest(encUpload: EncUpload) {
-        val report = Report()
 
         val s57Files = withContext(Dispatchers.IO) {
             step1UnzipFiles(encUpload)
         }
-        report.totalChartCount.set(s57Files.size)
-        webSocketSession.sendMessage(
-            WsMsg.Info(
-                num = 0,
-                total = report.totalChartCount.get(),
-                message = "uuid = ${encUpload.uuid} files = ${encUpload.files.size}",
-            )
+        val report = Report(
+            totalFeatureCount = s57Files.sumOf { it.featureCount(exLayers) },
+            totalChartCount = s57Files.size.toLong()
         )
+        webSocketSession.sendMessage(report.progressMessage())
         val inserts = withContext(Dispatchers.IO) {
             step2InsertData(s57Files, report).filterNotNull()
         }
-        webSocketSession.sendMessage(
-            WsMsg.Info(
-                num = 0,
-                total = report.totalChartCount.get(),
-                message = "step 2 complete",
-            )
-        )
         step3(inserts, report)
-        webSocketSession.sendMessage(
-            report.message()
-        )
+        webSocketSession.sendMessage(report.completionMessage())
 
         withContext(Dispatchers.IO) {
             encUpload.uuidDir()?.deleteRecursively()
@@ -124,7 +112,7 @@ class ChartIngest(
             val all = s57Files.size.toFloat()
             when (val insert = s57.chartInsertInfo()) {
                 is InsertError -> {
-                    report.failedCharts.add("${s57.file.name} (step2) ${insert.msg}")
+                    report.failChart(s57.file.name, insert.msg)
                     null
                 }
 
@@ -158,7 +146,7 @@ class ChartIngest(
                         } ?: run {
                             val msg = "${s57.file.name} (step3)"
                             log.warn(msg)
-                            report.failedCharts.add(msg)
+                            report.failChart(s57.file.name, msg)
                         }
                         log.info("completed chart ${s57.file} ${working.decrementAndGet()}")
                     }
@@ -166,6 +154,11 @@ class ChartIngest(
             }
         }
         log.info("step 3 completed")
+    }
+
+    private suspend fun countFeatures(s57: S57): Int {
+        s57.layerNames()
+        return 0
     }
 
     private suspend fun installChart(chart: Chart, s57: S57, report: Report) {
@@ -181,21 +174,12 @@ class ChartIngest(
                         log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
                         log.debug("geo json = \n${geo}")
                     }
-                    report.featureCountTotal.getAndUpdate { it + count }
-                    report.add(chart.name, count)
-
-                    val num = report.chartInstallCount.get()
-                    val total = report.totalChartCount.get()
-                    webSocketSession.sendMessage(
-                        WsMsg.Info(
-                            num = num,
-                            total = total,
-                            message = "$num charts and ${report.featureCountTotal.get()} features installed",
-                        )
-                    )
+                    report.appendChartFeatureCount(chart.name, count)
+                    webSocketSession.sendMessage(report.progressMessage())
                 }
             }.toList().awaitAll()
-            report.chartInstallCount.incrementAndGet()
+            report.completedChart()
+            webSocketSession.sendMessage(report.progressMessage())
         }
     }
 
@@ -226,26 +210,45 @@ class ChartIngest(
     }
 }
 
-private class Report {
+private data class Report(
+    val totalFeatureCount: Long,
+    val totalChartCount: Long,
+) {
+
+    private val featureInstallCount = AtomicLong(0)
+    private val chartInstallCount = AtomicInteger(0)
+    private val insertItems: MutableMap<String, Int> = Collections.synchronizedMap(mutableMapOf())
+    private val failedCharts: MutableMap<String, String> = Collections.synchronizedMap(mutableMapOf())
     private val time = System.currentTimeMillis()
-    val featureCountTotal = AtomicInteger(0)
-    val totalChartCount = AtomicInteger(0)
-    val chartInstallCount = AtomicInteger(0)
-    val insertItems: MutableMap<String, Int> = Collections.synchronizedMap(mutableMapOf())
-    val failedCharts: MutableList<String> = Collections.synchronizedList(mutableListOf<String>())
     private fun elapsed(): Long {
         return System.currentTimeMillis() - time
     }
 
-    fun message() = WsMsg.CompletionReport(
-        totalFeatureCount = featureCountTotal.get(),
-        totalChartCount = totalChartCount.get(),
-        failedCharts = failedCharts,
+    fun progressMessage() = WsMsg.Info(
+        feature = featureInstallCount.get(),
+        chart = chartInstallCount.get(),
+        totalCharts = totalChartCount,
+        totalFeatures = totalFeatureCount,
+    )
+
+    fun completionMessage() = WsMsg.CompletionReport(
+        totalFeatureCount = totalFeatureCount,
+        totalChartCount = totalChartCount,
+        failedCharts = failedCharts.map { "${it.key} msg: ${it.value}" },
         items = insertItems.map { WsMsg.InsertItem(it.key, it.value) },
         ms = elapsed()
     )
 
-    fun add(chartName: String, featureCount: Int) {
+    fun appendChartFeatureCount(chartName: String, featureCount: Int) {
+        featureInstallCount.getAndUpdate { featureCount.toLong() }
         insertItems[chartName] = (insertItems[chartName] ?: 0) + featureCount
+    }
+
+    fun failChart(name: String, msg: String) {
+        failedCharts.compute(name) { _, value -> value?.let { "$it, $msg" } ?: msg}
+    }
+
+    fun completedChart() {
+        chartInstallCount.incrementAndGet()
     }
 }

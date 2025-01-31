@@ -115,6 +115,18 @@ class S57(
         )
     }
 
+    suspend fun featureCount(exLayers: Set<String>? = null): Long {
+        return dataSourceAccess {
+            dataSet.layers().map{ layer ->
+                if (exLayers?.contains(layer.GetName()) == true) {
+                   0
+                } else {
+                    layer.GetFeatureCount()
+                }
+            }.sum()
+        }
+    }
+
     suspend fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
         return dataSourceAccess {
             dataSet.layers().mapNotNull { layer ->

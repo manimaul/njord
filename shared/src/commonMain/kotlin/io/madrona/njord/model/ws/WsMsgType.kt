@@ -16,13 +16,13 @@ sealed class WsMsg {
         val feature: Long,
         val totalFeatures: Long,
         val chart: Int,
-        val totalCharts: Long,
+        val totalCharts: Int,
     ) : WsMsg()
 
     @Serializable
     data class CompletionReport(
         val totalFeatureCount: Long,
-        val totalChartCount: Long,
+        val totalChartCount: Int,
         val items: List<InsertItem>,
         val failedCharts: List<String>,
         val ms: Long,
@@ -36,8 +36,6 @@ sealed class WsMsg {
 
     @Serializable
     data class Extracting(
-        val step: Int,
         val progress: Float,
-        val steps: Int = 2,
     ) : WsMsg()
 }

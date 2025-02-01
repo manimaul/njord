@@ -1,5 +1,6 @@
 package io.madrona.njord.ingest
 
+import com.codahale.metrics.Timer
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import java.util.zip.ZipFile
+import kotlin.concurrent.timer
 
 class ChartIngest(
     private val webSocketSession: WebSocketSession,
@@ -27,27 +29,59 @@ class ChartIngest(
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val tileDao: TileDao = Singletons.tileDao,
+    private val timer: Timer = Singletons.metrics.timer("ChartIngestFeatureInsert"),
 ) {
 
     private val charDir = config.chartTempData
     private val log = logger()
 
     suspend fun ingest(encUpload: EncUpload) {
-
+        log.info("ingesting enc upload $encUpload")
         val s57Files = withContext(Dispatchers.IO) {
+            log.info("unzipping files")
             step1UnzipFiles(encUpload)
+        }.filter { it.name.endsWith(".000") }
+
+        val featureCount = withContext(Dispatchers.IO) {
+            log.info("counting features")
+            s57Files.sumOf { file ->
+                log.info("counting features: $file")
+                S57.from(file)?.featureCount(exLayers) ?: 0
+            }
         }
         val report = Report(
-            totalFeatureCount = s57Files.sumOf { it.featureCount(exLayers) },
-            totalChartCount = s57Files.size.toLong()
+            totalFeatureCount = featureCount,
+            totalChartCount = s57Files.size
         )
         webSocketSession.sendMessage(report.progressMessage())
-        val inserts = withContext(Dispatchers.IO) {
-            step2InsertData(s57Files, report).filterNotNull()
+        log.info("inserting data")
+        val queue = ConcurrentLinkedDeque(s57Files)
+        withContext(Dispatchers.IO) {
+            val working = AtomicInteger(0)
+            while (queue.isNotEmpty()) {
+                if (working.get() < 5) {
+                    val w = working.incrementAndGet()
+                    log.info("inserting chart working = $w")
+                    S57.from(queue.poll())?.let { s57 ->
+                        launch {
+                            chartInsertData(s57, report)?.let { data ->
+                                chartDao.insertAsync(data, true)?.let {
+                                    installChartFeatures(it, s57, report)
+                                } ?: run {
+                                    report.failChart(s57.file.name, "chart insert")
+                                }
+                            }
+                            working.decrementAndGet()
+                        }
+                    }
+                } else {
+                    delay(250)
+                }
+            }
         }
-        step3(inserts, report)
         webSocketSession.sendMessage(report.completionMessage())
 
+        log.info("cleaning up resources")
         withContext(Dispatchers.IO) {
             encUpload.uuidDir()?.deleteRecursively()
         }
@@ -59,9 +93,9 @@ class ChartIngest(
 
     private suspend fun step1UnzipFiles(
         encUpload: EncUpload,
-    ): List<S57> {
+    ): List<File> {
         webSocketSession.sendMessage(
-            WsMsg.Extracting(1, 0f)
+            WsMsg.Extracting(0f)
         )
         val retVal = mutableListOf<File>()
         return letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
@@ -83,7 +117,7 @@ class ChartIngest(
                                         input.copyTo(output)
                                         complete += 1
                                         webSocketSession.sendMessage(
-                                            WsMsg.Extracting(1, complete / size)
+                                            WsMsg.Extracting(complete / size)
                                         )
                                     }
                                     retVal.add(outFile)
@@ -93,83 +127,40 @@ class ChartIngest(
                     }
                 }
             }
-            retVal.mapNotNull {
-                S57.from(it)
-            }.also {
+            retVal.also {
                 webSocketSession.sendMessage(
-                    WsMsg.Extracting(1, 1f)
+                    WsMsg.Extracting(1f)
                 )
             }
         } ?: emptyList()
     }
 
-    private suspend fun step2InsertData(
-        s57Files: List<S57>, report: Report
-    ): List<Pair<S57, InsertSuccess<ChartInsert>>?> {
-        webSocketSession.sendMessage(WsMsg.Extracting(2, 0f))
-        return s57Files.map { s57 ->
-            var complete = 0f
-            val all = s57Files.size.toFloat()
-            when (val insert = s57.chartInsertInfo()) {
-                is InsertError -> {
-                    report.failChart(s57.file.name, insert.msg)
-                    null
-                }
+    private fun chartInsertData(
+        s57: S57, report: Report
+    ): ChartInsert? {
+        return when (val insert = s57.chartInsertInfo()) {
+            is InsertError -> {
+                report.failChart(s57.file.name, insert.msg)
+                null
+            }
 
-                is InsertSuccess -> {
-                    s57 to insert
-                }
-            }.also {
-                complete += 1
-                webSocketSession.sendMessage(WsMsg.Extracting(2, complete / all))
+            is InsertSuccess -> {
+                insert.value
             }
         }
     }
 
-    private suspend fun step3(
-        data: List<Pair<S57, InsertSuccess<ChartInsert>>>,
-        report: Report
-    ) {
-        val queue = ConcurrentLinkedDeque(data)
-        val working = AtomicInteger(0)
-
-        withContext(Dispatchers.IO) {
-            while (queue.isNotEmpty()) {
-                if (working.get() >= 100) {
-                    delay(500)
-                } else {
-                    val (s57, insert) = queue.poll()
-                    log.info("installing chart ${s57.file} ${working.incrementAndGet()}")
-                    launch {
-                        chartDao.insertAsync(insert.value, true)?.let { chart ->
-                            installChart(chart, s57, report)
-                        } ?: run {
-                            val msg = "${s57.file.name} (step3)"
-                            log.warn(msg)
-                            report.failChart(s57.file.name, msg)
-                        }
-                        log.info("completed chart ${s57.file} ${working.decrementAndGet()}")
-                    }
-                }
-            }
-        }
-        log.info("step 3 completed")
-    }
-
-    private suspend fun countFeatures(s57: S57): Int {
-        s57.layerNames()
-        return 0
-    }
-
-    private suspend fun installChart(chart: Chart, s57: S57, report: Report) {
+    private suspend fun installChartFeatures(chart: Chart, s57: S57, report: Report) {
         withContext(Dispatchers.IO) {
             s57.layerGeoJsonSequence(exLayers).map { (layerName, geo) ->
-                async {
+                async(Dispatchers.IO) {
+                    val ctx = timer.time()
                     val count = geoJsonDao.insertAsync(
                         FeatureInsert(
                             layerName = layerName, chart = chart, geo = geo
                         )
                     ) ?: 0
+                    ctx.stop()
                     if (count == 0) {
                         log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
                         log.debug("geo json = \n${geo}")
@@ -212,7 +203,7 @@ class ChartIngest(
 
 private data class Report(
     val totalFeatureCount: Long,
-    val totalChartCount: Long,
+    val totalChartCount: Int,
 ) {
 
     private val featureInstallCount = AtomicLong(0)
@@ -240,12 +231,12 @@ private data class Report(
     )
 
     fun appendChartFeatureCount(chartName: String, featureCount: Int) {
-        featureInstallCount.getAndUpdate { featureCount.toLong() }
+        featureInstallCount.getAndUpdate { it + featureCount.toLong() }
         insertItems[chartName] = (insertItems[chartName] ?: 0) + featureCount
     }
 
     fun failChart(name: String, msg: String) {
-        failedCharts.compute(name) { _, value -> value?.let { "$it, $msg" } ?: msg}
+        failedCharts.compute(name) { _, value -> value?.let { "$it, $msg" } ?: msg }
     }
 
     fun completedChart() {

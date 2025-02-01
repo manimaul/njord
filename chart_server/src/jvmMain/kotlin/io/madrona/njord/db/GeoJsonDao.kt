@@ -83,7 +83,7 @@ class GeoJsonDao : Dao() {
                        zoomRange = geoJson.minZ()..geoJson.maxZ(),
                    ).insert(conn)
                } ?: run {
-                   log.warn("skipping inserting layer $layerName chart id ${chart.id} props $jsonProps")
+                   //log.warn("skipping inserting layer $layerName chart id ${chart.id} props $jsonProps")
                    0
                }
             }

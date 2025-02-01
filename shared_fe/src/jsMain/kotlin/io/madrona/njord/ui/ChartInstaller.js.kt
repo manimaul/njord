@@ -32,6 +32,10 @@ fun ChartInstaller() {
     }
 }
 
+private fun WsMsg.Info.text() : String {
+    return "Installed: features $feature of $totalFeatures - charts $chart of $totalCharts"
+}
+
 @Composable
 fun ChartInstallProgress(state: ChartInstallState) {
     when (val wsMsg = state.info) {
@@ -45,11 +49,11 @@ fun ChartInstallProgress(state: ChartInstallState) {
         }
         is WsMsg.Extracting -> {
             val progress = (wsMsg.progress * 100.0).toInt()
-            Progress("Extracting chart file ${wsMsg.step} of ${wsMsg.steps}", progress)
+            Progress("Extracting chart files", progress)
         }
         is WsMsg.Info -> {
             val progress = ((wsMsg.feature.toDouble() / wsMsg.totalFeatures.toDouble()) * 100.0).toInt()
-            Progress("Feature ${wsMsg.feature} of ${wsMsg.totalFeatures}", progress)
+            Progress(wsMsg.text(), progress)
         }
         null -> {
             println("null wsMsg")

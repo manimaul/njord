@@ -68,7 +68,7 @@ object Singletons {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build()
-                .start(5, TimeUnit.MINUTES)
+                .start(1, TimeUnit.MINUTES)
 
             JmxReporter.forRegistry(it)
                 .convertRatesTo(TimeUnit.SECONDS)

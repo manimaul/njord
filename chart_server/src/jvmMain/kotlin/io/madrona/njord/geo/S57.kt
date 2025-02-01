@@ -14,7 +14,6 @@ import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.model.LayerGeoJson
 import io.madrona.njord.util.ZFinder
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -27,43 +26,25 @@ import org.gdal.ogr.ogrConstants.*
 import org.gdal.osr.SpatialReference
 import java.io.File
 import java.nio.charset.Charset
-import java.util.concurrent.Executors
 
 
 class S57(
     val file: File,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val zFinder: ZFinder = Singletons.zFinder,
-    private val dispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
-) : CoroutineScope by CoroutineScope(dispatcher + SupervisorJob()) {
+) {
 
-    private val dataSet by lazy {
-        runBlocking { dataSourceAccess { gdal.OpenEx(file.absolutePath) } }
-    }
+    private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
-    private suspend fun <R> dataSourceAccess(block: suspend CoroutineScope.() -> R): R {
-        return coroutineScope {
-            async(dispatcher) {
-                block()
-            }.await()
-        }
-    }
-
-    suspend fun layerNames(): List<String> {
-        return dataSourceAccess { layers }
-    }
-
-    private val layers: List<String> by lazy {
+    val layers: List<String> by lazy {
         dataSet.layers().map { it.GetName() }.toList()
     }
 
-    suspend fun findLayer(name: String): FeatureCollection? {
-        return dataSourceAccess {
-            dataSet.GetLayer(name)?.featureCollection()
-        }
+    fun findLayer(name: String): FeatureCollection? {
+        return dataSet.GetLayer(name)?.featureCollection()
     }
 
-    private fun JsonObject.findCharsetFromDsidProps() : Charset {
+    private fun JsonObject.findCharsetFromDsidProps(): Charset {
         return when (intValue("DSSI_NALL") ?: intValue("DSSI_AALL")) {
             0 -> Charsets.US_ASCII
             1 -> Charsets.ISO_8859_1
@@ -71,7 +52,7 @@ class S57(
         }
     }
 
-    suspend fun chartInsertInfo(): Insertable<ChartInsert> {
+    fun chartInsertInfo(): Insertable<ChartInsert> {
 
         val dsid = findLayer("DSID") ?: return InsertError("dsid is missing")
         val props = dsid.features.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
@@ -115,24 +96,20 @@ class S57(
         )
     }
 
-    suspend fun featureCount(exLayers: Set<String>? = null): Long {
-        return dataSourceAccess {
-            dataSet.layers().map{ layer ->
-                if (exLayers?.contains(layer.GetName()) == true) {
-                   0
-                } else {
-                    layer.GetFeatureCount()
-                }
-            }.sum()
-        }
+    fun featureCount(exLayers: Set<String>? = null): Long {
+        return dataSet.layers().map { layer ->
+            if (exLayers?.contains(layer.GetName()) == true) {
+                0
+            } else {
+                layer.GetFeatureCount()
+            }
+        }.sum()
     }
 
-    suspend fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
-        return dataSourceAccess {
-            dataSet.layers().mapNotNull { layer ->
-                layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
-                    LayerGeoJson(it, layer.featureCollection())
-                }
+    fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
+        return dataSet.layers().mapNotNull { layer ->
+            layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
+                LayerGeoJson(it, layer.featureCollection())
             }
         }
     }
@@ -188,7 +165,8 @@ class S57(
         return FeatureCollection(
             features = features().mapNotNull {
                 it.geoJsonFeature("SOUNDG".equals(name, ignoreCase = false))
-            }.toList())
+            }.toList()
+        )
     }
 
     private fun Layer.features(): Sequence<Feature> {
@@ -223,6 +201,7 @@ class S57(
     companion object {
 
         val log = logger()
+
         /**
          * https://gdal.org/drivers/vector/s57.html
          */

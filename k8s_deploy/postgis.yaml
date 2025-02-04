@@ -30,6 +30,13 @@ spec:
     spec:
       containers:
         - name: njord-postgis
+          resources:
+            limits:
+              cpu: "1.0"
+              memory: "1G"
+            requests:
+              cpu: 750m
+              memory: "1G"
           image: postgis/postgis:13-3.1
           ports:
             - name: postgres

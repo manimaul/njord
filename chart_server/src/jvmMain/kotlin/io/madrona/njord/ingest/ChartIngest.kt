@@ -21,11 +21,10 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import java.util.zip.ZipFile
-import kotlin.concurrent.timer
 
 class ChartIngest(
     private val webSocketSession: WebSocketSession,
-    config: ChartsConfig = Singletons.config,
+    private val config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val tileDao: TileDao = Singletons.tileDao,
@@ -59,7 +58,7 @@ class ChartIngest(
         withContext(Dispatchers.IO) {
             val working = AtomicInteger(0)
             while (queue.isNotEmpty()) {
-                if (working.get() < 5) {
+                if (working.get() < config.chartIngestWorkers) {
                     val w = working.incrementAndGet()
                     log.info("inserting chart working = $w")
                     S57.from(queue.poll())?.let { s57 ->

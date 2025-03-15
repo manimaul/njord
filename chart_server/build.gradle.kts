@@ -29,9 +29,6 @@ ospackage {
     packageName = "njord"
     version = "${project.version}-${GitInfo.gitShortHash()}"
     release = "1"
-    from("debpkg/gdal-arm64", closureOf<CopySpec> {
-        into("/opt/chart_server/gdal")
-    })
     from("debpkg/njord.service", closureOf<CopySpec> {
         into("/etc/systemd/system/")
     })
@@ -116,8 +113,8 @@ kotlin {
                 implementation("org.postgresql:postgresql:42.7.3")
                 implementation("com.zaxxer:HikariCP:5.0.1")
                 implementation("io.ktor:ktor-server-metrics:$ktorVersion")
-                implementation("io.dropwizard.metrics:metrics-core:4.2.29")
-                implementation("io.dropwizard.metrics:metrics-jmx:4.2.29")
+                implementation("io.dropwizard.metrics:metrics-core:4.2.30")
+                implementation("io.dropwizard.metrics:metrics-jmx:4.2.30")
                 implementation("com.googlecode.xmemcached:xmemcached:2.4.8")
             }
         }

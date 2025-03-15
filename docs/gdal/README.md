@@ -1,9 +1,22 @@
-# Developing on Linux
+# Build Gdal with Java Bindings
 
+##  [Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/generic-linux-install.html)
+Note: Raspberry pi openjdk-17-source debian package seems broken 
+```shell
+wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
+echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
 
-Build Gdal with Java Bindings
+sudo apt update
+sudo apt install -y build-essential cmake swig libproj-dev libjson-c-dev java-17-amazon-corretto-jdk ant checkinstall
 ```
-sudo apt install -y build-essential cmake swig libproj-dev libjson-c-dev openjdk-21-jdk-headless openjdk-21-source ant
+
+## OpenJDK 
+Node: Debian, Ubuntu, PopOS
+```shell
+sudo apt install -y build-essential cmake swig libproj-dev libjson-c-dev openjdk-21-jdk-headless openjdk-21-source ant checkinstall
+```
+
+```shell
 export JAVA_HOME=$(dirname $(dirname $(readlink -e /usr/bin/javac))) 
 export JAVADOC="${JAVA_HOME}/bin/javadoc"
 export JAVAC="${JAVA_HOME}/bin/javac"
@@ -26,9 +39,8 @@ cmake -S . -B build \
 	-Wno-dev \
 	-DBUILD_TESTING=OFF
 cmake --build build
-sudo mkdir -p /opt/gdal
-sudo chown -R $(whoami) /opt/gdal
-cmake --install build
-cp /opt/gdal/share/java/gdal-$version.jar $(pwd)/../../../chart_server/libs
+fakeroot checkinstall --install=no -D cmake --install build
+sudo apt install "./gdal_$version-1_$(arch).deb"
+/opt/gdal/bin/gdalinfo --version
 ```
 

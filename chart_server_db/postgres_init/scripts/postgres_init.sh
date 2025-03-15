@@ -9,5 +9,9 @@ done
 
 >&2 echo "Postgres is up - executing command"
 
-createdb -w admin
+if [[ $RDS == 1 ]]; then
+  cat ./rds.sql | sed "s/admin/$PGUSER/g" > ./_rds.sql
+  psql -a -q -f ./_rds.sql
+fi
+
 psql -a -q -f ./up.sql

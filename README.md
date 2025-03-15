@@ -72,8 +72,8 @@ export CHART_SERVER_OPTS="-Dcharts.adminUser=test"
 # Install on Raspberry Pi
 
 ```shell
-wget njord<version>.deb
 sudo apt install ./njord<version>.deb
+sudo apt install ./gdal_3.10.0-1_arm64.deb
 sudo systemctl enable postgresql.service
 sudo bash -c "echo \"listen_addresses = 'localhost'\" >> /etc/postgresql/15/main/postgresql.conf"
 sudo systemctl restart postgresql.service

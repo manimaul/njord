@@ -8,6 +8,7 @@ class ChartsConfig(
         config: Config = ConfigFactory.load().getConfig("charts")
 ) {
 
+    val chartIngestWorkers: Int = config.getInt("chartIngestWorkers")
     private val externalScheme: String = config.getString("externalScheme")
     private val externalHostName: String = config.getString("externalHostName")
     private val externalPort: Int = config.getInt("externalPort")

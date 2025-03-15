@@ -11,6 +11,7 @@ plugins {
     id("org.jetbrains.compose") version composeVersion apply false
     kotlin("plugin.serialization") version kotlinVersion apply false
     id("com.android.library") version agpVersion apply false
+    id("com.netflix.nebula.ospackage-application") version osPackageVersion apply false
 }
 
 allprojects {

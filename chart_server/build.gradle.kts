@@ -1,9 +1,11 @@
+import io.madrona.njord.build.GitInfo
 import io.madrona.njord.build.VersionPlugin
 
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("io.ktor.plugin") version ktorVersion
+    id("com.netflix.nebula.ospackage-application") version osPackageVersion
 }
 
 repositories {
@@ -22,6 +24,52 @@ application {
 
 group = "io.madrona.njord"
 version = "${properties["version"]}"
+
+ospackage {
+    packageName = "njord"
+    version = "${project.version}-${GitInfo.gitShortHash()}"
+    release = "1"
+    from("debpkg/gdal-arm64", closureOf<CopySpec> {
+        into("/opt/chart_server/gdal")
+    })
+    from("debpkg/njord.service", closureOf<CopySpec> {
+        into("/etc/systemd/system/")
+    })
+    from("debpkg/njord_exec.sh", closureOf<CopySpec> {
+        into("/usr/bin/")
+    })
+    from("debpkg/njord.conf", closureOf<CopySpec> {
+        into("/etc/")
+    })
+    from("build/dist/js/productionExecutable", closureOf<CopySpec> {
+        into("/opt/chart_server/public")
+    })
+    from("debpkg/njord_setup.sh", closureOf<CopySpec> {
+        into("/opt/chart_server")
+    })
+    preDepends("systemd")
+    preDepends("postgresql")
+    preDepends("postgis")
+    preDepends("memcached")
+    preDepends("postgresql-client")
+    requires("openjdk-17-jre-headless")
+    postInstall(file("debpkg/postInstall.sh"))
+    preUninstall(file("debpkg/preUninstall.sh"))
+    postUninstall(file("debpkg/postUninstall.sh"))
+}
+
+
+task<Copy>("debWebRes") {
+    dependsOn(":web:jsBrowserDistribution")
+    mustRunAfter(":web:jsBrowserDistribution")
+    from("../web/build/dist/js/productionExecutable")
+    into("build/dist/js/productionExecutable")
+}
+
+tasks.findByName("buildDeb")?.apply {
+    dependsOn("debWebRes")
+    mustRunAfter("debWebRes")
+}
 
 kotlin {
     jvmToolchain(17)

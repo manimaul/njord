@@ -1,0 +1,13 @@
+[Unit]
+Description=Njord
+Before=postgresql.conf
+
+[Service]
+ExecStart=njord_exec.sh
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=njord
+
+[Install]
+WantedBy=default.target

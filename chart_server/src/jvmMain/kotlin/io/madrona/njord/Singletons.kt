@@ -64,11 +64,13 @@ object Singletons {
     val metrics by lazy {
         MetricRegistry().also {
 
-            ConsoleReporter.forRegistry(it)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .build()
-                .start(1, TimeUnit.MINUTES)
+            if (config.consoleMetrics) {
+                ConsoleReporter.forRegistry(it)
+                    .convertRatesTo(TimeUnit.SECONDS)
+                    .convertDurationsTo(TimeUnit.MILLISECONDS)
+                    .build()
+                    .start(1, TimeUnit.MINUTES)
+            }
 
             JmxReporter.forRegistry(it)
                 .convertRatesTo(TimeUnit.SECONDS)

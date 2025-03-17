@@ -2,15 +2,18 @@ package io.madrona.njord
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import io.madrona.njord.util.NetworkUtil
 import java.io.File
 
 class ChartsConfig(
-        config: Config = ConfigFactory.load().getConfig("charts")
+    config: Config = ConfigFactory.load().getConfig("charts")
 ) {
 
+    val consoleMetrics: Boolean = config.getBoolean("consoleMetrics")
     val chartIngestWorkers: Int = config.getInt("chartIngestWorkers")
     private val externalScheme: String = config.getString("externalScheme")
     private val externalHostName: String = config.getString("externalHostName")
+        .takeIf { it.isNotBlank() } ?: NetworkUtil.guessExternalIP()
     private val externalPort: Int = config.getInt("externalPort")
 
     val adminUser: String = config.getString("adminUser")
@@ -25,9 +28,6 @@ class ChartsConfig(
     val deepDepth: Float = config.getDouble("deepDepth").toFloat()
 
     val debugTile: Boolean = config.getBoolean("debugTile")
-
-    val chartMinZoom: Int = config.getInt("chartMinZoom")
-    val chartMaxZoom: Int = config.getInt("chartMaxZoom")
 
     val chartTempData: File = File(config.getString("chartTempData")).also {
         if (!it.exists()) {

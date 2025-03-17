@@ -118,9 +118,7 @@ data:
         allowHosts = ["www.openenc.com", "openenc.com"]
         externalPort = 443
 
-        chartMinZoom = 0
-        chartMaxZoom = 30
-    
+        consoleMetrics = false
         chartTempData = /tmp/njord/data
 
         webStaticContent=/opt/chart_server/public

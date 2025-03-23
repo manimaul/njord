@@ -30,19 +30,23 @@ object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
             sqlOpAsync { conn ->
                 val metaExists =
                     conn.prepareStatement("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'meta');")
-                        .executeQuery().let {
-                            it.next() && it.getBoolean(1)
+                        .use {
+                            it.executeQuery().use { rs ->
+                                rs.next() && rs.getBoolean(1)
+                            }
                         }
                 if (!metaExists) {
                     conn.prepareStatement(
                         "CREATE TABLE meta (key VARCHAR UNIQUE NOT NULL, value VARCHAR UNIQUE NULL);" +
                                 "INSERT INTO meta VALUES ('version', '0');"
-                    ).execute()
+                    ).use { it.execute() }
                 }
-                conn.prepareStatement("SELECT value from meta WHERE key = 'version';").executeQuery().let {
-                    if (it.next()) {
-                        it.getString(1).toIntOrNull()
-                    } else null
+                conn.prepareStatement("SELECT value from meta WHERE key = 'version';").use {
+                    it.executeQuery().use { rs ->
+                        if (rs.next()) {
+                            rs.getString(1).toIntOrNull()
+                        } else null
+                    }
                 }
             }!!
         }
@@ -75,8 +79,9 @@ CREATE TABLE IF NOT EXISTS charts
 CREATE INDEX IF NOT EXISTS charts_gist ON charts USING GIST (covr);
 CREATE INDEX IF NOT EXISTS charts_idx ON charts (id);
             """.trimIndent()
-            ).execute()
-            conn.prepareStatement("""
+            ).use { it.execute() }
+            conn.prepareStatement(
+                """
                 
 CREATE TABLE IF NOT EXISTS features
 (
@@ -93,7 +98,8 @@ CREATE INDEX IF NOT EXISTS features_idx ON features (id);
 CREATE INDEX IF NOT EXISTS features_layer_idx ON features (layer);
 CREATE INDEX IF NOT EXISTS features_zoom_idx ON features USING GIST (z_range);
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
-            """.trimIndent()).execute()
+            """.trimIndent()
+            ).use { it.execute() }
             conn.prepareStatement("UPDATE meta SET value ='1' WHERE key = 'version';").execute()
         }
     }
@@ -103,23 +109,25 @@ CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
             conn.prepareStatement(
                 "ALTER TABLE features ADD COLUMN IF NOT EXISTS lnam_refs VARCHAR[] NULL;" +
                         "CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);"
-            ).execute()
+            ).use { it.execute() }
             conn.prepareStatement("SELECT id, props->'LNAM_REFS' AS lnam_refs FROM features WHERE lnam_refs IS NULL AND jsonb_array_length(props->'LNAM_REFS') > 0;")
-                .executeQuery().let {
-                    var num = 0
-                    while (it.next()) {
-                        log.info("lnam ref migration update ${++num}")
-                        val id = it.getLong(1)
-                        val ra = decodeFromString<List<String>>(it.getString(2))
-                        val refs = conn.createArrayOf("VARCHAR", ra.toTypedArray())
-                        val stmt = conn.prepareStatement("UPDATE features SET lnam_refs =? WHERE id =?").apply {
-                            setArray(1, refs)
-                            setLong(2, id)
+                .use {
+                    it.executeQuery().use {
+                        var num = 0
+                        while (it.next()) {
+                            log.info("lnam ref migration update ${++num}")
+                            val id = it.getLong(1)
+                            val ra = decodeFromString<List<String>>(it.getString(2))
+                            val refs = conn.createArrayOf("VARCHAR", ra.toTypedArray())
+                            conn.prepareStatement("UPDATE features SET lnam_refs =? WHERE id =?").use {
+                                it.setArray(1, refs)
+                                it.setLong(2, id)
+                                it.executeUpdate()
+                            }
                         }
-                        stmt.executeUpdate()
                     }
                 }
-            conn.prepareStatement("UPDATE meta SET value ='1' WHERE key = 'version';").execute()
+            conn.prepareStatement("UPDATE meta SET value ='1' WHERE key = 'version';").use { it.execute() }
         }
 
     }

@@ -18,54 +18,57 @@ class FeatureDao : Dao() {
             """SELECT features.id, ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > ? AND features.layer = ? ORDER BY features.id LIMIT 5; 
             """.trimIndent()
-        ).apply {
-            setLong(1, startId)
-            setString(2, layer)
-        }.executeQuery().use {
-            val result = mutableListOf<LayerQueryResult>()
-            var lastId = 0L
-            while (it.next()) {
-                val id = it.getLong(1)
-                lastId = max(lastId, id)
-                val wkt = it.getString(2)
-                val coord = WKTReader().read(wkt).coordinate
-                val props: Map<String, JsonElement> = if (layer == "TOPMAR") {
-                    decodeFromString<Map<String, JsonElement>>(it.getString(4)).toMutableMap().apply {
-                        val assoc = findAssociatedLayerNames(this["LNAM"].toString())
-                        TopmarData.fromAssoc(assoc).addTo(this)
+        ).use {
+            it.setLong(1, startId)
+            it.setString(2, layer)
+            it.executeQuery().use {
+                val result = mutableListOf<LayerQueryResult>()
+                var lastId = 0L
+                while (it.next()) {
+                    val id = it.getLong(1)
+                    lastId = max(lastId, id)
+                    val wkt = it.getString(2)
+                    val coord = WKTReader().read(wkt).coordinate
+                    val props: Map<String, JsonElement> = if (layer == "TOPMAR") {
+                        decodeFromString<Map<String, JsonElement>>(it.getString(4)).toMutableMap().apply {
+                            val assoc = findAssociatedLayerNames(this["LNAM"].toString())
+                            TopmarData.fromAssoc(assoc).addTo(this)
+                        }
+                        decodeFromString<Map<String, JsonElement>>(it.getString(4))
+                    } else {
+                        decodeFromString<Map<String, JsonElement>>(it.getString(4))
                     }
-                    decodeFromString<Map<String, JsonElement>>(it.getString(4))
-                } else {
-                    decodeFromString<Map<String, JsonElement>>(it.getString(4))
-                }
-                result.add(
-                    LayerQueryResult(
-                        id = id,
-                        lat = coord.y,
-                        lng = coord.x,
-                        zoom = it.getFloat(6),
-                        props = props,
-                        chartName = it.getString(5),
-                        geomType = it.getString(3).replace("ST_", ""),
+                    result.add(
+                        LayerQueryResult(
+                            id = id,
+                            lat = coord.y,
+                            lng = coord.x,
+                            zoom = it.getFloat(6),
+                            props = props,
+                            chartName = it.getString(5),
+                            geomType = it.getString(3).replace("ST_", ""),
+                        )
                     )
+                }
+                LayerQueryResultPage(
+                    lastId = lastId,
+                    items = result
                 )
             }
-            LayerQueryResultPage(
-                lastId = lastId,
-                items = result
-            )
         }
     }
 
     suspend fun findAssociatedLayerNames(lnam: String): List<String> = sqlOpAsync { conn ->
         conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE ?=ANY(lnam_refs);").apply {
             setString(1, lnam)
-        }.executeQuery().use {
-            generateSequence {
-                if (it.next()) {
-                    it.getString(1)
-                } else null
-            }.toList()
+        }.use {
+            it.executeQuery().use {
+                generateSequence {
+                    if (it.next()) {
+                        it.getString(1)
+                    } else null
+                }.toList()
+            }
         }
     } ?: emptyList()
 
@@ -78,16 +81,18 @@ class FeatureDao : Dao() {
         conn.prepareStatement(
             """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, lower(z_range), upper(z_range)
                 FROM features WHERE props->'LNAM' = to_jsonb(?::text);""".trimIndent()
-        ).apply {
-            setString(1, lnam)
-        }.executeQuery().use { it.featureRecord().firstOrNull() }
+        ).use {
+            it.setString(1, lnam)
+            it.executeQuery().use { it.featureRecord().firstOrNull() }
+        }
     }
 
     fun featureCount(conn: Connection, chartId: Long): Int {
-        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").apply {
-            setLong(1, chartId)
-        }.executeQuery().use {
-            if (it.next()) it.getInt(1) else 0
+        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").use {
+            it.setLong(1, chartId)
+            it.executeQuery().use {
+                if (it.next()) it.getInt(1) else 0
+            }
         }
     }
 

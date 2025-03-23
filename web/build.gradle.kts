@@ -7,7 +7,6 @@ plugins {
 kotlin {
 
     js {
-        moduleName = "njord"
         browser {
             commonWebpackConfig {
                 cssSupport { enabled.set(true) } // Add this
@@ -31,23 +30,23 @@ kotlin {
                 implementation(project(":shared"))
                 implementation(project(":shared_fe"))
             }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+            val jsTest by getting {
+                dependencies {
+                    implementation(kotlin("test-js"))
+                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                }
             }
         }
     }
-}
 
-tasks.named("jsBrowserTest") {
-    doFirst {
-        File("webpack.config.d/dev_server_config.js")
-            .renameTo(File("webpack.config.d/dev_server_config"))
-    }
-    doLast {
-        File("webpack.config.d/dev_server_config")
-            .renameTo(File("webpack.config.d/dev_server_config.js"))
+    tasks.named("jsBrowserTest") {
+        doFirst {
+            File("webpack.config.d/dev_server_config.js")
+                .renameTo(File("webpack.config.d/dev_server_config"))
+        }
+        doLast {
+            File("webpack.config.d/dev_server_config")
+                .renameTo(File("webpack.config.d/dev_server_config.js"))
+        }
     }
 }

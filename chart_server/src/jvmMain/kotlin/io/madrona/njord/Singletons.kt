@@ -42,9 +42,7 @@ object Singletons {
         hc.jdbcUrl = "jdbc:postgresql://${config.pgHost}:${config.pgPort}/${config.pgDatabase}"
         hc.username = config.pgUser
         hc.password = config.pgPassword
-        hc.addDataSourceProperty("cachePrepStmts", "true")
-        hc.addDataSourceProperty("prepStmtCacheSize", "250")
-        hc.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
+        hc.metricRegistry = metrics
         hc.maximumPoolSize = config.pgConnectionPoolSize
         hc.connectionTimeout = 120000
         hc.leakDetectionThreshold = 300000

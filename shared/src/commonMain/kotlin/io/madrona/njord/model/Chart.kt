@@ -1,6 +1,7 @@
 package io.madrona.njord.model
 
 import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.Geometry
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -17,7 +18,7 @@ class ChartInfo(
 class ChartFeatureInfo(
     val layer: String,
     val props: Map<String, JsonElement>,
-    val geom: String?,
+    val geom: Geometry?,
 )
 
 @Serializable

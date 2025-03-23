@@ -1,0 +1,412 @@
+package io.madrona.njord.db
+
+import Connection
+import DataSource
+import ResultSet
+import io.madrona.njord.Singletons
+import io.madrona.njord.ext.jsonStr
+import io.madrona.njord.geojson.FeatureBuilder
+import io.madrona.njord.model.*
+import kotlinx.serialization.json.Json.Default.decodeFromString
+
+class ChartDao(
+    ds: DataSource = Singletons.ds,
+    private val featureDao: FeatureDao = Singletons.featureDao,
+) : Dao(ds) {
+
+    private fun ResultSet.chart(layers: List<String>, featureCount: Int) = generateSequence {
+        if (next()) {
+            var i = 0
+            Chart(
+                id = getLong(++i),
+                name = getString(++i),
+                scale = getInt(++i),
+                fileName = getString(++i),
+                updated = getString(++i),
+                issued = getString(++i),
+                zoom = getInt(++i),
+                covr = FeatureBuilder(geometryJson = getString(++i)).build(),
+                bounds = getBytes(++i).let {
+                    //todo
+//                    val env = WKBReader().read(it).envelopeInternal
+//                    Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
+                    Bounds(leftLng = 0.0, topLat = 0.0, rightLng = 0.0, bottomLat = 0.0)
+                },
+                layers = layers,
+                dsidProps = decodeFromString(getString(++i)),
+                chartTxt = decodeFromString(getString(++i)),
+                featureCount = featureCount,
+            )
+        } else null
+    }
+
+    suspend fun findChartsWithLayerAsync(layer: String): List<Chart>? = sqlOpAsync { conn ->
+        conn.prepareStatement("SELECT chart_id FROM features WHERE layer = $1;").let {
+            it.setString(1, layer)
+            it.executeQuery().use {
+                val result = mutableListOf<Long>()
+                while (it.next()) {
+                    result.add(it.getLong(1))
+                }
+                result.mapNotNull { findAsync(it) }
+            }
+        }
+    }
+
+    private fun findLayers(id: Long, conn: Connection): List<String> {
+        return conn.prepareStatement(
+            "SELECT DISTINCT layer FROM features where chart_id=$1;"
+        ).let {
+            it.setLong(1, id)
+            it.executeQuery().use {
+                generateSequence {
+                    if (it.next()) {
+                        it.getString(1)
+                    } else {
+                        null
+                    }
+                }.toList()
+            }
+        }
+    }
+
+    suspend fun findChartFeaturesAsync4326(
+        x: Int,
+        y: Int,
+        z: Int,
+        chartId: Long
+    ): List<ChartFeature>? =
+        sqlOpAsync { conn ->
+            val result = conn.prepareStatement(
+                """
+WITH tile AS (VALUES (st_transform(
+        st_tileenvelope($1, $2, $3),
+        4326)))
+SELECT st_asbinary(
+               st_intersection(
+                       geom,
+                       (table tile)
+               )
+       ),
+       props,
+       layer
+FROM features
+WHERE chart_id = $4
+  AND $5 <@ z_range
+  AND st_intersects(geom, (table tile));
+          """.trimIndent()
+            ).apply {
+                setInt(1, z)
+                setInt(2, x)
+                setInt(3, y)
+                setLong(4, chartId)
+                setInt( 5, z)
+            }.executeQuery().use { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = decodeFromString(rs.getString(2)),
+                            layer = rs.getString(3)
+                        )
+                    } else null
+                }.toList()
+            }
+            result
+        }
+
+    suspend fun findChartFeaturesAsync4326(
+        exclusionMask: ByteArray,
+        x: Int,
+        y: Int,
+        z: Int,
+        chartId: Long
+    ): List<ChartFeature>? =
+        sqlOpAsync { conn ->
+            val result = conn.prepareStatement(
+                """
+WITH exclude AS (VALUES (st_geomfromwkb($1, 4326))),
+     tile AS (VALUES (st_transform(
+             st_tileenvelope($2, $3, $4),
+             4326)))
+SELECT st_asbinary(
+               st_intersection(
+                       st_difference(
+                               geom, (table exclude)
+                       ),
+                       (table tile)
+               )
+       ),
+       props,
+       layer
+FROM features
+WHERE chart_id = $5
+  AND $6 <@ z_range
+  AND st_intersects(geom, (table tile));
+          """.trimIndent()
+            ).apply {
+                setBytes(1, exclusionMask)
+                setInt(2, z)
+                setInt(3, x)
+                setInt(4, y)
+                setLong(5, chartId)
+                setInt( 6, z)
+            }.executeQuery().use { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = decodeFromString(rs.getString(2)),
+                            layer = rs.getString(3)
+                        )
+                    } else null
+                }.toList()
+            }
+            result
+        }
+
+    suspend fun findChartFeaturesAsync4326(
+        inclusionMask: ByteArray,
+        chartId: Long,
+        zoom: Int,
+    ): List<ChartFeature>? =
+        sqlOpAsync { conn ->
+            val result = conn.prepareStatement(
+                """
+WITH include AS (VALUES (st_geomfromwkb($1, 4326)))
+SELECT st_asbinary(
+               st_intersection(
+                       geom,
+                       (table include)
+               )
+       ),
+       props,
+       layer
+FROM features
+WHERE chart_id = $2
+  AND $3 <@ z_range
+  AND st_intersects(geom, (table include));
+          """.trimIndent()
+            ).apply {
+                setBytes(1, inclusionMask)
+                setLong(2, chartId)
+                setInt( 3, zoom)
+            }.executeQuery().use { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = decodeFromString(rs.getString(2)),
+                            layer = rs.getString(3)
+                        )
+                    } else null
+                }.toList()
+            }
+            result
+        }
+    /**
+     * This query is designed to generate Vector Tile layer data for a specific chart performing a "subtraction"
+     * (exclusion) operation. It takes a specific geometry [exclusionMask], subtracts it from the existing features, and then clips the
+     * result to fit a specific map tile.
+     *
+     * [exclusionMask] The "Mask" geometry (areas you want to hide/cut out).
+     * [x], [y], [z] The map tile coordinates
+     * [chartId] the chart id to fetch features from.
+     *
+     * https://postgis.net/docs/reference.html
+     */
+    suspend fun findChartFeaturesAsync(
+        exclusionMask: ByteArray,
+        x: Int,
+        y: Int,
+        z: Int,
+        chartId: Long
+    ): List<ChartFeature>? =
+        sqlOpAsync { conn ->
+            val result = conn.prepareStatement(
+                """
+                WITH exclude AS (VALUES (st_transform(st_geomfromwkb($1,4326), 3857))),
+                    tile AS (VALUES (st_tileenvelope($2,$3,$4)))
+                SELECT st_asbinary(st_asmvtgeom(st_difference(st_transform(geom, 3857), (table exclude)), (table tile))), 
+                    props, 
+                    layer
+                FROM features
+                WHERE chart_id=$5
+                    AND $6 <@ z_range
+                    AND st_intersects(geom, st_transform((table tile), 4326));
+          """.trimIndent()
+            ).apply {
+                setBytes(1, exclusionMask)
+                setInt(2, z)
+                setInt(3, x)
+                setInt(4, y)
+                setLong(5, chartId)
+                setInt( 6, z)
+            }.executeQuery().use { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = decodeFromString(rs.getString(2)),
+                            layer = rs.getString(3)
+                        )
+                    } else null
+                }.toList()
+            }
+            result
+        }
+
+    suspend fun findInfoAsync(wkb: ByteArray): List<ChartInfo>? = sqlOpAsync { conn ->
+//        val tCtx = findInfoAsyncTimer.time()
+        conn.prepareStatement(
+            """
+                SELECT 
+                    id,
+                    scale, 
+                    zoom,
+                    st_asbinary(covr) as wkb 
+                FROM charts 
+                WHERE st_intersects(st_geomfromwkb($1, 4326), covr)
+                ORDER BY scale;
+            """.trimIndent()
+        ).let {
+            it.setBytes(1, wkb)
+            it.executeQuery().use { rs ->
+                generateSequence {
+                    if (rs.next()) {
+                        val id = rs.getLong(1)
+                        ChartInfo(
+                            id = id,
+                            scale = rs.getInt(2),
+                            zoom = rs.getInt(3),
+                            covrWKB = rs.getBytes(4)
+                        )
+                    } else null
+                }.toList()
+            }
+        }
+    }
+
+    suspend fun findAsync(id: Long): Chart? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+            SELECT
+                id,
+                name,
+                scale,
+                file_name,
+                updated,
+                issued,
+                zoom,
+                st_asgeojson(covr)::JSON,
+                st_asbinary(covr),
+                dsid_props,
+                chart_txt
+            FROM charts
+            WHERE id=$1;
+            """.trimIndent()
+        ).let {
+            it.setLong(1, id)
+            it.executeQuery().use { it.chart(findLayers(id, conn), featureDao.featureCount(conn, id)).firstOrNull() }
+        }
+    }
+
+    private fun chartCount(conn: Connection): Int {
+        return conn.prepareStatement("SELECT COUNT(id) FROM charts;").executeQuery().use {
+            if (it.next()) it.getInt(1) else 0
+        }
+    }
+
+    suspend fun listAsync(nextPageId: Long? = null): ChartCatalog? = sqlOpAsync { conn ->
+        val totalCount = chartCount(conn)
+        conn.prepareStatement(
+            """SELECT id, name FROM charts WHERE id >= $1 ORDER BY id LIMIT ${PAGE_SIZE + 1};
+            """.trimIndent()
+        ).let {
+            it.setLong(1, nextPageId ?: 0L)
+            it.executeQuery().use {
+                val page = mutableListOf<ChartItem>()
+                var num = 0
+                var nextId: Long? = null
+                while (it.next() && num <= PAGE_SIZE) {
+                    val id = it.getLong(1)
+                    if (++num > PAGE_SIZE) {
+                        nextId = id
+                    } else {
+                        page.add(
+                            ChartItem(
+                                id = id,
+                                name = it.getString(2),
+                            )
+                        )
+                    }
+                }
+                ChartCatalog(
+                    totalChartCount = totalCount,
+                    nextId = nextId,
+                    page = page
+                )
+            }
+        }
+    }
+
+    suspend fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Chart? = sqlOpAsync(tryCount = 2) {
+        insertAsync(chartInsert, overwrite, it)
+    }
+
+    private fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean, conn: Connection): Chart? {
+        if (overwrite) {
+            delete(name = chartInsert.name, conn)
+        }
+        return conn.prepareStatement(
+            """
+                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) 
+                VALUES ($1,$2,$3,$4,$5,$6,st_setsrid(st_geomfromgeojson($7), 4326),$8::JSON,$9::JSON)
+                RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
+        ).let { stmt ->
+            stmt.setString(1, chartInsert.name)
+            stmt.setInt(2, chartInsert.scale)
+            stmt.setString(3, chartInsert.fileName)
+            stmt.setString(4, chartInsert.updated)
+            stmt.setString(5, chartInsert.issued)
+            stmt.setInt(6, chartInsert.zoom)
+            stmt.setString(7, chartInsert.covr.geometry?.jsonStr())
+            stmt.setAuto(8, chartInsert.dsidProps.jsonStr())
+            stmt.setAuto(9, chartInsert.chartTxt.jsonStr())
+            stmt.executeReturning().use { result ->
+                result.chart(layers = emptyList(), 0).firstOrNull()
+            }
+        }
+    }
+
+    private fun delete(name: String, conn: Connection): Boolean {
+        return conn.prepareStatement(
+            """
+                DELETE from features WHERE features.chart_id IN
+                (SELECT id from charts where name=$1);
+                DELETE FROM charts WHERE name=$2;
+                """.trimIndent()
+        ).let {
+            it.setString(1, name)
+            it.setString(2, name)
+            it.execute() > 0
+        }
+    }
+
+    suspend fun deleteAsync(id: Long): Boolean? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+                DELETE FROM features WHERE chart_id=$1;
+                DELETE FROM charts WHERE id=$2;
+                """.trimIndent()
+        ).let {
+            it.setLong(1, id)
+            it.setLong(2, id)
+            it.execute() > 0
+        }
+    }
+
+    companion object {
+        const val PAGE_SIZE = 100
+    }
+}

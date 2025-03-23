@@ -8,8 +8,10 @@ pluginManagement {
 
 rootProject.name = "njord"
 
-include("chart_server")
-include("geojson")
+include("server")
 include("shared")
 include("shared_fe")
 include("web")
+include("libpq")
+include("libgdal")
+include("geojson")

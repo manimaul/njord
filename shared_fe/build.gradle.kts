@@ -3,13 +3,11 @@ plugins {
     kotlin("plugin.compose") version kotlinVersion
     id("org.jetbrains.compose") version composeVersion
     kotlin("plugin.serialization")
-    id("com.android.library")
 }
 
 version = "${properties["version"]}"
 
 kotlin {
-    androidTarget()
     js {
         browser()
         useCommonJs()
@@ -20,14 +18,14 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":shared"))
-            api(compose.runtime)
+            api("org.jetbrains.compose.runtime:runtime:${composeVersion}")
             api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
         }
 
         val jsMain by getting {
             dependencies {
-                api(compose.html.core)
-                api(compose.html.svg)
+                api("org.jetbrains.compose.html:html-core:${composeVersion}")
+                api("org.jetbrains.compose.html:html-svg:${composeVersion}")
                 api(npm("maplibre-gl", "4.7.1"))
                 api(npm("bootstrap", "5.3.3"))
                 api(npm("@popperjs/core", "2.11.8"))
@@ -39,23 +37,5 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-    }
-}
-
-android {
-    compileSdk = 35
-    namespace = "com.openenc"
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-
-    defaultConfig {
-        minSdk = 26
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        jvmToolchain(17)
     }
 }

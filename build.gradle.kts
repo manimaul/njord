@@ -2,7 +2,6 @@ import io.madrona.njord.build.*
 import io.madrona.njord.build.GitInfo.gitBranch
 import io.madrona.njord.build.GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
-import java.util.*
 
 plugins {
     kotlin("jvm") version kotlinVersion apply false
@@ -11,13 +10,21 @@ plugins {
     id("org.jetbrains.compose") version composeVersion apply false
     kotlin("plugin.serialization") version kotlinVersion apply false
     id("com.android.library") version agpVersion apply false
-    id("com.netflix.nebula.ospackage-application") version osPackageVersion apply false
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+//        mavenLocal() // temporary until libs stabilize (non SNAPSHOT)
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/manimaul/geojson")
+            credentials {
+                username = System.getenv("GH_USER")
+                password = System.getenv("GH_TOKEN")
+            }
+        }
     }
 }
 

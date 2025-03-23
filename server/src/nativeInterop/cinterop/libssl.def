@@ -1,0 +1,11 @@
+#sudo apt-get install libssl-dev
+headers = hmac.h evp.h
+headerFilter = *
+linkerOpts.linux = -lcrypto
+
+# `dpkg-query -L libssl-dev`
+compilerOpts.linux = -I/usr/include -I/usr/include/openssl  -I/usr/include/x86_64-linux-gnu/
+
+# `dpkg-query -L libssl-dev`
+linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lssl
+#dpkg-query -L libssl-dev

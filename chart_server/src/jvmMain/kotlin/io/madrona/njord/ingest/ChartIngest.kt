@@ -16,6 +16,7 @@ import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import java.io.File
+import java.sql.Connection
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
@@ -64,10 +65,12 @@ class ChartIngest(
                     S57.from(queue.poll())?.let { s57 ->
                         launch {
                             chartInsertData(s57, report)?.let { data ->
-                                chartDao.insertAsync(data, true)?.let {
-                                    installChartFeatures(it, s57, report)
-                                } ?: run {
-                                    report.failChart(s57.file.name, "chart insert")
+                                chartDao.sqlOpAsync(tryCount = 2) { conn ->
+                                    chartDao.insertAsync(data, true, conn)?.let {
+                                        installChartFeatures(it, s57, report, conn)
+                                    } ?: run {
+                                        report.failChart(s57.file.name, "chart insert")
+                                    }
                                 }
                             }
                             working.decrementAndGet()
@@ -149,16 +152,16 @@ class ChartIngest(
         }
     }
 
-    private suspend fun installChartFeatures(chart: Chart, s57: S57, report: Report) {
+    private suspend fun installChartFeatures(chart: Chart, s57: S57, report: Report, conn: Connection) {
         withContext(Dispatchers.IO) {
             s57.layerGeoJsonSequence(exLayers).map { (layerName, geo) ->
                 async(Dispatchers.IO) {
                     val ctx = timer.time()
-                    val count = geoJsonDao.insertAsync(
+                    val count = geoJsonDao.featureInsert(
                         FeatureInsert(
                             layerName = layerName, chart = chart, geo = geo
-                        )
-                    ) ?: 0
+                        ), conn
+                    )
                     ctx.stop()
                     if (count == 0) {
                         log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")

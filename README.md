@@ -80,3 +80,35 @@ sudo bash -c "echo \"listen_addresses = 'localhost'\" >> /etc/postgresql/15/main
 sudo systemctl restart postgresql.service
 sudo /opt/chart_server/njord_setup.sh
 ```
+
+# Prometheus Grafana (optional)
+```shell
+sudo apt install -y apt-transport-https software-properties-common wget
+wget https://github.com/prometheus/jmx_exporter/releases/download/1.1.0/jmx_prometheus_javaagent-1.1.0.jar /opt/chart_server/jmx-agent.jar
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+sudo apt update && sudo apt install prometheus grafana
+```
+
+Add the following to /etc/prometheus/prometheus.yml 
+```yaml
+scrape_configs:
+  - job_name: njord 
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    static_configs:
+      - targets: ['localhost:5000']
+```
+
+```shell
+sudo systemctl restart prometheus 
+sudo systemctl status prometheus 
+
+sudo systemctl enable grafana-server
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+```
+
+Prometheus runs on port 9090
+Grafana runs on port 3000

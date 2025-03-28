@@ -11,6 +11,7 @@ class ChartsConfig(
 
     val consoleMetrics: Boolean = config.getBoolean("consoleMetrics")
     val chartIngestWorkers: Int = config.getInt("chartIngestWorkers")
+    val featureIngestWorkers: Int = config.getInt("featureIngestWorkers")
     private val externalScheme: String = config.getString("externalScheme")
     private val externalHostName: String = config.getString("externalHostName")
         .takeIf { it.isNotBlank() } ?: NetworkUtil.guessExternalIP()

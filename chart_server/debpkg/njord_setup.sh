@@ -15,9 +15,9 @@ admin_secret="$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 16)"
 admin_key="$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | head -c 8)"
 
 echo "updating /etc/njord.conf with random secrets"
-sudo sed -i -e "s/.*adminKey.*/    adminKey = \"$admin_key\"/g" /etc/njord.conf
-sudo sed -i -e "s/.*adminPass.*/    adminPass = \"$admin_secret\"/g" /etc/njord.conf
-sudo sed -i -e "s/.*pgPassword.*/    pgPassword = \"$db_secret\"/g" /etc/njord.conf
+sudo sed -i -e "s/.*adminKey.*/    adminKey = \"$admin_key\"/g" /etc/njord/njord.conf
+sudo sed -i -e "s/.*adminPass.*/    adminPass = \"$admin_secret\"/g" /etc/njord/njord.conf
+sudo sed -i -e "s/.*pgPassword.*/    pgPassword = \"$db_secret\"/g" /etc/njord/njord.conf
 
 if [ "$(sudo -Hiu postgres psql postgres -tXAc "SELECT 1 FROM pg_roles WHERE rolname='njord'")" != 1 ]
 then
@@ -51,4 +51,10 @@ sudo systemctl restart postgresql
 sudo systemctl restart memcached
 sudo systemctl enable njord
 sudo systemctl restart njord
-echo "done - the njord admin username password is set in /etc/njord.conf"
+
+ip="$(cut -d' ' -f1 <<< "$(hostname -I)")"
+echo "Done - Njord should be running and accessible at http://$ip:9000"
+echo "The admin password has been randomly generated and can be set in /etc/njord.conf"
+echo "Your admin password is $admin_secret"
+echo "Logs can be viewed with command 'sudo journalctl -u njord -f'"
+echo "Status can be checked with command 'sudo systemctl status njord'"

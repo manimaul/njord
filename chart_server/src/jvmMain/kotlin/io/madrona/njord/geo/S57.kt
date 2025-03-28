@@ -32,16 +32,24 @@ class S57(
     val file: File,
     private val sr4326: SpatialReference = Singletons.wgs84SpatialRef,
     private val zFinder: ZFinder = Singletons.zFinder,
-) {
+) : AutoCloseable {
 
     private val dataSet: Dataset = gdal.OpenEx(file.absolutePath)
 
     val layers: List<String> by lazy {
-        dataSet.layers().map { it.GetName() }.toList()
+        dataSet.layers().map { layer ->
+            val name = layer.GetName()
+            layer.delete()
+            name
+        }.toList()
     }
 
     fun findLayer(name: String): FeatureCollection? {
-        return dataSet.GetLayer(name)?.featureCollection()
+        return dataSet.GetLayer(name)?.let { layer ->
+            val fc = layer.featureCollection()
+            layer.delete()
+            fc
+        }
     }
 
     private fun JsonObject.findCharsetFromDsidProps(): Charset {
@@ -108,9 +116,11 @@ class S57(
 
     fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
         return dataSet.layers().mapNotNull { layer ->
-            layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
+            val layerGeoJson = layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
                 LayerGeoJson(it, layer.featureCollection())
             }
+            layer.delete()
+            layerGeoJson
         }
     }
 
@@ -133,7 +143,9 @@ class S57(
         return (0 until GetFieldCount()).asSequence().map { id ->
             GetFieldDefnRef(id).let {
                 val name = it.GetName()
-                name to value(it.GetFieldType(), id)
+                val pair = name to value(it.GetFieldType(), id)
+                it.delete()
+                pair
             }
         }.toMap().toMutableMap()
     }
@@ -163,8 +175,10 @@ class S57(
     private fun Layer.featureCollection(): FeatureCollection {
         val name = GetName()
         return FeatureCollection(
-            features = features().mapNotNull {
-                it.geoJsonFeature("SOUNDG".equals(name, ignoreCase = false))
+            features = features().mapNotNull { feature ->
+                val featureGeoJson = feature.geoJsonFeature("SOUNDG".equals(name, ignoreCase = false))
+                feature.delete()
+                featureGeoJson
             }.toList()
         )
     }
@@ -185,7 +199,12 @@ class S57(
 
 
     private fun Geometry.wgs84() {
-        if (GetSpatialReference()?.IsSameGeogCS(sr4326) != 1) {
+        val is4326 = GetSpatialReference()?.let {
+            val code = it.IsSameGeogCS(sr4326)
+            it.delete()
+            code
+        }
+        if (is4326 != 1) {
             val result = TransformTo(sr4326)
             if (result != 0) {
                 throw RuntimeException("failed to transform Geometry to wgs84")
@@ -195,7 +214,9 @@ class S57(
 
     private fun Geometry.geoJson(): String? {
         wgs84()
-        return ExportToJson()
+        val json = ExportToJson()
+        delete()
+        return json
     }
 
     companion object {
@@ -232,5 +253,9 @@ class S57(
                 }
             }
         }
+    }
+
+    override fun close() {
+        dataSet.delete()
     }
 }

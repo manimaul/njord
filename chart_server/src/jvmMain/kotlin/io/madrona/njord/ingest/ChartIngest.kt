@@ -7,10 +7,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.geo.S57
-import io.madrona.njord.model.Chart
-import io.madrona.njord.model.ChartInsert
-import io.madrona.njord.model.EncUpload
-import io.madrona.njord.model.FeatureInsert
+import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
@@ -34,6 +31,7 @@ class ChartIngest(
 
     private val charDir = config.chartTempData
     private val log = logger()
+    private val working = AtomicInteger(0)
 
     suspend fun ingest(encUpload: EncUpload) {
         log.info("ingesting enc upload $encUpload")
@@ -46,7 +44,9 @@ class ChartIngest(
             log.info("counting features")
             s57Files.sumOf { file ->
                 log.info("counting features: $file")
-                S57.from(file)?.featureCount(exLayers) ?: 0
+                S57.from(file)?.use {
+                    it.featureCount(exLayers)
+                } ?: 0
             }
         }
         val report = Report(
@@ -56,24 +56,29 @@ class ChartIngest(
         webSocketSession.sendMessage(report.progressMessage())
         log.info("inserting data")
         val queue = ConcurrentLinkedDeque(s57Files)
+        working.set(0)
         withContext(Dispatchers.IO) {
-            val working = AtomicInteger(0)
+            val chartsWorking = AtomicInteger(0)
             while (queue.isNotEmpty()) {
-                if (working.get() < config.chartIngestWorkers) {
-                    val w = working.incrementAndGet()
-                    log.info("inserting chart working = $w")
-                    S57.from(queue.poll())?.let { s57 ->
+                if (chartsWorking.get() < config.chartIngestWorkers) {
+                    queue.poll()?.let { file ->
+                        val w = chartsWorking.incrementAndGet()
                         launch {
-                            chartInsertData(s57, report)?.let { data ->
+                            log.info("inserting chart ${file.name} working = $w")
+                            S57.from(file)?.use { s57 ->
+                                chartInsertData(s57, report)?.let { data ->
+                                    ConcurrentLinkedDeque(s57.layerGeoJsonSequence(exLayers).toList()) to data
+                                }
+                            }?.let { (queue, data) ->
                                 chartDao.sqlOpAsync(tryCount = 2) { conn ->
                                     chartDao.insertAsync(data, true, conn)?.let {
-                                        installChartFeatures(it, s57, report, conn)
+                                        installChartFeatures(queue, it, report, conn)
                                     } ?: run {
-                                        report.failChart(s57.file.name, "chart insert")
+                                        report.failChart(file.name, "chart insert")
                                     }
                                 }
                             }
-                            working.decrementAndGet()
+                            chartsWorking.decrementAndGet()
                         }
                     }
                 } else {
@@ -152,25 +157,35 @@ class ChartIngest(
         }
     }
 
-    private suspend fun installChartFeatures(chart: Chart, s57: S57, report: Report, conn: Connection) {
+    private suspend fun installChartFeatures(
+        queue: Queue<LayerGeoJson>,
+        chart: Chart, report: Report, conn: Connection) {
         withContext(Dispatchers.IO) {
-            s57.layerGeoJsonSequence(exLayers).map { (layerName, geo) ->
-                async(Dispatchers.IO) {
-                    val ctx = timer.time()
-                    val count = geoJsonDao.featureInsert(
-                        FeatureInsert(
-                            layerName = layerName, chart = chart, geo = geo
-                        ), conn
-                    )
-                    ctx.stop()
-                    if (count == 0) {
-                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-                        log.debug("geo json = \n${geo}")
+            while (queue.isNotEmpty()) {
+                if (working.get() < config.featureIngestWorkers) {
+                    working.incrementAndGet()
+                    queue.poll()?.let { (layerName, geo) ->
+                        launch(Dispatchers.IO) {
+                            val ctx = timer.time()
+                            val count = geoJsonDao.featureInsert(
+                                FeatureInsert(
+                                    layerName = layerName, chart = chart, geo = geo
+                                ), conn
+                            )
+                            val ms = ctx.stop() / 1000L
+                            val w = working.decrementAndGet()
+                            if (count == 0) {
+                                log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                                log.debug("geo json = \n${geo}")
+                            }
+                            log.info("$count feature(s) inserted in $ms working = ${w}")
+                            report.appendChartFeatureCount(chart.name, count)
+                            webSocketSession.sendMessage(report.progressMessage())
+                        }
                     }
-                    report.appendChartFeatureCount(chart.name, count)
-                    webSocketSession.sendMessage(report.progressMessage())
                 }
-            }.toList().awaitAll()
+
+            }
             report.completedChart()
             webSocketSession.sendMessage(report.progressMessage())
         }

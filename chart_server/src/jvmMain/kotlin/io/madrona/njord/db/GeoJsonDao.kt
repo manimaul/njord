@@ -60,11 +60,11 @@ class GeoJsonDao : Dao() {
         }
     }
 
-    suspend fun insertAsync(featureInsert: FeatureInsert): Int? = sqlOpAsync {
+    suspend fun featureInsertAsync(featureInsert: FeatureInsert): Int? = sqlOpAsync {
         featureInsert(featureInsert, it)
     }
 
-    fun featureInsert(featureInsert: FeatureInsert, conn: Connection): Int {
+    private fun featureInsert(featureInsert: FeatureInsert, conn: Connection): Int {
         return when (val geoJson = featureInsert.geo) {
             is Geometry -> FeatureRecord(
                 chartId = featureInsert.chart.id,

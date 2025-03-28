@@ -42,7 +42,7 @@ class GeoJsonHandler(
                 )
             }
         }?.let { fi ->
-            geoJsonDao.insertAsync(fi)?.let { it to fi }
+            geoJsonDao.featureInsertAsync(fi)?.let { it to fi }
         }?.let {
             if (it.first > 0) {
                 call.respond(HttpStatusCode.OK, it)

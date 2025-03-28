@@ -13,7 +13,6 @@ import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import java.io.File
-import java.sql.Connection
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
@@ -63,16 +62,12 @@ class ChartIngest(
                 if (chartsWorking.get() < config.chartIngestWorkers) {
                     queue.poll()?.let { file ->
                         val w = chartsWorking.incrementAndGet()
+                        log.info("inserting chart ${file.name} working = $w")
                         launch {
-                            log.info("inserting chart ${file.name} working = $w")
                             S57.from(file)?.use { s57 ->
                                 chartInsertData(s57, report)?.let { data ->
-                                    ConcurrentLinkedDeque(s57.layerGeoJsonSequence(exLayers).toList()) to data
-                                }
-                            }?.let { (queue, data) ->
-                                chartDao.sqlOpAsync(tryCount = 2) { conn ->
-                                    chartDao.insertAsync(data, true, conn)?.let {
-                                        installChartFeatures(queue, it, report, conn)
+                                    chartDao.insertAsync(data, true)?.let {
+                                        installChartFeatures(s57, it, report)
                                     } ?: run {
                                         report.failChart(file.name, "chart insert")
                                     }
@@ -158,33 +153,39 @@ class ChartIngest(
     }
 
     private suspend fun installChartFeatures(
-        queue: Queue<LayerGeoJson>,
-        chart: Chart, report: Report, conn: Connection) {
+        s57: S57,
+        chart: Chart, report: Report) {
+        val queue = ConcurrentLinkedDeque(s57.layers.filter { !exLayers.contains(it) })
         withContext(Dispatchers.IO) {
             while (queue.isNotEmpty()) {
                 if (working.get() < config.featureIngestWorkers) {
-                    working.incrementAndGet()
-                    queue.poll()?.let { (layerName, geo) ->
-                        launch(Dispatchers.IO) {
-                            val ctx = timer.time()
-                            val count = geoJsonDao.featureInsert(
-                                FeatureInsert(
-                                    layerName = layerName, chart = chart, geo = geo
-                                ), conn
-                            )
-                            val ms = ctx.stop() / 1000L
-                            val w = working.decrementAndGet()
-                            if (count == 0) {
-                                log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-                                log.debug("geo json = \n${geo}")
+                    queue.poll()?.let { layerName ->
+                        s57.findLayer(layerName)?.let { geo ->
+                            val w = working.incrementAndGet()
+                            val r = queue.size
+                            launch {
+                                log.info("$layerName ${geo.features.size} feature(s) inserting working=$w remaining=$r")
+                                val ctx = timer.time()
+                                val count = geoJsonDao.featureInsertAsync(
+                                    FeatureInsert(
+                                        layerName = layerName, chart = chart, geo = geo
+                                    )
+                                ) ?: 0
+                                val ms = ctx.stop() / 1000L
+                                val w = working.decrementAndGet()
+                                if (count == 0) {
+                                    log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                                    log.debug("geo json = \n${geo}")
+                                }
+                                log.info("$layerName $count feature(s) inserted in $ms working=$w")
+                                report.appendChartFeatureCount(chart.name, count)
+                                webSocketSession.sendMessage(report.progressMessage())
                             }
-                            log.info("$count feature(s) inserted in $ms working = ${w}")
-                            report.appendChartFeatureCount(chart.name, count)
-                            webSocketSession.sendMessage(report.progressMessage())
                         }
                     }
+                } else {
+                    delay(250)
                 }
-
             }
             report.completedChart()
             webSocketSession.sendMessage(report.progressMessage())

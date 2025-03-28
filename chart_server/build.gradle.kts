@@ -30,7 +30,7 @@ ospackage {
     version = "${project.version}-${GitInfo.gitShortHash()}"
     release = "1"
     from("debpkg/njord.service", closureOf<CopySpec> {
-        into("/etc/systemd/system/multi-user.target.wants/")
+        into("/etc/systemd/system/")
     })
     from("debpkg/njord_exec.sh", closureOf<CopySpec> {
         into("/usr/bin/")

@@ -25,7 +25,7 @@ abstract class Dao(
             log.error("$msg - try count = $tryCount", e)
             if (tryCount < maxTryCount) {
                 delay(1000)
-                sqlOpAsyncInternal(msg, tryCount + 1, block)
+                sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
             } else {
                 null
             }

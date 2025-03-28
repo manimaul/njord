@@ -218,11 +218,11 @@ class ChartDao(
         }
     }
 
-    suspend fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Chart? = sqlOpAsync {
+    suspend fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Chart? = sqlOpAsync(tryCount = 2) {
         insertAsync(chartInsert, overwrite, it)
     }
 
-    fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean, conn: Connection): Chart? {
+    private fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean, conn: Connection): Chart? {
         if (overwrite) {
             delete(name = chartInsert.name, conn)
         }

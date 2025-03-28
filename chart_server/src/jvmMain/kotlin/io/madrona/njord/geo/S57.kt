@@ -106,22 +106,14 @@ class S57(
 
     fun featureCount(exLayers: Set<String>? = null): Long {
         return dataSet.layers().map { layer ->
-            if (exLayers?.contains(layer.GetName()) == true) {
+            val count = if (exLayers?.contains(layer.GetName()) == true) {
                 0
             } else {
                 layer.GetFeatureCount()
             }
-        }.sum()
-    }
-
-    fun layerGeoJsonSequence(exLayers: Set<String>? = null): Sequence<LayerGeoJson> {
-        return dataSet.layers().mapNotNull { layer ->
-            val layerGeoJson = layer.GetName()?.takeIf { exLayers == null || !exLayers.contains(it) }?.let {
-                LayerGeoJson(it, layer.featureCollection())
-            }
             layer.delete()
-            layerGeoJson
-        }
+            count
+        }.sum()
     }
 
     private fun Feature.geoJsonFeature(soundg: Boolean = false): io.madrona.njord.geojson.Feature? {

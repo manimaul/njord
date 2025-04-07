@@ -1,21 +1,24 @@
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.toKString
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import libgdal.GDALVersionInfo
 
 @Serializable
 private data class Message(
-    val topic: String,
-    val content: String,
+    val gdalVersion: String,
 )
 
 private val PrettyPrintJson = Json {
     prettyPrint = true
 }
 
+@OptIn(ExperimentalForeignApi::class)
 fun main() {
+    //https://gdal.org/en/stable/api/raster_c_api.html
+    val info = GDALVersionInfo("BUILD_INFO");
     val message = Message(
-        topic = "Kotlin/Native",
-        content = "Hello!"
+        gdalVersion = info?.toKString() ?: "",
     )
     println(PrettyPrintJson.encodeToString(message))
 }

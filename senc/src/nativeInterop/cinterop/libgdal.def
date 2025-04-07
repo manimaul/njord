@@ -1,0 +1,9 @@
+#sudo apt install libgdal30 libgdal-dev
+headers = gdal/gdal.h
+headerFilter = gdal/*
+
+# `dpkg-query -L libgdal-dev`
+compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include/gdal
+
+# `dpkg-query -L libgdal30`
+linkerOpts.linux = -L/usr/lib -lgdal

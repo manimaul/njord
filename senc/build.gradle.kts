@@ -29,6 +29,11 @@ kotlin {
     }
 
     nativeTarget.apply {
+        compilations.getByName("main") {
+            cinterops {
+                val libgdal by creating
+            }
+        }
         binaries {
             executable {
                 entryPoint = "main"

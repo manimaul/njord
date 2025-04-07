@@ -1,5 +1,5 @@
 #sudo apt install libgdal30 libgdal-dev
-headers = gdal/gdal.h
+headers = gdal/gdal.h gdal/cpl_conv.h
 headerFilter = gdal/*
 
 # `dpkg-query -L libgdal-dev`

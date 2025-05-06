@@ -43,6 +43,7 @@ kotlin {
 
     sourceSets {
         nativeMain.dependencies {
+            implementation(project(":shared"))
             implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
         }
     }

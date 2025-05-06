@@ -6,4 +6,6 @@ fun main() {
     s57.layerNames.forEach {
         println("layer name $it")
     }
+    val fc = s57.featureCount()
+    println("feature count = $fc")
 }

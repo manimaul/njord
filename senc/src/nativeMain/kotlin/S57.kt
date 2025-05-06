@@ -11,19 +11,35 @@ class S57(
         GDAL_OF_VECTOR.toUInt(),
         null,
         null,
-        null)
+        null
+    )
 
     val layerNames: List<String> by lazy {
         layers().mapNotNull {
-           OGR_L_GetName(it)?.toKString()
+            OGR_L_GetName(it)?.toKString()
         }
     }
 
-    private fun layers() : List<OGRLayerH> {
+    fun featureCount(exLayers: Set<String> = emptySet()): Int {
+        return layers().sumOf {
+            if (exLayers.contains(OGR_L_GetName(it)?.toKString() ?: "")) {
+                0
+            } else {
+                features(it).size
+            }
+        }
+    }
+
+    private fun features(layer: OGRLayerH): List<OGRFeatureH> {
         GDALDatasetResetReading(dataSet)
-        val count = OGR_DS_GetLayerCount(dataSet)
-        println("layer count $count")
-        return (0 until  OGR_DS_GetLayerCount(dataSet)).mapNotNull {
+        return generateSequence {
+            OGR_L_GetNextFeature(layer)
+        }.toList()
+    }
+
+    private fun layers(): List<OGRLayerH> {
+        GDALDatasetResetReading(dataSet)
+        return (0 until OGR_DS_GetLayerCount(dataSet)).mapNotNull {
             OGR_DS_GetLayer(dataSet, it)
         }
     }

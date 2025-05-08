@@ -1,10 +1,12 @@
-import PostgresNativeDriver.Companion.TEXT_RESULT_FORMAT
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
 import libpq.*
+
+const val TEXT_RESULT_FORMAT = 0
+const val BINARY_RESULT_FORMAT = 1
 
 @OptIn(ExperimentalForeignApi::class)
 class PgDb(

@@ -91,8 +91,8 @@ kotlin {
             kotlin.srcDir("build/generated/source/version")
             dependencies {
                 implementation(project(":shared"))
-                implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-                implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+                implementation("io.ktor:ktor-server-core:$ktorVersion")
+                implementation("io.ktor:ktor-server-cio:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
@@ -115,7 +115,6 @@ kotlin {
                 implementation(files("libs/gdal-3.10.0.jar"))
                 implementation("ch.qos.logback:logback-classic:1.4.12")
                 implementation("com.google.protobuf:protobuf-java:3.22.3")
-                implementation("org.locationtech.jts:jts-core:1.19.0")
                 implementation("org.postgresql:postgresql:42.7.3")
                 implementation("com.zaxxer:HikariCP:5.0.1")
                 implementation("io.ktor:ktor-server-metrics:$ktorVersion")

@@ -4,9 +4,9 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.cio.CIO
 import io.ktor.server.engine.*
 import io.ktor.server.http.content.*
-import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -26,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 class ChartServerApp {
     fun serve() {
         embeddedServer(
-            Netty,
+            CIO,
             port = Singletons.config.port,
             host = Singletons.config.host,
             module = Application::njord
@@ -63,7 +63,7 @@ fun Application.njord() {
         basic("auth-basic") {
             realm = "Admin"
             validate { credentials ->
-                if (Singletons.config.adminUser == credentials.name && Singletons.config.adminPass == credentials.password ) {
+                if (Singletons.config.adminUser == credentials.name && Singletons.config.adminPass == credentials.password) {
                     UserIdPrincipal(credentials.name)
                 } else {
                     null

@@ -2,7 +2,6 @@ import io.madrona.njord.build.*
 import io.madrona.njord.build.GitInfo.gitBranch
 import io.madrona.njord.build.GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
-import java.util.*
 
 plugins {
     kotlin("jvm") version kotlinVersion apply false

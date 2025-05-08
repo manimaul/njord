@@ -32,6 +32,7 @@ kotlin {
         compilations.getByName("main") {
             cinterops {
                 val libgdal by creating
+                val libpq by creating
             }
         }
         binaries {

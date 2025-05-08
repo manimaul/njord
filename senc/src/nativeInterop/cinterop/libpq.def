@@ -1,0 +1,10 @@
+#sudo apt install libpq-dev libpq5
+headers = libpq-fe.h
+headerFilter = *
+# package = libpq
+
+# `dpkg-query -L libpq-dev`
+compilerOpts.linux = -I/usr/include/postgresql
+
+# `dpkg-query -L libpq5`
+linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lpq

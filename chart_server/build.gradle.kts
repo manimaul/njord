@@ -5,7 +5,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("io.ktor.plugin") version ktorVersion
-    id("com.netflix.nebula.ospackage-application") version osPackageVersion
+//    id("com.netflix.nebula.ospackage-application") version osPackageVersion
 }
 
 repositories {
@@ -25,41 +25,41 @@ application {
 group = "io.madrona.njord"
 version = "${properties["version"]}"
 
-ospackage {
-    packageName = "njord"
-    version = "${project.version}-${GitInfo.gitShortHash()}"
-    release = "1"
-    from("debpkg/njord.service", closureOf<CopySpec> {
-        into("/etc/systemd/system/")
-    })
-    from("debpkg/njord_exec.sh", closureOf<CopySpec> {
-        into("/usr/bin/")
-    })
-    from("debpkg/njord.conf", closureOf<CopySpec> {
-        into("/etc/njord/")
-    })
-    from("build/dist/js/productionExecutable", closureOf<CopySpec> {
-        into("/opt/chart_server/public")
-    })
-    from("debpkg/njord_setup.sh", closureOf<CopySpec> {
-        into("/opt/chart_server")
-    })
-    from("debpkg/jmx_exporter.yaml", closureOf<CopySpec> {
-        into("/etc/njord")
-    })
-    from("debpkg/jmx_prometheus_javaagent-1.1.0.jar", closureOf<CopySpec> {
-        into("/opt/chart_server")
-    })
-    preDepends("systemd")
-    preDepends("postgresql")
-    preDepends("postgis")
-    preDepends("memcached")
-    preDepends("postgresql-client")
-    requires("openjdk-17-jre-headless")
-    postInstall(file("debpkg/postInstall.sh"))
-    preUninstall(file("debpkg/preUninstall.sh"))
-    postUninstall(file("debpkg/postUninstall.sh"))
-}
+//ospackage {
+//    packageName = "njord"
+//    version = "${project.version}-${GitInfo.gitShortHash()}"
+//    release = "1"
+//    from("debpkg/njord.service", closureOf<CopySpec> {
+//        into("/etc/systemd/system/")
+//    })
+//    from("debpkg/njord_exec.sh", closureOf<CopySpec> {
+//        into("/usr/bin/")
+//    })
+//    from("debpkg/njord.conf", closureOf<CopySpec> {
+//        into("/etc/njord/")
+//    })
+//    from("build/dist/js/productionExecutable", closureOf<CopySpec> {
+//        into("/opt/chart_server/public")
+//    })
+//    from("debpkg/njord_setup.sh", closureOf<CopySpec> {
+//        into("/opt/chart_server")
+//    })
+//    from("debpkg/jmx_exporter.yaml", closureOf<CopySpec> {
+//        into("/etc/njord")
+//    })
+//    from("debpkg/jmx_prometheus_javaagent-1.1.0.jar", closureOf<CopySpec> {
+//        into("/opt/chart_server")
+//    })
+//    preDepends("systemd")
+//    preDepends("postgresql")
+//    preDepends("postgis")
+//    preDepends("memcached")
+//    preDepends("postgresql-client")
+//    requires("openjdk-17-jre-headless")
+//    postInstall(file("debpkg/postInstall.sh"))
+//    preUninstall(file("debpkg/preUninstall.sh"))
+//    postUninstall(file("debpkg/postUninstall.sh"))
+//}
 
 
 task<Copy>("debWebRes") {

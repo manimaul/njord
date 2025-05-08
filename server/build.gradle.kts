@@ -34,6 +34,7 @@ kotlin {
     sourceSets {
         nativeMain.dependencies {
             implementation(project(":shared"))
+            implementation(project(":libpq"))
             implementation("io.ktor:ktor-server-core:${ktorVersion}")
             implementation("io.ktor:ktor-server-cio:${ktorVersion}")
             implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")

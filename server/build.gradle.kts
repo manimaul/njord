@@ -29,7 +29,7 @@ kotlin {
                 entryPoint = "main"
                 runTask?.run {
                     argumentProviders.add(CommandLineArgumentProvider {
-                        listOf(project.file("./src/nativeMain/resources/application.json").absolutePath)
+                        listOf(project.file("./src/nativeMain/resources").absolutePath)
                     })
                 }
             }

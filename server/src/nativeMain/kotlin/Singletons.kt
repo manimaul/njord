@@ -1,10 +1,17 @@
 import io.ktor.util.logging.*
+import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlin.getValue
+
+lateinit var resources: String
 
 object Singletons {
 
     lateinit var genLog: Logger
 
-    lateinit var config: ChartsConfig
+    val config by lazy {
+        val contents = File("$resources/config/application.json")
+        decodeFromString<ChartsConfig>(contents.readContents())
+    }
 
 //    val adminUtil by lazy { AdminUtil() }
 //

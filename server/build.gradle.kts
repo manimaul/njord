@@ -27,6 +27,11 @@ kotlin {
         binaries {
             executable {
                 entryPoint = "main"
+                runTask?.run {
+                    argumentProviders.add(CommandLineArgumentProvider {
+                        listOf(project.file("./src/nativeMain/resources/application.json").absolutePath)
+                    })
+                }
             }
         }
     }

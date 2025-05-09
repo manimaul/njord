@@ -1,3 +1,4 @@
+import io.ktor.http.ContentDisposition.Companion.File
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.*
@@ -9,6 +10,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.serialization.json.Json.Default.decodeFromString
 
 class ChartServerApp {
     fun serve() {
@@ -30,8 +33,18 @@ val db = PgDb.login(
     password = "mysecretpassword"
 )
 
-fun main() {
-    ChartServerApp().serve()
+@OptIn(ExperimentalForeignApi::class)
+fun main(args: Array<String>) {
+    args.takeIf { it.isNotEmpty() }?.let {
+        File(it[0])
+    }?.takeIf { it.exists() }?.let {
+        val contents = it.readContents()
+        Singletons.config = decodeFromString<ChartsConfig>(contents)
+        println("config found $contents")
+        ChartServerApp().serve()
+    } ?: run {
+        println("Please include argument of configuration path")
+    }
 }
 
 fun Application.njord() {

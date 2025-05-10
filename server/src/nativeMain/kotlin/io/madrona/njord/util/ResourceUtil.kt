@@ -1,7 +1,7 @@
 package io.madrona.njord.util
 
-import File
-import resources
+import io.madrona.njord.resources
+
 
 fun Any.resourceAsString(name: String) : String? {
     return File("$resources/$name").takeIf { it.exists() }?.readContents()

@@ -14,15 +14,15 @@ import kotlin.concurrent.AtomicInt
 
 interface ResultSet : AutoCloseable {
     fun next() : Boolean
-    fun getString(index: Int) : String?
-    fun getBoolean(index: Int) : Boolean?
-    fun getByte(index: Int) : Byte?
-    fun getBytes(index: Int) : ByteArray?
-    fun getShort(index: Int) : Short?
-    fun getInt(index: Int) : Int?
-    fun getLong(index: Int) : Long?
-    fun getFloat(index: Int) : Float?
-    fun getDouble(index: Int) : Double?
+    fun getString(index: Int) : String
+    fun getBoolean(index: Int) : Boolean
+    fun getByte(index: Int) : Byte
+    fun getBytes(index: Int) : ByteArray
+    fun getShort(index: Int) : Short
+    fun getInt(index: Int) : Int
+    fun getLong(index: Int) : Long
+    fun getFloat(index: Int) : Float
+    fun getDouble(index: Int) : Double
 }
 
 private val counter: AtomicInt = AtomicInt(0)
@@ -56,22 +56,22 @@ class PgResultSet(
         }
     }
 
-    override fun getString(index: Int): String? {
+    override fun getString(index: Int): String {
         val isNull = PQgetisnull(result, tup_num = currentRowIndex, field_num = index) == 1
         return if (isNull) {
-            null
+           null
         } else {
             val value = PQgetvalue(result, tup_num = currentRowIndex, field_num = index)
             value?.toKString()
-        }
+        } ?: ""
     }
 
-    override fun getBoolean(index: Int): Boolean? {
-        return getString(index)?.toBoolean()
+    override fun getBoolean(index: Int): Boolean {
+        return getString(index).toBoolean()
     }
 
-    override fun getByte(index: Int): Byte? {
-        return getString(index)?.toByte()
+    override fun getByte(index: Int): Byte {
+        return getString(index).toByte()
     }
 
     private fun Int.fromHex(): Int = if (this in 48..57) {
@@ -92,7 +92,7 @@ class PgResultSet(
         return array
     }
 
-    override fun getBytes(index: Int): ByteArray? {
+    override fun getBytes(index: Int): ByteArray {
         val isNull = PQgetisnull(result, tup_num = currentRowIndex, field_num = index) == 1
         return if (isNull) {
             null
@@ -100,27 +100,27 @@ class PgResultSet(
             val bytes = PQgetvalue(result, tup_num = currentRowIndex, field_num = index)!!
             val length = PQgetlength(result, tup_num = currentRowIndex, field_num = index)
             bytes.fromHex(length)
-        }
+        } ?: ByteArray(0)
     }
 
-    override fun getShort(index: Int): Short? {
-        return getString(index)?.toShort()
+    override fun getShort(index: Int): Short {
+        return getString(index).toShort()
     }
 
-    override fun getInt(index: Int): Int? {
-        return getString(index)?.toInt()
+    override fun getInt(index: Int): Int {
+        return getString(index).toInt()
     }
 
-    override fun getLong(index: Int): Long? {
-        return getString(index)?.toLong()
+    override fun getLong(index: Int): Long {
+        return getString(index).toLong()
     }
 
-    override fun getFloat(index: Int): Float? {
-        return getString(index)?.toFloat()
+    override fun getFloat(index: Int): Float {
+        return getString(index).toFloat()
     }
 
-    override fun getDouble(index: Int): Double? {
-        return getString(index)?.toDouble()
+    override fun getDouble(index: Int): Double {
+        return getString(index).toDouble()
     }
 
     override fun close() {

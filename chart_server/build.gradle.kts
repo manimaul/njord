@@ -110,7 +110,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
-                implementation("no.ecc.vectortile:java-vector-tile:1.3.23")
+//                implementation("no.ecc.vectortile:java-vector-tile:1.3.23")
 
                 implementation(files("libs/gdal-3.10.0.jar"))
                 implementation("ch.qos.logback:logback-classic:1.4.12")

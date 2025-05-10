@@ -5,7 +5,7 @@ import libgdal.*
 @OptIn(ExperimentalForeignApi::class)
 class S57(
     path: String
-) {
+) : AutoCloseable {
     private val dataSet: GDALDatasetH? = GDALOpenEx(
         path,
         GDAL_OF_VECTOR.toUInt(),
@@ -42,6 +42,10 @@ class S57(
         return (0 until OGR_DS_GetLayerCount(dataSet)).mapNotNull {
             OGR_DS_GetLayer(dataSet, it)
         }
+    }
+
+    override fun close() {
+        TODO("Not yet implemented")
     }
 
     companion object {

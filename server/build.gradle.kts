@@ -40,6 +40,7 @@ kotlin {
         nativeMain.dependencies {
             implementation(project(":shared"))
             implementation(project(":libpq"))
+            implementation(project(":libgdal"))
             implementation("io.ktor:ktor-server-core:${ktorVersion}")
             implementation("io.ktor:ktor-server-cio:${ktorVersion}")
             implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
@@ -51,6 +52,7 @@ kotlin {
             implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
             implementation("io.ktor:ktor-server-host-common:${ktorVersion}")
 //            implementation("io.ktor:ktor-server-call-logging:${ktorVersion}")
+            implementation("io.ktor:ktor-client-curl:${ktorVersion}")
         }
     }
 }

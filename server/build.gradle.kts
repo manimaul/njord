@@ -41,6 +41,7 @@ kotlin {
             implementation(project(":shared"))
             implementation(project(":libpq"))
             implementation(project(":libgdal"))
+            implementation(project(":libgeos"))
             implementation("io.ktor:ktor-server-core:${ktorVersion}")
             implementation("io.ktor:ktor-server-cio:${ktorVersion}")
             implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")

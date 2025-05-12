@@ -1,9 +1,9 @@
 package io.madrona.njord.geo
 
 import VectorTileEncoder
+import geos.Geos
+import geos.GeosGeomType
 import geos.GeosGeometry
-import geos.GeosMultiPolygon
-import geos.GeosPolygon
 import geos.WKBReader
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
@@ -29,16 +29,19 @@ class TileEncoder(
     private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
 ) {
 
-    private val tileEnvelope: GeosPolygon = tileSystem.createTileClipPolygon(x, y, z)
+    private val tileEnvelope: GeosGeometry = tileSystem.createTileClipPolygon(x, y, z)
 
     fun addDebug(): TileEncoder {
-        val tileGeom = tileSystem.tileGeometry(tileEnvelope.exteriorRing, x, y, z)
-        encoder.addFeature("DEBUG", emptyMap<String, Any>(), tileGeom)
-        encoder.addFeature(
-            "DEBUG", mapOf<String, Any>(
-                "DMSG" to "z:$z x:$x y:$y"
-            ), tileGeom.centroid
-        )
+        tileSystem.tileGeometry(tileEnvelope.exteriorRing, x, y, z).use { tileGeom ->
+            encoder.addFeature("DEBUG", emptyMap(), tileGeom)
+            tileGeom.centroid().use { centroid ->
+                encoder.addFeature(
+                    "DEBUG", mapOf<String, Any>(
+                        "DMSG" to "z:$z x:$x y:$y"
+                    ), centroid
+                )
+            }
+        }
         return this
     }
 
@@ -79,7 +82,7 @@ class TileEncoder(
     suspend fun addCharts(info: Boolean): TileEncoder {
 //        val ctx = timer.time()
         var include: GeosGeometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
-        var covered: GeosGeometry = GeosPolygon()
+        var covered: GeosGeometry = Geos.createPolygon()
         chartDao.findInfoAsync(tileEnvelope)?.let { charts ->
             charts.forEach { chart ->
                 val chartGeo = WKBReader().read(chart.covrWKB)
@@ -118,14 +121,17 @@ class TileEncoder(
 
 
     private fun addPly(chartGeo: GeosGeometry?) {
-        (chartGeo as? GeosPolygon)?.let { ply ->
-            val plyTile = tileSystem.tileGeometry(ply.exteriorRing, x, y, z)
-            encoder.addFeature("PLY", emptyMap(), plyTile)
-        }
-        (chartGeo as? GeosMultiPolygon)?.let { ply ->
-            for (i in 0..<ply.numGeometries) {
-                addPly(ply.getGeometryN(i))
+        when (chartGeo?.type) {
+            GeosGeomType.Polygon -> {
+                val plyTile = tileSystem.tileGeometry(chartGeo.exteriorRing, x, y, z)
+                encoder.addFeature("PLY", emptyMap(), plyTile)
             }
+            GeosGeomType.MultiPolygon -> {
+                for (i in 0..<chartGeo.numGeometries) {
+                    addPly(chartGeo.getGeometryN(i))
+                }
+            }
+            else -> {}
         }
     }
 

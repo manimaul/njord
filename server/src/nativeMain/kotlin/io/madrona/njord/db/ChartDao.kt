@@ -3,7 +3,6 @@ package io.madrona.njord.db
 import Connection
 import ResultSet
 import geos.GeosGeometry
-import geos.GeosPolygon
 import geos.WKBWriter
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.jsonStr
@@ -119,7 +118,7 @@ class ChartDao(
             result
         }
 
-    suspend fun findInfoAsync(polygon: GeosPolygon): List<ChartInfo>? = sqlOpAsync { conn ->
+    suspend fun findInfoAsync(polygon: GeosGeometry): List<ChartInfo>? = sqlOpAsync { conn ->
 //        val tCtx = findInfoAsyncTimer.time()
         conn.prepareStatement(
             """

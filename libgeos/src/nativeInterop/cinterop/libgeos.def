@@ -1,0 +1,9 @@
+#sudo apt install libgeos-dev
+headers = geos_c.h
+headerFilter = *
+
+# `dpkg-query -L libgeos-dev`
+compilerOpts.linux = -I/usr/include -I/usr/include/geos -I/usr/include/x86_64-linux-gnu/
+
+# `dpkg-query -L libgeos-dev`
+linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lgeos_c

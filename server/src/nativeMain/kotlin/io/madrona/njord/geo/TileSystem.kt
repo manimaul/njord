@@ -2,9 +2,8 @@ package io.madrona.njord.geo
 
 
 import geos.Coordinate
+import geos.Geos
 import geos.GeosGeometry
-import geos.GeosPolygon
-import io.madrona.njord.geojson.Geometry
 import kotlin.math.*
 
 
@@ -80,13 +79,13 @@ class TileSystem(
      * y: the tile y value
      * a tuple (top left, top right, bottom right, bottom left) of 4 WGS84 (latitude,longitude) tuples
      */
-    fun createTileClipPolygon(x: Int, y: Int, z: Int): GeosPolygon {
+    fun createTileClipPolygon(x: Int, y: Int, z: Int): GeosGeometry {
         val pixelCoord = tileXyToPixelXy(x, y)
         val bl = pixelXyToLatLng(pixelCoord, z)
         val br = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize), z)
         val tr = pixelXyToLatLng(pixelCoord.newCoordinate(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
         val tl = pixelXyToLatLng(pixelCoord.newCoordinate(y = pixelCoord.y + tileSize), z)
-        return GeosPolygon.create(tl, tr, br, bl, tl)
+        return Geos.createPolygon(tl, tr, br, bl, tl)
     }
 
     /**

@@ -23,14 +23,14 @@ class GeosGeometry(
 ) : AutoCloseable {
 
     val isEmpty: Boolean
-        get() = GEOSisEmpty(ptr) == '1'.code.toByte()
+        get() = GEOSisEmpty(ptr) == 1.toByte()
 
     fun centroid() : GeosGeometry {
-        return GeosGeometry(GEOSGetCentroid(ptr)!!, false)
+        return GeosGeometry(checkNotNull(GEOSGetCentroid(ptr)), false)
     }
 
     val exteriorRing: GeosGeometry
-        get() = GeosGeometry(GEOSGetExteriorRing(ptr)!!, true)
+        get() = GeosGeometry(checkNotNull(GEOSGetExteriorRing(ptr)), true)
 
     val type: GeosGeomType
         get() {

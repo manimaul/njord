@@ -30,14 +30,18 @@ kotlin {
             }
         }
         binaries {
-            executable {
-                entryPoint = "main"
+            staticLib {
+                baseName = "geos"
             }
         }
     }
 
     sourceSets {
         nativeMain.dependencies {
+        }
+
+        nativeTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }

@@ -2,8 +2,8 @@ package io.madrona.njord.db
 
 import Connection
 import ResultSet
+import geos.Geos
 import geos.GeosGeometry
-import geos.WKBWriter
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.jsonStr
 import io.madrona.njord.geojson.FeatureBuilder
@@ -97,7 +97,7 @@ class ChartDao(
           """.trimIndent()
             ).apply {
                 var i = 0
-                setBytes(++i, WKBWriter().write(covered))
+                setBytes(++i, Geos.wkbWriter.write(covered))
                 setInt(++i, z)
                 setInt(++i, x)
                 setInt(++i, y)
@@ -132,7 +132,7 @@ class ChartDao(
                 ORDER BY scale;
             """.trimIndent()
         ).use {
-            it.setBytes(1, WKBWriter().write(polygon))
+            it.setBytes(1, Geos.wkbWriter.write(polygon))
             it.executeQuery().use { rs ->
                 val result =
                     generateSequence {

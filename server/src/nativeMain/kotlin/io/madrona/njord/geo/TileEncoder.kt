@@ -4,7 +4,6 @@ import VectorTileEncoder
 import geos.Geos
 import geos.GeosGeomType
 import geos.GeosGeometry
-import geos.WKBReader
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.json
@@ -85,12 +84,12 @@ class TileEncoder(
         var covered: GeosGeometry = Geos.createPolygon()
         chartDao.findInfoAsync(tileEnvelope)?.let { charts ->
             charts.forEach { chart ->
-                val chartGeo = WKBReader().read(chart.covrWKB)
+                val chartGeo = Geos.wkbReader.read(chart.covrWKB)
                 if (!include.isEmpty && chart.zoom in 0..z) {
                     chartDao.findChartFeaturesAsync(covered, x, y, z, chart.id)?.filter {
                         it.geomWKB != null
                     }?.forEach { feature ->
-                        val tileGeo = WKBReader().read(feature.geomWKB)
+                        val tileGeo = Geos.wkbReader.read(feature.geomWKB)
                         layerFactory.preTileEncode(feature)
                         if (info && tileGeo != null) {
                             infoFeatures.add(

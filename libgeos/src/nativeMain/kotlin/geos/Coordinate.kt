@@ -10,7 +10,8 @@ data class Coordinate(
 
 @OptIn(ExperimentalForeignApi::class)
 class GeosCoordinateSequence(
-    val ptr: CPointer<GEOSCoordSequence>
+    val ptr: CPointer<GEOSCoordSequence>,
+    var owned: Boolean = false
 ) : AutoCloseable {
 
     val coordinates: List<Coordinate>
@@ -33,18 +34,19 @@ class GeosCoordinateSequence(
         }
 
     override fun close() {
-        GEOSCoordSeq_destroy(ptr)
+        if (!owned) {
+            GEOSCoordSeq_destroy(ptr)
+        }
     }
 
     companion object {
-        fun from(list: List<Coordinate>): GeosCoordinateSequence? {
-            return GEOSCoordSeq_create(list.size.toUInt(), 2.toUInt())?.let { ptr ->
-                list.forEachIndexed { i, ea ->
-                    GEOSCoordSeq_setX(ptr, i.toUInt(), ea.x)
-                    GEOSCoordSeq_setY(ptr, i.toUInt(), ea.y)
-                }
-                GeosCoordinateSequence(ptr)
+        fun from(list: List<Coordinate>): GeosCoordinateSequence {
+            val ptr = checkNotNull(GEOSCoordSeq_create(list.size.toUInt(), 2.toUInt()))
+            list.forEachIndexed { i, ea ->
+                GEOSCoordSeq_setX(ptr, i.toUInt(), ea.x)
+                GEOSCoordSeq_setY(ptr, i.toUInt(), ea.y)
             }
+            return GeosCoordinateSequence(ptr)
         }
     }
 }

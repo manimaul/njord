@@ -30,14 +30,19 @@ kotlin {
             }
         }
         binaries {
-            executable {
-                entryPoint = "main"
+            staticLib {
+                baseName = "pq"
             }
         }
     }
 
     sourceSets {
         nativeMain.dependencies {
+            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
+        }
+
+        nativeTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }

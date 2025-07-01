@@ -4,7 +4,6 @@ import kotlin.test.assertEquals
 
 class PgDbTest {
 
-
     @Test
     fun testLoginExecQuery() {
         val db = PgDb.login(
@@ -30,16 +29,5 @@ class PgDbTest {
             ), chartNames
         )
         assertEquals(3L,db.execute("SELECT * from charts LIMIT 3;"))
-    }
-
-    @Test
-    fun test() {
-        val db = PgDb.login(
-            host = "localhost",
-            database = "s57server",
-            port = 5432,
-            user = "admin",
-            password = "mysecretpassword"
-        )
     }
 }

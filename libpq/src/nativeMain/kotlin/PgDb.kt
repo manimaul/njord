@@ -12,7 +12,7 @@ const val BINARY_RESULT_FORMAT = 1
 
 class PgDb(
     val conn: CPointer<PGconn>,
-) {
+) : AutoCloseable {
 
     fun execute(
         sql: String,
@@ -36,6 +36,9 @@ class PgDb(
         return PgResultSet(name, result, conn)
     }
 
+    override fun close() {
+        PQfinish(conn)
+    }
 
     companion object {
         fun connect(info: String) : PgDb {

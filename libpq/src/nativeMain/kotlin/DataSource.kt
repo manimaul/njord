@@ -1,25 +1,28 @@
-interface PreparedStatement : AutoCloseable {
+interface Statement : AutoCloseable {
+
     fun executeQuery() : ResultSet
     fun execute() : Long
     fun executeUpdate() : Int
     fun <T> executeUpdateGeneratedKeys(handler: (Int, ResultSet) -> T) : T
 
-    fun setArray(index: Int, value: Array<String>?)
-    fun setLong(index: Int, value: Long?)
-    fun setBool(index: Int, value: Boolean?)
-    fun setInt(index: Int, value: Int?)
-    fun setFloat(index: Int, value: Float?)
-    fun setDouble(index: Int, value: Double?)
-    fun setString(index: Int, value: String?)
-    fun setJsonb(index: Int, json: String?)
-    fun setBytes(index: Int, value: ByteArray?)
+    fun setArray(index: Int, value: Array<String>?) : Statement
+    fun setLong(index: Int, value: Long?) :Statement
+    fun setBool(index: Int, value: Boolean?) : Statement
+    fun setInt(index: Int, value: Int?) : Statement
+    fun setFloat(index: Int, value: Float?) : Statement
+    fun setDouble(index: Int, value: Double?) : Statement
+    fun setString(index: Int, value: String?) : Statement
+    fun setJsonb(index: Int, json: String?) : Statement
+    fun setBytes(index: Int, value: ByteArray?) : Statement
 }
 
 interface Connection : AutoCloseable {
+    fun statement(
+        sql: String
+    ) : Statement
     fun prepareStatement(
-        sql: String,
-        identifier: Int? = null
-    ) : PreparedStatement
+        sql: String
+    ) : Statement
     fun createArrayOf(type: String, items: Array<String>) : Array<String>
 }
 

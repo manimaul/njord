@@ -31,6 +31,50 @@ fun nextName() : String {
     return "mycursor${counter.addAndGet(1)}"
 }
 
+class EmptyResultSet : ResultSet {
+    override fun next(): Boolean {
+        return false
+    }
+
+    override fun getString(index: Int): String {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getBoolean(index: Int): Boolean {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getByte(index: Int): Byte {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getBytes(index: Int): ByteArray {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getShort(index: Int): Short {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getInt(index: Int): Int {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getLong(index: Int): Long {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getFloat(index: Int): Float {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun getDouble(index: Int): Double {
+        throw IllegalStateException("empty result set")
+    }
+
+    override fun close() { }
+}
+
 @ExperimentalForeignApi
 class PgResultSet(
     private val name: String,

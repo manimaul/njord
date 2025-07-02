@@ -28,12 +28,11 @@ class PgDb(
 
     fun query(sql: String): ResultSet {
         conn.exec("BEGIN")
-        val name = nextName()
-        conn.exec("DECLARE $name CURSOR FOR $sql")
+        conn.exec("DECLARE mycursor CURSOR FOR $sql")
         val result = memScoped {
             PQexec(conn, sql).check(conn)
         }.check(conn)
-        return PgResultSet(name, result, conn)
+        return PgResultSet("mycursor", result, conn)
     }
 
     override fun close() {

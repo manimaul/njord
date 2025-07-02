@@ -12,47 +12,89 @@ class PgPreparedStatement(
     val identifier: Int
 ) : PgStatement(sql, pgDb) {
 
+    private fun Int.escapeNegative(): String = if (this < 0) "_${toString().substring(1)}" else toString()
+
     override fun executeQuery(): ResultSet {
-//        val name = nextName()
-//        if (!preparedStatementExists(identifier)) {
-//            println("preparing statement for $sql")
-//            PQprepare(
-//                pgDb.conn,
-//                stmtName = identifier.toString(),
-//                query = sql,
-//                nParams = parameters,
-//                paramTypes = types.refTo(0)
-//            ).check(pgDb.conn).clear()
-//        } else {
-//            println("statement for $sql prepared")
-//        }
-        return EmptyResultSet()
-//        pgDb.conn.exec("BEGIN")
-//        val result = memScoped {
-//            PQexecPrepared(
-//                pgDb.conn,
-//                stmtName = identifier.toString(),
-//                nParams = parameters,
-//                paramValues = values(this, values),
-//                paramLengths = lengths.refTo(0),
-//                paramFormats = formats.refTo(0),
-//                resultFormat = TEXT_RESULT_FORMAT
-//            )
-//        }.check(pgDb.conn)
-//        return PgResultSet(name, result, pgDb.conn)
+        val cursorName = "cursor${identifier.escapeNegative()}"
+        if (!preparedStatementExists()) {
+            println("preparing statement for $sql")
+            prepare(cursorName)
+        } else {
+            println("statement for $sql prepared")
+        }
+        pgDb.conn.exec("BEGIN")
+        val result = memScoped {
+            PQexecPrepared(
+                pgDb.conn,
+                stmtName = identifier.toString(),
+                nParams = parameters,
+                paramValues = values.takeIf { it.isNotEmpty() }?.let { values(this, it) },
+                paramLengths = lengths.takeIf { it.isNotEmpty() }?.refTo(0),
+                paramFormats = formats.takeIf { it.isNotEmpty() }?.refTo(0),
+                resultFormat = TEXT_RESULT_FORMAT
+            )
+        }.check(pgDb.conn)
+        return PgResultSet(cursorName, result, pgDb.conn)
     }
 
-    private fun preparedStatementExists(identifier: Int): Boolean {
+    fun prepare(name: String) {
+        PQprepare(
+            pgDb.conn,
+            stmtName = identifier.toString(),
+            query = "DECLARE $name CURSOR FOR $sql",
+            nParams = parameters,
+            paramTypes = types.takeIf { it.isNotEmpty() }?.refTo(0)
+        ).check(pgDb.conn).clear()
+    }
+
+    fun preparedStatementExists(): Boolean {
         return PgStatement("SELECT name FROM pg_prepared_statements WHERE name = $1", pgDb).use {
-            it.setInt(0, identifier)
-            executeQuery().use { query ->
+            it.setString(0, "$identifier")
+            it.executeQuery().use { query ->
                 query.next()
             }
         }
     }
 
     override fun execute(): Long {
-        TODO("Not yet implemented")
+//        return onExec(this)
+//        if (identifier == null) {
+//            if (parameters == 0) {
+//                return memScoped {
+//                    PQexec(
+//                        conn =connection.pgDb.conn,
+//                        query = sql
+//                    ).check(connection.pgDb.conn)
+//                }.rows
+//            }
+//        }
+//        return if (identifier == null) {
+//            memScoped {
+//                PQexecParams(
+//                    connection.pgDb.conn,
+//                    nParams = parameters,
+//                    paramValues = values(this),
+//                    paramFormats = formats.refTo(0),
+//                    paramLengths = lengths.refTo(0),
+//                    resultFormat = TEXT_RESULT_FORMAT,
+//                   paramTypes = prp
+//                )
+//            }.check(connection.pgDb.conn).rows
+//        } else {
+//            //todo: check for cached statement
+//            memScoped {
+//                PQexecPrepared(
+//                    connection.pgDb.conn,
+//                    stmtName = identifier.toString(),
+//                    nParams = parameters,
+//                    paramValues = values(this),
+//                    paramFormats = formats.refTo(0),
+//                    paramLengths = lengths.refTo(0),
+//                    resultFormat = TEXT_RESULT_FORMAT
+//                )
+//            }.check(connection.pgDb.conn).rows
+//        }
+        TODO()
     }
 
 

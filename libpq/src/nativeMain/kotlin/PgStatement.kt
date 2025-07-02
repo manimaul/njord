@@ -17,12 +17,11 @@ open class PgStatement(
 
     override fun executeQuery(): ResultSet {
         pgDb.conn.exec("BEGIN")
-        val name = nextName()
         return if (parameters > 0) {
             val result = memScoped {
                 PQexecParams(
                     conn = pgDb.conn,
-                    command = "DECLARE $name CURSOR FOR $sql",
+                    command = "DECLARE mycursor CURSOR FOR $sql",
                     nParams = parameters,
                     paramValues = values(this, values),
                     paramLengths = lengths.refTo(0),
@@ -31,7 +30,7 @@ open class PgStatement(
                     resultFormat = TEXT_RESULT_FORMAT
                 )
             }.check(pgDb.conn)
-            PgResultSet(name, result, pgDb.conn)
+            PgResultSet("mycursor", result, pgDb.conn)
         } else {
             pgDb.query(sql)
         }

@@ -10,7 +10,6 @@ import libpq.PQgetisnull
 import libpq.PQgetlength
 import libpq.PQgetvalue
 import libpq.PQntuples
-import kotlin.concurrent.AtomicInt
 
 interface ResultSet : AutoCloseable {
     fun next() : Boolean
@@ -23,12 +22,6 @@ interface ResultSet : AutoCloseable {
     fun getLong(index: Int) : Long
     fun getFloat(index: Int) : Float
     fun getDouble(index: Int) : Double
-}
-
-private val counter: AtomicInt = AtomicInt(0)
-
-fun nextName() : String {
-    return "mycursor${counter.addAndGet(1)}"
 }
 
 class EmptyResultSet : ResultSet {
@@ -77,7 +70,7 @@ class EmptyResultSet : ResultSet {
 
 @ExperimentalForeignApi
 class PgResultSet(
-    private val name: String,
+    private val cursorName: String,
     private var result: CPointer<PGresult>,
     private val conn: CPointer<PGconn>,
 ) : ResultSet {
@@ -89,7 +82,7 @@ class PgResultSet(
             currentRowIndex = -1
         }
         if (currentRowIndex == -1) {
-            result = PQexec(conn, "FETCH ALL IN $name").check(conn)
+            result = PQexec(conn, "FETCH ALL IN $cursorName").check(conn)
             maxRowIndex = PQntuples(result) - 1
         }
         return if (currentRowIndex < maxRowIndex) {
@@ -169,7 +162,7 @@ class PgResultSet(
 
     override fun close() {
         result.clear()
-        conn.exec("CLOSE $name")
+        conn.exec("CLOSE $cursorName")
         conn.exec("END")
     }
 

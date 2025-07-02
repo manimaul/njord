@@ -24,7 +24,7 @@ kotlin {
     }
 
     nativeTarget.apply {
-        compilations.getByName("main") {
+        compilations.all {
             cinterops {
                 val libpq by creating
             }

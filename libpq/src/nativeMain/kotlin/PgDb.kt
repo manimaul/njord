@@ -14,27 +14,6 @@ class PgDb(
     val conn: CPointer<PGconn>,
 ) : AutoCloseable {
 
-    fun execute(
-        sql: String,
-    ): Long {
-        val result = memScoped {
-            PQexec(
-                conn,
-                query = sql,
-            )
-        }.check(conn)
-        return result.rows
-    }
-
-    fun query(sql: String): ResultSet {
-        conn.exec("BEGIN")
-        conn.exec("DECLARE mycursor CURSOR FOR $sql")
-        val result = memScoped {
-            PQexec(conn, sql).check(conn)
-        }.check(conn)
-        return PgResultSet("mycursor", result, conn)
-    }
-
     override fun close() {
         PQfinish(conn)
     }

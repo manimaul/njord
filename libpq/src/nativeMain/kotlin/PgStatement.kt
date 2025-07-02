@@ -3,6 +3,7 @@
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.refTo
+import libpq.PQexec
 import libpq.PQexecParams
 
 open class PgStatement(
@@ -11,9 +12,6 @@ open class PgStatement(
 ) : Statement {
 
     val parameters = pattern.findAll(sql).count()
-
-    override fun close() {
-    }
 
     override fun executeQuery(): ResultSet {
         pgDb.conn.exec("BEGIN")
@@ -32,58 +30,41 @@ open class PgStatement(
             }.check(pgDb.conn)
             PgResultSet("mycursor", result, pgDb.conn)
         } else {
-            pgDb.query(sql)
+            pgDb.conn.exec("BEGIN")
+            pgDb.conn.exec("DECLARE mycursor CURSOR FOR $sql")
+            val result = memScoped {
+                PQexec(pgDb.conn, sql).check(pgDb.conn)
+            }.check(pgDb.conn)
+            return PgResultSet("mycursor", result, pgDb.conn)
         }
     }
 
 
     override fun execute(): Long {
-//        return onExec(this)
-//        if (identifier == null) {
-//            if (parameters == 0) {
-//                return memScoped {
-//                    PQexec(
-//                        conn =connection.pgDb.conn,
-//                        query = sql
-//                    ).check(connection.pgDb.conn)
-//                }.rows
-//            }
-//        }
-//        return if (identifier == null) {
-//            memScoped {
-//                PQexecParams(
-//                    connection.pgDb.conn,
-//                    nParams = parameters,
-//                    paramValues = values(this),
-//                    paramFormats = formats.refTo(0),
-//                    paramLengths = lengths.refTo(0),
-//                    resultFormat = TEXT_RESULT_FORMAT,
-//                   paramTypes = prp
-//                )
-//            }.check(connection.pgDb.conn).rows
-//        } else {
-//            //todo: check for cached statement
-//            memScoped {
-//                PQexecPrepared(
-//                    connection.pgDb.conn,
-//                    stmtName = identifier.toString(),
-//                    nParams = parameters,
-//                    paramValues = values(this),
-//                    paramFormats = formats.refTo(0),
-//                    paramLengths = lengths.refTo(0),
-//                    resultFormat = TEXT_RESULT_FORMAT
-//                )
-//            }.check(connection.pgDb.conn).rows
-//        }
-        TODO()
+        if (parameters > 0) {
+            return memScoped {
+                PQexecParams(
+                    pgDb.conn,
+                    command = sql,
+                    nParams = parameters,
+                    paramValues = values(this, values),
+                    paramLengths = lengths.refTo(0),
+                    paramFormats = formats.refTo(0),
+                    paramTypes = types.refTo(0),
+                    resultFormat = TEXT_RESULT_FORMAT
+                )
+            }.check(pgDb.conn).rows
+        }
+        return memScoped {
+            PQexec(
+                pgDb.conn,
+                query = sql,
+            )
+        }.check(pgDb.conn).rows
     }
 
 
-    override fun executeUpdate(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> executeUpdateGeneratedKeys(handler: (Int, ResultSet) -> T): T {
+    override fun <T> executeUpdate(handler: (Int, ResultSet) -> T): T {
         TODO("Not yet implemented")
     }
 
@@ -94,12 +75,13 @@ open class PgStatement(
     internal val types = UIntArray(parameters)
 
     private fun bind(index: Int, value: String?, oid: UInt) {
-        lengths[index] = if (value != null) {
-            values[index] = Data.Text(value)
+        val zeroIndex = index - 1
+        lengths[zeroIndex] = if (value != null) {
+            values[zeroIndex] = Data.Text(value)
             value.length
         } else 0
-        formats[index] = TEXT_RESULT_FORMAT
-        types[index] = oid
+        formats[zeroIndex] = TEXT_RESULT_FORMAT
+        types[zeroIndex] = oid
     }
 
     override fun setArray(index: Int, value: Array<String>?): Statement {
@@ -164,6 +146,6 @@ open class PgStatement(
         private const val floatOid = 700u
         private const val doubleOid = 701u
         private const val jsonbOid = 3082u
-        private val pattern = "\\?|\\$[0-9]".toRegex()
+        private val pattern = "\\$[1-9]".toRegex()
     }
 }

@@ -48,8 +48,8 @@ class PgPreparedStatement(
     }
 
     fun preparedStatementExists(): Boolean {
-        return PgStatement("SELECT name FROM pg_prepared_statements WHERE name = $1", pgDb).use {
-            it.setString(0, "$identifier")
+        return PgStatement("SELECT name FROM pg_prepared_statements WHERE name = $1", pgDb).let {
+            it.setString(1, "$identifier")
             it.executeQuery().use { query ->
                 query.next()
             }
@@ -97,12 +97,7 @@ class PgPreparedStatement(
         TODO()
     }
 
-
-    override fun executeUpdate(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> executeUpdateGeneratedKeys(handler: (Int, ResultSet) -> T): T {
+    override fun <T> executeUpdate(handler: (Int, ResultSet) -> T): T {
         TODO("Not yet implemented")
     }
 }

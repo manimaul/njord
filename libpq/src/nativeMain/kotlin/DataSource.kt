@@ -1,9 +1,8 @@
-interface Statement : AutoCloseable {
+interface Statement {
 
     fun executeQuery() : ResultSet
     fun execute() : Long
-    fun executeUpdate() : Int
-    fun <T> executeUpdateGeneratedKeys(handler: (Int, ResultSet) -> T) : T
+    fun <T> executeUpdate(handler: (Int, ResultSet) -> T) : T
 
     fun setArray(index: Int, value: Array<String>?) : Statement
     fun setLong(index: Int, value: Long?) :Statement

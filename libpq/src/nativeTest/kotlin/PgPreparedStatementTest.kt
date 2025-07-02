@@ -18,20 +18,12 @@ class PgPreparedStatementTest {
                     assertEquals(1, statement.parameters)
                 }
                 {
-                    val statement = it.prepareStatement("SELECT name from charts LIMIT ?;") as PgStatement
-                    assertEquals(1, statement.parameters)
-                }
-                {
                     val statement = it.prepareStatement("SELECT name from charts WHERE name=$1 LIMIT $2;") as PgStatement
                     assertEquals(2, statement.parameters)
                 }
                 {
                     val statement = it.prepareStatement("SELECT name from charts LIMIT $1;") as PgStatement
                     assertEquals(1, statement.parameters)
-                }
-                {
-                    val statement = it.prepareStatement("SELECT name from charts WHERE name=? LIMIT ?;") as PgStatement
-                    assertEquals(2, statement.parameters)
                 }
             }
         }
@@ -43,7 +35,7 @@ class PgPreparedStatementTest {
         assertEquals(1, ds.readyCount)
         val exists = runBlocking {
             ds.connection().use { conn ->
-                conn.prepareStatement("SELECT name from charts LIMIT 3;").use {
+                conn.prepareStatement("SELECT name from charts LIMIT 3;").let {
                     val ps = (it as PgPreparedStatement)
                     if (!ps.preparedStatementExists()) {
                        ps.prepare("mycursor")
@@ -84,7 +76,7 @@ class PgPreparedStatementTest {
         )
 
         val exists = runBlocking {
-            ds.connection().prepareStatement("SELECT name from charts LIMIT 3;").use {
+            ds.connection().prepareStatement("SELECT name from charts LIMIT 3;").let {
                 val ps = (it as PgPreparedStatement)
                 ps.preparedStatementExists()
             }
@@ -101,7 +93,7 @@ class PgPreparedStatementTest {
         val chartNames = runBlocking {
             ds.connection().use {
                 it.prepareStatement("SELECT name from charts LIMIT $1;")
-                    .setInt(0, 3)
+                    .setInt(1, 3)
                     .executeQuery().use { result ->
                         val names = mutableListOf<String>()
                         while (result.next()) {

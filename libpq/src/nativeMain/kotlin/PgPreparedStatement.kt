@@ -17,10 +17,10 @@ class PgPreparedStatement(
     override fun executeQuery(): ResultSet {
         val cursorName = "cursor${identifier.escapeNegative()}"
         if (!preparedStatementExists()) {
-            println("preparing statement for $sql")
+            pgDbLogD("preparing statement for '$sql'")
             prepare(cursorName)
         } else {
-            println("statement for $sql prepared")
+            pgDbLogD("statement prepared for '$sql'")
         }
         pgDb.conn.exec("BEGIN")
         val result = memScoped {

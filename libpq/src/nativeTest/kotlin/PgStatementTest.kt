@@ -11,6 +11,7 @@ class PgStatementTest {
 
     @BeforeTest
     fun beforeEach() {
+        //pgDebug = true
         ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:5432/s57server", 1)
         assertEquals(1, ds.readyCount)
         runBlocking {
@@ -109,18 +110,55 @@ class PgStatementTest {
                         sql += "(\$$it, \$${it + 1})${if (it == 99) ";" else ", "}"
                     }
                 }
-                println(sql)
+                println("creating statement for sql = '$sql'")
                 val stmt = conn.statement(sql)
                 assertEquals(100, (stmt as PgStatement).parameters)
+                println("binding params")
                 (1..99).forEach {
                     if (it % 2 == 1) {
                         stmt.setLong(it, 10000L +it)
                         stmt.setString(it+1, "value ${it+1}")
                     }
                 }
+                println("executing insert")
                 stmt.execute()
 
+                var count = 0
+                println("creating select statement")
+                val select = conn.statement("select * from testing;")
+                println("executing select staement")
+                select.executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        val id = resultSet.getLong(0)
+                        val name = resultSet.getString(1)
+                        println("result record id: $id value = $name")
+                        count++
+                    }
+                }
+                assertEquals(50, count )
+            }
 
+            ds.connection().use { conn ->
+                var count = 0
+                conn.prepareStatement("select * from testing;").executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        val id = resultSet.getLong(0)
+                        val name = resultSet.getString(1)
+                        println("result record id: $id value = $name")
+                        count++
+                    }
+                }
+                assertEquals(50, count )
+                count = 0
+                conn.prepareStatement("select * from testing;").executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        val id = resultSet.getLong(0)
+                        val name = resultSet.getString(1)
+                        println("result record id: $id value = $name")
+                        count++
+                    }
+                }
+                assertEquals(50, count )
             }
         }
     }

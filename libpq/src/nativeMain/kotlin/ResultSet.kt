@@ -162,6 +162,7 @@ class PgResultSet(
 
     override fun close() {
         result.clear()
+        pgDbLogD("closing cursor '$cursorName' and ending transaction")
         conn.exec("CLOSE $cursorName")
         conn.exec("END")
     }

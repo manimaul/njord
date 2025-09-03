@@ -54,9 +54,10 @@ fun Application.njord() {
     }
     Singletons.genLog = log
     install(CORS) {
-        Singletons.config.allowHosts.forEach {
-            allowHost(it)
-        }
+        allowHost("*")
+//        Singletons.config.allowHosts.forEach {
+//            allowHost(it)
+//        }
         allowHeader(HttpHeaders.ContentType)
     }
     install(Authentication) {

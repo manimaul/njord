@@ -128,6 +128,7 @@ data:
         deepDepth = 9.0 // meters (29.5 feet)
     
         debugTile = false
+        chartIngestWorkers = 4
     }
   jmx_exporter.yaml: |
     openTelemetry:

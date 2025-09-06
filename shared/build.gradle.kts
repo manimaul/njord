@@ -36,7 +36,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
-                api(project(":geojson"))
+                api("io.madrona:geojson:1.0-SNAPSHOT")
             }
         }
         val commonTest by getting {

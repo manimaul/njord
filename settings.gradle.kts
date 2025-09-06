@@ -10,7 +10,6 @@ rootProject.name = "njord"
 
 include("chart_server")
 include("server")
-include("geojson")
 include("shared")
 include("shared_fe")
 include("web")

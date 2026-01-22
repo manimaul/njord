@@ -15,6 +15,7 @@ class Background : Layerable() {
                 backgroundOpacity = 1
             ),
             type = LayerType.BACKGROUND,
+            source = null,
         )
     )
 }

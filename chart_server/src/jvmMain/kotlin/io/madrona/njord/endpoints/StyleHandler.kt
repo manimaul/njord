@@ -9,7 +9,7 @@ import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.ext.fromString
 import io.madrona.njord.layers.*
 import io.madrona.njord.model.*
-import kotlinx.serialization.json.Json.Default.encodeToString
+import kotlinx.serialization.json.Json
 
 
 class StyleHandler(
@@ -18,6 +18,10 @@ class StyleHandler(
     private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
 ) : KtorHandler {
     override val route = "/v1/style/{depth}/{theme}"
+    private val styleJson = Json {
+        encodeDefaults = true
+        explicitNulls = false
+    }
 
     override suspend fun handleGet(call: ApplicationCall) {
         fromString<Depth>(call.parameters["depth"])?.let { depth ->
@@ -34,7 +38,7 @@ class StyleHandler(
     }
 
     private fun styleString(name: String, depth: Depth, theme: Theme): String {
-        return encodeToString(
+        return styleJson.encodeToString(
             Style.serializer(),
             Style(
                 name = name,

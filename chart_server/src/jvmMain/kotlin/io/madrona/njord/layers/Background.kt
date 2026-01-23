@@ -14,8 +14,8 @@ class Background : Layerable() {
                 backgroundColor = colorFrom(Color.NODTA, options.theme),
                 backgroundOpacity = 1
             ),
-            type = LayerType.BACKGROUND,
             source = null,
+            type = LayerType.BACKGROUND,
         )
     )
 }

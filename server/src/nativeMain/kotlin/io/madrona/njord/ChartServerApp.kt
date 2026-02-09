@@ -11,10 +11,10 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.origin
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.uri
+import io.ktor.server.response.respondBytes
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
-import io.madrona.njord.db.DbMigrations
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
 import io.madrona.njord.util.File
@@ -147,11 +147,11 @@ fun Application.njord() {
         unhandled { call ->
             val name = call.request.uri.substringAfterLast('/')
             File(Singletons.config.webStaticContent, name).takeIf { it.exists() && it.isFile() }?.let {
-                call.respondText(it.readContents(), ContentType.fromFilePath(name).firstOrNull())
+                call.respondBytes(it.readData(), ContentType.fromFilePath(name).firstOrNull())
             } ?: run{
                 call.respondText(File(Singletons.config.webStaticContent, "index.html").readContents(), ContentType.Text.Html)
             }
         }
     }
-    DbMigrations.checkVersion()
+    //DbMigrations.checkVersion()
 }

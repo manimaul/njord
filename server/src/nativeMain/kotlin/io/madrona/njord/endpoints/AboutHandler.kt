@@ -35,11 +35,11 @@ class AboutHandler(
     private fun about(): AboutJson {
 
         return AboutJson(
-            version = "", //version,
-            gdalVersion = "", //gdal.VersionInfo() ?: "NONE",
-            gitHash = "", //gitHash,
-            gitBranch = "", //gitBranch,
-            buildDate = "", //buildDate,
+            version = VersionInfo.version,
+            gdalVersion = Gdal.gdalVersion(),
+            gitHash = VersionInfo.gitHash,
+            gitBranch = VersionInfo.gitBranch,
+            buildDate = VersionInfo.buildDate,
         )
 
     }

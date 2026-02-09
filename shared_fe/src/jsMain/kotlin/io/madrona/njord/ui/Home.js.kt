@@ -15,7 +15,7 @@ import org.jetbrains.compose.web.dom.*
 @Composable
 actual fun Home() {
     val viewModel = remember { AboutViewModel() }
-    val state = viewModel.flow.collectAsState()
+    val state by viewModel.flow.collectAsState()
     val adminState by adminViewModel.flow.collectAsState()
     Div(attrs = { classes("Column", "Fill") }) {
         Div(attrs = { classes("Container", "Fill") }) {
@@ -23,7 +23,7 @@ actual fun Home() {
                 Img(src = "/njord.jpg") { classes("img-fluid", "w-25") }
             }
             Div(attrs = { classes("Center") }) {
-                state.value.response.complete(viewModel) { info ->
+                state.response.complete(viewModel) { info ->
                     Table(attrs = { classes("w-50", "table", "table-striped", "table-bordered", "table-hover") }) {
                         Thead {
                             Tr {

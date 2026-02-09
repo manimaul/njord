@@ -5,3 +5,4 @@ out/
 data/
 .idea/
 .kotlin/
+**/VersionInfo.kt

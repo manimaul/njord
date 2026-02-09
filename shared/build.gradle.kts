@@ -5,8 +5,14 @@ plugins {
 
 
 group = "com.mxmariner.regatta"
-version = "${properties.get("version")}"
+version = "${properties["version"]}"
 
+
+apply<VersionPlugin>()
+
+configure<VersionPluginExtension> {
+    versionOutDir.set(layout.projectDirectory.dir("src/commonMain/kotlin"))
+}
 
 kotlin {
     jvmToolchain(17)

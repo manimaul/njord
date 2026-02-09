@@ -9,6 +9,7 @@ import libgdal.GDALGetDriver
 import libgdal.GDALGetDriverByName
 import libgdal.GDALGetDriverCount
 import libgdal.GDALGetDriverShortName
+import libgdal.GDALVersionInfo
 import libgdal.OGRERR_NONE
 import libgdal.OGRErr
 import libgdal.OGRSpatialReferenceH
@@ -65,6 +66,10 @@ object Gdal {
      */
     private const val OGR_S57_OPTIONS_V =
         "RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON:ADD_SOUNDG_DEPTH=ON"
+
+    fun gdalVersion() : String {
+        return GDALVersionInfo("RELEASE_NAME")?.toKString() ?: "unknown"
+    }
 
     fun initialize(debug: Boolean = false) {
         GDALAllRegister()

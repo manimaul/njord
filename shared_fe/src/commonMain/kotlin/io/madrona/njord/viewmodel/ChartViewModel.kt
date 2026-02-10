@@ -1,5 +1,6 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.*
@@ -29,7 +30,7 @@ private fun mapLocation(): MapLocation? {
 
 data class ChartState(
     val location: MapLocation = mapLocation() ?: MapLocation(),
-    val bounds: Bounds? = null,
+    val bounds: BoundingBox? = null,
     val highlight: Feature? = null,
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
@@ -137,7 +138,7 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         }
     }
 
-    fun setBounds(bounds: Bounds?, highlight: Feature? = null) {
+    fun setBounds(bounds: BoundingBox?, highlight: Feature? = null) {
         setState {
             bounds?.let { controller.fitBounds(it) }
             highlight?.let { controller.highlight(it) }

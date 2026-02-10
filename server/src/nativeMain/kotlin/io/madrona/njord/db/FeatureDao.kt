@@ -18,12 +18,12 @@ class FeatureDao(
     suspend fun findLayerPositionsPage(layer: String, startId: Long): LayerQueryResultPage? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """SELECT features.id, ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
-                FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > ? AND features.layer = ? ORDER BY features.id LIMIT 5; 
+                FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > $1 AND features.layer = $2 ORDER BY features.id LIMIT 5; 
             """.trimIndent()
-        ).let {
-            it.setLong(1, startId)
-            it.setString(2, layer)
-            it.executeQuery().use {
+        ).let{ statement ->
+            statement.setLong(1, startId)
+            statement.setString(2, layer)
+            statement.executeQuery().use {
                 val result = mutableListOf<LayerQueryResult>()
                 var lastId = 0L
                 while (it.next()) {
@@ -61,7 +61,7 @@ class FeatureDao(
     }
 
     suspend fun findAssociatedLayerNames(lnam: String): List<String> = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE ?=ANY(lnam_refs);").apply {
+        conn.prepareStatement("SELECT DISTINCT layer FROM features WHERE $1=ANY(lnam_refs);").apply {
             setString(1, lnam)
         }.let {
             it.executeQuery().use {
@@ -82,7 +82,7 @@ class FeatureDao(
     suspend fun findFeature(lnam: String): FeatureRecord? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, lower(z_range), upper(z_range)
-                FROM features WHERE props->'LNAM' = to_jsonb(?::text);""".trimIndent()
+                FROM features WHERE props->'LNAM' = to_jsonb($1::text);""".trimIndent()
         ).let {
             it.setString(1, lnam)
             it.executeQuery().use { it.featureRecord().firstOrNull() }
@@ -90,7 +90,7 @@ class FeatureDao(
     }
 
     fun featureCount(conn: Connection, chartId: Long): Int {
-        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = ?;").let {
+        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = $1;").let {
             it.setLong(1, chartId)
             it.executeQuery().use {
                 if (it.next()) it.getInt(1) else 0

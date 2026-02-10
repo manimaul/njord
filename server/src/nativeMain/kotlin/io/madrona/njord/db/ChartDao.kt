@@ -26,11 +26,8 @@ class ChartDao(
                 issued = getString(++i),
                 zoom = getInt(++i),
                 covr = FeatureBuilder(geometryJson = getString(++i)).build(),
-                bounds = getBytes(++i).let {
-                    //todo
-//                    val env = WKBReader().read(it).envelopeInternal
-//                    Bounds(leftLng = env.minX, topLat = env.maxY, rightLng = env.maxX, bottomLat = env.minY)
-                    Bounds(leftLng = 0.0, topLat = 0.0, rightLng = 0.0, bottomLat = 0.0)
+                bounds = getBytes(++i).let { wkb ->
+                    OgrGeometry.fromWkb4326(wkb)?.envelope()
                 },
                 layers = layers,
                 dsidProps = decodeFromString(getString(++i)),
@@ -61,7 +58,7 @@ class ChartDao(
             it.executeQuery().use {
                 generateSequence {
                     if (it.next()) {
-                        it.getString(1)
+                        it.getString("layer")
                     } else {
                         null
                     }
@@ -288,6 +285,8 @@ WHERE chart_id = $2
     }
 
     suspend fun findAsync(id: Long): Chart? = sqlOpAsync { conn ->
+        val layers = findLayers(id, conn)
+        val count = featureDao.featureCount(conn, id)
         conn.prepareStatement(
             """
             SELECT
@@ -305,9 +304,11 @@ WHERE chart_id = $2
             FROM charts
             WHERE id=$1;
             """.trimIndent()
-        ).let {
-            it.setLong(1, id)
-            it.executeQuery().use { it.chart(findLayers(id, conn), featureDao.featureCount(conn, id)).firstOrNull() }
+        ).let { statement ->
+            statement.setLong(1, id)
+            statement.executeQuery().use { result ->
+                result.chart(layers, count).firstOrNull()
+            }
         }
     }
 

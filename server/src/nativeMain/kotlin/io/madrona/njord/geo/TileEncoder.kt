@@ -9,7 +9,6 @@ import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
-import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.serialization.json.*
 
 class TileEncoder(
@@ -81,7 +80,7 @@ class TileEncoder(
                         it.geomWKB != null
                     }?.forEach { feature ->
                         layerFactory.preTileEncode(feature)
-                        feature.geomWKB?.let { OgrGeometry.fromWkb(it) }?.let { geo ->
+                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.let { geo ->
                             val props = feature.props.filtered().also {
                                 it["CID"] = chart.id.json
                             }
@@ -98,7 +97,7 @@ class TileEncoder(
                         }
                     }
                 }
-                OgrGeometry.fromWkb(chart.covrWKB)?.let { chartCoverage ->
+                OgrGeometry.fromWkb4326(chart.covrWKB)?.let { chartCoverage ->
                     include.difference(chartCoverage)?.let { include = it }
                     chartCoverage.intersection(tileEnvelope)?.let {
                         mvtDataset.addFeature("PLY", emptyMap(), it)

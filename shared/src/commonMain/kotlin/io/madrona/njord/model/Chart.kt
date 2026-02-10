@@ -1,5 +1,6 @@
 package io.madrona.njord.model
 
+import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.Geometry
 import kotlinx.serialization.SerialName
@@ -38,19 +39,11 @@ data class Chart(
     val issued: String,
     val zoom: Int,
     val covr: Feature,
-    val bounds: Bounds,
+    val bounds: BoundingBox?,
     val layers: List<String>,
     @SerialName("dsid_props") val dsidProps: Map<String, JsonElement>,
     @SerialName("chart_txt") val chartTxt: Map<String, String>,
     val featureCount: Int,
-)
-
-@Serializable
-data class Bounds(
-    val leftLng: Double,
-    val topLat: Double,
-    val rightLng: Double,
-    val bottomLat: Double,
 )
 
 @Serializable

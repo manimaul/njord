@@ -1,5 +1,6 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.js.*
@@ -25,9 +26,9 @@ actual class ChartController actual constructor() {
         mapView?.jumpTo(options)
     }
 
-    actual fun fitBounds(bounds: Bounds) {
-        val topLeft = arrayOf(bounds.leftLng, bounds.topLat)
-        val botRight = arrayOf(bounds.rightLng, bounds.bottomLat)
+    actual fun fitBounds(bounds: BoundingBox) {
+        val topLeft = arrayOf(bounds.west, bounds.north)
+        val botRight = arrayOf(bounds.east, bounds.south)
         mapView?.fitBounds(arrayOf(topLeft, botRight))
     }
 
@@ -79,8 +80,8 @@ actual class ChartController actual constructor() {
                 }
             }
             chartViewModel.flow.value.bounds?.let { bounds ->
-                val topLeft = arrayOf(bounds.leftLng, bounds.topLat)
-                val botRight = arrayOf(bounds.rightLng, bounds.bottomLat)
+                val topLeft = arrayOf(bounds.west, bounds.north)
+                val botRight = arrayOf(bounds.east, bounds.south)
                 mv.fitBounds(arrayOf(topLeft, botRight))
                 chartViewModel.setBounds(null)
             }

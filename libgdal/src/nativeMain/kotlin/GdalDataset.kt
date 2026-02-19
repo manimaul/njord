@@ -17,6 +17,7 @@ open class GdalDataset(
     @OptIn(ExperimentalNativeApi::class)
     private val cleaner: Cleaner? = if (autoClose) {
         createCleaner(ptr) {
+            //println("free gdal dataset")
             GDALClose(it)
         }
     } else {

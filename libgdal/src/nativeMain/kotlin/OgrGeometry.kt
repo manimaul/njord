@@ -13,13 +13,13 @@ import kotlin.native.ref.createCleaner
 
 open class OgrGeometry(
     val ptr: OGRGeometryH,
-    autoClose: Boolean = true,
 ) {
 
     @OptIn(ExperimentalNativeApi::class)
-    private val cleaner: Cleaner? = if(autoClose) createCleaner(ptr) {
+    private val cleaner: Cleaner = createCleaner(ptr) {
+        //println("free geometry")
         OGR_G_DestroyGeometry(it)
-    } else null
+    }
 
     private val children: MutableMap<Long, OgrGeometry> = mutableMapOf()
 

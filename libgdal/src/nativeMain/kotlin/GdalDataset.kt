@@ -2,22 +2,8 @@
 
 import Gdal.epsg4326
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.memScoped
-import kotlinx.cinterop.toKString
 import kotlinx.serialization.json.JsonElement
-import libgdal.GDALClose
-import libgdal.GDALDatasetCreateLayer
-import libgdal.GDALDatasetH
-import libgdal.GDALDatasetResetReading
-import libgdal.OGRFeatureH
-import libgdal.OGRLayerH
-import libgdal.OGRSpatialReferenceH
-import libgdal.OGR_DS_GetLayer
-import libgdal.OGR_DS_GetLayerCount
-import libgdal.OGR_L_GetName
-import libgdal.OGR_L_GetNextFeature
-import libgdal.OSRGetAuthorityCode
-import libgdal.wkbUnknown
+import libgdal.*
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
@@ -31,7 +17,6 @@ open class GdalDataset(
     @OptIn(ExperimentalNativeApi::class)
     private val cleaner: Cleaner? = if (autoClose) {
         createCleaner(ptr) {
-            println("closing dataset")
             GDALClose(it)
         }
     } else {
@@ -42,18 +27,12 @@ open class GdalDataset(
 
     fun getOrCreateLayer(layerName: String): OgrLayer {
         return layers.getOrPut(layerName) {
-            val p = memScoped {
-//                val options = allocStringArray("ADVERTIZE_UTF8=YES")
-                val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
-                val epsg = OSRGetAuthorityCode(sr, null)?.toKString()
-                println("created layer=$layerName epsg=$epsg")
-                lp
-            }
-            OgrLayer(p)
+            val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
+            OgrLayer(lp)
         }
     }
 
-    fun getLayer(name: String) : OgrLayer? {
+    fun getLayer(name: String): OgrLayer? {
         return layers[name]
     }
 
@@ -64,8 +43,7 @@ open class GdalDataset(
 
     open fun addFeature(layerName: String, props: Map<String, JsonElement>, geometry: OgrGeometry) {
         val layer: OgrLayer = getOrCreateLayer(layerName)
-        val feature = layer.addFeature(geometry, props)
-        feature.geometry = geometry
+        layer.addFeature(geometry, props)
     }
 
     fun featureCount(exLayers: Set<String> = emptySet()): Long {
@@ -74,6 +52,23 @@ open class GdalDataset(
                 0L
             } else {
                 it.featureCount
+            }
+        }
+    }
+
+    companion object {
+        fun create(
+            driverName: String,
+            path: String,
+            epsg: Int
+        ): GdalDataset? {
+            val driver = GDALGetDriverByName(driverName)
+            val sr = (OSRNewSpatialReference(null) as OGRSpatialReferenceH).also {
+                OSRImportFromEPSG(it, epsg)
+                OSRSetAxisMappingStrategy(it, OSRAxisMappingStrategy.OAMS_TRADITIONAL_GIS_ORDER)
+            }
+            return GDALCreate(driver, path, 0, 0, 0, GDT_Unknown, null)?.let {
+                GdalDataset(it, sr)
             }
         }
     }

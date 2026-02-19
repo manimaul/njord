@@ -26,9 +26,11 @@ class TileEncoder(
 
     fun addDebug(): TileEncoder {
         tileEnvelope.centroid().takeIf { !it.isEmpty() }?.let {
-            mvtDataset.addFeature("DEBUG", mapOf(
-                "DMSG" to "$z, $x, $y".json
-            ), it)
+            mvtDataset.addFeature(
+                "DEBUG", mapOf(
+                    "DMSG" to "$z, $x, $y".json
+                ), it
+            )
         }
         return this
     }
@@ -69,18 +71,19 @@ class TileEncoder(
 
     suspend fun addCharts(info: Boolean): TileEncoder {
         var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
+        var covered: OgrGeometry = Gdal.createPolygon()
         chartDao.findInfoAsync(tileEnvelope.wkb)?.let { charts ->
             charts.forEach { chart ->
+                val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
                     chartDao.findChartFeaturesAsync4326(
-                        inclusionMask = include.wkb,
+                        exclusionMask = covered.wkb,
+                        tile = tileEnvelope.wkb,
                         chartId = chart.id,
-                        zoom = z
-                    )?.filter {
-                        it.geomWKB != null
-                    }?.forEach { feature ->
+                        zoom = z,
+                    )?.forEach { feature ->
                         layerFactory.preTileEncode(feature)
-                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.let { geo ->
+                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }?.let { tileGeo ->
                             val props = feature.props.filtered().also {
                                 it["CID"] = chart.id.json
                             }
@@ -89,19 +92,18 @@ class TileEncoder(
                                     ChartFeatureInfo(
                                         feature.layer,
                                         props,
-                                        geo.geoJson()
+                                        tileGeo.geoJson()
                                     )
                                 )
                             }
-                            mvtDataset.addFeature(feature.layer, props, geo)
+                            mvtDataset.addFeature(feature.layer, props, tileGeo)
                         }
                     }
                 }
-                OgrGeometry.fromWkb4326(chart.covrWKB)?.let { chartCoverage ->
-                    include.difference(chartCoverage)?.let { include = it }
-                    chartCoverage.intersection(tileEnvelope)?.let {
-                        mvtDataset.addFeature("PLY", emptyMap(), it)
-                    }
+                covered = covered.union(chartGeo) ?: covered
+                include = include.difference(covered) ?: include
+                chartGeo.intersection(tileEnvelope)?.let {
+                    mvtDataset.addFeature("PLY", emptyMap(), it)
                 }
             }
         }

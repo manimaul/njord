@@ -114,18 +114,15 @@ WHERE chart_id = $4
 
     suspend fun findChartFeaturesAsync4326(
         exclusionMask: ByteArray,
-        x: Int,
-        y: Int,
-        z: Int,
-        chartId: Long
+        tile: ByteArray,
+        chartId: Long,
+        zoom: Int,
     ): List<ChartFeature>? =
         sqlOpAsync { conn ->
             val result = conn.prepareStatement(
                 """
 WITH exclude AS (VALUES (st_geomfromwkb($1, 4326))),
-     tile AS (VALUES (st_transform(
-             st_tileenvelope($2, $3, $4),
-             4326)))
+     tile AS (VALUES (st_geomfromwkb($2, 4326)))
 SELECT st_asbinary(
                st_intersection(
                        st_difference(
@@ -137,17 +134,15 @@ SELECT st_asbinary(
        props,
        layer
 FROM features
-WHERE chart_id = $5
-  AND $6 <@ z_range
+WHERE chart_id = $3
+  AND $4 <@ z_range
   AND st_intersects(geom, (table tile));
           """.trimIndent()
             ).apply {
                 setBytes(1, exclusionMask)
-                setInt(2, z)
-                setInt(3, x)
-                setInt(4, y)
-                setLong(5, chartId)
-                setInt( 6, z)
+                setBytes(2, tile)
+                setLong(3, chartId)
+                setInt( 4, zoom)
             }.executeQuery().use { rs ->
                 generateSequence {
                     if (rs.next()) {

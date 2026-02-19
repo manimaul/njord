@@ -5,6 +5,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.geo.TileEncoder
 import io.madrona.njord.model.ChartFeatureInfo
 import io.madrona.njord.util.logger
+import kotlin.time.measureTimedValue
 
 class TileDao(
     private val chartsConfig: ChartsConfig = Singletons.config,
@@ -40,31 +41,14 @@ class TileDao(
     }
 
     suspend fun getTile(z: Int, x: Int, y: Int): ByteArray {
-        if (chartsConfig.debugTile) {
-            return TileEncoder(x, y, z).let {
-                it.addCharts(false)
+        val (result, duration) = measureTimedValue {
+            TileEncoder(x, y, z).let {
+                it.addCharts(chartsConfig.debugTile)
                 it.addDebug()
                 it.encode()
             }
         }
-
-//        val key = "$z-$x-$y"
-//        val ctx = timer.time()
-
-//        return cache.get<ByteArray?>(key)?.let {
-//            cache.touch(key, 0)
-//            log.info("tile $key fetched from cache")
-//            ctx.stop()
-//            it
-//        } ?:
-        return TileEncoder(x, y, z).let {
-            it.addCharts(false)
-            it.encode()
-        }
-//            .also {
-//                val added = cache.set(key, 0, it)
-//                log.debug("tile $key added $added")
-//                counter.inc()
-//            }
+        println("Tile creation $z,$x,$y took: $duration")
+        return result
     }
 }

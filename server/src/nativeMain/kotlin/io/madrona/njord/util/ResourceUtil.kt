@@ -1,5 +1,6 @@
 package io.madrona.njord.util
 
+import File
 import io.madrona.njord.resources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString

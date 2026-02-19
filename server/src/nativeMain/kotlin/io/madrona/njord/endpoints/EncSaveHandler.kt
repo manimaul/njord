@@ -1,5 +1,6 @@
 package io.madrona.njord.endpoints
 
+import File
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -10,7 +11,6 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.EncUpload
-import io.madrona.njord.util.File
 import io.madrona.njord.util.UUID
 import io.madrona.njord.util.logger
 import kotlinx.io.readByteArray

@@ -1,6 +1,5 @@
 @file:OptIn(ExperimentalForeignApi::class)
 
-import io.madrona.njord.util.File
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
@@ -16,7 +15,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
-
 
 class FileTest {
 

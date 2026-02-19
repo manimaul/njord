@@ -1,6 +1,6 @@
 package io.madrona.njord
 
-import io.madrona.njord.util.File
+import File
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.runBlocking
 

@@ -37,8 +37,7 @@ open class MvtDiskDataset (
     minZoom: Int = 0,
     maxZoom: Int = 18,
     outPath: String,
-)
-    : GdalDataset(
+) : GdalDataset(
     ptr = mvtPtr(minZoom, maxZoom, outPath),
     sr = epsg3857,
     autoClose = false,
@@ -79,7 +78,7 @@ open class MvtDataset : GdalDataset(
 
     override fun addFeature(layerName: String, props: Map<String, JsonElement>, geometry: OgrGeometry) {
         OGR_G_Transform(geometry.ptr, transform).requireSuccess {
-            "failed to transform geometry"
+            "failed to transform geometry ${geometry.wkt}"
         }
         super.addFeature(layerName, props, geometry)
     }

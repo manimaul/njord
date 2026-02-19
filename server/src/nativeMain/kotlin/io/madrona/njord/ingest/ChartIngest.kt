@@ -1,5 +1,6 @@
 package io.madrona.njord.ingest
 
+import File
 import OgrVectorDataset
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
@@ -8,7 +9,6 @@ import io.madrona.njord.db.*
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.model.ws.sendMessage
-import io.madrona.njord.util.File
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock

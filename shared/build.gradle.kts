@@ -38,13 +38,11 @@ kotlin {
 
 
     sourceSets {
-//        val nativeMain by getting {
-//            dependencies {
-//
-////                api(project(":geojson"))
-////                api("io.madrona:geojson-native:1.0-SNAPSHOT")
-//            }
-//        }
+        val nativeMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.8.2")
+            }
+        }
         val commonMain by getting {
             dependencies {
                 api(project(":geojson"))

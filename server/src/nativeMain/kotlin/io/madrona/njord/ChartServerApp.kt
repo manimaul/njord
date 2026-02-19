@@ -1,5 +1,6 @@
 package io.madrona.njord
 
+import File
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -17,7 +18,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
-import io.madrona.njord.util.File
 import kotlin.time.Duration.Companion.seconds
 
 val CallLogging = createApplicationPlugin(name = "CallLogging") {

@@ -29,7 +29,7 @@ class OgrLayer(
     val featureCount: Long
         get() = OGR_L_GetFeatureCount(ptr, 1)
 
-    fun addFeature(geometry: OgrGeometry, props: Map<String, JsonElement> = emptyMap()): OgrFeature {
+    fun addFeature(geometry: OgrGeometry, props: Map<String, JsonElement> = emptyMap()) {
         val data = props.mapNotNull {
             createFieldSchema(it.key, it.value)
         }
@@ -37,6 +37,8 @@ class OgrLayer(
         val layerDef: OGRFeatureDefnH = OGR_L_GetLayerDefn(ptr) ?: error("OGR_L_GetLayerDefn failed")
         val feature: OGRFeatureH = OGR_F_Create(layerDef) ?: error("OGR_F_Create failed")
 
+        //This function updates the features geometry, and operates the same as SetGeometryDirectly(), except that this
+        // function does not assume ownership of the passed geometry, but instead makes a copy of it.
         OGR_F_SetGeometry(feature, geometry.ptr)
 
         data.forEach {
@@ -45,11 +47,12 @@ class OgrLayer(
 
         OGR_L_CreateFeature(ptr, feature).requireSuccess { "OGR_L_CreateFeature failed" }
 
-        return OgrFeature(feature)
+        OGR_F_Destroy(feature)
     }
 
     private fun createFieldSchema(key: String, value: JsonElement) : FieldData? {
         return value.fieldType()?.let {
+            println("schema ${it.name} $key, $value")
             val fieldDef: OGRFieldDefnH =
                 OGR_Fld_Create(key, it.nativeType) ?: error("OGR_Fld_Create failed")
             OGR_Fld_SetName(fieldDef, key)
@@ -134,6 +137,7 @@ data class FieldData(
 ) {
 
     private var cleaner: Cleaner = createCleaner(fieldDev) {
+        //println("free field data")
         OGR_Fld_Destroy(it)
     }
 }

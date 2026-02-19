@@ -73,6 +73,7 @@ open class MvtDataset : GdalDataset(
 
     @OptIn(ExperimentalNativeApi::class)
     private val cleaner: Cleaner = createCleaner(transform) {
+        //println("free mvt dataset coordinate transformation")
         OCTDestroyCoordinateTransformation(it)
     }
 
@@ -125,6 +126,7 @@ class MvtVsi(
 
     @OptIn(ExperimentalNativeApi::class)
     private val vsiPathCleaner: Cleaner = createCleaner(outPath) {
+        println("vsi unlink")
         VSIUnlink(it);
     }
 

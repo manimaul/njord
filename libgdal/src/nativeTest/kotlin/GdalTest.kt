@@ -6,7 +6,7 @@ import kotlin.test.assertNotNull
 class GdalTest {
 
     @BeforeTest
-    fun beforeAll() {
+    fun beforeEach() {
         Gdal.initialize()
     }
 

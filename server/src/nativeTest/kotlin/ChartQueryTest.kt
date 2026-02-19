@@ -3,7 +3,6 @@
 import Gdal.epsg4326
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.FeatureDao
-import io.madrona.njord.util.File
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking

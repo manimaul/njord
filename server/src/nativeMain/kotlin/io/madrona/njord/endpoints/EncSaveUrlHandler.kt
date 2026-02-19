@@ -1,5 +1,6 @@
 package io.madrona.njord.endpoints
 
+import File
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.curl.*
@@ -12,7 +13,6 @@ import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.EncUpload
-import io.madrona.njord.util.File
 import io.madrona.njord.util.UUID
 import io.madrona.njord.util.logger
 

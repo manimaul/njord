@@ -1,25 +1,34 @@
-package io.madrona.njord.util
-
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.ptr
 import kotlinx.cinterop.refTo
+import kotlinx.cinterop.toCValues
 import kotlinx.cinterop.toKString
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
+import platform.posix.PATH_MAX
 import platform.posix.SEEK_END
 import platform.posix.SEEK_SET
+import platform.posix.S_IFDIR
+import platform.posix.S_IFMT
+import platform.posix.S_IFREG
+import platform.posix.S_IRWXU
 import platform.posix.fclose
 import platform.posix.fgets
 import platform.posix.fopen
 import platform.posix.fread
 import platform.posix.fseek
 import platform.posix.ftell
-import kotlinx.cinterop.*
-import platform.posix.*
-import platform.posix.PATH_MAX
-import platform.posix.S_IRWXU
+import platform.posix.fwrite
+import platform.posix.getcwd
+import platform.posix.mkdir
+import platform.posix.realpath
+import platform.posix.remove
+import platform.posix.rmdir
+import platform.posix.stat
 
 @OptIn(ExperimentalForeignApi::class)
 class File(val path: Path) {

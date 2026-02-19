@@ -13,12 +13,13 @@ import kotlin.native.ref.createCleaner
 
 open class OgrGeometry(
     val ptr: OGRGeometryH,
+    autoClose: Boolean = true,
 ) {
 
     @OptIn(ExperimentalNativeApi::class)
-    private val cleaner: Cleaner = createCleaner(ptr) {
+    private val cleaner: Cleaner? = if(autoClose) createCleaner(ptr) {
         OGR_G_DestroyGeometry(it)
-    }
+    } else null
 
     private val children: MutableMap<Long, OgrGeometry> = mutableMapOf()
 
@@ -115,8 +116,12 @@ open class OgrGeometry(
     }
 
     fun difference(other: OgrGeometry): OgrGeometry? {
-        return OGR_G_Difference(ptr, other.ptr)?.let {
-            OgrGeometry(it)
+        return if (other.isValid) {
+            OGR_G_Difference(ptr, other.ptr)?.let {
+                OgrGeometry(it)
+            }
+        } else {
+            null
         }
     }
 
@@ -171,7 +176,7 @@ open class OgrGeometry(
             return memScoped {
                 val geoInput = alloc<OGRGeometryHVar>()
                 val wktInput = alloc<CPointerVar<ByteVar>>()
-                wktInput.value = wkt.cstr.getPointer(this)
+                wktInput.value = wkt.cstr.ptr
                 OGR_G_CreateFromWkt(wktInput.ptr, sr, geoInput.ptr)
                 geoInput.value?.let {
                     OgrGeometry(it)

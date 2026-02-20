@@ -8,7 +8,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 
-private const val testDbSql = """
+const val testDbSql = """
     drop table if exists testing;
     create table testing 
     (

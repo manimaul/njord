@@ -14,7 +14,7 @@ fun parsePqArray(arrayString: String): List<String?> {
         val char = arrayBody[i]
         when (char) {
             '"' -> {
-                if (inQuote && arrayBody[i - 1] == '\\') {
+                if (inQuote && i > 0 && arrayBody[i - 1] == '\\') {
                     element.append(char)
                 } else {
                     inQuote = !inQuote

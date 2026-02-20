@@ -11,6 +11,8 @@ import io.madrona.njord.model.FeatureInsert
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlinx.serialization.json.Json.Default.encodeToString
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 class GeoJsonDao : Dao() {
 
@@ -27,12 +29,14 @@ class GeoJsonDao : Dao() {
     }
 
     suspend fun fetchTileAsync(z: Int, x: Int, y: Int): ByteArray? = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT concat_mvt(?,?,?);").let {
-            it.setInt(1, z)
-            it.setInt(2, x)
-            it.setInt(3, y)
-            it.executeQuery()
-        }.takeIf { it.next() }?.getBytes(1)
+        conn.prepareStatement("SELECT concat_mvt(?,?,?);").let { stmt ->
+            stmt.setInt(1, z)
+            stmt.setInt(2, x)
+            stmt.setInt(3, y)
+            stmt.executeQuery().use { rs ->
+                if (rs.next()) rs.getBytes(1) else null
+            }
+        }
     }
 
     suspend fun fetchAsync(chartId: Long, layerName: String): FeatureCollection? =
@@ -105,11 +109,11 @@ class GeoJsonDao : Dao() {
     }
 
     private fun Feature.minZ(): Int {
-        return properties["MINZ"]?.toString()?.toIntOrNull() ?: 0
+        return properties["MINZ"]?.jsonPrimitive?.intOrNull ?: 0
     }
 
     private fun Feature.maxZ(): Int {
-        return properties["MAXZ"]?.toString()?.toIntOrNull() ?: 32
+        return properties["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32
     }
 
     private fun Feature.propertyJson(): String {
@@ -136,9 +140,7 @@ class GeoJsonDao : Dao() {
                 it.setLong(4, chartId)
                 it.setInt(5, zoomRange.first)
                 it.setInt(6, zoomRange.last)
-//                it.executeUpdate()
-
-                TODO("kn")
+                it.execute().toInt()
             }
         } catch (e: SQLException) {
             log.error("error inserting json $geoJson layer $layerName chart id $chartId props $jsonProps", e)

@@ -41,6 +41,7 @@ object GeometrySerializer : KSerializer<Geometry> {
             is MultiLineString -> MultiLineString.serializer().serialize(encoder, value)
             is Polygon -> Polygon.serializer().serialize(encoder, value)
             is MultiPolygon -> MultiPolygon.serializer().serialize(encoder, value)
+            is GeometryCollection -> GeometryCollection.serializer().serialize(encoder, value)
         }
     }
 }

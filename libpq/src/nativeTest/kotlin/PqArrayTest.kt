@@ -46,4 +46,22 @@ class PqArrayTest {
         assertEquals("""apple,banana,orange""", parsedArray4[0])
         assertEquals("""food""", parsedArray4[1])
     }
+
+    @Test
+    fun test5() {
+        val array5 = """{"first","second","third"}"""
+        val parsedArray5 = parsePqArray(array5)
+        assertEquals(3, parsedArray5.size)
+        assertEquals("first", parsedArray5[0])
+        assertEquals("second", parsedArray5[1])
+        assertEquals("third", parsedArray5[2])
+    }
+
+    @Test
+    fun test6() {
+        val array6 = """{""}"""
+        val parsedArray6 = parsePqArray(array6)
+        assertEquals(1, parsedArray6.size)
+        assertEquals("", parsedArray6[0])
+    }
 }

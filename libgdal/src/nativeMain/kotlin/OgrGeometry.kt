@@ -40,6 +40,9 @@ open class OgrGeometry(
 
     fun coordinateSequence(): List<Position> {
         val count = numCoordinates
+        if (count == 0) {
+            return emptyList()
+        }
         val xCoords = DoubleArray(count)
         val yCoords = DoubleArray(count)
 

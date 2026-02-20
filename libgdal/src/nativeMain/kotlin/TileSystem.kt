@@ -90,10 +90,10 @@ class TileSystem(
     fun createTileClipPolygon(x: Int, y: Int, z: Int): OgrGeometry {
         val ring: OGRGeometryH = requireNotNull(OGR_G_CreateGeometry(wkbLinearRing))
         val pixelCoord = tileXyToPixelXy(x, y)
-        val bl = pixelXyToLatLng(pixelCoord, z)
-        val br = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize), z)
-        val tr = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
-        val tl = pixelXyToLatLng(pixelCoord.newPosition(y = pixelCoord.y + tileSize), z)
+        val tl = pixelXyToLatLng(pixelCoord, z)
+        val tr = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize), z)
+        val br = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
+        val bl = pixelXyToLatLng(pixelCoord.newPosition(y = pixelCoord.y + tileSize), z)
 
         OGR_G_AddPoint_2D(ring, tl.x, tl.y);
         OGR_G_AddPoint_2D(ring, tr.x, tr.y);

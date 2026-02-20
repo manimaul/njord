@@ -14,6 +14,4 @@ class OgrVectorDataset(path: String) : GdalDataset(
             null
         )
     )
-) {
-
-}
+)

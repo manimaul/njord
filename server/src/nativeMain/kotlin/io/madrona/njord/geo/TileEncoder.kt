@@ -71,22 +71,19 @@ class TileEncoder(
 
     suspend fun addCharts(info: Boolean): TileEncoder {
         var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
-        var covered: OgrGeometry = Gdal.createPolygon()
         chartDao.findInfoAsync(tileEnvelope.wkb)?.let { charts ->
             charts.forEach { chart ->
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
                     chartDao.findChartFeaturesAsync4326(
-                        exclusionMask = covered.wkb,
-                        tile = tileEnvelope.wkb,
+                        inclusionMask = include.wkb,
                         chartId = chart.id,
                         zoom = z,
                     )?.forEach { feature ->
-                        layerFactory.preTileEncode(feature)
+                        val props = layerFactory.preTileEncode(feature).props.filtered().also {
+                            it["CID"] = chart.id.json
+                        }
                         feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }?.let { tileGeo ->
-                            val props = feature.props.filtered().also {
-                                it["CID"] = chart.id.json
-                            }
                             if (info) {
                                 infoFeatures.add(
                                     ChartFeatureInfo(
@@ -100,8 +97,7 @@ class TileEncoder(
                         }
                     }
                 }
-                covered = covered.union(chartGeo) ?: covered
-                include = include.difference(covered) ?: include
+                include = include.difference(chartGeo) ?: include
                 chartGeo.intersection(tileEnvelope)?.let {
                     mvtDataset.addFeature("PLY", emptyMap(), it)
                 }

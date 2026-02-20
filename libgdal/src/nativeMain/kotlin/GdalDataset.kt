@@ -27,7 +27,11 @@ open class GdalDataset(
     private val layers: MutableMap<String, OgrLayer> = mutableMapOf()
 
     fun getOrCreateLayer(layerName: String): OgrLayer {
+//        if (layers.containsKey(layerName)) {
+//            println("returning existing layer for $layerName")
+//        }
         return layers.getOrPut(layerName) {
+//            println("creating new layer for $layerName")
             val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
             OgrLayer(lp)
         }

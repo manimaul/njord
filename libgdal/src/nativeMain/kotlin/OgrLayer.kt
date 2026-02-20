@@ -16,8 +16,6 @@ import kotlinx.serialization.json.long
 import kotlinx.serialization.json.longOrNull
 import libgdal.*
 import kotlin.experimental.ExperimentalNativeApi
-import kotlin.native.ref.Cleaner
-import kotlin.native.ref.createCleaner
 
 class OgrLayer(
     val ptr: OGRLayerH
@@ -51,23 +49,33 @@ class OgrLayer(
     }
 
     private fun createFieldSchema(key: String, value: JsonElement) : FieldData? {
+        val index = OGR_L_FindFieldIndex(ptr, key, 1)
+
         return value.fieldType()?.let {
-            println("schema ${it.name} $key, $value")
-            val fieldDef: OGRFieldDefnH =
-                OGR_Fld_Create(key, it.nativeType) ?: error("OGR_Fld_Create failed")
-            OGR_Fld_SetName(fieldDef, key)
-            OGR_Fld_SetType(fieldDef, it.nativeType)
-            OGR_Fld_SetSubType(fieldDef, it.nativeSubType)
-            OGR_L_CreateField(ptr, fieldDef, 1).requireSuccess {
-                "OGR_L_CreateField failed"
+            if (index == -1) {
+//                println("init schema ${it.name} $key, $value")
+                val fieldDef: OGRFieldDefnH =
+                    OGR_Fld_Create(key, it.nativeType) ?: error("OGR_Fld_Create failed")
+                OGR_Fld_SetName(fieldDef, key)
+                OGR_Fld_SetType(fieldDef, it.nativeType)
+                OGR_Fld_SetSubType(fieldDef, it.nativeSubType)
+                OGR_L_CreateField(ptr, fieldDef, 1).requireSuccess {
+                    "OGR_L_CreateField failed"
+                }
+                OGR_Fld_Destroy(fieldDef)
+            } else {
+//                println("reusing schema ${it.name} $key, $value")
             }
-            FieldData(key, it, value, fieldDef)
+            FieldData(key, it, value, index)
         }
     }
 
     private fun bindFeatureProperty(fp: OGRFeatureH, fieldData: FieldData) {
-
-        val fieldIndex = OGR_F_GetFieldIndex(fp, fieldData.key)
+        val fieldIndex = if (fieldData.index == -1) {
+            OGR_F_GetFieldIndex(fp, fieldData.key)
+        } else {
+            fieldData.index
+        }
         when (fieldData.fieldType) {
             OgrFieldType.StringField -> memScoped {
                 val strValue = (fieldData.value as JsonPrimitive).content
@@ -133,14 +141,8 @@ data class FieldData(
     val key: String,
     val fieldType: OgrFieldType,
     val value: JsonElement,
-    val fieldDev: OGRFieldDefnH? = null
-) {
-
-    private var cleaner: Cleaner = createCleaner(fieldDev) {
-        //println("free field data")
-        OGR_Fld_Destroy(it)
-    }
-}
+    val index: Int,
+)
 
 private fun JsonElement.fieldType(): OgrFieldType? {
     return when {

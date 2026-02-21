@@ -23,8 +23,6 @@ open class OgrGeometry(
         OGR_G_DestroyGeometry(it)
     } else null
 
-    private val children: MutableMap<Long, OgrGeometry> = mutableMapOf()
-
     val area: Double
         get() = OGR_G_GetArea(ptr)
 
@@ -163,11 +161,10 @@ open class OgrGeometry(
         return centroid
     }
 
-    fun addGeometryDirectly(child: OgrGeometry) {
-        OGR_G_AddGeometryDirectly(ptr, child.ptr).requireSuccess {
-            "error adding geometry directly"
+    fun addGeometry(child: OgrGeometry) {
+        OGR_G_AddGeometry(ptr, child.ptr).requireSuccess {
+            "error adding geometry"
         }
-        children[child.ptr.rawValue.toLong()] = child
     }
 
     val wkb by lazy {

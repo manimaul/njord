@@ -10,13 +10,17 @@ import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
+import tile.VectorTileEncoder
+import transformToTileGeometry
+import kotlin.collections.emptyMap
 
 class TileEncoder(
     val x: Int,
     val y: Int,
     val z: Int,
     private val tileSystem: TileSystem = Singletons.tileSystem,
-    private val mvtDataset: MvtDataset = MvtDataset(),
+//    private val mvtDataset: MvtDataset = MvtDataset(),
+    private val vectorTileEncoder: VectorTileEncoder = VectorTileEncoder(),
     private val chartDao: ChartDao = Singletons.chartDao,
     private val layerFactory: LayerFactory = Singletons.layerFactory,
     private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
@@ -26,10 +30,10 @@ class TileEncoder(
 
     fun addDebug(): TileEncoder {
         tileEnvelope.centroid().takeIf { !it.isEmpty() }?.let {
-            mvtDataset.addFeature(
+            vectorTileEncoder.addFeature(
                 "DEBUG", mapOf(
                     "DMSG" to "$z, $x, $y".json
-                ), it
+                ), transformToTileGeometry(it)
             )
         }
         return this
@@ -93,13 +97,13 @@ class TileEncoder(
                                     )
                                 )
                             }
-                            mvtDataset.addFeature(feature.layer, props, tileGeo)
+                            vectorTileEncoder.addFeature(feature.layer, props,  transformToTileGeometry(tileGeo))
                         }
                     }
                 }
                 include = include.difference(chartGeo) ?: include
                 chartGeo.intersection(tileEnvelope)?.let {
-                    mvtDataset.addFeature("PLY", emptyMap(), it)
+                    vectorTileEncoder.addFeature("PLY", emptyMap<String, Any>(), transformToTileGeometry(it))
                 }
             }
         }
@@ -107,7 +111,7 @@ class TileEncoder(
     }
 
     fun encode(): ByteArray {
-        return mvtDataset.translateMvt(z, z).getMvt(z, x, y)
+        return vectorTileEncoder.encode()
     }
 
     fun infoJson() = infoFeatures

@@ -162,13 +162,13 @@ class VectorTileEncoder(
 
     private fun clipCovers(geom: OgrGeometry): Boolean {
         if (geom.type == GeomType.Point) {
-            return clipGeometry.getEnvelopeInternal()?.covers(geom) == true
+            return clipGeometry.envelopeGeometry().covers(geom)
         }
-        return geom.getEnvelopeInternal()?.let { clipEnvelope.covers(it) } == true
+        return geom.envelopeGeometry().let { clipEnvelope.covers(it) }
     }
 
     private fun clipGeometry(geometry: OgrGeometry): OgrGeometry? {
-        if (clipEnvelope.contains(geometry.getEnvelopeInternal())) {
+        if (clipEnvelope.contains(geometry.envelopeGeometry())) {
             return geometry
         }
 

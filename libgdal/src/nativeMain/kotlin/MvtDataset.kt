@@ -16,6 +16,13 @@ import kotlin.native.ref.createCleaner
 
 
 private val uniqueId = AtomicInt(0)
+private val transformEpsg4326ToEpsg3857 = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
+
+fun transformToTileGeometry(geometry: OgrGeometry) {
+    OGR_G_Transform(geometry.ptr, transformEpsg4326ToEpsg3857).requireSuccess {
+        "failed to transform geometry"
+    }
+}
 
 private fun mvtPtr(
     minZoom: Int,
@@ -43,17 +50,14 @@ open class MvtDiskDataset (
     autoClose = false,
 ), AutoCloseable {
 
-    private val transform = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
 
     override fun addFeature(layerName: String, props: Map<String, JsonElement>, geometry: OgrGeometry) {
-        OGR_G_Transform(geometry.ptr, transform).requireSuccess {
-            "failed to transform geometry"
-        }
+        transformToTileGeometry(geometry)
         super.addFeature(layerName, props, geometry)
     }
 
     override fun close() {
-        OCTDestroyCoordinateTransformation(transform)
+        OCTDestroyCoordinateTransformation(transformEpsg4326ToEpsg3857)
         GDALClose(ptr)
     }
 }
@@ -69,16 +73,16 @@ open class MvtDataset : GdalDataset(
     sr = epsg3857,
 ) {
 
-    private val transform = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
-
-    @OptIn(ExperimentalNativeApi::class)
-    private val cleaner: Cleaner = createCleaner(transform) {
-        //println("free mvt dataset coordinate transformation")
-        OCTDestroyCoordinateTransformation(it)
-    }
+//    private val transform = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
+//
+//    @OptIn(ExperimentalNativeApi::class)
+//    private val cleaner: Cleaner = createCleaner(transform) {
+//        //println("free mvt dataset coordinate transformation")
+//        OCTDestroyCoordinateTransformation(it)
+//    }
 
     override fun addFeature(layerName: String, props: Map<String, JsonElement>, geometry: OgrGeometry) {
-        OGR_G_Transform(geometry.ptr, transform).requireSuccess {
+        OGR_G_Transform(geometry.ptr, transformEpsg4326ToEpsg3857).requireSuccess {
             "failed to transform geometry ${geometry.wkt}"
         }
         super.addFeature(layerName, props, geometry)

@@ -100,9 +100,9 @@ object Gdal {
 
     fun createPolygon(shell: OgrGeometry, vararg holes: OgrGeometry) : OgrGeometry {
         return OgrGeometry(requireNotNull(OGR_G_CreateGeometry(wkbPolygon))).also { poly ->
-            poly.addGeometryDirectly(shell)
+            poly.addGeometry(shell)
             holes.forEach {
-                poly.addGeometryDirectly(it)
+                poly.addGeometry(it)
             }
         }
     }
@@ -125,7 +125,7 @@ object Gdal {
 
     fun createMultiLineString(vararg geo: OgrGeometry): OgrGeometry {
         return OgrGeometry(requireNotNull(OGR_G_CreateGeometry(wkbMultiLineString))).also { mls ->
-            geo.forEach { mls.addGeometryDirectly(it) }
+            geo.forEach { mls.addGeometry(it) }
         }
     }
 
@@ -139,7 +139,7 @@ object Gdal {
 
     fun createMultiPointFromCoords(vararg position: Position): OgrGeometry {
         return OgrGeometry(requireNotNull(OGR_G_CreateGeometry(wkbMultiPoint))).also { mp ->
-            position.map { createPoint(it) }.forEach { mp.addGeometryDirectly(it) }
+            position.map { createPoint(it) }.forEach { mp.addGeometry(it) }
         }
     }
 
@@ -148,8 +148,8 @@ object Gdal {
             position.forEach {
                 OGR_G_AddPoint_2D(lr.ptr, it.x, it.y)
             }
-            require(OGR_G_IsRing(lr.ptr) == 1) {
-                "error linear ring was not closed"
+            if (OGR_G_IsRing(lr.ptr) == 1) {
+                println("warning linear ring was not closed")
             }
         }
     }

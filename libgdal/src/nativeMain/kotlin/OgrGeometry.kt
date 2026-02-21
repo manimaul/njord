@@ -71,12 +71,16 @@ open class OgrGeometry(
         return memScoped {
             val env = alloc<OGREnvelope>()
             OGR_G_GetEnvelope(ptr, env.ptr)
+            val minX = env.MinX - 1
+            val maxX = env.MaxX + 1
+            val minY = env.MinY - 1
+            val maxY = env.MaxY + 1
             val ring = Gdal.createLinearRing(
-                Position(env.MinX, env.MinY),
-                Position(env.MaxX, env.MinY),
-                Position(env.MaxX, env.MaxY),
-                Position(env.MinX, env.MaxY),
-                Position(env.MinX, env.MinY),
+                Position(minX, minY),
+                Position(maxX, minY),
+                Position(maxX, maxY),
+                Position(minX, maxY),
+                Position(minX, minY),
             )
             Gdal.createPolygon(ring)
         }
@@ -100,13 +104,6 @@ open class OgrGeometry(
         return other?.let {
             OGR_G_Intersects(ptr, other.ptr) == 1
         } ?: false
-    }
-
-    fun covers(other: OgrGeometry?): Boolean {
-        TODO()
-//        return other?.let {
-//            OGR_G_Covers(ptr, other.ptr) == 1
-//        } ?: false
     }
 
     fun simplify(tolerance: Double): OgrGeometry? {

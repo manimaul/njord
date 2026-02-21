@@ -18,10 +18,11 @@ import kotlin.native.ref.createCleaner
 private val uniqueId = AtomicInt(0)
 private val transformEpsg4326ToEpsg3857 = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
 
-fun transformToTileGeometry(geometry: OgrGeometry) {
+fun transformToTileGeometry(geometry: OgrGeometry): OgrGeometry {
     OGR_G_Transform(geometry.ptr, transformEpsg4326ToEpsg3857).requireSuccess {
         "failed to transform geometry"
     }
+    return geometry
 }
 
 private fun mvtPtr(

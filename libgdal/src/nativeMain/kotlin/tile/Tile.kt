@@ -2,8 +2,10 @@ package tile
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.protobuf.ProtoIntegerType
 import kotlinx.serialization.protobuf.ProtoNumber
 import kotlinx.serialization.protobuf.ProtoPacked
+import kotlinx.serialization.protobuf.ProtoType
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.decodeFromByteArray
 
@@ -26,17 +28,17 @@ data class Tile(
         @ProtoNumber(2) val floatValue: Float? = null,
         @ProtoNumber(3) val doubleValue: Double? = null,
         @ProtoNumber(4) val intValue: Long? = null,
-        @ProtoNumber(5) val uintValue: Long? = null,
-        @ProtoNumber(6) val sintValue: Long? = null,
+        @ProtoNumber(5) val uintValue: ULong? = null,
+        @ProtoType(ProtoIntegerType.SIGNED) @ProtoNumber(6) val sintValue: Long? = null,
         @ProtoNumber(7) val boolValue: Boolean? = null
     )
 
     @Serializable
     data class Feature(
-        @ProtoNumber(1) val id: Long = 0L,
-        @ProtoPacked @ProtoNumber(2) val tags: List<Int> = emptyList(),
+        @ProtoNumber(1) val id: ULong = 0UL,
+        @ProtoPacked @ProtoNumber(2) val tags: List<UInt> = emptyList(),
         @ProtoNumber(3) val type: GeomType = GeomType.UNKNOWN,
-        @ProtoPacked @ProtoNumber(4) val geometry: List<Int> = emptyList()
+        @ProtoPacked @ProtoNumber(4) val geometry: List<UInt> = emptyList()
     )
 
     @Serializable

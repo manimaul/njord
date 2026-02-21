@@ -62,7 +62,7 @@ class VectorTileEncoder(
             return
         }
 
-        if (geometry.type == GeomType.LineString && geometry.area < minimumArea) {
+        if (geometry.type == GeomType.LineString && geometry.length < minimumLength) {
             return
         }
 
@@ -139,7 +139,7 @@ class VectorTileEncoder(
             layers[layerName] = layer
         }
 
-        val tags = mutableListOf(attributes.entries.size)
+        val tags = mutableListOf<Int>()
         for (e in attributes.entries) {
             // skip attribute without value
             val value = e.value ?: continue
@@ -253,10 +253,10 @@ class VectorTileEncoder(
                             null
                         } else {
                             Tile.Feature(
-                                id = feature.id,
-                                tags = feature.tags,
+                                id = feature.id.toULong(),
+                                tags = feature.tags.map { it.toUInt() },
                                 type = geomType,
-                                geometry = commands,
+                                geometry = commands.map { it.toUInt() },
                             )
                         }
 
@@ -295,7 +295,7 @@ class VectorTileEncoder(
     }
 
     fun commandsMultiLineString(mls: OgrGeometry): List<Int> {
-        return (0 until mls.numInteriorRings).flatMap { i ->
+        return (0 until mls.numGeometries).flatMap { i ->
             val oldX = x
             val oldY = y
             val geomCommands =
@@ -405,19 +405,23 @@ class VectorTileEncoder(
         // Therefore, we must reverse the coordinates.
         // So, the code below will make sure that exterior ring is in counter-clockwise order
         // and interior ring in clockwise order.
+        //
+        // OGR_G_GetArea on a LinearRing returns fabs(signedArea), always non-negative,
+        // so we compute signed area via the shoelace formula to detect winding order.
         var exteriorRing: OgrGeometry? = polygon.getExteriorRing()
-
-        if ((exteriorRing?.area ?: 0.0) > 0.0) {
+        val exteriorCs = exteriorRing?.coordinateSequence() ?: emptyList()
+        if (signedArea(exteriorCs) > 0.0) {
             exteriorRing = exteriorRing?.reverse()
         }
-        commands.addAll(commandsCoords(exteriorRing?.coordinateSequence() ?: emptyList(), true))
+        commands.addAll(commandsCoords(exteriorRing?.coordinateSequence() ?: exteriorCs, true))
 
         for (i in 0..<polygon.numInteriorRings) {
             var interiorRing: OgrGeometry? = polygon.getInteriorRingN(i)
-            if ((interiorRing?.area ?: 0.0) < 0.0) {
+            val interiorCs = interiorRing?.coordinateSequence() ?: emptyList()
+            if (signedArea(interiorCs) < 0.0) {
                 interiorRing = interiorRing?.reverse()
             }
-            commands.addAll(commandsCoords(interiorRing?.coordinateSequence() ?: emptyList(), true))
+            commands.addAll(commandsCoords(interiorRing?.coordinateSequence() ?: interiorCs, true))
         }
         return commands
     }
@@ -488,6 +492,18 @@ class VectorTileEncoder(
 
         fun zigZagEncode(n: Int): Int {
             return (n shl 1) xor (n shr 31)
+        }
+
+        // Shoelace formula. Positive = CCW in EPSG:3857 (Y-up) = CW in tile space (Y-down).
+        fun signedArea(cs: List<Position>): Double {
+            var sum = 0.0
+            val n = cs.size
+            for (i in 0 until n) {
+                val c0 = cs[i]
+                val c1 = cs[(i + 1) % n]
+                sum += (c0.x * c1.y) - (c1.x * c0.y)
+            }
+            return sum / 2.0
         }
     }
 }

@@ -1,6 +1,12 @@
+@file:OptIn(ExperimentalForeignApi::class)
 
-import VectorTileDecoder.Companion.decodeGeometry
+package tile
+
+import Gdal.epsg3857
+import OgrGeometry
 import io.madrona.njord.geojson.Position
+import kotlinx.cinterop.ExperimentalForeignApi
+import tile.VectorTileDecoder.Companion.decodeGeometry
 import kotlin.math.round
 
 
@@ -8,7 +14,7 @@ class VectorTileEncoder(
     private val extent: Int = 4096,
     clipBuffer: Int = 8,
     private val autoScale: Boolean = false,
-    private val simplificationDistanceTolerance: Double = -1.0
+    private val simplificationDistanceTolerance: Double = 0.1
 ) {
     private val layers: MutableMap<String, Layer> = LinkedHashMap<String, Layer>()
 
@@ -20,9 +26,9 @@ class VectorTileEncoder(
 
     private val clipGeometry: OgrGeometry = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
 
-    private val clipEnvelope: OgrGeometry = clipGeometry.envelope()
+    private val clipEnvelope: OgrGeometry = clipGeometry.envelopeGeometry()
 
-    private val clipGeometryPrepared: OgrPreparedGeometry = clipGeometry.prepare()
+    private val clipGeometryPrepared: OgrGeometry = clipGeometry //.prepare()
 
     private var x = 0
     private var y = 0
@@ -172,7 +178,7 @@ class VectorTileEncoder(
         // going via wkb fixes the problem.
         if ((intersection == null || intersection.isEmpty()) && clipGeometryPrepared.intersects(geometry)) {
             val wkb = geometry.wkb
-            return clipGeometry.intersection(OgrGeometry.fromWkb(wkb))
+            return clipGeometry.intersection(OgrGeometry.fromWkb(wkb, epsg3857))
         }
 
         return intersection
@@ -369,7 +375,7 @@ class VectorTileEncoder(
                 r.removeAt(lineToIndex)
             } else {
                 // update LineTo with new length
-                r.set(lineToIndex, commandAndLength(Command.LineTo, lineToLength))
+                r[lineToIndex] = commandAndLength(Command.LineTo, lineToLength)
             }
         }
 

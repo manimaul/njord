@@ -7,6 +7,8 @@ import io.madrona.njord.geojson.Position
 import kotlinx.cinterop.*
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import libgdal.*
+import tile.GeomType
+import tile.Tile
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
@@ -38,6 +40,9 @@ open class OgrGeometry(
     val numCoordinates: Int
         get() = OGR_G_GetPointCount(ptr)
 
+    val type: GeomType
+        get() = TODO()
+
     fun coordinateSequence(): List<Position> {
         val count = numCoordinates
         if (count == 0) {
@@ -60,6 +65,10 @@ open class OgrGeometry(
         }
     }
 
+    fun envelopeGeometry(): OgrGeometry {
+        TODO()
+    }
+
     fun envelope(): BoundingBox {
         return memScoped {
             val envelope = alloc<OGREnvelope>()
@@ -73,6 +82,33 @@ open class OgrGeometry(
             OGR_G_Contains(ptr, other.ptr) == 1
         } ?: false
     }
+
+    fun intersects(other: OgrGeometry?): Boolean {
+        TODO()
+    }
+
+    fun covers(other: OgrGeometry?): Boolean {
+        TODO()
+    }
+
+    fun simplify(tolerance: Double): OgrGeometry? {
+        TODO()
+    }
+
+    fun getExteriorRing(): OgrGeometry? {
+        TODO()
+    }
+
+    fun getInteriorRingN(n: Int): OgrGeometry? {
+       TODO()
+    }
+
+    fun reverse(): OgrGeometry? {
+        TODO()
+    }
+
+    val numInteriorRings: Int
+        get() = TODO()
 
     fun intersection(other: OgrGeometry?): OgrGeometry? {
         return other?.let {
@@ -186,5 +222,17 @@ open class OgrGeometry(
                 }
             }
         }
+    }
+
+    fun getGeometryN(i: Int) : OgrGeometry? {
+        TODO()
+    }
+
+    fun simplifyPreserveTopology(simplificationDistanceTolerance: Double) : OgrGeometry {
+       TODO()
+    }
+
+    fun getEnvelopeInternal() : OgrGeometry? {
+        TODO()
     }
 }

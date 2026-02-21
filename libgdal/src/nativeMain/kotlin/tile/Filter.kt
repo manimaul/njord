@@ -1,3 +1,4 @@
+package tile
 /**
  * A filter which can be passed to a VectorTile decoder to optimize performance by only decoding layers of interest.
  */

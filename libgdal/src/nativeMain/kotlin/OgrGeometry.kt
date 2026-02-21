@@ -8,20 +8,20 @@ import kotlinx.cinterop.*
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import libgdal.*
 import tile.GeomType
-import tile.Tile
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
 
 open class OgrGeometry(
     val ptr: OGRGeometryH,
+    owned: Boolean = false,
 ) {
 
     @OptIn(ExperimentalNativeApi::class)
-    private val cleaner: Cleaner = createCleaner(ptr) {
+    private val cleaner: Cleaner? = if (!owned) createCleaner(ptr) {
         //println("free geometry")
         OGR_G_DestroyGeometry(it)
-    }
+    } else null
 
     private val children: MutableMap<Long, OgrGeometry> = mutableMapOf()
 
@@ -41,7 +41,9 @@ open class OgrGeometry(
         get() = OGR_G_GetPointCount(ptr)
 
     val type: GeomType
-        get() = TODO()
+        get() = OGR_GT_Flatten(OGR_G_GetGeometryType(ptr)).let { gdalType ->
+            GeomType.entries.firstOrNull { it.gdalType == gdalType } ?: GeomType.Unknown
+        }
 
     fun coordinateSequence(): List<Position> {
         val count = numCoordinates
@@ -66,7 +68,18 @@ open class OgrGeometry(
     }
 
     fun envelopeGeometry(): OgrGeometry {
-        TODO()
+        return memScoped {
+            val env = alloc<OGREnvelope>()
+            OGR_G_GetEnvelope(ptr, env.ptr)
+            val ring = Gdal.createLinearRing(
+                Position(env.MinX, env.MinY),
+                Position(env.MaxX, env.MinY),
+                Position(env.MaxX, env.MaxY),
+                Position(env.MinX, env.MaxY),
+                Position(env.MinX, env.MinY),
+            )
+            Gdal.createPolygon(ring)
+        }
     }
 
     fun envelope(): BoundingBox {
@@ -84,31 +97,60 @@ open class OgrGeometry(
     }
 
     fun intersects(other: OgrGeometry?): Boolean {
-        TODO()
+        return other?.let {
+            OGR_G_Intersects(ptr, other.ptr) == 1
+        } ?: false
     }
 
     fun covers(other: OgrGeometry?): Boolean {
         TODO()
+//        return other?.let {
+//            OGR_G_Covers(ptr, other.ptr) == 1
+//        } ?: false
     }
 
     fun simplify(tolerance: Double): OgrGeometry? {
-        TODO()
+        return OGR_G_Simplify(ptr, tolerance)?.let { OgrGeometry(it) }
     }
 
     fun getExteriorRing(): OgrGeometry? {
-        TODO()
+        if (numGeometries > 0) {
+            return getGeometryN(0)
+        } else {
+            return null
+        }
     }
 
     fun getInteriorRingN(n: Int): OgrGeometry? {
-       TODO()
+        //For a polygon, OGR_G_GetGeometryRef(iSubGeom) returns the exterior ring if iSubGeom == 0, and the interior rings for iSubGeom > 0.
+        val i = n + 1
+        return if (i < numGeometries) {
+            getGeometryN(i)
+        } else {
+            null
+        }
     }
 
     fun reverse(): OgrGeometry? {
-        TODO()
+        val clonePtr = OGR_G_Clone(ptr) ?: return null
+        val n = OGR_G_GetPointCount(clonePtr)
+        if (n <= 1) return OgrGeometry(clonePtr)
+        val xCoords = DoubleArray(n)
+        val yCoords = DoubleArray(n)
+        xCoords.usePinned { xPinned ->
+            yCoords.usePinned { yPinned ->
+                OGR_G_GetPoints(clonePtr, xPinned.addressOf(0), 8, yPinned.addressOf(0), 8, null, 0)
+            }
+        }
+        for (i in 0 until n) {
+            OGR_G_SetPoint_2D(clonePtr, i, xCoords[n - 1 - i], yCoords[n - 1 - i])
+        }
+        return OgrGeometry(clonePtr)
     }
 
+    // For a polygon: OGR_G_GetGeometryCount includes the exterior ring, so subtract 1.
     val numInteriorRings: Int
-        get() = TODO()
+        get() = maxOf(0, OGR_G_GetGeometryCount(ptr) - 1)
 
     fun intersection(other: OgrGeometry?): OgrGeometry? {
         return other?.let {
@@ -224,15 +266,15 @@ open class OgrGeometry(
         }
     }
 
-    fun getGeometryN(i: Int) : OgrGeometry? {
-        TODO()
+    fun getGeometryN(i: Int): OgrGeometry? {
+        return OGR_G_GetGeometryRef(ptr, i)?.let { geom ->
+            OgrGeometry(geom, true)
+        }
     }
 
-    fun simplifyPreserveTopology(simplificationDistanceTolerance: Double) : OgrGeometry {
-       TODO()
-    }
-
-    fun getEnvelopeInternal() : OgrGeometry? {
-        TODO()
+    fun simplifyPreserveTopology(simplificationDistanceTolerance: Double): OgrGeometry {
+        return OGR_G_SimplifyPreserveTopology(ptr, simplificationDistanceTolerance)
+            ?.let { OgrGeometry(it) }
+            ?: this
     }
 }

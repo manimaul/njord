@@ -57,7 +57,7 @@ data class Tile(
 
         @OptIn(ExperimentalSerializationApi::class)
         fun encodeTile(tile: Tile): ByteArray {
-            return ProtoBuf.encodeToByteArray(Tile.serializer(), tile)
+            return ProtoBuf.encodeToByteArray(serializer(), tile)
         }
 
     }

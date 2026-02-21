@@ -108,11 +108,7 @@ object Gdal {
     }
 
     fun createPolygon(vararg position: Position) : OgrGeometry {
-        return OgrGeometry(requireNotNull(OGR_G_CreateGeometry(wkbPolygon))).also { poly ->
-            position.forEach {
-                OGR_G_AddPoint_2D(poly.ptr, it.x, it.y)
-            }
-        }
+        return createPolygon(createLinearRing(*position))
     }
 
     fun createLineString(vararg position: Position): OgrGeometry {

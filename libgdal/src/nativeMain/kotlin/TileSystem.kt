@@ -98,8 +98,12 @@ class TileSystem(
         OGR_G_AddPoint_2D(ring, br.x, br.y);
         OGR_G_AddPoint_2D(ring, bl.x, bl.y);
         OGR_G_AddPoint_2D(ring, tl.x, tl.y);
-        val polygon: OGRGeometryH = requireNotNull(OGR_G_CreateGeometry(wkbPolygon))
-        OGR_G_AddGeometryDirectly(polygon, ring)
+        val polygon: OGRGeometryH = requireNotNull(OGR_G_CreateGeometry(wkbPolygon)) {
+            "could not create empty polygon"
+        }
+        OGR_G_AddGeometryDirectly(polygon, ring).requireSuccess {
+            "failed to add ring to polygon"
+        }
         return OgrGeometry(polygon)
     }
 

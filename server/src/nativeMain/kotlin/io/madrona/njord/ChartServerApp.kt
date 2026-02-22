@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class, ExperimentalAtomicApi::class)
+
 package io.madrona.njord
 
 import File
@@ -19,6 +21,18 @@ import io.ktor.server.websocket.*
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.staticCFunction
+import kotlin.concurrent.atomics.AtomicInt
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.concurrent.atomics.incrementAndFetch
+import kotlin.system.exitProcess
+import platform.posix.SIGINT
+import platform.posix.SIGTERM
+import platform.posix.pause
+import platform.posix.signal
+
+private val shutdownFlag = AtomicInt(0)
 
 val CallLogging = createApplicationPlugin(name = "CallLogging") {
     onCall { call ->
@@ -29,12 +43,28 @@ val CallLogging = createApplicationPlugin(name = "CallLogging") {
 
 class ChartServerApp {
     fun serve() {
-        embeddedServer(
-            CIO,
-            port = Singletons.config.port,
-            host = Singletons.config.host,
+        val server = embeddedServer(
+            factory = CIO,
+            configure = {
+                connector {
+                    host = Singletons.config.host
+                    port = Singletons.config.port
+                }
+                reuseAddress = true
+            },
             module = Application::njord
-        ).start(wait = true)
+        ).start(wait = false)
+
+        signal(SIGINT, staticCFunction { _ -> shutdownFlag.incrementAndFetch() })
+        signal(SIGTERM, staticCFunction { _ -> shutdownFlag.incrementAndFetch() })
+
+        while (shutdownFlag.load() == 0) {
+            pause()
+        }
+
+        println("Shutting down server...")
+        server.stop(gracePeriodMillis = 500, timeoutMillis = 5000)
+        exitProcess(0)
     }
 }
 
@@ -116,9 +146,6 @@ fun Application.njord() {
 
             // curl -v "https://openenc.com/v1/tile/0/0/0"
             TileHandler(),
-
-            // curl -v "https://openenc.com/v1/cache"
-            CacheHandler(),
 
             // https://openenc.com/v1/icon/<name>.png
             IconHandler(),

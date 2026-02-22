@@ -23,8 +23,6 @@ class TileSystem(
     private val maxLatY = 85.05112878
     private val minLngX = -180.0
     private val maxLngX = 180.0
-    private val maxZoomLevel = 32
-    private val minZoomLevel = 0
 
     companion object {
 
@@ -40,7 +38,7 @@ class TileSystem(
 
     /**
      * Determines the map width and height (in pixels) at a specified level of detail
-     * levelOfDetail, from [minZoomLevel] to [maxZoomLevel] (the highest detail)
+     * levelOfDetail.
      * returns map height and width in pixels
      */
     fun mapSize(levelOfDetail: Number): Int {
@@ -50,9 +48,8 @@ class TileSystem(
     /**
      * converts a pixel x,y coordinates at a specified level of detail into
      * latitude,longitude WGS-84 coordinates (in decimal degrees)
-     * x - coordinate of point in pixels
-     * y - coordinate of point in pixels
-     * levelOfDetail, from [minZoomLevel] to [maxZoomLevel] (the highest detail)
+     * [pixels] - pixel coordinates
+     * [levelOfDetail] the z / zoom level
      */
     private fun pixelXyToLatLng(pixels: Position, levelOfDetail: Int): Position {
         val mSize = mapSize(levelOfDetail)
@@ -83,17 +80,18 @@ class TileSystem(
     /**
      * calculate the WGS-84 coordinate (in decimal degrees) bounds of a tile
      * levelOfDetail: z axis level from 1 (lowest detail) to 23 (highest detail)
-     * x: the tile x value
-     * y: the tile y value
-     * a tuple (top left, top right, bottom right, bottom left) of 4 WGS84 (latitude,longitude) tuples
+     * [x] the tile x value
+     * [y] the tile y value
+     * [z] the tile zoom
+     * [expandPixels] the amount of pixels to expand the tile by
      */
-    fun createTileClipPolygon(x: Int, y: Int, z: Int): OgrGeometry {
+    fun createTileClipPolygon(x: Int, y: Int, z: Int, expandPixels: Int = 0): OgrGeometry {
         val ring: OGRGeometryH = requireNotNull(OGR_G_CreateGeometry(wkbLinearRing))
         val pixelCoord = tileXyToPixelXy(x, y)
-        val tl = pixelXyToLatLng(pixelCoord, z)
-        val tr = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize), z)
-        val br = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize, y = pixelCoord.y + tileSize), z)
-        val bl = pixelXyToLatLng(pixelCoord.newPosition(y = pixelCoord.y + tileSize), z)
+        val tl = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x - expandPixels, y = pixelCoord.y - expandPixels), z)
+        val tr = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize + expandPixels, y = pixelCoord.y - expandPixels), z)
+        val br = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x + tileSize + expandPixels, y = pixelCoord.y + tileSize + expandPixels), z)
+        val bl = pixelXyToLatLng(pixelCoord.newPosition(x = pixelCoord.x - expandPixels, y = pixelCoord.y + tileSize + expandPixels), z)
 
         OGR_G_AddPoint_2D(ring, tl.x, tl.y);
         OGR_G_AddPoint_2D(ring, tr.x, tr.y);
@@ -109,7 +107,7 @@ class TileSystem(
      * converts latitude/longitude WGS-84 coordinates (in decimal degrees) into pixel x,y
      * latitude - (in decimal degrees) to convert
      * longitude - (in decimal degrees) to convert
-     * levelOfDetail, from [minZoomLevel] to [maxZoomLevel] (the highest detail)
+     * levelOfDetail - the z / zoom level
      */
     private fun latLngToPixelXy(lngX: Double, latY: Double, levelOfDetail: Number): Position {
         val latitude = clip(latY, minLatY, maxLatY)

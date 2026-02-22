@@ -1,6 +1,5 @@
 package io.madrona.njord.geo
 
-import MvtDataset
 import OgrGeometry
 import TileSystem
 import io.madrona.njord.Singletons
@@ -12,7 +11,6 @@ import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
 import transformToTilePixels
-import kotlin.collections.emptyMap
 
 class TileEncoder(
     val x: Int,
@@ -28,13 +26,11 @@ class TileEncoder(
     private val tileEnvelope: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z)
 
     fun addDebug(): TileEncoder {
-        tileEnvelope.centroid().takeIf { !it.isEmpty() }?.let {
-            vectorTileEncoder.addFeature(
-                "DEBUG", mapOf(
-                    "DMSG" to "$z, $x, $y".json
-                ), transformToTilePixels(it, x, y, z, tileSystem)
+        vectorTileEncoder.addDebugEnvelope(
+            "DEBUG", mapOf(
+                "DMSG" to "$z, $x, $y".json
             )
-        }
+        )
         return this
     }
 
@@ -86,23 +82,30 @@ class TileEncoder(
                         val props = layerFactory.preTileEncode(feature).props.filtered().also {
                             it["CID"] = chart.id.json
                         }
-                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }?.let { tileGeo ->
-                            if (info) {
-                                infoFeatures.add(
-                                    ChartFeatureInfo(
-                                        feature.layer,
-                                        props,
-                                        tileGeo.geoJson()
+                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }
+                            ?.let { tileGeo ->
+                                if (info) {
+                                    infoFeatures.add(
+                                        ChartFeatureInfo(
+                                            feature.layer,
+                                            props,
+                                            tileGeo.geoJson()
+                                        )
                                     )
+                                }
+                                vectorTileEncoder.addFeature(
+                                    feature.layer,
+                                    props,
+                                    transformToTilePixels(tileGeo, x, y, z, tileSystem)
                                 )
                             }
-                            vectorTileEncoder.addFeature(feature.layer, props, transformToTilePixels(tileGeo, x, y, z, tileSystem))
-                        }
                     }
                     include = include.difference(chartGeo) ?: include
-                    chartGeo.getExteriorRing()?.let {
-                        vectorTileEncoder.addFeature("PLY", emptyMap(), transformToTilePixels(it, x, y, z, tileSystem))
-                    }
+                }
+                chartGeo.boundary()?.let {
+                    transformToTilePixels(it, x, y, z, tileSystem)
+                }?.let {
+                    vectorTileEncoder.addFeature("PLY", emptyMap(), it)
                 }
             }
         }

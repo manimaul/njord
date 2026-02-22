@@ -115,6 +115,12 @@ open class OgrGeometry(
         }
     }
 
+    fun boundary(): OgrGeometry? {
+        return OGR_G_Boundary(ptr)?.let {
+            OgrGeometry(it)
+        }
+    }
+
     fun getInteriorRingN(n: Int): OgrGeometry? {
         //For a polygon, OGR_G_GetGeometryRef(iSubGeom) returns the exterior ring if iSubGeom == 0, and the interior rings for iSubGeom > 0.
         val i = n + 1
@@ -140,6 +146,10 @@ open class OgrGeometry(
             OGR_G_SetPoint_2D(clonePtr, i, xCoords[n - 1 - i], yCoords[n - 1 - i])
         }
         return OgrGeometry(clonePtr)
+    }
+
+    fun clone(): OgrGeometry? {
+        return OGR_G_Clone(ptr)?.let { OgrGeometry(it) }
     }
 
     // For a polygon: OGR_G_GetGeometryCount includes the exterior ring, so subtract 1.

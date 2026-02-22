@@ -18,7 +18,7 @@ import kotlin.math.round
 
 class VectorTileEncoder(
     private val extent: Int = 4096,
-    clipBuffer: Int = 8,
+    private val clipBuffer: Int = 8,
     private val autoScale: Boolean = false,
     private val simplificationDistanceTolerance: Double = 0.1
 ) {
@@ -39,6 +39,15 @@ class VectorTileEncoder(
 
     private var x = 0
     private var y = 0
+
+    fun addDebugEnvelope(
+        layerName: String,
+        attributes: Map<String, JsonElement>,
+    ) {
+        val border = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
+        addFeature(layerName, attributes, border.boundary())
+        addFeature(layerName, attributes, border.centroid())
+    }
 
     fun addFeature(
         layerName: String,
@@ -460,7 +469,7 @@ class VectorTileEncoder(
     }
 
     companion object {
-        private fun createTileEnvelope(buffer: Int, size: Int): OgrGeometry {
+        fun createTileEnvelope(buffer: Int, size: Int): OgrGeometry {
             val cap = Position((0 - buffer).toDouble(), (size + buffer).toDouble())
             val coords = arrayOf(
                 cap,

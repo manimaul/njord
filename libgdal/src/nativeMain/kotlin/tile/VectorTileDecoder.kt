@@ -14,7 +14,7 @@ class VectorTileDecoder {
             geomType: Tile.GeomType,
             commands: List<Int>,
             scale: Double
-        ): OgrGeometry? {
+        ): OgrGeometry {
             var x = 0
             var y = 0
 
@@ -55,8 +55,8 @@ class VectorTileDecoder {
                     dx = zigZagDecode(dx)
                     dy = zigZagDecode(dy)
 
-                    x = x + dx
-                    y = y + dy
+                    x += dx
+                    y += dy
 
                     val coord = Position(x / scale, y / scale)
                     coords!!.add(coord)

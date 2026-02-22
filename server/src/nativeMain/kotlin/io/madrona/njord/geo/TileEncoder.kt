@@ -19,7 +19,6 @@ class TileEncoder(
     val y: Int,
     val z: Int,
     private val tileSystem: TileSystem = Singletons.tileSystem,
-//    private val mvtDataset: MvtDataset = MvtDataset(),
     private val vectorTileEncoder: VectorTileEncoder = VectorTileEncoder(),
     private val chartDao: ChartDao = Singletons.chartDao,
     private val layerFactory: LayerFactory = Singletons.layerFactory,
@@ -102,8 +101,8 @@ class TileEncoder(
                     }
                 }
                 include = include.difference(chartGeo) ?: include
-                chartGeo.intersection(tileEnvelope)?.let {
-                    vectorTileEncoder.addFeature("PLY", emptyMap<String, Any>(), transformToTilePixels(it, x, y, z, tileSystem))
+                chartGeo.getExteriorRing()?.let {
+                    vectorTileEncoder.addFeature("PLY", emptyMap(), transformToTilePixels(it, x, y, z, tileSystem))
                 }
             }
         }

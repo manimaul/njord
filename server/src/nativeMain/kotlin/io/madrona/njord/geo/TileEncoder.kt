@@ -11,7 +11,7 @@ import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
-import transformToTileGeometry
+import transformToTilePixels
 import kotlin.collections.emptyMap
 
 class TileEncoder(
@@ -33,7 +33,7 @@ class TileEncoder(
             vectorTileEncoder.addFeature(
                 "DEBUG", mapOf(
                     "DMSG" to "$z, $x, $y".json
-                ), transformToTileGeometry(it)
+                ), transformToTilePixels(it, x, y, z, tileSystem)
             )
         }
         return this
@@ -97,13 +97,13 @@ class TileEncoder(
                                     )
                                 )
                             }
-                            vectorTileEncoder.addFeature(feature.layer, props,  transformToTileGeometry(tileGeo))
+                            vectorTileEncoder.addFeature(feature.layer, props, transformToTilePixels(tileGeo, x, y, z, tileSystem))
                         }
                     }
                 }
                 include = include.difference(chartGeo) ?: include
                 chartGeo.intersection(tileEnvelope)?.let {
-                    vectorTileEncoder.addFeature("PLY", emptyMap<String, Any>(), transformToTileGeometry(it))
+                    vectorTileEncoder.addFeature("PLY", emptyMap<String, Any>(), transformToTilePixels(it, x, y, z, tileSystem))
                 }
             }
         }

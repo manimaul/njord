@@ -6,6 +6,12 @@ import Gdal.epsg3857
 import OgrGeometry
 import io.madrona.njord.geojson.Position
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.longOrNull
 import tile.VectorTileDecoder.Companion.decodeGeometry
 import kotlin.math.round
 
@@ -26,16 +32,17 @@ class VectorTileEncoder(
 
     private val clipGeometry: OgrGeometry = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
 
-    private val clipEnvelope: OgrGeometry = clipGeometry.envelopeGeometry()
+    //expand by 1 because gdal does not have covers so we use contains and don't want to exclude geometries on the outer ring coordinates
+    private val clipEnvelope: OgrGeometry = clipGeometry.envelopeGeometry(expand = 1)
 
-    private val clipGeometryPrepared: OgrGeometry = clipGeometry //.prepare()
+    private val clipGeometryPrepared: OgrGeometry = clipGeometry //todo() use prepared geometry
 
     private var x = 0
     private var y = 0
 
     fun addFeature(
         layerName: String,
-        attributes: Map<String, *>,
+        attributes: Map<String, JsonElement>,
         geo: OgrGeometry?,
     ) {
         if (geo == null) {
@@ -47,7 +54,7 @@ class VectorTileEncoder(
 
     private fun addFeature(
         layerName: String,
-        attributes: Map<String, *>,
+        attributes: Map<String, JsonElement>,
         geo: OgrGeometry?,
         id: Long
     ) {
@@ -141,20 +148,15 @@ class VectorTileEncoder(
 
         val tags = mutableListOf<Int>()
         for (e in attributes.entries) {
-            // skip attribute without value
-            val value = e.value ?: continue
-
+            val value = e.value
             tags.add(layer.key(e.key))
             tags.add(layer.value(value))
         }
 
         layer.features.add(
             Feature(
-//                layerName = layerName,
-//                extent = extent,
                 geometry = geometry,
                 tags = tags,
-//                attributes = attributes,
                 id = id
             )
         )
@@ -194,7 +196,7 @@ class VectorTileEncoder(
         if (simplificationDistanceTolerance > 0.0 && geomType == Tile.GeomType.POLYGON) {
             val scale = if (autoScale) (extent / 256.0) else 1.0
             val decodedGeometry = decodeGeometry(geomType, commands, scale)
-            if (decodedGeometry?.isValid != true) {
+            if (!decodedGeometry.isValid) {
                 // Invalid. Try more simplification and without preserving topology.
                 geometry = geometry.simplify(simplificationDistanceTolerance * 2.0)
                 if (geometry == null || geometry.isEmpty()) {
@@ -209,6 +211,18 @@ class VectorTileEncoder(
         return commands
     }
 
+    fun jsonPrimitiveTileValue(jsonPrimitive: JsonPrimitive) : Tile.Value {
+        return if (jsonPrimitive.isString) {
+            Tile.Value(stringValue = jsonPrimitive.content)
+        } else {
+            jsonPrimitive.booleanOrNull?.let { Tile.Value(boolValue = it) } ?:
+            jsonPrimitive.intOrNull?.let { Tile.Value(intValue = it.toLong()) } ?:
+            jsonPrimitive.longOrNull?.let { Tile.Value(sintValue = it) } ?:
+            jsonPrimitive.doubleOrNull?.let { Tile.Value(doubleValue = it) } ?:
+            Tile.Value(stringValue = jsonPrimitive.content)
+        }
+    }
+
     /**
      * @return a byte array with the vector tile
      */
@@ -219,27 +233,11 @@ class VectorTileEncoder(
                     val layerName = entry.key
                     val layer = entry.value
                     val values = layer.values().map { value ->
-                        val tileValue: Tile.Value
-                        if (value is String) {
-                            tileValue = Tile.Value(stringValue = value)
-                        } else if (value is Int) {
-                            tileValue = Tile.Value(intValue = value.toLong())
-                        } else if (value is Long) {
-                            tileValue = Tile.Value(sintValue = value)
-                        } else if (value is Float) {
-                            tileValue = Tile.Value(floatValue = value)
-                        } else if (value is Double) {
-                            tileValue = Tile.Value(doubleValue = value)
-                        } else if (value is String) {
-                            tileValue = Tile.Value(stringValue = value)
-                        } else if (value is Number) {
-                            tileValue = Tile.Value(doubleValue = value.toDouble())
-                        } else if (value is Boolean) {
-                            tileValue = Tile.Value(boolValue = value)
+                        if (value is JsonPrimitive) {
+                            jsonPrimitiveTileValue(value)
                         } else {
-                            tileValue = Tile.Value(stringValue = value.toString())
+                            Tile.Value(stringValue = value.toString())
                         }
-                        tileValue
                     }
 
                     val features = layer.features.mapNotNull { feature ->
@@ -432,7 +430,7 @@ class VectorTileEncoder(
         val features: MutableList<Feature> = ArrayList()
 
         private val keys: MutableMap<String, Int> = LinkedHashMap()
-        private val values: MutableMap<Any, Int> = LinkedHashMap()
+        private val values: MutableMap<JsonElement, Int> = LinkedHashMap()
 
         fun key(key: String): Int {
             var i = keys[key]
@@ -447,7 +445,7 @@ class VectorTileEncoder(
             return ArrayList<String>(keys.keys)
         }
 
-        fun value(value: Any): Int {
+        fun value(value: JsonElement): Int {
             var i = values[value]
             if (i == null) {
                 i = values.size
@@ -456,7 +454,7 @@ class VectorTileEncoder(
             return i
         }
 
-        fun values(): List<Any> {
+        fun values(): List<JsonElement> {
             return values.keys.toList()
         }
     }

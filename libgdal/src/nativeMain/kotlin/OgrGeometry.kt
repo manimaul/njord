@@ -64,14 +64,14 @@ open class OgrGeometry(
         }
     }
 
-    fun envelopeGeometry(): OgrGeometry {
+    fun envelopeGeometry(expand: Int = 0): OgrGeometry {
         return memScoped {
             val env = alloc<OGREnvelope>()
             OGR_G_GetEnvelope(ptr, env.ptr)
-            val minX = env.MinX - 1
-            val maxX = env.MaxX + 1
-            val minY = env.MinY - 1
-            val maxY = env.MaxY + 1
+            val minX = env.MinX - expand
+            val maxX = env.MaxX + expand
+            val minY = env.MinY - expand
+            val maxY = env.MaxY + expand
             val ring = Gdal.createLinearRing(
                 Position(minX, minY),
                 Position(maxX, minY),

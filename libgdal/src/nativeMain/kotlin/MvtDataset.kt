@@ -25,6 +25,40 @@ fun transformToTileGeometry(geometry: OgrGeometry): OgrGeometry {
     return geometry
 }
 
+private fun applyCoordTransform(ptr: OGRGeometryH, transform: (Double, Double) -> Pair<Double, Double>) {
+    val n = OGR_G_GetPointCount(ptr)
+    if (n > 0) {
+        val xs = DoubleArray(n)
+        val ys = DoubleArray(n)
+        xs.usePinned { xp ->
+            ys.usePinned { yp ->
+                OGR_G_GetPoints(ptr, xp.addressOf(0), 8, yp.addressOf(0), 8, null, 0)
+            }
+        }
+        for (i in 0 until n) {
+            val (newX, newY) = transform(xs[i], ys[i])
+            OGR_G_SetPoint_2D(ptr, i, newX, newY)
+        }
+    } else {
+        val count = OGR_G_GetGeometryCount(ptr)
+        for (i in 0 until count) {
+            OGR_G_GetGeometryRef(ptr, i)?.let { applyCoordTransform(it, transform) }
+        }
+    }
+}
+
+/**
+ * Transforms a WGS84 (EPSG:4326) geometry in-place to tile-local pixel coordinates (0..extent)
+ * suitable for use with VectorTileEncoder.
+ */
+fun transformToTilePixels(geometry: OgrGeometry, x: Int, y: Int, z: Int, tileSystem: TileSystem): OgrGeometry {
+    applyCoordTransform(geometry.ptr) { lng, lat ->
+        val pos = tileSystem.latLngToTileBoundedXy(lng, lat, x, y, z)
+        Pair(pos.x, pos.y)
+    }
+    return geometry
+}
+
 private fun mvtPtr(
     minZoom: Int,
     maxZoom: Int,

@@ -19,7 +19,6 @@ open class OgrGeometry(
 
     @OptIn(ExperimentalNativeApi::class)
     private val cleaner: Cleaner? = if (!owned) createCleaner(ptr) {
-        //println("free geometry")
         OGR_G_DestroyGeometry(it)
     } else null
 

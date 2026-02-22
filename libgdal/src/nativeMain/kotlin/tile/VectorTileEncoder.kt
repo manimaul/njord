@@ -410,7 +410,7 @@ class VectorTileEncoder(
         // so we compute signed area via the shoelace formula to detect winding order.
         var exteriorRing: OgrGeometry? = polygon.getExteriorRing()
         val exteriorCs = exteriorRing?.coordinateSequence() ?: emptyList()
-        if (signedArea(exteriorCs) > 0.0) {
+        if ((exteriorRing?.area ?: 0.0) > 0.0) {
             exteriorRing = exteriorRing?.reverse()
         }
         commands.addAll(commandsCoords(exteriorRing?.coordinateSequence() ?: exteriorCs, true))
@@ -418,7 +418,7 @@ class VectorTileEncoder(
         for (i in 0..<polygon.numInteriorRings) {
             var interiorRing: OgrGeometry? = polygon.getInteriorRingN(i)
             val interiorCs = interiorRing?.coordinateSequence() ?: emptyList()
-            if (signedArea(interiorCs) < 0.0) {
+            if ((interiorRing?.area ?: 0.0) < 0.0) {
                 interiorRing = interiorRing?.reverse()
             }
             commands.addAll(commandsCoords(interiorRing?.coordinateSequence() ?: interiorCs, true))
@@ -477,7 +477,6 @@ class VectorTileEncoder(
 
         fun shouldClosePath(geometry: OgrGeometry): Boolean {
             return when (geometry.type) {
-                GeomType.LineString,
                 GeomType.LinearRing,
                 GeomType.Polygon -> true
 
@@ -492,18 +491,6 @@ class VectorTileEncoder(
 
         fun zigZagEncode(n: Int): Int {
             return (n shl 1) xor (n shr 31)
-        }
-
-        // Shoelace formula. Positive = CCW in EPSG:3857 (Y-up) = CW in tile space (Y-down).
-        fun signedArea(cs: List<Position>): Double {
-            var sum = 0.0
-            val n = cs.size
-            for (i in 0 until n) {
-                val c0 = cs[i]
-                val c1 = cs[(i + 1) % n]
-                sum += (c0.x * c1.y) - (c1.x * c0.y)
-            }
-            return sum / 2.0
         }
     }
 }

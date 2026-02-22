@@ -69,7 +69,8 @@ class TileEncoder(
     }
 
     suspend fun addCharts(info: Boolean): TileEncoder {
-        var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z) //wgs84
+        //we need to expand the polygon so that lines are not drawn on the edge of the tile
+        var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
         chartDao.findInfoAsync(tileEnvelope.wkb)?.let { charts ->
             charts.forEach { chart ->
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
@@ -93,10 +94,11 @@ class TileEncoder(
                                         )
                                     )
                                 }
+                                transformToTilePixels(tileGeo, x, y, z, tileSystem)
                                 vectorTileEncoder.addFeature(
                                     feature.layer,
                                     props,
-                                    transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                                    tileGeo
                                 )
                             }
                     }

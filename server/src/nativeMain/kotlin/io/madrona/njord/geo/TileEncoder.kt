@@ -99,10 +99,10 @@ class TileEncoder(
                             vectorTileEncoder.addFeature(feature.layer, props, transformToTilePixels(tileGeo, x, y, z, tileSystem))
                         }
                     }
-                }
-                include = include.difference(chartGeo) ?: include
-                chartGeo.getExteriorRing()?.let {
-                    vectorTileEncoder.addFeature("PLY", emptyMap(), transformToTilePixels(it, x, y, z, tileSystem))
+                    include = include.difference(chartGeo) ?: include
+                    chartGeo.getExteriorRing()?.let {
+                        vectorTileEncoder.addFeature("PLY", emptyMap(), transformToTilePixels(it, x, y, z, tileSystem))
+                    }
                 }
             }
         }

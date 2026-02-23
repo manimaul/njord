@@ -27,13 +27,9 @@ open class GdalDataset(
     private val layers: MutableMap<String, OgrLayer> = mutableMapOf()
 
     fun getOrCreateLayer(layerName: String): OgrLayer {
-//        if (layers.containsKey(layerName)) {
-//            println("returning existing layer for $layerName")
-//        }
         return layers.getOrPut(layerName) {
-//            println("creating new layer for $layerName")
             val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
-            OgrLayer(lp)
+            OgrLayer(lp, this)
         }
     }
 
@@ -41,7 +37,7 @@ open class GdalDataset(
         return layers[name]
     }
 
-    val layerNames: Set<String>
+    open val layerNames: Set<String>
         get() = layers.values.mapNotNull { it.name }.toSet()
 
     val layerCount: Int = OGR_DS_GetLayerCount(ptr)
@@ -51,15 +47,6 @@ open class GdalDataset(
         layer.addFeature(geometry, props)
     }
 
-    fun featureCount(exLayers: Set<String> = emptySet()): Long {
-        return layers.values.sumOf {
-            if (exLayers.contains(it.name)) {
-                0L
-            } else {
-                it.featureCount
-            }
-        }
-    }
 
     companion object {
         fun create(

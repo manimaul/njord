@@ -19,7 +19,8 @@ import libgdal.*
 import kotlin.experimental.ExperimentalNativeApi
 
 class OgrLayer(
-    val ptr: OGRLayerH
+    val ptr: OGRLayerH,
+    val owner: Any
 ) {
 
     val name: String?

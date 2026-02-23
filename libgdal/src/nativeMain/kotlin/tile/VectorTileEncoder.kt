@@ -4,6 +4,7 @@ package tile
 
 import Gdal.epsg3857
 import OgrGeometry
+import OgrPreparedGeometry
 import io.madrona.njord.geojson.Position
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.serialization.json.JsonElement
@@ -12,29 +13,28 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
+import tile.VectorTileEncoder.Companion.createTileEnvelope
 import kotlin.math.round
 
+private val extent: Int = 4096
+private val clipBuffer: Int = 8
+private val autoScale: Boolean = false
+private val simplificationDistanceTolerance: Double = 0.1
 
-class VectorTileEncoder(
-    private val extent: Int = 4096,
-    private val clipBuffer: Int = 8,
-    private val autoScale: Boolean = false,
-    private val simplificationDistanceTolerance: Double = 0.1
-) {
+private val minimumLength: Double = if (autoScale) (256.0 / extent) else 1.0
+
+private val minimumArea: Double = minimumLength * minimumLength
+
+private val clipGeometry: OgrGeometry = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
+
+//expand by 1 because gdal does not have covers so we use contains and don't want to exclude geometries on the outer ring coordinates
+private val clipEnvelope = clipGeometry.envelopeGeometry(expand = 1).prepare()
+
+private val clipGeometryPrepared: OgrPreparedGeometry = clipGeometry.prepare() //todo() use prepared geometry
+
+class VectorTileEncoder {
     private val layers: MutableMap<String, Layer> = LinkedHashMap<String, Layer>()
-
     private var autoincrement: Long = 1
-
-    private val minimumLength: Double = if (autoScale) (256.0 / extent) else 1.0
-
-    private val minimumArea: Double = minimumLength * minimumLength
-
-    private val clipGeometry: OgrGeometry = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
-
-    //expand by 1 because gdal does not have covers so we use contains and don't want to exclude geometries on the outer ring coordinates
-    private val clipEnvelope: OgrGeometry = clipGeometry.envelopeGeometry(expand = 1)
-
-    private val clipGeometryPrepared: OgrGeometry = clipGeometry //todo() use prepared geometry
 
     private var x = 0
     private var y = 0
@@ -180,13 +180,13 @@ class VectorTileEncoder(
             return geometry
         }
 
-        val intersection = clipGeometry.intersection(geometry)
+        val intersection = clipGeometry.intersection(geometry) //todo: prepared
 
         // Sometimes an intersection is returned as an empty geometry.
         // going via wkb fixes the problem.
         if ((intersection == null || intersection.isEmpty()) && clipGeometryPrepared.intersects(geometry)) {
             val wkb = geometry.wkb
-            return clipGeometry.intersection(OgrGeometry.fromWkb(wkb, epsg3857))
+            return clipGeometry.intersection(OgrGeometry.fromWkb(wkb, epsg3857)) //todo: prepared
         }
 
         return intersection

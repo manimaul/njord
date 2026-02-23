@@ -56,17 +56,24 @@ class ZipFileEntry(
         }
     }
 
-    fun unzipToPath(path: String) {
-        File(path).path.parent?.toString()?.let { File(it).mkdirs() }
-        val fp = fopen(path, "wb") ?: error("Cannot open destination: $path")
-        try {
-            readFileChunked { buffer, count ->
-                buffer.usePinned { pinned ->
-                    fwrite(pinned.addressOf(0), 1u, count.toULong(), fp)
+    fun unzipToPath(dir: File) {
+        val name = name()
+        if (isDirectory()) {
+            File(dir, name).mkdirs()
+        } else {
+            val f = File(dir, name)
+            f.parentFile()?.mkdirs()
+            val path = f.getAbsolutePath().toString()
+            val fp = fopen(path, "wb") ?: error("Cannot open destination: $path")
+            try {
+                readFileChunked { buffer, count ->
+                    buffer.usePinned { pinned ->
+                        fwrite(pinned.addressOf(0), 1u, count.toULong(), fp)
+                    }
                 }
+            } finally {
+                fclose(fp)
             }
-        } finally {
-            fclose(fp)
         }
     }
 }

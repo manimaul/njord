@@ -42,6 +42,19 @@ open class OgrGeometry(
             GeomType.entries.firstOrNull { it.gdalType == gdalType } ?: GeomType.Unknown
         }
 
+    fun makeValid() : OgrGeometry? {
+        return if (!isValid) {
+            println("making nonvalid geometry valid")
+            OGR_G_MakeValid(ptr)?.let {
+                val valid = OgrGeometry(it)
+                println("making nonvalid geometry valid result = ${valid.isValid}")
+                valid
+            }
+        } else {
+            this
+        }
+    }
+
     fun coordinateSequence(): List<Position> {
         val count = numCoordinates
         if (count == 0) {

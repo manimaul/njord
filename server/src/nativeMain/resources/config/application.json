@@ -25,7 +25,7 @@
     "shallowDepth": 3.0,
     "safetyDepth": 6.0,
     "deepDepth": 9.0,
-    "debugTile": false,
+    "debugTile": true,
     "chartIngestWorkers": 7,
     "featureIngestWorkers": 10
 }

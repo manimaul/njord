@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 
+import io.madrona.njord.geojson.FeatureCollection
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
@@ -33,9 +34,15 @@ class OgrLayer(
         buildList {
             while (true) {
                 val feature = OGR_L_GetNextFeature(ptr) ?: break
-                add(OgrFeature(feature, this))
+                add(OgrFeature(feature, this@OgrLayer))
             }
         }
+    }
+
+    fun geoJson(): FeatureCollection {
+        return FeatureCollection(
+            features = features.map { it.geoJson() }
+        )
     }
 
     fun addFeature(geometry: OgrGeometry, props: Map<String, JsonElement> = emptyMap()) {

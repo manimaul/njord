@@ -44,7 +44,7 @@ class OgrS57Dataset(
         val chartTxt = file.parentFile()?.listFiles(false)?.filter { ea ->
             ea.name.endsWith(".TXT", true)
         }?.associate {
-            it.name to it.readContents() //todo: Charset
+            it.name to it.readContents(charSet)
         } ?: emptyMap()
 
         val mcover = getLayer("M_COVR")

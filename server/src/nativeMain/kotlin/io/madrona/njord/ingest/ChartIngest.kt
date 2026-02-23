@@ -139,42 +139,40 @@ class ChartIngest(
         s57: OgrS57Dataset,
         chart: Chart, report: Report
     ) {
-        TODO()
-//        val queue = ArrayDeque(s57.layerNames.filter { !exLayers.contains(it) })
-//        withContext(Dispatchers.IO) {
-//            while (queue.isNotEmpty()) {
-//                if (working.get() < config.featureIngestWorkers) {
-//                    queue.poll()?.let { layerName ->
-//                        s57.findLayer(layerName)?.let { geo ->
-//                            val w = working.incrementAndGet()
-//                            val r = queue.size
-//                            launch {
-//                                log.info("$layerName ${geo.features.size} feature(s) inserting working=$w remaining=$r")
-//                                val ctx = timer.time()
-//                                val count = geoJsonDao.featureInsertAsync(
-//                                    FeatureInsert(
-//                                        layerName = layerName, chart = chart, geo = geo
-//                                    )
-//                                ) ?: 0
-//                                val ms = ctx.stop() / 1000L
-//                                val w = working.decrementAndGet()
-//                                if (count == 0) {
-//                                    log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-//                                    log.debug("geo json = \n${geo}")
-//                                }
-//                                log.info("$layerName $count feature(s) inserted in $ms working=$w")
-//                                report.appendChartFeatureCount(chart.name, count)
-//                                webSocketSession.sendMessage(report.progressMessage())
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    delay(250)
-//                }
-//            }
-//            report.completedChart()
-//            webSocketSession.sendMessage(report.progressMessage())
-//        }
+        val queue = ArrayDeque(s57.layerNames.filter { !exLayers.contains(it) })
+        withContext(Dispatchers.IO) {
+            while (queue.isNotEmpty()) {
+                if (working.value < config.featureIngestWorkers) {
+                    queue.removeFirstOrNull()?.let { layerName ->
+                        s57.getLayer(layerName)?.let { layer ->
+                            val w = working.incrementAndGet()
+                            launch {
+                                log.info("$layerName ${layer.features.size} feature(s) inserting working=$w remaining=${queue.size}")
+                                layer.geoJson()?.let { geo ->
+                                    val count = geoJsonDao.featureInsertAsync(
+                                        FeatureInsert(
+                                            layerName = layerName, chart = chart, geo = geo
+                                        )
+                                    ) ?: 0
+                                    val w = working.decrementAndGet()
+                                    log.info("$layerName ${layer.features.size} feature(s) insert complete working=$w remaining=${queue.size}")
+                                    if (count == 0) {
+                                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                                        log.debug("geo json = \n${geo}")
+                                    }
+                                    report.appendChartFeatureCount(chart.name, count)
+                                }
+                                webSocketSession.sendMessage(report.progressMessage())
+                            }
+                        }
+                    }
+                } else {
+                    delay(250)
+                }
+            }
+            report.completedChart()
+            webSocketSession.sendMessage(report.progressMessage())
+        }
     }
 
     private fun EncUpload.cacheFiles(): List<File> {
@@ -239,8 +237,12 @@ private data class Report(
     }
 
     fun failChart(name: String, msg: String) {
-//        failedCharts.compute(name) { _, value -> value?.let { "$it, $msg" } ?: msg }
-        TODO()
+        val m = if (failedCharts.contains(name)) {
+           "${failedCharts[name]}, $msg"
+        } else {
+            msg
+        }
+        failedCharts[name] = m
     }
 
     fun completedChart() {

@@ -102,19 +102,12 @@ class TileEncoder(
                                 )
                             }
                     }
-                    val prevInclude = include
-                    println("[$z/$x/$y] include.difference start: include.isValid=${include.isValid} chartGeo.isValid=${chartGeo.isValid}")
                     include = include.difference(chartGeo) ?: include
-                    println("[$z/$x/$y] include.difference end: result.isValid=${include.isValid} result==prev=${include === prevInclude}")
                 }
-                println("[$z/$x/$y] boundary start: chartGeo.isValid=${chartGeo.isValid}")
                 val boundary = chartGeo.boundary()
-                println("[$z/$x/$y] boundary end: boundary=${boundary?.type} isValid=${boundary?.isValid}")
                 boundary?.let {
                     transformToTilePixels(it, x, y, z, tileSystem)
-                    println("[$z/$x/$y] transformToTilePixels done")
                     vectorTileEncoder.addFeature("PLY", emptyMap(), it)
-                    println("[$z/$x/$y] addFeature PLY done")
                 }
             }
         }
@@ -122,10 +115,7 @@ class TileEncoder(
     }
 
     fun encode(): ByteArray {
-        println("[$z/$x/$y] encoding")
-        val data = vectorTileEncoder.encode()
-        println("[$z/$x/$y] encoding done")
-        return data
+        return vectorTileEncoder.encode()
     }
 
     fun infoJson() = infoFeatures

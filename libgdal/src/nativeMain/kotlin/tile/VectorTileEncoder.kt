@@ -12,7 +12,6 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
-import tile.VectorTileDecoder.Companion.decodeGeometry
 import kotlin.math.round
 
 
@@ -93,7 +92,7 @@ class VectorTileEncoder(
         // special handling of GeometryCollection. subclasses are not handled here.
         if (geometry.type == GeomType.GeometryCollection) {
             for (i in 0..<geometry.numGeometries) {
-                val subGeometry = geometry.getGeometryN(i)
+                val subGeometry = geometry.getGeometryN(i)?.clone()
                 // keeping the id. any better suggestion?
                 addFeature(layerName, attributes, subGeometry, id)
             }
@@ -142,7 +141,7 @@ class VectorTileEncoder(
         // GeometryCollection. Subclasses not handled here.
         if (geometry.type == GeomType.GeometryCollection) {
             for (i in 0..<geometry.numGeometries) {
-                val subGeometry = geometry.getGeometryN(i)
+                val subGeometry = geometry.getGeometryN(i)?.clone()
                 // keeping the id. any better suggestion?
                 addFeature(layerName, attributes, subGeometry, id)
             }
@@ -370,7 +369,7 @@ class VectorTileEncoder(
 
     fun commandsMultiPolygon(mp: OgrGeometry): List<Int> {
         return (0 until mp.numGeometries).flatMap { i ->
-            mp.getGeometryN(i)?.let {
+            mp.getGeometryN(i)?.clone()?.let {
                 commands(it)
             } ?: emptyList()
         }

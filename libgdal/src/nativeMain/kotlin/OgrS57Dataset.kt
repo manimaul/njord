@@ -7,14 +7,18 @@ import io.madrona.njord.geojson.intValue
 import io.madrona.njord.geojson.stringValue
 import io.madrona.njord.model.ChartInsert
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.toKString
 import kotlinx.serialization.json.JsonObject
 import libgdal.*
+import kotlin.collections.contains
 import kotlin.collections.emptyMap
+import kotlin.experimental.ExperimentalNativeApi
+import kotlin.native.ref.Cleaner
+import kotlin.native.ref.createCleaner
 
 
-class OgrS57Dataset(
-    val file: File) : GdalDataset(
-    requireNotNull(
+class OgrS57Dataset(val file: File) {
+    private val ptr: GDALDatasetH = requireNotNull(
         GDALOpenEx(
             file.getAbsolutePath().toString(),
             GDAL_OF_VECTOR.toUInt(),
@@ -23,7 +27,13 @@ class OgrS57Dataset(
             null
         )
     )
-) {
+
+    @OptIn(ExperimentalNativeApi::class)
+    private val cleaner: Cleaner = createCleaner(ptr) {
+        GDALClose(it)
+    }
+
+    val layerCount: Int = OGR_DS_GetLayerCount(ptr)
 
     private fun JsonObject.findCharsetFromDsidProps(): Charset {
         return when (intValue("DSSI_NALL") ?: intValue("DSSI_AALL")) {
@@ -33,9 +43,31 @@ class OgrS57Dataset(
         }
     }
 
+    fun layerNames(): List<String> {
+        return if (layerCount > 0) {
+            (0 until layerCount).mapNotNull { index ->
+                OGR_DS_GetLayer(ptr, index)?.let { lp ->
+                    OGR_L_GetName(lp)?.toKString()
+                }
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    fun getLayer(name: String): OgrLayer? {
+        return OGR_DS_GetLayerByName(ptr, name)?.let {
+            OgrLayer(it, this)
+        }
+    }
+
+    fun featureCount(exLayers: Set<String> = emptySet()): Long {
+        return layerNames().filter { !exLayers.contains(it) }.sumOf {
+            getLayer(it)?.featureCount ?: 0
+        }
+    }
+
     fun chartInsertInfo(): Insertable<ChartInsert> {
-
-
         val dsid = getLayer("DSID") ?: return InsertError("dsid is missing")
 
         val props = dsid.features.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
@@ -61,7 +93,7 @@ class OgrS57Dataset(
                 feature.geometry?.geoJson() as? Polygon
             }
             val multiPolygon = MultiPolygon(polygons)
-            Feature( geometry = multiPolygon )
+            Feature(geometry = multiPolygon)
         }
         val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
 

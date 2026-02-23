@@ -101,13 +101,12 @@ class ChartIngest(
                     zip.entries().filter { !it.isDirectory() }.forEach { entry ->
                         val name = entry.name()
                         if (!name.startsWith("__MACOSX")) {
-                            val outFile = File(dir, name)
-                            entry.unzipToPath(outFile.getAbsolutePath().toString())
+                            entry.unzipToPath(dir)
                             complete += 1
                             webSocketSession.sendMessage(
                                 WsMsg.Extracting((complete / size).toFloat())
                             )
-                            retVal.add(outFile)
+                            retVal.add(File(dir, name))
                         }
                     }
                 }
@@ -139,7 +138,7 @@ class ChartIngest(
         s57: OgrS57Dataset,
         chart: Chart, report: Report
     ) {
-        val queue = ArrayDeque(s57.layerNames.filter { !exLayers.contains(it) })
+        val queue = ArrayDeque(s57.layerNames().filter { !exLayers.contains(it) })
         withContext(Dispatchers.IO) {
             while (queue.isNotEmpty()) {
                 if (working.value < config.featureIngestWorkers) {

@@ -53,10 +53,8 @@ class VectorTileEncoder(
         attributes: Map<String, JsonElement>,
         geo: OgrGeometry?,
     ) {
-        if (geo == null) {
-            return
-        } else {
-            addFeature(layerName, attributes, geo.makeValid(), ++autoincrement)
+        geo?.makeValid()?.let {
+            addFeature(layerName, attributes, it, ++autoincrement)
         }
     }
 
@@ -66,7 +64,7 @@ class VectorTileEncoder(
         geo: OgrGeometry?,
         id: Long
     ) {
-        if (geo == null || !geo.isValid) {
+        if (geo == null) {
             return
         }
         var geometry = geo
@@ -224,8 +222,8 @@ class VectorTileEncoder(
                     }
 
                     val features = layer.features.mapNotNull { feature ->
-                        val geometry = feature.geometry.makeValid()
-                        val geomType: Tile.GeomType = geometry?.type?.tileType ?: Tile.GeomType.UNKNOWN
+                        val geometry = feature.geometry
+                        val geomType: Tile.GeomType = geometry.type.tileType
                         x = 0
                         y = 0
                         val commands = commands(geometry)

@@ -390,9 +390,11 @@ class VectorTileEncoder(
         //
         // OGR_G_GetArea on a LinearRing returns fabs(signedArea), always non-negative,
         // so we compute signed area via the shoelace formula to detect winding order.
+
         var exteriorRing: OgrGeometry? = polygon.getExteriorRing()
         val exteriorCs = exteriorRing?.coordinateSequence() ?: emptyList()
-        if ((exteriorRing?.area ?: 0.0) > 0.0) {
+        if (exteriorCs.signedArea() < 0.0) {
+            println("reversing exterior ring")
             exteriorRing = exteriorRing?.reverse()
         }
         commands.addAll(commandsCoords(exteriorRing?.coordinateSequence() ?: exteriorCs, true))
@@ -400,12 +402,25 @@ class VectorTileEncoder(
         for (i in 0..<polygon.numInteriorRings) {
             var interiorRing: OgrGeometry? = polygon.getInteriorRingN(i)
             val interiorCs = interiorRing?.coordinateSequence() ?: emptyList()
-            if ((interiorRing?.area ?: 0.0) < 0.0) {
+            if (interiorCs.signedArea() > 0.0) {
+                println("reversing interior ring")
                 interiorRing = interiorRing?.reverse()
             }
             commands.addAll(commandsCoords(interiorRing?.coordinateSequence() ?: interiorCs, true))
         }
         return commands
+    }
+
+    // In tile pixel space (Y-down): positive shoelace = CW on screen (CCW in geo/math).
+    // MVT spec requires exterior = CW on screen (positive shoelace in pixel space).
+    // MVT spec requires interior = CCW on screen (negative shoelace in pixel space).
+    fun List<Position>.signedArea(): Double {
+        var area = 0.0
+        for (i in indices) {
+            val j = (i + 1) % size
+            area += this[i].x * this[j].y - this[j].x * this[i].y
+        }
+        return area / 2.0
     }
 
     private data class Feature(val geometry: OgrGeometry, val tags: MutableList<Int>, val id: Long)

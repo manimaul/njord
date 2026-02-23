@@ -12,6 +12,29 @@ import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
 
+
+class OgrPreparedGeometry(
+    val ptr: OGRPreparedGeometryH,
+) {
+
+    @OptIn(ExperimentalNativeApi::class)
+    private val cleaner: Cleaner =  createCleaner(ptr) {
+        OGRDestroyPreparedGeometry(it)
+    }
+
+    fun contains(other: OgrGeometry?): Boolean {
+        return other?.let {
+            OGRPreparedGeometryContains(ptr, other.ptr) == 1
+        } ?: false
+    }
+
+    fun intersects(other: OgrGeometry?): Boolean {
+        return other?.let {
+            OGRPreparedGeometryIntersects(ptr, other.ptr) == 1
+        } ?: false
+    }
+}
+
 open class OgrGeometry(
     val ptr: OGRGeometryH,
     owned: Boolean = false,
@@ -44,6 +67,10 @@ open class OgrGeometry(
         OGR_GT_Flatten(OGR_G_GetGeometryType(ptr)).let { gdalType ->
             GeomType.entries.firstOrNull { it.gdalType == gdalType } ?: GeomType.Unknown
         }
+    }
+
+    fun prepare() : OgrPreparedGeometry {
+        return OgrPreparedGeometry(requireNotNull(OGRCreatePreparedGeometry(ptr)))
     }
 
     fun makeValid() : OgrGeometry? {

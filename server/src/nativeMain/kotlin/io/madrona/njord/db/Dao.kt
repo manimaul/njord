@@ -37,11 +37,3 @@ abstract class Dao(
     }
 }
 
-sealed class Insertable<T>
-class InsertError<T>(
-    val msg: String
-) : Insertable<T>()
-
-class InsertSuccess<T>(
-    val value: T
-) : Insertable<T>()

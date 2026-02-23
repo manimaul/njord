@@ -13,7 +13,6 @@ import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.SpriteSheet
-import io.madrona.njord.util.ZFinder
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlin.getValue
 
@@ -43,8 +42,6 @@ object Singletons {
     }
 
     val colorLibrary by lazy { ColorLibrary() }
-
-    val zFinder by lazy { ZFinder() }
 
     val tileSystem by lazy { TileSystem() }
 

@@ -415,7 +415,7 @@ class VectorTileEncoder(
     // In tile pixel space (Y-down): positive shoelace = CW on screen (CCW in geo/math).
     // MVT spec requires exterior = CW on screen (positive shoelace in pixel space).
     // MVT spec requires interior = CCW on screen (negative shoelace in pixel space).
-    fun List<Position>.signedArea(): Double {
+    private fun List<Position>.signedArea(): Double {
         var area = 0.0
         for (i in indices) {
             val j = (i + 1) % size

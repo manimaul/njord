@@ -56,9 +56,4 @@ class PgPreparedStatement(
     override fun executeReturning(): ResultSet {
         return executeQuery()
     }
-
-    override fun execute(): Long {
-        //todo: fails with create table type statement
-        return executeQuery().totalRows
-    }
 }

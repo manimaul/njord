@@ -41,7 +41,6 @@ class EncSaveHandler(
         } ?: call.respond(HttpStatusCode.NotFound)
     }
 
-    @OptIn(InternalAPI::class)
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val multipartData = call.receiveMultipart(formFieldLimit = Long.MAX_VALUE)
         val uuid = UUID.randomUUID().toString()

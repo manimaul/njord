@@ -44,11 +44,8 @@ open class OgrGeometry(
 
     fun makeValid() : OgrGeometry? {
         return if (!isValid) {
-            println("making nonvalid geometry valid")
             OGR_G_MakeValid(ptr)?.let {
-                val valid = OgrGeometry(it)
-                println("making nonvalid geometry valid result = ${valid.isValid}")
-                valid
+                return OgrGeometry(it)
             }
         } else {
             this
@@ -142,23 +139,6 @@ open class OgrGeometry(
         } else {
             null
         }
-    }
-
-    fun reverse(): OgrGeometry? {
-        val clonePtr = OGR_G_Clone(ptr) ?: return null
-        val n = OGR_G_GetPointCount(clonePtr)
-        if (n <= 1) return OgrGeometry(clonePtr)
-        val xCoords = DoubleArray(n)
-        val yCoords = DoubleArray(n)
-        xCoords.usePinned { xPinned ->
-            yCoords.usePinned { yPinned ->
-                OGR_G_GetPoints(clonePtr, xPinned.addressOf(0), 8, yPinned.addressOf(0), 8, null, 0)
-            }
-        }
-        for (i in 0 until n) {
-            OGR_G_SetPoint_2D(clonePtr, i, xCoords[n - 1 - i], yCoords[n - 1 - i])
-        }
-        return OgrGeometry(clonePtr)
     }
 
     fun clone(): OgrGeometry? {

@@ -37,10 +37,11 @@ open class OgrGeometry(
     val numCoordinates: Int
         get() = OGR_G_GetPointCount(ptr)
 
-    val type: GeomType
-        get() = OGR_GT_Flatten(OGR_G_GetGeometryType(ptr)).let { gdalType ->
+    val type: GeomType by lazy {
+        OGR_GT_Flatten(OGR_G_GetGeometryType(ptr)).let { gdalType ->
             GeomType.entries.firstOrNull { it.gdalType == gdalType } ?: GeomType.Unknown
         }
+    }
 
     fun makeValid() : OgrGeometry? {
         return if (!isValid) {

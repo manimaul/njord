@@ -28,14 +28,17 @@ open class OgrGeometry(
     val length: Double
         get() = OGR_G_Length(ptr)
 
-    val numGeometries: Int
-        get() = OGR_G_GetGeometryCount(ptr)
+    val numGeometries: Int by lazy {
+        OGR_G_GetGeometryCount(ptr)
+    }
 
-    val isValid: Boolean
-        get() = OGR_G_IsValid(ptr) == 1
+    val isValid: Boolean by lazy {
+        OGR_G_IsValid(ptr) == 1
+    }
 
-    val numCoordinates: Int
-        get() = OGR_G_GetPointCount(ptr)
+    val numCoordinates: Int by lazy {
+        OGR_G_GetPointCount(ptr)
+    }
 
     val type: GeomType by lazy {
         OGR_GT_Flatten(OGR_G_GetGeometryType(ptr)).let { gdalType ->

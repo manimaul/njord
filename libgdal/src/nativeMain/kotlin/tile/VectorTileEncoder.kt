@@ -390,23 +390,24 @@ class VectorTileEncoder(
         //
         // OGR_G_GetArea on a LinearRing returns fabs(signedArea), always non-negative,
         // so we compute signed area via the shoelace formula to detect winding order.
-
-        var exteriorRing: OgrGeometry? = polygon.getExteriorRing()
+        val exteriorRing: OgrGeometry? = polygon.getExteriorRing()
         val exteriorCs = exteriorRing?.coordinateSequence() ?: emptyList()
-        if (exteriorCs.signedArea() < 0.0) {
-            println("reversing exterior ring")
-            exteriorRing = exteriorRing?.reverse()
+        val ecs = if (exteriorCs.signedArea() < 0.0) {
+            exteriorCs.reversed()
+        } else {
+            exteriorCs
         }
-        commands.addAll(commandsCoords(exteriorRing?.coordinateSequence() ?: exteriorCs, true))
+        commands.addAll(commandsCoords(ecs, true))
 
         for (i in 0..<polygon.numInteriorRings) {
-            var interiorRing: OgrGeometry? = polygon.getInteriorRingN(i)
+            val interiorRing: OgrGeometry? = polygon.getInteriorRingN(i)
             val interiorCs = interiorRing?.coordinateSequence() ?: emptyList()
-            if (interiorCs.signedArea() > 0.0) {
-                println("reversing interior ring")
-                interiorRing = interiorRing?.reverse()
+            val cs = if (interiorCs.signedArea() > 0.0) {
+               interiorCs.reversed()
+            } else {
+               interiorCs
             }
-            commands.addAll(commandsCoords(interiorRing?.coordinateSequence() ?: interiorCs, true))
+            commands.addAll(commandsCoords(cs, true))
         }
         return commands
     }

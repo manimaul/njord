@@ -57,7 +57,7 @@ class VectorTileEncoder(
         if (geo == null) {
             return
         } else {
-            addFeature(layerName, attributes, geo, ++autoincrement)
+            addFeature(layerName, attributes, geo.makeValid(), ++autoincrement)
         }
     }
 
@@ -67,7 +67,7 @@ class VectorTileEncoder(
         geo: OgrGeometry?,
         id: Long
     ) {
-        if (geo == null) {
+        if (geo == null || !geo.isValid) {
             return
         }
         var geometry = geo
@@ -195,31 +195,6 @@ class VectorTileEncoder(
         return intersection
     }
 
-    private fun validateAndRepairCommands(commands: List<Int>, geometry: OgrGeometry): List<Int> {
-        var geometry: OgrGeometry? = geometry
-        if (commands.isEmpty()) {
-            return commands
-        }
-
-        val geomType: Tile.GeomType? = geometry?.type?.tileType
-        if (simplificationDistanceTolerance > 0.0 && geomType == Tile.GeomType.POLYGON) {
-            val scale = if (autoScale) (extent / 256.0) else 1.0
-            val decodedGeometry = decodeGeometry(geomType, commands, scale)
-            if (!decodedGeometry.isValid) {
-                // Invalid. Try more simplification and without preserving topology.
-                geometry = geometry.simplify(simplificationDistanceTolerance * 2.0)
-                if (geometry == null || geometry.isEmpty()) {
-                    mutableListOf<Any?>()
-                }
-                x = 0
-                y = 0
-                return commands(geometry)
-            }
-        }
-
-        return commands
-    }
-
     fun jsonPrimitiveTileValue(jsonPrimitive: JsonPrimitive) : Tile.Value {
         return if (jsonPrimitive.isString) {
             Tile.Value(stringValue = jsonPrimitive.content)
@@ -250,11 +225,11 @@ class VectorTileEncoder(
                     }
 
                     val features = layer.features.mapNotNull { feature ->
-                        val geometry = feature.geometry
-                        val geomType: Tile.GeomType = geometry.type.tileType
+                        val geometry = feature.geometry.makeValid()
+                        val geomType: Tile.GeomType = geometry?.type?.tileType ?: Tile.GeomType.UNKNOWN
                         x = 0
                         y = 0
-                        val commands = validateAndRepairCommands(commands(geometry), geometry)
+                        val commands = commands(geometry)
                         // skip features with no geometry commands
                         if (commands.isEmpty()) {
                             null

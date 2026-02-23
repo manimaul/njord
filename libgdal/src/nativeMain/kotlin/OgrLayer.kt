@@ -27,6 +27,17 @@ class OgrLayer(
     val featureCount: Long
         get() = OGR_L_GetFeatureCount(ptr, 1)
 
+
+    val features: List<OgrFeature> by lazy {
+        OGR_L_ResetReading(ptr)
+        buildList {
+            while (true) {
+                val feature = OGR_L_GetNextFeature(ptr) ?: break
+                add(OgrFeature(feature, this))
+            }
+        }
+    }
+
     fun addFeature(geometry: OgrGeometry, props: Map<String, JsonElement> = emptyMap()) {
         val data = props.mapNotNull {
             createFieldSchema(it.key, it.value)
@@ -53,7 +64,6 @@ class OgrLayer(
 
         return value.fieldType()?.let {
             if (index == -1) {
-//                println("init schema ${it.name} $key, $value")
                 val fieldDef: OGRFieldDefnH =
                     OGR_Fld_Create(key, it.nativeType) ?: error("OGR_Fld_Create failed")
                 OGR_Fld_SetName(fieldDef, key)
@@ -63,8 +73,6 @@ class OgrLayer(
                     "OGR_L_CreateField failed"
                 }
                 OGR_Fld_Destroy(fieldDef)
-            } else {
-//                println("reusing schema ${it.name} $key, $value")
             }
             FieldData(key, it, value, index)
         }

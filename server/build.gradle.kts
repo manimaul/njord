@@ -43,9 +43,9 @@ kotlin {
     sourceSets {
         nativeMain.dependencies {
             implementation(project(":shared"))
-//            implementation("io.madrona:ktpq:1.0-SNAPSHOT")
             implementation(project(":libgdal"))
             implementation(project(":libpq"))
+            implementation(project(":libzip"))
             implementation("io.ktor:ktor-server-core:${ktorVersion}")
             implementation("io.ktor:ktor-server-cio:${ktorVersion}")
             implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")

@@ -1,11 +1,15 @@
 package io.madrona.njord.ingest
 
 import File
-import OgrVectorDataset
+import InsertError
+import InsertSuccess
+import OgrS57Dataset
+import ZipFile
 import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
+import io.madrona.njord.ext.letTwo
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.model.ws.sendMessage
@@ -38,11 +42,11 @@ class ChartIngest(
             log.info("counting features")
             s57Files.sumOf { file ->
                 log.info("counting features: $file")
-                OgrVectorDataset(file.toString()).featureCount(exLayers)
+                OgrS57Dataset(file).featureCount(exLayers)
             }
         }
         val report = Report(
-            totalFeatureCount = featureCount.toLong(),
+            totalFeatureCount = featureCount,
             totalChartCount = s57Files.size
         )
         webSocketSession.sendMessage(report.progressMessage())
@@ -57,7 +61,7 @@ class ChartIngest(
                         val w = chartsWorking.incrementAndGet()
                         log.info("inserting chart ${file.name} working = $w")
                         launch {
-                            OgrVectorDataset(file.toString()).let{ s57 ->
+                            OgrS57Dataset(file).let { s57 ->
                                 chartInsertData(s57, report)?.let { data ->
                                     chartDao.insertAsync(data, true)?.let {
                                         installChartFeatures(s57, it, report)
@@ -85,67 +89,56 @@ class ChartIngest(
     private suspend fun step1UnzipFiles(
         encUpload: EncUpload,
     ): List<File> {
-        TODO()
-//        webSocketSession.sendMessage(
-//            WsMsg.Extracting(0f)
-//        )
-//        val retVal = mutableListOf<File>()
-//        return letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
-//            files.forEach { zipFile ->
-//                ZipFile(zipFile).use { zip ->
-//                    val size = zip.size().toFloat()
-//                    var complete = 0f
-//                    zip.entries().asSequence().forEach { entry ->
-//                        zip.getInputStream(entry).use { input ->
-//                            if (!entry.name.startsWith("__MACOSX")) {
-//                                val outFile = File(dir, entry.name)
-//                                outFile.parentFile?.let {
-//                                    if (!it.exists()) {
-//                                        it.mkdirs()
-//                                    }
-//                                }
-//                                if (!entry.isDirectory) {
-//                                    outFile.outputStream().use { output ->
-//                                        input.copyTo(output)
-//                                        complete += 1
-//                                        webSocketSession.sendMessage(
-//                                            WsMsg.Extracting(complete / size)
-//                                        )
-//                                    }
-//                                    retVal.add(outFile)
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            retVal.also {
-//                webSocketSession.sendMessage(
-//                    WsMsg.Extracting(1f)
-//                )
-//            }
-//        } ?: emptyList()
+        webSocketSession.sendMessage(
+            WsMsg.Extracting(0f)
+        )
+        val retVal = mutableListOf<File>()
+        return letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
+            files.forEach { zipFile ->
+                ZipFile(zipFile).let { zip ->
+                    val size = zip.size().toDouble()
+                    var complete = 0.0
+                    zip.entries().filter { !it.isDirectory() }.forEach { entry ->
+                        val name = entry.name()
+                        if (!name.startsWith("__MACOSX")) {
+                            val outFile = File(dir, name)
+                            entry.unzipToPath(outFile.getAbsolutePath().toString())
+                            complete += 1
+                            webSocketSession.sendMessage(
+                                WsMsg.Extracting((complete / size).toFloat())
+                            )
+                            retVal.add(outFile)
+                        }
+                    }
+                }
+            }
+            retVal.also {
+                webSocketSession.sendMessage(
+                    WsMsg.Extracting(1f)
+                )
+            }
+        } ?: emptyList()
     }
 
     private fun chartInsertData(
-        s57: OgrVectorDataset, report: Report
+        s57: OgrS57Dataset, report: Report
     ): ChartInsert? {
-        TODO()
-//        return when (val insert = s57.chartInsertInfo()) {
-//            is InsertError -> {
-//                report.failChart(s57.file.name, insert.msg)
-//                null
-//            }
-//
-//            is InsertSuccess -> {
-//                insert.value
-//            }
-//        }
+        return when (val insert = s57.chartInsertInfo()) {
+            is InsertError -> {
+                report.failChart(s57.file.name, insert.msg)
+                null
+            }
+
+            is InsertSuccess -> {
+                insert.value
+            }
+        }
     }
 
     private suspend fun installChartFeatures(
-        s57: OgrVectorDataset,
-        chart: Chart, report: Report) {
+        s57: OgrS57Dataset,
+        chart: Chart, report: Report
+    ) {
         TODO()
 //        val queue = ArrayDeque(s57.layerNames.filter { !exLayers.contains(it) })
 //        withContext(Dispatchers.IO) {

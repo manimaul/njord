@@ -31,6 +31,9 @@ class ZipFileEntry(
     private val archive: CPointer<zip_t>,
     private val index: ULong,
 ) {
+
+    fun isDirectory(): Boolean = name().endsWith("/")
+
     fun name(): String {
         return zip_get_name(archive, index, 0u)?.toKString()
             ?: error("Cannot get name for zip entry $index")

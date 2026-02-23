@@ -30,6 +30,12 @@ import platform.posix.remove
 import platform.posix.rmdir
 import platform.posix.stat
 
+enum class Charset {
+    US_ASCII,
+    ISO_8859_1,
+    UTF_8
+}
+
 @OptIn(ExperimentalForeignApi::class)
 class File(val path: Path) {
 
@@ -52,6 +58,8 @@ class File(val path: Path) {
             }
         }
     }
+
+    fun parentFile(): File? = path.parent?.let { File(it) }
 
     /**
      * Get the absolute path of this file
@@ -246,23 +254,13 @@ class File(val path: Path) {
         return buffer ?: ByteArray(0)
     }
 
-    fun readContents(): String {
-        val sb = StringBuilder()
-        val file = fopen(path.toString(), "r") ?: throw IllegalArgumentException("Cannot open input file $path")
-        try {
-            memScoped {
-                val readLength = 1024
-                val buffer = allocArray<ByteVar>(readLength)
-                var line = fgets(buffer, readLength, file)?.toKString()
-                while (line != null) {
-                    sb.append(line)
-                    line = fgets(buffer, readLength, file)?.toKString()
-                }
-            }
-        } finally {
-            fclose(file)
+    fun readContents(charset: Charset = Charset.UTF_8): String {
+        val bytes = readData()
+        return when (charset) {
+            Charset.UTF_8 -> bytes.decodeToString()
+            Charset.US_ASCII -> bytes.decodeToString()
+            Charset.ISO_8859_1 -> CharArray(bytes.size) { bytes[it].toInt().and(0xFF).toChar() }.concatToString()
         }
-        return sb.toString()
     }
 
     override fun toString(): String {

@@ -37,11 +37,11 @@ class OgrPreparedGeometry(
 
 open class OgrGeometry(
     val ptr: OGRGeometryH,
-    owned: Boolean = false,
+    val owner: Any? = null,
 ) {
 
     @OptIn(ExperimentalNativeApi::class)
-    private val cleaner: Cleaner? = if (!owned) createCleaner(ptr) {
+    private val cleaner: Cleaner? = if (owner == null) createCleaner(ptr) {
         OGR_G_DestroyGeometry(it)
     } else null
 
@@ -295,7 +295,7 @@ open class OgrGeometry(
 
     fun getGeometryN(i: Int): OgrGeometry? {
         return OGR_G_GetGeometryRef(ptr, i)?.let { geom ->
-            OgrGeometry(geom, true)
+            OgrGeometry(geom, this)
         }
     }
 

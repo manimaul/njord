@@ -108,14 +108,6 @@ open class MvtDataset : GdalDataset(
     sr = epsg3857,
 ) {
 
-//    private val transform = OCTNewCoordinateTransformation(epsg4326,  epsg3857);
-//
-//    @OptIn(ExperimentalNativeApi::class)
-//    private val cleaner: Cleaner = createCleaner(transform) {
-//        //println("free mvt dataset coordinate transformation")
-//        OCTDestroyCoordinateTransformation(it)
-//    }
-
     override fun addFeature(layerName: String, props: Map<String, JsonElement>, geometry: OgrGeometry) {
         OGR_G_Transform(geometry.ptr, transformEpsg4326ToEpsg3857).requireSuccess {
             "failed to transform geometry ${geometry.wkt}"

@@ -17,6 +17,10 @@ cd chart_server_db && docker-compose up
 
 # 3. Run the API server (Kotlin/Native executable)
 ./gradlew :server:runDebugExecutable
+# OR
+./gradlew :server:assemble
+./server/build/bin/native/releaseExecutable/server.kexe ./server/src/nativeMain/resources
+
 
 # 4. Frontend with hot-reload (separate terminal)
 ./gradlew :web:jsRun --continuous

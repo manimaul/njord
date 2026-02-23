@@ -21,11 +21,11 @@
     ],
     "consoleMetrics": true,
     "chartTempData": "/tmp/njord",
-    "webStaticContent": "../web/build/dist/js/productionExecutable",
+    "webStaticContent": "./web/build/dist/js/productionExecutable",
     "shallowDepth": 3.0,
     "safetyDepth": 6.0,
     "deepDepth": 9.0,
-    "debugTile": true,
+    "debugTile": false,
     "chartIngestWorkers": 7,
     "featureIngestWorkers": 10
 }

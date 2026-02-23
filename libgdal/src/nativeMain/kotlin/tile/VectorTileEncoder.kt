@@ -2,9 +2,7 @@
 
 package tile
 
-import Gdal.epsg3857
 import OgrGeometry
-import OgrPreparedGeometry
 import io.madrona.njord.geojson.Position
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.serialization.json.JsonElement
@@ -16,21 +14,14 @@ import kotlinx.serialization.json.longOrNull
 import tile.VectorTileEncoder.Companion.createTileEnvelope
 import kotlin.math.round
 
-private val extent: Int = 4096
-private val clipBuffer: Int = 8
-private val autoScale: Boolean = false
+private const val extent: Int = 4096
+private const val clipBuffer: Int = 8
 private val simplificationDistanceTolerance: Double = 0.1
-
-private val minimumLength: Double = if (autoScale) (256.0 / extent) else 1.0
-
+private val minimumLength: Double = 1.0
 private val minimumArea: Double = minimumLength * minimumLength
-
-private val clipGeometry: OgrGeometry = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
-
+private val clipGeometry by lazy { createTileEnvelope(clipBuffer, extent) }
 //expand by 1 because gdal does not have covers so we use contains and don't want to exclude geometries on the outer ring coordinates
-private val clipEnvelope = clipGeometry.envelopeGeometry(expand = 1).prepare()
-
-private val clipGeometryPrepared: OgrPreparedGeometry = clipGeometry.prepare() //todo() use prepared geometry
+private val clipEnvelope  by lazy { clipGeometry.envelopeGeometry(expand = 1).prepare() }
 
 class VectorTileEncoder {
     private val layers: MutableMap<String, Layer> = LinkedHashMap<String, Layer>()
@@ -43,7 +34,7 @@ class VectorTileEncoder {
         layerName: String,
         attributes: Map<String, JsonElement>,
     ) {
-        val border = createTileEnvelope(clipBuffer, if (autoScale) 256 else extent)
+        val border = createTileEnvelope(clipBuffer, extent)
         addFeature(layerName, attributes, border.boundary())
         addFeature(layerName, attributes, border.centroid())
     }
@@ -180,16 +171,7 @@ class VectorTileEncoder {
             return geometry
         }
 
-        val intersection = clipGeometry.intersection(geometry) //todo: prepared
-
-        // Sometimes an intersection is returned as an empty geometry.
-        // going via wkb fixes the problem.
-        if ((intersection == null || intersection.isEmpty()) && clipGeometryPrepared.intersects(geometry)) {
-            val wkb = geometry.wkb
-            return clipGeometry.intersection(OgrGeometry.fromWkb(wkb, epsg3857)) //todo: prepared
-        }
-
-        return intersection
+        return clipGeometry.intersection(geometry)
     }
 
     fun jsonPrimitiveTileValue(jsonPrimitive: JsonPrimitive) : Tile.Value {
@@ -308,7 +290,7 @@ class VectorTileEncoder {
         var lineToIndex = 0
         var lineToLength = 0
 
-        val scale = if (autoScale) (extent / 256.0) else 1.0
+        val scale = 1.0
 
         for (i in cs.indices) {
             val c = cs[i]

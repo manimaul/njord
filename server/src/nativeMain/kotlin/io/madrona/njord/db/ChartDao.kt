@@ -376,28 +376,31 @@ WHERE chart_id = $2
     }
 
     private fun delete(name: String, conn: Connection): Boolean {
-        return conn.prepareStatement(
-            """
-                DELETE from features WHERE features.chart_id IN
-                (SELECT id from charts where name=$1);
-                DELETE FROM charts WHERE name=$2;
-                """.trimIndent()
+        conn.prepareStatement(
+            "DELETE FROM features WHERE features.chart_id IN (SELECT id FROM charts WHERE name=\$1);"
         ).let {
             it.setString(1, name)
-            it.setString(2, name)
+            it.execute()
+        }
+        return conn.prepareStatement(
+            "DELETE FROM charts WHERE name=\$1;"
+        ).let {
+            it.setString(1, name)
             it.execute() > 0
         }
     }
 
     suspend fun deleteAsync(id: Long): Boolean? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """
-                DELETE FROM features WHERE chart_id=$1;
-                DELETE FROM charts WHERE id=$2;
-                """.trimIndent()
+            "DELETE FROM features WHERE chart_id=\$1;"
         ).let {
             it.setLong(1, id)
-            it.setLong(2, id)
+            it.execute()
+        }
+        conn.prepareStatement(
+            "DELETE FROM charts WHERE id=\$1;"
+        ).let {
+            it.setLong(1, id)
             it.execute() > 0
         }
     }

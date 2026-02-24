@@ -126,11 +126,11 @@ class GeoJsonDao : Dao() {
                 """
                 INSERT INTO features (layer, geom, props, chart_id, z_range)
                 VALUES (
-                    ?,
-                    ST_SetSRID(ST_GeomFromGeoJSON(?), 4326),
-                    ?::json,
-                    ?,
-                    int4range(?,?)
+                    $1,
+                    ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($2), 4326)),
+                    $3::json,
+                    $4,
+                    int4range($5, $6)
                 );
             """.trimIndent()
             ).let {

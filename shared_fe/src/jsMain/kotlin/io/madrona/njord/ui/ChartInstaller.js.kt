@@ -14,7 +14,7 @@ import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.*
 import org.w3c.dom.HTMLFormElement
-import org.w3c.xhr.FormData
+import org.w3c.dom.HTMLInputElement
 
 @Composable
 fun ChartInstaller() {
@@ -125,8 +125,11 @@ fun ChartInstallForm() {
             } ?: classes("btn", "btn-primary", "disabled")
             onClick {
                 it.preventDefault()
-                form?.let {
-                    chartInstallViewModel.upload(FormData(it))
+                form?.let { formElement ->
+                    val fileInput = formElement.elements.namedItem("enczip") as? HTMLInputElement
+                    fileInput?.files?.item(0)?.let { file ->
+                        chartInstallViewModel.upload(file)
+                    }
                 }
             }
         }) { Text("Submit") }

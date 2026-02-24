@@ -354,10 +354,10 @@ WHERE chart_id = $2
         if (overwrite) {
             delete(name = chartInsert.name, conn)
         }
-        return conn.prepareStatement(
+        return conn.statement(
             """
                 INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) 
-                VALUES ($1,$2,$3,$4,$5,$6,st_setsrid(st_geomfromgeojson($7), 4326),$8::JSON,$9::JSON)
+                VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json)
                 RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
         ).let { stmt ->
             stmt.setString(1, chartInsert.name)

@@ -45,6 +45,8 @@ class ChartIngest(
                 OgrS57Dataset(file).featureCount(exLayers)
             }
         }
+
+        log.info("counting features sum = $featureCount")
         val report = Report(
             totalFeatureCount = featureCount,
             totalChartCount = s57Files.size
@@ -53,14 +55,14 @@ class ChartIngest(
         log.info("inserting data")
         val queue = ArrayDeque(s57Files)
         working.getAndSet(0)
-        withContext(Dispatchers.IO) {
+//        withContext(Dispatchers.IO) {
             val chartsWorking = AtomicInt(0)
             while (queue.isNotEmpty()) {
                 if (chartsWorking.value < config.chartIngestWorkers) {
                     queue.removeFirstOrNull()?.let { file ->
                         val w = chartsWorking.incrementAndGet()
                         log.info("inserting chart ${file.name} working = $w")
-                        launch {
+//                        launch {
                             OgrS57Dataset(file).let { s57 ->
                                 chartInsertData(s57, report)?.let { data ->
                                     chartDao.insertAsync(data, true)?.let {
@@ -71,13 +73,13 @@ class ChartIngest(
                                 }
                             }
                             chartsWorking.decrementAndGet()
-                        }
+//                        }
                     }
                 } else {
                     delay(250)
                 }
             }
-        }
+//        }
         webSocketSession.sendMessage(report.completionMessage())
 
         log.info("cleaning up resources")
@@ -145,9 +147,9 @@ class ChartIngest(
                     queue.removeFirstOrNull()?.let { layerName ->
                         s57.getLayer(layerName)?.let { layer ->
                             val w = working.incrementAndGet()
-                            launch {
+//                            launch {
                                 log.info("$layerName ${layer.features.size} feature(s) inserting working=$w remaining=${queue.size}")
-                                layer.geoJson()?.let { geo ->
+                                layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
                                     val count = geoJsonDao.featureInsertAsync(
                                         FeatureInsert(
                                             layerName = layerName, chart = chart, geo = geo
@@ -162,7 +164,7 @@ class ChartIngest(
                                     report.appendChartFeatureCount(chart.name, count)
                                 }
                                 webSocketSession.sendMessage(report.progressMessage())
-                            }
+//                            }
                         }
                     }
                 } else {

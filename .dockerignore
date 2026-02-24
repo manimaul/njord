@@ -1,9 +1,12 @@
 .gradle
-build/
+**/.gradle
+**/.kotlin
+**/build/
+!web/build/dist/
 out/
 .DS_Store
 data/
 .idea/
 docs/
 chart_server_db/
-k8s_deploy/
+local.properties

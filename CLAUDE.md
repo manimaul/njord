@@ -20,6 +20,9 @@ cd chart_server_db && docker-compose up
 # OR
 ./gradlew :server:assemble
 ./server/build/bin/native/releaseExecutable/server.kexe ./server/src/nativeMain/resources
+# OR
+./gradlew makeImg
+docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT 
 
 
 # 4. Frontend with hot-reload (separate terminal)

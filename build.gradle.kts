@@ -1,6 +1,5 @@
-import io.madrona.njord.build.*
-import io.madrona.njord.build.GitInfo.gitBranch
-import io.madrona.njord.build.GitInfo.gitShortHash
+import GitInfo.gitBranch
+import GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
@@ -9,14 +8,12 @@ plugins {
     kotlin("plugin.compose") version kotlinVersion apply false
     id("org.jetbrains.compose") version composeVersion apply false
     kotlin("plugin.serialization") version kotlinVersion apply false
-    id("com.android.library") version agpVersion apply false
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-//        mavenLocal() // temporary until libs stabilize (non SNAPSHOT)
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/manimaul/geojson")
@@ -62,9 +59,17 @@ task("showSecret") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-    dependsOn(":web:jsBrowserDistribution", ":chart_server:installDist")
-    mustRunAfter(":web:jsBrowserDistribution", ":chart_server:installDist")
-    commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
+//    dependsOn(":web:jsBrowserDistribution")
+//    mustRunAfter(":web:jsBrowserDistribution")
+    val ghUser = System.getenv("GH_USER") ?: ""
+    val ghToken = System.getenv("GH_TOKEN") ?: ""
+    commandLine(
+        "docker", "build",
+        "--build-arg", "GH_USER=$ghUser",
+        "--build-arg", "GH_TOKEN=$ghToken",
+        "-t", "ghcr.io/manimaul/njord-chart-server:${project.version}",
+        "."
+    )
 }
 
 /**

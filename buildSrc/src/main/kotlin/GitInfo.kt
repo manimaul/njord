@@ -1,6 +1,3 @@
-package io.madrona.njord.build
-
-
 object GitInfo {
 
     fun gitBranch(): String {

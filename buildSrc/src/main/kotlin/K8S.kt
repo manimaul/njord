@@ -1,5 +1,3 @@
-package io.madrona.njord.build
-
 import java.io.File
 
 object K8S {

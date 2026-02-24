@@ -1,5 +1,3 @@
-package io.madrona.njord.build
-
 import java.util.*
 
 //echo <secret> | gpg -r manimaul@gmail.com --armor --encrypt

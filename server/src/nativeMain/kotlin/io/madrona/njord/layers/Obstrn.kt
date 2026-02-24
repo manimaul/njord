@@ -1,7 +1,7 @@
 package io.madrona.njord.layers
 
+import addSoundingConversions
 import io.madrona.njord.Singletons
-import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.floatValue
 import io.madrona.njord.layers.attributehelpers.Catobs
 import io.madrona.njord.layers.attributehelpers.Catobs.Companion.catobs

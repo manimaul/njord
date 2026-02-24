@@ -23,8 +23,9 @@ class OgrLayer(
     val owner: Any
 ) {
 
-    val name: String?
-        get() = OGR_L_GetName(ptr)?.toKString()
+    val name: String? by lazy {
+        OGR_L_GetName(ptr)?.toKString()
+    }
 
     val featureCount: Long
         get() = OGR_L_GetFeatureCount(ptr, 1)
@@ -35,7 +36,7 @@ class OgrLayer(
         buildList {
             while (true) {
                 val feature = OGR_L_GetNextFeature(ptr) ?: break
-                add(OgrFeature(feature, this@OgrLayer))
+                add(OgrFeature(feature, this@OgrLayer, name == "SOUNDG"))
             }
         }
     }

@@ -19,6 +19,12 @@ class OgrS57DatasetTest {
         assertEquals(67, ds.layerCount)
         assertEquals(5164, ds.featureCount())
 
+        val soundg = ds.getLayer("SOUNDG")
+        assertNotNull(soundg)
+        assertEquals("SOUNDG", soundg.name)
+        val sfc = soundg.geoJson()
+        assertNotNull(sfc)
+
         val lndare = ds.getLayer("LNDARE")
         assertNotNull(lndare)
         assertEquals("LNDARE", lndare.name)

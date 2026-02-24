@@ -1,9 +1,9 @@
 package io.madrona.njord.layers
 
+import addSoundingConversions
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.json
-import io.madrona.njord.geo.symbols.addSoundingConversions
 import io.madrona.njord.geo.symbols.doubleValue
 import io.madrona.njord.model.*
 import kotlinx.serialization.json.JsonElement

@@ -10,7 +10,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 import kotlinx.serialization.json.JsonObject
 import libgdal.*
-import kotlin.collections.contains
 import kotlin.collections.emptyMap
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
@@ -123,7 +122,7 @@ class InsertSuccess<T>(
     val value: T
 ) : Insertable<T>()
 
-private val zFinder = ZFinder()
+val zFinder = ZFinder()
 
 class ZFinder(
     private val oneToOneZoom: Int = 28

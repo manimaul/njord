@@ -69,6 +69,10 @@ open class OgrGeometry(
         }
     }
 
+    val pointZ: Double? by lazy {
+        OGR_G_GetZ(ptr, 0)
+    }
+
     fun prepare() : OgrPreparedGeometry {
         return OgrPreparedGeometry(requireNotNull(OGRCreatePreparedGeometry(ptr)))
     }
@@ -82,6 +86,7 @@ open class OgrGeometry(
             this
         }
     }
+
 
     fun coordinateSequence(): List<Position> {
         val count = numCoordinates

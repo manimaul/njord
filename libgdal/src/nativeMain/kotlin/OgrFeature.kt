@@ -1,9 +1,6 @@
 @file:OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 
 import io.madrona.njord.geojson.Feature
-import io.madrona.njord.geojson.Geometry
-import kotlinx.cinterop.ByteVar
-import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.IntVar
 import kotlinx.cinterop.alloc
@@ -16,7 +13,9 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
 import libgdal.*
+import tile.GeomType
 import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
@@ -25,17 +24,23 @@ import kotlin.native.ref.createCleaner
 class OgrFeature(
     val ptr: OGRFeatureH,
     val owner: OgrLayer? = null,
+    val isSounding: Boolean = false,
 ) {
 
     @Suppress("unused")
     private val cleaner: Cleaner? = if (owner == null) createCleaner(ptr) {
-        //println("free feature")
         OGR_F_Destroy(it)
     } else null
 
     val properties: JsonObject by lazy {
         val count = OGR_F_GetFieldCount(ptr)
         JsonObject(buildMap {
+            if (isSounding) {
+                val meters = geometry?.pointZ
+                meters?.let {
+                    put("METERS", JsonPrimitive(it))
+                }
+            }
             for (i in 0 until count) {
                 if (OGR_F_IsFieldSetAndNotNull(ptr, i) != 1) continue
                 val defn = OGR_F_GetFieldDefnRef(ptr, i) ?: continue
@@ -85,6 +90,19 @@ class OgrFeature(
                     }
 
                     else -> JsonPrimitive(OGR_F_GetFieldAsString(ptr, i)?.toKString() ?: "")
+                }
+                if (name == "SCAMIN") {
+                    (value as? JsonPrimitive)?.let {
+                       it.intOrNull
+                    }?.let {
+                        put("MINZ", JsonPrimitive(zFinder.findZoom(it)))
+                    }
+                } else if (name == "SCAMAX") {
+                    (value as? JsonPrimitive)?.let {
+                        it.intOrNull
+                    }?.let {
+                        put("MAXZ", JsonPrimitive(zFinder.findZoom(it)))
+                    }
                 }
                 put(name, value)
             }

@@ -10,7 +10,7 @@ import kotlinx.browser.window
 import kotlinx.serialization.json.Json
 import org.w3c.dom.WebSocket
 import org.w3c.dom.events.EventListener
-import org.w3c.xhr.FormData
+import org.w3c.files.File
 import org.w3c.xhr.XMLHttpRequest
 
 
@@ -51,18 +51,18 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
     override fun reload() {
     }
 
-    fun upload(formData: FormData) {
+    fun upload(file: File) {
         withState { state ->
             if (state.encUpload == Uninitialized) {
-                startUpload(formData)
+                startUpload(file)
             }
         }
     }
 
-    private fun startUpload(formData: FormData) {
-        println("startUpload ${JSON.stringify(formData)}")
+    private fun startUpload(file: File) {
+        println("startUpload ${file.name}")
         setState { copy(encUpload = Loading()) }
-        val xhr = XMLHttpRequest();
+        val xhr = XMLHttpRequest()
         xhr.upload.addEventListener("progress", EventListener {
             val loaded = it.asDynamic().loaded as Double
             val total = it.asDynamic().total as Double
@@ -81,9 +81,9 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
             }
             setupWebSocket(encUpload)
         })
-        val url = "/v1/enc_save?signature=${adminViewModel.signature?.signatureEncoded}"
+        val url = "/v1/enc_save?signature=${adminViewModel.signature?.signatureEncoded}&filename=${encodeURIComponent(file.name)}"
         xhr.open("POST", url, true)
-        xhr.send(formData)
+        xhr.asDynamic().send(file)
     }
 
     private fun setupWebSocket(encUpload: EncUpload) {

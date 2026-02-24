@@ -4,6 +4,7 @@ package io.madrona.njord
 
 import File
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -72,6 +73,7 @@ fun Application.njord() {
 //    install(Compression)
     install(ContentNegotiation) {
         json()
+        ignoreType<MultiPartData>()
     }
     install(WebSockets) {
         pingPeriod = 15.seconds
@@ -82,11 +84,11 @@ fun Application.njord() {
     install(CallLogging)
     Singletons.genLog = log
     install(CORS) {
-        allowHost("*")
-//        Singletons.config.allowHosts.forEach {
-//            allowHost(it)
-//        }
+        anyHost()
         allowHeader(HttpHeaders.ContentType)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Put)
     }
     install(Authentication) {
         basic("auth-basic") {

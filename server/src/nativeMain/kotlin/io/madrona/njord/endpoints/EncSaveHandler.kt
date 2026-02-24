@@ -2,18 +2,15 @@ package io.madrona.njord.endpoints
 
 import File
 import io.ktor.http.*
-import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.utils.io.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.util.UUID
 import io.madrona.njord.util.logger
-import kotlinx.io.readByteArray
 
 class EncSaveHandler(
     config: ChartsConfig = Singletons.config,
@@ -42,37 +39,16 @@ class EncSaveHandler(
     }
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
-        val multipartData = call.receiveMultipart(formFieldLimit = Long.MAX_VALUE)
-        val uuid = UUID.randomUUID().toString()
-        val tempDir = File(chartDir, uuid)
-        val files = mutableListOf<String>()
-        if (tempDir.mkdirs()) {
-            multipartData.forEachPart { part ->
-                when (part) {
-                    is PartData.FormItem -> {
-                        log.info("file description = ${part.value}")
-                    }
-
-                    is PartData.FileItem -> {
-                        val fileName = part.originalFileName as String
-                        val channel = part.provider()
-                        val fileBytes = channel.readRemaining().readByteArray()
-                        files.add(fileName)
-                        File(tempDir, fileName).writeBytes(fileBytes)
-                    }
-
-                    else -> {
-                    }
-                }
+        call.request.queryParameters["filename"]?.let { fileName ->
+            val uuid = UUID.randomUUID().toString()
+            val tempDir = File(chartDir, uuid)
+            if (tempDir.mkdirs()) {
+                val fileBytes = call.receive<ByteArray>()
+                File(tempDir, fileName).writeBytes(fileBytes)
+                call.respond(EncUpload(files = listOf(fileName), uuid = uuid))
+            } else {
+                call.respond(HttpStatusCode.InternalServerError)
             }
-            call.respond(
-                EncUpload(
-                    files = files,
-                    uuid = uuid
-                )
-            )
-        } else {
-            call.respond(HttpStatusCode.InternalServerError)
-        }
+        } ?: call.respond(HttpStatusCode.BadRequest)
     }
 }

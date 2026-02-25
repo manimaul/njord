@@ -8,10 +8,11 @@ metadata:
   namespace: njord
 spec:
   scaleTargetRef:
-    kind: ReplicaSet
+    apiVersion: apps/v1
+    kind: Deployment
     name: njord-chart-dep
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 50
 ---
 apiVersion: v1

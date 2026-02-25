@@ -18,24 +18,29 @@ open class PgStatement(
     override fun executeQuery(): ResultSet {
         pgDb.conn.exec("BEGIN")
         val cursor = generateRandomString(8)
-        return if (parameters > 0) {
-            val result = memScoped {
-                PQexecParams(
-                    conn = pgDb.conn,
-                    command = "DECLARE $cursor CURSOR FOR $sql",
-                    nParams = parameters,
-                    paramValues = values(this, values),
-                    paramLengths = lengths.refTo(0),
-                    paramFormats = formats.refTo(0),
-                    paramTypes = types.refTo(0),
-                    resultFormat = TEXT_RESULT_FORMAT
-                )
-            }.check(pgDb.conn)
-            PgResultSet(cursor, result, pgDb.conn)
-        } else {
-            pgDb.conn.exec("DECLARE $cursor CURSOR FOR $sql")
-            val result = PQexec(pgDb.conn, sql).check(pgDb.conn)
-            return PgResultSet(cursor, result, pgDb.conn)
+        try {
+            return if (parameters > 0) {
+                val result = memScoped {
+                    PQexecParams(
+                        conn = pgDb.conn,
+                        command = "DECLARE $cursor CURSOR FOR $sql",
+                        nParams = parameters,
+                        paramValues = values(this, values),
+                        paramLengths = lengths.refTo(0),
+                        paramFormats = formats.refTo(0),
+                        paramTypes = types.refTo(0),
+                        resultFormat = TEXT_RESULT_FORMAT
+                    )
+                }.check(pgDb.conn)
+                PgResultSet(cursor, result, pgDb.conn)
+            } else {
+                pgDb.conn.exec("DECLARE $cursor CURSOR FOR $sql")
+                val result = PQexec(pgDb.conn, sql).check(pgDb.conn)
+                PgResultSet(cursor, result, pgDb.conn)
+            }
+        } catch (e: Throwable) {
+            try { pgDb.conn.exec("ROLLBACK") } catch (_: Throwable) { }
+            throw e
         }
     }
 

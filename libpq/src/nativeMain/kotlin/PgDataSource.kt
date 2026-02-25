@@ -21,6 +21,7 @@ postgresql://host1:123,host2:456/somedb?target_session_attrs=any&application_nam
 class PgDataSource(
     private val connectionInfo: String,
     connectionCount: Int = 10,
+    private val acquireTimeoutMs: Long = 30_000,
 ) : DataSource, CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO), AutoCloseable {
 
     private val ready: ArrayDeque<PgDb> =
@@ -42,20 +43,45 @@ class PgDataSource(
         return PgDb.connect(connectionInfo)
     }
 
+    private fun addToPool() {
+        launch {
+            try {
+                release(PgDb.connect(connectionInfo))
+            } catch (_: Throwable) {
+                delay(500)
+                addToPool()
+            }
+        }
+    }
+
     private suspend fun acquire(): PgDb {
         val box = mutex.withLock {
             if (ready.isNotEmpty()) {
                 Box(ready.removeFirst())
             } else {
+                println("acquiring connection - waiting for ready")
                 Box().also { waiting.addLast(it) }
             }
         }
+        var elapsed = 0L
         var pgDb: PgDb? = box.pgDb
         while (pgDb == null) {
             delay(5)
+            elapsed += 5
+            if (elapsed > acquireTimeoutMs) {
+                mutex.withLock { waiting.remove(box) }
+                error("Connection pool exhausted: no connection available after ${acquireTimeoutMs}ms")
+            }
             pgDb = box.pgDb
         }
-        return pgDb.validated()
+        return try {
+            pgDb.validated()
+        } catch (e: Throwable) {
+            // Reconnect failed; restore this pool slot asynchronously so the
+            // pool doesn't permanently shrink when the DB is temporarily unreachable.
+            addToPool()
+            throw e
+        }
     }
 
     private fun release(pgDb: PgDb) {
@@ -71,12 +97,8 @@ class PgDataSource(
     }
 
     override suspend fun connection(): Connection {
-        return async {
-            val pgDb = acquire()
-            PgConnection(pgDb) {
-                release(pgDb)
-            }
-        }.await()
+        val pgDb = acquire()
+        return PgConnection(pgDb = pgDb, onClose = { release(pgDb) })
     }
 
     override fun close() {
@@ -93,9 +115,10 @@ class PgDataSource(
     }
 }
 
-private data class Box(
-    var pgDb: PgDb? = null
-)
+private class Box(initial: PgDb? = null) {
+    @kotlin.concurrent.Volatile
+    var pgDb: PgDb? = initial
+}
 
 class PgConnection(
     val pgDb: PgDb,

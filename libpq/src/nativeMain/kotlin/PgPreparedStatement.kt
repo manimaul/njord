@@ -20,18 +20,23 @@ class PgPreparedStatement(
             prepare(cursorName)
         }
         pgDb.conn.exec("BEGIN")
-        val result = memScoped {
-            PQexecPrepared(
-                pgDb.conn,
-                stmtName = identifier.toString(),
-                nParams = parameters,
-                paramValues = values.takeIf { it.isNotEmpty() }?.let { values(this, it) },
-                paramLengths = lengths.takeIf { it.isNotEmpty() }?.refTo(0),
-                paramFormats = formats.takeIf { it.isNotEmpty() }?.refTo(0),
-                resultFormat = TEXT_RESULT_FORMAT
-            )
-        }.check(pgDb.conn)
-        return PgResultSet(cursorName, result, pgDb.conn)
+        try {
+            val result = memScoped {
+                PQexecPrepared(
+                    pgDb.conn,
+                    stmtName = identifier.toString(),
+                    nParams = parameters,
+                    paramValues = values.takeIf { it.isNotEmpty() }?.let { values(this, it) },
+                    paramLengths = lengths.takeIf { it.isNotEmpty() }?.refTo(0),
+                    paramFormats = formats.takeIf { it.isNotEmpty() }?.refTo(0),
+                    resultFormat = TEXT_RESULT_FORMAT
+                )
+            }.check(pgDb.conn)
+            return PgResultSet(cursorName, result, pgDb.conn)
+        } catch (e: Throwable) {
+            try { pgDb.conn.exec("ROLLBACK") } catch (_: Throwable) { }
+            throw e
+        }
     }
 
     fun prepare(name: String) {

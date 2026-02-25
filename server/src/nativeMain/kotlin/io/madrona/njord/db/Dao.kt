@@ -21,7 +21,7 @@ abstract class Dao(
             ds.connection().use {
                 block(it)
             }
-        } catch (e: SQLException) {
+        } catch (e: Exception) {
             log.error("$msg - try count = $tryCount", e)
             if (tryCount < maxTryCount) {
                 delay(1000)

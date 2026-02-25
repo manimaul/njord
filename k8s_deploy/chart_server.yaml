@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: njord-chart-dep
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 1 #we can scale this up with a shared chartTempData mount (PVC with ReadWriteMany)
   targetCPUUtilizationPercentage: 50
 ---
 apiVersion: v1

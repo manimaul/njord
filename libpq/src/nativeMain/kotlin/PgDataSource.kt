@@ -4,6 +4,9 @@ import kotlinx.cinterop.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import libpq.ConnStatusType
+import libpq.PQreset
+import libpq.PQstatus
 
 /**
 postgresql://
@@ -16,7 +19,7 @@ postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp
 postgresql://host1:123,host2:456/somedb?target_session_attrs=any&application_name=myapp
  */
 class PgDataSource(
-    connectionInfo: String,
+    private val connectionInfo: String,
     connectionCount: Int = 10,
 ) : DataSource, CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO), AutoCloseable {
 
@@ -31,6 +34,14 @@ class PgDataSource(
     val waitingCount: Int
         get() = waiting.count()
 
+    private fun PgDb.validated(): PgDb {
+        if (PQstatus(conn) == ConnStatusType.CONNECTION_OK) return this
+        PQreset(conn)
+        if (PQstatus(conn) == ConnStatusType.CONNECTION_OK) return this
+        close()
+        return PgDb.connect(connectionInfo)
+    }
+
     private suspend fun acquire(): PgDb {
         val box = mutex.withLock {
             if (ready.isNotEmpty()) {
@@ -39,12 +50,12 @@ class PgDataSource(
                 Box().also { waiting.addLast(it) }
             }
         }
-        var pgDb: PgDb? = box.pgDb;
+        var pgDb: PgDb? = box.pgDb
         while (pgDb == null) {
             delay(5)
             pgDb = box.pgDb
         }
-        return pgDb
+        return pgDb.validated()
     }
 
     private fun release(pgDb: PgDb) {

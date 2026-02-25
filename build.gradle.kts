@@ -59,8 +59,6 @@ task("showSecret") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-//    dependsOn(":web:jsBrowserDistribution")
-//    mustRunAfter(":web:jsBrowserDistribution")
     val ghUser = System.getenv("GH_USER") ?: ""
     val ghToken = System.getenv("GH_TOKEN") ?: ""
     commandLine(

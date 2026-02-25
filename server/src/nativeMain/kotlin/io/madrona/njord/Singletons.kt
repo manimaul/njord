@@ -9,6 +9,7 @@ import TileSystem
 import io.ktor.util.logging.*
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.FeatureDao
+import io.madrona.njord.db.TileCache
 import io.madrona.njord.db.TileDao
 import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
@@ -35,6 +36,8 @@ object Singletons {
     val chartDao by lazy { ChartDao() }
 
     val featureDao by lazy { FeatureDao() }
+
+    val tileCache by lazy { TileCache(File(config.chartTempData, "tiles")) }
 
     val tileDao by lazy { TileDao() }
 

@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: njord-shared-data
+  namespace: njord
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: nfs
 ---
 # kubectl -n njord autoscale deployment njord-chart-dep --cpu-percent=50 --min=1 --max=2
 ---
@@ -12,7 +24,7 @@ spec:
     kind: Deployment
     name: njord-chart-dep
   minReplicas: 1
-  maxReplicas: 1 #we can scale this up with a shared chartTempData mount (PVC with ReadWriteMany)
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 50
 ---
 apiVersion: v1
@@ -65,6 +77,8 @@ spec:
               mountPath: /opt/njord/resources/config/application.json
               subPath: application.json
               readOnly: true
+            - name: njord-shared-data
+              mountPath: /mnt/njord
           env:
             - name: CHART_SERVER_OPTS
               valueFrom:
@@ -75,6 +89,9 @@ spec:
         - name: njord-config-vol
           configMap:
             name: njord-config
+        - name: njord-shared-data
+          persistentVolumeClaim:
+            claimName: njord-shared-data
 ---
 # kubectl -n njord create configmap njord-config --from-file=k8s_deploy/application.json
 apiVersion: v1
@@ -102,7 +119,7 @@ data:
       "externalPort": 443,
       
       "consoleMetrics": false,
-      "chartTempData": "/tmp/njord",
+      "chartTempData": "/mnt/njord/charts",
       
       "webStaticContent": "/opt/njord/resources/www",
       

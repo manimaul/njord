@@ -9,6 +9,7 @@ import kotlin.time.measureTimedValue
 
 class TileDao(
     private val chartsConfig: ChartsConfig = Singletons.config,
+    private val tileCache: TileCache = Singletons.tileCache,
 ) {
 
     val log = logger()
@@ -21,6 +22,9 @@ class TileDao(
     }
 
     suspend fun getTile(z: Int, x: Int, y: Int): ByteArray {
+        if (!chartsConfig.debugTile) {
+            tileCache.get(z, x, y)?.let { return it }
+        }
         val (result, duration) = measureTimedValue {
             TileEncoder(x, y, z).let {
                 it.addCharts(chartsConfig.debugTile)
@@ -31,6 +35,13 @@ class TileDao(
             }
         }
         println("Tile creation $z,$x,$y took: $duration")
+        if (!chartsConfig.debugTile) {
+            tileCache.put(z, x, y, result)
+        }
         return result
+    }
+
+    fun invalidateCache() {
+        tileCache.clear()
     }
 }

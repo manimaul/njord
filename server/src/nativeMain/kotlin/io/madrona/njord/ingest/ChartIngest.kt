@@ -86,6 +86,7 @@ class ChartIngest(
         withContext(Dispatchers.IO) {
             encUpload.uuidDir()?.deleteRecursively()
         }
+        tileDao.invalidateCache()
     }
 
     private suspend fun step1UnzipFiles(

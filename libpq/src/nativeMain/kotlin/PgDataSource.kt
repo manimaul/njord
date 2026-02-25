@@ -4,6 +4,7 @@ import kotlinx.cinterop.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlin.coroutines.cancellation.CancellationException
 import libpq.ConnStatusType
 import libpq.PQreset
 import libpq.PQstatus
@@ -63,16 +64,29 @@ class PgDataSource(
                 Box().also { waiting.addLast(it) }
             }
         }
-        var elapsed = 0L
-        var pgDb: PgDb? = box.pgDb
-        while (pgDb == null) {
-            delay(5)
-            elapsed += 5
-            if (elapsed > acquireTimeoutMs) {
-                mutex.withLock { waiting.remove(box) }
-                error("Connection pool exhausted: no connection available after ${acquireTimeoutMs}ms")
+        val pgDb: PgDb = try {
+            var elapsed = 0L
+            var db: PgDb? = box.pgDb
+            while (db == null) {
+                delay(5)
+                elapsed += 5
+                if (elapsed > acquireTimeoutMs) {
+                    error("Connection pool exhausted: no connection available after ${acquireTimeoutMs}ms")
+                }
+                db = box.pgDb
             }
-            pgDb = box.pgDb
+            db
+        } catch (e: Throwable) {
+            // Canceled or timed out while waiting. Under the mutex, either:
+            //  - our box is still in waiting (remove it, no connection was assigned), or
+            //  - release() already dequeued it and set box.pgDb (return that connection to the pool).
+            withContext(NonCancellable) {
+                val orphaned = mutex.withLock {
+                    if (waiting.remove(box)) null else box.pgDb
+                }
+                orphaned?.let { release(it) }
+            }
+            throw e
         }
         return try {
             pgDb.validated()

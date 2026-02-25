@@ -64,6 +64,12 @@ spec:
               mountPath: /opt/njord/resources/config/application.json
               subPath: application.json
               readOnly: true
+          env:
+            - name: CHART_SERVER_OPTS
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret-json
+                  key: chart_server_opts
       volumes:
         - name: njord-config-vol
           configMap:

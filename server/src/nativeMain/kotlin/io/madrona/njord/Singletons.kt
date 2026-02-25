@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package io.madrona.njord
 
 import DataSource
@@ -13,7 +15,13 @@ import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.SpriteSheet
-import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.toKString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonObject
+import platform.posix.getenv
 import kotlin.getValue
 
 lateinit var resources: String
@@ -31,8 +39,14 @@ object Singletons {
     val tileDao by lazy { TileDao() }
 
     val config by lazy {
-        val contents = File("$resources/config/application.json")
-        decodeFromString<ChartsConfig>(contents.readContents())
+        val json = Json { ignoreUnknownKeys = true }
+        val baseJson = json.parseToJsonElement(
+            File("$resources/config/application.json").readContents()
+        ).jsonObject
+        val merged = getenv("CHART_SERVER_OPTS")?.toKString()?.let { overrides ->
+            JsonObject(baseJson + json.parseToJsonElement(overrides).jsonObject)
+        } ?: baseJson
+        json.decodeFromJsonElement<ChartsConfig>(merged)
     }
 
     val spriteSheet by lazy { SpriteSheet() }

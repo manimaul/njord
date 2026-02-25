@@ -65,12 +65,18 @@ aJFDBGfAbkvGF//fQT4QhTGj4wh5b/zzf0WLcWjXTTAxQrjbnQPoY5caoYdOIjnC
 
 fun adminKey() = CommandLine.exec("echo '${admin_key_enc}' | gpg -d 2>/dev/null")
 
-fun options() ="-Dcharts.adminKey=${adminKey()} -Dcharts.adminUser=${user()} -Dcharts.adminPass=${password()}"
+fun options() = """
+    {
+    "adminKey": "${adminKey()}",
+    "adminUser": "${user()}",
+    "adminPass": "${password()}"
+    }
+""".trimIndent()
 
 fun secretYaml() = """apiVersion: v1
 kind: Secret
 metadata:
-  name: admin-secret
+  name: admin-secret-json
   namespace: njord
 data:
   chart_server_opts: "${Base64.getEncoder().encodeToString(options().toByteArray())}" 

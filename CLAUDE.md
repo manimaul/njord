@@ -26,7 +26,7 @@ docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT
 
 
 # 4. Frontend with hot-reload (separate terminal)
-./gradlew :web:jsRun --continuous
+./gradlew :web:jsBrowserDevelopmentRun --continuous
 ```
 
 ### Testing

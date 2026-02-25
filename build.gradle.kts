@@ -59,15 +59,9 @@ task("showSecret") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-    val ghUser = System.getenv("GH_USER") ?: ""
-    val ghToken = System.getenv("GH_TOKEN") ?: ""
-    commandLine(
-        "docker", "build",
-        "--build-arg", "GH_USER=$ghUser",
-        "--build-arg", "GH_TOKEN=$ghToken",
-        "-t", "ghcr.io/manimaul/njord-chart-server:${project.version}",
-        "."
-    )
+    dependsOn(":web:jsBrowserDistribution", ":server:linkReleaseExecutableNative")
+    mustRunAfter(":web:jsBrowserDistribution", ":server:linkReleaseExecutableNative")
+    commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
 /**

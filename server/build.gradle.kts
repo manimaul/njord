@@ -25,6 +25,7 @@ kotlin {
         compilations.getByName("main") {
             cinterops {
                 val libssl by creating
+                val libgd by creating
             }
         }
         binaries {

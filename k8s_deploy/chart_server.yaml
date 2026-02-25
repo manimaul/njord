@@ -23,7 +23,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 80
+      targetPort: 9000
   selector:
     app: njord-chart-svc
   type: ClusterIP
@@ -48,8 +48,9 @@ spec:
         - image: ghcr.io/manimaul/njord-chart-server:latest
           imagePullPolicy: Always
           name: njord-chart-svc
+          command: ["/opt/njord/server.kexe", "/opt/njord/resources"]
           ports:
-            - containerPort: 80
+            - containerPort: 9000
               name: http
           resources:
             limits:
@@ -60,83 +61,57 @@ spec:
               memory: "1G"
           volumeMounts:
             - name: njord-config-vol
-              mountPath: /etc/chart_server
+              mountPath: /opt/njord/resources/config/application.json
+              subPath: application.json
               readOnly: true
-          env:
-            - name: JAVA_OPTS
-              value: "-javaagent:/opt/chart_server/jmx-agent.jar=5000:/etc/chart_server/jmx_exporter.yaml -Dconfig.file=/etc/chart_server/application.conf -Djava.library.path=/opt/gdal/jni"
-            - name: CHART_SERVER_OPTS
-              valueFrom:
-                secretKeyRef:
-                  name: admin-secret
-                  key: chart_server_opts
       volumes:
         - name: njord-config-vol
           configMap:
             name: njord-config
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: jmx-njord
-  namespace: njord
-spec:
-  selector:
-    app: jmx-njord
-  ports:
-  - name: jmx
-    protocol: TCP
-    port: 5000
-    targetPort: 5000
-  type: ClusterIP
----
-# kubectl -n njord create configmap njord-config --from-file=/Users/williamkamp/source/madrona/njord/chart_server/src/jvmMain/resources/application.conf
+# kubectl -n njord create configmap njord-config --from-file=k8s_deploy/application.json
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: njord-config
   namespace: njord
 data:
-  application.conf: |
-    charts {
-        adminExpirationSeconds = 604800 // 60 * 60 * 24 * 7days
-    
-        pgUser=admin
-        pgPassword=mysecretpassword
-        pgHost=njord-postgis-svc.njord.svc.cluster.local
-        pgPort=5432
-        pgDatabase=s57server
-        pgConnectionPoolSize=10 
-    
-        memcacheHost=memcached.njord.svc.cluster.local
-
-        host = "0.0.0.0"
-        port = 80
-
-        externalScheme = "https"
-        externalHostName = "openenc.com"
-        allowHosts = ["www.openenc.com", "openenc.com"]
-        externalPort = 443
-
-        consoleMetrics = false
-        chartTempData = /tmp/njord/data
-
-        webStaticContent=/opt/chart_server/public
-    
-        shallowDepth = 3.0 // meters (9.8 feet)
-        safetyDepth = 6.0 // meters (19.6 feet)
-        deepDepth = 9.0 // meters (29.5 feet)
-    
-        debugTile = false
-        chartIngestWorkers = 4
+  application.json: |
+    {
+      "adminExpirationSeconds": 604800,
+      
+      "pgUser": "admin",
+      "pgPassword": "mysecretpassword",
+      "pgHost": "njord-postgis-svc.njord.svc.cluster.local",
+      "pgPort": 5432,
+      "pgDatabase": "s57server",
+      "pgConnectionPoolSize": 10,
+      
+      "host": "0.0.0.0",
+      "port": 9000,
+      
+      "externalScheme": "https",
+      "externalHostName": "openenc.com",
+      "externalPort": 443,
+      
+      "consoleMetrics": false,
+      "chartTempData": "/tmp/njord",
+      
+      "webStaticContent": "/opt/njord/resources/www",
+      
+      "shallowDepth": 3.0,
+      "safetyDepth": 6.0,
+      "deepDepth": 9.0,
+      
+      "adminKey": "changeme",
+      "adminUser": "admin",
+      "adminPass": "admin",
+      
+      "debugTile": false,
+      "chartIngestWorkers": 4,
+      "featureIngestWorkers": 10
     }
-  jmx_exporter.yaml: |
-    openTelemetry:
-      endpoint: http://kube-prom-stack-kube-prome-prometheus.monitoring.svc.cluster.local:9090/api/v1/otlp
-      protocol: http/protobuf
-      interval: 60
-    rules:
-      - pattern: ".*"
+
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -186,41 +161,3 @@ spec:
         - openenc.com
         - www.openenc.com
       secretName: njord-cert
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: memcached
-  namespace: njord
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: memcached
-  revisionHistoryLimit: 2
-  template:
-    metadata:
-      labels:
-        run: memcached
-    spec:
-      containers:
-        - name: memcached
-          image: memcached:1.6
-          ports:
-            - containerPort: 11211
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: njord
-  labels:
-    run: memcached
-  name: memcached
-spec:
-  clusterIP: None  # Headless service
-  ports:
-    - port: 11211
-      protocol: TCP
-      targetPort: 11211
-  selector:
-    run: memcached

@@ -1,25 +1,33 @@
 {
-    "adminKey": "changeme",
-    "adminUser": "admin",
-    "adminPass": "admin",
     "adminExpirationSeconds": 604800,
+
     "pgUser": "admin",
     "pgPassword": "mysecretpassword",
     "pgHost": "localhost",
     "pgPort": 5432,
-    "pgConnectionPoolSize": 10,
     "pgDatabase": "s57server",
+    "pgConnectionPoolSize": 10,
+
     "host": "0.0.0.0",
     "port": 9000,
+
     "externalScheme": "http",
     "externalHostName": "localhost",
     "externalPort": 9000,
+
     "consoleMetrics": true,
     "chartTempData": "/tmp/njord",
+
     "webStaticContent": "/opt/njord/resources/www",
+
     "shallowDepth": 3.0,
     "safetyDepth": 6.0,
     "deepDepth": 9.0,
+
+    "adminKey": "changeme",
+    "adminUser": "admin",
+    "adminPass": "admin",
+
     "debugTile": false,
     "chartIngestWorkers": 7,
     "featureIngestWorkers": 10

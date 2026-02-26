@@ -21,6 +21,5 @@
     "safetyDepth": 6.0,
     "deepDepth": 9.0,
     "debugTile": false,
-    "chartIngestWorkers": 7,
-    "featureIngestWorkers": 10
+    "chartIngestWorkers": 5
 }

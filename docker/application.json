@@ -29,6 +29,5 @@
     "adminPass": "admin",
 
     "debugTile": false,
-    "chartIngestWorkers": 7,
-    "featureIngestWorkers": 10
+    "chartIngestWorkers": 5
 }

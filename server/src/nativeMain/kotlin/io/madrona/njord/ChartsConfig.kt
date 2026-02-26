@@ -27,7 +27,6 @@ data class ChartsConfig(
     val deepDepth: Float,
     val debugTile: Boolean,
     val chartIngestWorkers: Int,
-    val featureIngestWorkers: Int,
 ) {
     val externalBaseUrl = "${externalScheme}://${externalHostName}:${externalPort}"
 }

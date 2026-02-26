@@ -133,8 +133,7 @@ data:
       "adminPass": "admin",
       
       "debugTile": false,
-      "chartIngestWorkers": 4,
-      "featureIngestWorkers": 10
+      "chartIngestWorkers": 5
     }
 
 ---

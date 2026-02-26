@@ -8,7 +8,6 @@ import ZipFile
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
-import io.madrona.njord.ext.letTwo
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.util.logger
@@ -24,51 +23,49 @@ class ChartIngest(
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val tileDao: TileDao = Singletons.tileDao,
     val chartDir: File,
-) {
+) : CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
     private val log = logger()
-    private val working = AtomicInt(0)
+    val featuresWorking = AtomicInt(0)
 
     suspend fun ingest(encUpload: EncUpload) {
         log.info("ingesting enc upload $encUpload")
-        val s57Files = withContext(Dispatchers.IO) {
-            log.info("unzipping files")
-            step1UnzipFiles(encUpload)
-        }.filter { it.name.endsWith(".000") }
+        log.info("unzipping files")
+        val s57Files = step1UnzipFiles(encUpload).filter { it.name.endsWith(".000") }
 
-        val featureCount = withContext(Dispatchers.IO) {
-            log.info("counting features")
-            s57Files.sumOf { file ->
-                log.info("counting features: $file")
-                OgrS57Dataset(file).featureCount(exLayers)
-            }
+        log.info("counting features")
+        val featureCount = s57Files.sumOf { file ->
+            log.info("summing features of: $file")
+            OgrS57Dataset(file).featureCount(exLayers)
         }
+        log.info("total feature count: $featureCount")
 
-        log.info("counting features sum = $featureCount")
         val report = Report(
             totalFeatureCount = featureCount,
             totalChartCount = s57Files.size
         )
         statusFile.writeMsg(report.progressMessage())
+
         log.info("inserting data")
         val queue = ArrayDeque(s57Files)
-        working.getAndSet(0)
         val chartsWorking = AtomicInt(0)
         while (queue.isNotEmpty()) {
             if (chartsWorking.value < config.chartIngestWorkers) {
                 queue.removeFirstOrNull()?.let { file ->
                     val w = chartsWorking.incrementAndGet()
-                    log.info("inserting chart ${file.name} working = $w")
-                    OgrS57Dataset(file).let { s57 ->
-                        chartInsertData(s57, report)?.let { data ->
-                            chartDao.insertAsync(data, true)?.let {
-                                installChartFeatures(s57, it, report)
-                            } ?: run {
-                                report.failChart(file.name, "chart insert")
+                    launch {
+                        log.info("inserting chart ${file.name} working = $w")
+                        OgrS57Dataset(file).let { s57 ->
+                            chartInsertData(s57, report)?.let { data ->
+                                chartDao.insertAsync(data, true)?.let {
+                                    installChartFeatures(s57, it, report)
+                                } ?: run {
+                                    report.failChart(file.name, "chart insert")
+                                }
                             }
                         }
+                        chartsWorking.decrementAndGet()
                     }
-                    chartsWorking.decrementAndGet()
                 }
             } else {
                 delay(250)
@@ -84,7 +81,7 @@ class ChartIngest(
         statusFile.writeMsg(WsMsg.Idle)
     }
 
-    private suspend fun step1UnzipFiles(
+    private fun step1UnzipFiles(
         encUpload: EncUpload,
     ): List<File> {
         statusFile.writeMsg(WsMsg.Extracting(0f))
@@ -135,38 +132,26 @@ class ChartIngest(
         s57: OgrS57Dataset,
         chart: Chart, report: Report
     ) {
-        val queue = ArrayDeque(s57.layerNames().filter { !exLayers.contains(it) })
-        withContext(Dispatchers.IO) {
-            while (queue.isNotEmpty()) {
-                if (working.value < config.featureIngestWorkers) {
-                    queue.removeFirstOrNull()?.let { layerName ->
-                        s57.getLayer(layerName)?.let { layer ->
-                            val w = working.incrementAndGet()
-                            log.info("$layerName ${layer.features.size} feature(s) inserting working=$w remaining=${queue.size}")
-                            layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
-                                val count = geoJsonDao.featureInsertAsync(
-                                    FeatureInsert(
-                                        layerName = layerName, chart = chart, geo = geo
-                                    )
-                                ) ?: 0
-                                val w = working.decrementAndGet()
-                                log.info("$layerName ${layer.features.size} feature(s) insert complete working=$w remaining_layers=${queue.size}")
-                                if (count == 0) {
-                                    log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-                                    log.debug("geo json = \n${geo}")
-                                }
-                                report.appendChartFeatureCount(chart.name, count)
-                            }
-                            statusFile.writeMsg(report.progressMessage())
-                        }
+        s57.layerNames().filter { !exLayers.contains(it) }.forEach { layerName ->
+            s57.getLayer(layerName)?.let { layer ->
+                log.info("$layerName ${layer.features.size} feature(s) inserting")
+                layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
+                    val count = geoJsonDao.featureInsertAsync(
+                        FeatureInsert(
+                            layerName = layerName, chart = chart, geo = geo
+                        )
+                    ) ?: 0
+                    if (count == 0) {
+                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                        log.debug("geo json = \n${geo}")
                     }
-                } else {
-                    delay(250)
+                    report.appendChartFeatureCount(chart.name, count)
                 }
+                statusFile.writeMsg(report.progressMessage())
             }
-            report.completedChart()
-            statusFile.writeMsg(report.progressMessage())
         }
+        report.completedChart()
+        statusFile.writeMsg(report.progressMessage())
     }
 
     companion object {
@@ -210,7 +195,7 @@ private data class Report(
 
     fun failChart(name: String, msg: String) {
         val m = if (failedCharts.contains(name)) {
-           "${failedCharts[name]}, $msg"
+            "${failedCharts[name]}, $msg"
         } else {
             msg
         }

@@ -5,10 +5,8 @@ import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.viewmodel.ChartInstallState
 import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.chartInstallViewModel
-import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Fail
 import io.madrona.njord.viewmodel.utils.Loading
-import io.madrona.njord.viewmodel.utils.Uninitialized
 import org.jetbrains.compose.web.attributes.*
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.width
@@ -20,12 +18,21 @@ import org.w3c.dom.HTMLInputElement
 fun ChartInstaller() {
     val state by chartInstallViewModel.flow.collectAsState()
     val adminState by adminViewModel.flow.collectAsState()
+
+    LaunchedEffect(adminState.isLoggedIn) {
+        if (adminState.isLoggedIn) {
+            chartInstallViewModel.connect()
+        }
+    }
+
     if (adminState.isLoggedIn) {
-        when (val upload = state.encUpload) {
-            is Complete -> ChartInstallProgress(state)
-            is Fail -> ErrorDisplay(upload) { }
-            is Loading -> Progress("Uploading chart file", state.uploadProgress)
-            Uninitialized -> ChartInstallForm()
+        when {
+            state.info == null || state.info is WsMsg.Idle -> when (val upload = state.encUpload) {
+                is Loading -> Progress("Uploading chart file", state.uploadProgress)
+                is Fail -> ErrorDisplay(upload) { chartInstallViewModel.reset() }
+                else -> ChartInstallForm()
+            }
+            else -> ChartInstallProgress(state)
         }
     } else {
         Text("Admin access required")
@@ -55,10 +62,7 @@ fun ChartInstallProgress(state: ChartInstallState) {
             val progress = ((wsMsg.feature.toDouble() / wsMsg.totalFeatures.toDouble()) * 100.0).toInt()
             Progress(wsMsg.text(), progress)
         }
-        null -> {
-            println("null wsMsg")
-            Text("null wsMsg")
-        }
+        else -> {}
     }
 }
 

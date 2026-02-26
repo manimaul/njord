@@ -149,6 +149,16 @@ class File(val path: Path) {
         return emptyList()
     }
 
+    fun listDirs(): List<File> {
+        if (isDirectory()) {
+            return SystemFileSystem.list(path).mapNotNull {
+                val f = File(it)
+                if (f.isDirectory()) f else null
+            }
+        }
+        return emptyList()
+    }
+
     fun normalizePath(): Path {
         val p = path.toString()
         val isAbsolute = p.startsWith(SEPARATOR)
@@ -175,6 +185,10 @@ class File(val path: Path) {
                 Path(cwd.path, stack.joinToString(SEPARATOR))
             } ?: throw IllegalStateException("could not normalize path")
         }
+    }
+
+    fun isEmpty() : Boolean {
+        return listFiles(false).isEmpty()
     }
 
     fun mkdirs(): Boolean {

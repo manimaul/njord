@@ -21,9 +21,11 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
+import io.madrona.njord.ingest.ChartIngestWorker
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.staticCFunction
+import kotlinx.coroutines.launch
 import kotlin.concurrent.atomics.AtomicInt
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.concurrent.atomics.incrementAndFetch
@@ -70,7 +72,6 @@ class ChartServerApp {
 }
 
 fun Application.njord() {
-//    install(Compression)
     install(ContentNegotiation) {
         json()
         ignoreType<MultiPartData>()
@@ -83,6 +84,9 @@ fun Application.njord() {
     }
     install(CallLogging)
     Singletons.genLog = log
+    launch {
+        ChartIngestWorker().run()
+    }
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
@@ -128,8 +132,6 @@ fun Application.njord() {
             // curl -v -X DELETE "http://localhost:9000/v1/enc_save?signature=$sig&uuid="
             // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
             EncSaveHandler(),
-
-            EncSaveUrlHandler(),
 
             ChartWebSocketHandler(),
 

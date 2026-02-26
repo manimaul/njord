@@ -16,7 +16,7 @@ import org.w3c.xhr.XMLHttpRequest
 
 external fun encodeURIComponent(str: String): String
 
-fun websocketUri(upload: EncUpload): String? {
+fun websocketUri(): String? {
     return adminViewModel.signature?.let { sig ->
         val loc = window.location.host.let {
             if (it.endsWith(":8080")) {
@@ -30,12 +30,8 @@ fun websocketUri(upload: EncUpload): String? {
         } else {
             "ws://$loc"
         }
-        val files = upload.files.fold("") { acc, ea ->
-            acc + "&file=${encodeURIComponent(ea)}"
-        }
-        "$base/v1/ws/enc_process?uuid=${encodeURIComponent(upload.uuid)}&signature=${sig.signatureEncoded}$files"
+        "$base/v1/ws/enc_process?signature=${sig.signatureEncoded}"
     }
-
 }
 
 data class ChartInstallState(
@@ -48,7 +44,20 @@ data class ChartInstallState(
 val chartInstallViewModel = ChartInstallViewModel()
 
 class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState()) {
+
     override fun reload() {
+    }
+
+    fun connect() {
+        withState { state ->
+            if (state.webSocket == null) {
+                setupWebSocket()
+            }
+        }
+    }
+
+    fun reset() {
+        setState { copy(encUpload = Uninitialized, uploadProgress = 0) }
     }
 
     fun upload(file: File) {
@@ -79,15 +88,14 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
                     uploadProgress = 100
                 )
             }
-            setupWebSocket(encUpload)
         })
         val url = "/v1/enc_save?signature=${adminViewModel.signature?.signatureEncoded}&filename=${encodeURIComponent(file.name)}"
         xhr.open("POST", url, true)
         xhr.asDynamic().send(file)
     }
 
-    private fun setupWebSocket(encUpload: EncUpload) {
-        websocketUri(encUpload)?.let { uri ->
+    private fun setupWebSocket() {
+        websocketUri()?.let { uri ->
             val ws = WebSocket(uri)
             ws.onclose = {
                 setState { copy(webSocket = null) }
@@ -100,8 +108,13 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
             }
             ws.onmessage = { event ->
                 try {
-                    (event.data as? String)?.let { Json.decodeFromString<WsMsg>(it) }?.let {
-                        setState { copy(info = it) }
+                    (event.data as? String)?.let { Json.decodeFromString<WsMsg>(it) }?.let { msg ->
+                        setState {
+                            copy(
+                                info = msg,
+                                encUpload = if (msg is WsMsg.Idle) Uninitialized else encUpload,
+                            )
+                        }
                     }
                 } catch (e: Exception) {
                     println("error: ${e.message}")

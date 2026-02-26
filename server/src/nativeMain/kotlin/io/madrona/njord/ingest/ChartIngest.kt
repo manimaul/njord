@@ -5,14 +5,12 @@ import InsertError
 import InsertSuccess
 import OgrS57Dataset
 import ZipFile
-import io.ktor.websocket.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
 import io.madrona.njord.ext.letTwo
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
-import io.madrona.njord.model.ws.sendMessage
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
@@ -20,14 +18,14 @@ import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
 
 class ChartIngest(
-    private val webSocketSession: WebSocketSession,
+    private val statusFile: File,
     private val config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val tileDao: TileDao = Singletons.tileDao,
+    val chartDir: File,
 ) {
 
-    private val charDir = config.chartTempData
     private val log = logger()
     private val working = AtomicInt(0)
 
@@ -51,75 +49,71 @@ class ChartIngest(
             totalFeatureCount = featureCount,
             totalChartCount = s57Files.size
         )
-        webSocketSession.sendMessage(report.progressMessage())
+        statusFile.writeMsg(report.progressMessage())
         log.info("inserting data")
         val queue = ArrayDeque(s57Files)
         working.getAndSet(0)
-//        withContext(Dispatchers.IO) {
-            val chartsWorking = AtomicInt(0)
-            while (queue.isNotEmpty()) {
-                if (chartsWorking.value < config.chartIngestWorkers) {
-                    queue.removeFirstOrNull()?.let { file ->
-                        val w = chartsWorking.incrementAndGet()
-                        log.info("inserting chart ${file.name} working = $w")
-//                        launch {
-                            OgrS57Dataset(file).let { s57 ->
-                                chartInsertData(s57, report)?.let { data ->
-                                    chartDao.insertAsync(data, true)?.let {
-                                        installChartFeatures(s57, it, report)
-                                    } ?: run {
-                                        report.failChart(file.name, "chart insert")
-                                    }
-                                }
+        val chartsWorking = AtomicInt(0)
+        while (queue.isNotEmpty()) {
+            if (chartsWorking.value < config.chartIngestWorkers) {
+                queue.removeFirstOrNull()?.let { file ->
+                    val w = chartsWorking.incrementAndGet()
+                    log.info("inserting chart ${file.name} working = $w")
+                    OgrS57Dataset(file).let { s57 ->
+                        chartInsertData(s57, report)?.let { data ->
+                            chartDao.insertAsync(data, true)?.let {
+                                installChartFeatures(s57, it, report)
+                            } ?: run {
+                                report.failChart(file.name, "chart insert")
                             }
-                            chartsWorking.decrementAndGet()
-//                        }
+                        }
                     }
-                } else {
-                    delay(250)
+                    chartsWorking.decrementAndGet()
                 }
+            } else {
+                delay(250)
             }
-//        }
-        webSocketSession.sendMessage(report.completionMessage())
+        }
+        statusFile.writeMsg(report.completionMessage())
 
         log.info("cleaning up resources")
         withContext(Dispatchers.IO) {
-            encUpload.uuidDir()?.deleteRecursively()
+            chartDir.deleteRecursively()
         }
         tileDao.invalidateCache()
+        statusFile.writeMsg(WsMsg.Idle)
     }
 
     private suspend fun step1UnzipFiles(
         encUpload: EncUpload,
     ): List<File> {
-        webSocketSession.sendMessage(
-            WsMsg.Extracting(0f)
-        )
+        statusFile.writeMsg(WsMsg.Extracting(0f))
         val retVal = mutableListOf<File>()
-        return letTwo(encUpload.uuidDir(), encUpload.cacheFiles()) { dir, files ->
-            files.forEach { zipFile ->
-                ZipFile(zipFile).let { zip ->
-                    val size = zip.size().toDouble()
-                    var complete = 0.0
-                    zip.entries().filter { !it.isDirectory() }.forEach { entry ->
-                        val name = entry.name()
-                        if (!name.startsWith("__MACOSX")) {
-                            entry.unzipToPath(dir)
-                            complete += 1
-                            webSocketSession.sendMessage(
-                                WsMsg.Extracting((complete / size).toFloat())
-                            )
-                            retVal.add(File(dir, name))
-                        }
+        val files = encUpload.zipFiles.mapNotNull { name ->
+            File(chartDir, name).takeIf { it.exists() } ?: run {
+                log.error("chart dir file does not exist $chartDir/$name")
+                null
+            }
+        }
+        files.forEach { zipFile ->
+            ZipFile(zipFile).let { zip ->
+                val size = zip.size().toDouble()
+                var complete = 0.0
+                zip.entries().filter { !it.isDirectory() }.forEach { entry ->
+                    val name = entry.name()
+                    if (!name.startsWith("__MACOSX")) {
+                        entry.unzipToPath(chartDir)
+                        complete += 1
+                        statusFile.writeMsg(
+                            WsMsg.Extracting((complete / size).toFloat())
+                        )
+                        retVal.add(File(chartDir, name))
                     }
                 }
             }
-            retVal.also {
-                webSocketSession.sendMessage(
-                    WsMsg.Extracting(1f)
-                )
-            }
-        } ?: emptyList()
+        }
+        statusFile.writeMsg(WsMsg.Extracting(1f))
+        return retVal
     }
 
     private fun chartInsertData(
@@ -148,24 +142,22 @@ class ChartIngest(
                     queue.removeFirstOrNull()?.let { layerName ->
                         s57.getLayer(layerName)?.let { layer ->
                             val w = working.incrementAndGet()
-//                            launch {
-                                log.info("$layerName ${layer.features.size} feature(s) inserting working=$w remaining=${queue.size}")
-                                layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
-                                    val count = geoJsonDao.featureInsertAsync(
-                                        FeatureInsert(
-                                            layerName = layerName, chart = chart, geo = geo
-                                        )
-                                    ) ?: 0
-                                    val w = working.decrementAndGet()
-                                    log.info("$layerName ${layer.features.size} feature(s) insert complete working=$w remaining=${queue.size}")
-                                    if (count == 0) {
-                                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-                                        log.debug("geo json = \n${geo}")
-                                    }
-                                    report.appendChartFeatureCount(chart.name, count)
+                            log.info("$layerName ${layer.features.size} feature(s) inserting working=$w remaining=${queue.size}")
+                            layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
+                                val count = geoJsonDao.featureInsertAsync(
+                                    FeatureInsert(
+                                        layerName = layerName, chart = chart, geo = geo
+                                    )
+                                ) ?: 0
+                                val w = working.decrementAndGet()
+                                log.info("$layerName ${layer.features.size} feature(s) insert complete working=$w remaining_layers=${queue.size}")
+                                if (count == 0) {
+                                    log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
+                                    log.debug("geo json = \n${geo}")
                                 }
-                                webSocketSession.sendMessage(report.progressMessage())
-//                            }
+                                report.appendChartFeatureCount(chart.name, count)
+                            }
+                            statusFile.writeMsg(report.progressMessage())
                         }
                     }
                 } else {
@@ -173,29 +165,7 @@ class ChartIngest(
                 }
             }
             report.completedChart()
-            webSocketSession.sendMessage(report.progressMessage())
-        }
-    }
-
-    private fun EncUpload.cacheFiles(): List<File> {
-        return uuidDir()?.let { dir ->
-            files.mapNotNull { name ->
-                File(dir, name).takeIf {
-                    it.exists()
-                } ?: run {
-                    log.error("chart dir file does not exist $dir/$name")
-                    null
-                }
-            }
-        } ?: emptyList()
-    }
-
-    private fun EncUpload.uuidDir(): File? {
-        return File(charDir, uuid).takeIf {
-            it.exists()
-        } ?: run {
-            log.error("chart dir does not exist $charDir/$uuid")
-            null
+            statusFile.writeMsg(report.progressMessage())
         }
     }
 
@@ -211,8 +181,8 @@ private data class Report(
 
     private val featureInstallCount = AtomicLong(0)
     private val chartInstallCount = AtomicInt(0)
-    private val insertItems: MutableMap<String, Int> = mutableMapOf() //Collections.synchronizedMap(mutableMapOf())
-    private val failedCharts: MutableMap<String, String> = mutableMapOf() //Collections.synchronizedMap(mutableMapOf())
+    private val insertItems: MutableMap<String, Int> = mutableMapOf()
+    private val failedCharts: MutableMap<String, String> = mutableMapOf()
     private val time = Clock.System.now().toEpochMilliseconds()
     private fun elapsed(): Long {
         return Clock.System.now().toEpochMilliseconds() - time

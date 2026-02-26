@@ -38,4 +38,7 @@ sealed class WsMsg {
     data class Extracting(
         val progress: Float,
     ) : WsMsg()
+
+    @Serializable
+    data object Idle : WsMsg()
 }

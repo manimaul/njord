@@ -39,6 +39,18 @@ object Singletons {
 
     val tileCache by lazy { TileCache(File(config.chartTempData, "tiles")) }
 
+    val chartUploadDir by lazy {
+        File(config.chartTempData, "save")
+    }
+
+    val chartIngestWorkDir by lazy {
+        File(config.chartTempData, "ingest")
+    }
+
+    val ingestStatusFile by lazy {
+        File(config.chartTempData, "status.json")
+    }
+
     val tileDao by lazy { TileDao() }
 
     val config by lazy {

@@ -1,0 +1,27 @@
+compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+---
+#include <stdlib.h>
+
+#ifdef __linux__
+#include <unistd.h>
+#include <sys/inotify.h>
+
+static int njord_inotify_init() {
+    return inotify_init1(IN_NONBLOCK | IN_CLOEXEC);
+}
+static int njord_inotify_add_watch_create(int fd, const char* path) {
+    return inotify_add_watch(fd, path, IN_CREATE | IN_MOVED_TO);
+}
+static int njord_inotify_rm(int fd, int wd) {
+    return inotify_rm_watch(fd, wd);
+}
+static int njord_inotify_read_events(int fd, char* buf, int len) {
+    return (int)read(fd, buf, (size_t)len);
+}
+#else
+/* Non-Linux stubs — inotify unavailable; Kotlin code falls back to polling */
+static int njord_inotify_init() { return -1; }
+static int njord_inotify_add_watch_create(int fd, const char* path) { return -1; }
+static int njord_inotify_rm(int fd, int wd) { return 0; }
+static int njord_inotify_read_events(int fd, char* buf, int len) { return 0; }
+#endif

@@ -3,24 +3,21 @@ package io.madrona.njord.ingest
 import File
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.EncUpload
-import io.madrona.njord.model.ws.WsMsg
-import io.madrona.njord.util.UUID
+import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.delay
-import kotlinx.serialization.json.Json
 
 class ChartIngestWorker(
     private val saveDir: File = Singletons.chartUploadDir,
     private val workDir: File = Singletons.chartIngestWorkDir,
-    private val statusFile: File = Singletons.ingestStatusFile,
+    private val ingestStatus: IngestStatus = Singletons.ingestStatus,
+    private val distributedLock: DistributedLock = Singletons.distributedLock,
 ) {
     private val log = logger()
 
     suspend fun run() {
         workDir.mkdirs()
-        if (!statusFile.isFile()) {
-            statusFile.writeMsg(WsMsg.Idle)
-        }
+        ingestStatus.initIfNeeded()
         while (true) {
             delay(5_000)
             tryClaimAndIngest()
@@ -28,14 +25,16 @@ class ChartIngestWorker(
     }
 
     private suspend fun tryClaimAndIngest() {
-        // Only one ingestion at a time: skip if ingest/ has any subdirectory
-        if (workDir.listDirs().isNotEmpty()) return
-
         val zips = saveDir.listFiles(false).filter { it.name.endsWith(".zip", ignoreCase = true) }
         if (zips.isEmpty()) return
 
-        val uuid = UUID.randomUUID().toString()
-        val claimDir = File(workDir, uuid)
+        if (!distributedLock.tryAcquireLock()) return
+        println("lock acquired to perform chart ingestion")
+
+        println("clearing work dir")
+        workDir.deleteRecursively()
+
+        val claimDir = File(workDir, distributedLock.uuid)
         claimDir.mkdirs()
 
         // Atomic per-file claim: rename zip from save/ → ingest/{uuid}/
@@ -45,28 +44,15 @@ class ChartIngestWorker(
         }
 
         if (claimed.isEmpty()) {
+            println("claimed files empty - clearing lock and cleaning up")
             claimDir.deleteRecursively()
+            distributedLock.tryClearLock()
             return
         }
 
-        log.info("claimed ${claimed.size} zip(s) for ingestion as $uuid")
-        try {
-            ChartIngest(statusFile = statusFile, chartDir = claimDir).ingest(
-                EncUpload(zipFiles = claimed.map { it.name })
-            )
-        } catch (e: Throwable) {
-            log.error("ingestion failed: ${e.message}")
-            statusFile.writeMsg(WsMsg.Error(message = e.message ?: "ingestion error", isFatal = true))
-            claimDir.deleteRecursively()
-            statusFile.writeMsg(WsMsg.Idle)
-        }
+        log.info("claimed ${claimed.size} zip(s) for ingestion as ${distributedLock.uuid}")
+        ChartIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(
+            EncUpload(zipFiles = claimed.map { it.name })
+        )
     }
-}
-
-fun File.writeMsg(msg: WsMsg) {
-    val json = Json.encodeToString(WsMsg.serializer(), msg)
-    val parentPath = path.parent?.toString() ?: "."
-    val tmp = File("$parentPath/${name}.${kotlin.random.Random.nextLong()}.tmp")
-    tmp.write(json)
-    tmp.renameTo(getAbsolutePath().toString())
 }

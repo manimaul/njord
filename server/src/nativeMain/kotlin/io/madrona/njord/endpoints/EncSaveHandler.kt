@@ -7,12 +7,17 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
+import io.madrona.njord.ingest.IngestStatus
 import io.madrona.njord.model.EncUpload
+import io.madrona.njord.model.ws.WsMsg
+import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
 
 class EncSaveHandler(
     val chartDir: File = Singletons.chartUploadDir,
-    val chartIngestWorkDir: File = Singletons.chartIngestWorkDir
+    val chartIngestWorkDir: File = Singletons.chartIngestWorkDir,
+    val distributedLock: DistributedLock = Singletons.distributedLock,
+    val ingestStatus: IngestStatus = Singletons.ingestStatus,
 ) : KtorHandler {
     override val route = "/v1/enc_save"
     private val log = logger()
@@ -23,10 +28,16 @@ class EncSaveHandler(
     }
 
     override suspend fun handleDelete(call: ApplicationCall) = call.requireSignature {
-        chartIngestWorkDir.listFiles(false).forEach {
-            it.deleteRecursively()
+        if (distributedLock.tryClearLock()) {
+            chartDir.deleteRecursively()
+            chartDir.mkdirs()
+            chartIngestWorkDir.deleteRecursively()
+            chartIngestWorkDir.mkdirs()
+            ingestStatus.writeMsgIgnoreLock(WsMsg.Idle)
+            call.respond(HttpStatusCode.Accepted)
+        } else {
+            call.respond(HttpStatusCode.OK)
         }
-        call.respond(HttpStatusCode.OK)
     }
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
@@ -35,6 +46,8 @@ class EncSaveHandler(
             val dest = File(chartDir, fileName)
             val tmp = File(chartDir, "$fileName.tmp")
             tmp.writeBytes(fileBytes)
+            distributedLock.tryClearLock()
+            ingestStatus.writeMsgIgnoreLock(WsMsg.Extracting(0f))
             tmp.renameTo(dest.getAbsolutePath().toString())
             call.respond(EncUpload(zipFiles = listOf(fileName)))
         } ?: call.respond(HttpStatusCode.BadRequest)

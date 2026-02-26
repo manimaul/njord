@@ -188,7 +188,12 @@ class File(val path: Path) {
     }
 
     fun isEmpty() : Boolean {
-        return listFiles(false).isEmpty()
+        if (isDirectory()) {
+            return listFiles(false).isEmpty()
+        } else if (exists()) {
+            (SystemFileSystem.metadataOrNull(path)?.size ?: 0L) > 0
+        }
+        return true
     }
 
     fun mkdirs(): Boolean {
@@ -260,7 +265,7 @@ class File(val path: Path) {
     }
 
     fun readData(): ByteArray {
-        if (isDirectory()) {
+        if (isDirectory() || !exists()) {
             return ByteArray(0)
         }
         val file = fopen(path.toString(), "rb") ?: throw IllegalArgumentException("Cannot open input file $path")

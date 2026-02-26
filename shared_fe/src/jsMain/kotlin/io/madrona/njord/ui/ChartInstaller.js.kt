@@ -2,8 +2,10 @@ package io.madrona.njord.ui
 
 import androidx.compose.runtime.*
 import io.madrona.njord.model.ws.WsMsg
+import io.madrona.njord.viewmodel.AdminState
 import io.madrona.njord.viewmodel.ChartInstallState
 import io.madrona.njord.viewmodel.adminViewModel
+import io.madrona.njord.viewmodel.chartCatalogViewModel
 import io.madrona.njord.viewmodel.chartInstallViewModel
 import io.madrona.njord.viewmodel.utils.Fail
 import io.madrona.njord.viewmodel.utils.Loading
@@ -20,19 +22,19 @@ fun ChartInstaller() {
     val adminState by adminViewModel.flow.collectAsState()
 
     LaunchedEffect(adminState.isLoggedIn) {
-        if (adminState.isLoggedIn) {
-            chartInstallViewModel.connect()
-        }
+        chartInstallViewModel.connect(adminState.isLoggedIn)
     }
 
     if (adminState.isLoggedIn) {
         when {
             state.info == null || state.info is WsMsg.Idle -> when (val upload = state.encUpload) {
                 is Loading -> Progress("Uploading chart file", state.uploadProgress)
-                is Fail -> ErrorDisplay(upload) { chartInstallViewModel.reset() }
+                is Fail -> ErrorDisplay(upload) {
+                    chartInstallViewModel.reset(adminState.adminSignature.value)
+                }
                 else -> ChartInstallForm()
             }
-            else -> ChartInstallProgress(state)
+            else -> ChartInstallProgress(adminState, state)
         }
     } else {
         Text("Admin access required")
@@ -44,26 +46,64 @@ private fun WsMsg.Info.text() : String {
 }
 
 @Composable
-fun ChartInstallProgress(state: ChartInstallState) {
-    when (val wsMsg = state.info) {
+fun ChartInstallProgress(
+    adminState: AdminState,
+    state: ChartInstallState
+) {
+    val working = when (val wsMsg = state.info) {
         is WsMsg.CompletionReport -> {
             println("complete $wsMsg")
             Text("$wsMsg")
+            false
         }
         is WsMsg.Error -> {
             println("info $wsMsg")
             Text("$wsMsg")
+            false
         }
         is WsMsg.Extracting -> {
             val progress = (wsMsg.progress * 100.0).toInt()
             Progress("Extracting chart files", progress)
+            true
         }
         is WsMsg.Info -> {
             val progress = ((wsMsg.feature.toDouble() / wsMsg.totalFeatures.toDouble()) * 100.0).toInt()
             Progress(wsMsg.text(), progress)
+            true
         }
-        else -> {}
+        else -> false
     }
+
+    Modal(
+        id = "confirm-delete",
+        title = "Are you sure?", { }) {
+        H6 { Text("This will halt the current chart installation leaving it partially completed!") }
+        Button(attrs = {
+            classes("btn", "btn-danger", "btn-sm", "me-2")
+            onClick {
+                chartInstallViewModel.reset(adminState.adminSignature.value)
+                modalViewModel.hide()
+            }
+        }) { Text("Confirm") }
+        Button(
+            attrs = {
+                classes("btn", "btn-success", "btn-sm")
+                onClick { modalViewModel.hide() }
+            }
+        ) { Text("Cancel") }
+    }
+
+    Br {  }
+    Button(attrs = {
+        classes("btn", "btn-danger")
+        onClick {
+            if (working) {
+                modalViewModel.show()
+            } else {
+                chartInstallViewModel.reset(adminState.adminSignature.value)
+            }
+        }
+    }) { Text(if (working) "Abort" else "Reset") }
 }
 
 @Composable

@@ -26,6 +26,7 @@ kotlin {
             cinterops {
                 val libssl by creating
                 val libgd by creating
+                val libnotify by creating
             }
         }
         binaries {

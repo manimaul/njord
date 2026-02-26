@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalAtomicApi::class)
+
 package io.madrona.njord.ingest
 
 import File
@@ -10,14 +12,18 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
+import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
+import kotlin.concurrent.atomics.AtomicBoolean
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class ChartIngest(
-    private val statusFile: File,
+    private val ingestStatus: IngestStatus = Singletons.ingestStatus,
+    val distributedLock: DistributedLock = Singletons.distributedLock,
     private val config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
@@ -28,6 +34,25 @@ class ChartIngest(
     private val log = logger()
 
     suspend fun ingest(encUpload: EncUpload) {
+        if (distributedLock.lockAcquired) {
+            runCatching {
+                val report = ingestInternal(encUpload)
+                log.info("ingestion complete $encUpload")
+                log.info("cleaning up resources")
+                tileDao.invalidateCache()
+                chartDir.deleteRecursively()
+                if (!distributedLock.lockAcquired) {
+                    report.abort()
+                }
+                ingestStatus.writeMsg(report.completionMessage())
+            }
+            distributedLock.tryClearLock()
+        } else {
+            println("ingest noop $encUpload - lock not acquired")
+        }
+    }
+
+    private suspend fun ingestInternal(encUpload: EncUpload): Report {
         log.info("ingesting enc upload $encUpload")
         log.info("unzipping files")
         val s57Files = step1UnzipFiles(encUpload).filter { it.name.endsWith(".000") }
@@ -43,16 +68,21 @@ class ChartIngest(
             totalFeatureCount = featureCount,
             totalChartCount = s57Files.size
         )
-        statusFile.writeMsg(report.progressMessage())
+        ingestStatus.writeMsg(report.progressMessage())
 
         log.info("inserting data")
         val queue = ArrayDeque(s57Files)
         val chartsWorking = AtomicInt(0)
+        val jobs = mutableListOf<Job>()
         while (queue.isNotEmpty()) {
+            if (!distributedLock.lockAcquired) {
+                report.abort()
+                break
+            }
             if (chartsWorking.value < config.chartIngestWorkers) {
                 queue.removeFirstOrNull()?.let { file ->
                     val w = chartsWorking.incrementAndGet()
-                    launch {
+                    jobs.add(launch {
                         log.info("inserting chart ${file.name} working = $w")
                         OgrS57Dataset(file).let { s57 ->
                             chartInsertData(s57, report)?.let { data ->
@@ -64,23 +94,20 @@ class ChartIngest(
                             }
                         }
                         chartsWorking.decrementAndGet()
-                    }
+                    })
                 }
             } else {
                 delay(250)
             }
         }
-
-        log.info("cleaning up resources")
-        tileDao.invalidateCache()
-        chartDir.deleteRecursively()
-        statusFile.writeMsg(report.completionMessage())
+        jobs.joinAll()
+        return report
     }
 
     private fun step1UnzipFiles(
         encUpload: EncUpload,
     ): List<File> {
-        statusFile.writeMsg(WsMsg.Extracting(0f))
+        ingestStatus.writeMsg(WsMsg.Extracting(0f))
         val retVal = mutableListOf<File>()
         val files = encUpload.zipFiles.mapNotNull { name ->
             File(chartDir, name).takeIf { it.exists() } ?: run {
@@ -90,14 +117,20 @@ class ChartIngest(
         }
         files.forEach { zipFile ->
             ZipFile(zipFile).let { zip ->
+                if (!distributedLock.lockAcquired) {
+                    return emptyList()
+                }
                 val size = zip.size().toDouble()
                 var complete = 0.0
                 zip.entries().filter { !it.isDirectory() }.forEach { entry ->
                     val name = entry.name()
+                    if (!distributedLock.lockAcquired) {
+                        return emptyList()
+                    }
                     if (!name.startsWith("__MACOSX")) {
                         entry.unzipToPath(chartDir)
                         complete += 1
-                        statusFile.writeMsg(
+                        ingestStatus.writeMsg(
                             WsMsg.Extracting((complete / size).toFloat())
                         )
                         retVal.add(File(chartDir, name))
@@ -105,7 +138,7 @@ class ChartIngest(
                 }
             }
         }
-        statusFile.writeMsg(WsMsg.Extracting(1f))
+        ingestStatus.writeMsg(WsMsg.Extracting(1f))
         return retVal
     }
 
@@ -126,11 +159,16 @@ class ChartIngest(
 
     private suspend fun installChartFeatures(
         s57: OgrS57Dataset,
-        chart: Chart, report: Report
+        chart: Chart,
+        report: Report
     ) {
         s57.layerNames().filter { !exLayers.contains(it) }.forEach { layerName ->
+            if (!distributedLock.lockAcquired) {
+                report.abort()
+                return
+            }
             s57.getLayer(layerName)?.let { layer ->
-                log.info("$layerName ${layer.features.size} feature(s) inserting")
+//                log.info("$layerName ${layer.features.size} feature(s) inserting")
                 layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
                     //todo: look into inserting via WKB / props
                     val count = geoJsonDao.featureInsertAsync(
@@ -144,11 +182,11 @@ class ChartIngest(
                     }
                     report.appendChartFeatureCount(chart.name, count)
                 }
-                statusFile.writeMsg(report.progressMessage())
+                ingestStatus.writeMsg(report.progressMessage())
             }
         }
         report.completedChart()
-        statusFile.writeMsg(report.progressMessage())
+        ingestStatus.writeMsg(report.progressMessage())
     }
 
     companion object {
@@ -161,6 +199,7 @@ private data class Report(
     val totalChartCount: Int,
 ) {
 
+    private val aborted = AtomicInt(0)
     private val featureInstallCount = AtomicLong(0)
     private val chartInstallCount = AtomicInt(0)
     private val insertItems: MutableMap<String, Int> = mutableMapOf()
@@ -170,6 +209,12 @@ private data class Report(
         return Clock.System.now().toEpochMilliseconds() - time
     }
 
+    fun abort() : Report {
+        println("result set to aborted")
+        aborted.value = 1
+        return this
+    }
+
     fun progressMessage() = WsMsg.Info(
         feature = featureInstallCount.value,
         chart = chartInstallCount.value,
@@ -177,7 +222,7 @@ private data class Report(
         totalFeatures = totalFeatureCount,
     )
 
-    fun completionMessage() = WsMsg.CompletionReport(
+    fun completionMessage() = if (aborted.value == 1) WsMsg.Idle else WsMsg.CompletionReport(
         totalFeatureCount = totalFeatureCount,
         totalChartCount = totalChartCount,
         failedCharts = failedCharts.map { "${it.key} msg: ${it.value}" },

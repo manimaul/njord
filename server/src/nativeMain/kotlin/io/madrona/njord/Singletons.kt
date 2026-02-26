@@ -13,9 +13,12 @@ import io.madrona.njord.db.TileCache
 import io.madrona.njord.db.TileDao
 import io.madrona.njord.endpoints.AdminUtil
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
+import io.madrona.njord.ingest.IngestStatus
 import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
+import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.SpriteSheet
+import io.madrona.njord.util.UUID
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 import kotlinx.serialization.json.Json
@@ -50,6 +53,16 @@ object Singletons {
     val ingestStatusFile by lazy {
         File(config.chartTempData, "status.json")
     }
+
+    val lockFile by lazy {
+        File(config.chartTempData, "lock")
+    }
+
+    val distributedLock by lazy {
+        DistributedLock()
+    }
+
+    val ingestStatus by lazy { IngestStatus() }
 
     val tileDao by lazy { TileDao() }
 

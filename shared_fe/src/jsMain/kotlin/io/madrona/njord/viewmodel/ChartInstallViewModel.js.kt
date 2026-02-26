@@ -1,12 +1,16 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.model.AdminResponse
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.ws.WsMsg
+import io.madrona.njord.network.Network
 import io.madrona.njord.viewmodel.utils.Async
 import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Loading
 import io.madrona.njord.viewmodel.utils.Uninitialized
+import io.madrona.njord.viewmodel.utils.toAsync
 import kotlinx.browser.window
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.w3c.dom.WebSocket
 import org.w3c.dom.events.EventListener
@@ -48,16 +52,19 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
     override fun reload() {
     }
 
-    fun connect() {
-        withState { state ->
-            if (state.webSocket == null) {
-                setupWebSocket()
-            }
+    fun connect(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
+            setupWebSocket()
         }
     }
 
-    fun reset() {
-        setState { copy(encUpload = Uninitialized, uploadProgress = 0) }
+    fun reset(adminResponse: AdminResponse?) {
+        adminResponse?.let {
+            launch {
+                Network.resetChartInstall(adminResponse)
+                setupWebSocket()
+            }
+        }
     }
 
     fun upload(file: File) {
@@ -94,31 +101,41 @@ class ChartInstallViewModel : BaseViewModel<ChartInstallState>(ChartInstallState
         xhr.asDynamic().send(file)
     }
 
-    private fun setupWebSocket() {
-        websocketUri()?.let { uri ->
-            val ws = WebSocket(uri)
-            ws.onclose = {
-                setState { copy(webSocket = null) }
+    private fun setupWebSocket(reset: Boolean = false) {
+        if (reset) {
+            setState {
+                webSocket?.close()
+                copy(webSocket = null)
             }
-            ws.onerror = {
-                setState { copy(webSocket = null) }
-            }
-            ws.onopen = {
-                setState { copy(webSocket = ws) }
-            }
-            ws.onmessage = { event ->
-                try {
-                    (event.data as? String)?.let { Json.decodeFromString<WsMsg>(it) }?.let { msg ->
-                        setState {
-                            copy(
-                                info = msg,
-                                encUpload = if (msg is WsMsg.Idle) Uninitialized else encUpload,
-                            )
+        }
+        withState { state ->
+            if (state.webSocket == null) {
+                websocketUri()?.let { uri ->
+                    val ws = WebSocket(uri)
+                    ws.onclose = {
+                        setState { copy(webSocket = null) }
+                    }
+                    ws.onerror = {
+                        setState { copy(webSocket = null) }
+                    }
+                    ws.onopen = {
+                        setState { copy(webSocket = ws) }
+                    }
+                    ws.onmessage = { event ->
+                        try {
+                            (event.data as? String)?.let { Json.decodeFromString<WsMsg>(it) }?.let { msg ->
+                                setState {
+                                    copy(
+                                        info = msg,
+                                        encUpload = if (msg is WsMsg.Idle) Uninitialized else encUpload,
+                                    )
+                                }
+                            }
+                        } catch (e: Exception) {
+                            println("error: ${e.message}")
+                            println("event: ${event.data}")
                         }
                     }
-                } catch (e: Exception) {
-                    println("error: ${e.message}")
-                    println("event: ${event.data}")
                 }
             }
         }

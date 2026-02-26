@@ -30,6 +30,7 @@ object Network {
     suspend fun getExpectedInputs(): NetworkResponse<Map<String, List<S57ExpectedInput>>> = get("about/expectedInput")
     suspend fun getColors(): NetworkResponse<Map<ThemeMode, Map<Color, String>>> = get("about/colors")
     suspend fun getAbout() : NetworkResponse<AboutJson> = get("about/version")
+    suspend fun resetChartInstall(signature: AdminResponse) : NetworkResponse<Unit> = delete("enc_save", mapOf("signature" to signature.signatureEncoded))
     suspend fun getChartInfo(id: String) : NetworkResponse<Chart> = get("chart", mapOf("id" to id))
     suspend fun getCustomColors() : NetworkResponse<Map<String, Map<String, Map<String, String>>>> = get("about/colors/custom")
     suspend fun getChartCatalog(id: Long): NetworkResponse<ChartCatalog> = get("chart_catalog", mapOf("id" to "$id"))

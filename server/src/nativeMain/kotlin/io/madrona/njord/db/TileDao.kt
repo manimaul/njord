@@ -22,20 +22,29 @@ class TileDao(
     }
 
     suspend fun getTile(z: Int, x: Int, y: Int): ByteArray {
-        if (!chartsConfig.debugTile) {
-            tileCache.get(z, x, y)?.let { return it }
-        }
+        val cached: Boolean
         val (result, duration) = measureTimedValue {
-            TileEncoder(x, y, z).let {
-                it.addCharts(chartsConfig.debugTile)
-                if (chartsConfig.debugTile) {
-                    it.addDebug()
+            val cacheTile = if (!chartsConfig.debugTile) {
+                tileCache.get(z, x, y)
+            } else {
+                null
+            }
+            if (cacheTile == null) {
+                cached = false
+                TileEncoder(x, y, z).let {
+                    it.addCharts(chartsConfig.debugTile)
+                    if (chartsConfig.debugTile) {
+                        it.addDebug()
+                    }
+                    it.encode()
                 }
-                it.encode()
+            } else {
+                cached = true
+                cacheTile
             }
         }
-        println("Tile creation $z,$x,$y took: $duration")
-        if (!chartsConfig.debugTile) {
+        println("Tile creation $z,$x,$y took: $duration, cached $cached")
+        if (!chartsConfig.debugTile && !cached) {
             tileCache.put(z, x, y, result)
         }
         return result

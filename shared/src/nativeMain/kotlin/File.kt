@@ -17,7 +17,6 @@ import platform.posix.S_IFMT
 import platform.posix.S_IFREG
 import platform.posix.S_IRWXU
 import platform.posix.fclose
-import platform.posix.fgets
 import platform.posix.fopen
 import platform.posix.fread
 import platform.posix.fseek
@@ -27,6 +26,7 @@ import platform.posix.getcwd
 import platform.posix.mkdir
 import platform.posix.realpath
 import platform.posix.remove
+import platform.posix.rename
 import platform.posix.rmdir
 import platform.posix.stat
 
@@ -208,6 +208,12 @@ class File(val path: Path) {
             fwrite(cString, 1u, data.size.toULong(), fp) == 0.toULong()
         } finally {
             fclose(fp)
+        }
+    }
+
+    fun renameTo(newPath: String) : File? {
+        return rename(getAbsolutePath().toString(), newPath).takeIf { it == 0 }?.let {
+            File(newPath)
         }
     }
 

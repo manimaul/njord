@@ -2,6 +2,7 @@ package io.madrona.njord.db
 
 import File
 import io.madrona.njord.util.logger
+import kotlin.random.Random
 
 /**
  * Best-effort filesystem tile cache.
@@ -33,12 +34,22 @@ class TileCache(private val basePath: File) {
         }
     }
 
+    /**
+     *  Stores the tile in the cache.
+     *
+     *  Notes: We rename the file to eliminate a torn-read risk when the directory is a shared nfs (PVC) mount on K8S.
+     */
     fun put(z: Int, x: Int, y: Int, data: ByteArray) {
         if (data.isEmpty()) return
         try {
             val dir = File("$basePath/$z/$x")
             if (!dir.isDirectory()) dir.mkdirs()
-            File("$basePath/$z/$x/$y.mvt").writeBytes(data)
+            val tmp = File("$basePath/$z/$x/$y.mvt.${Random.nextLong(Long.MAX_VALUE)}.tmp")
+            tmp.writeBytes(data)
+            if (tmp.renameTo("$basePath/$z/$x/$y.mvt") == null) {
+                log.warn("tile cache rename failed $z/$x/$y")
+                tmp.deleteRecursively()
+            }
         } catch (e: Throwable) {
             log.warn("tile cache write error $z/$x/$y: ${e.message}")
         }

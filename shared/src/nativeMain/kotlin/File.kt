@@ -225,10 +225,21 @@ class File(val path: Path) {
         }
     }
 
-    fun renameTo(newPath: String) : File? {
-        return rename(getAbsolutePath().toString(), newPath).takeIf { it == 0 }?.let {
-            File(newPath)
+    private fun <T> Result<T>.onFailure(block: (Throwable) -> Unit) : Result<T> {
+        if (isFailure) {
+            exceptionOrNull()?.let { block(it) }
         }
+        return this
+    }
+
+    fun renameTo(newPath: String) : File? {
+        return runCatching {
+            rename(getAbsolutePath().toString(), newPath).takeIf { it == 0 }?.let {
+                File(newPath)
+            }
+        }.onFailure {
+            println("error renaming file $path to $newPath ${it.message}")
+        }.getOrNull()
     }
 
     fun deleteRecursively(): Boolean {

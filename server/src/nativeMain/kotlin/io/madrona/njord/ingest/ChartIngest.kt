@@ -26,7 +26,6 @@ class ChartIngest(
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO) {
 
     private val log = logger()
-    val featuresWorking = AtomicInt(0)
 
     suspend fun ingest(encUpload: EncUpload) {
         log.info("ingesting enc upload $encUpload")
@@ -71,14 +70,11 @@ class ChartIngest(
                 delay(250)
             }
         }
-        statusFile.writeMsg(report.completionMessage())
 
         log.info("cleaning up resources")
-        withContext(Dispatchers.IO) {
-            chartDir.deleteRecursively()
-        }
         tileDao.invalidateCache()
-        statusFile.writeMsg(WsMsg.Idle)
+        chartDir.deleteRecursively()
+        statusFile.writeMsg(report.completionMessage())
     }
 
     private fun step1UnzipFiles(
@@ -136,6 +132,7 @@ class ChartIngest(
             s57.getLayer(layerName)?.let { layer ->
                 log.info("$layerName ${layer.features.size} feature(s) inserting")
                 layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
+                    //todo: look into inserting via WKB / props
                     val count = geoJsonDao.featureInsertAsync(
                         FeatureInsert(
                             layerName = layerName, chart = chart, geo = geo

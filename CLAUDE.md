@@ -1,6 +1,7 @@
 ## Project Overview
 
-Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display specifications. Live demo: https://openenc.com
+Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them 
+as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display specifications. Live demo: https://openenc.com
 
 ## Build System
 
@@ -15,12 +16,15 @@ cd chart_server_db && docker-compose up
 # 2. Build frontend
 ./gradlew :web:jsBrowserDistribution
 
-# 3. Run the API server (Kotlin/Native executable)
+# 3a. Run the API server (Kotlin/Native executable)
 ./gradlew :server:runDebugExecutable
-# OR
-./gradlew :server:assemble
+
+# 3b. Option - build and run production
+./gradlew :server:linkReleaseExecutableNative
+CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutable" }' \
 ./server/build/bin/native/releaseExecutable/server.kexe ./server/src/nativeMain/resources
-# OR
+
+# 3c. Option - build and run in container
 ./gradlew makeImg
 docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT 
 
@@ -94,4 +98,5 @@ PostgreSQL 13 + PostGIS. For development, run via Docker Compose in `chart_serve
 
 - **GitHub Packages** authentication uses `GH_USER` and `GH_TOKEN` environment variables
 - The `docs/DESIGN.md` links reference an older JVM implementation; the current codebase is Kotlin/Native
-- Platform targets: Linux x64/ARM64, macOS x64/ARM64, Windows x64 (Native); Browser (JS)
+- Platform targets: Linux x64/ARM64 (backend), JS (frontend / browser) 
+- Targets not used: macOS x64/ARM64, Windows x64 (Native)

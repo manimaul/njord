@@ -69,7 +69,7 @@ spec:
           resources:
             limits:
               cpu: "1.0"
-              memory: "1G"
+              memory: "3G" # 1242Mi used during ingestion processing with 5 concurrent chartIngestWorkers
             requests:
               cpu: 750m
               memory: "1G"

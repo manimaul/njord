@@ -1,6 +1,7 @@
 package io.madrona.njord.ingest
 
 import File
+import ZipFile
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.util.DistributedLock
@@ -51,8 +52,14 @@ class ChartIngestWorker(
         }
 
         log.info("claimed ${claimed.size} zip(s) for ingestion as ${distributedLock.uuid}")
-        ChartIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(
-            EncUpload(zipFiles = claimed.map { it.name })
-        )
+        val encUpload = EncUpload(zipFiles = claimed.map { it.name })
+        val hasShapefiles = claimed.any { zip ->
+            ZipFile(zip).entries().any { it.name().endsWith(".shp", ignoreCase = true) }
+        }
+        if (hasShapefiles) {
+            NaturalEarthIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
+        } else {
+            ChartIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
+        }
     }
 }

@@ -8,6 +8,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
+class BaseInfo(
+    val id: Long,
+    val scale: Int,
+    val name: String,
+)
+
+@Serializable
 class ChartInfo(
     val id: Long,
     val scale: Int,
@@ -57,4 +64,5 @@ data class ChartInsert(
     val covr: Feature,
     @SerialName("dsid_props") val dsidProps: Map<String, JsonElement>,
     @SerialName("chart_txt") val chartTxt: Map<String, String>,
+    val isBasemap: Boolean = false,
 )

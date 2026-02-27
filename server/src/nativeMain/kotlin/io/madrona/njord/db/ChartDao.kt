@@ -196,70 +196,48 @@ WHERE chart_id = $2
             }
             result
         }
-    /**
-     * This query is designed to generate Vector Tile layer data for a specific chart performing a "subtraction"
-     * (exclusion) operation. It takes a specific geometry [exclusionMask], subtracts it from the existing features, and then clips the
-     * result to fit a specific map tile.
-     *
-     * [exclusionMask] The "Mask" geometry (areas you want to hide/cut out).
-     * [x], [y], [z] The map tile coordinates
-     * [chartId] the chart id to fetch features from.
-     *
-     * https://postgis.net/docs/reference.html
-     */
-    suspend fun findChartFeaturesAsync(
-        exclusionMask: ByteArray,
-        x: Int,
-        y: Int,
-        z: Int,
-        chartId: Long
-    ): List<ChartFeature>? =
-        sqlOpAsync { conn ->
-            val result = conn.prepareStatement(
-                """
-                WITH exclude AS (VALUES (st_transform(st_geomfromwkb($1,4326), 3857))),
-                    tile AS (VALUES (st_tileenvelope($2,$3,$4)))
-                SELECT st_asbinary(st_asmvtgeom(st_difference(st_transform(geom, 3857), (table exclude)), (table tile))), 
-                    props, 
-                    layer
-                FROM features
-                WHERE chart_id=$5
-                    AND $6 <@ z_range
-                    AND st_intersects(geom, st_transform((table tile), 4326));
-          """.trimIndent()
-            ).apply {
-                setBytes(1, exclusionMask)
-                setInt(2, z)
-                setInt(3, x)
-                setInt(4, y)
-                setLong(5, chartId)
-                setInt( 6, z)
-            }.executeQuery().use { rs ->
+
+    suspend fun findBaseInfoAsync(scale: Int): List<BaseInfo>? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+                SELECT
+                    id,
+                    scale,
+                    name
+                FROM charts
+                WHERE base_map=true
+                AND scale=$1
+                ORDER BY scale ASC;
+            """.trimIndent()
+        ).let {
+            it.setInt(1, scale)
+            it.executeQuery().use { rs ->
                 generateSequence {
                     if (rs.next()) {
-                        ChartFeature(
-                            geomWKB = rs.getBytes(1),
-                            props = decodeFromString(rs.getString(2)),
-                            layer = rs.getString(3)
+                        val id = rs.getLong(1)
+                        BaseInfo(
+                            id = id,
+                            scale = rs.getInt(2),
+                            name = rs.getString(3),
                         )
                     } else null
                 }.toList()
             }
-            result
         }
+    }
 
     suspend fun findInfoAsync(wkb: ByteArray): List<ChartInfo>? = sqlOpAsync { conn ->
-//        val tCtx = findInfoAsyncTimer.time()
         conn.prepareStatement(
             """
-                SELECT 
+                SELECT
                     id,
-                    scale, 
+                    scale,
                     zoom,
-                    st_asbinary(covr) as wkb 
-                FROM charts 
+                    st_asbinary(covr) as wkb
+                FROM charts
                 WHERE st_intersects(st_geomfromwkb($1, 4326), covr)
-                ORDER BY scale;
+                AND base_map=false
+                ORDER BY scale ASC;
             """.trimIndent()
         ).let {
             it.setBytes(1, wkb)
@@ -271,7 +249,7 @@ WHERE chart_id = $2
                             id = id,
                             scale = rs.getInt(2),
                             zoom = rs.getInt(3),
-                            covrWKB = rs.getBytes(4)
+                            covrWKB = rs.getBytes(4),
                         )
                     } else null
                 }.toList()
@@ -356,8 +334,8 @@ WHERE chart_id = $2
         }
         return conn.statement(
             """
-                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) 
-                VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json)
+                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt, base_map)
+                VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json, $10)
                 RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
         ).let { stmt ->
             stmt.setString(1, chartInsert.name)
@@ -369,6 +347,7 @@ WHERE chart_id = $2
             stmt.setString(7, chartInsert.covr.geometry?.jsonStr())
             stmt.setAuto(8, chartInsert.dsidProps.jsonStr())
             stmt.setAuto(9, chartInsert.chartTxt.jsonStr())
+            stmt.setBool(10, chartInsert.isBasemap)
             stmt.executeReturning().use { result ->
                 result.chart(layers = emptyList(), 0).firstOrNull()
             }

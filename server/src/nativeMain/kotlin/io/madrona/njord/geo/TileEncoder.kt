@@ -16,11 +16,11 @@ class TileEncoder(
     val x: Int,
     val y: Int,
     val z: Int,
-    private val tileSystem: TileSystem = Singletons.tileSystem,
-    private val vectorTileEncoder: VectorTileEncoder = VectorTileEncoder(),
-    private val chartDao: ChartDao = Singletons.chartDao,
-    private val layerFactory: LayerFactory = Singletons.layerFactory,
-    private val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
+    val tileSystem: TileSystem = Singletons.tileSystem,
+    val vectorTileEncoder: VectorTileEncoder = VectorTileEncoder(),
+    val chartDao: ChartDao = Singletons.chartDao,
+    val layerFactory: LayerFactory = Singletons.layerFactory,
+    val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
 ) {
 
     private val tileEnvelope: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z)
@@ -111,8 +111,57 @@ class TileEncoder(
                 }
             }
         }
+
+        // Encode base map features inside un rendered "include"
+        if (!include.isEmpty() && !info) {
+            chartDao.findBaseInfoAsync(findBaseMapScale(z))?.forEach { chart ->
+                chartDao.findChartFeaturesAsync4326(
+                    inclusionMask = include.wkb,
+                    chartId = chart.id,
+                    zoom = z,
+                )?.forEach { feature ->
+                    val props = layerFactory.preTileEncode(feature).props.filtered().also {
+                        it["CID"] = chart.id.json
+                        it["BASE"] = chart.name.json
+                        it["SCALE"] = chart.scale.json
+                    }
+                    feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }
+                        ?.let { tileGeo ->
+                            transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                            vectorTileEncoder.addFeature(
+                                feature.layer,
+                                props,
+                                tileGeo
+                            )
+                        }
+                }
+            }
+        }
         return this
     }
+
+
+    /**
+     *   ┌────────────────────┬─────────────┬────────────────────┐
+     *   │        Data        │ Scale value │ Natural zoom range │
+     *   ├────────────────────┼─────────────┼────────────────────┤
+     *   │ NE 110m            │ 110,000,000 │ z 0–2              │
+     *   ├────────────────────┼─────────────┼────────────────────┤
+     *   │ NE 50m             │ 50,000,000  │ z 3–4              │
+     *   ├────────────────────┼─────────────┼────────────────────┤
+     *   │ NE 10m             │ 10,000,000  │ z 5–6              │
+     *   └────────────────────┴─────────────┴────────────────────┘
+     */
+    fun findBaseMapScale(z: Int): Int {
+        return if (z < 3) {
+            110_000_000
+        } else if (z < 5) {
+            50_000_000
+        } else {
+            10_000_000
+        }
+    }
+
 
     fun encode(): ByteArray {
         return vectorTileEncoder.encode()

@@ -19,6 +19,7 @@ import io.ktor.server.response.respondBytes
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
+import io.madrona.njord.db.DbMigrations
 import io.madrona.njord.endpoints.*
 import io.madrona.njord.ext.addHandler
 import io.madrona.njord.ingest.ChartIngestWorker
@@ -184,5 +185,5 @@ fun Application.njord() {
             }
         }
     }
-    //DbMigrations.checkVersion()
+    DbMigrations.run()
 }

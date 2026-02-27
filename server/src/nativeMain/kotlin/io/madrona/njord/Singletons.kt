@@ -18,7 +18,6 @@ import io.madrona.njord.layers.LayerFactory
 import io.madrona.njord.model.ColorLibrary
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.SpriteSheet
-import io.madrona.njord.util.UUID
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 import kotlinx.serialization.json.Json

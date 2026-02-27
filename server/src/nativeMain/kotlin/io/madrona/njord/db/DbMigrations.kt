@@ -1,56 +1,18 @@
 package io.madrona.njord.db
 
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json.Default.decodeFromString
 
 object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
-
-    const val currentVersion = 1
-
-    fun checkVersion() {
-        val v = version()
-        if (v != currentVersion) {
-            log.info("db migration version = $v expected $currentVersion")
-            if (v == 0) {
-                launch {
-                    version0()
-                }
-            }
-            if (v < 1) {
-                launch {
-                    version1Migration()
-                }
-            }
-            log.info("db migrated to version = ${version()}")
-        }
-    }
-
-    fun version(): Int {
-        return runBlocking {
+    fun run() {
+        runBlocking {
+            initializeSchema()
             sqlOpAsync { conn ->
-                println("checking for meta table")
-                val metaExists =
-                    conn.statement("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'meta');")
-                        .executeQuery().use { rs ->
-                            rs.next() && rs.getBoolean(0)
-                        }
-                if (!metaExists) {
-                    conn.statement(
-                        "CREATE TABLE meta (key VARCHAR UNIQUE NOT NULL, value VARCHAR UNIQUE NULL);" +
-                                "INSERT INTO meta VALUES ('version', '0');"
-                    ).execute()
-                }
-                conn.statement("SELECT value from meta WHERE key = 'version';").executeQuery().use { rs ->
-                    if (rs.next()) {
-                        rs.getString(0).toIntOrNull()
-                    } else null
-                } ?: 0
-            }!!
+                conn.statement("ALTER TABLE charts ADD COLUMN IF NOT EXISTS base_map BOOLEAN NOT NULL DEFAULT FALSE;").execute()
+            }
         }
     }
 
-
-    private suspend fun version0() {
+    private suspend fun initializeSchema() {
         sqlOpAsync { conn ->
             conn.statement(
                 """
@@ -69,7 +31,8 @@ CREATE TABLE IF NOT EXISTS charts
     zoom       INTEGER                  NOT NULL, -- Best display zoom level derived from scale and center latitude
     covr       GEOMETRY(GEOMETRY, 4326) NOT NULL, -- Coverage area from "M_COVR" layer feature with "CATCOV" = 1
     dsid_props JSONB                    NOT NULL, -- DSID
-    chart_txt  JSONB                    NOT NULL  -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
+    chart_txt  JSONB                    NOT NULL,  -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
+    base_map   BOOLEAN                  NOT NULL DEFAULT FALSE -- TRUE for Natural Earth basemap charts
 );
 
 -- indices
@@ -77,6 +40,7 @@ CREATE INDEX IF NOT EXISTS charts_gist ON charts USING GIST (covr);
 CREATE INDEX IF NOT EXISTS charts_idx ON charts (id);
             """.trimIndent()
             ).execute()
+
             conn.statement(
                 """
                 
@@ -97,31 +61,6 @@ CREATE INDEX IF NOT EXISTS features_zoom_idx ON features USING GIST (z_range);
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
             """.trimIndent()
             ).execute()
-            conn.statement("UPDATE meta SET value ='1' WHERE key = 'version';").execute()
         }
-    }
-
-    private suspend fun version1Migration() {
-        sqlOpAsync { conn ->
-            conn.statement(
-                "ALTER TABLE features ADD COLUMN IF NOT EXISTS lnam_refs VARCHAR[] NULL;" +
-                        "CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);"
-            ).execute()
-            conn.statement("SELECT id, props->'LNAM_REFS' AS lnam_refs FROM features WHERE lnam_refs IS NULL AND jsonb_array_length(props->'LNAM_REFS') > 0;")
-                .executeQuery().use {
-                    var num = 0
-                    while (it.next()) {
-                        log.info("lnam ref migration update ${++num}")
-                        val id = it.getLong(1)
-                        val ra: Array<Any> = decodeFromString<List<String>>(it.getString(2)).toTypedArray()
-                        conn.statement("UPDATE features SET lnam_refs =$1 WHERE id =$2")
-                            .setArray(1, ra)
-                            .setLong(2, id)
-                            .execute()
-                    }
-                }
-            conn.statement("UPDATE meta SET value ='1' WHERE key = 'version';").execute()
-        }
-
     }
 }

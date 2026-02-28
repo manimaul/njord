@@ -7,7 +7,7 @@ object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
         runBlocking {
             initializeSchema()
             sqlOpAsync { conn ->
-                conn.statement("ALTER TABLE charts ADD COLUMN IF NOT EXISTS base_map BOOLEAN NOT NULL DEFAULT FALSE;").execute()
+                conn.statement("ALTER TABLE charts DROP COLUMN IF EXISTS base_map;").execute()
             }
         }
     }
@@ -31,8 +31,7 @@ CREATE TABLE IF NOT EXISTS charts
     zoom       INTEGER                  NOT NULL, -- Best display zoom level derived from scale and center latitude
     covr       GEOMETRY(GEOMETRY, 4326) NOT NULL, -- Coverage area from "M_COVR" layer feature with "CATCOV" = 1
     dsid_props JSONB                    NOT NULL, -- DSID
-    chart_txt  JSONB                    NOT NULL,  -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
-    base_map   BOOLEAN                  NOT NULL DEFAULT FALSE -- TRUE for Natural Earth basemap charts
+    chart_txt  JSONB                    NOT NULL  -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
 );
 
 -- indices
@@ -59,6 +58,22 @@ CREATE INDEX IF NOT EXISTS features_idx ON features (id);
 CREATE INDEX IF NOT EXISTS features_layer_idx ON features (layer);
 CREATE INDEX IF NOT EXISTS features_zoom_idx ON features USING GIST (z_range);
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
+            """.trimIndent()
+            ).execute()
+
+            conn.statement(
+                """
+CREATE TABLE IF NOT EXISTS base_features
+(
+    id    BIGSERIAL PRIMARY KEY,
+    geom  GEOMETRY(GEOMETRY, 4326) NOT NULL,
+    props JSONB                    NOT NULL,
+    name  VARCHAR                  NOT NULL,  -- shapefile file name e.g. ne_10m_land.shp
+    scale INTEGER                  NOT NULL,  -- NE scale: 10_000_000 / 50_000_000 / 110_000_000
+    layer VARCHAR                  NOT NULL   -- S-57 layer name e.g. LNDARE
+);
+CREATE INDEX IF NOT EXISTS base_features_gist ON base_features USING GIST (geom);
+CREATE INDEX IF NOT EXISTS base_features_scale_idx ON base_features (scale);
             """.trimIndent()
             ).execute()
         }

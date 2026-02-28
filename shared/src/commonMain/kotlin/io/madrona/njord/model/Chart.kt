@@ -64,5 +64,4 @@ data class ChartInsert(
     val covr: Feature,
     @SerialName("dsid_props") val dsidProps: Map<String, JsonElement>,
     @SerialName("chart_txt") val chartTxt: Map<String, String>,
-    val isBasemap: Boolean = false,
 )

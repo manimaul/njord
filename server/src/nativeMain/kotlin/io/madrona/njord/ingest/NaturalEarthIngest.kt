@@ -6,16 +6,11 @@ import File
 import OgrShapefileDataset
 import ZipFile
 import io.madrona.njord.Singletons
-import io.madrona.njord.db.ChartDao
-import io.madrona.njord.db.GeoJsonDao
+import io.madrona.njord.db.BaseFeatureDao
 import io.madrona.njord.db.TileDao
-import io.madrona.njord.geojson.Feature
+import io.madrona.njord.ext.jsonStr
 import io.madrona.njord.geojson.FeatureCollection
-import io.madrona.njord.geojson.Polygon
-import io.madrona.njord.geojson.Position
-import io.madrona.njord.model.ChartInsert
 import io.madrona.njord.model.EncUpload
-import io.madrona.njord.model.FeatureInsert
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
@@ -31,8 +26,7 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 class NaturalEarthIngest(
     private val ingestStatus: IngestStatus = Singletons.ingestStatus,
     val distributedLock: DistributedLock = Singletons.distributedLock,
-    private val chartDao: ChartDao = ChartDao(),
-    private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
+    private val baseFeatureDao: BaseFeatureDao = Singletons.baseFeatureDao,
     private val tileDao: TileDao = Singletons.tileDao,
     val chartDir: File,
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO) {
@@ -58,12 +52,21 @@ class NaturalEarthIngest(
         }
     }
 
-    private suspend fun ingestInternal(encUpload: EncUpload): NeReport {
+    private suspend fun ingestInternal(encUpload: EncUpload): Report {
         log.info("ingesting Natural Earth upload $encUpload")
-        val shpFiles = step1UnzipFiles(encUpload).filter { it.name.endsWith(".shp", ignoreCase = true) }
+        val shpFiles = step1UnzipFiles(encUpload)
+            .filter {
+                it.name.endsWith(".shp", ignoreCase = true)
+            }.map {
+                OgrShapefileDataset(it)
+            }
         log.info("found ${shpFiles.size} shapefile(s)")
 
-        val report = NeReport(totalShapefileCount = shpFiles.size)
+        log.info("counting features")
+        val featureCount = shpFiles.sumOf { it.featureCount() }
+        log.info("total feature count: $featureCount")
+
+        val report = Report(totalChartCount = shpFiles.size, totalFeatureCount = featureCount)
         ingestStatus.writeMsg(report.progressMessage())
 
         shpFiles.forEach { shpFile ->
@@ -72,6 +75,7 @@ class NaturalEarthIngest(
                 return report
             }
             processShapefile(shpFile, report)
+            report.completedChart()
         }
 
         return report
@@ -111,78 +115,54 @@ class NaturalEarthIngest(
         return retVal
     }
 
-    private suspend fun processShapefile(shpFile: File, report: NeReport) {
-        val baseName = shpFile.name.substringBeforeLast(".")
-        val s57LayerName = s57Layer(shpFile.name) ?: run {
-            log.info("skipping unmapped shapefile: ${shpFile.name}")
+    private suspend fun processShapefile(shpFile: OgrShapefileDataset, report: Report) {
+        val fileName = shpFile.file.name
+        val s57LayerName = s57Layer(fileName) ?: run {
+            log.info("skipping unmapped shapefile: $fileName")
             return
         }
-        log.info("processing $baseName -> $s57LayerName")
+        log.info("processing $fileName -> $s57LayerName")
 
-        val worldCovr = Feature(
-            geometry = Polygon(
-                coordinates = listOf(
-                    listOf(
-                        Position(-180.0, -90.0),
-                        Position(180.0, -90.0),
-                        Position(180.0, 90.0),
-                        Position(-180.0, 90.0),
-                        Position(-180.0, -90.0)
-                    )
-                )
-            )
-        )
 
-        val chartInsert = ChartInsert(
-            name = baseName,
-            scale = scaleFromFilename(shpFile.name),
-            fileName = shpFile.name,
-            updated = "",
-            issued = "",
-            zoom = 0,
-            covr = worldCovr,
-            dsidProps = emptyMap(),
-            chartTxt = emptyMap(),
-            isBasemap = true,
-        )
+        val scale = scaleFromFilename(fileName)
+        baseFeatureDao.deleteByNameAndScaleAsync(fileName, scale)
 
-        val chart = chartDao.insertAsync(chartInsert, overwrite = true) ?: run {
-            log.error("failed to insert chart for $baseName")
-            report.fail(baseName, "chart insert failed")
-            return
+        shpFile.layerNames().mapNotNull {
+            shpFile.getLayer(it)
+        }.forEach { layer ->
+            if (!distributedLock.lockAcquired) {
+                report.abort()
+                return
+            }
+            val geoJson = layer.geoJson()
+            val enrichedGeoJson = if (s57LayerName == "DEPARE") {
+                enrichDepareFeatures(geoJson, fileName)
+            } else {
+                geoJson
+            }
+
+            if (enrichedGeoJson.features.isEmpty()) {
+                log.info("no features in $fileName, skipping insert")
+                return
+            }
+
+
+            var count = 0
+            enrichedGeoJson.features.forEach { feature ->
+                if (!distributedLock.lockAcquired) {
+                    report.abort()
+                    return
+                }
+                val geomJson = feature.geometry?.jsonStr() ?: return@forEach
+                val propsJson = feature.properties.jsonStr()
+                baseFeatureDao.insertAsync(geomJson, propsJson, fileName, scale, s57LayerName)
+                count++
+            }
+
+            log.info("inserted $count feature(s) for $fileName -> $s57LayerName")
+            report.appendChartFeatureCount(fileName, count)
+            ingestStatus.writeMsg(report.progressMessage())
         }
-
-        val layer = try {
-            OgrShapefileDataset(shpFile).getLayerAt(0)
-        } catch (e: IllegalArgumentException) {
-            log.error("failed to open shapefile ${shpFile.name}: ${e.message}")
-            report.fail(baseName, "open failed: ${e.message}")
-            return
-        } ?: run {
-            log.error("no layer in shapefile: ${shpFile.name}")
-            report.fail(baseName, "no layer found")
-            return
-        }
-
-        val geoJson = layer.geoJson()
-        val enrichedGeoJson = if (s57LayerName == "DEPARE") {
-            enrichDepareFeatures(geoJson, baseName)
-        } else {
-            geoJson
-        }
-
-        if (enrichedGeoJson.features.isEmpty()) {
-            log.info("no features in $baseName, skipping insert")
-            return
-        }
-
-        val count = geoJsonDao.featureInsertAsync(
-            FeatureInsert(layerName = s57LayerName, chart = chart, geo = enrichedGeoJson)
-        ) ?: 0
-
-        log.info("inserted $count feature(s) for $baseName -> $s57LayerName")
-        report.append(baseName, count)
-        ingestStatus.writeMsg(report.progressMessage())
     }
 
     private fun enrichDepareFeatures(geoJson: FeatureCollection, baseName: String): FeatureCollection {
@@ -231,55 +211,11 @@ class NaturalEarthIngest(
         }
 
         fun scaleFromFilename(filename: String): Int {
-            val baseName = filename.substringBeforeLast(".")
             return when {
-                baseName.contains("_110m_") -> 110_000_000
-                baseName.contains("_50m_") -> 50_000_000
+                filename.contains("_110m_") -> 110_000_000
+                filename.contains("_50m_") -> 50_000_000
                 else -> 10_000_000
             }
         }
-    }
-}
-
-private class NeReport(
-    val totalShapefileCount: Int,
-) {
-    private val aborted = AtomicInt(0)
-    private val featureCount = AtomicLong(0)
-    private val shapefilesDone = AtomicInt(0)
-    private val insertItems: MutableMap<String, Int> = mutableMapOf()
-    private val failed: MutableMap<String, String> = mutableMapOf()
-    private val time = Clock.System.now().toEpochMilliseconds()
-
-    private fun elapsed() = Clock.System.now().toEpochMilliseconds() - time
-
-    fun abort(): NeReport {
-        aborted.value = 1
-        return this
-    }
-
-    fun progressMessage() = WsMsg.Info(
-        feature = featureCount.value,
-        chart = shapefilesDone.value,
-        totalCharts = totalShapefileCount,
-        totalFeatures = 0L,
-    )
-
-    fun completionMessage() = if (aborted.value == 1) WsMsg.Idle else WsMsg.CompletionReport(
-        totalFeatureCount = featureCount.value,
-        totalChartCount = totalShapefileCount,
-        failedCharts = failed.map { "${it.key} msg: ${it.value}" },
-        items = insertItems.map { WsMsg.InsertItem(it.key, it.value) },
-        ms = elapsed()
-    )
-
-    fun append(name: String, count: Int) {
-        featureCount.getAndAdd(count.toLong())
-        insertItems[name] = (insertItems[name] ?: 0) + count
-        shapefilesDone.incrementAndGet()
-    }
-
-    fun fail(name: String, msg: String) {
-        failed[name] = msg
     }
 }

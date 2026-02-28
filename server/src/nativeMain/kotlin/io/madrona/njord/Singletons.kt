@@ -7,6 +7,7 @@ import File
 import PgDataSource
 import TileSystem
 import io.ktor.util.logging.*
+import io.madrona.njord.db.BaseFeatureDao
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.db.FeatureDao
 import io.madrona.njord.db.TileCache
@@ -34,6 +35,8 @@ object Singletons {
     var genLog: Logger? = null
 
     val adminUtil by lazy { AdminUtil() }
+
+    val baseFeatureDao by lazy { BaseFeatureDao() }
 
     val chartDao by lazy { ChartDao() }
 

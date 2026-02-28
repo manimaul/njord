@@ -3,6 +3,7 @@ package io.madrona.njord.geo
 import OgrGeometry
 import TileSystem
 import io.madrona.njord.Singletons
+import io.madrona.njord.db.BaseFeatureDao
 import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
@@ -21,6 +22,7 @@ class TileEncoder(
     val chartDao: ChartDao = Singletons.chartDao,
     val layerFactory: LayerFactory = Singletons.layerFactory,
     val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
+    val baseFeatureDao: BaseFeatureDao = Singletons.baseFeatureDao,
 ) {
 
     private val tileEnvelope: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z)
@@ -114,27 +116,14 @@ class TileEncoder(
 
         // Encode base map features inside un rendered "include"
         if (!include.isEmpty() && !info) {
-            chartDao.findBaseInfoAsync(findBaseMapScale(z))?.forEach { chart ->
-                chartDao.findChartFeaturesAsync4326(
-                    inclusionMask = include.wkb,
-                    chartId = chart.id,
-                    zoom = z,
-                )?.forEach { feature ->
-                    val props = layerFactory.preTileEncode(feature).props.filtered().also {
-                        it["CID"] = chart.id.json
-                        it["BASE"] = chart.name.json
-                        it["SCALE"] = chart.scale.json
+            baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
+                val props = layerFactory.preTileEncode(feature).props.filtered()
+                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                    ?.takeIf { it.isValid && !it.isEmpty() }
+                    ?.let { tileGeo ->
+                        transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                        vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
                     }
-                    feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }
-                        ?.let { tileGeo ->
-                            transformToTilePixels(tileGeo, x, y, z, tileSystem)
-                            vectorTileEncoder.addFeature(
-                                feature.layer,
-                                props,
-                                tileGeo
-                            )
-                        }
-                }
             }
         }
         return this

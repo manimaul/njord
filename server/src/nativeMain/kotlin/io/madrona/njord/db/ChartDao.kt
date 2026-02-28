@@ -197,35 +197,6 @@ WHERE chart_id = $2
             result
         }
 
-    suspend fun findBaseInfoAsync(scale: Int): List<BaseInfo>? = sqlOpAsync { conn ->
-        conn.prepareStatement(
-            """
-                SELECT
-                    id,
-                    scale,
-                    name
-                FROM charts
-                WHERE base_map=true
-                AND scale=$1
-                ORDER BY scale ASC;
-            """.trimIndent()
-        ).let {
-            it.setInt(1, scale)
-            it.executeQuery().use { rs ->
-                generateSequence {
-                    if (rs.next()) {
-                        val id = rs.getLong(1)
-                        BaseInfo(
-                            id = id,
-                            scale = rs.getInt(2),
-                            name = rs.getString(3),
-                        )
-                    } else null
-                }.toList()
-            }
-        }
-    }
-
     suspend fun findInfoAsync(wkb: ByteArray): List<ChartInfo>? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """
@@ -236,7 +207,6 @@ WHERE chart_id = $2
                     st_asbinary(covr) as wkb
                 FROM charts
                 WHERE st_intersects(st_geomfromwkb($1, 4326), covr)
-                AND base_map=false
                 ORDER BY scale ASC;
             """.trimIndent()
         ).let {
@@ -334,8 +304,8 @@ WHERE chart_id = $2
         }
         return conn.statement(
             """
-                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt, base_map)
-                VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json, $10)
+                INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt)
+                VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json)
                 RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
         ).let { stmt ->
             stmt.setString(1, chartInsert.name)
@@ -347,7 +317,6 @@ WHERE chart_id = $2
             stmt.setString(7, chartInsert.covr.geometry?.jsonStr())
             stmt.setAuto(8, chartInsert.dsidProps.jsonStr())
             stmt.setAuto(9, chartInsert.chartTxt.jsonStr())
-            stmt.setBool(10, chartInsert.isBasemap)
             stmt.executeReturning().use { result ->
                 result.chart(layers = emptyList(), 0).firstOrNull()
             }

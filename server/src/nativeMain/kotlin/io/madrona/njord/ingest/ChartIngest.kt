@@ -55,12 +55,14 @@ class ChartIngest(
     private suspend fun ingestInternal(encUpload: EncUpload): Report {
         log.info("ingesting enc upload $encUpload")
         log.info("unzipping files")
-        val s57Files = step1UnzipFiles(encUpload).filter { it.name.endsWith(".000") }
+        val s57Files = step1UnzipFiles(encUpload).filter {
+            it.name.endsWith(".000")
+        }.map { OgrS57Dataset(it) }
 
         log.info("counting features")
-        val featureCount = s57Files.sumOf { file ->
-            log.info("summing features of: $file")
-            OgrS57Dataset(file).featureCount(exLayers)
+        val featureCount = s57Files.sumOf {
+            log.info("summing features of: ${it.file}")
+            it.featureCount(exLayers)
         }
         log.info("total feature count: $featureCount")
 
@@ -80,17 +82,15 @@ class ChartIngest(
                 break
             }
             if (chartsWorking.value < config.chartIngestWorkers) {
-                queue.removeFirstOrNull()?.let { file ->
+                queue.removeFirstOrNull()?.let { s57 ->
                     val w = chartsWorking.incrementAndGet()
                     jobs.add(launch {
-                        log.info("inserting chart ${file.name} working = $w")
-                        OgrS57Dataset(file).let { s57 ->
-                            chartInsertData(s57, report)?.let { data ->
-                                chartDao.insertAsync(data, true)?.let {
-                                    installChartFeatures(s57, it, report)
-                                } ?: run {
-                                    report.failChart(file.name, "chart insert")
-                                }
+                        log.info("inserting chart ${s57.file.name} working = $w")
+                        chartInsertData(s57, report)?.let { data ->
+                            chartDao.insertAsync(data, true)?.let {
+                                installChartFeatures(s57, it, report)
+                            } ?: run {
+                                report.failChart(s57.file.name, "chart insert")
                             }
                         }
                         chartsWorking.decrementAndGet()
@@ -194,7 +194,7 @@ class ChartIngest(
     }
 }
 
-private data class Report(
+data class Report(
     val totalFeatureCount: Long,
     val totalChartCount: Int,
 ) {
@@ -209,7 +209,7 @@ private data class Report(
         return Clock.System.now().toEpochMilliseconds() - time
     }
 
-    fun abort() : Report {
+    fun abort(): Report {
         println("result set to aborted")
         aborted.value = 1
         return this

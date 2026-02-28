@@ -11,15 +11,10 @@ docker-compose up
 ```
 or
 
+## Connect Prod db to local dev
 ```shell
 app=njord-postgis-svc
 ns=njord
 pod=$(kubectl -n "$ns" get pods -l app="$app" -o jsonpath='{.items[*].metadata.name}')
 kubectl -n "$ns" port-forward "$pod" 5432:5432
-docker run -p 11211:11211 memcached:1.6 memcached -I 128m -m 512
 ```
-
-```shell
-./gradlew :chart_server:run
-```
-

@@ -4,12 +4,18 @@ import Connection
 import DataSource
 import ResultSet
 import io.madrona.njord.Singletons
+import io.madrona.njord.geojson.Feature
 import io.madrona.njord.layers.TopmarData
+import io.madrona.njord.model.Chart
 import io.madrona.njord.model.FeatureRecord
 import io.madrona.njord.model.LayerQueryResult
 import io.madrona.njord.model.LayerQueryResultPage
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.Json.Default.encodeToString
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.math.max
 
 class FeatureDao(
@@ -89,6 +95,41 @@ class FeatureDao(
         }
     }
 
+    suspend fun insertFeature(
+        layerName: String,
+        chart: Chart,
+        wkb: ByteArray,
+        properties: JsonObject
+    ) = sqlOpAsync { conn ->
+        conn.statement("""
+                INSERT INTO features (layer, geom, props, chart_id, z_range)
+                VALUES (
+                    $1,
+                    st_force2d(st_setsrid(st_geomfromwkb($2), 4326)),
+                    $3::json,
+                    $4,
+                    int4range($5, $6)
+                );
+        """.trimIndent())
+            .setString(1, layerName)
+            .setBytes(2, wkb)
+            .setString(3, properties.propertyJson())
+            .setLong(4, chart.id)
+            .setInt(5, properties.minZ())
+            .setInt(6, properties.maxZ()).execute()
+    }
+
+    private fun JsonObject.propertyJson(): String {
+        return encodeToString(JsonObject.serializer(), this)
+    }
+
+    private fun JsonObject.minZ(): Int {
+        return this["MINZ"]?.jsonPrimitive?.intOrNull ?: 0
+    }
+
+    private fun JsonObject.maxZ(): Int {
+        return this["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32
+    }
     fun featureCount(conn: Connection, chartId: Long): Int {
         return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = $1;").let {
             it.setLong(1, chartId)

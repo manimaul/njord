@@ -15,10 +15,11 @@ import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
 import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
-import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class ChartIngest(
@@ -27,6 +28,7 @@ class ChartIngest(
     private val config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
     private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
+    private val featureDao: FeatureDao = FeatureDao(),
     private val tileDao: TileDao = Singletons.tileDao,
     val chartDir: File,
 ) : CoroutineScope by CoroutineScope(Dispatchers.IO) {
@@ -142,7 +144,7 @@ class ChartIngest(
         return retVal
     }
 
-    private fun chartInsertData(
+    private suspend fun chartInsertData(
         s57: OgrS57Dataset, report: Report
     ): ChartInsert? {
         return when (val insert = s57.chartInsertInfo()) {
@@ -168,19 +170,15 @@ class ChartIngest(
                 return
             }
             s57.getLayer(layerName)?.let { layer ->
-//                log.info("$layerName ${layer.features.size} feature(s) inserting")
-                layer.geoJson().takeIf { it.features.isNotEmpty() }?.let { geo ->
-                    //todo: look into inserting via WKB / props
-                    val count = geoJsonDao.featureInsertAsync(
-                        FeatureInsert(
-                            layerName = layerName, chart = chart, geo = geo
-                        )
-                    ) ?: 0
-                    if (count == 0) {
-                        log.debug("error inserting feature with layer = $layerName geo feature count = ${geo.features.size}")
-                        log.debug("geo json = \n${geo}")
+                layer.features.forEach { feature ->
+                    feature.geometry?.makeValid()?.wkb?.let { wkb ->
+                        val count = featureDao.insertFeature(layerName, chart, wkb, feature.properties)
+                        if (count == 0L) {
+                            log.debug("error inserting feature with layer = $layerName")
+                            log.debug("geo json = \n${feature.geometry?.geoJson()}")
+                        }
+                        report.appendChartFeatureCount(chart.name, count ?: 0)
                     }
-                    report.appendChartFeatureCount(chart.name, count)
                 }
                 ingestStatus.writeMsg(report.progressMessage())
             }
@@ -199,10 +197,11 @@ data class Report(
     val totalChartCount: Int,
 ) {
 
+    private val mutex = Mutex()
     private val aborted = AtomicInt(0)
     private val featureInstallCount = AtomicLong(0)
     private val chartInstallCount = AtomicInt(0)
-    private val insertItems: MutableMap<String, Int> = mutableMapOf()
+    private val insertItems: MutableMap<String, Long> = mutableMapOf()
     private val failedCharts: MutableMap<String, String> = mutableMapOf()
     private val time = Clock.System.now().toEpochMilliseconds()
     private fun elapsed(): Long {
@@ -230,18 +229,22 @@ data class Report(
         ms = elapsed()
     )
 
-    fun appendChartFeatureCount(chartName: String, featureCount: Int) {
-        featureInstallCount.getAndAdd(featureCount.toLong())
-        insertItems[chartName] = (insertItems[chartName] ?: 0) + featureCount
+    suspend fun appendChartFeatureCount(chartName: String, featureCount: Long) {
+        featureInstallCount.getAndAdd(featureCount)
+        mutex.withLock {
+            insertItems[chartName] = (insertItems[chartName] ?: 0) + featureCount
+        }
     }
 
-    fun failChart(name: String, msg: String) {
-        val m = if (failedCharts.contains(name)) {
-            "${failedCharts[name]}, $msg"
-        } else {
-            msg
+    suspend fun failChart(name: String, msg: String) {
+        mutex.withLock {
+            val m = if (failedCharts.contains(name)) {
+                "${failedCharts[name]}, $msg"
+            } else {
+                msg
+            }
+            failedCharts[name] = m
         }
-        failedCharts[name] = m
     }
 
     fun completedChart() {

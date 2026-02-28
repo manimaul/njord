@@ -8,8 +8,6 @@ import ZipFile
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.BaseFeatureDao
 import io.madrona.njord.db.TileDao
-import io.madrona.njord.ext.jsonStr
-import io.madrona.njord.geojson.FeatureCollection
 import io.madrona.njord.model.EncUpload
 import io.madrona.njord.model.ws.WsMsg
 import io.madrona.njord.util.DistributedLock
@@ -17,10 +15,7 @@ import io.madrona.njord.util.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.datetime.Clock
 import kotlinx.serialization.json.*
-import kotlin.concurrent.AtomicInt
-import kotlin.concurrent.AtomicLong
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class NaturalEarthIngest(
@@ -134,55 +129,46 @@ class NaturalEarthIngest(
                 report.abort()
                 return
             }
-            val geoJson = layer.geoJson()
-            val enrichedGeoJson = if (s57LayerName == "DEPARE") {
-                enrichDepareFeatures(geoJson, fileName)
-            } else {
-                geoJson
-            }
-
-            if (enrichedGeoJson.features.isEmpty()) {
-                log.info("no features in $fileName, skipping insert")
-                return
-            }
-
-
             var count = 0
-            enrichedGeoJson.features.forEach { feature ->
+            layer.features.forEach { feature ->
                 if (!distributedLock.lockAcquired) {
                     report.abort()
                     return
                 }
-                val geomJson = feature.geometry?.jsonStr() ?: return@forEach
-                val propsJson = feature.properties.jsonStr()
-                baseFeatureDao.insertAsync(geomJson, propsJson, fileName, scale, s57LayerName)
+                val wkb = feature.geometry?.makeValid()?.wkb ?: return@forEach
+                val props = if (s57LayerName == "DEPARE") {
+                    enrichDepareProperties(feature.properties, fileName)
+                } else {
+                    feature.properties
+                }
+                baseFeatureDao.insertAsync(wkb, props, fileName, scale, s57LayerName)
                 count++
             }
 
             log.info("inserted $count feature(s) for $fileName -> $s57LayerName")
-            report.appendChartFeatureCount(fileName, count)
+            report.appendChartFeatureCount(fileName, count.toLong())
             ingestStatus.writeMsg(report.progressMessage())
         }
     }
 
-    private fun enrichDepareFeatures(geoJson: FeatureCollection, baseName: String): FeatureCollection {
-        val (drval1, drval2) = if (baseName.endsWith("_ocean")) {
+    private fun enrichDepareProperties(properties: JsonObject, baseName: String): JsonObject {
+
+        val (drval1, drval2) = if (baseName.contains("_ocean")) {
             200.0 to 9999.0
         } else {
+            //  ne_10m_bathymetry_E_6000.shp
             // ne_10m_bathymetry_K_200 -> depth = 200; treat depth as DRVAL1
-            val depth = baseName.split("_").lastOrNull()?.toDoubleOrNull() ?: 0.0
+            val depth = baseName.split("_")
+                .lastOrNull()
+                ?.replace(".shp", "")
+                ?.toDoubleOrNull() ?: 0.0
             depth to 9999.0
         }
-        val enriched = geoJson.features.map { feature ->
-            feature.copy(
-                properties = buildJsonObject {
-                    feature.properties.forEach { (k, v) -> put(k, v) }
-                    put("DRVAL1", JsonPrimitive(drval1))
-                    put("DRVAL2", JsonPrimitive(drval2))
-                }
-            )
+        return buildJsonObject {
+            properties.forEach { (k, v) -> put(k, v) }
+            put("DRVAL1", JsonPrimitive(drval1))
+            put("DRVAL2", JsonPrimitive(drval2))
         }
-        return geoJson.copy(features = enriched)
     }
 
     companion object {
@@ -193,7 +179,7 @@ class NaturalEarthIngest(
             "land" to "LNDARE",
             "minor_islands" to "LNDARE",
             "ocean" to "DEPARE",
-            "lakes" to "LAKSHR",
+            "lakes" to "LAKARE",
             "rivers_lake_centerlines" to "RIVERS",
             "glaciated_areas" to "ICEARE",
             "reefs" to "SBDARE",

@@ -31,7 +31,7 @@ sealed class WsMsg {
     @Serializable
     data class InsertItem(
         val chartName: String,
-        val featureCount: Int,
+        val featureCount: Long,
     )
 
     @Serializable

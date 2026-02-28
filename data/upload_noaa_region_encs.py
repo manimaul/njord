@@ -8,6 +8,7 @@ Usage:
     python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret
     python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret --dir /path/to/zips
     python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret --file 02Region_ENCs.zip
+    python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret --all
 """
 
 import argparse
@@ -294,6 +295,53 @@ def display_ingestion(sock: socket.socket) -> bool:
     return done
 
 
+# ── upload + monitor ──────────────────────────────────────────────────────────
+
+def upload_and_monitor(base_url: str, username: str, password: str, zip_path: Path) -> bool:
+    """Upload a zip file and monitor ingestion to completion. Returns True on success."""
+    try:
+        signature = login(base_url, username, password)
+    except Exception as e:
+        print(f"Login failed: {e}")
+        return False
+
+    print(f"Uploading {zip_path.name}  ({zip_path.stat().st_size / 1_048_576:.1f} MB) ...")
+    try:
+        result = upload(base_url, signature, zip_path)
+        print(f"  Server accepted: {result}\n")
+    except Exception as e:
+        print(f"Upload failed: {e}")
+        return False
+
+    reconnect_delay = 3
+    while True:
+        print("Connecting to ingestion WebSocket ...")
+        try:
+            sock = ws_connect(base_url, signature)
+        except Exception as e:
+            print(f"  WebSocket connection failed: {e}")
+            print(f"  Retrying in {reconnect_delay}s ...")
+            time.sleep(reconnect_delay)
+            try:
+                signature = login(base_url, username, password)
+            except Exception as login_err:
+                print(f"  Re-login failed: {login_err}")
+            continue
+
+        print("  Connected — monitoring ingestion:\n")
+        done = display_ingestion(sock)
+        if done:
+            return True
+
+        print(f"\n  Reconnecting in {reconnect_delay}s ...")
+        time.sleep(reconnect_delay)
+        try:
+            signature = login(base_url, username, password)
+            print("  Signature refreshed.\n")
+        except Exception as e:
+            print(f"  Re-login failed: {e}\n")
+
+
 # ── interactive zip selection ─────────────────────────────────────────────────
 
 def pick_zip(directory: Path, specified: str | None) -> Path:
@@ -343,7 +391,10 @@ From a specific directory\n
 python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret --dir /path/to/zips\n
 \n
 Direct file (skip selection prompt)\n
-python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --password secret --file 02Region_ENCs.zip
+python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --password secret --file 02Region_ENCs.zip\n
+\n
+Upload all regions sequentially (one at a time)\n
+python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --password secret --all
 \n
 """
     parser = argparse.ArgumentParser(
@@ -365,11 +416,35 @@ python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --p
         help="Zip file to upload — skips interactive selection (name or full path)",
     )
     parser.add_argument(
+        "--all", action="store_true",
+        help="Upload every zip in --dir sequentially, waiting for each ingestion to finish",
+    )
+    parser.add_argument(
         "--monitor", action="store_true",
         help="Skip upload and just connect to the WebSocket to monitor ingestion progress",
     )
     args = parser.parse_args()
 
+    directory = Path(args.dir).resolve()
+
+    # ── upload all regions one at a time ──────────────────────────────────────
+    if args.all:
+        zips = sorted(directory.glob("*.zip"))
+        if not zips:
+            sys.exit(f"No .zip files found in {directory}")
+        print(f"Found {len(zips)} zip file(s) in {directory}:\n")
+        for z in zips:
+            print(f"  {z.name}  ({z.stat().st_size / 1_048_576:.1f} MB)")
+        print()
+        for i, zip_path in enumerate(zips, 1):
+            print(f"\n[{i}/{len(zips)}] Starting upload: {zip_path.name}")
+            success = upload_and_monitor(args.server, args.user, args.password, zip_path)
+            if not success:
+                sys.exit(f"Failed on {zip_path.name} — aborting.")
+        print("\nAll regions uploaded and ingested successfully.")
+        return
+
+    # ── monitor-only mode ─────────────────────────────────────────────────────
     print(f"\nLogging in to {args.server} as '{args.user}' ...")
     try:
         signature = login(args.server, args.user, args.password)
@@ -378,9 +453,7 @@ python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --p
     print("  Signature obtained.\n")
 
     if not args.monitor:
-        directory = Path(args.dir).resolve()
         zip_path = pick_zip(directory, args.file)
-
         print(f"Uploading {zip_path.name}  ({zip_path.stat().st_size / 1_048_576:.1f} MB) ...")
         try:
             result = upload(args.server, signature, zip_path)

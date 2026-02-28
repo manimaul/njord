@@ -127,6 +127,7 @@ class StandardLayers {
         //land / base layers
         Depare(),
         Lndare(),
+        Lakare(),
         Lakshr(),
         Buisgl(),
         Buaare(),

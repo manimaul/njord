@@ -4,6 +4,8 @@ import DataSource
 import io.madrona.njord.Singletons
 import io.madrona.njord.model.ChartFeature
 import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.Json.Default.encodeToString
+import kotlinx.serialization.json.JsonObject
 
 class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
 
@@ -18,8 +20,8 @@ class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
     }
 
     suspend fun insertAsync(
-        geomJson: String,
-        propsJson: String,
+        wkb: ByteArray,
+        props: JsonObject,
         name: String,
         scale: Int,
         layer: String,
@@ -27,11 +29,11 @@ class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
         conn.prepareStatement(
             """
             INSERT INTO base_features (geom, props, name, scale, layer)
-            VALUES (ST_MakeValid(ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))), $2::jsonb, $3, $4, $5);
+            VALUES (ST_Force2D(ST_SetSRID(ST_GeomFromWKB($1), 4326)), $2::jsonb, $3, $4, $5);
             """.trimIndent()
         ).let {
-            it.setString(1, geomJson)
-            it.setString(2, propsJson)
+            it.setBytes(1, wkb)
+            it.setString(2, encodeToString(JsonObject.serializer(), props))
             it.setString(3, name)
             it.setInt(4, scale)
             it.setString(5, layer)

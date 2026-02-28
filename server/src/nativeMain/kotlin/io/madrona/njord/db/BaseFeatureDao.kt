@@ -27,7 +27,7 @@ class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
         conn.prepareStatement(
             """
             INSERT INTO base_features (geom, props, name, scale, layer)
-            VALUES (ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326)), $2::jsonb, $3, $4, $5);
+            VALUES (ST_MakeValid(ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($1), 4326))), $2::jsonb, $3, $4, $5);
             """.trimIndent()
         ).let {
             it.setString(1, geomJson)

@@ -17,7 +17,7 @@ def fetch_tile(server: str, z: int, x: int, y: int) -> tuple[int, int, int, int]
     """Fetch a single tile. Returns (z, x, y, http_status)."""
     url = f"{server}/v1/tile/{z}/{x}/{y}"
     try:
-        with urllib.request.urlopen(url, timeout=30) as resp:
+        with urllib.request.urlopen(url, timeout=60) as resp:
             return z, x, y, resp.status
     except URLError as e:
         code = e.code if hasattr(e, "code") else 0

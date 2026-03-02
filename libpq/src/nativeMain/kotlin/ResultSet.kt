@@ -262,8 +262,8 @@ class PgResultSet(
     override fun close() {
         clearResult()
         if (cursorName != null) {
-            conn.exec("CLOSE $cursorName")
-            conn.exec("END")
+            try { conn.exec("CLOSE $cursorName") } catch (_: Throwable) {}
+            try { conn.exec("END") } catch (_: Throwable) {}
         }
     }
 

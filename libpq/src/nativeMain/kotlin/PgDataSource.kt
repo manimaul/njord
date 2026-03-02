@@ -6,8 +6,12 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.cancellation.CancellationException
 import libpq.ConnStatusType
+import libpq.PGTransactionStatusType
+import libpq.PQclear
+import libpq.PQexec
 import libpq.PQreset
 import libpq.PQstatus
+import libpq.PQtransactionStatus
 
 /**
 postgresql://
@@ -37,11 +41,17 @@ class PgDataSource(
         get() = waiting.count()
 
     private fun PgDb.validated(): PgDb {
-        if (PQstatus(conn) == ConnStatusType.CONNECTION_OK) return this
-        PQreset(conn)
-        if (PQstatus(conn) == ConnStatusType.CONNECTION_OK) return this
-        close()
-        return PgDb.connect(connectionInfo)
+        if (PQstatus(conn) != ConnStatusType.CONNECTION_OK) {
+            PQreset(conn)
+            if (PQstatus(conn) != ConnStatusType.CONNECTION_OK) {
+                close()
+                return PgDb.connect(connectionInfo)
+            }
+        }
+        if (PQtransactionStatus(conn) != PGTransactionStatusType.PQTRANS_IDLE) {
+            try { PQexec(conn, "ROLLBACK")?.also { PQclear(it) } } catch (_: Throwable) {}
+        }
+        return this
     }
 
     private fun addToPool() {

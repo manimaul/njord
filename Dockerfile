@@ -1,4 +1,4 @@
-FROM debian:bookworm AS builder
+FROM debian:12.9-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -12,17 +12,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgd-dev \
     && rm -rf /var/lib/apt/lists/*
 
-ARG GH_USER
-ARG GH_TOKEN
+ENV KONAN_DATA_DIR=/root/.konan
 
 WORKDIR /build
 COPY . .
 
-RUN ./gradlew :web:jsBrowserDistribution --no-daemon
-RUN ./gradlew :server:linkReleaseExecutableNative --no-daemon
+# RUN ./gradlew :web:jsBrowserDistribution --no-daemon
+RUN --mount=type=cache,target=/root/.konan \
+    --mount=type=cache,target=/root/.gradle \
+    ./gradlew :server:linkReleaseExecutableArch --no-daemon
 
-
-FROM debian:bookworm-slim
+FROM debian:12.9-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdal32 \
@@ -33,9 +33,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgd3 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /build/server/build/bin/native/releaseExecutable/server.kexe /opt/njord/server.kexe
+COPY --from=builder /build/server/build/bin/arch/releaseExecutable/server.kexe /opt/njord/server.kexe
 COPY --from=builder /build/server/src/nativeMain/resources /opt/njord/resources
 COPY docker/application.json /opt/njord/resources/config/application.json
-COPY --from=builder /build/web/build/dist/js/productionExecutable /opt/njord/resources/www
+COPY web/build/dist/js/productionExecutable /opt/njord/resources/www
 
 CMD ["/opt/njord/server.kexe", "/opt/njord/resources"]

@@ -65,7 +65,7 @@ class AdminUtil(
 
         return AdminResponse(
             signature = signature,
-            signatureEncoded = encodeToString(AdminSignature.serializer(), signature).encodeBase64().encodeURLPath(encodeSlash = true)
+            signatureEncoded = Base64.encode(encodeToString(AdminSignature.serializer(), signature).encodeToByteArray()).encodeURLPath(encodeSlash = true)
         )
     }
 
@@ -78,7 +78,7 @@ class AdminUtil(
         hmac.update(config.externalBaseUrl.toByteArray())
         hmac.update(dateString.toByteArray())
         hmac.update(uuid.toByteArray())
-        val signature = hmac.doFinal().encodeBase64()
+        val signature = Base64.encode(hmac.doFinal())
         return AdminSignature(
             date = now,
             signature = signature,
@@ -88,7 +88,7 @@ class AdminUtil(
     }
 
     fun verifySignature(query: String): Boolean {
-        val data = query.decodeURLPart().decodeBase64String()
+        val data = Base64.decode(query.decodeURLPart()).decodeToString()
         val sig = decodeFromString<AdminSignature>(data)
         return verifySignature(sig)
     }
@@ -105,7 +105,7 @@ class AdminUtil(
         hmac.update(config.externalBaseUrl.toByteArray())
         hmac.update(signature.date.toString().toByteArray())
         hmac.update(signature.uuid.toByteArray())
-        val checkSignature = hmac.doFinal().encodeBase64()
+        val checkSignature = Base64.encode(hmac.doFinal())
         val match = checkSignature == signature.signature
         log.info("match=$match expected=$checkSignature got=${signature.signature}")
         return match

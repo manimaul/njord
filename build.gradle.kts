@@ -59,8 +59,8 @@ task("showSecret") {
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-    dependsOn(":web:jsBrowserDistribution", ":server:linkReleaseExecutableNative")
-    mustRunAfter(":web:jsBrowserDistribution", ":server:linkReleaseExecutableNative")
+    dependsOn(":web:jsBrowserDistribution", ":server:linkReleaseExecutableArch")
+    mustRunAfter(":web:jsBrowserDistribution", ":server:linkReleaseExecutableArch")
     commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 

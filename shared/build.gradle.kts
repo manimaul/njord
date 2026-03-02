@@ -27,28 +27,32 @@ kotlin {
     val hostOs = System.getProperty("os.name")
     val isArm64 = System.getProperty("os.arch") == "aarch64"
     val isMingwX64 = hostOs.startsWith("Windows")
-    when {
-        hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
-        hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
-        hostOs == "Linux" && isArm64 -> linuxArm64("native")
-        hostOs == "Linux" && !isArm64 -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
+    val nativeTarget = when {
+        hostOs == "Mac OS X" && isArm64 -> macosArm64()
+        hostOs == "Mac OS X" && !isArm64 -> macosX64()
+        hostOs == "Linux" && isArm64 -> linuxArm64()
+        hostOs == "Linux" && !isArm64 -> linuxX64()
+        isMingwX64 -> mingwX64()
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
+    nativeTarget.apply {
+        binaries {
+            staticLib {
+                baseName = "shared"
+            }
+        }
+    }
 
     sourceSets {
-        val nativeMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.8.2")
-            }
+        nativeMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.8.2")
         }
         val commonMain by getting {
             dependencies {
                 api(project(":geojson"))
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
-//                api("io.madrona:geojson:1.0-SNAPSHOT")
             }
         }
         val commonTest by getting {

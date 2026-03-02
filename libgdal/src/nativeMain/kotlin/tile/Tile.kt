@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+
 package tile
 
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -52,12 +54,10 @@ data class Tile(
     )
 
     companion object{
-        @OptIn(ExperimentalSerializationApi::class)
         fun decodeTile(data: ByteArray): Tile {
             return ProtoBuf.decodeFromByteArray<Tile>(data)
         }
 
-        @OptIn(ExperimentalSerializationApi::class)
         fun encodeTile(tile: Tile): ByteArray {
             return ProtoBuf.encodeToByteArray(serializer(), tile)
         }

@@ -2,10 +2,20 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Slogrd : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Sloping ground
+ *
+ * Acronym: SLOGRD
+ *
+ * Code: 127
+ */
+class Slogrd : Layerable() {
+    override suspend fun preTileEncode(feature: ChartFeature) {}
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        areaLayerWithFillColor(color = Color.LANDF, theme = options.theme),
+        lineLayerWithColor(theme = options.theme, color = Color.CSTLN),
+    )
 }

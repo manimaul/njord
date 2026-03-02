@@ -2,10 +2,19 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Rcrtcl : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Line
+ *
+ * Object: Recommended track center line
+ *
+ * Acronym: RCRTCL
+ *
+ * Code: 107
+ */
+class Rcrtcl : Layerable() {
+    override suspend fun preTileEncode(feature: ChartFeature) {}
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(theme = options.theme, color = Color.PLRTE),
+    )
 }

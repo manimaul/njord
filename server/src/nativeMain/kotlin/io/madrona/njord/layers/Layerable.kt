@@ -377,22 +377,3 @@ fun ChartFeature.lineColor(color: Color) {
     props["LC"] = color.name.json
 }
 
-abstract class LayerableTodo : Layerable() {
-    override suspend fun preTileEncode(feature: ChartFeature) {
-        log.warn("layer $key preTileEncode not handled")
-        feature.pointSymbol(Sprite.QUESMRK1)
-        feature.areaPattern(Sprite.QUESMRK1)
-        feature.linePattern(Sprite.QUESMRK1)
-    }
-
-    override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(color = Color.RADLO, theme = options.theme),
-        areaLayerWithFillPattern(),
-        lineLayerWithColor(options.theme, color = Color.CHBLK),
-        lineLayerWithColor(options.theme, color = Color.LITRD, LineStyle.DashLine),
-        lineLayerWithPattern(),
-        pointLayerFromSymbol(),
-    ).also {
-        log.warn("layer $key layers not handled")
-    }
-}

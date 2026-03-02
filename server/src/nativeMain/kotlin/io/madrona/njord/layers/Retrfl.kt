@@ -2,10 +2,26 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Retrfl : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Point
+ *
+ * Object: Retro-reflector
+ *
+ * Acronym: RETRFL
+ *
+ * Code: 112
+ */
+class Retrfl : Layerable() {
+    private val symbol = Sprite.RETRFL02
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.pointSymbol(symbol)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        pointLayerFromSymbol(
+            symbol = Symbol.Sprite(symbol),
+            anchor = Anchor.CENTER,
+        )
+    )
 }

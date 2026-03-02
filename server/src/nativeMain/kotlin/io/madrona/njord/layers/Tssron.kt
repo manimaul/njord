@@ -2,10 +2,23 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.model.*
 
-class Tssron : LayerableTodo() {
-    //todo:
-    override suspend fun preTileEncode(feature: ChartFeature) = super.preTileEncode(feature)
+/**
+ * Geometry Primitives: Area
+ *
+ * Object: Traffic separation scheme roundabout
+ *
+ * Acronym: TSSRON
+ *
+ * Code: 150
+ */
+class Tssron : Layerable() {
+    private val lineColor = Color.TRFCF
 
-    //todo:
-    override fun layers(options: LayerableOptions) = super.layers(options)
+    override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.lineColor(lineColor)
+    }
+
+    override fun layers(options: LayerableOptions) = sequenceOf(
+        lineLayerWithColor(theme = options.theme, color = lineColor, style = LineStyle.CustomDash(3f, 2f)),
+    )
 }

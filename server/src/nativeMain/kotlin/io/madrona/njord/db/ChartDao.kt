@@ -37,19 +37,6 @@ class ChartDao(
         } else null
     }
 
-    suspend fun findChartsWithLayerAsync(layer: String): List<Chart>? = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT chart_id FROM features WHERE layer = $1;").let {
-            it.setString(1, layer)
-            it.executeQuery().use {
-                val result = mutableListOf<Long>()
-                while (it.next()) {
-                    result.add(it.getLong(1))
-                }
-                result.mapNotNull { findAsync(it) }
-            }
-        }
-    }
-
     private fun findLayers(id: Long, conn: Connection): List<String> {
         return conn.prepareStatement(
             "SELECT DISTINCT layer FROM features where chart_id=$1;"
@@ -68,96 +55,6 @@ class ChartDao(
     }
 
     suspend fun findChartFeaturesAsync4326(
-        x: Int,
-        y: Int,
-        z: Int,
-        chartId: Long
-    ): List<ChartFeature>? =
-        sqlOpAsync { conn ->
-            val result = conn.prepareStatement(
-                """
-WITH tile AS (VALUES (st_transform(
-        st_tileenvelope($1, $2, $3),
-        4326)))
-SELECT st_asbinary(
-               st_intersection(
-                       geom,
-                       (table tile)
-               )
-       ),
-       props,
-       layer
-FROM features
-WHERE chart_id = $4
-  AND $5 <@ z_range
-  AND st_intersects(geom, (table tile));
-          """.trimIndent()
-            ).apply {
-                setInt(1, z)
-                setInt(2, x)
-                setInt(3, y)
-                setLong(4, chartId)
-                setInt( 5, z)
-            }.executeQuery().use { rs ->
-                generateSequence {
-                    if (rs.next()) {
-                        ChartFeature(
-                            geomWKB = rs.getBytes(1),
-                            props = decodeFromString(rs.getString(2)),
-                            layer = rs.getString(3)
-                        )
-                    } else null
-                }.toList()
-            }
-            result
-        }
-
-    suspend fun findChartFeaturesAsync4326(
-        exclusionMask: ByteArray,
-        tile: ByteArray,
-        chartId: Long,
-        zoom: Int,
-    ): List<ChartFeature>? =
-        sqlOpAsync { conn ->
-            val result = conn.prepareStatement(
-                """
-WITH exclude AS (VALUES (st_geomfromwkb($1, 4326))),
-     tile AS (VALUES (st_geomfromwkb($2, 4326)))
-SELECT st_asbinary(
-               st_intersection(
-                       st_difference(
-                               geom, (table exclude)
-                       ),
-                       (table tile)
-               )
-       ),
-       props,
-       layer
-FROM features
-WHERE chart_id = $3
-  AND $4 <@ z_range
-  AND st_intersects(geom, (table tile));
-          """.trimIndent()
-            ).apply {
-                setBytes(1, exclusionMask)
-                setBytes(2, tile)
-                setLong(3, chartId)
-                setInt( 4, zoom)
-            }.executeQuery().use { rs ->
-                generateSequence {
-                    if (rs.next()) {
-                        ChartFeature(
-                            geomWKB = rs.getBytes(1),
-                            props = decodeFromString(rs.getString(2)),
-                            layer = rs.getString(3)
-                        )
-                    } else null
-                }.toList()
-            }
-            result
-        }
-
-    suspend fun findChartFeaturesAsync4326(
         inclusionMask: ByteArray,
         chartId: Long,
         zoom: Int,
@@ -166,14 +63,7 @@ WHERE chart_id = $3
             val result = conn.prepareStatement(
                 """
 WITH include AS (VALUES (st_geomfromwkb($1, 4326)))
-SELECT st_asbinary(
-               st_intersection(
-                       geom,
-                       (table include)
-               )
-       ),
-       props,
-       layer
+SELECT st_asbinary(st_intersection(geom, (table include))), props, layer
 FROM features
 WHERE chart_id = $2
   AND $3 <@ z_range

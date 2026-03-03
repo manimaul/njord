@@ -28,17 +28,6 @@ class GeoJsonDao : Dao() {
         }
     }
 
-    suspend fun fetchTileAsync(z: Int, x: Int, y: Int): ByteArray? = sqlOpAsync { conn ->
-        conn.prepareStatement("SELECT concat_mvt(?,?,?);").let { stmt ->
-            stmt.setInt(1, z)
-            stmt.setInt(2, x)
-            stmt.setInt(3, y)
-            stmt.executeQuery().use { rs ->
-                if (rs.next()) rs.getBytes(1) else null
-            }
-        }
-    }
-
     suspend fun fetchAsync(chartId: Long, layerName: String): FeatureCollection? =
         sqlOpAsync("error fetching feature") { conn ->
             conn.prepareStatement(

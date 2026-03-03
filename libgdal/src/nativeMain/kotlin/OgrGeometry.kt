@@ -73,6 +73,14 @@ open class OgrGeometry(
         OGR_G_GetZ(ptr, 0)
     }
 
+    val pointX: Double? by lazy {
+        OGR_G_GetX(ptr, 0)
+    }
+
+    val pointY: Double? by lazy {
+        OGR_G_GetX(ptr, 0)
+    }
+
     fun prepare() : OgrPreparedGeometry {
         return OgrPreparedGeometry(requireNotNull(OGRCreatePreparedGeometry(ptr)))
     }

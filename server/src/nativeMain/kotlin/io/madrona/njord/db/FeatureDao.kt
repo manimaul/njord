@@ -23,7 +23,7 @@ class FeatureDao(
 ) : Dao(ds) {
     suspend fun findLayerPositionsPage(layer: String, startId: Long): LayerQueryResultPage? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """SELECT features.id, ST_AsText(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
+            """SELECT features.id, ST_AsBinary(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
                 FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > $1 AND features.layer = $2 ORDER BY features.id LIMIT 5; 
             """.trimIndent()
         ).let{ statement ->
@@ -35,22 +35,21 @@ class FeatureDao(
                 while (it.next()) {
                     val id = it.getLong(1)
                     lastId = max(lastId, id)
-                    val wkt = it.getString(2)
-//                    val coord = WKTReader().read(wkt).coordinate
+                    val wkb = it.getBytes(2)
+                    val geom = OgrGeometry.fromWkb4326(wkb)
                     val props: Map<String, JsonElement> = if (layer == "TOPMAR") {
                         decodeFromString<Map<String, JsonElement>>(it.getString(4)).toMutableMap().apply {
                             val assoc = findAssociatedLayerNames(this["LNAM"].toString())
                             TopmarData.fromAssoc(assoc).addTo(this)
                         }
-                        decodeFromString<Map<String, JsonElement>>(it.getString(4))
                     } else {
                         decodeFromString<Map<String, JsonElement>>(it.getString(4))
                     }
                     result.add(
                         LayerQueryResult(
                             id = id,
-                            lat = 0.0, //coord.y,
-                            lng = 0.0, //coord.x,
+                            lat = geom?.pointY ?: 0.0,
+                            lng = geom?.pointX ?: 0.0,
                             zoom = it.getFloat(6),
                             props = props,
                             chartName = it.getString(5),

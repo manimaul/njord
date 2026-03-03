@@ -1,5 +1,5 @@
 # Image for initializing the PostGIS Db
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y postgresql-client
 

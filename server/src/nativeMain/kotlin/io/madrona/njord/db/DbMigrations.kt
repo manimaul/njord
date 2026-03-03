@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS features
 );
 CREATE INDEX IF NOT EXISTS features_gist ON features USING GIST (geom);
 CREATE INDEX IF NOT EXISTS features_idx ON features (id);
+CREATE INDEX IF NOT EXISTS features_chart_id_idx ON features (chart_id);
 CREATE INDEX IF NOT EXISTS features_layer_idx ON features (layer);
 CREATE INDEX IF NOT EXISTS features_zoom_idx ON features USING GIST (z_range);
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);

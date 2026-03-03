@@ -2,7 +2,6 @@ package io.madrona.njord.db
 
 import Connection
 import DataSource
-import SQLException
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.delay
@@ -36,7 +35,7 @@ abstract class Dao(
     }
 
     companion object {
-        const val MAX_TRY_COUNT = 15
+        const val MAX_TRY_COUNT = 3
     }
 }
 

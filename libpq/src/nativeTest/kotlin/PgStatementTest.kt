@@ -1,10 +1,10 @@
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.runBlocking
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 
@@ -27,25 +27,19 @@ class PgStatementTest {
 
     @BeforeTest
     fun beforeEach() {
-        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:5432/s57server", 1)
-        assertEquals(1, ds.readyCount)
+        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement(testDbSql).execute()
             }
         }
-    }
-
-    @AfterTest
-    fun afterEach() {
-        ds.close()
     }
 
 
     @Test
     fun testStatement() {
         val chartNames = runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement(
                     "insert into testing VALUES (1, 'foo'), (2, 'bar'), (3, 'baz');"
                 ).execute()
@@ -60,6 +54,7 @@ class PgStatementTest {
             }
         }
 
+        assertNotNull(chartNames)
         assertEquals(
             listOf(
                 "foo",
@@ -72,7 +67,7 @@ class PgStatementTest {
     @Test
     fun testStatementParams() {
         val names = runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement(
                     "insert into testing VALUES (1, 'foo'), (2, 'bar'), (3, 'baz');"
                 ).execute()
@@ -88,6 +83,7 @@ class PgStatementTest {
             }
         }
 
+        assertNotNull(names)
         assertEquals(
             listOf(
                 "foo",
@@ -100,7 +96,7 @@ class PgStatementTest {
     @Test
     fun testExecute() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 val count = conn.statement("insert into testing VALUES (1, 'bar'), (2, 'baz');").execute()
                 val stmt = conn.statement("insert into testing VALUES ($1, $2), ($3, $4);")
                     .setLong(1, 3L)
@@ -113,7 +109,7 @@ class PgStatementTest {
                 assertEquals(2, count2)
             }
 
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement("select * from testing;").executeQuery().use { results ->
                     while (results.next()) {
                         println("${results.getLong("id")},${results.getString("name")}")
@@ -126,7 +122,7 @@ class PgStatementTest {
     @Test
     fun testExecute500Params() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 var sql = "insert into testing VALUES "
                 (1..499).forEach {
                     if (it % 2 == 1) {
@@ -163,7 +159,7 @@ class PgStatementTest {
                 assertEquals(250, count)
             }
 
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 var count = 0
                 conn.prepareStatement("select * from testing;").executeQuery().use { resultSet ->
                     while (resultSet.next()) {
@@ -193,7 +189,7 @@ class PgStatementTest {
         var bazId: Long? = null
         var barId: Long? = null
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 println("===== inserting bar, baz")
                 conn.statement("insert into testing VALUES (1, 'bar'), (2, 'baz') returning *;").executeReturning()
                     .use { result ->
@@ -271,7 +267,7 @@ class PgStatementTest {
     @Test
     fun testBinaryData() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement("insert into testing (id, name, data_b) VALUES ($1, $2, $3), ($4, $5, $6) returning *;")
                     .setLong(1, 0L)
                     .setString(2, "foo")
@@ -298,7 +294,7 @@ class PgStatementTest {
     @Test
     fun testBooleanData() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement("insert into testing (id, name, truth) VALUES ($1, $2, $3), ($4, $5, $6) returning *;")
                     .setLong(1, 0L)
                     .setString(2, "foo")

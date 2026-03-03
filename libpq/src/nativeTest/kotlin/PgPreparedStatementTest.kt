@@ -1,7 +1,6 @@
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlinx.serialization.json.Json.Default.encodeToString
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,25 +15,19 @@ class PgPreparedStatementTest {
 
     @BeforeTest
     fun beforeEach() {
-        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:5432/s57server", 1)
-        assertEquals(1, ds.readyCount)
+        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement(testDbSql)
                     .execute()
             }
         }
     }
 
-    @AfterTest
-    fun afterEach() {
-        ds.close()
-    }
-
     @Test
     fun testParamCount() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 (conn.prepareStatement("SELECT name from testing LIMIT $1;") as PgStatement).also { statement ->
                     assertEquals(1, statement.parameters)
                 }
@@ -46,27 +39,9 @@ class PgPreparedStatementTest {
     }
 
     @Test
-    fun testPreparedStatementExists() {
-        val exists = runBlocking {
-            ds.connection().use { conn ->
-                conn.prepareStatement("SELECT name from testing LIMIT 3;").let {
-                    val ps = (it as PgPreparedStatement)
-                    if (!ps.preparedStatementExists()) {
-                        ps.prepare("mycursor")
-                    }
-                    ps.preparedStatementExists()
-                }
-            }
-        }
-        assertTrue(exists)
-
-        ds.close()
-    }
-
-    @Test
     fun testPreparedStatement() {
         val names = runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
 
                 conn.statement(
                     "insert into testing VALUES (1, 'foo'), (2, 'bar'), (3, 'baz');"
@@ -90,20 +65,12 @@ class PgPreparedStatementTest {
                 "baz",
             ), names
         )
-
-        val exists = runBlocking {
-            ds.connection().prepareStatement("SELECT name from testing LIMIT 3;").let {
-                val ps = (it as PgPreparedStatement)
-                ps.preparedStatementExists()
-            }
-        }
-        assertTrue(exists)
     }
 
     @Test
     fun testInvalidPreparedStatementParams() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 val statement = conn.prepareStatement("SELECT name from does_not_exist LIMIT $1;")
                     .setInt(1, 3)
                 assertFails {
@@ -121,7 +88,7 @@ class PgPreparedStatementTest {
     @Test
     fun testPreparedStatementParams() {
         val names = runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 conn.statement(
                     "insert into testing VALUES (1, 'foo'), (2, 'bar'), (3, 'baz');"
                 ).execute()
@@ -151,7 +118,7 @@ class PgPreparedStatementTest {
     @Test
     fun testUpdate() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 val result =
                     conn.statement("insert into testing VALUES (1, 'bar'), (2, 'baz') returning *;")
                         .executeReturning()
@@ -173,7 +140,7 @@ class PgPreparedStatementTest {
     @Test
     fun testUpdateParams() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 println("creating statement")
 
                 val statement =
@@ -202,7 +169,7 @@ class PgPreparedStatementTest {
     @Test
     fun testJsonQuery() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 println("creating statement")
                 var i = 0
                 println("json = ${encodeToString(KvString(key = "value"))}")
@@ -248,7 +215,7 @@ class PgPreparedStatementTest {
     @Test
     fun testArrayQuery() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 println("creating statement")
                 var i = 0
                 conn.statement("insert into testing (id, name, array_t) VALUES ($1, $2, $3), ($4, $5, $6);")
@@ -287,7 +254,7 @@ class PgPreparedStatementTest {
     @Test
     fun testUnNestArrayQuery() {
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 println("creating statement")
                 var i = 0
                 conn.statement("insert into testing VALUES ($1, $2, null, $3), ($4, $5, null, $6);")

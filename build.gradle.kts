@@ -53,6 +53,11 @@ task("showSecret") {
         println("admin key: ${adminKey()}")
         println("admin user: ${user()}")
         println("admin pass: ${password()}")
+        println("db host: ${dbHost()}")
+        println("db port: ${dbPort()}")
+        println("db name: ${dbName()}")
+        println("db user: ${dbUser()}")
+        println("db pass: ${dbPass()}")
     }
 }
 

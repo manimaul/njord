@@ -24,13 +24,16 @@ class PgDb(
     }
 
     companion object {
-        fun connect(info: String) : PgDb {
-            val conn = PQconnectdb(info)
-            val status = PQstatus(conn)
-            require(status == ConnStatusType.CONNECTION_OK) {
-                conn.error(true)
+        fun connect(info: String) : PgDb? {
+            return PQconnectdb(info)?.let {
+                val status = PQstatus(it)
+                if (status == ConnStatusType.CONNECTION_OK) {
+                    return PgDb(it)
+                } else {
+                    it.error(true)
+                    null
+                }
             }
-            return PgDb(conn!!)
         }
 
         fun login(host: String, port: Int, database: String, user: String, password: String): PgDb {

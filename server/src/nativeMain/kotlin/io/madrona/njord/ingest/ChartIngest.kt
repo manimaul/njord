@@ -164,27 +164,49 @@ class ChartIngest(
         chart: Chart,
         report: Report
     ) {
-        s57.layerNames().filter { !exLayers.contains(it) }.forEach { layerName ->
-            if (!distributedLock.lockAcquired) {
-                report.abort()
-                return
-            }
-            s57.getLayer(layerName)?.let { layer ->
-                layer.features.forEach { feature ->
-                    feature.geometry?.makeValid()?.wkb?.let { wkb ->
-                        val count = featureDao.insertFeature(layerName, chart, wkb, feature.properties)
-                        if (count == 0L) {
-                            log.debug("error inserting feature with layer = $layerName")
-                            log.debug("geo json = \n${feature.geometry?.geoJson()}")
+        featureDao.sqlOpAsync { conn ->
+            conn.statement("BEGIN").execute()
+            var chartAborted = false
+            runCatching {
+                s57.layerNames().filter { !exLayers.contains(it) }.forEach { layerName ->
+                    if (chartAborted) return@forEach
+                    if (!distributedLock.lockAcquired) {
+                        report.abort()
+                        chartAborted = true
+                        return@forEach
+                    }
+                    s57.getLayer(layerName)?.let { layer ->
+                        layer.features.forEach { feature ->
+                            if (!distributedLock.lockAcquired) {
+                                report.abort()
+                                chartAborted = true
+                                return@forEach
+                            }
+                            feature.geometry?.makeValid()?.wkb?.let { wkb ->
+                                val count = featureDao.insertFeatureSync(conn, layerName, chart, wkb, feature.properties)
+                                if (count == 0L) {
+                                    log.debug("error inserting feature with layer = $layerName")
+                                    log.debug("geo json = \n${feature.geometry?.geoJson()}")
+                                }
+                                report.appendChartFeatureCount(chart.name, count)
+                            }
                         }
-                        report.appendChartFeatureCount(chart.name, count ?: 0)
+                        ingestStatus.writeMsg(report.progressMessage())
                     }
                 }
-                ingestStatus.writeMsg(report.progressMessage())
+            }.onSuccess {
+                if (chartAborted) {
+                    runCatching { conn.statement("ROLLBACK").execute() }
+                } else {
+                    conn.statement("COMMIT").execute()
+                }
+            }.onFailure {
+                runCatching { conn.statement("ROLLBACK").execute() }
+                throw it
             }
+            report.completedChart()
+            ingestStatus.writeMsg(report.progressMessage())
         }
-        report.completedChart()
-        ingestStatus.writeMsg(report.progressMessage())
     }
 
     companion object {

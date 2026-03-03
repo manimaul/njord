@@ -26,7 +26,7 @@ CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutab
 
 # 3c. Option - build and run in container
 ./gradlew makeImg
-docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.0-SNAPSHOT 
+docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.1-SNAPSHOT
 
 
 # 4. Frontend with hot-reload (separate terminal)

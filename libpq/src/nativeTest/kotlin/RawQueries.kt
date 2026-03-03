@@ -27,10 +27,9 @@ class RawQueries {
 
     @BeforeTest
     fun beforeEach() {
-        val ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:5432/s57server", 1)
-        assertEquals(1, ds.readyCount)
+        val ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
-            ds.connection().use { conn ->
+            ds.connection()?.use { conn ->
                 pgConn = (conn as PgConnection).pgDb.conn
                 conn.statement(testDbSql).execute()
             }

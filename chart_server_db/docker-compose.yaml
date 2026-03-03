@@ -23,7 +23,6 @@ services:
       - overlay
     ports:
       - "5432:5432"
-      # We only expose the port here for local dev purposes
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin"]
       interval: 10s
@@ -33,6 +32,19 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: s57server
+
+  pgbouncer:
+    image: ghcr.io/cloudnative-pg/pgbouncer:latest
+    networks:
+      - overlay
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 
 networks:

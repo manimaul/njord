@@ -82,10 +82,9 @@ object Singletons {
     val spriteSheet by lazy { SpriteSheet() }
 
     val ds: DataSource by lazy {
+        "postgresql://"
         PgDataSource(
-            "postgresql://${config.pgUser}:${config.pgPassword}@${config.pgHost}:${config.pgPort}/${config.pgDatabase}" +
-                    "?keepalives=1&keepalives_idle=30&keepalives_interval=10&keepalives_count=5",
-            config.pgConnectionPoolSize
+            config.pgConnectionInfo
         )
     }
 

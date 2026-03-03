@@ -1,12 +1,7 @@
 {
     "adminExpirationSeconds": 604800,
 
-    "pgUser": "admin",
-    "pgPassword": "mysecretpassword",
-    "pgHost": "localhost",
-    "pgPort": 5432,
-    "pgDatabase": "s57server",
-    "pgConnectionPoolSize": 10,
+    "pgConnectionInfo": "postgresql://admin@localhost:5432/s57server",
 
     "host": "0.0.0.0",
     "port": 9000,

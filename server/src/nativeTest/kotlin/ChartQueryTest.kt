@@ -11,7 +11,6 @@ import kotlin.native.runtime.NativeRuntimeApi
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 
 class ChartQueryTest {
@@ -35,8 +34,7 @@ class ChartQueryTest {
 
     @BeforeTest
     fun beforeEach() {
-        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:5432/s57server", 1)
-        assertEquals(1, ds.readyCount)
+        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
             ds.connection().use { conn ->
                 conn.statement(testSql).execute()
@@ -50,7 +48,6 @@ class ChartQueryTest {
 
     @AfterTest
     fun afterEach() {
-        ds.close()
         GC.collect()
     }
 

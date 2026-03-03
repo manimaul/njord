@@ -17,25 +17,29 @@ abstract class Dao(
     suspend fun <T> sqlOpAsync(msg: String = "error", tryCount: Int, block: suspend (conn: Connection) -> T): T? = sqlOpAsyncInternal(msg, 1, block, tryCount)
 
     private suspend fun <T> sqlOpAsyncInternal(msg: String, tryCount: Int, block: suspend (conn: Connection) -> T, maxTryCount: Int = MAX_TRY_COUNT): T? {
-        return try {
-            ds.connection().use {
+        val conn = ds.connection()
+        if (conn == null) {
+            if (tryCount >= maxTryCount) return null
+            delay(100L * tryCount)
+            return sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
+        }
+
+        return conn.use {
+            val result = runCatching {
                 block(it)
             }
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            log.error("$msg - try count = $tryCount", e)
-            if (tryCount < maxTryCount) {
-                delay(1000)
-                sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
-            } else {
-                null
-            }
+
+           if (result.isFailure && result.exceptionOrNull() !is CancellationException && tryCount < maxTryCount) {
+               delay(100L * tryCount)
+               sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
+           } else {
+               result.getOrNull()
+           }
         }
     }
 
     companion object {
-        const val MAX_TRY_COUNT = 3
+        const val MAX_TRY_COUNT = 7
     }
 }
 

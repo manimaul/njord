@@ -100,7 +100,17 @@ class FeatureDao(
         wkb: ByteArray,
         properties: JsonObject
     ) = sqlOpAsync { conn ->
-        conn.statement("""
+        insertFeatureSync(conn, layerName, chart, wkb, properties)
+    }
+
+    fun insertFeatureSync(
+        conn: Connection,
+        layerName: String,
+        chart: Chart,
+        wkb: ByteArray,
+        properties: JsonObject
+    ): Long {
+        return conn.statement("""
                 INSERT INTO features (layer, geom, props, chart_id, z_range)
                 VALUES (
                     $1,

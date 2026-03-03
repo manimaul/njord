@@ -30,7 +30,7 @@ interface Connection : AutoCloseable {
 }
 
 interface DataSource {
-    suspend fun connection(): Connection
+    suspend fun connection(): Connection?
 }
 
 class SQLException(message: String, throwable: Throwable) : Throwable(message, throwable)

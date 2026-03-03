@@ -16,7 +16,7 @@ abstract class Layerable(
 
     open suspend fun preTileEncode(feature: ChartFeature) {}
 
-    private var pointLayerFromSymbolId = 0
+    private var nextId = 0
 
     /**
      *
@@ -30,7 +30,7 @@ abstract class Layerable(
         iconRotationAlignment: IconRotationAlignment? = null,
     ): Layer {
         return Layer(
-            id = "${key}_point_${++pointLayerFromSymbolId}",
+            id = "${key}_point_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = listOf(Filters.any, Filters.eqTypePoint).json,
@@ -57,7 +57,7 @@ abstract class Layerable(
         textOffset: Offset? = null
     ): Layer {
         return Layer(
-            id = "${key}_label_${++pointLayerWithLabelId}",
+            id = "${key}_label_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePoint,
@@ -78,7 +78,6 @@ abstract class Layerable(
         )
     }
 
-    private var lineLayerWithColorId = 0
     fun lineLayerWithColor(
         theme: Theme,
         color: Color,
@@ -87,7 +86,7 @@ abstract class Layerable(
         filter: JsonElement? = null,
     ): Layer {
         return Layer(
-            id = "${key}_line_${++lineLayerWithColorId}",
+            id = "${key}_line_${++nextId}",
             type = LayerType.LINE,
             sourceLayer = sourceLayer,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
@@ -107,7 +106,7 @@ abstract class Layerable(
         filter: List<JsonElement>? = null,
     ): Layer {
         return Layer(
-            id = "${key}_line_${++lineLayerWithColorId}",
+            id = "${key}_line_${++nextId}",
             type = LayerType.LINE,
             sourceLayer = sourceLayer,
             filter = filter?.json ?: Filters.eqTypeLineStringOrPolygon,
@@ -119,7 +118,6 @@ abstract class Layerable(
         )
     }
 
-    private var lineLayerWithLabelId = 0
     fun lineLayerWithLabel(
         label: Label,
         theme: Theme,
@@ -127,7 +125,7 @@ abstract class Layerable(
         highlightColor: Color = Color.DEPDW,
     ): Layer {
         return Layer(
-            id = "${key}_label_${++lineLayerWithLabelId}",
+            id = "${key}_label_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineStringOrPolygon,
@@ -146,7 +144,6 @@ abstract class Layerable(
         )
     }
 
-    private var lineLayerWithPatternId = 0
     fun lineLayerWithPattern(
         symbol: Sprite? = null,
         includePolygonLines: Boolean = true,
@@ -155,7 +152,7 @@ abstract class Layerable(
         iconAllowOverlap: Boolean? = null,
     ): Layer {
         return Layer(
-            id = "${key}_line_symbol_${++lineLayerWithPatternId}",
+            id = "${key}_line_symbol_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = if (includePolygonLines) Filters.eqTypeLineStringOrPolygon else Filters.eqTypeLineString,
@@ -170,7 +167,6 @@ abstract class Layerable(
         )
     }
 
-    private var lineLayerWithPattern2Id = 0
     fun lineLayerWithPattern(
         symbol: Sprite? = null,
         iconRotate: Float? = null,
@@ -179,7 +175,7 @@ abstract class Layerable(
         allowOverlap: Boolean,
     ): Layer {
         return Layer(
-            id = "${key}_line_symbol_${++lineLayerWithPattern2Id}",
+            id = "${key}_line_symbol_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineStringOrPolygon,
@@ -195,10 +191,9 @@ abstract class Layerable(
         )
     }
 
-    private var lineLayerWithTextId = 0
     fun lineLayerWithText(textKey: String, theme: Theme): Layer {
         return Layer(
-            id = "${key}_line_label${++lineLayerWithTextId}",
+            id = "${key}_line_label${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypeLineString,
@@ -217,13 +212,12 @@ abstract class Layerable(
         )
     }
 
-    private var areaLayerWithFillColorId = 0
     fun areaLayerWithFillColor(
         options: Set<Color>,
         theme: Theme
     ): Layer {
         return Layer(
-            id = "${key}_fill_${++areaLayerWithFillColorId}",
+            id = "${key}_fill_${++nextId}",
             type = LayerType.FILL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
@@ -238,7 +232,7 @@ abstract class Layerable(
         theme: Theme
     ): Layer {
         return Layer(
-            id = "${key}_fill_${++areaLayerWithFillColorId}",
+            id = "${key}_fill_${++nextId}",
             type = LayerType.FILL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
@@ -248,10 +242,9 @@ abstract class Layerable(
         )
     }
 
-    private var areaLayerWithFillPatternId = 0
     fun areaLayerWithFillPattern(symbol: Sprite? = null): Layer {
         return Layer(
-            id = "${key}_fill_pattern_${++areaLayerWithFillPatternId}",
+            id = "${key}_fill_pattern_${++nextId}",
             type = LayerType.FILL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
@@ -261,7 +254,6 @@ abstract class Layerable(
         )
     }
 
-    private var areaLayerWithSingleSymbolId = 0
     fun areaLayerWithSingleSymbol(
         symbol: Sprite? = null,
         iconOffset: List<Float>? = null,
@@ -269,7 +261,7 @@ abstract class Layerable(
         iconRotationAlignment: IconRotationAlignment = IconRotationAlignment.MAP,
     ): Layer {
         return Layer(
-            id = "${key}_area_symbol${++areaLayerWithSingleSymbolId}",
+            id = "${key}_area_symbol${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,
@@ -284,7 +276,6 @@ abstract class Layerable(
     }
 
 
-    private var areaLayerWithPointSymbolId = 0
     fun areaLayerWithPointSymbol(
         symbol: Sprite? = null,
         anchor: Anchor = Anchor.CENTER,
@@ -294,7 +285,7 @@ abstract class Layerable(
         iconOffset: List<Float>? = null,
     ): Layer {
         return Layer(
-            id = "${key}_area_point${++areaLayerWithPointSymbolId}",
+            id = "${key}_area_point${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = listOf(Filters.all, Filters.eqTypePolyGon, listOf("!=", "EA", true)).json,
@@ -311,7 +302,6 @@ abstract class Layerable(
         )
     }
 
-    private var areaLayerWithTextId = 0
     fun areaLayerWithText(
         label: Label,
         theme: Theme,
@@ -322,7 +312,7 @@ abstract class Layerable(
         textOptional: Boolean? = null,
     ): Layer {
         return Layer(
-            id = "${key}_area_label${++areaLayerWithTextId}",
+            id = "${key}_area_label${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePointOrPolygon,

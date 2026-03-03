@@ -40,33 +40,6 @@ sealed interface IconRot {
         override var property = listOf("get", name).json
     }
 }
-//sealed interface IconRotAlign {
-//    val property: Any?
-//
-//    object Map : IconRotAlign {
-//        override val property = IconRotationAlignment.MAP
-//    }
-//    object ViewPort: IconRotAlign {
-//        override val property = IconRotationAlignment.VIEWPORT
-//    }
-//    object Auto: IconRotAlign {
-//        override val property = IconRotationAlignment.AUTO
-//    }
-//    data class IfValueEq(
-//        val key: String,
-//        val value: String,
-//        val eq: IconRotationAlignment,
-//        val nEq: IconRotationAlignment,
-//    ) : IconRotAlign {
-//        override val property: Any
-//            get() = listOf(
-//                "case",
-//                listOf("==", listOf("get", key), value),
-//                listOf("literal", eq),
-//                listOf("literal", nEq)
-//            )
-//    }
-//}
 
 sealed interface Offset {
     val property: JsonElement?

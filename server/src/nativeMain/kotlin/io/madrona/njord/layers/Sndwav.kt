@@ -26,6 +26,5 @@ class Sndwav : Layerable() {
             style = LineStyle.DashLine
         ),
         areaLayerWithPointSymbol(),
-//        areaLayerWithFillPattern(),
     )
 }

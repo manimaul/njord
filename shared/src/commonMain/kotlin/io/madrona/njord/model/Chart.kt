@@ -8,13 +8,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-class BaseInfo(
-    val id: Long,
-    val scale: Int,
-    val name: String,
-)
-
-@Serializable
 class ChartInfo(
     val id: Long,
     val scale: Int,

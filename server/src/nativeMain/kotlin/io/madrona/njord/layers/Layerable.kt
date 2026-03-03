@@ -57,7 +57,7 @@ abstract class Layerable(
         textOffset: Offset? = null
     ): Layer {
         return Layer(
-            id = "${key}_label_${++lineLayerWithLabelId}",
+            id = "${key}_label_${++pointLayerWithLabelId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePoint,
@@ -251,7 +251,7 @@ abstract class Layerable(
     private var areaLayerWithFillPatternId = 0
     fun areaLayerWithFillPattern(symbol: Sprite? = null): Layer {
         return Layer(
-            id = "${key}_fill_pattern_${++areaLayerWithFillColorId}",
+            id = "${key}_fill_pattern_${++areaLayerWithFillPatternId}",
             type = LayerType.FILL,
             sourceLayer = sourceLayer,
             filter = Filters.eqTypePolyGon,

@@ -10,6 +10,8 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion apply false
 }
 
+version = "${properties["version"]}"
+
 allprojects {
     repositories {
         google()

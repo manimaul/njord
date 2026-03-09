@@ -122,7 +122,6 @@ import io.madrona.njord.layers.*
  */
 class StandardLayers {
     val layers = sequenceOf(
-        Background(),
 
         //land / base layers
         Depare(),

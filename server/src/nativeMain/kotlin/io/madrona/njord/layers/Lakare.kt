@@ -11,7 +11,7 @@ import io.madrona.njord.model.*
  *
  * Code: 69
  */
-class Lakare : Layerable() {
+open class Lakare : Layerable() {
     private val lineColor = Color.CSTLN
 
     override suspend fun preTileEncode(feature: ChartFeature) {

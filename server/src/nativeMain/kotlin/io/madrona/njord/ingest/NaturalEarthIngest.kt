@@ -15,7 +15,6 @@ import io.madrona.njord.util.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.serialization.json.*
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class NaturalEarthIngest(
@@ -112,12 +111,6 @@ class NaturalEarthIngest(
 
     private suspend fun processShapefile(shpFile: OgrShapefileDataset, report: Report) {
         val fileName = shpFile.file.name
-        val s57LayerName = s57Layer(fileName) ?: run {
-            log.info("skipping unmapped shapefile: $fileName")
-            return
-        }
-        log.info("processing $fileName -> $s57LayerName")
-
 
         val scale = scaleFromFilename(fileName)
         baseFeatureDao.deleteByNameAndScaleAsync(fileName, scale)
@@ -129,6 +122,7 @@ class NaturalEarthIngest(
                 report.abort()
                 return
             }
+            val layerName = layer.name?.let { normalizeLayerName(it) } ?: "unknown"
             var count = 0
             layer.features.forEach { feature ->
                 if (!distributedLock.lockAcquired) {
@@ -136,64 +130,25 @@ class NaturalEarthIngest(
                     return
                 }
                 val wkb = feature.geometry?.makeValid()?.wkb ?: return@forEach
-                val props = if (s57LayerName == "DEPARE") {
-                    enrichDepareProperties(feature.properties, fileName)
-                } else {
-                    feature.properties
-                }
-                baseFeatureDao.insertAsync(wkb, props, fileName, scale, s57LayerName)
+                baseFeatureDao.insertAsync(wkb, feature.properties, fileName, scale, layerName)
                 count++
             }
 
-            log.info("inserted $count feature(s) for $fileName -> $s57LayerName")
+            log.info("inserted $count feature(s) for $fileName -> $layerName")
             report.appendChartFeatureCount(fileName, count.toLong())
             ingestStatus.writeMsg(report.progressMessage())
-        }
-    }
-
-    private fun enrichDepareProperties(properties: JsonObject, baseName: String): JsonObject {
-
-        val (drval1, drval2) = if (baseName.contains("_ocean")) {
-            200.0 to 9999.0
-        } else {
-            //  ne_10m_bathymetry_E_6000.shp
-            // ne_10m_bathymetry_K_200 -> depth = 200; treat depth as DRVAL1
-            val depth = baseName.split("_")
-                .lastOrNull()
-                ?.replace(".shp", "")
-                ?.toDoubleOrNull() ?: 0.0
-            depth to 9999.0
-        }
-        return buildJsonObject {
-            properties.forEach { (k, v) -> put(k, v) }
-            put("DRVAL1", JsonPrimitive(drval1))
-            put("DRVAL2", JsonPrimitive(drval2))
         }
     }
 
     companion object {
         private val resolutionRegex = Regex("^ne_(10|50|110)m_")
 
-        private val layerMap = mapOf(
-            "coastline" to "COALNE",
-            "land" to "LNDARE",
-            "minor_islands" to "LNDARE",
-            "ocean" to "DEPARE",
-            "lakes" to "LAKARE",
-            "rivers_lake_centerlines" to "RIVERS",
-            "glaciated_areas" to "ICEARE",
-            "reefs" to "SBDARE",
-            "playas" to "SBDARE",
-            "antarctic_ice_shelves_polys" to "ICEARE",
-            "geographic_lines" to "DEPCNT",
-        )
-
-        fun s57Layer(filename: String): String? {
+        fun normalizeLayerName(filename: String): String {
             val baseName = filename.substringBeforeLast(".")
             val suffix = baseName.replaceFirst(resolutionRegex, "")
-            layerMap[suffix]?.let { return it }
-            if (suffix.startsWith("bathymetry_")) return "DEPARE"
-            return null
+            if (suffix.startsWith("bathymetry")) return "bathymetry"
+            if (suffix.startsWith("lakes")) return "lakes"
+            return suffix
         }
 
         fun scaleFromFilename(filename: String): Int {

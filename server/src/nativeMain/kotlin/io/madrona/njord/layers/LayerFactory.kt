@@ -2,12 +2,14 @@ package io.madrona.njord.layers
 
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
+import io.madrona.njord.layers.set.BaseLayers
 import io.madrona.njord.layers.set.ExtraLayers
 import io.madrona.njord.layers.set.InlandLayers
 import io.madrona.njord.layers.set.StandardLayers
 import io.madrona.njord.model.*
 
 class LayerFactory(
+    private val baseLayers: BaseLayers = BaseLayers(),
     private val standardLayers: StandardLayers = StandardLayers(),
     private val inlandLayers: InlandLayers = InlandLayers(),
     private val extraLayers: ExtraLayers = ExtraLayers(),
@@ -16,7 +18,7 @@ class LayerFactory(
 ) {
 
     private val layerables by lazy {
-        (standardLayers.layers + inlandLayers.layers + extraLayers.layers).let {
+        (baseLayers.layers + standardLayers.layers + inlandLayers.layers + extraLayers.layers).let {
             if (config.debugTile) {
                 it + sequenceOf(Debug())
             } else {

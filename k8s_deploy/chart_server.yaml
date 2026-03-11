@@ -149,7 +149,8 @@ data:
       "adminPass": "admin",
       
       "debugTile": false,
-      "chartIngestWorkers": 5
+      "chartIngestWorkers": 5,
+      "useTileCache": true
     }
 
 ---

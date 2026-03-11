@@ -24,7 +24,7 @@ class TileDao(
     suspend fun getTile(z: Int, x: Int, y: Int): ByteArray {
         val cached: Boolean
         val (result, duration) = measureTimedValue {
-            val cacheTile = if (!chartsConfig.debugTile) {
+            val cacheTile = if (chartsConfig.useTileCache && !chartsConfig.debugTile) {
                 tileCache.get(z, x, y)
             } else {
                 null
@@ -44,7 +44,7 @@ class TileDao(
             }
         }
         println("Tile creation $z,$x,$y took: $duration, cached $cached")
-        if (!chartsConfig.debugTile && !cached) {
+        if (chartsConfig.useTileCache && !chartsConfig.debugTile && !cached) {
             tileCache.put(z, x, y, result)
         }
         return result

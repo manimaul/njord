@@ -17,14 +17,14 @@ class LayerFactory(
     private val colorLibrary: ColorLibrary = Singletons.colorLibrary,
 ) {
 
-    private val layerables by lazy {
+    private val layerablesMap: Map<String, Layerable> by lazy {
         (baseLayers.layers + standardLayers.layers + inlandLayers.layers + extraLayers.layers).let {
             if (config.debugTile) {
                 it + sequenceOf(Debug())
             } else {
                 it
             }
-        }
+        }.associateBy { it.key }
     }
 
     private val layers: Map<LayerableOptions, Sequence<Layer>> by lazy {
@@ -41,7 +41,7 @@ class LayerFactory(
         }.flatten()
 
         optionList.associateWith { options ->
-            layerables.map {
+            layerablesMap.values.asSequence().map {
                 it.layers(options)
             }.flatten()
         }
@@ -52,11 +52,7 @@ class LayerFactory(
     )
 
     suspend fun preTileEncode(feature: ChartFeature) : ChartFeature {
-        layerables.forEach {
-            if (feature.layer == it.key) {
-                it.preTileEncode(feature)
-            }
-        }
+        layerablesMap[feature.layer]?.preTileEncode(feature)
         return feature
     }
 }

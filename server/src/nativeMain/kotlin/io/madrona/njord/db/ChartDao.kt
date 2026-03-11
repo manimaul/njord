@@ -93,6 +93,50 @@ WHERE chart_id = $2
             result
         }
 
+    suspend fun findAllChartFeaturesAsync4326(
+        tileWkb: ByteArray,
+        chartIds: List<Long>,
+        zoom: Int,
+    ): Map<Long, List<ChartFeature>>? {
+        if (chartIds.isEmpty()) return emptyMap()
+        return sqlOpAsync { conn ->
+            conn.prepareStatement(
+                """
+WITH tile AS (VALUES (st_geomfromwkb($1, 4326)))
+SELECT st_asbinary(
+    CASE WHEN ST_NRings((table tile)) = 1
+         THEN ST_ClipByBox2D(geom, (table tile)::box2d)
+         ELSE ST_Intersection(geom, (table tile))
+    END
+), props, layer, chart_id
+FROM features
+WHERE chart_id = ANY($2)
+  AND $3 >= z_min AND $4 <= z_max
+  AND st_intersects(geom, (table tile))
+ORDER BY chart_id;
+                """.trimIndent()
+            ).apply {
+                setBytes(1, tileWkb)
+                setArray(2, chartIds.map { it as Any }.toTypedArray())
+                setInt(3, zoom)
+                setInt(4, zoom)
+            }.executeQuery().use { rs ->
+                val result = mutableMapOf<Long, MutableList<ChartFeature>>()
+                while (rs.next()) {
+                    val chartId = rs.getLong(4)
+                    result.getOrPut(chartId) { mutableListOf() }.add(
+                        ChartFeature(
+                            geomWKB = rs.getBytes(1),
+                            props = decodeFromString(rs.getString(2)),
+                            layer = rs.getString(3),
+                        )
+                    )
+                }
+                result
+            }
+        }
+    }
+
     suspend fun findInfoAsync(wkb: ByteArray): List<ChartInfo>? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """

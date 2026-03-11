@@ -8,6 +8,7 @@ import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
+import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
@@ -74,18 +75,20 @@ class TileEncoder(
         //we need to expand the polygon so that lines are not drawn on the edge of the tile
         var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
         chartDao.findInfoAsync(tileEnvelope.wkb)?.let { charts ->
+            val eligibleChartIds = charts.filter { it.zoom in 0..z }.map { it.id }
+            val allFeatures: Map<Long, List<ChartFeature>> =
+                chartDao.findAllChartFeaturesAsync4326(include.wkb, eligibleChartIds, z) ?: emptyMap()
             charts.forEach { chart ->
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
-                    chartDao.findChartFeaturesAsync4326(
-                        inclusionMask = include.wkb,
-                        chartId = chart.id,
-                        zoom = z,
-                    )?.forEach { feature ->
+                    val chartInclude = include
+                    allFeatures[chart.id]?.forEach { feature ->
                         val props = layerFactory.preTileEncode(feature).props.filtered().also {
                             it["CID"] = chart.id.json
                         }
-                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }?.takeIf { it.isValid && !it.isEmpty() }
+                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                            ?.intersection(chartInclude)
+                            ?.takeIf { it.isValid && !it.isEmpty() }
                             ?.let { tileGeo ->
                                 if (info) {
                                     infoFeatures.add(

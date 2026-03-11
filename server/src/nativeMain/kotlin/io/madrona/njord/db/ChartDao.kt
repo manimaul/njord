@@ -63,7 +63,12 @@ class ChartDao(
             val result = conn.prepareStatement(
                 """
 WITH include AS (VALUES (st_geomfromwkb($1, 4326)))
-SELECT st_asbinary(st_intersection(geom, (table include))), props, layer
+SELECT st_asbinary(
+    CASE WHEN ST_NRings((table include)) = 1
+         THEN ST_ClipByBox2D(geom, (table include)::box2d)
+         ELSE ST_Intersection(geom, (table include))
+    END
+), props, layer
 FROM features
 WHERE chart_id = $2
   AND $3 >= z_min AND $4 <= z_max

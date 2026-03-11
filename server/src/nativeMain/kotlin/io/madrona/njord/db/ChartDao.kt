@@ -66,13 +66,14 @@ WITH include AS (VALUES (st_geomfromwkb($1, 4326)))
 SELECT st_asbinary(st_intersection(geom, (table include))), props, layer
 FROM features
 WHERE chart_id = $2
-  AND $3 <@ z_range
+  AND $3 >= z_min AND $4 <= z_max
   AND st_intersects(geom, (table include));
           """.trimIndent()
             ).apply {
                 setBytes(1, inclusionMask)
                 setLong(2, chartId)
                 setInt( 3, zoom)
+                setInt( 4, zoom)
             }.executeQuery().use { rs ->
                 generateSequence {
                     if (rs.next()) {

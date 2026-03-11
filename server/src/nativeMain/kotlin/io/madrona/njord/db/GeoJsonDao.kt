@@ -113,13 +113,14 @@ class GeoJsonDao : Dao() {
         try {
             return conn.prepareStatement(
                 """
-                INSERT INTO features (layer, geom, props, chart_id, z_range)
+                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max)
                 VALUES (
                     $1,
                     ST_MakeValid(ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($2), 4326))),
                     $3::json,
                     $4,
-                    int4range($5, $6)
+                    $5,
+                    $6
                 );
             """.trimIndent()
             ).let {

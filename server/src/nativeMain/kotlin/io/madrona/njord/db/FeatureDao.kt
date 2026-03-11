@@ -4,7 +4,6 @@ import Connection
 import DataSource
 import ResultSet
 import io.madrona.njord.Singletons
-import io.madrona.njord.geojson.Feature
 import io.madrona.njord.layers.TopmarData
 import io.madrona.njord.model.Chart
 import io.madrona.njord.model.FeatureRecord
@@ -86,7 +85,7 @@ class FeatureDao(
      */
     suspend fun findFeature(lnam: String): FeatureRecord? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, lower(z_range), upper(z_range)
+            """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, z_min, z_max
                 FROM features WHERE props->'LNAM' = to_jsonb($1::text);""".trimIndent()
         ).let {
             it.setString(1, lnam)
@@ -111,13 +110,14 @@ class FeatureDao(
         properties: JsonObject
     ): Long {
         return conn.statement("""
-                INSERT INTO features (layer, geom, props, chart_id, z_range)
+                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max)
                 VALUES (
                     $1,
                     st_force2d(st_setsrid(st_geomfromwkb($2), 4326)),
                     $3::json,
                     $4,
-                    int4range($5, $6)
+                    $5,
+                    $6
                 );
         """.trimIndent())
             .setString(1, layerName)

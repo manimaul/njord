@@ -28,22 +28,22 @@ class LayerFactory(
     }
 
     private val layers: Map<LayerableOptions, Sequence<Layer>> by lazy {
-        val optionList = Depth.entries.map { depth ->
+        val optionList = Depth.entries.flatMap { depth ->
             ThemeMode.entries.map { theme ->
                 LayerableOptions(depth, theme)
             }
-        }.flatten() + colorLibrary.colorMap.custom.keys.map { name ->
-            Depth.entries.map { depth ->
+        } + colorLibrary.colorMap.custom.keys.flatMap { name ->
+            Depth.entries.flatMap { depth ->
                 ThemeMode.entries.map { themeMode ->
                     LayerableOptions(depth, CustomTheme(themeMode, name))
                 }
-            }.flatten()
-        }.flatten()
+            }
+        }
 
         optionList.associateWith { options ->
-            layerablesMap.values.asSequence().map {
+            layerablesMap.values.asSequence().flatMap {
                 it.layers(options)
-            }.flatten()
+            }
         }
     }
 

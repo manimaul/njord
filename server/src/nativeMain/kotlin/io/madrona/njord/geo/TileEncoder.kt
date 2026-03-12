@@ -13,6 +13,8 @@ import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
 import transformToTilePixels
+import kotlin.time.Duration
+import kotlin.time.measureTimedValue
 
 class TileEncoder(
     val x: Int,
@@ -25,6 +27,37 @@ class TileEncoder(
     val s57ObjectLibrary: S57ObjectLibrary = Singletons.s57ObjectLibrary,
     val baseFeatureDao: BaseFeatureDao = Singletons.baseFeatureDao,
 ) {
+
+    var chartQueryDuration: Duration = Duration.ZERO
+        private set
+
+    var featureQueryDuration: Duration = Duration.ZERO
+        private set
+
+    var preEncodeDuration: Duration = Duration.ZERO
+        private set
+
+    var geomOpDuration: Duration = Duration.ZERO
+        private set
+
+    var encodeDuration: Duration = Duration.ZERO
+        private set
+
+    var finalEncodeDuration: Duration = Duration.ZERO
+        private set
+
+    var baseMapDuration: Duration = Duration.ZERO
+        private set
+
+    fun spans() : String {
+        return "chart query: $chartQueryDuration\n" +
+                "feature query: $featureQueryDuration\n" +
+                "pre encode: $preEncodeDuration\n" +
+                "geometry ops: $geomOpDuration\n" +
+                "encode: $encodeDuration\n" +
+                "encode final pass: $finalEncodeDuration\n" +
+                "base map: $baseMapDuration\n"
+    }
 
     private val tileEnvelope: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z)
 
@@ -74,38 +107,62 @@ class TileEncoder(
     suspend fun addCharts(info: Boolean): TileEncoder {
         //we need to expand the polygon so that lines are not drawn on the edge of the tile
         var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
-        chartDao.findInfoAsync(tileEnvelope.wkb)?.let { charts ->
+
+        val (charts, cd) = measureTimedValue {
+            chartDao.findInfoAsync(tileEnvelope.wkb)
+        }
+        chartQueryDuration
+        chartQueryDuration = cd
+        charts?.let { charts ->
             val eligibleChartIds = charts.filter { it.zoom in 0..z }.map { it.id }
-            val allFeatures: Map<Long, List<ChartFeature>> =
+
+            val (allFeatures, fd) = measureTimedValue {
                 chartDao.findAllChartFeaturesAsync4326(include.wkb, eligibleChartIds, z) ?: emptyMap()
+            }
+            featureQueryDuration += fd
+
             charts.forEach { chart ->
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
                     val chartInclude = include
                     allFeatures[chart.id]?.forEach { feature ->
-                        val props = layerFactory.preTileEncode(feature).props.filtered().also {
-                            it["CID"] = chart.id.json
+
+                        val (props, ed) = measureTimedValue {
+                            layerFactory.preTileEncode(feature).props.filtered().also {
+                                it["CID"] = chart.id.json
+                            }
                         }
-                        feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
-                            ?.intersection(chartInclude)
-                            ?.takeIf { it.isValid && !it.isEmpty() }
-                            ?.let { tileGeo ->
-                                if (info) {
-                                    infoFeatures.add(
-                                        ChartFeatureInfo(
-                                            feature.layer,
-                                            props,
-                                            tileGeo.geoJson()
-                                        )
+                        preEncodeDuration += ed
+
+                        val (tileGeo, td) = measureTimedValue {
+                            feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                                ?.intersection(chartInclude)
+                                ?.takeIf { it.isValid && !it.isEmpty() }
+                        }
+                        geomOpDuration += td
+                        tileGeo?.let { tileGeo ->
+                            if (info) {
+                                infoFeatures.add(
+                                    ChartFeatureInfo(
+                                        feature.layer,
+                                        props,
+                                        tileGeo.geoJson()
                                     )
-                                }
+                                )
+                            }
+                            val (tileGeo, tpd) = measureTimedValue {
                                 transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                            }
+                            geomOpDuration += tpd
+
+                            encodeDuration += measureTimedValue {
                                 vectorTileEncoder.addFeature(
                                     feature.layer,
                                     props,
                                     tileGeo
                                 )
-                            }
+                            }.duration
+                        }
                     }
                     include = include.difference(chartGeo) ?: include
                 }
@@ -119,15 +176,17 @@ class TileEncoder(
 
         // Encode base map features inside un rendered "include"
         if (!include.isEmpty() && !info) {
-            baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
-                val props = layerFactory.preTileEncode(feature).props.filtered()
-                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
-                    ?.takeIf { it.isValid && !it.isEmpty() }
-                    ?.let { tileGeo ->
-                        transformToTilePixels(tileGeo, x, y, z, tileSystem)
-                        vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
-                    }
-            }
+            baseMapDuration = measureTimedValue {
+                baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
+                    val props = layerFactory.preTileEncode(feature).props.filtered()
+                    feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                        ?.takeIf { it.isValid && !it.isEmpty() }
+                        ?.let { tileGeo ->
+                            transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                            vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
+                        }
+                }
+            }.duration
         }
         return this
     }
@@ -156,8 +215,15 @@ class TileEncoder(
 
 
     fun encode(): ByteArray {
-        return vectorTileEncoder.encode()
+        val (mvt, duration) = measureTimedValue {
+            vectorTileEncoder.encode()
+        }
+        finalEncodeDuration += duration
+        return mvt
     }
 
-    fun infoJson() = infoFeatures
+    fun infoJson() : List<ChartFeatureInfo> {
+        return infoFeatures
+    }
+
 }

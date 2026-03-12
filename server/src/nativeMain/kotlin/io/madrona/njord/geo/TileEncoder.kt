@@ -107,6 +107,7 @@ class TileEncoder(
     suspend fun addCharts(info: Boolean): TileEncoder {
         //we need to expand the polygon so that lines are not drawn on the edge of the tile
         var include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
+        val tileWkb = include.wkb
 
         val (charts, cd) = measureTimedValue {
             chartDao.findInfoAsync(tileEnvelope.wkb)
@@ -117,7 +118,7 @@ class TileEncoder(
             val eligibleChartIds = charts.filter { it.zoom in 0..z }.map { it.id }
 
             val (allFeatures, fd) = measureTimedValue {
-                chartDao.findAllChartFeaturesAsync4326(include.wkb, eligibleChartIds, z) ?: emptyMap()
+                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartIds, z) ?: emptyMap()
             }
             featureQueryDuration += fd
 

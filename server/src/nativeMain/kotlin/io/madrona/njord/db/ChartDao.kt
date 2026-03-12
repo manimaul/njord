@@ -104,10 +104,7 @@ WHERE chart_id = $2
                 """
 WITH tile AS (VALUES (st_geomfromwkb($1, 4326)))
 SELECT st_asbinary(
-    CASE WHEN ST_NRings((table tile)) = 1
-         THEN ST_ClipByBox2D(geom, (table tile)::box2d)
-         ELSE ST_Intersection(geom, (table tile))
-    END
+    ST_ClipByBox2D(geom, (table tile)::box2d)
 ), props, layer, chart_id
 FROM features
 WHERE chart_id = ANY($2)

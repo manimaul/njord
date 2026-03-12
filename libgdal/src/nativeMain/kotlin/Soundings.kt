@@ -1,8 +1,4 @@
-import io.madrona.njord.geojson.FeatureBuilder
-import io.madrona.njord.geojson.Point
-import io.madrona.njord.geojson.Position
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 
 data class DisplayDepths(
     val meters: Double,

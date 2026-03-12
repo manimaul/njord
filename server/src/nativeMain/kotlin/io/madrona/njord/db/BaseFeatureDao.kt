@@ -6,6 +6,7 @@ import io.madrona.njord.model.ChartFeature
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlinx.serialization.json.Json.Default.encodeToString
 import kotlinx.serialization.json.JsonObject
+import kotlin.collections.emptyList
 
 class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
 
@@ -62,7 +63,8 @@ class BaseFeatureDao(ds: DataSource = Singletons.ds) : Dao(ds) {
                             ChartFeature(
                                 geomWKB = rs.getBytes(1),
                                 props = decodeFromString(rs.getString(2)),
-                                layer = rs.getString(3)
+                                layer = rs.getString(3),
+                                associatedLayerNames = emptyList(),
                             )
                         } else null
                     }.toList()

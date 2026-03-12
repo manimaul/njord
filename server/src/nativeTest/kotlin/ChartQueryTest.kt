@@ -37,7 +37,7 @@ class ChartQueryTest {
         ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
             ds.connection().use { conn ->
-                conn.statement(testSql).execute()
+                conn?.statement(testSql)?.execute()
             }
         }
         featureDao = FeatureDao(ds)

@@ -53,13 +53,11 @@ data class TopmarData(
  *
  * Code: 144
  */
-class Topmar(
-    private val featureDao: FeatureDao = Singletons.featureDao
-) : Layerable() {
+class Topmar : Layerable() {
 
-    private suspend fun topmarData(feature: ChartFeature): TopmarData {
-        return feature.props.stringValue("LNAM")?.let { lnam ->
-            TopmarData.fromAssoc(featureDao.findAssociatedLayerNames(lnam))
+    private fun topmarData(feature: ChartFeature): TopmarData {
+        return feature.associatedLayerNames.takeIf { it.isNotEmpty() }?.let {
+            TopmarData.fromAssoc(it)
         } ?: TopmarData(TopmarPlatform.RIGID, emptyList())
     }
 

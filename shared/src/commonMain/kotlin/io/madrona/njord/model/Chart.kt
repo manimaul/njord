@@ -26,7 +26,8 @@ class ChartFeatureInfo(
 class ChartFeature(
     val layer: String,
     val geomWKB: ByteArray?,
-    val props: MutableMap<String, JsonElement>
+    val props: MutableMap<String, JsonElement>,
+    val associatedLayerNames: List<String>
 )
 
 @Serializable

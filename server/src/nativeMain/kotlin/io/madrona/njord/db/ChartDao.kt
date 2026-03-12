@@ -8,6 +8,7 @@ import io.madrona.njord.ext.jsonStr
 import io.madrona.njord.geojson.FeatureBuilder
 import io.madrona.njord.model.*
 import kotlinx.serialization.json.Json.Default.decodeFromString
+import kotlinx.serialization.json.JsonPrimitive
 
 class ChartDao(
     ds: DataSource = Singletons.ds,
@@ -37,6 +38,45 @@ class ChartDao(
         } else null
     }
 
+    /**
+     * For each TOPMAR feature in [features], looks up the distinct layer names of all features
+     * that reference its LNAM via lnam_refs. Uses a single &&-based GIN scan for the whole batch.
+     * Returns a map of LNAM → associated layer names; empty if no TOPMAR features are present.
+     */
+    private fun topmarAssocByLnam(conn: Connection, features: List<ChartFeature>): Map<String, List<String>> {
+        val lnams = features
+            .filter { it.layer == "TOPMAR" }
+            .mapNotNull { (it.props["LNAM"] as? JsonPrimitive)?.content }
+            .distinct()
+        if (lnams.isEmpty()) return emptyMap()
+        return conn.prepareStatement(
+            """
+WITH input_lnams AS (SELECT unnest($1::varchar[]) AS lnam)
+SELECT il.lnam, array_agg(DISTINCT f.layer)
+FROM input_lnams il
+JOIN features f ON f.lnam_refs @> ARRAY[il.lnam]
+GROUP BY il.lnam;
+            """.trimIndent()
+        ).apply {
+            setArray(1, lnams.map { it as Any }.toTypedArray())
+        }.executeQuery().use { rs ->
+            val result = mutableMapOf<String, List<String>>()
+            while (rs.next()) result[rs.getString(1)] = rs.getArray(2).filterNotNull()
+            result
+        }
+    }
+
+    private fun ChartFeature.withAssoc(assocByLnam: Map<String, List<String>>): ChartFeature {
+        if (layer != "TOPMAR") return this
+        val lnam = (props["LNAM"] as? JsonPrimitive)?.content ?: return this
+        return ChartFeature(
+            geomWKB = geomWKB,
+            props = props,
+            layer = layer,
+            associatedLayerNames = assocByLnam[lnam] ?: emptyList(),
+        )
+    }
+
     private fun findLayers(id: Long, conn: Connection): List<String> {
         return conn.prepareStatement(
             "SELECT DISTINCT layer FROM features where chart_id=$1;"
@@ -60,19 +100,19 @@ class ChartDao(
         zoom: Int,
     ): List<ChartFeature>? =
         sqlOpAsync { conn ->
-            val result = conn.prepareStatement(
+            val features = conn.prepareStatement(
                 """
 WITH include AS (VALUES (st_geomfromwkb($1, 4326)))
 SELECT st_asbinary(
     CASE WHEN ST_NRings((table include)) = 1
-         THEN ST_ClipByBox2D(geom, (table include)::box2d)
-         ELSE ST_Intersection(geom, (table include))
+         THEN ST_ClipByBox2D(f.geom, (table include)::box2d)
+         ELSE ST_Intersection(f.geom, (table include))
     END
-), props, layer
-FROM features
-WHERE chart_id = $2
-  AND $3 >= z_min AND $4 <= z_max
-  AND st_intersects(geom, (table include));
+), f.props, f.layer
+FROM features f
+WHERE f.chart_id = $2
+  AND $3 >= f.z_min AND $4 <= f.z_max
+  AND st_intersects(f.geom, (table include));
           """.trimIndent()
             ).apply {
                 setBytes(1, inclusionMask)
@@ -81,16 +121,16 @@ WHERE chart_id = $2
                 setInt( 4, zoom)
             }.executeQuery().use { rs ->
                 generateSequence {
-                    if (rs.next()) {
-                        ChartFeature(
-                            geomWKB = rs.getBytes(1),
-                            props = decodeFromString(rs.getString(2)),
-                            layer = rs.getString(3)
-                        )
-                    } else null
+                    if (rs.next()) ChartFeature(
+                        geomWKB = rs.getBytes(1),
+                        props = decodeFromString(rs.getString(2)),
+                        layer = rs.getString(3),
+                        associatedLayerNames = emptyList(),
+                    ) else null
                 }.toList()
             }
-            result
+            val assocByLnam = topmarAssocByLnam(conn, features)
+            if (assocByLnam.isEmpty()) features else features.map { it.withAssoc(assocByLnam) }
         }
 
     suspend fun findAllChartFeaturesAsync4326(
@@ -100,17 +140,17 @@ WHERE chart_id = $2
     ): Map<Long, List<ChartFeature>>? {
         if (chartIds.isEmpty()) return emptyMap()
         return sqlOpAsync { conn ->
-            conn.prepareStatement(
+            val features = conn.prepareStatement(
                 """
 WITH tile AS (VALUES (st_geomfromwkb($1, 4326)))
 SELECT st_asbinary(
-    ST_ClipByBox2D(geom, (table tile)::box2d)
-), props, layer, chart_id
-FROM features
-WHERE chart_id = ANY($2)
-  AND $3 >= z_min AND $4 <= z_max
-  AND st_intersects(geom, (table tile))
-ORDER BY chart_id;
+    ST_ClipByBox2D(f.geom, (table tile)::box2d)
+), f.props, f.layer, f.chart_id
+FROM features f
+WHERE f.chart_id = ANY($2)
+  AND $3 >= f.z_min AND $4 <= f.z_max
+  AND st_intersects(f.geom, (table tile))
+ORDER BY f.chart_id;
                 """.trimIndent()
             ).apply {
                 setBytes(1, tileWkb)
@@ -126,10 +166,16 @@ ORDER BY chart_id;
                             geomWKB = rs.getBytes(1),
                             props = decodeFromString(rs.getString(2)),
                             layer = rs.getString(3),
+                            associatedLayerNames = emptyList(),
                         )
                     )
                 }
                 result
+            }
+            val allFeatures = features.values.flatten()
+            val assocByLnam = topmarAssocByLnam(conn, allFeatures)
+            if (assocByLnam.isEmpty()) features else features.mapValues { (_, list) ->
+                list.map { it.withAssoc(assocByLnam) }
             }
         }
     }

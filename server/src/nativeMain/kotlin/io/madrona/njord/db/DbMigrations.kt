@@ -1,16 +1,64 @@
 package io.madrona.njord.db
 
+import io.madrona.njord.Singletons
+import io.madrona.njord.util.DistributedLock
 import kotlinx.coroutines.*
 
 object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
-    fun run() {
+    private const val DB_VERSION = 1
+    private const val VERSION_KEY = "version"
+
+    fun run(distributedLock: DistributedLock = Singletons.distributedLock) {
         runBlocking {
-            initializeSchema()
+            while (true) {
+                val version = dbVersion()
+                if (version == DB_VERSION) {
+                    log.info("DB schema version ready $version")
+                    break
+                } else {
+                    if (distributedLock.tryAcquireLock()) {
+                        try {
+                            if (version == 0) {
+                                initializeSchema()
+                            }
+                        } finally {
+                            distributedLock.tryClearLock()
+                        }
+                        break
+                    }
+                    log.info("waiting for schema initialization by another instance")
+                    delay(500)
+                }
+            }
         }
+    }
+
+    private suspend fun dbVersion(): Int {
+        return sqlOpAsync { conn ->
+            val tableExists = conn.prepareStatement("SELECT to_regclass('public.meta_data') IS NOT NULL")
+                .executeQuery()
+                .use { rs -> rs.next() && rs.getBoolean(1) }
+            if (!tableExists) return@sqlOpAsync 0
+            conn.prepareStatement("SELECT value FROM meta_data WHERE key = $1")
+                .apply { setString(1, VERSION_KEY) }
+                .executeQuery()
+                .use { rs -> if (rs.next()) rs.getString(1).toIntOrNull() else null }
+                ?: 0
+        } ?: 0
     }
 
     private suspend fun initializeSchema() {
         sqlOpAsync { conn ->
+            conn.statement(
+                """
+CREATE TABLE IF NOT EXISTS meta_data
+(
+    key   VARCHAR PRIMARY KEY,
+    value VARCHAR NOT NULL
+);
+                """.trimIndent()
+            ).execute()
+
             conn.statement(
                 """
 CREATE TABLE IF NOT EXISTS charts
@@ -34,12 +82,11 @@ CREATE TABLE IF NOT EXISTS charts
 -- indices
 CREATE INDEX IF NOT EXISTS charts_gist ON charts USING GIST (covr);
 CREATE INDEX IF NOT EXISTS charts_idx ON charts (id);
-            """.trimIndent()
+                """.trimIndent()
             ).execute()
 
             conn.statement(
                 """
-                
 CREATE TABLE IF NOT EXISTS features
 (
     id        BIGSERIAL PRIMARY KEY,
@@ -56,7 +103,7 @@ CREATE INDEX IF NOT EXISTS features_idx ON features (id);
 CREATE INDEX IF NOT EXISTS features_chart_zoom_idx ON features (chart_id, z_min, z_max);
 CREATE INDEX IF NOT EXISTS features_layer_idx ON features (layer);
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
-            """.trimIndent()
+                """.trimIndent()
             ).execute()
 
             conn.statement(
@@ -72,8 +119,16 @@ CREATE TABLE IF NOT EXISTS base_features
 );
 CREATE INDEX IF NOT EXISTS base_features_gist ON base_features USING GIST (geom);
 CREATE INDEX IF NOT EXISTS base_features_scale_idx ON base_features (scale);
-            """.trimIndent()
+                """.trimIndent()
+            ).execute()
+
+            conn.statement(
+                """
+INSERT INTO meta_data (key, value) VALUES ('$VERSION_KEY', '$DB_VERSION')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+                """.trimIndent()
             ).execute()
         }
+        log.info("DB schema initialized to version $DB_VERSION")
     }
 }

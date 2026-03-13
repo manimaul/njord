@@ -205,11 +205,12 @@ spec:
       secretName: njord-cert
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: ReplicaSet
 metadata:
-  name: njord-ingest-ds
+  name: njord-ingest-rs
   namespace: njord
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: njord-ingest

@@ -48,6 +48,6 @@ class EncUrlHandler(
             }
         }
 
-        call.respond(HttpStatusCode.Accepted, EncUpload(zipFiles = listOf(fileName)))
+        call.respond(HttpStatusCode.Accepted, EncUpload(zipFile = fileName))
     }
 }

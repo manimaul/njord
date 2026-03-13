@@ -27,7 +27,6 @@ class ChartIngest(
     val distributedLock: DistributedLock = Singletons.distributedLock,
     private val config: ChartsConfig = Singletons.config,
     private val chartDao: ChartDao = ChartDao(),
-    private val geoJsonDao: GeoJsonDao = GeoJsonDao(),
     private val featureDao: FeatureDao = FeatureDao(),
     private val tileDao: TileDao = Singletons.tileDao,
     val chartDir: File,
@@ -111,13 +110,8 @@ class ChartIngest(
     ): List<File> {
         ingestStatus.writeMsg(WsMsg.Extracting(0f))
         val retVal = mutableListOf<File>()
-        val files = encUpload.zipFiles.mapNotNull { name ->
-            File(chartDir, name).takeIf { it.exists() } ?: run {
-                log.error("chart dir file does not exist $chartDir/$name")
-                null
-            }
-        }
-        files.forEach { zipFile ->
+
+        File(chartDir, encUpload.zipFile).takeIf { it.exists() } ?.let { zipFile ->
             ZipFile(zipFile).let { zip ->
                 if (!distributedLock.lockAcquired) {
                     return emptyList()
@@ -139,6 +133,8 @@ class ChartIngest(
                     }
                 }
             }
+        } ?: run {
+            log.error("chart dir file does not exist $chartDir/${encUpload.zipFile}")
         }
         ingestStatus.writeMsg(WsMsg.Extracting(1f))
         return retVal

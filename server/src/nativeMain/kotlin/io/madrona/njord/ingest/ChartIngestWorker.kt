@@ -39,27 +39,24 @@ class ChartIngestWorker(
         claimDir.mkdirs()
 
         // Atomic per-file claim: rename zip from save/ → ingest/{uuid}/
-        val claimed = zips.mapNotNull { zip ->
+        val claimed = zips.firstNotNullOfOrNull { zip ->
             val dest = File(claimDir, zip.name)
             if (zip.renameTo(dest.getAbsolutePath().toString()) != null) dest else null
         }
 
-        if (claimed.isEmpty()) {
+        if (claimed == null || claimed.isEmpty()) {
             println("claimed files empty - clearing lock and cleaning up")
             claimDir.deleteRecursively()
             distributedLock.tryClearLock()
-            return
+        } else {
+            val encUpload = EncUpload(zipFile = claimed.name)
+            val hasShapefiles = ZipFile(claimed).entries().any { it.name().endsWith(".shp", ignoreCase = true) }
+            if (hasShapefiles) {
+                NaturalEarthIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
+            } else {
+                ChartIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
+            }
         }
 
-        log.info("claimed ${claimed.size} zip(s) for ingestion as ${distributedLock.uuid}")
-        val encUpload = EncUpload(zipFiles = claimed.map { it.name })
-        val hasShapefiles = claimed.any { zip ->
-            ZipFile(zip).entries().any { it.name().endsWith(".shp", ignoreCase = true) }
-        }
-        if (hasShapefiles) {
-            NaturalEarthIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
-        } else {
-            ChartIngest(ingestStatus = ingestStatus, chartDir = claimDir).ingest(encUpload)
-        }
     }
 }

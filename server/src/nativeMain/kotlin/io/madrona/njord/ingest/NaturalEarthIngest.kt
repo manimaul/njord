@@ -78,13 +78,7 @@ class NaturalEarthIngest(
     private fun step1UnzipFiles(encUpload: EncUpload): List<File> {
         ingestStatus.writeMsg(WsMsg.Extracting(0f))
         val retVal = mutableListOf<File>()
-        val files = encUpload.zipFiles.mapNotNull { name ->
-            File(chartDir, name).takeIf { it.exists() } ?: run {
-                log.error("chart dir file does not exist $chartDir/$name")
-                null
-            }
-        }
-        files.forEach { zipFile ->
+        File(chartDir, encUpload.zipFile).takeIf { it.exists() }?.let { zipFile ->
             ZipFile(zipFile).let { zip ->
                 if (!distributedLock.lockAcquired) {
                     return emptyList()
@@ -104,6 +98,9 @@ class NaturalEarthIngest(
                     }
                 }
             }
+        } ?: run {
+            log.error("chart dir file does not exist $chartDir/${encUpload.zipFile}")
+            null
         }
         ingestStatus.writeMsg(WsMsg.Extracting(1f))
         return retVal

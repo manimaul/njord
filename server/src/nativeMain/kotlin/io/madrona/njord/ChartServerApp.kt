@@ -136,9 +136,9 @@ fun Application.njord() {
             // curl -v --form file="@${HOME}/Charts/ENC_ROOT.zip" 'http://localhost:8080/v1/enc_save'
             EncSaveHandler(),
 
-            // curl -v -X POST -H "Content-Type: application/json" \
-            //   --data '{"url":"https://example.com/ENC_ROOT.zip"}' \
-            //   "http://localhost:9000/v1/enc_url?signature=$sig"
+             //curl -v -X POST -H "Content-Type: application/json" \
+             //--data '{"url":"https://charts.noaa.gov/ENCs/TenDays_ENCs.zip"}' \
+             //"http://localhost:9000/v1/enc_url?signature=$sig"
             EncUrlHandler(),
 
             ChartWebSocketHandler(),

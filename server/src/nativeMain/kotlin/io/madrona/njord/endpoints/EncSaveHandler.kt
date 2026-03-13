@@ -49,7 +49,7 @@ class EncSaveHandler(
             distributedLock.tryClearLock()
             ingestStatus.writeMsgIgnoreLock(WsMsg.Extracting(0f))
             tmp.renameTo(dest.getAbsolutePath().toString())
-            call.respond(EncUpload(zipFiles = listOf(fileName)))
+            call.respond(EncUpload(zipFile = fileName))
         } ?: call.respond(HttpStatusCode.BadRequest)
     }
 }

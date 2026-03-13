@@ -188,12 +188,13 @@ class File(val path: Path) {
     }
 
     fun isEmpty() : Boolean {
-        if (isDirectory()) {
-            return listFiles(false).isEmpty()
+        return if (isDirectory()) {
+            listFiles(false).isEmpty()
         } else if (exists()) {
-            (SystemFileSystem.metadataOrNull(path)?.size ?: 0L) > 0
+            (SystemFileSystem.metadataOrNull(path)?.size ?: 0L) == 0L
+        } else {
+            true
         }
-        return true
     }
 
     fun mkdirs(): Boolean {

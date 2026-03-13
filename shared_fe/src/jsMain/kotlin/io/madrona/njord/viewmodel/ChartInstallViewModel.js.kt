@@ -8,7 +8,6 @@ import io.madrona.njord.viewmodel.utils.Async
 import io.madrona.njord.viewmodel.utils.Complete
 import io.madrona.njord.viewmodel.utils.Loading
 import io.madrona.njord.viewmodel.utils.Uninitialized
-import io.madrona.njord.viewmodel.utils.toAsync
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json

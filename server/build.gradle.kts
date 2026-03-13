@@ -38,6 +38,14 @@ kotlin {
                     })
                 }
             }
+            executable("ingest") {
+                entryPoint = "io.madrona.njord.ingest.ingestMain"
+                runTaskProvider?.configure {
+                    argumentProviders.add(CommandLineArgumentProvider {
+                        listOf(project.file("./src/nativeMain/resources").absolutePath)
+                    })
+                }
+            }
         }
     }
 

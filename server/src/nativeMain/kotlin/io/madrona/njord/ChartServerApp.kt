@@ -85,8 +85,10 @@ fun Application.njord() {
     }
     install(CallLogging)
     Singletons.genLog = log
-    launch {
-        ChartIngestWorker().run()
+    if (Singletons.config.enableIngestion) {
+        launch {
+            ChartIngestWorker().run()
+        }
     }
     install(CORS) {
         anyHost()

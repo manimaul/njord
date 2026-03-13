@@ -23,6 +23,7 @@ data class ChartsConfig(
     val debugTile: Boolean,
     val chartIngestWorkers: Int,
     val useTileCache: Boolean = true,
+    val enableIngestion: Boolean = true,
 ) {
     val externalBaseUrl = "${externalScheme}://${externalHostName}:${externalPort}"
 }

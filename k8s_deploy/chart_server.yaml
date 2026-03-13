@@ -150,7 +150,8 @@ data:
       
       "debugTile": false,
       "chartIngestWorkers": 5,
-      "useTileCache": true
+      "useTileCache": true,
+      "enableIngestion": false
     }
 
 ---
@@ -202,3 +203,74 @@ spec:
         - openenc.com
         - www.openenc.com
       secretName: njord-cert
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: njord-ingest-ds
+  namespace: njord
+spec:
+  selector:
+    matchLabels:
+      app: njord-ingest
+  template:
+    metadata:
+      labels:
+        app: njord-ingest
+    spec:
+      imagePullSecrets:
+        - name: ghreg
+      containers:
+        - image: ghcr.io/manimaul/njord-chart-server:latest
+          imagePullPolicy: Always
+          name: njord-ingest
+          command: ["/opt/njord/ingest.kexe", "/opt/njord/resources"]
+          resources:
+            limits:
+              cpu: "1.0"
+              memory: "3G"
+            requests:
+              cpu: 500m
+              memory: "1G"
+          volumeMounts:
+            - name: njord-config-vol
+              mountPath: /opt/njord/resources/config/application.json
+              subPath: application.json
+              readOnly: true
+            - name: njord-shared-data
+              mountPath: /mnt/njord
+          env:
+            - name: CHART_SERVER_OPTS
+              valueFrom:
+                secretKeyRef:
+                  name: admin-secret-json
+                  key: chart_server_opts
+        - name: pgbouncer
+          image: ghcr.io/cloudnative-pg/pgbouncer:latest
+          ports:
+            - containerPort: 5432
+          resources:
+            limits:
+              cpu: 250m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 32Mi
+          volumeMounts:
+            - name: pgbouncer-config
+              mountPath: /etc/pgbouncer
+              readOnly: true
+      volumes:
+        - name: njord-config-vol
+          configMap:
+            name: njord-config
+        - name: njord-shared-data
+          persistentVolumeClaim:
+            claimName: njord-shared-data
+        - name: pgbouncer-config
+          projected:
+            sources:
+              - secret:
+                  name: njord-pgbouncer-ini
+              - secret:
+                  name: njord-pgbouncer-userlist-txt

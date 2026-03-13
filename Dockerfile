@@ -20,7 +20,7 @@ COPY . .
 # RUN ./gradlew :web:jsBrowserDistribution --no-daemon
 RUN --mount=type=cache,target=/root/.konan \
     --mount=type=cache,target=/root/.gradle \
-    ./gradlew :server:linkReleaseExecutableArch --no-daemon
+    ./gradlew :server:linkReleaseExecutableArch :server:linkIngestReleaseExecutableArch --no-daemon
 
 FROM debian:12.9-slim
 
@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /build/server/build/bin/arch/releaseExecutable/server.kexe /opt/njord/server.kexe
+COPY --from=builder /build/server/build/bin/arch/ingestReleaseExecutable/ingest.kexe /opt/njord/ingest.kexe
 COPY --from=builder /build/server/src/nativeMain/resources /opt/njord/resources
 COPY docker/application.json /opt/njord/resources/config/application.json
 COPY web/build/dist/js/productionExecutable /opt/njord/resources/www

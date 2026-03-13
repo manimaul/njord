@@ -25,6 +25,7 @@ RUN --mount=type=cache,target=/root/.konan \
 FROM debian:12.9-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     libgdal32 \
     libpq5 \
     libzip4 \

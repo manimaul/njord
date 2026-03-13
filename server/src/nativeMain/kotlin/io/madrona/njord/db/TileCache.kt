@@ -66,4 +66,17 @@ class TileCache(private val basePath: File) {
             log.warn("tile cache clear error: ${e.message}")
         }
     }
+
+    fun counts(): Map<Int, Int> {
+        return try {
+            basePath.listDirs().mapNotNull { zDir ->
+                zDir.name.toIntOrNull()?.let { z ->
+                    z to zDir.listFiles(recursive = true).count { it.name.endsWith(".mvt") }
+                }
+            }.toMap()
+        } catch (e: Throwable) {
+            log.warn("tile cache count error: ${e.message}")
+            emptyMap()
+        }
+    }
 }

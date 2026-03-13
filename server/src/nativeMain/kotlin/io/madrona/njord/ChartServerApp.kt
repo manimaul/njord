@@ -152,6 +152,10 @@ fun Application.njord() {
             // curl -v "https://openenc.com/v1/tile/0/0/0"
             TileHandler(),
 
+            // curl https://openenc.com/v1/cache | jq
+            // curl -X DELETE https://openenc.com/v1/cache
+            CacheHandler(),
+
             // https://openenc.com/v1/icon/<name>.png
             IconHandler(),
 

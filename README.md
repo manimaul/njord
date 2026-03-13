@@ -6,6 +6,8 @@
 
 [Design documentation](docs/DESIGN.md)
 
+[RELEASE_NOTES](./RELEASE_NOTES.md)
+
 ## Project Overview
 
 Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them 

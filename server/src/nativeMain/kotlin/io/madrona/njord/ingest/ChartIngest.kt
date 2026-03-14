@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalAtomicApi::class)
+@file:OptIn(ExperimentalAtomicApi::class, NativeRuntimeApi::class)
 
 package io.madrona.njord.ingest
 
@@ -21,6 +21,8 @@ import kotlinx.datetime.Clock
 import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlin.native.runtime.GC
+import kotlin.native.runtime.NativeRuntimeApi
 
 class ChartIngest(
     private val ingestStatus: IngestStatus = Singletons.ingestStatus,
@@ -202,6 +204,7 @@ class ChartIngest(
             }
             report.completedChart()
             ingestStatus.writeMsg(report.progressMessage())
+            GC.collect()
         }
     }
 

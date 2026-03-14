@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: njord-enc-download
+  namespace: njord
+spec:
+  schedule: "0 0 * * *"
+  timeZone: "America/Los_Angeles"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: enc-download
+              image: curlimages/curl:latest
+              command:
+                - curl
+                - --fail
+                - --silent
+                - --show-error
+                - --location
+                - --output
+                - /mnt/njord/charts/save/OneDay_ENCs.zip
+                - https://charts.noaa.gov/ENCs/OneDay_ENCs.zip
+              volumeMounts:
+                - name: njord-shared-data
+                  mountPath: /mnt/njord
+          volumes:
+            - name: njord-shared-data
+              persistentVolumeClaim:
+                claimName: njord-shared-data

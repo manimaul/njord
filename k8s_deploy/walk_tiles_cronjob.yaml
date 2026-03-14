@@ -1,0 +1,118 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: walk-tiles-script
+  namespace: njord
+data:
+  walk_tiles.py: |
+    #!/usr/bin/env python3
+    import argparse
+    import asyncio
+    import sys
+    import urllib.request
+    from urllib.error import URLError
+
+
+    def fetch_tile(server, z, x, y):
+        url = f"{server}/v1/tile/{z}/{x}/{y}"
+        try:
+            with urllib.request.urlopen(url, timeout=60) as resp:
+                return z, x, y, resp.status
+        except URLError as e:
+            code = e.code if hasattr(e, "code") else 0
+            return z, x, y, code
+
+
+    async def fetch_tile_async(semaphore, server, z, x, y):
+        async with semaphore:
+            loop = asyncio.get_running_loop()
+            return await loop.run_in_executor(None, fetch_tile, server, z, x, y)
+
+
+    async def warm_zoom(server, z, concurrency):
+        dim = 1 << z
+        semaphore = asyncio.Semaphore(concurrency)
+        tasks = [
+            fetch_tile_async(semaphore, server, z, x, y)
+            for x in range(dim)
+            for y in range(dim)
+        ]
+        ok = errors = done = 0
+        total = len(tasks)
+        for coro in asyncio.as_completed(tasks):
+            tz, tx, ty, status = await coro
+            done += 1
+            if 200 <= status < 300 or status == 204:
+                ok += 1
+            else:
+                errors += 1
+                print(f"\r  [{tz}/{tx}/{ty}] HTTP {status}                    ", flush=True)
+            pct = done / total * 100
+            print(f"\r  {done:,}/{total:,} ({pct:.0f}%)  ok={ok:,}  err={errors}", end="", flush=True)
+        print()
+        return ok, errors
+
+
+    def main():
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--min-zoom", type=int, default=0)
+        parser.add_argument("--max-zoom", type=int, default=14)
+        parser.add_argument("--server", required=True)
+        parser.add_argument("--concurrency", type=int, default=10)
+        args = parser.parse_args()
+
+        grand_total = grand_ok = grand_err = 0
+        for z in range(args.min_zoom, args.max_zoom + 1):
+            dim = 1 << z
+            count = dim * dim
+            print(f"zoom {z}: requesting {count:,} tiles ...", flush=True)
+            ok, err = asyncio.run(warm_zoom(args.server, z, args.concurrency))
+            grand_ok += ok
+            grand_err += err
+            grand_total += count
+            print(f"zoom {z}: {count:,} tiles  ok={ok:,}  err={err}", flush=True)
+        print(f"\ntotal: {grand_total:,} tiles  ok={grand_ok:,}  err={grand_err}")
+
+
+    if __name__ == "__main__":
+        main()
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: njord-walk-tiles
+  namespace: njord
+spec:
+  schedule: "0 1 * * *"
+  timeZone: "America/Los_Angeles"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: walk-tiles
+              image: python:3.12-slim
+              command:
+                - python3
+                - /scripts/walk_tiles.py
+                - --server
+                - http://njord-chart-svc
+                - --min-zoom
+                - "0"
+                - --max-zoom
+                - "10"
+                - --concurrency
+                - "4"
+              volumeMounts:
+                - name: walk-tiles-script
+                  mountPath: /scripts
+                  readOnly: true
+          volumes:
+            - name: walk-tiles-script
+              configMap:
+                name: walk-tiles-script

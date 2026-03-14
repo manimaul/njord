@@ -16,37 +16,19 @@ kubectl -n njord logs $(kubectl get pods -n njord -l app=njord-chart-svc -o json
 
 ------------------
 
-## PostGIS
+## Noaa Daily Update Cron
 
-Publish init container image
 ```shell
-cd chart_server_db/postres_init
-docker build -t "ghcr.io/manimaul/njord-init-postgis:latest" .
-docker push "ghcr.io/manimaul/njord-init-postgis:latest"
+kubectl apply -f ./noaa_enc_daily_cron.yaml
+kubectl apply -f ./walk_tiles_cronjob.yaml
 ```
 
-Add Github container registry secrets to njord namespace
+Run Immediate one-off NOAA Daily
 ```shell
-cd k8s
-./k8s_create_reg_sec.sh k8s_login
-cd ..
-./gradlew secret
+kubectl create job daily --from=cronjob/njord-enc-download njord-enc-download-manual -n njord
 ```
 
-Deploy postgis service
+Run Immediate one-off Walk Tiles
 ```shell
-cd k8s
-kubectl apply -f postgis_volume.yaml
-kubectl apply -f postgis.yaml
-# wait
-kubectl apply -f postgis_init.yaml
-```
-
-Check postgis service
-```shell
-kubectl -n njord get pods --selector=job-name=njord-init-postgis
-
-kubectl -n njord describe pod -l app=njord-postgis-svc 
-kubectl -n njord logs $(kubectl get pods -n njord -l app=njord-postgis-svc -o jsonpath='{.items[*].metadata.name}')
-kubectl -n njord describe deployment njord-postgis
+kubectl create job walk --from=cronjob/njord-walk-tiles -n njord
 ```

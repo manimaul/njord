@@ -105,7 +105,7 @@ spec:
                 - --min-zoom
                 - "0"
                 - --max-zoom
-                - "10"
+                - "6"
                 - --concurrency
                 - "4"
               volumeMounts:

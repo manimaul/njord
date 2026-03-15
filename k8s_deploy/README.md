@@ -27,6 +27,11 @@ Run Immediate one-off NOAA Daily
 ```shell
 kubectl -n njord delete job noaadaily
 kubectl -n njord create job noaadaily --from=cronjob/njord-enc-download
+kubectl logs -n njord -l job-name=noaadaily -f
+```
+
+```shell
+kubectl create job --from=cronjob/njord-enc-download njord-enc-download-test -n njord
 ```
 
 Run Immediate one-off Walk Tiles

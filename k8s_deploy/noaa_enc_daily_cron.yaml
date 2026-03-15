@@ -18,12 +18,15 @@ spec:
           containers:
             - name: enc-download
               image: curlimages/curl:latest
+              securityContext:
+                runAsUser: 0
               command:
                 - curl
                 - --fail
                 - --silent
                 - --show-error
                 - --location
+                - --create-dirs
                 - --output
                 - /mnt/njord/charts/save/OneDay_ENCs.zip
                 - https://charts.noaa.gov/ENCs/OneDay_ENCs.zip

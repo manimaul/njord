@@ -136,9 +136,14 @@ class TileEncoder(
                         preEncodeDuration += ed
 
                         val (tileGeo, td) = measureTimedValue {
-                            feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
-                                ?.intersection(chartInclude)
-                                ?.takeIf { it.isValid && !it.isEmpty() }
+                            if (feature.layer == "LIGHTS") {
+                                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                                    ?.takeIf { it.isValid && !it.isEmpty() }
+                            } else {
+                                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                                    ?.intersection(chartInclude)
+                                    ?.takeIf { it.isValid && !it.isEmpty() }
+                            }
                         }
                         geomOpDuration += td
                         tileGeo?.let { tileGeo ->

@@ -234,20 +234,11 @@ class StandardLayers {
         Lndmrk(),
         Topmar(),
 
-        // lights
-        Litflt(),
-        Litves(),
-        Lights(),
-        Prdare(),
-
         //high pri labels
         Soundg(),
         Curent(),
 
-        //todo: below layers need completion
         Achpnt(),
-
-        // todo:
         Rcrtcl(),
         Retrfl(),
         Splare(),
@@ -259,5 +250,11 @@ class StandardLayers {
         Tssron(),
         Tunnel(),
         Newobj(),
+
+        // lights
+        Litflt(),
+        Litves(),
+        Lights(),
+        Prdare(),
     )
 }

@@ -37,22 +37,26 @@ enum class Colour {
     companion object {
         fun ChartFeature.colors(): List<Colour> {
             return props.intValues("COLOUR").mapNotNull {
-                when (it) {
-                    1 -> White
-                    2 -> Black
-                    3 -> Red
-                    4 -> Green
-                    5 -> Blue
-                    6 -> Yellow
-                    7 -> Grey
-                    8 -> Brown
-                    9 -> Amber
-                    10 -> Violet
-                    11 -> Orange
-                    12 -> Magenta
-                    13 -> Pink
-                    else -> null
-                }
+                it.color()
+            }
+        }
+
+        fun Int.color() : Colour? {
+            return when (this) {
+                1 -> White
+                2 -> Black
+                3 -> Red
+                4 -> Green
+                5 -> Blue
+                6 -> Yellow
+                7 -> Grey
+                8 -> Brown
+                9 -> Amber
+                10 -> Violet
+                11 -> Orange
+                12 -> Magenta
+                13 -> Pink
+                else -> null
             }
         }
     }

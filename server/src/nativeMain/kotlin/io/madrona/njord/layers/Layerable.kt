@@ -82,6 +82,7 @@ abstract class Layerable(
         theme: Theme,
         color: Color,
         style: LineStyle = LineStyle.Solid,
+        layout: Layout? = null,
         width: Float = 2f,
         filter: JsonElement? = null,
     ): Layer {
@@ -90,6 +91,7 @@ abstract class Layerable(
             type = LayerType.LINE,
             sourceLayer = sourceLayer,
             filter = filter ?: Filters.eqTypeLineStringOrPolygon,
+            layout = layout,
             paint = Paint(
                 lineColor = colorFrom(color, theme).json,
                 lineWidth = width,
@@ -103,13 +105,14 @@ abstract class Layerable(
         theme: Theme,
         style: LineStyle = LineStyle.Solid,
         width: Float = 2f,
-        filter: List<JsonElement>? = null,
+        filter: JsonElement? = null,
     ): Layer {
         return Layer(
             id = "${key}_line_${++nextId}",
             type = LayerType.LINE,
             sourceLayer = sourceLayer,
-            filter = filter?.json ?: Filters.eqTypeLineStringOrPolygon,
+            filter = filter ?: Filters.eqTypeLineStringOrPolygon,
+            layout = Layout(lineJoin = LineJoin.ROUND, lineCap = LineCap.ROUND),
             paint = Paint(
                 lineColor = Filters.lineColor(options = options, theme = theme),
                 lineWidth = width,

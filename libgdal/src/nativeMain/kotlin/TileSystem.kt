@@ -10,10 +10,13 @@ import libgdal.wkbLinearRing
 import libgdal.wkbPolygon
 import kotlin.math.PI
 import kotlin.math.atan
+import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.ln
+import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.sin
 
 class TileSystem(
@@ -33,6 +36,10 @@ class TileSystem(
          */
         fun clip(num: Double, minValue: Double, maxValue: Double): Double =
             min(max(num, minValue), maxValue)
+
+        private const val EARTH_CIRCUMFERENCE = 40_075_016.686     // meters at equator
+        private const val SCREEN_PIXEL_SIZE_METERS = 0.0254 / 96.0 // 96 dpi screen pixel size in meters
+        private const val SCREEN_TILE_SIZE = 256                   // screen pixels per Web Mercator tile
     }
 
 
@@ -43,6 +50,28 @@ class TileSystem(
      */
     fun mapSize(levelOfDetail: Number): Int {
         return tileSize.shl(levelOfDetail.toInt())
+    }
+
+    /**
+     * Convert a map scale denominator to a zoom level at the given latitude.
+     * @param scaleDenominator the "1:X" denominator (e.g. 50000 for 1:50,000)
+     * @param latitudeDegrees the map centroid latitude in degrees
+     * @return fractional zoom level
+     */
+    fun scaleToZoom(scaleDenominator: Double, latitudeDegrees: Double): Double {
+        val latRad = latitudeDegrees * PI / 180.0
+        return log2(EARTH_CIRCUMFERENCE * cos(latRad) / (SCREEN_TILE_SIZE * scaleDenominator * SCREEN_PIXEL_SIZE_METERS))
+    }
+
+    /**
+     * Convert a zoom level to a map scale denominator at the given latitude.
+     * @param zoom the zoom level (may be fractional)
+     * @param latitudeDegrees the map centroid latitude in degrees
+     * @return scale denominator (the X in 1:X)
+     */
+    fun zoomToScale(zoom: Double, latitudeDegrees: Double): Double {
+        val latRad = latitudeDegrees * PI / 180.0
+        return EARTH_CIRCUMFERENCE * cos(latRad) / (SCREEN_TILE_SIZE * 2.0.pow(zoom) * SCREEN_PIXEL_SIZE_METERS)
     }
 
     /**

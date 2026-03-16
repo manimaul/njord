@@ -2,9 +2,12 @@
 
 package io.madrona.njord.ingest
 
+import Connection
 import File
 import InsertError
 import InsertSuccess
+import OgrFeature
+import OgrGeometry
 import OgrS57Dataset
 import ZipFile
 import io.madrona.njord.ChartsConfig
@@ -12,6 +15,10 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
@@ -113,7 +120,7 @@ class ChartIngest(
         ingestStatus.writeMsg(WsMsg.Extracting(0f))
         val retVal = mutableListOf<File>()
 
-        File(chartDir, encUpload.zipFile).takeIf { it.exists() } ?.let { zipFile ->
+        File(chartDir, encUpload.zipFile).takeIf { it.exists() }?.let { zipFile ->
             ZipFile(zipFile).let { zip ->
                 if (!distributedLock.lockAcquired) {
                     return emptyList()
@@ -181,12 +188,16 @@ class ChartIngest(
                                 return@forEach
                             }
                             feature.geometry?.makeValid()?.wkb?.let { wkb ->
-                                val count = featureDao.insertFeatureSync(conn, layerName, chart, wkb, feature.properties)
+                                val count =
+                                    featureDao.insertFeatureSync(conn, layerName, chart, wkb, feature.properties)
                                 if (count == 0L) {
                                     log.debug("error inserting feature with layer = $layerName")
                                     log.debug("geo json = \n${feature.geometry?.geoJson()}")
                                 }
                                 report.appendChartFeatureCount(chart.name, count)
+                            }
+                            if (layerName == "LIGHTS") {
+                                insertLightSectors(conn, chart, feature)
                             }
                         }
                         ingestStatus.writeMsg(report.progressMessage())
@@ -205,6 +216,41 @@ class ChartIngest(
             report.completedChart()
             ingestStatus.writeMsg(report.progressMessage())
             GC.collect()
+        }
+    }
+
+    private fun insertLightSectors(
+        conn: Connection,
+        chart: Chart,
+        feature: OgrFeature,
+    ) {
+        val props = feature.properties
+        val valnmr = props["VALNMR"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+        val majorLight = valnmr != null && valnmr >= 10
+
+        val sector1 = props["SECTR1"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+        val sector2 = props["SECTR2"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+        val scaleMin = props["SCAMIN"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+
+        if (!majorLight && (sector1 == null || sector2 == null)) {
+            return
+        }
+
+        val lon = feature.geometry?.pointX ?: return
+        val lat = feature.geometry?.pointY ?: return
+
+        val sectorGeoms = lightSectorWkt(lon, lat, sector1, sector2, scaleMin, majorLight)
+
+        val arcProps = JsonObject(props + mapOf("SARC" to JsonPrimitive(true)))
+        OgrGeometry.fromWkt4326(sectorGeoms.arkWkt)?.wkb?.let { wkb ->
+            featureDao.insertFeatureSync(conn, "LIGHTS", chart, wkb, arcProps)
+        }
+
+        val radProps = JsonObject(props + mapOf("SRAD" to JsonPrimitive(true)))
+        sectorGeoms.radWkt.forEach {
+            OgrGeometry.fromWkt4326(it)?.wkb?.let { wkb ->
+                featureDao.insertFeatureSync(conn, "LIGHTS", chart, wkb, radProps)
+            }
         }
     }
 

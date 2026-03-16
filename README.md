@@ -38,7 +38,7 @@ CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutab
 
 # 3c. Option - build and run in container
 ./gradlew makeImg
-docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.1-SNAPSHOT
+docker run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 
 
 # 4. Frontend with hot-reload (separate terminal)
@@ -49,12 +49,18 @@ docker run --rm --network host ghcr.io/manimaul/njord-chart-server:1.1-SNAPSHOT
 
 ```bash
 # Run all tests
-./gradlew test
+./gradlew allTests
 
 # Run tests for a specific module
-./gradlew :geojson:test
-./gradlew :libgdal:nativeTest
-./gradlew :server:nativeTest
+./gradlew :geojson:allTests
+./gradlew :libgdal:allTests
+./gradlew :server:allTests
+
+# Run tests for a specific module and build target
+./gradlew :geojson:jsTest
+./gradlew :geojson:jsBrowserTest
+./gradlew :geojson:archTest
+./gradlew :geojson:jvmTest
 ```
 
 ### Containerization & Deployment

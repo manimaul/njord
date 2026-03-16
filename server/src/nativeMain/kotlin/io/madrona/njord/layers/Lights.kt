@@ -19,10 +19,10 @@ class Lights : Layerable() {
         when(feature.colors().firstOrNull()) {
             Colour.Red -> feature.pointSymbol(Sprite.LIGHTS11)
             Colour.Green -> feature.pointSymbol(Sprite.LIGHTS12)
-            Colour.Yellow -> feature.pointSymbol(Sprite.LIGHTS13)
+            Colour.Yellow,
             Colour.White,
             Colour.Amber,
-            Colour.Orange,
+            Colour.Orange -> feature.pointSymbol(Sprite.LIGHTS13)
             Colour.Magenta -> feature.pointSymbol(Sprite.LITDEF11)
             else -> feature.pointSymbol(Sprite.LITDEF11)
         }

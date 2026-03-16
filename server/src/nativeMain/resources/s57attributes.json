@@ -1233,14 +1233,14 @@
   },
   "VALMXR": {
     "Code": 177,
-    "Attribute": "Value of maximum range",
+    "Attribute": "Value of maximum range (nautical miles)",
     "Acronym": "VALMXR",
     "Attributetype": "F",
     "Class": "F"
   },
   "VALNMR": {
     "Code": 178,
-    "Attribute": "Value of nominal range",
+    "Attribute": "Value of nominal range (nautical miles)",
     "Acronym": "VALNMR",
     "Attributetype": "F",
     "Class": "F"

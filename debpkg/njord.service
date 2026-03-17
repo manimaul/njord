@@ -1,0 +1,26 @@
+[Unit]
+Description=Njord Marine ENC Chart Server
+Documentation=https://github.com/manimaul/njord
+After=network.target postgresql.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=njord
+Group=njord
+WorkingDirectory=/usr/lib/njord
+ExecStart=/usr/lib/njord/server.kexe /usr/lib/njord
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=njord
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

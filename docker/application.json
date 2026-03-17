@@ -25,5 +25,6 @@
 
     "debugTile": false,
     "chartIngestWorkers": 5,
-    "useTileCache": true
+    "useTileCache": true,
+    "enableIngestion": true
 }

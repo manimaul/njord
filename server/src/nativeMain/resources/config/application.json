@@ -17,5 +17,6 @@
     "deepDepth": 9.0,
     "debugTile": false,
     "chartIngestWorkers": 5,
+    "enableIngestion": true,
     "useTileCache": false
 }

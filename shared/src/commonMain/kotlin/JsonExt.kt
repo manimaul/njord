@@ -1,10 +1,8 @@
-//import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.model.Color
 import io.madrona.njord.model.IconRotationAlignment
 import io.madrona.njord.model.Sprite
 import io.madrona.njord.model.Theme
 import kotlinx.serialization.json.Json.Default.encodeToJsonElement
-import kotlinx.serialization.json.Json.Default.encodeToString
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull

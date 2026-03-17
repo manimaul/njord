@@ -166,6 +166,9 @@ fun Application.njord() {
             // https://openenc.com/v1/icon/<name>.png
             IconHandler(),
 
+            // https://openenc.co/v1/sector_svg/DAY/0/250/LITRD
+            SvgLightSectorHandler(),
+
             // curl -v "https://openenc.com/v1/content/fonts/Roboto Bold/0-255.pbf"
             // curl https://openenc.com/v1/content/sprites/day_sprites.json | jq
             // curl https://openenc.com/v1/content/sprites/day_sprites.png

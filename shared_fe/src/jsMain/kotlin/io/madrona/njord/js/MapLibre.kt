@@ -13,6 +13,7 @@ external class MapLibre {
         fun fitBounds(bounds: Array<Array<Double>>)
         fun addLayer(options: dynamic)
         fun addSource(id: String, source: dynamic)
+        fun addImage(id: String, image: dynamic)
         fun project(lngLat: Array<Double>): dynamic
     }
 }

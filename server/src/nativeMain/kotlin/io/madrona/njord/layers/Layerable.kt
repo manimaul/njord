@@ -28,12 +28,13 @@ abstract class Layerable(
         iconAllowOverlap: Boolean = true,
         iconRotate: IconRot? = null,
         iconRotationAlignment: IconRotationAlignment? = null,
+        filter: JsonElement? = null,
     ): Layer {
         return Layer(
             id = "${key}_point_${++nextId}",
             type = LayerType.SYMBOL,
             sourceLayer = sourceLayer,
-            filter = listOf(Filters.any, Filters.eqTypePoint).json,
+            filter = filter ?: listOf(Filters.any, Filters.eqTypePoint).json,
             layout = Layout(
                 symbolPlacement = Placement.POINT,
                 iconImage = symbol.property,

@@ -1,8 +1,8 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.buildSectorSvg
 import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
-import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.js.*
 import io.madrona.njord.model.*
 import io.madrona.njord.util.json
@@ -16,6 +16,7 @@ import org.w3c.dom.HTMLDivElement
 @OptIn(ExperimentalSerializationApi::class)
 actual class ChartController actual constructor() {
     var mapView: MapLibre.Map? = null
+    var themeMode: ThemeMode? = null
     actual var onMoveEnd: ((MapLocation) -> Unit)? = null
     actual var onClick: ((MapPoint) -> Unit)? = null
 
@@ -66,6 +67,7 @@ actual class ChartController actual constructor() {
     }
 
     actual fun setStyle(theme: Theme, depth: Depth) {
+        themeMode = theme.mode()
         val style = stylePath(theme, depth)
         mapView?.setStyle(style)
     }
@@ -97,7 +99,39 @@ actual class ChartController actual constructor() {
                 val y: Int = event.point.y as Int
                 onClick?.invoke(MapPoint(x, y))
             }
+            mv.on("styleimagemissing") { event ->
+                (event.id as? String)?.takeIf { it.startsWith("sector_") }?.let {
+                    addSectorImage(mv, it)
+                }
+            }
         }
+    }
+
+    private fun addSectorImage(map: MapLibre.Map, name: String) {
+        val parts = name.removePrefix("sector_").split("_")
+        if (parts.size < 9) return
+        val sectr1 = parts[0].toDoubleOrNull() ?: return
+        val sectr2 = parts[1].toDoubleOrNull() ?: return
+        val dayColor = parts[2]
+        val duskColor = parts[3]
+        val nightColor = parts[4]
+        val dayLineColor = parts[5]
+        val duskLineColor = parts[6]
+        val nightLineColor = parts[7]
+        val radius = parts[8].toDoubleOrNull() ?: 80.0
+
+        val (fillColor, lineColor) = when (themeMode) {
+            ThemeMode.Day -> dayColor to dayLineColor
+            ThemeMode.Dusk -> duskColor to duskLineColor
+            ThemeMode.Night -> nightColor to nightLineColor
+            null -> dayColor to dayLineColor
+        }
+
+        val svg = buildSectorSvg(sectr1, sectr2, fillColor, lineColor, radius)
+        val dataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg)
+        val img = js("new Image(200, 200)")
+        img.onload = { map.addImage(name, img) }
+        img.src = dataUrl
     }
 
     fun disposeMapView() {

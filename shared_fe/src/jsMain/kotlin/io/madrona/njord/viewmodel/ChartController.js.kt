@@ -17,6 +17,7 @@ import org.w3c.dom.HTMLDivElement
 actual class ChartController actual constructor() {
     var mapView: MapLibre.Map? = null
     var themeMode: ThemeMode? = null
+    var scaleControl: MapLibre.ScaleControl? = null
     actual var onMoveEnd: ((MapLocation) -> Unit)? = null
     actual var onClick: ((MapPoint) -> Unit)? = null
 
@@ -69,13 +70,29 @@ actual class ChartController actual constructor() {
     actual fun setStyle(theme: Theme, depth: Depth) {
         themeMode = theme.mode()
         val style = stylePath(theme, depth)
-        mapView?.setStyle(style)
+        mapView?.let { mv ->
+            mv.setStyle(style)
+            addScaleControl(mv, depth)
+        }
+    }
+
+    private fun addScaleControl(map: MapLibre.Map, depth: Depth) {
+        scaleControl?.let { map.removeControl(it) }
+        val scaleOpts = js("{}")
+        scaleOpts["unit"] = when (depth) {
+            Depth.METERS -> "metric"
+            else -> "nautical"
+        }
+        MapLibre.ScaleControl(scaleOpts).also {
+            scaleControl = it
+            map.addControl(it, "bottom-left")
+        }
     }
 
     fun createMapView(container: HTMLDivElement) {
         mapView = MapLibre.Map(mapLibreArgs(container)).also { mv ->
             mv.addControl(MapLibre.NavigationControl(), "top-right")
-            mv.addControl(MapLibre.ScaleControl(), "bottom-left")
+            addScaleControl(mv, chartViewModel.flow.value.depth)
             chartViewModel.flow.value.highlight?.let { geo ->
                 mv.on("load") { event ->
                     highlight(geo)

@@ -15,5 +15,9 @@ external class MapLibre {
         fun addSource(id: String, source: dynamic)
         fun addImage(id: String, image: dynamic)
         fun project(lngLat: Array<Double>): dynamic
+        fun addControl(control: dynamic, position: String = definedExternally)
     }
+
+    class NavigationControl(options: dynamic = definedExternally)
+    class ScaleControl(options: dynamic = definedExternally)
 }

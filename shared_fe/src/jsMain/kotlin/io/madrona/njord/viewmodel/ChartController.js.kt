@@ -74,6 +74,8 @@ actual class ChartController actual constructor() {
 
     fun createMapView(container: HTMLDivElement) {
         mapView = MapLibre.Map(mapLibreArgs(container)).also { mv ->
+            mv.addControl(MapLibre.NavigationControl(), "top-right")
+            mv.addControl(MapLibre.ScaleControl(), "bottom-left")
             chartViewModel.flow.value.highlight?.let { geo ->
                 mv.on("load") { event ->
                     highlight(geo)

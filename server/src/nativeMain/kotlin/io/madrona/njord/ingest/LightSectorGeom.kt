@@ -1,6 +1,7 @@
 package io.madrona.njord.ingest
 
 import io.madrona.njord.Singletons
+import io.madrona.njord.geo.symbols.Colour
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -18,6 +19,7 @@ fun lightSectorWkt(
     sector2: Double?,
     scale: Double?,
     majorLight: Boolean,
+    color: Colour?,
 ): LightSectorGeom {
     var radiusDeg = 1.0 / 60.0
     scale?.let {
@@ -29,6 +31,13 @@ fun lightSectorWkt(
             val factor = zoom - 10
             radiusDeg /= factor
         }
+    }
+
+    //offset radius for separate colors
+    when (color) {
+        Colour.Red -> radiusDeg *= 0.95
+        Colour.Green -> radiusDeg *= 1.05
+        else -> Unit
     }
 
     val latRad = lat.toRadians()

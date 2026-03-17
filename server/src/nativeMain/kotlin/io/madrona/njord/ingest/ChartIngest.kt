@@ -13,6 +13,7 @@ import ZipFile
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.*
+import io.madrona.njord.geo.symbols.Colour.Companion.color
 import io.madrona.njord.model.*
 import io.madrona.njord.model.ws.WsMsg
 import kotlinx.serialization.json.JsonObject
@@ -25,6 +26,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.Clock
+import kotlinx.serialization.json.jsonArray
 import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
@@ -231,6 +233,7 @@ class ChartIngest(
         val sector1 = props["SECTR1"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
         val sector2 = props["SECTR2"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
         val scaleMin = props["SCAMIN"]?.jsonPrimitive?.contentOrNull?.toDoubleOrNull()
+        val color = props["COLOUR"]?.jsonArray?.firstNotNullOf { it.jsonPrimitive.contentOrNull?.toIntOrNull() }?.color()
 
         if (!majorLight && (sector1 == null || sector2 == null)) {
             return
@@ -239,7 +242,7 @@ class ChartIngest(
         val lon = feature.geometry?.pointX ?: return
         val lat = feature.geometry?.pointY ?: return
 
-        val sectorGeoms = lightSectorWkt(lon, lat, sector1, sector2, scaleMin, majorLight)
+        val sectorGeoms = lightSectorWkt(lon, lat, sector1, sector2, scaleMin, majorLight, color)
 
         val arcProps = JsonObject(props + mapOf("SARC" to JsonPrimitive(true)))
         OgrGeometry.fromWkt4326(sectorGeoms.arkWkt)?.wkb?.let { wkb ->

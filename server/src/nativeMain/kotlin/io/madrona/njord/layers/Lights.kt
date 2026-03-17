@@ -88,6 +88,7 @@ class Lights : Layerable() {
                 iconAnchor = Anchor.CENTER,
                 iconAllowOverlap = true,
                 iconSize = 1.0f,
+                iconRotationAlignment = IconRotationAlignment.MAP,
             )
         ),
     )

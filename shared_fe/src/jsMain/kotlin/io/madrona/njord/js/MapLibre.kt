@@ -14,6 +14,8 @@ external class MapLibre {
         fun addLayer(options: dynamic)
         fun addSource(id: String, source: dynamic)
         fun addImage(id: String, image: dynamic)
+        fun removeImage(id: String)
+        fun listImages(): Array<String>
         fun project(lngLat: Array<Double>): dynamic
         fun addControl(control: dynamic, position: String = definedExternally)
         fun removeControl(control: dynamic)

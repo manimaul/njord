@@ -71,6 +71,7 @@ actual class ChartController actual constructor() {
         themeMode = theme.mode()
         val style = stylePath(theme, depth)
         mapView?.let { mv ->
+            mv.listImages().filter { it.startsWith("sector_") }.forEach { mv.removeImage(it) }
             mv.setStyle(style)
             addScaleControl(mv, depth)
         }

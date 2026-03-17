@@ -95,7 +95,8 @@ task<Exec>("k8sApply") {
  */
 task<Exec>("cyclePods") {
     mustRunAfter(":k8sApply", ":pubImg", ":holdOn")
-    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc")
+    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc && " +
+            "kubectl -n njord delete pods -l app=njord-ingest")
 }
 
 /**

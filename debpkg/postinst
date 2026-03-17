@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+# Ensure /tmp/njord exists with correct ownership
+mkdir -p /tmp/njord
+chown -R njord:njord /tmp/njord
+
+ln -sf /etc/njord/application.json /usr/lib/njord/config/application.json
+
+systemctl daemon-reload
+
+echo "You'll need to edit /etc/njord/application.json "
+echo "After you edit application.json there is a database setup script you can run to initialize the db."
+echo "sudo /usr/share/njord/db_setup.sh"

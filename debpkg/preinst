@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+if ! id -u njord > /dev/null 2>&1; then
+    adduser --system --group --no-create-home --home /usr/lib/njord njord
+fi

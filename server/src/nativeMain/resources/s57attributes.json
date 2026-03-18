@@ -1,4 +1,11 @@
 {
+  "###": {
+    "Code": 0,
+    "Attribute": "###40000 comes from past s57attributes_iw.csv (Inland Waterways)",
+    "Acronym": "###",
+    "Attributetype": "S",
+    "Class": "F"
+  },
   "AGENCY": {
     "Code": 1,
     "Attribute": "Agency responsible for production",
@@ -1398,13 +1405,6 @@
     "Acronym": "QUAPOS",
     "Attributetype": "E",
     "Class": "S"
-  },
-  "###": {
-    "Code": 0,
-    "Attribute": "###40000 comes from past s57attributes_iw.csv (Inland Waterways)",
-    "Acronym": "###",
-    "Attributetype": "S",
-    "Class": "F"
   },
   "catach": {
     "Code": 17000,

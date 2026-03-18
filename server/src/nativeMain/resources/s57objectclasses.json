@@ -6158,7 +6158,9 @@
       "SORIND"
     ],
     "Class": "$",
-    "Primitives": []
+    "Primitives": [
+      "Area"
+    ]
   },
   "$LINES": {
     "Code": 501,
@@ -6183,7 +6185,9 @@
       "SORIND"
     ],
     "Class": "$",
-    "Primitives": []
+    "Primitives": [
+      "Line"
+    ]
   },
   "$CSYMB": {
     "Code": 502,
@@ -6210,7 +6214,9 @@
       "SORIND"
     ],
     "Class": "$",
-    "Primitives": []
+    "Primitives": [
+      "Point"
+    ]
   },
   "$COMPS": {
     "Code": 503,
@@ -6238,7 +6244,9 @@
       "SORIND"
     ],
     "Class": "$",
-    "Primitives": []
+    "Primitives": [
+      "Point"
+    ]
   },
   "$TEXTS": {
     "Code": 504,
@@ -6269,7 +6277,9 @@
       "SORIND"
     ],
     "Class": "$",
-    "Primitives": []
+    "Primitives": [
+      "Point"
+    ]
   },
   "": {
     "Code": 0,
@@ -10100,6 +10110,984 @@
     "Class": "M",
     "Primitives": [
       "N/A"
+    ]
+  },
+  "excnst": {
+    "Code": 17070,
+    "ObjectClass": "Exceptional navigation structure",
+    "Acronym": "excnst",
+    "Attribute_A": [
+      "catexs",
+      "DRVAL1",
+      "verdat",
+      "wtwdis",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "hunits",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "chkpnt": {
+    "Code": 17027,
+    "ObjectClass": "Checkpoint",
+    "Acronym": "chkpnt",
+    "Attribute_A": [
+      "catchp",
+      "NATION",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ACHPNT": {
+    "Code": 1003,
+    "ObjectClass": "Anchor",
+    "Acronym": "ACHPNT",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "m_sdat": {
+    "Code": 17022,
+    "ObjectClass": "Sounding datum",
+    "Acronym": "m_sdat",
+    "Attribute_A": [
+      "verdat"
+    ],
+    "Attribute_B": [],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "ponton": {
+    "Code": 17021,
+    "ObjectClass": "Pontoon",
+    "Acronym": "ponton",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "_texto": {
+    "Code": 135,
+    "ObjectClass": "Text",
+    "Acronym": "_texto",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "$",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "flodoc": {
+    "Code": 17025,
+    "ObjectClass": "Floating dock",
+    "Acronym": "flodoc",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "DRVAL1",
+      "HORCLR",
+      "HORLEN",
+      "horcll",
+      "horclw",
+      "HORWID",
+      "verdat",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "CHNWIR": {
+    "Code": 1027,
+    "ObjectClass": "Chain/Wire",
+    "Acronym": "CHNWIR",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "m_vdat": {
+    "Code": 17023,
+    "ObjectClass": "Vertical datum",
+    "Acronym": "m_vdat",
+    "Attribute_A": [
+      "verdat"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "M",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "vehtrf": {
+    "Code": 17069,
+    "ObjectClass": "Vehicle transfer",
+    "Acronym": "vehtrf",
+    "Attribute_A": [
+      "catvtr",
+      "HEIGHT",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "verdat",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "ZEMCNT": {
+    "Code": 1159,
+    "ObjectClass": "Zero meter contour",
+    "Acronym": "ZEMCNT",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "curent": {
+    "Code": 17019,
+    "ObjectClass": "Current, non-gravitational",
+    "Acronym": "curent",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "curvhw",
+      "curvlw",
+      "curvmw",
+      "curvow",
+      "dirimp",
+      "hignam",
+      "lownam",
+      "meanam",
+      "othnam",
+      "ORIENT",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "_extgn": {
+    "Code": 1075,
+    "ObjectClass": "Light, extinguished",
+    "Acronym": "_extgn",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "lg_vsp": {
+    "Code": 18002,
+    "ObjectClass": "Maximum permitted vessel speed",
+    "Acronym": "lg_vsp",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "lg_rel",
+      "lg_des",
+      "lc_csi",
+      "lc_cse",
+      "lc_asi",
+      "lc_ase",
+      "lc_cci",
+      "lc_cce",
+      "lc_wd1",
+      "lc_wd2",
+      "lg_wdu",
+      "lg_spd",
+      "lg_spr",
+      "lc_bm1",
+      "lc_bm2",
+      "lc_lg1",
+      "lc_lg2",
+      "lc_dr1",
+      "lc_dr2",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND",
+      "lg_pbr"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "hulkes": {
+    "Code": 17020,
+    "ObjectClass": "Hulk",
+    "Acronym": "hulkes",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "cathlk",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "MONUMT": {
+    "Code": 1083,
+    "ObjectClass": "Monument",
+    "Acronym": "MONUMT",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "gatcon": {
+    "Code": 17031,
+    "ObjectClass": "Gate",
+    "Acronym": "gatcon",
+    "Attribute_A": [
+      "CATGAT",
+      "HORCLR",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "VERCLR",
+      "wtwdis",
+      "verdat",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "hunits",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "uwtroc": {
+    "Code": 17033,
+    "ObjectClass": "Underwater rock / awash rock",
+    "Acronym": "uwtroc",
+    "Attribute_A": [
+      "VALSOU",
+      "watlev",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "pipohd": {
+    "Code": 17024,
+    "ObjectClass": "Pipeline, overhead",
+    "Acronym": "pipohd",
+    "Attribute_A": [
+      "CATPIP",
+      "PRODCT",
+      "VERCLR",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "verdat",
+      "wtwdis",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "hunits",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "GENNAV": {
+    "Code": 22011,
+    "ObjectClass": "Generic NavAid",
+    "Acronym": "GENNAV",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "TOWERS": {
+    "Code": 1144,
+    "ObjectClass": "Tower",
+    "Acronym": "TOWERS",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "BUIREL": {
+    "Code": 1012,
+    "ObjectClass": "Building, religous",
+    "Acronym": "BUIREL",
+    "Attribute_A": [],
+    "Attribute_B": [],
+    "Attribute_C": [],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "tisdge": {
+    "Code": 17068,
+    "ObjectClass": "Time Schedule - in general",
+    "Acronym": "tisdge",
+    "Attribute_A": [
+      "cattab",
+      "schref",
+      "shptyp",
+      "useshp"
+    ],
+    "Attribute_B": [
+      "aptref",
+      "dirimp"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "O",
+    "Primitives": [
+      "N"
+    ]
+  },
+  "bcnlat": {
+    "Code": 17028,
+    "ObjectClass": "Beacon, lateral",
+    "Acronym": "bcnlat",
+    "Attribute_A": [
+      "BCNSHP",
+      "catlam",
+      "COLOUR",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "COLPAT",
+      "dirimp",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "ANNOTA": {
+    "Code": 22001,
+    "ObjectClass": "Annotation",
+    "Acronym": "ANNOTA",
+    "Attribute_A": [
+      "ANATR1",
+      "ANATR2",
+      "ANATR3",
+      "ANLYR1",
+      "ANATR5",
+      "ANATR4",
+      "ANATR9",
+      "ANATRA",
+      "ANTXT1",
+      "ANATR6",
+      "ANATR7",
+      "ANATR8",
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "convyr": {
+    "Code": 17034,
+    "ObjectClass": "Conveyor",
+    "Acronym": "convyr",
+    "Attribute_A": [
+      "CATCON",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "PRODCT",
+      "VERCLR",
+      "verdat",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "wtwgag": {
+    "Code": 17067,
+    "ObjectClass": "Waterway gauge",
+    "Acronym": "wtwgag",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "catgag",
+      "disipd",
+      "disipu",
+      "ELEVAT",
+      "higwat",
+      "hignam",
+      "lowwat",
+      "lownam",
+      "meawat",
+      "meanam",
+      "othwat",
+      "othnam",
+      "reflev",
+      "sdrlev",
+      "vcrlev",
+      "verdat",
+      "wtwdis",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "hunits",
+      "OBJNAM",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "lg_sdm": {
+    "Code": 18001,
+    "ObjectClass": "Maximum permitted ship dimensions",
+    "Acronym": "lg_sdm",
+    "Attribute_A": [],
+    "Attribute_B": [
+      "lg_rel",
+      "lg_des",
+      "lc_csi",
+      "lc_cse",
+      "lc_asi",
+      "lc_ase",
+      "lc_cci",
+      "lc_cce",
+      "lg_bme",
+      "lg_lgs",
+      "lg_drt",
+      "lg_wdp",
+      "lg_wdu",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND",
+      "lg_pbr"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
+    ]
+  },
+  "slcons": {
+    "Code": 17032,
+    "ObjectClass": "Shoreline Construction",
+    "Acronym": "slcons",
+    "Attribute_A": [
+      "catslc",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "NATCON",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "watlev",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line",
+      "Area"
+    ]
+  },
+  "TRFLNE": {
+    "Code": 22010,
+    "ObjectClass": "Traffic Line",
+    "Acronym": "TRFLNE",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "boylat": {
+    "Code": 17029,
+    "ObjectClass": "Buoy, lateral",
+    "Acronym": "boylat",
+    "Attribute_A": [
+      "BOYSHP",
+      "catlam",
+      "COLOUR",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "CONRAD",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "COLPAT",
+      "marsys",
+      "OBJNAM",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point"
+    ]
+  },
+  "trnbsn": {
+    "Code": 17065,
+    "ObjectClass": "turning basin",
+    "Acronym": "trnbsn",
+    "Attribute_A": [
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "HORCLR",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "cranes": {
+    "Code": 17030,
+    "ObjectClass": "Crane",
+    "Acronym": "cranes",
+    "Attribute_A": [
+      "CATCRN",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "VERCLR",
+      "verdat",
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Point",
+      "Area"
+    ]
+  },
+  "RESTRC": {
+    "Code": 22009,
+    "ObjectClass": "Generic Boundary",
+    "Acronym": "RESTRC",
+    "Attribute_A": [
+      "DATEND",
+      "DATSTA",
+      "NOBJNM",
+      "OBJNAM",
+      "PEREND",
+      "PERSTA",
+      "STATUS"
+    ],
+    "Attribute_B": [
+      "INFORM",
+      "NINFOM",
+      "NTXTDS",
+      "SCAMAX",
+      "SCAMIN",
+      "TXTDSC"
+    ],
+    "Attribute_C": [
+      "RECDAT",
+      "RECIND",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Line"
+    ]
+  },
+  "wtware": {
+    "Code": 17066,
+    "ObjectClass": "Waterway area",
+    "Acronym": "wtware",
+    "Attribute_A": [
+      "catccl",
+      "dirimp",
+      "SCAMIN"
+    ],
+    "Attribute_B": [
+      "OBJNAM",
+      "NOBJNM",
+      "INFORM",
+      "NINFOM",
+      "PICREP",
+      "TXTDSC",
+      "DATSTA",
+      "DATEND",
+      "PERSTA",
+      "PEREND"
+    ],
+    "Attribute_C": [
+      "unlocd",
+      "SORDAT",
+      "SORIND"
+    ],
+    "Class": "G",
+    "Primitives": [
+      "Area"
     ]
   }
 }

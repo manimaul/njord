@@ -188,5 +188,8 @@ fun AttributeSet(obj: S57Object) {
 }
 
 private fun geometryPrimitives(obj: S57Object): String {
+    if (obj.primitives.isEmpty()) {
+        return ""
+    }
     return obj.primitives.reduce { a, b -> "$a, $b" }
 }

@@ -255,5 +255,60 @@ class StandardLayers {
         Litves(),
         Lights(),
         Prdare(),
+
+//        todo: New Layers
+//
+//        // simple points
+//        Rdosta(),
+//        Rscsta(),
+//        Spring(),
+//        Locmag(),
+//        Magvar(),
+//        Lndelv(),
+//        Mnpub(),
+//        Wattur(),
+//
+//        // conditional points
+//        Radsta(),
+//        Vegatn(),
+//        Slotop(),
+//        Hrbfac(),
+//        Smcfac(),
+//
+//        // area zones
+//        Conzne(),
+//        Cosare(),
+//        Cuszne(),
+//        Exezne(),
+//        Fshzne(),
+//        Tesare(),
+//        Admare(),
+//        Hrbare(),
+//        Drydoc(),
+//
+//        // line features
+//        Railwy(),
+//        Pipohd(),
+//        Pipsol(),
+//        Tidewy(),
+//        Roadwy(),
+//        Rapids(),
+//
+//        // complex
+//        Wrecks(),
+//        Uwtroc(),
+//        Sbdare(),
+//        Tsfeb(),
+//        Watfal(),
+//        Gridrn(),
+//
+//        // meta
+//        Mcovr(),
+//        Mcscl(),
+//        Mnsys(),
+//        Mqual(),
+//        Msdat(),
+//        Msrel(),
+//        Mvdat(),
     )
 }

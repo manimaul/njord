@@ -1,1 +1,0 @@
-../nsvg/README.md

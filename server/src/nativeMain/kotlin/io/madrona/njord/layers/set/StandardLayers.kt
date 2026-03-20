@@ -219,6 +219,7 @@ class StandardLayers {
         Pilbop(),
         Pilpnt(),
         Obstrn(),
+        Uwtroc(),
         Ospare(),
         Sistat(),
         Sistaw(),
@@ -242,7 +243,7 @@ class StandardLayers {
         Boysaw(),
         Boyspp(),
         Lndmrk(),
-        Achpnt(), //todo
+        Achpnt(),
         Retrfl(),
         Topmar(),
 
@@ -256,7 +257,11 @@ class StandardLayers {
         Lights(),
         Prdare(),
 
-//        todo: New Layers
+//        todo: Missing Layers
+//        Wrecks(),
+//        Sbdare(),
+//        Tsfeb(),
+//        Watfal(),
 //
 //        // simple points
 //        Rdosta(),
@@ -285,6 +290,7 @@ class StandardLayers {
 //        Admare(),
 //        Hrbare(),
 //        Drydoc(),
+//        Gridrn(),
 //
 //        // line features
 //        Railwy(),
@@ -294,13 +300,6 @@ class StandardLayers {
 //        Roadwy(),
 //        Rapids(),
 //
-//        // complex
-//        Wrecks(),
-//        Uwtroc(),
-//        Sbdare(),
-//        Tsfeb(),
-//        Watfal(),
-//        Gridrn(),
 //
 //        // meta
 //        Mcovr(),

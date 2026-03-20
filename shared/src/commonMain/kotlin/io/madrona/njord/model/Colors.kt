@@ -326,4 +326,7 @@ enum class Sprite {
     WIMCON11,
     WNDFRM61,
     WNDMIL12,
+    WRECKS01,
+    WRECKS04,
+    WRECKS05,
 }

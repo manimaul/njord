@@ -27,6 +27,7 @@ import libgd.gdImageSaveAlpha
 
 class SpriteSheet {
 
+    val log = logger()
     private fun resNameBase(theme: ThemeMode): String {
         return "www/sprites/${theme.name.lowercase()}_simplified@2x"
     }
@@ -34,7 +35,11 @@ class SpriteSheet {
     val spritesByTheme: Map<ThemeMode, Map<Sprite, IconInfo>> by lazy {
         ThemeMode.entries.associateWith { theme ->
             resourceAsString("${resNameBase(theme)}.json")?.let { sheet ->
-                Json.decodeFromString(MapSerializer(Sprite.serializer(), IconInfo.serializer()), sheet)
+                runCatching {
+                    Json.decodeFromString(MapSerializer(Sprite.serializer(), IconInfo.serializer()), sheet)
+                }.onFailure {
+                   log.error("error decoding sheet", it)
+                }.getOrNull()
             } ?: emptyMap()
         }
     }

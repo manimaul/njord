@@ -7,4 +7,4 @@ headerFilter = *
 compilerOpts.linux = -I/usr/include/postgresql
 
 # `dpkg-query -L libpq5`
-linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lpq
+linkerOpts.linux = -lpq

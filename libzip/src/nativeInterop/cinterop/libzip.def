@@ -3,7 +3,7 @@ headers = zip.h
 headerFilter = *
 
 # `dpkg-query -L libzip-dev`
-compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+compilerOpts.linux = -I/usr/include
 
 # `dpkg-query -L libzip4`
-linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lzip
+linkerOpts.linux = -lzip

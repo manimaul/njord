@@ -3,7 +3,7 @@ headers = gdal/gdal.h gdal/cpl_conv.h gdal/ogr_api.h gdal/gdal_utils.h gdal/ogr_
 #headerFilter = gdal/*
 
 # `dpkg-query -L libgdal-dev`
-compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include/gdal -D_FILE_OFFSET_BITS=64
+compilerOpts.linux = -I/usr/include -I/usr/include/gdal -D_FILE_OFFSET_BITS=64
 
 # `dpkg-query -L libgdal30`
 linkerOpts.linux = -L/usr/lib -lgdal

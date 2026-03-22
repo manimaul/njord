@@ -13,6 +13,7 @@ repositories {
 kotlin {
     val hostOs = System.getProperty("os.name")
     val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val multiarchTuple = if (isArm64) "aarch64-linux-gnu" else "x86_64-linux-gnu"
     val isMingwX64 = hostOs.startsWith("Windows")
     val name = "arch"
     val nativeTarget = when {
@@ -27,7 +28,12 @@ kotlin {
     nativeTarget.apply {
         compilations.getByName("main") {
             cinterops {
-                val libzip by creating
+                val libzip by creating {
+                    if (hostOs == "Linux") {
+                        compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                        linkerOpts("-L/usr/lib/$multiarchTuple")
+                    }
+                }
             }
         }
         binaries {

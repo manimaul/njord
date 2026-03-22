@@ -9,6 +9,7 @@ version = "${properties["version"]}"
 kotlin {
     val hostOs = System.getProperty("os.name")
     val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val multiarchTuple = if (isArm64) "aarch64-linux-gnu" else "x86_64-linux-gnu"
     val isMingwX64 = hostOs.startsWith("Windows")
     val name = "arch"
     val nativeTarget = when {
@@ -24,14 +25,30 @@ kotlin {
 
         compilations.getByName("main") {
             cinterops {
-                val libssl by creating
-                val libgd by creating
-                val libnotify by creating
+                val libssl by creating {
+                    if (hostOs == "Linux") {
+                        compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                        linkerOpts("-L/usr/lib/$multiarchTuple")
+                    }
+                }
+                val libgd by creating {
+                    if (hostOs == "Linux") {
+                        compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                        linkerOpts("-L/usr/lib/$multiarchTuple")
+                    }
+                }
+                val libnotify by creating {
+                    if (hostOs == "Linux") {
+                        compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                        linkerOpts("-L/usr/lib/$multiarchTuple")
+                    }
+                }
             }
         }
         binaries {
             executable {
                 entryPoint = "io.madrona.njord.main"
+                if (hostOs == "Linux") linkerOpts("-L/usr/lib/$multiarchTuple")
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)
@@ -40,6 +57,7 @@ kotlin {
             }
             executable("ingest") {
                 entryPoint = "io.madrona.njord.ingest.ingestMain"
+                if (hostOs == "Linux") linkerOpts("-L/usr/lib/$multiarchTuple")
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)

@@ -4,8 +4,8 @@ headerFilter = *
 linkerOpts.linux = -lcrypto
 
 # `dpkg-query -L libssl-dev`
-compilerOpts.linux = -I/usr/include -I/usr/include/openssl  -I/usr/include/x86_64-linux-gnu/
+compilerOpts.linux = -I/usr/include -I/usr/include/openssl
 
 # `dpkg-query -L libssl-dev`
-linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -lssl
+linkerOpts.linux = -lssl
 #dpkg-query -L libssl-dev

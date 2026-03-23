@@ -8,7 +8,7 @@ version = "${properties["version"]}"
 
 kotlin {
     val hostOs = System.getProperty("os.name")
-    val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val isArm64 = System.getProperty("os.arch") == "aarch64" || project.findProperty("buildForArm64") == "true"
     val multiarchTuple = if (isArm64) "aarch64-linux-gnu" else "x86_64-linux-gnu"
     val isMingwX64 = hostOs.startsWith("Windows")
     val name = "arch"
@@ -28,27 +28,44 @@ kotlin {
                 val libssl by creating {
                     if (hostOs == "Linux") {
                         compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
-                        linkerOpts("-L/usr/lib/$multiarchTuple")
                     }
                 }
                 val libgd by creating {
                     if (hostOs == "Linux") {
                         compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
-                        linkerOpts("-L/usr/lib/$multiarchTuple")
                     }
                 }
                 val libnotify by creating {
                     if (hostOs == "Linux") {
                         compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
-                        linkerOpts("-L/usr/lib/$multiarchTuple")
                     }
                 }
             }
         }
+        // When cross-compiling for ARM64, Debian's libcrypto.a / libcurl.a are built
+        // with -moutline-atomics, emitting __aarch64_ldadd*/swp* calls that K/N's
+        // bundled lld cannot resolve.  The static archives are deleted in the
+        // Dockerfile so K/N falls back to the shared .so files; but as a safety net
+        // we also locate ARM64 libgcc.a from the cross-toolchain and append it as a
+        // positional argument to lld (after all cinterop archives, so ordering is
+        // correct for archive-based symbol resolution).
+        val crossGccLibGcc: String? = if (isArm64 && hostOs == "Linux") {
+            try {
+                val proc = ProcessBuilder("aarch64-linux-gnu-gcc", "--print-libgcc-file-name")
+                    .start()
+                proc.waitFor()
+                proc.inputStream.bufferedReader().readLine()?.trim()
+                    ?.takeIf { File(it).exists() }
+            } catch (_: Exception) { null }
+        } else null
+
         binaries {
             executable {
                 entryPoint = "io.madrona.njord.main"
-                if (hostOs == "Linux") linkerOpts("-L/usr/lib/$multiarchTuple")
+                if (hostOs == "Linux") {
+                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    crossGccLibGcc?.let { linkerOpts(it) }
+                }
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)
@@ -57,7 +74,10 @@ kotlin {
             }
             executable("ingest") {
                 entryPoint = "io.madrona.njord.ingest.ingestMain"
-                if (hostOs == "Linux") linkerOpts("-L/usr/lib/$multiarchTuple")
+                if (hostOs == "Linux") {
+                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    crossGccLibGcc?.let { linkerOpts(it) }
+                }
                 runTaskProvider?.configure {
                     argumentProviders.add(CommandLineArgumentProvider {
                         listOf(project.file("./src/nativeMain/resources").absolutePath)

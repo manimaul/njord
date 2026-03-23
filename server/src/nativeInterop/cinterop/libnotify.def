@@ -1,4 +1,4 @@
-compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+compilerOpts.linux = -I/usr/include
 ---
 #include <stdlib.h>
 

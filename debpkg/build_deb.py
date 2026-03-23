@@ -36,15 +36,14 @@ def _host_architecture() -> str:
     machine = platform.machine()
     return {"x86_64": "amd64", "aarch64": "arm64"}.get(machine, machine)
 
-ARCHITECTURE = _host_architecture()
 DEPENDS = [
     "systemd",
     "ca-certificates",
-    "libgdal30",
+    "libgdal36",
     "libpq5",
-    "libzip4",
-    "libssl3",
-    "libcurl4",
+    "libzip5",
+    "libssl3t64",
+    "libcurl4t64",
     "libgd3",
     "postgis",
     "postgresql-client",
@@ -85,8 +84,8 @@ def read_version() -> str:
     return "0.0.0"
 
 
-def build_package(version: str) -> None:
-    pkg_root = SCRIPT_DIR / f"{PACKAGE_NAME}_{version}_{ARCHITECTURE}"
+def build_package(version: str, architecture: str) -> None:
+    pkg_root = SCRIPT_DIR / f"{PACKAGE_NAME}_{version}_{architecture}"
     if pkg_root.exists():
         shutil.rmtree(pkg_root)
 
@@ -163,7 +162,7 @@ def build_package(version: str) -> None:
         textwrap.dedent(f"""\
             Package: {PACKAGE_NAME}
             Version: {version}
-            Architecture: {ARCHITECTURE}
+            Architecture: {architecture}
             Maintainer: {MAINTAINER}
             Depends: {", ".join(DEPENDS)}
             Section: net
@@ -182,7 +181,7 @@ def build_package(version: str) -> None:
         dest.chmod(0o755)
 
     # ── build the .deb ───────────────────────────────────────────────────────
-    output_deb = SCRIPT_DIR / f"{PACKAGE_NAME}_{version}_{ARCHITECTURE}.deb"
+    output_deb = SCRIPT_DIR / f"{PACKAGE_NAME}_{version}_{architecture}.deb"
     result = subprocess.run(
         ["dpkg-deb", "--build", "--root-owner-group", str(pkg_root), str(output_deb)],
         check=False,
@@ -204,11 +203,17 @@ def main() -> None:
         default=None,
         help="Override package version (default: read from gradle.properties)",
     )
+    parser.add_argument(
+        "--architecture",
+        default=None,
+        help="Override target architecture (default: detected via dpkg --print-architecture)",
+    )
     args = parser.parse_args()
 
     version = args.version or read_version()
-    print(f"Building {PACKAGE_NAME} {version} ({ARCHITECTURE}) …")
-    build_package(version)
+    architecture = args.architecture or _host_architecture()
+    print(f"Building {PACKAGE_NAME} {version} ({architecture}) …")
+    build_package(version, architecture)
 
 
 if __name__ == "__main__":

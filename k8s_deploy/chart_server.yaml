@@ -131,10 +131,6 @@ data:
       "host": "0.0.0.0",
       "port": 9000,
       
-      "externalScheme": "https",
-      "externalHostName": "openenc.com",
-      "externalPort": 443,
-      
       "consoleMetrics": false,
       "chartTempData": "/mnt/njord/charts",
       

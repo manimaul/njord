@@ -2,9 +2,18 @@ package io.madrona.njord.ext
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.origin
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
+
+fun ApplicationCall.externalBaseUrl(): String {
+    val origin = request.origin
+    val scheme = origin.scheme
+    val port = origin.serverPort
+    val portStr = if ((scheme == "https" && port == 443) || (scheme == "http" && port == 80)) "" else ":$port"
+    return "$scheme://${origin.serverHost}$portStr"
+}
 
 sealed interface KtorBaseHandler {
     val route: String

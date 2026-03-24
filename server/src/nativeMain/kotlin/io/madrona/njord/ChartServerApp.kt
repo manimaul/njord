@@ -12,6 +12,7 @@ import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.plugins.origin
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.uri
@@ -83,6 +84,8 @@ fun Application.njord() {
         maxFrameSize = Long.MAX_VALUE
         masking = false
     }
+    install(XForwardedHeaders)
+    install(ForwardedHeaders)
     install(CallLogging)
     Singletons.genLog = log
     if (Singletons.config.enableIngestion) {

@@ -102,6 +102,7 @@ kotlin {
             implementation("io.ktor:ktor-server-cors:${ktorVersion}")
             implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
             implementation("io.ktor:ktor-server-host-common:${ktorVersion}")
+            implementation("io.ktor:ktor-server-forwarded-header:${ktorVersion}")
             implementation("io.ktor:ktor-client-curl:${ktorVersion}")
         }
         nativeTest.dependencies {

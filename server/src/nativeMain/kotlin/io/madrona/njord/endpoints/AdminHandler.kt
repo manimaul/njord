@@ -4,11 +4,11 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import io.ktor.util.*
 import io.ktor.utils.io.core.toByteArray
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
+import io.madrona.njord.ext.externalBaseUrl
 import io.madrona.njord.model.AdminResponse
 import io.madrona.njord.model.AdminSignature
 import io.madrona.njord.util.UUID
@@ -48,7 +48,7 @@ class AdminHandler(
      */
     override suspend fun handleGet(call: ApplicationCall) {
         if (call.isAdminAuthorized()) {
-            call.respond(util.createSignatureResponse())
+            call.respond(util.createSignatureResponse(call.externalBaseUrl()))
         } else {
             call.respond(HttpStatusCode.Unauthorized)
         }
@@ -60,8 +60,8 @@ class AdminUtil(
 ) {
     val log = logger()
 
-    fun createSignatureResponse(): AdminResponse {
-        val signature = createSignature()
+    fun createSignatureResponse(baseUrl: String): AdminResponse {
+        val signature = createSignature(baseUrl)
 
         return AdminResponse(
             signature = signature,
@@ -69,13 +69,13 @@ class AdminUtil(
         )
     }
 
-    private fun createSignature(): AdminSignature {
+    private fun createSignature(baseUrl: String): AdminSignature {
         val now = Clock.System.now()
         val expiration = now.plus(config.adminExpirationSeconds.toDuration(DurationUnit.SECONDS))
         val dateString = now.toString()
         val uuid = UUID.randomUUID().toString()
         val hmac = HmacSHA256(config.adminKey)
-        hmac.update(config.externalBaseUrl.toByteArray())
+        hmac.update(baseUrl.toByteArray())
         hmac.update(dateString.toByteArray())
         hmac.update(uuid.toByteArray())
         val signature = Base64.encode(hmac.doFinal())
@@ -87,13 +87,13 @@ class AdminUtil(
         )
     }
 
-    fun verifySignature(query: String): Boolean {
+    fun verifySignature(query: String, baseUrl: String): Boolean {
         val data = Base64.decode(query.decodeURLPart()).decodeToString()
         val sig = decodeFromString<AdminSignature>(data)
-        return verifySignature(sig)
+        return verifySignature(sig, baseUrl)
     }
 
-    fun verifySignature(signature: AdminSignature): Boolean {
+    fun verifySignature(signature: AdminSignature, baseUrl: String): Boolean {
         val now = Clock.System.now()
         val then = signature.date
         val elapsed = then.until(now, DateTimeUnit.SECOND)
@@ -102,7 +102,7 @@ class AdminUtil(
             return false
         }
         val hmac = HmacSHA256(config.adminKey)
-        hmac.update(config.externalBaseUrl.toByteArray())
+        hmac.update(baseUrl.toByteArray())
         hmac.update(signature.date.toString().toByteArray())
         hmac.update(signature.uuid.toByteArray())
         val checkSignature = Base64.encode(hmac.doFinal())
@@ -152,7 +152,7 @@ class HmacSHA256(val key: String) {
 suspend fun ApplicationCall.requireSignature(onAuthorized: suspend () -> Unit) {
     val adminUti = Singletons.adminUtil
     val valid = request.queryParameters["signature"]?.let {
-        adminUti.verifySignature(it)
+        adminUti.verifySignature(it, externalBaseUrl())
     } ?: false
     if (valid) {
         onAuthorized()

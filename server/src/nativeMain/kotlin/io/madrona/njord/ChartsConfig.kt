@@ -11,9 +11,6 @@ data class ChartsConfig(
     val pgConnectionInfo: String,
     val host: String,
     val port: Int,
-    private val externalScheme: String,
-    private val externalHostName: String,
-    private val externalPort: Int,
     val consoleMetrics: Boolean,
     val chartTempData: String,
     val webStaticContent: String,
@@ -24,6 +21,4 @@ data class ChartsConfig(
     val chartIngestWorkers: Int,
     val useTileCache: Boolean = true,
     val enableIngestion: Boolean = true,
-) {
-    val externalBaseUrl = "${externalScheme}://${externalHostName}:${externalPort}"
-}
+)

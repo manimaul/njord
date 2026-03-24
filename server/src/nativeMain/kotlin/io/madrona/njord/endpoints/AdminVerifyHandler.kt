@@ -6,6 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.madrona.njord.Singletons
 import io.madrona.njord.ext.KtorHandler
+import io.madrona.njord.ext.externalBaseUrl
 import io.madrona.njord.model.AdminSignature
 
 class AdminVerifyHandler(
@@ -15,8 +16,9 @@ class AdminVerifyHandler(
 
     override suspend fun handlePost(call: ApplicationCall) {
         val signature = call.receive<AdminSignature>()
-        if (util.verifySignature(signature)) {
-            call.respond(util.createSignatureResponse())
+        val baseUrl = call.externalBaseUrl()
+        if (util.verifySignature(signature, baseUrl)) {
+            call.respond(util.createSignatureResponse(baseUrl))
         } else {
             call.respond(HttpStatusCode.Unauthorized)
         }

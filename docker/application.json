@@ -6,10 +6,6 @@
     "host": "0.0.0.0",
     "port": 9000,
 
-    "externalScheme": "http",
-    "externalHostName": "localhost",
-    "externalPort": 9000,
-
     "consoleMetrics": true,
     "chartTempData": "/tmp/njord",
 

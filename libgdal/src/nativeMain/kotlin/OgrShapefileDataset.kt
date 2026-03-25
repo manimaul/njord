@@ -39,13 +39,13 @@ class OgrShapefileDataset(val file: File) {
 
     fun getLayer(name: String): OgrLayer? {
         return OGR_DS_GetLayerByName(ptr, name)?.let {
-            OgrLayer(it, this)
+            OgrLayer(it)
         }
     }
 
     fun getLayerAt(index: Int): OgrLayer? {
         return OGR_DS_GetLayer(ptr, index)?.let {
-            OgrLayer(it, this)
+            OgrLayer(it)
         }
     }
 

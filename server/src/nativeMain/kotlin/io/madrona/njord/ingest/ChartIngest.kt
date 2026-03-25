@@ -174,20 +174,23 @@ class ChartIngest(
                         return@forEach
                     }
                     s57.getLayer(layerName)?.let { layer ->
-                        layer.features.forEach { feature ->
-                            if (!distributedLock.lockAcquired) {
+                        val inserts = layer.mapFeature { feature ->
+                            if (distributedLock.lockAcquired) {
+                                feature.geometry?.makeValid()?.wkb?.let {
+                                    it to feature.properties
+                                }
+                            } else {
                                 report.abort()
                                 chartAborted = true
-                                return@forEach
+                                null
                             }
-                            feature.geometry?.makeValid()?.wkb?.let { wkb ->
-                                val count = featureDao.insertFeatureSync(conn, layerName, chart, wkb, feature.properties)
-                                if (count == 0L) {
-                                    log.debug("error inserting feature with layer = $layerName")
-                                    log.debug("geo json = \n${feature.geometry?.geoJson()}")
-                                }
-                                report.appendChartFeatureCount(chart.name, count)
+                        }.filterNotNull()
+                        inserts.forEach { (wkb, props) ->
+                            val count = featureDao.insertFeatureSync(conn, layerName, chart, wkb, props)
+                            if (count == 0L) {
+                                log.debug("error inserting feature with layer = $layerName")
                             }
+                            report.appendChartFeatureCount(chart.name, count)
                         }
                         ingestStatus.writeMsg(report.progressMessage())
                     }

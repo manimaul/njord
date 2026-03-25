@@ -56,7 +56,7 @@ class OgrS57Dataset(val file: File) {
 
     fun getLayer(name: String): OgrLayer? {
         return OGR_DS_GetLayerByName(ptr, name)?.let {
-            OgrLayer(it, this)
+            OgrLayer(it)
         }
     }
 
@@ -69,7 +69,7 @@ class OgrS57Dataset(val file: File) {
     fun chartInsertInfo(): Insertable<ChartInsert> {
         val dsid = getLayer("DSID") ?: return InsertError("dsid is missing")
 
-        val props = dsid.features.firstOrNull()?.properties ?: return InsertError("DSID props are missing")
+        val props = dsid.mapFeature { it.properties }.firstOrNull() ?: return InsertError("DSID props are missing")
         val charSet = props.findCharsetFromDsidProps()
 
         val chartTxt = file.parentFile()?.listFiles(false)?.filter { ea ->
@@ -78,18 +78,22 @@ class OgrS57Dataset(val file: File) {
             it.name to it.readContents(charSet)
         } ?: emptyMap()
 
-        val mcover = getLayer("M_COVR")
-        val mcovr = mcover?.features?.filter {
-            it.properties.intValue("CATCOV") == 1
-        } ?: return InsertError("M_COVR is missing")
+        val mcovr = getLayer("M_COVR")?.mapFeature { feature ->
+            if (feature.properties.intValue("CATCOV") == 1) {
+                feature.geometry?.geoJson()
+            } else {
+                null
+            }
+        }?.filterNotNull() ?: return InsertError("M_COVR is missing")
+
         val combinedCoverage = if (mcovr.size == 1) {
             Feature(
-                geometry = mcovr.first().geometry?.geoJson()
+                geometry = mcovr.first()
             )
         } else {
             // Multiple coverage polygons - merge them into a single multipolygon
-            val polygons = mcovr.mapNotNull { feature ->
-                feature.geometry?.geoJson() as? Polygon
+            val polygons = mcovr.mapNotNull { geoJson ->
+                geoJson as? Polygon
             }
             val multiPolygon = MultiPolygon(polygons)
             Feature(geometry = multiPolygon)

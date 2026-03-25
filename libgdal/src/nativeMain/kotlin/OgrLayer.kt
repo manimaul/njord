@@ -20,7 +20,6 @@ import kotlin.experimental.ExperimentalNativeApi
 
 class OgrLayer(
     val ptr: OGRLayerH,
-    val owner: Any
 ) {
 
     val name: String? by lazy {
@@ -31,19 +30,24 @@ class OgrLayer(
         get() = OGR_L_GetFeatureCount(ptr, 1)
 
 
-    val features: List<OgrFeature> by lazy {
+    fun <T> mapFeature(block: (OgrFeature) -> T): List<T> {
         OGR_L_ResetReading(ptr)
-        buildList {
-            while (true) {
-                val feature = OGR_L_GetNextFeature(ptr) ?: break
-                add(OgrFeature(feature, this@OgrLayer, name == "SOUNDG"))
+        val retVal = mutableListOf<T>()
+        while (true) {
+            //It is critical that all features associated with an OGRLayer (more specifically an OGRFeatureDefn) be deleted before that layer/datasource is deleted.
+            val featurePtr = OGR_L_GetNextFeature(ptr) ?: break
+            try {
+                retVal.add(block(OgrFeature(featurePtr, this, name == "SOUNDG")))
+            } finally {
+                OGR_F_Destroy(featurePtr)
             }
         }
+        return retVal
     }
 
     fun geoJson(): FeatureCollection {
         return FeatureCollection(
-            features = features.map { it.geoJson() }
+            features = mapFeature { it.geoJson() }
         )
     }
 
@@ -68,7 +72,7 @@ class OgrLayer(
         OGR_F_Destroy(feature)
     }
 
-    private fun createFieldSchema(key: String, value: JsonElement) : FieldData? {
+    private fun createFieldSchema(key: String, value: JsonElement): FieldData? {
         val index = OGR_L_FindFieldIndex(ptr, key, 1)
 
         return value.fieldType()?.let {

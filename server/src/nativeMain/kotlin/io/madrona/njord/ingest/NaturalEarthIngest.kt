@@ -15,6 +15,7 @@ import io.madrona.njord.util.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class NaturalEarthIngest(
@@ -121,16 +122,22 @@ class NaturalEarthIngest(
             }
             val layerName = layer.name?.let { normalizeLayerName(it) } ?: "unknown"
             var count = 0
-            layer.features.forEach { feature ->
-                if (!distributedLock.lockAcquired) {
+            val inserts = layer.mapFeature { feature ->
+                if (distributedLock.lockAcquired) {
+                    feature.geometry?.makeValid()?.wkb?.let {
+                        it to feature.properties
+                    }
+                } else {
                     report.abort()
-                    return
+                    null
                 }
-                val wkb = feature.geometry?.makeValid()?.wkb ?: return@forEach
-                baseFeatureDao.insertAsync(wkb, feature.properties, fileName, scale, layerName)
-                count++
+            }.filterNotNull()
+            inserts.forEach { (wkb, props) ->
+                if (distributedLock.lockAcquired) {
+                    baseFeatureDao.insertAsync(wkb, props, fileName, scale, layerName)
+                    count++
+                }
             }
-
             log.info("inserted $count feature(s) for $fileName -> $layerName")
             report.appendChartFeatureCount(fileName, count.toLong())
             ingestStatus.writeMsg(report.progressMessage())

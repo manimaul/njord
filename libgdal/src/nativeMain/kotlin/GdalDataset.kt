@@ -29,7 +29,7 @@ open class GdalDataset(
     fun getOrCreateLayer(layerName: String): OgrLayer {
         return layers.getOrPut(layerName) {
             val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
-            OgrLayer(lp, this)
+            OgrLayer(lp)
         }
     }
 

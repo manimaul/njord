@@ -34,7 +34,7 @@ cd chart_server_db && docker-compose up
 # 3b. Option - build and run production
 ./gradlew :server:linkReleaseExecutableArch
 CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutable" }' \
-./server/build/bin/native/releaseExecutable/server.kexe ./server/src/nativeMain/resources
+./server/build/bin/arch/releaseExecutable/server.kexe ./server/src/nativeMain/resources
 
 # 3c. Option - build and run in container
 ./gradlew makeImg

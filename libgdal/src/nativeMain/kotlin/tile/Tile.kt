@@ -50,10 +50,10 @@ data class Tile(
         @ProtoNumber(2) val features: List<Feature> = emptyList(),
         @ProtoNumber(3) val keys: List<String> = emptyList(),
         @ProtoNumber(4) val values: List<Value> = emptyList(),
-        @ProtoNumber(5) val extent: Int = 4096
+        @ProtoNumber(5) val extent: Int
     )
 
-    companion object{
+    companion object {
         fun decodeTile(data: ByteArray): Tile {
             return ProtoBuf.decodeFromByteArray<Tile>(data)
         }
@@ -61,6 +61,5 @@ data class Tile(
         fun encodeTile(tile: Tile): ByteArray {
             return ProtoBuf.encodeToByteArray(serializer(), tile)
         }
-
     }
 }

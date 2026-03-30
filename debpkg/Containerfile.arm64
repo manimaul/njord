@@ -3,17 +3,17 @@
 # Runs entirely on x86_64 — no QEMU required.
 #
 # Prerequisites on the host:
-#   docker buildx create --use          # only needed once
+#   (none — podman handles multi-arch natively)
 #
 # Build & extract the .deb:
 #   cd <repo-root>
 #   bash debpkg/build_deb_arm64.sh
 #
 # Or manually:
-#   docker buildx build \
+#   podman build \
 #       --output type=local,dest=./debpkg/ \
 #       --target artifact \
-#       -f debpkg/Dockerfile.arm64 .
+#       -f debpkg/Containerfile.arm64 .
 
 FROM debian:trixie-slim AS builder
 

@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /build/server/build/bin/arch/releaseExecutable/server.kexe /opt/njord/server.kexe
 COPY --from=builder /build/server/build/bin/arch/ingestReleaseExecutable/ingest.kexe /opt/njord/ingest.kexe
 COPY --from=builder /build/server/src/nativeMain/resources /opt/njord/resources
-COPY docker/application.json /opt/njord/resources/config/application.json
+COPY container/application.json /opt/njord/resources/config/application.json
 COPY web/build/dist/js/productionExecutable /opt/njord/resources/www
 
 CMD ["/opt/njord/server.kexe", "/opt/njord/resources"]

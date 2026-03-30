@@ -1,4 +1,4 @@
-docker run -v $(pwd):/hpgl -it hpgl bash
+podman run -v $(pwd):/hpgl -it hpgl bash
 
 hp2xx -c 12340567 -m png -r 180 ./achare51.hpgl
 hp2xx -t -c 12340567 -m png ./bcnlat15.hpgl

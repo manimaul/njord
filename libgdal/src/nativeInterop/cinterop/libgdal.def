@@ -1,9 +1,16 @@
 #sudo apt install libgdal30 libgdal-dev
-headers = gdal/gdal.h gdal/cpl_conv.h gdal/ogr_api.h gdal/gdal_utils.h gdal/ogr_srs_api.h gdal/cpl_string.h gdal/cpl_vsi.h
+headers = gdal.h cpl_conv.h ogr_api.h gdal_utils.h ogr_srs_api.h cpl_string.h cpl_vsi.h
 #headerFilter = gdal/*
 
 # `dpkg-query -L libgdal-dev`
-compilerOpts.linux = -I/usr/include -I/usr/include/gdal -D_FILE_OFFSET_BITS=64
+compilerOpts.linux = -I/usr/include/gdal -D_FILE_OFFSET_BITS=64
 
 # `dpkg-query -L libgdal30`
 linkerOpts.linux = -L/usr/lib -lgdal
+
+# brew install gdal
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/gdal/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/gdal/lib -lgdal
+
+compilerOpts.macos_x64 = -I/usr/local/opt/gdal/include
+linkerOpts.macos_x64 = -L/usr/local/opt/gdal/lib -lgdal

@@ -2,3 +2,10 @@
 headers = gd.h
 compilerOpts.linux = -I/usr/include
 linkerOpts.linux = -lgd
+
+# brew install gd
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/gd/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/gd/lib -lgd
+
+compilerOpts.macos_x64 = -I/usr/local/opt/gd/include
+linkerOpts.macos_x64 = -L/usr/local/opt/gd/lib -lgd

@@ -5,6 +5,7 @@ import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.refTo
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.toCValues
 import kotlinx.cinterop.toKString
 import kotlinx.io.files.Path
@@ -205,7 +206,7 @@ class File(val path: Path) {
         normalizePath().toString().split(SEPARATOR).filter { it.isNotBlank() }.forEach {
             p += "/$it"
             if (p.isNotEmpty() && !SystemFileSystem.exists(Path(p))) {
-                if (mkdir(p, S_IRWXU.toUInt()) != 0) {
+                if (mkdir(p, S_IRWXU.convert()) != 0) {
                     return false
                 }
             }

@@ -15,10 +15,10 @@ cd - > /dev/null
 echo "==> Cross-compiling ARM64 .deb (x86_64 → linuxArm64, no QEMU)"
 echo "    Output: $SCRIPT_DIR/njord_*_arm64.deb"
 
-docker buildx build \
+podman build \
     --output "type=local,dest=$SCRIPT_DIR" \
     --target artifact \
-    -f "$SCRIPT_DIR/Dockerfile.arm64" \
+    -f "$SCRIPT_DIR/Containerfile.arm64" \
     "$REPO_ROOT"
 
 echo ""

@@ -7,3 +7,10 @@ compilerOpts.linux = -I/usr/include
 
 # `dpkg-query -L libzip4`
 linkerOpts.linux = -lzip
+
+# brew install libzip
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/libzip/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/libzip/lib -lzip
+
+compilerOpts.macos_x64 = -I/usr/local/opt/libzip/include
+linkerOpts.macos_x64 = -L/usr/local/opt/libzip/lib -lzip

@@ -62,23 +62,23 @@ task("showSecret") {
 }
 
 /**
- * Build the container image. This much faster than a multi-stage docker build.
+ * Build the container image. This much faster than a multi-stage podman build.
  * eg `./gradlew :buildImage`
  */
 task<Exec>("makeImg") {
-    dependsOn(":web:jsBrowserDistribution", ":server:linkReleaseExecutableArch")
-    mustRunAfter(":web:jsBrowserDistribution", ":server:linkReleaseExecutableArch")
-    commandLine("bash", "-c", "docker build -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
+    dependsOn(":web:jsBrowserDistribution")
+    mustRunAfter(":web:jsBrowserDistribution")
+    commandLine("bash", "-c", "podman build --platform linux/amd64 -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
 /**
- * Build the container image. This much faster than a multi-stage docker build.
+ * Build the container image. This much faster than a multi-stage podman build.
  * eg `./gradlew :buildImage`
  */
 task<Exec>("pubImg") {
     dependsOn(":makeImg")
     mustRunAfter(":makeImg")
-    commandLine("bash", "-c", "docker push ghcr.io/manimaul/njord-chart-server:${project.version}")
+    commandLine("bash", "-c", "podman push ghcr.io/manimaul/njord-chart-server:${project.version}")
 }
 
 /**

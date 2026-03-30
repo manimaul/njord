@@ -4,8 +4,8 @@ import File
 import io.madrona.njord.resources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
-import libgdal.realpath
 import platform.posix.free
+import platform.posix.realpath
 
 
 fun resourceAsString(name: String) : String? {

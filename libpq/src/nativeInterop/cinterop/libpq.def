@@ -8,3 +8,10 @@ compilerOpts.linux = -I/usr/include/postgresql
 
 # `dpkg-query -L libpq5`
 linkerOpts.linux = -lpq
+
+# brew install libpq
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/libpq/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/libpq/lib -lpq
+
+compilerOpts.macos_x64 = -I/usr/local/opt/libpq/include
+linkerOpts.macos_x64 = -L/usr/local/opt/libpq/lib -lpq

@@ -118,3 +118,20 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 - The `docs/DESIGN.md` links reference an older JVM implementation; the current codebase is Kotlin/Native
 - Platform targets: macOS x64/ARM64, Linux x64/ARM64 (backend), JS (frontend / browser) 
 - Targets not used: Windows x64 (Native)
+
+## Development on MacOS
+
+Required packages
+```shell
+brew install gdal libpq gd libzip openssl@3 openjdk@21
+```
+
+Useful packages 
+```shell
+brew install podman podman-compose
+```
+
+You'll need to set memory to at leas 8192 to build container image(s) 
+```shell
+podman machine set --memory 8192 
+```

@@ -28,6 +28,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - ./pb:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: mysecretpassword

@@ -201,6 +201,7 @@ enum class Sprite {
     DNGHILIT,
     DOMES001,
     DOMES011,
+    DRGARE01P,
     DSHAER11,
     DWRUTE51,
     EBBSTR01,

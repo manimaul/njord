@@ -15,11 +15,19 @@ cd - > /dev/null
 echo "==> Cross-compiling ARM64 .deb (x86_64 → linuxArm64, no QEMU)"
 echo "    Output: $SCRIPT_DIR/njord_*_arm64.deb"
 
+# Cross compiling Kotlin native is only available on Linux x86_64
+# Even on MacOS (arm64) since we are building in a Linux container we need the container to be x86_64 in order to cross compiling to arm64
+# This could probably be optimized using a arm64 sysroot and building on the host targeting arm64 using the sysroot
 podman build \
-    --output "type=local,dest=$SCRIPT_DIR" \
+    --platform linux/amd64 \
     --target artifact \
+    -t njord-arm64-artifact-tmp \
     -f "$SCRIPT_DIR/Containerfile.arm64" \
     "$REPO_ROOT"
+CID=$(podman create --platform linux/amd64 njord-arm64-artifact-tmp)
+podman cp "${CID}:/" "$SCRIPT_DIR/"
+podman rm "$CID"
+podman rmi njord-arm64-artifact-tmp
 
 echo ""
 echo "Done:"

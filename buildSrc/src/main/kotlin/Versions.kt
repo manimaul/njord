@@ -6,4 +6,3 @@ const val serializationVersion = "1.10.0"
 
 // https://developer.android.com/build/releases/gradle-plugin
 const val agpVersion = "8.7.0"
-

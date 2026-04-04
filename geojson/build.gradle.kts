@@ -28,8 +28,7 @@ kotlin {
     val isMingwX64 = hostOs.startsWith("Windows")
     val name = "arch"
     when {
-        hostOs == "Mac OS X" && isArm64 -> macosArm64(name)
-        hostOs == "Mac OS X" && !isArm64 -> macosX64(name)
+        hostOs == "Mac OS X" -> macosArm64(name)
         hostOs == "Linux" && isArm64 -> linuxArm64(name)
         hostOs == "Linux" && !isArm64 -> linuxX64(name)
         isMingwX64 -> mingwX64(name)

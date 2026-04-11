@@ -39,6 +39,7 @@ data class Paint(
     @SerialName("background-color") val backgroundColor: String? = null,
     @SerialName("background-opacity") val backgroundOpacity: Int? = null,
     @SerialName("fill-color") val fillColor: JsonElement? = null,
+    @SerialName("fill-opacity") val fillOpacity: Float? = null,
     @SerialName("fill-pattern") val fillPattern: JsonElement? = null, //List<String> or String>
     @SerialName("line-color") val lineColor: JsonElement? = null,
     @SerialName("line-width") val lineWidth: Float? = null,

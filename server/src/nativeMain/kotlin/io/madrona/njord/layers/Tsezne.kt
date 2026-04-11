@@ -18,6 +18,6 @@ class Tsezne : Layerable() {
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        areaLayerWithFillColor(ac, options.theme),
+        areaLayerWithFillColor(ac, options.theme, opacity = 0.25f),
     )
 }

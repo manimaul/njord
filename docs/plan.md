@@ -2,7 +2,7 @@
 
 We need a way to export chart data in the form of geographic regions. For example "US Coast Guard region 15" (Pacific NorthWest - Puget Sound to Canadian Border). The export should be a downloadable file that a mobile app can download and consume. Sqlite files will be used as the region export file format. After charts are ingested region(s) (sqlite files) will be created in a background process. Region processing can also be disabled in the main (application.json) config ("regionExports": []). Regions will be stored in sqlite files within the temp directory (for example /tmp/njord/regions/REGION15.sqlite).
 
-Region export configurations will be specified in the applicatin.json config file.
+Region export configurations will be specified in the applicatin.json config file. Coverage can be calculated using enc_boundary_wkt.py.
 ```json
 {
     "adminKey": "changeme",
@@ -97,6 +97,41 @@ CREATE TABLE IF NOT EXISTS tile_cache
 When region sqlite files are downloaded by a mobile client their contents will be loaded into the apps' sqlite db. The app can then discard the downloaded file. The mobile app will have its own world base map included. When a tile is queried the same algorithm used in the server
 will be applied by the mobile app. 
 
+# Ingestion reports
+
+We want to track chart ingestion via a postgres table. Things we should track are the date and time of ingestion start and end for each zip file uploaded, the name of the zip file, the CompletionReport as a json row and uuid. We should also tag each chart table row with the uuid of the association ingestion.
+
+```sql
+
+CREATE TABLE IF NOT EXISTS ingestions
+(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    zip_file_name VARCHAR NOT NULL,
+    started_at TIMESTAMPTZ NOT NULL,
+    completed_at TIMESTAMPTZ NULL,
+    completion_report JSONB NULL
+)
+
+ALTER TABLE charts
+    ADD COLUMN IF NOT EXISTS ingestion_id UUID REFERENCES ingestions(id) NULL
+```
+
+Lets also add an endpoint GET /ingestions. The endpoint will return a total count of ingestions and a list of ingestion items.
+The endpoint will have a query param for "after" and "count". The endpoint will return the count specified of ingestions ordered by complete_at descending after the date specified. If after is not specified we'll just return the latest count of ingestions. Count will clamp to 1 to 100.
+
+# Region export process
+
+Region generation will occur after an ingestion if there are no longer any zip files enqueued in the upload directory. How this might work is every time the ingestion lock is released a coroutine could start with a 15 second delay. If there's already a coroutine schedule it will get canceled and reset. After the 15 seconds the coroutine will check for no more zip files enqueued and for a clear lock. If these conditions are met then the region export process will start.
+
+For each region defined in config
+1. Check if new charts were added since the last region was created. If not then skip creating a new region.
+2. 
+
+
+```sql
+
+```
+
 # Questions
 
-How does encryption work?
+How does encryption work for protected datasets?

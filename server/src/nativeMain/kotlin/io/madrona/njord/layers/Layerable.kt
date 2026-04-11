@@ -246,6 +246,23 @@ abstract class Layerable(
         )
     }
 
+    fun areaLayerWithFillColor(
+        color: Color,
+        theme: Theme,
+        opacity: Float
+    ): Layer {
+        return Layer(
+            id = "${key}_fill_${++nextId}",
+            type = LayerType.FILL,
+            sourceLayer = sourceLayer,
+            filter = Filters.eqTypePolyGon,
+            paint = Paint(
+                fillColor = colorFrom(color, theme).json,
+                fillOpacity = opacity
+            ),
+        )
+    }
+
     fun areaLayerWithFillPattern(symbol: Sprite? = null): Layer {
         return Layer(
             id = "${key}_fill_pattern_${++nextId}",

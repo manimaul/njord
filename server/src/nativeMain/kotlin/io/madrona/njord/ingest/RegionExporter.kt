@@ -1,6 +1,7 @@
 package io.madrona.njord.ingest
 
 import File
+import OgrGeometry
 import SqliteDb
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.RegionExportConfig
@@ -12,6 +13,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.intOrNull
 
 @Serializable
 data class RegionManifestEntry(
@@ -28,6 +32,7 @@ class RegionExporter(
 ) {
     private val log = logger()
     private val json = Json { prettyPrint = true }
+    private val jsonParser = Json
 
     suspend fun exportAll() {
         if (config.regionExports.isEmpty()) {
@@ -98,6 +103,7 @@ class RegionExporter(
             db.exec(CREATE_CHART_TABLE)
             db.exec(CREATE_FEATURE_TABLE)
             db.exec(CREATE_LNAM_REFS_TABLE)
+            db.exec(CREATE_FEATURE_BBOX_TABLE)
 
             db.prepare(INSERT_CHART).use { stmt ->
                 db.transaction {
@@ -120,25 +126,45 @@ class RegionExporter(
 
             db.prepare(INSERT_FEATURE).use { featureStmt ->
                 db.prepare(INSERT_LNAM_REF).use { lnamStmt ->
-                    chartIds.forEach { chartId ->
-                        val features = regionDao.findFeaturesForChart(chartId) ?: return@forEach
-                        if (features.isEmpty()) return@forEach
+                    db.prepare(INSERT_FEATURE_BBOX).use { bboxStmt ->
+                        chartIds.forEach { chartId ->
+                            val features = regionDao.findFeaturesForChart(chartId) ?: return@forEach
+                            if (features.isEmpty()) return@forEach
 
-                        db.transaction {
-                            features.forEach { feature ->
-                                featureStmt.reset()
-                                    .bindLong(1, feature.id)
-                                    .bindText(2, feature.layer)
-                                    .bindBlob(3, feature.geomWkb)
-                                    .bindText(4, feature.propsJson)
-                                    .bindLong(5, feature.chartId)
-                                    .step()
-
-                                feature.lnamRefs.forEach { lnamRef ->
-                                    lnamStmt.reset()
+                            db.transaction {
+                                features.forEach { feature ->
+                                    featureStmt.reset()
                                         .bindLong(1, feature.id)
-                                        .bindText(2, lnamRef)
+                                        .bindText(2, feature.layer)
+                                        .bindBlob(3, feature.geomWkb)
+                                        .bindText(4, feature.propsJson)
+                                        .bindLong(5, feature.chartId)
                                         .step()
+
+                                    feature.lnamRefs.forEach { lnamRef ->
+                                        lnamStmt.reset()
+                                            .bindLong(1, feature.id)
+                                            .bindText(2, lnamRef)
+                                            .step()
+                                    }
+
+                                    val props = jsonParser.parseToJsonElement(feature.propsJson).jsonObject
+                                    val minZ = props["MINZ"]?.jsonPrimitive?.intOrNull ?: 0
+                                    val maxZ = props["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32
+                                    val bbox = OgrGeometry.fromWkb4326(feature.geomWkb)?.envelope()
+                                    if (bbox != null) {
+                                        bboxStmt.reset()
+                                            .bindLong(1, feature.id)
+                                            .bindInt(2, minZ)
+                                            .bindInt(3, maxZ)
+                                            .bindDouble(4, bbox.west)
+                                            .bindDouble(5, bbox.east)
+                                            .bindDouble(6, bbox.south)
+                                            .bindDouble(7, bbox.north)
+                                            .step()
+                                    } else {
+                                        log.warn("feature ${feature.id} has no parseable geometry, skipping bbox")
+                                    }
                                 }
                             }
                         }
@@ -247,6 +273,23 @@ class RegionExporter(
 
         private const val INSERT_LNAM_REF = """
             INSERT OR IGNORE INTO lnam_refs (fid, lnam_ref) VALUES (?, ?);
+        """
+
+        private val CREATE_FEATURE_BBOX_TABLE = """
+            CREATE TABLE IF NOT EXISTS feature_bbox (
+                id    INTEGER PRIMARY KEY,
+                min_z INTEGER NOT NULL,
+                max_z INTEGER NOT NULL,
+                min_x REAL    NOT NULL,
+                max_x REAL    NOT NULL,
+                min_y REAL    NOT NULL,
+                max_y REAL    NOT NULL
+            );
+        """.trimIndent()
+
+        private const val INSERT_FEATURE_BBOX = """
+            INSERT OR REPLACE INTO feature_bbox (id, min_z, max_z, min_x, max_x, min_y, max_y)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
         """
     }
 }

@@ -1,0 +1,17 @@
+# macOS: brew install sqlite
+# Linux: sudo apt install libsqlite3-dev
+headers = sqlite3.h
+headerFilter = *
+
+# `dpkg-query -L libsqlite3-dev`
+compilerOpts.linux = -I/usr/include
+
+# `dpkg-query -L libsqlite3-0`
+linkerOpts.linux = -lsqlite3
+
+# brew install sqlite
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/sqlite/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/sqlite/lib -lsqlite3
+
+compilerOpts.macos_x64 = -I/usr/local/opt/sqlite/include
+linkerOpts.macos_x64 = -L/usr/local/opt/sqlite/lib -lsqlite3

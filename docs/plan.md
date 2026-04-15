@@ -82,6 +82,23 @@ CREATE VIRTUAL TABLE feature_geo_index USING rtree(
 );
 ```
 
+Export sqlite files will have the following table that feature_geo_index can be built from: 
+
+Server computes bounding boxes during writeArchive() using OgrGeometry.fromWkb4326(wkb)?.envelope() (already exists in OgrGeometry.kt:140) and writes a flat table:
+
+```sql 
+CREATE TABLE IF NOT EXISTS feature_bbox
+(
+    id    INTEGER PRIMARY KEY,  -- matches feature.id
+    min_z INTEGER NOT NULL,
+    max_z INTEGER NOT NULL,
+    min_x REAL    NOT NULL,
+    max_x REAL    NOT NULL,
+    min_y REAL    NOT NULL,
+    max_y REAL    NOT NULL
+);
+```
+
 ```sql
 CREATE TABLE IF NOT EXISTS tile_cache 
 (

@@ -42,8 +42,19 @@ class RegionExporter(
         updateManifest()
     }
 
-    private suspend fun exportRegion(regionConfig: RegionExportConfig) {
-        log.info("exporting region ${regionConfig.name}")
+    /**
+     * Export a single region on-demand, always generating a new archive regardless of whether
+     * one already exists. Updates the manifest after writing.
+     */
+    suspend fun exportForced(regionConfig: RegionExportConfig) {
+        regionDir.mkdirs()
+        runCatching { exportRegion(regionConfig, force = true) }
+            .onFailure { log.error("forced region export failed for ${regionConfig.name}: ${it.message}") }
+        updateManifest()
+    }
+
+    private suspend fun exportRegion(regionConfig: RegionExportConfig, force: Boolean = false) {
+        log.info("exporting region ${regionConfig.name} force=$force")
 
         val charts = regionDao.findChartsInRegion(regionConfig.coverage) ?: run {
             log.warn("no charts found for region ${regionConfig.name}")
@@ -54,8 +65,7 @@ class RegionExporter(
             return
         }
 
-        // Check if any chart is newer than our latest archive for this region
-        if (!needsRebuild(regionConfig)) {
+        if (!force && !needsRebuild(regionConfig)) {
             log.info("region ${regionConfig.name} is up-to-date, skipping")
             return
         }

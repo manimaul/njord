@@ -94,7 +94,7 @@ class RegionDao(
                 st_asbinary(geom),
                 props::text,
                 chart_id,
-                lnam_refs
+                ARRAY(SELECT jsonb_array_elements_text(props->'LNAM_REFS')) AS lnam_refs
             FROM features
             WHERE chart_id = $1
             ORDER BY id;

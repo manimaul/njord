@@ -3,6 +3,13 @@ package io.madrona.njord
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class RegionExportConfig(
+    val name: String,
+    val description: String,
+    val coverage: String, // WKT polygon
+)
+
+@Serializable
 data class ChartsConfig(
     val adminKey: String,
     val adminUser: String,
@@ -21,4 +28,5 @@ data class ChartsConfig(
     val chartIngestWorkers: Int,
     val useTileCache: Boolean = true,
     val enableIngestion: Boolean = true,
+    val regionExports: List<RegionExportConfig> = emptyList(),
 )

@@ -50,6 +50,7 @@ class ChartIngest(
                 ingestStatus.writeMsg(report.completionMessage())
             }
             distributedLock.tryClearLock()
+            Singletons.regionExportWorker.schedule()
         } else {
             println("ingest noop $encUpload - lock not acquired")
         }

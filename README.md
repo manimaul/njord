@@ -123,7 +123,7 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 
 Required packages
 ```shell
-brew install gdal libpq gd libzip openssl@3 openjdk@21
+brew install gdal libpq gd libzip sqlite openssl@3 openjdk@21
 ```
 
 Useful packages 

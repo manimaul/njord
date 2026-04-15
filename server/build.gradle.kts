@@ -92,6 +92,7 @@ kotlin {
             implementation(project(":libgdal"))
             implementation(project(":libpq"))
             implementation(project(":libzip"))
+            implementation(project(":libsqlite"))
             implementation("io.ktor:ktor-server-core:${ktorVersion}")
             implementation("io.ktor:ktor-server-cio:${ktorVersion}")
             implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")

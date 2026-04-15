@@ -128,6 +128,16 @@ class SqliteStatement(
         return this
     }
 
+    fun bindDouble(index: Int, value: Double?): SqliteStatement {
+        val rc = if (value == null) {
+            sqlite3_bind_null(stmt, index)
+        } else {
+            sqlite3_bind_double(stmt, index, value)
+        }
+        check(rc == SQLITE_OK) { "bindDouble[$index] failed ($rc): ${errmsg()}" }
+        return this
+    }
+
     /**
      * Executes the statement one step. Returns true if a row is available (SELECT),
      * false when done (INSERT/UPDATE/DELETE/DDL). Throws on error.

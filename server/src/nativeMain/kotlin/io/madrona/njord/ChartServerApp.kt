@@ -185,6 +185,12 @@ fun Application.njord() {
 
             //curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} -v -H "Content-Type: application/json" --request POST  --data "$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin)" https://openenc.com/v1/verify_admin
             AdminVerifyHandler(),
+
+            // curl https://openenc.com/v1/regions | jq
+            RegionHandler(),
+
+            // curl -O https://openenc.com/v1/regions/REGION_15_2026-04-14T07-00-31.sqlite
+            RegionArchiveHandler(),
         ).forEach {
             addHandler(it)
         }

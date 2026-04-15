@@ -1,6 +1,6 @@
 # Regions and Mobile Datasets 
 
-We need a way to export chart data in the form of geographic regions. For example "US Coast Guard region 15" (Pacific NorthWest - Puget Sound to Canadian Border). The export should be a downloadable file that a mobile app can download and consume. Sqlite files will be used as the region export file format. After charts are ingested region(s) (sqlite files) will be created in a background process. Region processing can also be disabled in the main (application.json) config ("regionExports": []). Regions will be stored in sqlite files within the temp directory (for example /tmp/njord/regions/REGION15.sqlite).
+We need a way to export chart data in the form of geographic regions. For example "US Coast Guard region 15" (Pacific NorthWest - Puget Sound to Canadian Border). The export should be a downloadable file that a mobile app can download and consume. Sqlite files will be used as the region export file format. After charts are ingested region(s) (sqlite files) will be created in a background process. Region processing can also be disabled in the main (application.json) config ("regionExports": []). Regions will be stored in sqlite files within the <chartTempData>/regions directory (for example /tmp/njord/regions/REGION15.sqlite).
 
 Region export configurations will be specified in the applicatin.json config file. Coverage can be calculated using enc_boundary_wkt.py.
 ```json
@@ -51,22 +51,23 @@ CREATE TABLE IF NOT EXISTS chart
 ```
 
 ```sql 
-CREATE TABLE IF NOT EXISTS features 
+CREATE TABLE IF NOT EXISTS feature 
 (
     id INTEGER PRIMARY KEY,
     layer     TEXT NOT NULL, -- name of layer
     geom      BLOB NOT NULL, -- wkb geometry
     props     TEXT NOT NULL, -- json props
     chart_id  INTEGER NOT NULL,
-    FOREIGN KEY(chart_id) REFERENCES charts(id)
+    FOREIGN KEY(chart_id) REFERENCES chart(id)
 );
 ```
 
 ```sql 
 CREATE TABLE IF NOT EXISTS lnam_refs (
-    fid INTEGER,
-    lnam_ref TEXT,
-    FOREIGN KEY (fid) REFERENCES features(id)
+    fid INTEGER NOT NULL,
+    lnam_ref TEXT NOT NULL,
+    PRIMARY KEY (fid, lnam_ref),
+    FOREIGN KEY (fid) REFERENCES feature(id)
 );
 ```
 
@@ -110,10 +111,10 @@ CREATE TABLE IF NOT EXISTS ingestions
     started_at TIMESTAMPTZ NOT NULL,
     completed_at TIMESTAMPTZ NULL,
     completion_report JSONB NULL
-)
+);
 
 ALTER TABLE charts
-    ADD COLUMN IF NOT EXISTS ingestion_id UUID REFERENCES ingestions(id) NULL
+    ADD COLUMN IF NOT EXISTS ingestion_id UUID REFERENCES ingestions(id) NULL;
 ```
 
 Lets also add an endpoint GET /ingestions. The endpoint will return a total count of ingestions and a list of ingestion items.
@@ -121,16 +122,46 @@ The endpoint will have a query param for "after" and "count". The endpoint will 
 
 # Region export process
 
-Region generation will occur after an ingestion if there are no longer any zip files enqueued in the upload directory. How this might work is every time the ingestion lock is released a coroutine could start with a 15 second delay. If there's already a coroutine schedule it will get canceled and reset. After the 15 seconds the coroutine will check for no more zip files enqueued and for a clear lock. If these conditions are met then the region export process will start.
+Region generation will occur after an ingestion if there are no longer any zip files enqueued in the upload directory. How this might work is every time the ingestion lock is released a coroutine could start with a 15 second delay. If there's already a coroutine schedule it will get canceled and reset. After the 15 seconds the coroutine will check for no more zip files enqueued and for a clear lock. If these conditions are met then the region export process will start:
 
 For each region defined in config
-1. Check if new charts were added since the last region was created. If not then skip creating a new region.
-2. 
+1. Check if new charts were added since the last region was created where the chart M_COVR is withing the region boundary. If not then skip creating this new region.
+2. Open a sqlite file with a date stamp eg (REGION_15_2026-04-14T07:00:31-07:00.sqlite). Write all charts and features to the sqlite file where the chart M_COVR is within the region boundary. Note indexes are not included in the archive. Also note that base_features are not included.
+3. Update a manifest.json which will list all of the latest available region sqlite archives available for download.
+4. We will keep the latest 2 region sqlite archives for every region. When a new archive is generated if there are more than 2 archives for a single region the extra, oldest ones will be deleted. 
 
-
-```sql
+Example manifest.json
+```json
+[
+  {
+    "name": "REGION_15",
+    "description": "Pacific NorthWest - Puget Sound to Canadian Border",
+    "coverage": "POLYGON ((-120.5 43.2,-120.5652407 43.2,-120.5652407 42.0913546,-128.4022651 42.0913546,-128.4022651 43.2,-128.4022651 48.0,-128.4022651 49.262033,-120.5652407 49.262033,-120.5652407 48.0,-120.5 48.0,-120 48,-120 47.4827599,-120 45.812352,-120 45.8123413,-120 43.2,-120.5 43.2))",
+    "archive": "REGION_15_2026-04-14T07:00:31-07:00.sqlite"
+  }
+]
 
 ```
+
+# Sqlite
+
+We'll use C-Interop for sqlite rather than a full featured library as this is a write-once file export, not a live application database. The full value proposition of SQLDelight/Room (schema management, type-safe queries, reactive subscriptions) is completely unused. You'd pay their complexity tax for nothing.
+
+C-Interop is ~200-300 lines of straightforward binding code following the exact same pattern as libgdal and libpq. The libsqlite module would wrap:
+```
+sqlite3_open(path, &db)
+sqlite3_exec(db, "CREATE TABLE ...", ...)
+sqlite3_prepare_v2(db, "INSERT INTO ...", ...)
+sqlite3_bind_text / sqlite3_bind_blob / sqlite3_bind_int
+sqlite3_step
+sqlite3_finalize
+sqlite3_close                                      
+```
+
+# Download API 
+
+- GET /regions — list available regions (manifest.json)
+- GET /regions/{archive} — download the sqlite file
 
 # Questions
 

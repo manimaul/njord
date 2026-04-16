@@ -17,6 +17,7 @@ Live demo: https://openenc.com
 | `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2 |
 | `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client (`libpq`) |
 | `libzip` | Kotlin/Native | C interop bindings for ZIP extraction |
+| `libsqlite` | Kotlin/Native | C interop bindings to SQLite (region export) |
 | `geojson` | Multiplatform | GeoJSON RFC 7946 implementation |
 
 ---
@@ -41,6 +42,8 @@ Live demo: https://openenc.com
 │  /v1/content/*                → Fonts, sprites            │
 │  /v1/admin                    → HMAC signature endpoint   │
 │  /v1/about/*                  → S-57 object metadata      │
+│  /v1/regions                  → Region manifest JSON      │
+│  /v1/regions/{archive}        → Download region SQLite    │
 └──────┬───────────────────────────────┬─────────────────────┘
        │ Tile reads                    │ Writes on ingest
        ▼                               ▼
@@ -227,10 +230,68 @@ adminKey               — HMAC-SHA256 key for admin signature generation
 adminUser / adminPass  — Basic auth credentials for /v1/admin
 adminExpirationSeconds — Signature TTL (default 604800 = 7 days)
 chartIngestWorkers     — Concurrent S-57 processing workers (default 5)
+enableIngestion        — Enable/disable the chart ingest worker (default true)
+useTileCache           — Enable/disable in-memory tile LRU cache (default true)
 debugTile              — Include debug envelope layer; disable tile caching
+regionExports          — List of RegionExportConfig objects (default empty)
 ```
 
+Each `RegionExportConfig` has:
+
+```
+name        — Region identifier, used as the SQLite filename prefix (e.g., REGION_15)
+description — Human-readable description
+coverage    — WKT polygon defining the geographic boundary of the region
+```
+
+Coverage polygons can be generated with `data/enc_boundary_wkt.py`.
+
 `webStaticContent` must be an **absolute** path because the server resolves static files relative to CWD, not the resources directory.
+
+---
+
+## Region Export (Mobile Datasets)
+
+Region exports produce SQLite archive files that mobile clients can download for offline chart rendering. Each archive contains all charts and features whose `M_COVR` polygon falls within the configured region boundary.
+
+### Trigger
+
+`RegionExportWorker` hooks into the ingestion lifecycle. Each time the ingest lock is released it schedules a coroutine with a 15-second debounce delay. If another export is already pending it is cancelled and rescheduled. When the delay expires the worker checks that no ZIPs are queued and no ingestion is running, then calls `RegionExporter.exportAll()`.
+
+### Export Process (per region)
+
+1. Query `RegionDao` to check whether any chart with an `M_COVR` inside the region boundary has been added since the last export. Skip if not.
+2. Open a new SQLite file named `{name}_{ISO8601-timestamp}.sqlite` in `<chartTempData>/regions/`.
+3. Write `chart`, `feature`, `lnam_refs`, and `feature_bbox` tables for all matching charts (no indexes — the mobile client builds those on import).
+4. Update `manifest.json` in the regions directory.
+5. Prune archives so at most 2 copies per region are retained (oldest deleted first).
+
+### SQLite Schema
+
+```sql
+chart        — mirrors the PostGIS `charts` table (covr stored as WKB BLOB)
+feature      — layer, WKB geometry, JSON props, chart_id FK
+lnam_refs    — (fid, lnam_ref) cross-reference rows
+feature_bbox — pre-computed bounding boxes (min/max z, x, y) used by mobile to
+               build a virtual rtree index without re-parsing geometry WKB
+```
+
+### Manifest
+
+`GET /v1/regions` returns `manifest.json` — a JSON array of objects with `name`, `description`, `coverage` (WKT), and `archive` (filename). `GET /v1/regions/{archive}` streams the SQLite file for download.
+
+### Mobile Use
+
+The mobile app downloads an archive, imports its rows into a local SQLite database, builds an rtree `feature_geo_index` from `feature_bbox`, then discards the download. Tile rendering on device follows the same spatial query algorithm as the server.
+
+### Key Files
+
+- `server/src/nativeMain/kotlin/ingest/RegionExporter.kt` — export logic
+- `server/src/nativeMain/kotlin/ingest/RegionExportWorker.kt` — post-ingest scheduling
+- `server/src/nativeMain/kotlin/db/RegionDao.kt` — PostGIS queries for region data
+- `server/src/nativeMain/kotlin/endpoints/RegionHandler.kt` — HTTP handlers
+- `libsqlite/` — C interop bindings for SQLite writes
+- `data/enc_boundary_wkt.py` — helper script to generate coverage WKT from ENC files
 
 ---
 

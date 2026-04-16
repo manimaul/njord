@@ -125,9 +125,12 @@ metadata:
 data:
   application.json: |
     {
+      "adminKey": "changeme",
+      "adminUser": "admin",
+      "adminPass": "admin",
       "adminExpirationSeconds": 604800,
-      "pgConnectionInfo": "postgresql://admin@localhost:5432/s57server",
       
+      "pgConnectionInfo": "postgresql://admin@localhost:5432/s57server",
       "host": "0.0.0.0",
       "port": 9000,
       
@@ -140,14 +143,17 @@ data:
       "safetyDepth": 6.0,
       "deepDepth": 9.0,
       
-      "adminKey": "changeme",
-      "adminUser": "admin",
-      "adminPass": "admin",
-      
       "debugTile": false,
       "chartIngestWorkers": 3,
+      "enableIngestion": false,
       "useTileCache": true,
-      "enableIngestion": false
+      "regionExports": [
+        {
+          "name": "REGION_15",
+          "description": "Pacific NorthWest - Puget Sound to Canadian Border",
+          "coverage": "POLYGON ((-120.5 43.2,-120.5652407 43.2,-120.5652407 42.0913546,-128.4022651 42.0913546,-128.4022651 43.2,-128.4022651 48.0,-128.4022651 49.262033,-120.5652407 49.262033,-120.5652407 48.0,-120.5 48.0,-120 48,-120 47.4827599,-120 45.812352,-120 45.8123413,-120 43.2,-120.5 43.2))"
+        }
+      ]
     }
 
 ---

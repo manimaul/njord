@@ -61,8 +61,13 @@ kotlin {
         binaries {
             executable {
                 entryPoint = "io.madrona.njord.main"
+                /*
+                The libsqlite3.so lists libm.so.6 and libc.so.6 as needed, but its dl* and pthread_* symbols
+                (merged into libc in glibc 2.34) aren't listed — lld's --no-allow-shlib-undefined rejects this.
+                 The fix is --allow-shlib-undefined.
+                 */
                 if (hostOs == "Linux") {
-                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    linkerOpts("-L/usr/lib/$multiarchTuple", "-lsqlite3", "--allow-shlib-undefined")
                     crossGccLibGcc?.let { linkerOpts(it) }
                 }
                 runTaskProvider?.configure {
@@ -74,7 +79,7 @@ kotlin {
             executable("ingest") {
                 entryPoint = "io.madrona.njord.ingest.ingestMain"
                 if (hostOs == "Linux") {
-                    linkerOpts("-L/usr/lib/$multiarchTuple")
+                    linkerOpts("-L/usr/lib/$multiarchTuple", "-lsqlite3", "--allow-shlib-undefined")
                     crossGccLibGcc?.let { linkerOpts(it) }
                 }
                 runTaskProvider?.configure {

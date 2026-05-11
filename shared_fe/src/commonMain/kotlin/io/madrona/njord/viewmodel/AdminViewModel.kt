@@ -7,7 +7,7 @@ import io.madrona.njord.util.localStoreSet
 import io.madrona.njord.viewmodel.utils.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration

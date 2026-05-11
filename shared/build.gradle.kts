@@ -45,13 +45,13 @@ kotlin {
 
     sourceSets {
         nativeMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.8.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-io-core:$ioVersion")
         }
         val commonMain by getting {
             dependencies {
                 api(project(":geojson"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
             }
         }
         val commonTest by getting {

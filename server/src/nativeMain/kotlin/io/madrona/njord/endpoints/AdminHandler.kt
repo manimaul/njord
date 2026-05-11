@@ -18,7 +18,6 @@ import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toCValues
 import kotlinx.cinterop.usePinned
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.until
 import kotlinx.serialization.json.Json.Default.decodeFromString
@@ -30,6 +29,7 @@ import libssl.HMAC_Final
 import libssl.HMAC_Init_ex
 import libssl.HMAC_Update
 import kotlin.io.encoding.Base64
+import kotlin.time.Clock
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 

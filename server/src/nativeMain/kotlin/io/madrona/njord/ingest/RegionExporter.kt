@@ -8,7 +8,6 @@ import io.madrona.njord.RegionExportConfig
 import io.madrona.njord.Singletons
 import io.madrona.njord.db.RegionDao
 import io.madrona.njord.util.logger
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
@@ -16,6 +15,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.intOrNull
+import kotlin.time.Clock
 
 @Serializable
 data class RegionManifestEntry(

@@ -17,12 +17,12 @@ import io.madrona.njord.util.logger
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.datetime.Clock
 import kotlin.concurrent.AtomicInt
 import kotlin.concurrent.AtomicLong
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.native.runtime.GC
 import kotlin.native.runtime.NativeRuntimeApi
+import kotlin.time.Clock
 
 class ChartIngest(
     private val ingestStatus: IngestStatus = Singletons.ingestStatus,

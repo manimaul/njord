@@ -4,13 +4,13 @@ import androidx.compose.runtime.*
 import io.madrona.njord.viewmodel.AboutViewModel
 import io.madrona.njord.viewmodel.adminViewModel
 import io.madrona.njord.viewmodel.complete
-import kotlinx.datetime.Clock
-import kotlinx.datetime.toJSDate
 import org.jetbrains.compose.web.attributes.colspan
 import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.*
+import kotlin.time.Clock
+import kotlin.time.toJSDate
 
 @Composable
 actual fun Home() {

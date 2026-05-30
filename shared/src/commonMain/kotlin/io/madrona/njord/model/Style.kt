@@ -228,6 +228,8 @@ data class Source(
 
     @SerialName("url") val tileJsonUrl: String? = null, // "https://localhost:9000/v1/tile_json"
 
+    @SerialName("promoteId") val promoteId: String? = null,
+
     val data: Feature? = null,
 ) {
     companion object {

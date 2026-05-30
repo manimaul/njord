@@ -46,7 +46,8 @@ class StyleHandler(
                 sources = mapOf(
                     Source.SENC to Source(
                         type = SourceType.VECTOR,
-                        tileJsonUrl = "$baseUrl/v1/tile_json"
+                        tileJsonUrl = "$baseUrl/v1/tile_json",
+                        promoteId = "LNAM"
                     )
                 ),
                 layers = layerFactory.layers(LayerableOptions(depth, theme)),

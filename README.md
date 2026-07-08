@@ -22,6 +22,9 @@ Gradle with Kotlin DSL. Use `./gradlew` at the root.
 ### Development Workflow
 
 ```bash
+# 0. Start podman (if needed)
+podman machine start 
+
 # 1. Start the database (PostGIS)
 cd chart_server_db && podman-compose up
 

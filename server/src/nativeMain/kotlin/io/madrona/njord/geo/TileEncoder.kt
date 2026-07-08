@@ -228,6 +228,13 @@ class TileEncoder(
         return mvt
     }
 
+    /**
+     * True if this tile has real content beyond the "PLY" chart-coverage-boundary layer,
+     * which addCharts() adds unconditionally for any intersecting chart regardless of
+     * whether that chart contributed any actual rendered features to this tile.
+     */
+    fun hasContent(): Boolean = vectorTileEncoder.hasFeatures(excludingLayers = setOf("PLY"))
+
     fun infoJson() : List<ChartFeatureInfo> {
         return infoFeatures
     }

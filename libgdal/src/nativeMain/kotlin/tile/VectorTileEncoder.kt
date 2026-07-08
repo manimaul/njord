@@ -174,6 +174,14 @@ class VectorTileEncoder {
         return clipGeometry.intersection(geometry)
     }
 
+    /**
+     * @return true if any layer other than one in [excludingLayers] has at least one feature.
+     * Useful for detecting a tile that has no real content (e.g. only a chart-coverage
+     * boundary layer was added, but no chart/base-map features actually landed in it).
+     */
+    fun hasFeatures(excludingLayers: Set<String> = emptySet()): Boolean =
+        layers.any { (name, layer) -> name !in excludingLayers && layer.features.isNotEmpty() }
+
     fun jsonPrimitiveTileValue(jsonPrimitive: JsonPrimitive) : Tile.Value {
         return if (jsonPrimitive.isString) {
             Tile.Value(stringValue = jsonPrimitive.content)

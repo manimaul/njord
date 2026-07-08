@@ -6,7 +6,10 @@ import SqliteDb
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.RegionExportConfig
 import io.madrona.njord.Singletons
+import io.madrona.njord.db.RegionChart
 import io.madrona.njord.db.RegionDao
+import io.madrona.njord.geo.TileEncoder
+import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -24,6 +27,8 @@ data class RegionManifestEntry(
     val coverage: String,
     val archive: String,
 )
+
+private data class TileCoord(val z: Int, val x: Int, val y: Int)
 
 class RegionExporter(
     private val config: ChartsConfig = Singletons.config,
@@ -75,12 +80,12 @@ class RegionExporter(
             return
         }
 
-        val archiveName = "${regionConfig.name}_${currentTimestamp()}.sqlite"
+        val archiveName = "${regionConfig.name}_${currentTimestamp()}.mbtiles"
         val archiveFile = File(regionDir, archiveName)
         val tmpFile = File(regionDir, "$archiveName.tmp")
 
-        log.info("writing ${charts.size} charts to ${archiveFile.getAbsolutePath()}")
-        writeArchive(tmpFile.getAbsolutePath().toString(), charts.map { it.id }, regionConfig.coverage, charts)
+        log.info("writing ${charts.size} chart(s) to ${archiveFile.getAbsolutePath()}")
+        writeMbtilesArchive(tmpFile.getAbsolutePath().toString(), regionConfig, charts)
 
         // Atomic rename
         if (tmpFile.renameTo(archiveFile.getAbsolutePath().toString()) == null) {
@@ -93,82 +98,122 @@ class RegionExporter(
         pruneOldArchives(regionConfig.name)
     }
 
-    private suspend fun writeArchive(
+    private suspend fun writeMbtilesArchive(
         path: String,
-        chartIds: List<Long>,
-        coverageWkt: String,
-        charts: List<io.madrona.njord.db.RegionChart>,
+        regionConfig: RegionExportConfig,
+        charts: List<RegionChart>,
     ) {
-        SqliteDb.open(path).use { db ->
-            db.exec(CREATE_CHART_TABLE)
-            db.exec(CREATE_FEATURE_TABLE)
-            db.exec(CREATE_LNAM_REFS_TABLE)
-            db.exec(CREATE_FEATURE_BBOX_TABLE)
+        val tileCoords = compileTileCoordinates(charts)
+        log.info("region ${regionConfig.name}: ${tileCoords.size} candidate tile(s)")
 
-            db.prepare(INSERT_CHART).use { stmt ->
-                db.transaction {
-                    charts.forEach { chart ->
-                        stmt.reset()
-                            .bindLong(1, chart.id)
-                            .bindText(2, chart.name)
-                            .bindInt(3, chart.scale)
-                            .bindText(4, chart.fileName)
-                            .bindText(5, chart.updated)
-                            .bindText(6, chart.issued)
-                            .bindInt(7, chart.zoom)
-                            .bindBlob(8, chart.covrWkb)
-                            .bindText(9, chart.dsidPropsJson)
-                            .bindText(10, chart.chartTxtJson)
-                            .step()
+        SqliteDb.open(path).use { db ->
+            db.exec(CREATE_METADATA_TABLE)
+            db.exec(CREATE_TILES_TABLE)
+            db.exec(CREATE_TILES_INDEX)
+
+            val (written, minZ, maxZ) = renderAndWriteTiles(db, tileCoords)
+            writeMetadata(db, regionConfig, minZ, maxZ)
+            log.info("region ${regionConfig.name}: wrote $written/${tileCoords.size} non-empty tile(s)")
+        }
+    }
+
+    /**
+     * Compiles the sparse set of (z,x,y) tiles worth rendering: for every feature in every
+     * chart intersecting the region, its own [MINZ, MAXZ] zoom-visibility range (from S-57
+     * SCAMIN/SCAMAX) is capped at that feature's chart's own compiled-scale zoom (chart.zoom,
+     * already derived at ingest time from DSPM_CSCL) — so an overview chart naturally yields a
+     * shallow pyramid and a detailed chart a deeper one, with no separate config needed.
+     */
+    private suspend fun compileTileCoordinates(charts: List<RegionChart>): Set<TileCoord> {
+        val tileSystem = Singletons.tileSystem
+        val coords = mutableSetOf<TileCoord>()
+        charts.forEach { chart ->
+            val features = regionDao.findFeaturesForChart(chart.id) ?: return@forEach
+            features.forEach { feature ->
+                val props = jsonParser.parseToJsonElement(feature.propsJson).jsonObject
+                val featMinZ = (props["MINZ"]?.jsonPrimitive?.intOrNull ?: 0).coerceAtLeast(0)
+                val featMaxZ = (props["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32).coerceAtMost(chart.zoom)
+                if (featMinZ > featMaxZ) return@forEach
+
+                val bbox = OgrGeometry.fromWkb4326(feature.geomWkb)?.envelope() ?: return@forEach
+                for (z in featMinZ..featMaxZ) {
+                    val maxTile = (1 shl z) - 1
+                    val tl = tileSystem.latLngToTileXy(bbox.west, bbox.north, z)
+                    val br = tileSystem.latLngToTileXy(bbox.east, bbox.south, z)
+                    val xStart = tl.x.toInt().coerceIn(0, maxTile)
+                    val xEnd = br.x.toInt().coerceIn(0, maxTile)
+                    val yStart = tl.y.toInt().coerceIn(0, maxTile)
+                    val yEnd = br.y.toInt().coerceIn(0, maxTile)
+                    for (x in xStart..xEnd) {
+                        for (y in yStart..yEnd) {
+                            coords.add(TileCoord(z, x, y))
+                        }
                     }
                 }
             }
+        }
+        return coords
+    }
 
-            db.prepare(INSERT_FEATURE).use { featureStmt ->
-                db.prepare(INSERT_LNAM_REF).use { lnamStmt ->
-                    db.prepare(INSERT_FEATURE_BBOX).use { bboxStmt ->
-                        chartIds.forEach { chartId ->
-                            val features = regionDao.findFeaturesForChart(chartId) ?: return@forEach
-                            if (features.isEmpty()) return@forEach
-
-                            db.transaction {
-                                features.forEach { feature ->
-                                    featureStmt.reset()
-                                        .bindLong(1, feature.id)
-                                        .bindText(2, feature.layer)
-                                        .bindBlob(3, feature.geomWkb)
-                                        .bindText(4, feature.propsJson)
-                                        .bindLong(5, feature.chartId)
-                                        .step()
-
-                                    feature.lnamRefs.forEach { lnamRef ->
-                                        lnamStmt.reset()
-                                            .bindLong(1, feature.id)
-                                            .bindText(2, lnamRef)
-                                            .step()
-                                    }
-
-                                    val props = jsonParser.parseToJsonElement(feature.propsJson).jsonObject
-                                    val minZ = props["MINZ"]?.jsonPrimitive?.intOrNull ?: 0
-                                    val maxZ = props["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32
-                                    val bbox = OgrGeometry.fromWkb4326(feature.geomWkb)?.envelope()
-                                    if (bbox != null) {
-                                        bboxStmt.reset()
-                                            .bindLong(1, feature.id)
-                                            .bindInt(2, minZ)
-                                            .bindInt(3, maxZ)
-                                            .bindDouble(4, bbox.west)
-                                            .bindDouble(5, bbox.east)
-                                            .bindDouble(6, bbox.south)
-                                            .bindDouble(7, bbox.north)
-                                            .step()
-                                    } else {
-                                        log.warn("feature ${feature.id} has no parseable geometry, skipping bbox")
-                                    }
-                                }
+    /**
+     * Renders each candidate tile via the same [TileEncoder] used for live tile serving, skips
+     * tiles with no real content, and gzip-compresses + inserts the rest. Tiles are rendered in
+     * batches (suspend, outside any transaction) then written in a single sync db.transaction
+     * per batch, since SqliteDb.transaction {} does not accept a suspend lambda.
+     */
+    private suspend fun renderAndWriteTiles(db: SqliteDb, tileCoords: Set<TileCoord>): Triple<Int, Int, Int> {
+        var written = 0
+        var minZ = Int.MAX_VALUE
+        var maxZ = Int.MIN_VALUE
+        db.prepare(INSERT_TILE).use { stmt ->
+            tileCoords.sortedWith(compareBy({ it.z }, { it.x }, { it.y }))
+                .chunked(TILE_INSERT_BATCH_SIZE)
+                .forEach { batch ->
+                    val rendered = batch.mapNotNull { coord ->
+                        val encoder = TileEncoder(coord.x, coord.y, coord.z)
+                        encoder.addCharts(false)
+                        if (encoder.hasContent()) coord to gzipCompress(encoder.encode()) else null
+                    }
+                    if (rendered.isNotEmpty()) {
+                        db.transaction {
+                            rendered.forEach { (coord, bytes) ->
+                                val tmsRow = xyzToTmsRow(coord.z, coord.y)
+                                stmt.reset()
+                                    .bindInt(1, coord.z)
+                                    .bindInt(2, coord.x)
+                                    .bindInt(3, tmsRow)
+                                    .bindBlob(4, bytes)
+                                    .step()
+                                written++
+                                minZ = minOf(minZ, coord.z)
+                                maxZ = maxOf(maxZ, coord.z)
                             }
                         }
                     }
+                }
+        }
+        return Triple(written, if (written > 0) minZ else 0, if (written > 0) maxZ else 0)
+    }
+
+    private fun writeMetadata(db: SqliteDb, regionConfig: RegionExportConfig, minZ: Int, maxZ: Int) {
+        val env = OgrGeometry.fromWkt4326(regionConfig.coverage)?.envelope()
+        val rows = buildList {
+            add("name" to regionConfig.name)
+            add("description" to regionConfig.description)
+            add("format" to "pbf")
+            add("type" to "baselayer")
+            add("version" to "1")
+            add("minzoom" to minZ.toString())
+            add("maxzoom" to maxZ.toString())
+            env?.let {
+                add("bounds" to "${it.west},${it.south},${it.east},${it.north}")
+                add("center" to "${(it.west + it.east) / 2},${(it.south + it.north) / 2},${(minZ + maxZ) / 2}")
+            }
+        }
+        db.prepare(INSERT_METADATA).use { stmt ->
+            db.transaction {
+                rows.forEach { (name, value) ->
+                    stmt.reset().bindText(1, name).bindText(2, value).step()
                 }
             }
         }
@@ -194,7 +239,7 @@ class RegionExporter(
 
     private fun archivesForRegion(regionName: String): List<File> {
         return regionDir.listFiles(false)
-            .filter { it.name.startsWith(regionName) && it.name.endsWith(".sqlite") }
+            .filter { it.name.startsWith(regionName) && it.name.endsWith(".mbtiles") }
     }
 
     private fun updateManifest() {
@@ -224,72 +269,43 @@ class RegionExporter(
     companion object {
         const val MANIFEST_FILE = "manifest.json"
         const val MAX_ARCHIVES = 2
+        private const val TILE_INSERT_BATCH_SIZE = 200
 
-        private val CREATE_CHART_TABLE = """
-            CREATE TABLE IF NOT EXISTS chart (
-                id         INTEGER PRIMARY KEY,
-                name       TEXT UNIQUE NOT NULL,
-                scale      INTEGER     NOT NULL,
-                file_name  TEXT        NOT NULL,
-                updated    TEXT        NOT NULL,
-                issued     TEXT        NOT NULL,
-                zoom       INTEGER     NOT NULL,
-                covr_wkb   BLOB        NOT NULL,
-                dsid_props TEXT        NOT NULL,
-                chart_txt  TEXT        NOT NULL
+        /**
+         * MBTiles uses TMS row order (Y=0 at bottom); everywhere else in this pipeline
+         * (TileSystem, TileEncoder, the live /v1/tile route) uses XYZ (Y=0 at top) — this is
+         * the one place that flips.
+         */
+        fun xyzToTmsRow(z: Int, y: Int): Int = ((1 shl z) - 1) - y
+
+        private val CREATE_METADATA_TABLE = """
+            CREATE TABLE IF NOT EXISTS metadata (
+                name  TEXT NOT NULL,
+                value TEXT NOT NULL
             );
         """.trimIndent()
 
-        private val CREATE_FEATURE_TABLE = """
-            CREATE TABLE IF NOT EXISTS feature (
-                id       INTEGER PRIMARY KEY,
-                layer    TEXT    NOT NULL,
-                geom     BLOB    NOT NULL,
-                props    TEXT    NOT NULL,
-                chart_id INTEGER NOT NULL,
-                FOREIGN KEY(chart_id) REFERENCES chart(id)
+        private val CREATE_TILES_TABLE = """
+            CREATE TABLE IF NOT EXISTS tiles (
+                zoom_level  INTEGER NOT NULL,
+                tile_column INTEGER NOT NULL,
+                tile_row    INTEGER NOT NULL,
+                tile_data   BLOB    NOT NULL
             );
         """.trimIndent()
 
-        private val CREATE_LNAM_REFS_TABLE = """
-            CREATE TABLE IF NOT EXISTS lnam_refs (
-                fid      INTEGER NOT NULL,
-                lnam_ref TEXT    NOT NULL,
-                PRIMARY KEY (fid, lnam_ref),
-                FOREIGN KEY (fid) REFERENCES feature(id)
-            );
+        private val CREATE_TILES_INDEX = """
+            CREATE UNIQUE INDEX IF NOT EXISTS tile_index
+                ON tiles (zoom_level, tile_column, tile_row);
         """.trimIndent()
 
-        private const val INSERT_CHART = """
-            INSERT OR REPLACE INTO chart
-                (id, name, scale, file_name, updated, issued, zoom, covr_wkb, dsid_props, chart_txt)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        private const val INSERT_METADATA = """
+            INSERT INTO metadata (name, value) VALUES (?, ?);
         """
 
-        private const val INSERT_FEATURE = """
-            INSERT OR REPLACE INTO feature (id, layer, geom, props, chart_id)
-            VALUES (?, ?, ?, ?, ?);
-        """
-
-        private const val INSERT_LNAM_REF = """
-            INSERT OR IGNORE INTO lnam_refs (fid, lnam_ref) VALUES (?, ?);
-        """
-
-        private val CREATE_FEATURE_BBOX_TABLE = """
-            CREATE TABLE IF NOT EXISTS feature_bbox (
-                id    INTEGER PRIMARY KEY,
-                min_z INTEGER NOT NULL,
-                max_z INTEGER NOT NULL,
-                min_x REAL    NOT NULL,
-                max_x REAL    NOT NULL,
-                min_y REAL    NOT NULL,
-                max_y REAL    NOT NULL
-            );
-        """.trimIndent()
-
-        private const val INSERT_FEATURE_BBOX = """
-            INSERT OR REPLACE INTO feature_bbox (id, min_z, max_z, min_x, max_x, min_y, max_y)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
+        private const val INSERT_TILE = """
+            INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data)
+            VALUES (?, ?, ?, ?);
         """
     }
 }

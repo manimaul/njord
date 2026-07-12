@@ -9,6 +9,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.db.RegionChart
 import io.madrona.njord.db.RegionDao
 import io.madrona.njord.geo.TileEncoder
+import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
 import kotlinx.datetime.TimeZone
@@ -66,13 +67,19 @@ class RegionExporter(
     private suspend fun exportRegion(regionConfig: RegionExportConfig, force: Boolean = false) {
         log.info("exporting region ${regionConfig.name} force=$force")
 
-        val charts = regionDao.findChartsInRegion(regionConfig.coverage) ?: run {
-            log.warn("no charts found for region ${regionConfig.name}")
-            return
-        }
-        if (charts.isEmpty()) {
-            log.info("no charts intersect region ${regionConfig.name}, skipping")
-            return
+        val isWorld = regionConfig.name == WORLD_REGION_NAME
+        val charts = if (isWorld) {
+            emptyList()
+        } else {
+            val found = regionDao.findChartsInRegion(regionConfig.coverage) ?: run {
+                log.warn("no charts found for region ${regionConfig.name}")
+                return
+            }
+            if (found.isEmpty()) {
+                log.info("no charts intersect region ${regionConfig.name}, skipping")
+                return
+            }
+            found
         }
 
         if (!force && !needsRebuild(regionConfig)) {
@@ -84,8 +91,12 @@ class RegionExporter(
         val archiveFile = File(regionDir, archiveName)
         val tmpFile = File(regionDir, "$archiveName.tmp")
 
-        log.info("writing ${charts.size} chart(s) to ${archiveFile.getAbsolutePath()}")
-        writeMbtilesArchive(tmpFile.getAbsolutePath().toString(), regionConfig, charts)
+        if (isWorld) {
+            log.info("writing world base map to ${archiveFile.getAbsolutePath()}")
+        } else {
+            log.info("writing ${charts.size} chart(s) to ${archiveFile.getAbsolutePath()}")
+        }
+        writeMbtilesArchive(tmpFile.getAbsolutePath().toString(), regionConfig, charts, isWorld)
 
         // Atomic rename
         if (tmpFile.renameTo(archiveFile.getAbsolutePath().toString()) == null) {
@@ -102,8 +113,9 @@ class RegionExporter(
         path: String,
         regionConfig: RegionExportConfig,
         charts: List<RegionChart>,
+        isWorld: Boolean,
     ) {
-        val tileCoords = compileTileCoordinates(charts)
+        val tileCoords = if (isWorld) worldTileCoordinates() else compileTileCoordinates(charts)
         log.info("region ${regionConfig.name}: ${tileCoords.size} candidate tile(s)")
 
         SqliteDb.open(path).use { db ->
@@ -111,10 +123,28 @@ class RegionExporter(
             db.exec(CREATE_TILES_TABLE)
             db.exec(CREATE_TILES_INDEX)
 
-            val (written, minZ, maxZ) = renderAndWriteTiles(db, tileCoords)
-            writeMetadata(db, regionConfig, minZ, maxZ)
+            val (written, minZ, maxZ) = renderAndWriteTiles(db, tileCoords, isWorld)
+            writeMetadata(db, regionConfig, minZ, maxZ, isWorld)
             log.info("region ${regionConfig.name}: wrote $written/${tileCoords.size} non-empty tile(s)")
         }
+    }
+
+    /**
+     * The full quad tree of tiles for zoom levels 0..[WORLD_MAX_ZOOM], covering the entire
+     * earth. Used for the "WORLD" base map region, which has no charts to derive a sparse
+     * tile set from.
+     */
+    private fun worldTileCoordinates(): Set<TileCoord> {
+        val coords = mutableSetOf<TileCoord>()
+        for (z in 0..WORLD_MAX_ZOOM) {
+            val n = 1 shl z
+            for (x in 0 until n) {
+                for (y in 0 until n) {
+                    coords.add(TileCoord(z, x, y))
+                }
+            }
+        }
+        return coords
     }
 
     /**
@@ -161,7 +191,11 @@ class RegionExporter(
      * batches (suspend, outside any transaction) then written in a single sync db.transaction
      * per batch, since SqliteDb.transaction {} does not accept a suspend lambda.
      */
-    private suspend fun renderAndWriteTiles(db: SqliteDb, tileCoords: Set<TileCoord>): Triple<Int, Int, Int> {
+    private suspend fun renderAndWriteTiles(
+        db: SqliteDb,
+        tileCoords: Set<TileCoord>,
+        isWorld: Boolean,
+    ): Triple<Int, Int, Int> {
         var written = 0
         var minZ = Int.MAX_VALUE
         var maxZ = Int.MIN_VALUE
@@ -171,7 +205,7 @@ class RegionExporter(
                 .forEach { batch ->
                     val rendered = batch.mapNotNull { coord ->
                         val encoder = TileEncoder(coord.x, coord.y, coord.z)
-                        encoder.addCharts(false)
+                        if (isWorld) encoder.addBaseMapOnly() else encoder.addCharts(false)
                         if (encoder.hasContent()) coord to gzipCompress(encoder.encode()) else null
                     }
                     if (rendered.isNotEmpty()) {
@@ -195,8 +229,18 @@ class RegionExporter(
         return Triple(written, if (written > 0) minZ else 0, if (written > 0) maxZ else 0)
     }
 
-    private fun writeMetadata(db: SqliteDb, regionConfig: RegionExportConfig, minZ: Int, maxZ: Int) {
-        val env = OgrGeometry.fromWkt4326(regionConfig.coverage)?.envelope()
+    private fun writeMetadata(
+        db: SqliteDb,
+        regionConfig: RegionExportConfig,
+        minZ: Int,
+        maxZ: Int,
+        isWorld: Boolean,
+    ) {
+        val env = if (isWorld) {
+            WORLD_ENVELOPE
+        } else {
+            OgrGeometry.fromWkt4326(regionConfig.coverage)?.envelope()
+        }
         val rows = buildList {
             add("name" to regionConfig.name)
             add("description" to regionConfig.description)
@@ -269,7 +313,10 @@ class RegionExporter(
     companion object {
         const val MANIFEST_FILE = "manifest.json"
         const val MAX_ARCHIVES = 2
+        const val WORLD_REGION_NAME = "WORLD"
+        private const val WORLD_MAX_ZOOM = 6
         private const val TILE_INSERT_BATCH_SIZE = 200
+        private val WORLD_ENVELOPE = BoundingBox(-180.0, -90.0, 180.0, 90.0)
 
         /**
          * MBTiles uses TMS row order (Y=0 at bottom); everywhere else in this pipeline

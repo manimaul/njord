@@ -8,7 +8,6 @@ import io.madrona.njord.db.ChartDao
 import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.S57ObjectLibrary
 import io.madrona.njord.layers.LayerFactory
-import io.madrona.njord.model.ChartFeature
 import io.madrona.njord.model.ChartFeatureInfo
 import kotlinx.serialization.json.*
 import tile.VectorTileEncoder
@@ -182,19 +181,34 @@ class TileEncoder(
 
         // Encode base map features inside un rendered "include"
         if (!include.isEmpty() && !info) {
-            baseMapDuration = measureTimedValue {
-                baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
-                    val props = layerFactory.preTileEncode(feature).props.filtered()
-                    feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
-                        ?.takeIf { it.isValid && !it.isEmpty() }
-                        ?.let { tileGeo ->
-                            transformToTilePixels(tileGeo, x, y, z, tileSystem)
-                            vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
-                        }
-                }
-            }.duration
+            renderBaseMap(include)
         }
         return this
+    }
+
+    /**
+     * Renders only base map features across the entire tile, skipping the chart query and
+     * encoding pipeline entirely. Used by the "WORLD" region export, which is a base-map-only
+     * archive with no charts involved.
+     */
+    suspend fun addBaseMapOnly(): TileEncoder {
+        val include: OgrGeometry = tileSystem.createTileClipPolygon(x, y, z, expandPixels = 15)
+        renderBaseMap(include)
+        return this
+    }
+
+    private suspend fun renderBaseMap(include: OgrGeometry) {
+        baseMapDuration = measureTimedValue {
+            baseFeatureDao.findFeaturesAsync(findBaseMapScale(z), include.wkb)?.forEach { feature ->
+                val props = layerFactory.preTileEncode(feature).props.filtered()
+                feature.geomWKB?.let { OgrGeometry.fromWkb4326(it) }
+                    ?.takeIf { it.isValid && !it.isEmpty() }
+                    ?.let { tileGeo ->
+                        transformToTilePixels(tileGeo, x, y, z, tileSystem)
+                        vectorTileEncoder.addFeature(feature.layer, props, tileGeo)
+                    }
+            }
+        }.duration
     }
 
 

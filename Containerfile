@@ -18,7 +18,7 @@ WORKDIR /build
 COPY . .
 
 # RUN ./gradlew :web:jsBrowserDistribution --no-daemon
-RUN --mount=type=cache,target=/root/.konan \
+RUN --mount=type=cache,target=/root/.konan,sharing=locked \
     --mount=type=cache,target=/root/.gradle \
     ./gradlew :server:linkReleaseExecutableArch :server:linkIngestReleaseExecutableArch --no-daemon
 

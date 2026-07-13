@@ -151,12 +151,107 @@ data:
         {
           "name": "WORLD",
           "description": "World Base Map",
-          "coverage": "POLYGON((-180 -90, 180 -90, 180 90, -180 90, -180 -90))"
+          "coverage": "POLYGON ((-180.0 -90.0,180.0 -90.0,180.0 90.0,-180.0 90.0,-180.0 -90.0))"
+        },
+        {
+          "name": "REGION_02",
+          "description": "Block Island, RI to the Canadian Border",
+          "coverage": "POLYGON ((-74.8575673 38.6583911,-64.8175179 38.6583911,-64.8175179 45.6,-74.8575673 45.6,-74.8575673 38.6583911))"
+        },
+        {
+          "name": "REGION_03",
+          "description": "New York to Nantucket and Cape May, New Jersey",
+          "coverage": "POLYGON ((-77.1 34.4425632,-64.8 34.4425632,-64.8 45.3,-77.1 45.3,-77.1 34.4425632))"
+        },
+        {
+          "name": "REGION_04",
+          "description": "Chesapeake and Delaware Bays",
+          "coverage": "POLYGON ((-77.4995215 34.4425632,-72.4133413 34.4425632,-72.4133413 40.275,-77.4995215 40.275,-77.4995215 34.4425632))"
+        },
+        {
+          "name": "REGION_06",
+          "description": "Norfolk, VA to Florida - The Intracoastal Waterway",
+          "coverage": "POLYGON ((-82.05 28.3942244,-74.7 28.3942244,-74.7 39.5116525,-82.05 39.5116525,-82.05 28.3942244))"
+        },
+        {
+          "name": "REGION_07",
+          "description": "Florida East Coast and the Keys",
+          "coverage": "POLYGON ((-83.7836394 23.0,-77.7800583 23.0,-77.7800583 32.7724326,-83.7836394 32.7724326,-83.7836394 23.0))"
+        },
+        {
+          "name": "REGION_08",
+          "description": "Florida West Coast and the Keys",
+          "coverage": "POLYGON ((-91.2 23.0,-77.7800583 23.0,-77.7800583 33.6,-91.2 33.6,-91.2 23.0))"
+        },
+        {
+          "name": "REGION_10",
+          "description": "Puerto Rico and US Virgin Islands",
+          "coverage": "POLYGON ((-89.0 9.2166662,-63.6 9.2166662,-63.6 19.2,-89.0 19.2,-89.0 9.2166662))"
+        },
+        {
+          "name": "REGION_12",
+          "description": "Southern California - Point Arena to Mexican Border",
+          "coverage": "POLYGON ((-129.6 30.50001,-113.7 30.50001,-113.7 43.2,-129.6 43.2,-129.6 30.50001))"
+        },
+        {
+          "name": "REGION_13",
+          "description": "Lake Michigan",
+          "coverage": "POLYGON ((-91.2 38.4,-81.188 38.4,-81.188 48.0,-91.2 48.0,-91.2 38.4))"
+        },
+        {
+          "name": "REGION_14",
+          "description": "San Francisco to Cape Flattery",
+          "coverage": "POLYGON ((-129.6 31.3855505,-116.1 31.3855505,-116.1 49.262033,-129.6 49.262033,-129.6 31.3855505))"
         },
         {
           "name": "REGION_15",
           "description": "Pacific Northwest - Puget Sound to Canadian Border",
-          "coverage": "POLYGON ((-120.5 43.2,-120.5652407 43.2,-120.5652407 42.0913546,-128.4022651 42.0913546,-128.4022651 43.2,-128.4022651 48.0,-128.4022651 49.262033,-120.5652407 49.262033,-120.5652407 48.0,-120.5 48.0,-120 48,-120 47.4827599,-120 45.812352,-120 45.8123413,-120 43.2,-120.5 43.2))"
+          "coverage": "POLYGON ((-128.4022651 42.0913546,-120.0 42.0913546,-120.0 49.262033,-128.4022651 49.262033,-128.4022651 42.0913546))"
+        },
+        {
+          "name": "REGION_17",
+          "description": "Mobile, AL to Mexican Border",
+          "coverage": "POLYGON ((-100.8 23.9854414,-80.8182813 23.9854414,-80.8182813 33.6,-100.8 33.6,-100.8 23.9854414))"
+        },
+        {
+          "name": "REGION_22",
+          "description": "Lake Superior and Lake Huron",
+          "coverage": "POLYGON ((-96.0 38.4,-80.3210855 38.4,-80.3210855 52.8,-96.0 52.8,-96.0 38.4))"
+        },
+        {
+          "name": "REGION_24",
+          "description": "Lake Erie (US Waters)",
+          "coverage": "POLYGON ((-86.4 38.4,-78.6 38.4,-78.6 43.275,-86.4 43.275,-86.4 38.4))"
+        },
+        {
+          "name": "REGION_26",
+          "description": "Lake Ontario (US Waters)",
+          "coverage": "POLYGON ((-79.2 42.3,-73.8 42.3,-73.8 44.6259634,-79.2 44.6259634,-79.2 42.3))"
+        },
+        {
+          "name": "REGION_30",
+          "description": "Southeast Alaska",
+          "coverage": "POLYGON ((-154.05 54.0,-129.6 54.0,-129.6 61.2,-154.05 61.2,-154.05 54.0))"
+        },
+        {
+          "name": "REGION_32",
+          "description": "South Central Alaska",
+          "coverage": "POLYGON ((-158.4 55.2,-138.0 55.2,-138.0 62.4,-158.4 62.4,-158.4 55.2))"
+        },
+        {
+          "name": "REGION_34",
+          "description": "Alaska - The Aleutians and Bristol Bay",
+          "coverage": "POLYGON ((-180.0 50.4,180.0 50.4,180.0 62.4,-180.0 62.4,-180.0 50.4))"
+        },
+        {
+          "name": "REGION_36",
+          "description": "Alaska - Norton Sound to Beaufort Sea",
+          "coverage": "POLYGON ((-173.4 57.6,-138.5265083 57.6,-138.5265083 81.6,-173.4 81.6,-173.4 57.6))"
+        },
+        {
+          "name": "REGION_40",
+          "description": "Hawaiian Islands",
+          "coverage": "POLYGON ((-181.230469 -17.056785, -148.886719 -17.056785, -148.886719 29.764377, -181.230469 29.764377, -181.230469 -17.056785))"
         }
       ]
     }

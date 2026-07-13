@@ -48,20 +48,20 @@ class RegionArchiveHandler(
 ) : KtorHandler {
     override val route = "/v1/regions/{archive}"
 
-    override suspend fun handleGet(call: ApplicationCall) {
+    override suspend fun handleGet(call: ApplicationCall) = call.requireSignature {
         val archiveName = call.parameters["archive"] ?: run {
             call.respond(HttpStatusCode.BadRequest)
-            return
+            return@requireSignature
         }
         // Prevent path traversal
         if (archiveName.contains('/') || archiveName.contains("..")) {
             call.respond(HttpStatusCode.BadRequest)
-            return
+            return@requireSignature
         }
         val archive = File(regionDir, archiveName)
         if (!archive.exists() || !archive.isFile()) {
             call.respond(HttpStatusCode.NotFound)
-            return
+            return@requireSignature
         }
         call.response.header(
             HttpHeaders.ContentDisposition,

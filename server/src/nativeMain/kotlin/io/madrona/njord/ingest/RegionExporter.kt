@@ -54,6 +54,16 @@ class RegionExporter(
     }
 
     /**
+     * Deletes all rendered region archives and the manifest.
+     */
+    fun clear() {
+        if (regionDir.isDirectory()) {
+            regionDir.listFiles(false).forEach { it.deleteRecursively() }
+            log.info("region archives cleared")
+        }
+    }
+
+    /**
      * Export a single region on-demand, always generating a new archive regardless of whether
      * one already exists. Updates the manifest after writing.
      */

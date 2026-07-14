@@ -191,6 +191,10 @@ fun Application.njord() {
 
             // curl -O https://openenc.com/v1/regions/REGION_15_2026-04-14T07-00-31.sqlite
             RegionArchiveHandler(),
+
+            // sig=$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin | jq -r .signatureEncoded)
+            // curl -v -X DELETE "https://openenc.com/v1/nuke?signature=$sig"
+            NukeHandler(),
         ).forEach {
             addHandler(it)
         }

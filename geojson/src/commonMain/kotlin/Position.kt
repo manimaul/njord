@@ -51,7 +51,7 @@ data class Position constructor(
     @Transient
     val m: Double? = if (coordinates.size > 3) coordinates[3] else null
 
-    fun newPosition(x: Number? = null, y: Number? = null): Position =
-        Position(x?.toDouble() ?: this.x, y?.toDouble() ?: this.y)
+    fun newPosition(x: Double? = null, y: Double? = null): Position =
+        Position(x ?: this.x, y ?: this.y)
 }
 

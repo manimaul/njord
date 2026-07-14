@@ -39,6 +39,9 @@ kotlin {
             staticLib {
                 baseName = "pq"
             }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple")
+            }
         }
     }
 

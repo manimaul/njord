@@ -20,6 +20,7 @@ import kotlin.js.JsExport
  */
 @Serializable
 @JsExport
+@Suppress("NON_EXPORTABLE_TYPE")
 data class Feature(
     val id: String? = null,
     val geometry: Geometry?,

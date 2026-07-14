@@ -88,6 +88,10 @@ kotlin {
                     })
                 }
             }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple", "--allow-shlib-undefined")
+                crossGccLibGcc?.let { getTest("DEBUG").linkerOpts(it) }
+            }
         }
     }
 

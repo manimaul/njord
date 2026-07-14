@@ -38,6 +38,9 @@ kotlin {
             staticLib {
                 baseName = "zip"
             }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple")
+            }
         }
     }
 

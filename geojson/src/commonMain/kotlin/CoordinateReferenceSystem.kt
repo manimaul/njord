@@ -28,6 +28,7 @@ import kotlin.js.JsExport
  */
 @Serializable
 @JsExport
+@Suppress("NON_EXPORTABLE_TYPE")
 data class CoordinateReferenceSystem(
     val type: String,
     val properties: JsonObject

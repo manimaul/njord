@@ -37,6 +37,9 @@ kotlin {
             staticLib {
                 baseName = "sqlite"
             }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple", "--allow-shlib-undefined")
+            }
         }
     }
 

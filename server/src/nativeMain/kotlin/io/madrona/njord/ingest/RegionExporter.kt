@@ -17,6 +17,7 @@ import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
@@ -335,7 +336,7 @@ class RegionExporter(
         // Use a filesystem-safe ISO-8601-style timestamp (colons replaced with hyphens)
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         fun Int.pad2() = toString().padStart(2, '0')
-        return "${now.year}-${now.monthNumber.pad2()}-${now.dayOfMonth.pad2()}T${now.hour.pad2()}-${now.minute.pad2()}-${now.second.pad2()}"
+        return "${now.year}-${now.month.number.pad2()}-${now.day.pad2()}T${now.hour.pad2()}-${now.minute.pad2()}-${now.second.pad2()}"
     }
 
     companion object {

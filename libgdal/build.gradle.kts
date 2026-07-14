@@ -30,13 +30,16 @@ kotlin {
         compilations.getByName("main") {
             cinterops {
                 val libgdal by creating {
-                    if (hostOs == "Linux") compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0")
+                    if (hostOs == "Linux") compilerOpts("--sysroot=/", "-I/usr/include/$multiarchTuple", "-D__glibc_clang_prereq(a,b)=0", "-Wno-c99-designator", "-Wno-return-type")
                 }
             }
         }
         binaries {
             staticLib {
                 baseName = "gdal"
+            }
+            if (hostOs == "Linux") {
+                getTest("DEBUG").linkerOpts("-L/usr/lib/$multiarchTuple")
             }
         }
     }

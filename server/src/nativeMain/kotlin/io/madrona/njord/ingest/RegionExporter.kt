@@ -10,24 +10,21 @@ import io.madrona.njord.db.RegionChart
 import io.madrona.njord.db.RegionDao
 import io.madrona.njord.geo.TileEncoder
 import io.madrona.njord.geojson.BoundingBox
+import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.GeoJsonObject
+import io.madrona.njord.model.RegionManifestEntry
 import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.intOrNull
 import kotlin.time.Clock
-
-@Serializable
-data class RegionManifestEntry(
-    val name: String,
-    val description: String,
-    val coverage: String,
-    val archive: String,
-)
+import kotlin.time.Instant
 
 private data class TileCoord(val z: Int, val x: Int, val y: Int)
 
@@ -282,7 +279,6 @@ class RegionExporter(
 
     private fun pruneOldArchives(regionName: String) {
         val archives = archivesForRegion(regionName)
-            .sortedByDescending { it.name }
         if (archives.size > MAX_ARCHIVES) {
             archives.drop(MAX_ARCHIVES).forEach { old ->
                 log.info("pruning old archive ${old.name}")
@@ -294,18 +290,40 @@ class RegionExporter(
     private fun archivesForRegion(regionName: String): List<File> {
         return regionDir.listFiles(false)
             .filter { it.name.startsWith(regionName) && it.name.endsWith(".mbtiles") }
+            .sortedByDescending { parseArchiveTimestamp(regionName, it.name) ?: Instant.DISTANT_PAST }
+    }
+
+    private fun String.wktToGeojson() : GeoJsonObject {
+        return OgrGeometry.fromWkt4326(this)?.geoJson() ?: Feature(geometry = null)
+    }
+
+    /**
+     * Inverts [currentTimestamp]'s "yyyy-MM-ddTHH-mm-ss" format (dashes in place of colons,
+     * for filesystem-safety) back into an [Instant], from an archive filename of the form
+     * "${regionName}_${timestamp}.mbtiles".
+     */
+    private fun parseArchiveTimestamp(regionName: String, fileName: String): Instant? {
+        val ts = fileName.removePrefix("${regionName}_").removeSuffix(".mbtiles")
+        return runCatching {
+            val colonized = ts.replaceFirst(Regex("T(\\d{2})-(\\d{2})-(\\d{2})$"), "T$1:$2:$3")
+            LocalDateTime.parse(colonized).toInstant(TimeZone.currentSystemDefault())
+        }.getOrNull()
     }
 
     private fun updateManifest() {
         val entries = config.regionExports.mapNotNull { regionConfig ->
-            val latestArchive = archivesForRegion(regionConfig.name)
-                .sortedByDescending { it.name }
-                .firstOrNull() ?: return@mapNotNull null
+            val latestArchive = archivesForRegion(regionConfig.name).firstOrNull() ?: return@mapNotNull null
+            val createdAt = parseArchiveTimestamp(regionConfig.name, latestArchive.name) ?: run {
+                log.error("failed to parse timestamp from archive name ${latestArchive.name}")
+                return@mapNotNull null
+            }
             RegionManifestEntry(
                 name = regionConfig.name,
                 description = regionConfig.description,
                 coverage = regionConfig.coverage,
+                coverageGeo = regionConfig.coverage.wktToGeojson(),
                 archive = latestArchive.name,
+                createdAt = createdAt,
             )
         }
         val manifestFile = File(regionDir, MANIFEST_FILE)

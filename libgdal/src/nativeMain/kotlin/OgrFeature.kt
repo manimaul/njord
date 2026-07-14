@@ -34,6 +34,7 @@ class OgrFeature(
 
     val properties: JsonObject by lazy {
         val count = OGR_F_GetFieldCount(ptr)
+        val lat by lazy { geometry?.envelope()?.let { (it.south + it.north) / 2.0 } ?: 0.0 }
         JsonObject(buildMap {
             if (isSounding) {
                 val meters = geometry?.pointZ
@@ -95,13 +96,13 @@ class OgrFeature(
                     (value as? JsonPrimitive)?.let {
                        it.intOrNull
                     }?.let {
-                        put("MINZ", JsonPrimitive(zFinder.findZoom(it)))
+                        put("MINZ", JsonPrimitive(tileSystem.scaleToZoomInt(it.toDouble(), lat)))
                     }
                 } else if (name == "SCAMAX") {
                     (value as? JsonPrimitive)?.let {
                         it.intOrNull
                     }?.let {
-                        put("MAXZ", JsonPrimitive(zFinder.findZoom(it)))
+                        put("MAXZ", JsonPrimitive(tileSystem.scaleToZoomInt(it.toDouble(), lat)))
                     }
                 }
                 put(name, value)

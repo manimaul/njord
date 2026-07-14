@@ -127,6 +127,18 @@ class TileSystemTest {
     }
 
     @Test
+    fun scaleToZoomIntRoundsToNearest() {
+        val equatorZoom = subject.scaleToZoomInt(35_000.0, 0.0)
+        assertEquals(kotlin.math.round(subject.scaleToZoom(35_000.0, 0.0)).toInt(), equatorZoom)
+
+        // Mercator ground-resolution per pixel is finer near the poles at a fixed zoom, so
+        // reaching the same real-world scale at higher latitude needs a lower zoom level.
+        val seattleZoom = subject.scaleToZoomInt(35_000.0, 47.6)
+        assertEquals(kotlin.math.round(subject.scaleToZoom(35_000.0, 47.6)).toInt(), seattleZoom)
+        assertTrue(seattleZoom < equatorZoom, "Expected latitude-adjusted zoom ($seattleZoom) < equator zoom ($equatorZoom)")
+    }
+
+    @Test
     fun createTileClipPolygon() {
         val z = 16
         val x = 10485

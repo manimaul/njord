@@ -17,6 +17,7 @@ import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sin
 
 class TileSystem(
@@ -73,6 +74,16 @@ class TileSystem(
         val latRad = latitudeDegrees * PI / 180.0
         return EARTH_CIRCUMFERENCE * cos(latRad) / (SCREEN_TILE_SIZE * 2.0.pow(zoom) * SCREEN_PIXEL_SIZE_METERS)
     }
+
+    /**
+     * Convert a map scale denominator to a whole zoom level at the given latitude,
+     * rounded to the nearest integer zoom.
+     * @param scaleDenominator the "1:X" denominator (e.g. 50000 for 1:50,000)
+     * @param latitudeDegrees the map centroid latitude in degrees
+     * @return zoom level rounded to the nearest Int
+     */
+    fun scaleToZoomInt(scaleDenominator: Double, latitudeDegrees: Double): Int =
+        round(scaleToZoom(scaleDenominator, latitudeDegrees)).toInt()
 
     /**
      * converts a pixel x,y coordinates at a specified level of detail into
@@ -171,3 +182,5 @@ class TileSystem(
         return Position(tileX, tileY)
     }
 }
+
+val tileSystem = TileSystem()

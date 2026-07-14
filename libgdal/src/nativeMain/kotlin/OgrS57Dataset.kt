@@ -12,6 +12,8 @@ import kotlinx.serialization.json.JsonObject
 import libgdal.*
 import kotlin.collections.emptyMap
 import kotlin.experimental.ExperimentalNativeApi
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.native.ref.Cleaner
 import kotlin.native.ref.createCleaner
 
@@ -78,9 +80,15 @@ class OgrS57Dataset(val file: File) {
             it.name to it.readContents(charSet)
         } ?: emptyMap()
 
+        var covrSouth = Double.POSITIVE_INFINITY
+        var covrNorth = Double.NEGATIVE_INFINITY
         val mcovr = getLayer("M_COVR")?.mapFeature { feature ->
             if (feature.properties.intValue("CATCOV") == 1) {
-                feature.geometry?.geoJson()
+                feature.geometry?.also { geom ->
+                    val envelope = geom.envelope()
+                    covrSouth = min(covrSouth, envelope.south)
+                    covrNorth = max(covrNorth, envelope.north)
+                }?.geoJson()
             } else {
                 null
             }
@@ -99,6 +107,7 @@ class OgrS57Dataset(val file: File) {
             Feature(geometry = multiPolygon)
         }
         val scale = props.intValue("DSPM_CSCL") ?: return InsertError("DSID DSPM_CSCL is missing")
+        val centerLat = if (covrSouth.isFinite() && covrNorth.isFinite()) (covrSouth + covrNorth) / 2.0 else 0.0
 
         return InsertSuccess(
             ChartInsert(
@@ -107,7 +116,7 @@ class OgrS57Dataset(val file: File) {
                 fileName = file.name,
                 updated = props.stringValue("DSID_UADT") ?: "",
                 issued = props.stringValue("DSID_ISDT") ?: "",
-                zoom = zFinder.findZoom(scale),
+                zoom = tileSystem.scaleToZoomInt(scale.toDouble(), centerLat),
                 covr = combinedCoverage,
                 dsidProps = props,
                 chartTxt = chartTxt
@@ -125,30 +134,4 @@ class InsertError<T>(
 class InsertSuccess<T>(
     val value: T
 ) : Insertable<T>()
-
-val zFinder = ZFinder()
-
-class ZFinder(
-    private val oneToOneZoom: Int = 28
-) {
-
-    init {
-        if (oneToOneZoom !in 1..40) {
-            throw IllegalArgumentException("oneToOneZoom must be between 1 and 40")
-        }
-    }
-
-    /**
-     * Scale is the ratio of distances of a map. ex 17999 means 17999:1
-     */
-    fun findZoom(scale: Int): Int {
-        var zoom = oneToOneZoom
-        var zScale = scale.toDouble()
-        while (zScale > 1.0) {
-            zScale /= 2.0
-            zoom -= 1
-        }
-        return zoom
-    }
-}
 

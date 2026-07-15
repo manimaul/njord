@@ -46,6 +46,31 @@ object GeometrySerializer : KSerializer<Geometry> {
     }
 }
 
+object GeoJsonObjectSerializer : KSerializer<GeoJsonObject> {
+
+    @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+    override val descriptor: SerialDescriptor
+        get() = buildSerialDescriptor("GeoJsonObject", StructureKind.OBJECT)
+
+    override fun deserialize(decoder: Decoder): GeoJsonObject {
+        val input = decoder as? JsonDecoder ?: throw SerializationException("This class can only be loaded from JSON")
+        val element = input.decodeJsonElement()
+        return when (element.jsonObject["type"]?.jsonPrimitive?.content) {
+            "Feature" -> decodeFromJsonElement(Feature.serializer(), element)
+            "FeatureCollection" -> decodeFromJsonElement(FeatureCollection.serializer(), element)
+            else -> decodeFromJsonElement(GeometrySerializer, element)
+        }
+    }
+
+    override fun serialize(encoder: Encoder, value: GeoJsonObject) {
+        when (value) {
+            is Feature -> Feature.serializer().serialize(encoder, value)
+            is FeatureCollection -> FeatureCollection.serializer().serialize(encoder, value)
+            is Geometry -> GeometrySerializer.serialize(encoder, value)
+        }
+    }
+}
+
 interface DoubleListSerializer<T> : KSerializer<T> {
 
     fun coordinates(value: T): List<Double>

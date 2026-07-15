@@ -29,6 +29,6 @@ interface Geometry : GeoJsonObject {
 }
 
 
-@Serializable
+@Serializable(with = GeoJsonObjectSerializer::class)
 @JsExport
 sealed interface GeoJsonObject

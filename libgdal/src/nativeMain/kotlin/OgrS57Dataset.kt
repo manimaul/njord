@@ -58,7 +58,7 @@ class OgrS57Dataset(val file: File) {
 
     fun getLayer(name: String): OgrLayer? {
         return OGR_DS_GetLayerByName(ptr, name)?.let {
-            OgrLayer(it)
+            OgrLayer(it, this)
         }
     }
 

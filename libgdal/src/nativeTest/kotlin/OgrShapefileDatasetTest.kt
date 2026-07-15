@@ -6,8 +6,9 @@ class OgrShapefileDatasetTest {
     @Test
     fun testReadShapefile() {
         Gdal.initialize()
-        val path = "../data/ne/110m/extract/ne_110m_coastline.shp"
-        val shapeFile = OgrShapefileDataset(File(path))
+
+        val file = File("./src/nativeTest/resources/ne_110_extract/ne_110m_coastline.shp")
+        val shapeFile = OgrShapefileDataset(file)
 
         val layers = shapeFile.layerNames()
         assertTrue(layers.size > 0)

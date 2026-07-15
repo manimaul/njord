@@ -37,7 +37,7 @@ Life of a tile query option 2:
     - construct MVT in layer prioritized order from resulting geometries and cache tile render
 
 Questions:
-- Can we extract the geometries straight from the s57 files and still be performant?
+- Can we ne_110_extract the geometries straight from the s57 files and still be performant?
     - This would allow us to skip having `features` and `feature_geometry` tables altogether.
 - Do we want to use and [R*Tree enabled sqlite](https://www.sqlite.org/rtree.html)?
 

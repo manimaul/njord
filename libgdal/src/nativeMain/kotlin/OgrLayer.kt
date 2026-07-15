@@ -20,6 +20,11 @@ import kotlin.experimental.ExperimentalNativeApi
 
 class OgrLayer(
     val ptr: OGRLayerH,
+    // Keeps the owning dataset (and its Cleaner) alive for as long as this layer is
+    // reachable. Without this, the dataset's Cleaner can GDALClose() the dataset - and
+    // free everything GDAL owns underneath it, including this layer - while it is still
+    // in use, since the two are otherwise unrelated from the GC's point of view.
+    private val owner: Any? = null,
 ) {
 
     val name: String? by lazy {

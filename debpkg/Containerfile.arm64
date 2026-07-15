@@ -5,7 +5,7 @@
 # Prerequisites on the host:
 #   (none — podman handles multi-arch natively)
 #
-# Build & extract the .deb:
+# Build & ne_110_extract the .deb:
 #   cd <repo-root>
 #   bash debpkg/build_deb_arm64.sh
 #

@@ -32,7 +32,8 @@ class OgrFeatureTest {
         val ds = GdalDataset.create(
             driverName = "GeoJSON",
             path = path,
-            epsg = 4326
+            epsg = 4326,
+            autoClose = false,
         )
         assertNotNull(ds)
         val layer = ds.getOrCreateLayer("LNDARE")

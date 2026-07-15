@@ -29,7 +29,7 @@ open class GdalDataset(
     fun getOrCreateLayer(layerName: String): OgrLayer {
         return layers.getOrPut(layerName) {
             val lp = requireNotNull(GDALDatasetCreateLayer(ptr, layerName, sr, wkbUnknown, null))
-            OgrLayer(lp)
+            OgrLayer(lp, this)
         }
     }
 
@@ -52,7 +52,8 @@ open class GdalDataset(
         fun create(
             driverName: String,
             path: String,
-            epsg: Int
+            epsg: Int,
+            autoClose: Boolean = true,
         ): GdalDataset? {
             val driver = GDALGetDriverByName(driverName)
             val sr = (OSRNewSpatialReference(null) as OGRSpatialReferenceH).also {
@@ -60,7 +61,7 @@ open class GdalDataset(
                 OSRSetAxisMappingStrategy(it, OSRAxisMappingStrategy.OAMS_TRADITIONAL_GIS_ORDER)
             }
             return GDALCreate(driver, path, 0, 0, 0, GDT_Unknown, null)?.let {
-                GdalDataset(it, sr)
+                GdalDataset(it, sr, autoClose)
             }
         }
     }

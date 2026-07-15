@@ -71,7 +71,7 @@ spec:
               cpu: "1.0"
               memory: "3G" # 1242Mi used during ingestion processing with 5 concurrent chartIngestWorkers
             requests:
-              cpu: 750m
+              cpu: 300m
               memory: "1G"
           volumeMounts:
             - name: njord-config-vol

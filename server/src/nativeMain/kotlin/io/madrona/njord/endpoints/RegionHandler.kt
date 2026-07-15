@@ -12,22 +12,18 @@ import io.madrona.njord.ingest.RegionExporter
 import kotlinx.coroutines.*
 
 /**
- * GET  /v1/regions — returns the manifest.json listing available region archives.
+ * GET  /v1/regions — returns every region configured in [io.madrona.njord.ChartsConfig.regionExports]
+ * as a [io.madrona.njord.model.RegionManifestEntry]; regions with no rendered archive yet still
+ * appear, with `archive`/`createdAt` set to null.
  * POST /v1/regions — triggers immediate (forced) generation for the supplied region config.
  */
 class RegionHandler(
-    private val regionDir: File = Singletons.regionDir,
     private val exporter: RegionExporter = RegionExporter(),
 ) : KtorHandler, CoroutineScope by CoroutineScope(Dispatchers.IO) {
     override val route = "/v1/regions"
 
     override suspend fun handleGet(call: ApplicationCall) {
-        val manifest = File(regionDir, RegionExporter.MANIFEST_FILE)
-        if (!manifest.exists() || !manifest.isFile()) {
-            call.respond(HttpStatusCode.NotFound)
-            return
-        }
-        call.respondBytes(manifest.readData(), ContentType.Application.Json)
+        call.respond(exporter.buildManifest())
     }
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {

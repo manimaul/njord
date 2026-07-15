@@ -10,6 +10,6 @@ data class RegionManifestEntry(
     val description: String,
     val coverage: String,
     val coverageGeo: GeoJsonObject,
-    val archive: String,
-    val createdAt: Instant,
+    val archive: String?,
+    val createdAt: Instant?,
 )

@@ -35,7 +35,6 @@ class RegionExporter(
     private val regionDao: RegionDao = RegionDao(),
 ) {
     private val log = logger()
-    private val json = Json { prettyPrint = true }
     private val jsonParser = Json
 
     suspend fun exportAll() {
@@ -48,11 +47,10 @@ class RegionExporter(
             runCatching { exportRegion(regionConfig) }
                 .onFailure { log.error("region export failed for ${regionConfig.name}: ${it.message}") }
         }
-        updateManifest()
     }
 
     /**
-     * Deletes all rendered region archives and the manifest.
+     * Deletes all rendered region archives.
      */
     fun clear() {
         if (regionDir.isDirectory()) {
@@ -63,13 +61,12 @@ class RegionExporter(
 
     /**
      * Export a single region on-demand, always generating a new archive regardless of whether
-     * one already exists. Updates the manifest after writing.
+     * one already exists.
      */
     suspend fun exportForced(regionConfig: RegionExportConfig) {
         regionDir.mkdirs()
         runCatching { exportRegion(regionConfig, force = true) }
             .onFailure { log.error("forced region export failed for ${regionConfig.name}: ${it.message}") }
-        updateManifest()
     }
 
     private suspend fun exportRegion(regionConfig: RegionExportConfig, force: Boolean = false) {
@@ -311,25 +308,22 @@ class RegionExporter(
         }.getOrNull()
     }
 
-    private fun updateManifest() {
-        val entries = config.regionExports.mapNotNull { regionConfig ->
-            val latestArchive = archivesForRegion(regionConfig.name).firstOrNull() ?: return@mapNotNull null
-            val createdAt = parseArchiveTimestamp(regionConfig.name, latestArchive.name) ?: run {
-                log.error("failed to parse timestamp from archive name ${latestArchive.name}")
-                return@mapNotNull null
-            }
-            RegionManifestEntry(
-                name = regionConfig.name,
-                description = regionConfig.description,
-                coverage = regionConfig.coverage,
-                coverageGeo = regionConfig.coverage.wktToGeojson(),
-                archive = latestArchive.name,
-                createdAt = createdAt,
-            )
-        }
-        val manifestFile = File(regionDir, MANIFEST_FILE)
-        manifestFile.writeBytes(json.encodeToString(entries).encodeToByteArray())
-        log.info("manifest updated with ${entries.size} region(s)")
+    /**
+     * Builds a manifest entry for every region in [ChartsConfig.regionExports], regardless of
+     * whether it has been rendered yet — [RegionManifestEntry.archive] and [RegionManifestEntry.createdAt]
+     * are null until the first successful export.
+     */
+    fun buildManifest(): List<RegionManifestEntry> = config.regionExports.map { regionConfig ->
+        val latestArchive = archivesForRegion(regionConfig.name).firstOrNull()
+        val createdAt = latestArchive?.let { parseArchiveTimestamp(regionConfig.name, it.name) }
+        RegionManifestEntry(
+            name = regionConfig.name,
+            description = regionConfig.description,
+            coverage = regionConfig.coverage,
+            coverageGeo = regionConfig.coverage.wktToGeojson(),
+            archive = latestArchive?.name,
+            createdAt = createdAt,
+        )
     }
 
     private fun currentTimestamp(): String {
@@ -340,7 +334,6 @@ class RegionExporter(
     }
 
     companion object {
-        const val MANIFEST_FILE = "manifest.json"
         const val MAX_ARCHIVES = 2
         const val WORLD_REGION_NAME = "WORLD"
         private const val WORLD_MAX_ZOOM = 6

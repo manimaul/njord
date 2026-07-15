@@ -30,6 +30,39 @@ object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
                     delay(500)
                 }
             }
+            applyRegionExportPatch(distributedLock)
+        }
+    }
+
+    /**
+     * Unconditional idempotent patch that runs on every startup, independent of [DB_VERSION] —
+     * [initializeSchema] only ever runs once (when the version is 0), so it can't reach databases
+     * that were already provisioned before this column/table existed.
+     */
+    private suspend fun applyRegionExportPatch(distributedLock: DistributedLock) {
+        while (true) {
+            if (distributedLock.tryAcquireLock()) {
+                try {
+                    sqlOpAsync { conn ->
+                        conn.statement(
+                            """
+ALTER TABLE charts ADD COLUMN IF NOT EXISTS ingested_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+CREATE TABLE IF NOT EXISTS region_export_state
+(
+    region_name VARCHAR PRIMARY KEY,
+    exported_at TIMESTAMPTZ NOT NULL
+);
+                            """.trimIndent()
+                        ).execute()
+                    }
+                } finally {
+                    distributedLock.tryClearLock()
+                }
+                return
+            }
+            log.info("waiting for region export schema patch by another instance")
+            delay(500)
         }
     }
 
@@ -63,25 +96,32 @@ CREATE TABLE IF NOT EXISTS meta_data
                 """
 CREATE TABLE IF NOT EXISTS charts
 (
-    id         BIGSERIAL PRIMARY KEY,
-    name       VARCHAR UNIQUE           NOT NULL, -- DSID_DSNM
-    scale      INTEGER                  NOT NULL, -- DSPM_CSCL
-    file_name  VARCHAR                  NOT NULL, -- actual file name
-    updated    VARCHAR                  NOT NULL, -- DSID_UADT
-    issued     VARCHAR                  NOT NULL, -- DSID_ISDT
+    id          BIGSERIAL PRIMARY KEY,
+    name        VARCHAR UNIQUE           NOT NULL, -- DSID_DSNM
+    scale       INTEGER                  NOT NULL, -- DSPM_CSCL
+    file_name   VARCHAR                  NOT NULL, -- actual file name
+    updated     VARCHAR                  NOT NULL, -- DSID_UADT
+    issued      VARCHAR                  NOT NULL, -- DSID_ISDT
 
     -- Although these could be stored in th features table these we need some of this meta data in order to
     -- derive MINZ and MAXX when SCAMIN and SCAMAX are not defined. This allows us to NOT have to rely on insertion
     -- order.
-    zoom       INTEGER                  NOT NULL, -- Best display zoom level derived from scale and center latitude
-    covr       GEOMETRY(GEOMETRY, 4326) NOT NULL, -- Coverage area from "M_COVR" layer feature with "CATCOV" = 1
-    dsid_props JSONB                    NOT NULL, -- DSID
-    chart_txt  JSONB                    NOT NULL  -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
+    zoom        INTEGER                  NOT NULL, -- Best display zoom level derived from scale and center latitude
+    covr        GEOMETRY(GEOMETRY, 4326) NOT NULL, -- Coverage area from "M_COVR" layer feature with "CATCOV" = 1
+    dsid_props  JSONB                    NOT NULL, -- DSID
+    chart_txt   JSONB                    NOT NULL, -- Chart text file contents e.g. { "US5WA22A.TXT": "<file contents>" }
+    ingested_at TIMESTAMPTZ              NOT NULL DEFAULT now() -- when this row was written to our DB (distinct from DSID_UADT)
 );
 
 -- indices
 CREATE INDEX IF NOT EXISTS charts_gist ON charts USING GIST (covr);
 CREATE INDEX IF NOT EXISTS charts_idx ON charts (id);
+
+CREATE TABLE IF NOT EXISTS region_export_state
+(
+    region_name VARCHAR PRIMARY KEY,
+    exported_at TIMESTAMPTZ NOT NULL
+);
                 """.trimIndent()
             ).execute()
 

@@ -92,6 +92,9 @@ fun Application.njord() {
         launch {
             ChartIngestWorker().run()
         }
+        launch {
+            Singletons.regionExportWorker.run()
+        }
     }
     install(CORS) {
         anyHost()

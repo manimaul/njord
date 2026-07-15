@@ -137,4 +137,46 @@ class RegionDao(
             if (rs.next()) rs.getString(1) else null
         }
     }
+
+    /**
+     * True if any chart intersecting the region was written to the DB (`ingested_at`) more
+     * recently than the region's last recorded export. Unlike [latestChartUpdateInRegion], this
+     * compares against a real DB-assigned insert timestamp rather than the S-57-authored edition
+     * date, so a freshly re-ingested chart is always detected regardless of its DSID_UADT value.
+     */
+    suspend fun regionNeedsRebuild(coverageWkt: String, regionName: String): Boolean? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+            SELECT EXISTS (
+                SELECT 1 FROM charts
+                WHERE ST_Intersects(covr, ST_GeomFromText($1, 4326))
+                  AND ingested_at > COALESCE(
+                      (SELECT exported_at FROM region_export_state WHERE region_name = $2),
+                      '-infinity'::timestamptz
+                  )
+            );
+            """.trimIndent()
+        ).apply {
+            setString(1, coverageWkt)
+            setString(2, regionName)
+        }.executeQuery().use { rs ->
+            if (rs.next()) rs.getBoolean(1) else false
+        }
+    }
+
+    /**
+     * Records that [regionName] was just successfully exported, so subsequent [regionNeedsRebuild]
+     * checks only report charts ingested after this point.
+     */
+    suspend fun markRegionExported(regionName: String): Unit? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+            INSERT INTO region_export_state (region_name, exported_at) VALUES ($1, now())
+            ON CONFLICT (region_name) DO UPDATE SET exported_at = EXCLUDED.exported_at;
+            """.trimIndent()
+        ).apply {
+            setString(1, regionName)
+        }.execute()
+        Unit
+    }
 }

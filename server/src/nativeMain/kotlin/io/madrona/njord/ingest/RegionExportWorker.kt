@@ -4,56 +4,65 @@ import File
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
- * Schedules region archive exports after chart ingestion completes.
+ * Continuously renders stale region archives, one region at a time.
  *
- * Trigger logic:
- *  - [schedule] is called each time the ingestion lock is released.
- *  - Any pending trigger is cancelled and reset to fire 15 seconds later.
- *  - After the delay, the worker checks that the upload queue is empty and the
- *    ingestion lock is clear before starting region generation.
+ * [run] loops indefinitely: while zips are queued for ingestion or the ingestion lock is held,
+ * it waits briefly and rechecks. Otherwise it calls [RegionExporter.exportNext]: if a region was
+ * rendered, it loops again immediately (more regions may still be stale); if nothing needed
+ * rendering, it idles for [IDLE_DELAY_MS] before checking again. [wake] interrupts an idle/poll
+ * wait early — called after ingestion completes so newly-ingested charts' regions render promptly
+ * instead of waiting out the full idle period.
  */
 class RegionExportWorker(
     private val saveDir: File = Singletons.chartUploadDir,
     private val distributedLock: DistributedLock = Singletons.distributedLock,
     private val exporter: RegionExporter = RegionExporter(),
-) : CoroutineScope by CoroutineScope(Dispatchers.IO) {
-
+) {
     private val log = logger()
-    private var pendingJob: Job? = null
+    private val wakeChannel = Channel<Unit>(Channel.CONFLATED)
 
-    /**
-     * Called after ingestion completes. Cancels any existing pending trigger and
-     * schedules a new one to fire after [DELAY_MS] milliseconds.
-     */
-    fun schedule() {
-        pendingJob?.cancel()
-        pendingJob = launch {
-            delay(DELAY_MS)
-            runIfClear()
+    fun wake() {
+        wakeChannel.trySend(Unit)
+    }
+
+    suspend fun run() {
+        while (true) {
+            log.info("region export worker run")
+            val pendingZips = saveDir.listFiles(false)
+                .filter { it.name.endsWith(".zip", ignoreCase = true) }
+            if (pendingZips.isNotEmpty() || distributedLock.lockAcquired) {
+                idleFor(POLL_DELAY_MS)
+                continue
+            }
+            val result = runCatching { exporter.exportNext() }
+                .onFailure { log.error("region export error: ${it.message}") }
+                .getOrElse { RegionExporter.ExportResult.LockBusy }
+            when (result) {
+                is RegionExporter.ExportResult.Rendered -> {
+                    log.info("region export worker rendered")
+                }
+                is RegionExporter.ExportResult.LockBusy -> {
+                    log.info("region export worker lock busy waiting for $POLL_DELAY_MS")
+                    idleFor(POLL_DELAY_MS)
+                }
+                is RegionExporter.ExportResult.NothingToDo -> {
+                    log.info("region export worker nothing to do $IDLE_DELAY_MS")
+                    idleFor(IDLE_DELAY_MS)
+                }
+            }
         }
     }
 
-    private suspend fun runIfClear() {
-        val pendingZips = saveDir.listFiles(false)
-            .filter { it.name.endsWith(".zip", ignoreCase = true) }
-        if (pendingZips.isNotEmpty()) {
-            log.info("region export deferred — ${pendingZips.size} zip(s) still queued")
-            return
-        }
-        if (distributedLock.lockAcquired) {
-            log.info("region export deferred — ingestion lock is held")
-            return
-        }
-        log.info("starting region export")
-        runCatching { exporter.exportAll() }
-            .onSuccess { log.info("region export complete") }
-            .onFailure { log.error("region export error: ${it.message}") }
+    private suspend fun idleFor(ms: Long) {
+        withTimeoutOrNull(ms) { wakeChannel.receive() }
     }
 
     companion object {
-        private const val DELAY_MS = 15_000L
+        private const val POLL_DELAY_MS = 5_000L
+        private const val IDLE_DELAY_MS = 15 * 60 * 1000L
     }
 }

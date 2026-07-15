@@ -7,6 +7,7 @@ import io.madrona.njord.Singletons
 import io.madrona.njord.resources
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.staticCFunction
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import platform.posix.SIGINT
 import platform.posix.SIGTERM
@@ -25,7 +26,8 @@ fun ingestMain(args: Array<String>) {
         signal(SIGINT, staticCFunction { _ -> exitProcess(0) })
         signal(SIGTERM, staticCFunction { _ -> exitProcess(0) })
         runBlocking {
-            ChartIngestWorker().run()
+            launch { ChartIngestWorker().run() }
+            launch { Singletons.regionExportWorker.run() }
         }
     } ?: run {
         println("Path to resources directory was not supplied")

@@ -13,8 +13,10 @@ import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.GeoJsonObject
 import io.madrona.njord.model.RegionManifestEntry
+import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
+import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
@@ -33,20 +35,38 @@ class RegionExporter(
     private val config: ChartsConfig = Singletons.config,
     private val regionDir: File = Singletons.regionDir,
     private val regionDao: RegionDao = RegionDao(),
+    private val distributedLock: DistributedLock = Singletons.distributedLock,
 ) {
     private val log = logger()
     private val jsonParser = Json
 
-    suspend fun exportAll() {
+    sealed class ExportResult {
+        object Rendered : ExportResult()
+        object NothingToDo : ExportResult()
+        object LockBusy : ExportResult()
+    }
+
+    /**
+     * Renders at most one region — whichever configured region is currently stale — then
+     * returns. Acquires [distributedLock] (shared with chart ingestion) for the duration of the
+     * render, so this never runs concurrently with an ingest or another export anywhere in the
+     * cluster.
+     */
+    suspend fun exportNext(): ExportResult {
         if (config.regionExports.isEmpty()) {
             log.info("no region exports configured, skipping")
-            return
+            return ExportResult.NothingToDo
         }
         regionDir.mkdirs()
-        config.regionExports.forEach { regionConfig ->
-            runCatching { exportRegion(regionConfig) }
-                .onFailure { log.error("region export failed for ${regionConfig.name}: ${it.message}") }
+        val next = config.regionExports.firstOrNull { needsRebuild(it) } ?: return ExportResult.NothingToDo
+        if (!distributedLock.tryAcquireLock()) return ExportResult.LockBusy
+        try {
+            runCatching { exportRegion(next) }
+                .onFailure { log.error("region export failed for ${next.name}: ${it.message}") }
+        } finally {
+            distributedLock.tryClearLock()
         }
+        return ExportResult.Rendered
     }
 
     /**
@@ -61,16 +81,33 @@ class RegionExporter(
 
     /**
      * Export a single region on-demand, always generating a new archive regardless of whether
-     * one already exists.
+     * one already exists. Retries acquiring [distributedLock] a few times so a transient hold by
+     * the background export loop (or an in-progress ingest) doesn't silently drop this request.
      */
     suspend fun exportForced(regionConfig: RegionExportConfig) {
         regionDir.mkdirs()
-        runCatching { exportRegion(regionConfig, force = true) }
-            .onFailure { log.error("forced region export failed for ${regionConfig.name}: ${it.message}") }
+        repeat(FORCED_LOCK_ATTEMPTS) { attempt ->
+            if (distributedLock.tryAcquireLock()) {
+                try {
+                    runCatching { exportRegion(regionConfig, force = true) }
+                        .onFailure { log.error("forced region export failed for ${regionConfig.name}: ${it.message}") }
+                } finally {
+                    distributedLock.tryClearLock()
+                }
+                return
+            }
+            if (attempt < FORCED_LOCK_ATTEMPTS - 1) delay(FORCED_LOCK_RETRY_DELAY_MS)
+        }
+        log.warn("forced region export for ${regionConfig.name} skipped — lock busy")
     }
 
     private suspend fun exportRegion(regionConfig: RegionExportConfig, force: Boolean = false) {
         log.info("exporting region ${regionConfig.name} force=$force")
+
+        if (!force && !needsRebuild(regionConfig)) {
+            log.info("region ${regionConfig.name} is up-to-date, skipping")
+            return
+        }
 
         val isWorld = regionConfig.name == WORLD_REGION_NAME
         val charts = if (isWorld) {
@@ -85,11 +122,6 @@ class RegionExporter(
                 return
             }
             found
-        }
-
-        if (!force && !needsRebuild(regionConfig)) {
-            log.info("region ${regionConfig.name} is up-to-date, skipping")
-            return
         }
 
         val archiveName = "${regionConfig.name}_${currentTimestamp()}.mbtiles"
@@ -111,6 +143,7 @@ class RegionExporter(
         }
 
         log.info("region ${regionConfig.name} archive created: $archiveName")
+        regionDao.markRegionExported(regionConfig.name)
         pruneOldArchives(regionConfig.name)
     }
 
@@ -268,12 +301,8 @@ class RegionExporter(
         }
     }
 
-    private fun needsRebuild(regionConfig: RegionExportConfig): Boolean {
-        val existing = archivesForRegion(regionConfig.name)
-        if (existing.isEmpty()) return true
-        // Always rebuild — the caller (RegionExportWorker) only runs when new charts were ingested
-        return true
-    }
+    private suspend fun needsRebuild(regionConfig: RegionExportConfig): Boolean =
+        regionDao.regionNeedsRebuild(regionConfig.coverage, regionConfig.name) ?: true // fail-open: rebuild on DB error
 
     private fun pruneOldArchives(regionName: String) {
         val archives = archivesForRegion(regionName)
@@ -336,6 +365,8 @@ class RegionExporter(
     companion object {
         const val MAX_ARCHIVES = 2
         const val WORLD_REGION_NAME = "WORLD"
+        private const val FORCED_LOCK_ATTEMPTS = 3
+        private const val FORCED_LOCK_RETRY_DELAY_MS = 5_000L
         private const val WORLD_MAX_ZOOM = 6
         private const val TILE_INSERT_BATCH_SIZE = 200
         private val WORLD_ENVELOPE = BoundingBox(-180.0, -90.0, 180.0, 90.0)

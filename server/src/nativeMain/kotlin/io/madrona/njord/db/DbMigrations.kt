@@ -8,7 +8,7 @@ object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
     private const val DB_VERSION = 1
     private const val VERSION_KEY = "version"
 
-    fun run(distributedLock: DistributedLock = Singletons.distributedLock) {
+    fun run(distributedLock: DistributedLock = Singletons.migrationLock) {
         runBlocking {
             while (true) {
                 val version = dbVersion()

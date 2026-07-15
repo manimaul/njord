@@ -79,32 +79,10 @@ class RegionExporter(
         }
     }
 
-    /**
-     * Export a single region on-demand, always generating a new archive regardless of whether
-     * one already exists. Retries acquiring [distributedLock] a few times so a transient hold by
-     * the background export loop (or an in-progress ingest) doesn't silently drop this request.
-     */
-    suspend fun exportForced(regionConfig: RegionExportConfig) {
-        regionDir.mkdirs()
-        repeat(FORCED_LOCK_ATTEMPTS) { attempt ->
-            if (distributedLock.tryAcquireLock()) {
-                try {
-                    runCatching { exportRegion(regionConfig, force = true) }
-                        .onFailure { log.error("forced region export failed for ${regionConfig.name}: ${it.message}") }
-                } finally {
-                    distributedLock.tryClearLock()
-                }
-                return
-            }
-            if (attempt < FORCED_LOCK_ATTEMPTS - 1) delay(FORCED_LOCK_RETRY_DELAY_MS)
-        }
-        log.warn("forced region export for ${regionConfig.name} skipped — lock busy")
-    }
+    private suspend fun exportRegion(regionConfig: RegionExportConfig) {
+        log.info("exporting region ${regionConfig.name}")
 
-    private suspend fun exportRegion(regionConfig: RegionExportConfig, force: Boolean = false) {
-        log.info("exporting region ${regionConfig.name} force=$force")
-
-        if (!force && !needsRebuild(regionConfig)) {
+        if (!needsRebuild(regionConfig)) {
             log.info("region ${regionConfig.name} is up-to-date, skipping")
             return
         }
@@ -365,8 +343,6 @@ class RegionExporter(
     companion object {
         const val MAX_ARCHIVES = 2
         const val WORLD_REGION_NAME = "WORLD"
-        private const val FORCED_LOCK_ATTEMPTS = 3
-        private const val FORCED_LOCK_RETRY_DELAY_MS = 5_000L
         private const val WORLD_MAX_ZOOM = 6
         private const val TILE_INSERT_BATCH_SIZE = 200
         private val WORLD_ENVELOPE = BoundingBox(-180.0, -90.0, 180.0, 90.0)

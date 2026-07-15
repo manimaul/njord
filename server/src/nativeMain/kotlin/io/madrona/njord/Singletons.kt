@@ -69,6 +69,16 @@ object Singletons {
         DistributedLock()
     }
 
+    val migrationLockFile by lazy {
+        File(config.chartTempData, "migration-lock")
+    }
+
+    // Separate from [distributedLock] (ingest/export) so a lock stranded by a killed
+    // ingest or region-export can never block a new pod's startup migrations.
+    val migrationLock by lazy {
+        DistributedLock(lockFile = migrationLockFile)
+    }
+
     val ingestStatus by lazy { IngestStatus() }
 
     val regionExportWorker by lazy { RegionExportWorker() }

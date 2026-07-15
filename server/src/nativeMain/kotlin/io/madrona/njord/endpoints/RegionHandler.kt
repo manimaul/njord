@@ -25,15 +25,6 @@ class RegionHandler(
     override suspend fun handleGet(call: ApplicationCall) {
         call.respond(exporter.buildManifest())
     }
-
-    override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
-        val regionConfig = call.receive<RegionExportConfig>()
-        // Launch export in background so the HTTP response returns immediately
-        launch {
-            exporter.exportForced(regionConfig)
-        }
-        call.respond(HttpStatusCode.Accepted)
-    }
 }
 
 /**

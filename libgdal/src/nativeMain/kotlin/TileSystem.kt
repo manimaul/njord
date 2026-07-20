@@ -41,6 +41,8 @@ class TileSystem(
         private const val EARTH_CIRCUMFERENCE = 40_075_016.686     // meters at equator
         private const val SCREEN_PIXEL_SIZE_METERS = 0.0254 / 96.0 // 96 dpi screen pixel size in meters
         private const val SCREEN_TILE_SIZE = 256                   // screen pixels per Web Mercator tile
+
+        private const val TWEAK_ZOOM_TO_SCALE_BY = .92
     }
 
 
@@ -80,10 +82,11 @@ class TileSystem(
      * rounded to the nearest integer zoom.
      * @param scaleDenominator the "1:X" denominator (e.g. 50000 for 1:50,000)
      * @param latitudeDegrees the map centroid latitude in degrees
+     * @param tweakBy the amount as to multiply the calculated zoom by before it is rounded - defaults to [TWEAK_ZOOM_TO_SCALE_BY]
      * @return zoom level rounded to the nearest Int
      */
-    fun scaleToZoomInt(scaleDenominator: Double, latitudeDegrees: Double): Int =
-        round(scaleToZoom(scaleDenominator, latitudeDegrees)).toInt()
+    fun scaleToZoomInt(scaleDenominator: Double, latitudeDegrees: Double, tweakBy: Double = TWEAK_ZOOM_TO_SCALE_BY): Int =
+        round(scaleToZoom(scaleDenominator, latitudeDegrees) * tweakBy).toInt()
 
     /**
      * converts a pixel x,y coordinates at a specified level of detail into

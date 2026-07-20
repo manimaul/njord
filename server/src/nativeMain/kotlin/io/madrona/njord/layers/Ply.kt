@@ -17,7 +17,9 @@ class Ply : Layerable() {
                 paint = Paint(
                     lineColor = colorFrom(Color.CURSR, options.theme).json,
                     lineWidth = 2f
-                )
+                ),
+                minZoom = 0,
+                maxZoomExclusive = 10,
             )
         )
     }

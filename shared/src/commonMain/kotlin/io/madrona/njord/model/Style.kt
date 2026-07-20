@@ -29,6 +29,8 @@ data class Layer(
     @SerialName("source-layer") val sourceLayer: String? = null,
     val filter: JsonElement? = null,
     val layout: Layout? = null,
+    @SerialName("minzoom") val minZoom: Int? = null,
+    @SerialName( "maxzoom") val maxZoomExclusive: Int? = null,
 )
 
 @Serializable

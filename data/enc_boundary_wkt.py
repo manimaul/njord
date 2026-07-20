@@ -58,6 +58,25 @@ def get_mcovr_geometries(enc_path: str, max_scale: int) -> list:
     return geoms
 
 
+def exterior_only(geom: ogr.Geometry) -> ogr.Geometry:
+    """Return a copy of geom with interior rings (holes) removed, keeping only exterior rings."""
+    geom_type = ogr.GT_Flatten(geom.GetGeometryType())
+
+    if geom_type == ogr.wkbPolygon:
+        poly = ogr.Geometry(ogr.wkbPolygon)
+        poly.AddGeometry(geom.GetGeometryRef(0).Clone())
+        return poly
+
+    if geom_type == ogr.wkbMultiPolygon:
+        multi = ogr.Geometry(ogr.wkbMultiPolygon)
+        for i in range(geom.GetGeometryCount()):
+            multi.AddGeometry(exterior_only(geom.GetGeometryRef(i)))
+        return multi
+
+    print(f"ERROR: unexpected geometry type from union: {geom.GetGeometryName()}", file=sys.stderr)
+    sys.exit(1)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Output the union of all S-57 chart M_COVR boundaries as WKT"
@@ -70,8 +89,8 @@ def main():
         "--geojson", action="store_true", help="Output as GeoJSON instead of WKT"
     )
     parser.add_argument(
-        "--max-scale", type=int, default=900000,
-        help="Exclude charts with compilation scale >= this value (default: 900000)"
+        "--max-scale", type=int, default=350_000,
+        help="Exclude charts with compilation scale >= this value (default: 350_000)"
     )
     args = parser.parse_args()
 
@@ -96,6 +115,9 @@ def main():
     if union is None:
         print("ERROR: no M_COVR geometries found", file=sys.stderr)
         sys.exit(1)
+
+    union = union.Simplify(0.25)
+    union = exterior_only(union)
 
     if args.geojson:
         print(union.ExportToJson())

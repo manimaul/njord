@@ -33,7 +33,7 @@ class Debug : Layerable() {
                     ).json,
                     paint = Paint(
                             lineColor = colorFrom(Color.CSTLN, options.theme).json,
-                            lineWidth = 3f
+                            lineWidth = 5f
                     )
             )
     )

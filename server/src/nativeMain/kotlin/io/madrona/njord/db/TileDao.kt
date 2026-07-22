@@ -33,7 +33,7 @@ class TileDao(
             if (cacheTile == null) {
                 cached = false
                 TileEncoder(x, y, z).let {
-                    it.addCharts(chartsConfig.debugTile)
+                    it.addCharts(false)
                     if (chartsConfig.debugTile) {
                         it.addDebug()
                     }

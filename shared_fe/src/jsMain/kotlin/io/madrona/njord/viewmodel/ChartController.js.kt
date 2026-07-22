@@ -157,6 +157,7 @@ actual class ChartController actual constructor() {
     fun disposeMapView() {
         mapView?.remove()
         mapView = null
+        scaleControl = null
     }
 
     private fun mapLibreArgs(

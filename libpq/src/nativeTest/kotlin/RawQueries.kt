@@ -29,10 +29,9 @@ class RawQueries {
     fun beforeEach() {
         val ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
         runBlocking {
-            ds.connection()?.use { conn ->
-                pgConn = (conn as PgConnection).pgDb.conn
-                conn.statement(testDbSql).execute()
-            }
+            val conn = checkNotNull(ds.connection() as? PgConnection) { "could not connect" }
+            pgConn = conn.pgDb.conn
+            conn.statement(testDbSql).execute()
         }
     }
 

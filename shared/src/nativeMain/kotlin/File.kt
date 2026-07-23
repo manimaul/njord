@@ -139,7 +139,7 @@ class File(val path: Path) {
             return SystemFileSystem.list(path).flatMap {
                 val f = File(it)
                 if (f.isDirectory() && f.exists() && recursive) {
-                    f.listFiles(recursive) + listOf(f)
+                    f.listFiles(recursive)
                 } else if (f.isFile()) {
                     listOf(f)
                 } else {
@@ -251,8 +251,8 @@ class File(val path: Path) {
 
     fun deleteRecursively(): Boolean {
         return if (isDirectory()) {
-            val files = listFiles(true)
-            val childrenDeleted = files.all { it.deleteRecursively() }
+            val children = SystemFileSystem.list(path).map { File(it) }
+            val childrenDeleted = children.all { it.deleteRecursively() }
             if (childrenDeleted) {
                 val absPath = getAbsolutePath().toString()
                 rmdir(absPath) == 0

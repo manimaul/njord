@@ -3,8 +3,8 @@
 kotlin = "2.4.10"
 # https://ktor.io/
 ktor = "3.5.1"
-# https://kotlinlang.org/docs/multiplatform/whats-new-compose-110.html
-compose = "1.10.3"
+# https://kotlinlang.org/docs/multiplatform/get-started.html
+compose = "1.11.1"
 # https://kotlinlang.org/docs/coroutines-overview.html
 coroutines = "1.10.2"
 # https://kotlinlang.org/docs/serialization.html

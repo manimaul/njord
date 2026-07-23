@@ -3,20 +3,20 @@ package io.madrona.njord.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.RouteViewModel
 import io.madrona.njord.viewmodel.routeViewModel
 
 @Composable
-fun Router(viewModel: RouteViewModel = routeViewModel) {
+fun Router(viewModel: RouteViewModel<NjordRoute> = routeViewModel) {
     val state by viewModel.flow.collectAsState()
     AppBox {
         NavBar()
         when (state.current.route) {
-            Route.About -> RouteContent { Home() }
-            Route.NotFound -> RouteContent { NotFound() }
-            Route.Enc -> ChartView()
-            Route.ControlPanel -> RouteContent {
+            NjordRoute.About -> RouteContent { Home() }
+            NjordRoute.NotFound -> RouteContent { NotFound() }
+            NjordRoute.Enc -> ChartView()
+            NjordRoute.ControlPanel -> RouteContent {
                 state.current.args?.get("tab")?.let { tab ->
                     state.current.args?.get("path")?.let { path ->
                         ControlPanel(tab, path)
@@ -24,12 +24,12 @@ fun Router(viewModel: RouteViewModel = routeViewModel) {
                 } ?: NotFound()
             }
 
-            Route.Chart -> RouteContent {
+            NjordRoute.Chart -> RouteContent {
                 state.current.args?.get("id")?.let { id ->
                     ChartInfoPage(id)
                 } ?: NotFound()
             }
-            Route.Layer -> RouteContent {
+            NjordRoute.Layer -> RouteContent {
                 state.current.args?.get("name")?.let { name ->
                     LayerPage(name)
                 } ?: NotFound()

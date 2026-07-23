@@ -3,7 +3,7 @@ package io.madrona.njord.viewmodel
 import io.madrona.njord.model.S57Attribute
 import io.madrona.njord.model.S57ExpectedInput
 import io.madrona.njord.model.S57Object
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -34,7 +34,7 @@ class SymbolViewModel : BaseViewModel<SymbolState>(SymbolState()) {
             }.mapNotNull { it.value }
 
             routeViewModel.flow.filter {
-                it.current.route == Route.ControlPanel && it.current.path.startsWith("/control/symbols")
+                it.current.route == NjordRoute.ControlPanel && it.current.path.startsWith("/control/symbols")
             }.map { it.current.pathSegments }.flatMapMerge { pathSegments ->
                 obj.map { it[pathSegments.getOrNull(2)] }.flatMapMerge { selectedObj ->
                     att.map { selectedObj to it[pathSegments.getOrNull(3)] }

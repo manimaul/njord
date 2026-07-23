@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.*
 import kotlinx.serialization.json.*
 import org.jetbrains.compose.web.dom.*
@@ -47,7 +47,7 @@ actual fun LayerPage(name: String) {
                         classes("btn", "btn-outline-secondary", "btn-sm")
                         onClick {
                             chartViewModel.setLocation(MapLocation(latitude = item.lat, longitude = item.lng, zoom = item.zoom.toDouble()), true)
-                            routeViewModel.pushRoute(Route.Enc)
+                            routeViewModel.pushRoute(NjordRoute.Enc)
                         }
                     }){
                         Text("ENC Zoom")

@@ -1,28 +1,30 @@
 package io.madrona.njord.viewmodel
 
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.routing.QueryParams
 import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.RouteRegistry
 import io.madrona.njord.routing.Routing
 
-expect fun currentRouting(): Routing
+expect fun currentPath(): String
 expect fun currentHref(): String
 expect fun currentHrefQueryParam(key: String): List<String>
 expect fun windowHistoryBack()
-expect fun RouteViewModel.initialize()
+expect fun <R : Route> RouteViewModel<R>.initialize()
 
-data class RouteState(
-    val current: Routing = currentRouting(),
+data class RouteState<R : Route>(
+    val current: Routing<R>,
     val href: String = currentHref(),
     val canGoback: Boolean = false,
     val replace: Boolean = true,
-    val navBarRoutes: List<Routing> = listOf(
-        Routing.from(Route.About),
-        Routing.from(Route.Enc),
-        Route.controlPanel(),
-    ),
 )
 
-class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
+class RouteViewModel<R : Route>(
+    private val registry: RouteRegistry<R>,
+    private val homeRoute: R,
+) : BaseViewModel<RouteState<R>>(
+    RouteState(current = registry.from(currentPath()))
+) {
 
     fun getQueryParam(key: String): List<String> {
         return currentHrefQueryParam(key)
@@ -40,12 +42,12 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
             if (it.canGoback) {
                 windowHistoryBack()
             } else {
-                pushRoute(Route.About)
+                pushRoute(homeRoute)
             }
         }
     }
 
-    fun replaceRoute(routing: Routing) {
+    fun replaceRoute(routing: Routing<R>) {
         setState {
             copy(
                 current = routing,
@@ -56,14 +58,14 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
     }
 
     fun replaceRoute(path: String) {
-        replaceRoute(Routing.from(path))
+        replaceRoute(registry.from(path))
     }
 
     fun pushRoute(path: String) {
         if (path != flow.value.current.path) {
             setState {
                 copy(
-                    current = Routing.from(path),
+                    current = registry.from(path),
                     canGoback = true,
                     replace = false,
                 )
@@ -71,7 +73,7 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
         }
     }
 
-    fun pushRoute(route: Route) {
+    fun pushRoute(route: R) {
         if (route.pathPattern != flow.value.current.route.pathPattern) {
             setState {
                 copy(
@@ -84,4 +86,4 @@ class RouteViewModel : BaseViewModel<RouteState>(RouteState()) {
     }
 }
 
-val routeViewModel = RouteViewModel()
+val routeViewModel = RouteViewModel(NjordRoute.registry, NjordRoute.About)

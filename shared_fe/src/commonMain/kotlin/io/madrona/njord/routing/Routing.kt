@@ -1,7 +1,7 @@
 package io.madrona.njord.routing
 
-data class Routing(
-    val route: Route,
+data class Routing<R : Route>(
+    val route: R,
     val path: String,
     val args: Map<String, String>? = null,
     val params: QueryParams? = null,
@@ -18,21 +18,7 @@ data class Routing(
     }
 
     companion object {
-
-        private val matchers by lazy {
-            Route.entries.map { it to RouteMatcher.build(it) }
-        }
-
-        fun from(path: String, params: QueryParams? = null): Routing {
-            val queryParams = params ?: QueryParams()
-            return matchers.firstOrNull {
-                it.second.matches(path)
-            }?.let {
-                Routing(it.first, path, it.second.groups(path), queryParams)
-            } ?: Routing(Route.NotFound, path, null, queryParams)
-        }
-
-        fun from(route: Route): Routing {
+        fun <R : Route> from(route: R): Routing<R> {
             return Routing(route, route.pathPattern)
         }
     }

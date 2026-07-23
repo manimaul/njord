@@ -1,8 +1,7 @@
 package io.madrona.njord.viewmodel.utils
 
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.routing.RouteMatcher
-import io.madrona.njord.routing.Routing
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -34,8 +33,8 @@ class RouteMatcherTest {
     @Test
     fun routeMatch() {
         val path = "/control/tab1/sel1"
-        val route = Routing.from(path)
-        assertEquals(Route.ControlPanel, route.route)
+        val route = NjordRoute.registry.from(path)
+        assertEquals(NjordRoute.ControlPanel, route.route)
         assertEquals("tab1", route.args?.get("tab"))
     }
 
@@ -71,7 +70,7 @@ class RouteMatcherTest {
 
     @Test
     fun namedWildCardControlPanel() {
-        val matcher = RouteMatcher.build(Route.ControlPanel.pathPattern)
+        val matcher = RouteMatcher.build(NjordRoute.ControlPanel.pathPattern)
         assertTrue(matcher.matches("/control/sprites"))
         assertEquals(
             mapOf(

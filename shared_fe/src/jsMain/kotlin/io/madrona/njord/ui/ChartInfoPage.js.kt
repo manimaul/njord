@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import io.madrona.njord.routing.Route
+import io.madrona.njord.routing.NjordRoute
 import io.madrona.njord.viewmodel.*
 import org.jetbrains.compose.web.dom.*
 
@@ -38,7 +38,7 @@ actual fun ChartInfoPage(id: String) {
                                 classes("btn", "btn-outline-secondary", "btn-sm")
                                 onClick {
                                     chartViewModel.setBounds(chart.bounds, chart.covr)
-                                    routeViewModel.pushRoute(Route.Enc)
+                                    routeViewModel.pushRoute(NjordRoute.Enc)
                                 }
                             }) {
                                 Text("ENC Zoom")

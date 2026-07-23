@@ -1,6 +1,6 @@
 package io.madrona.njord.viewmodel
 
-import io.madrona.njord.routing.Routing
+import io.madrona.njord.routing.Route
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URL
@@ -9,7 +9,11 @@ actual fun currentHref(): String {
     return window.location.href
 }
 
-actual fun RouteViewModel.initialize() {
+actual fun currentPath(): String {
+    return window.location.pathname
+}
+
+actual fun <R : Route> RouteViewModel<R>.initialize() {
     window.addEventListener("popstate", {
         replaceRoute(window.location.pathname)
     })
@@ -17,16 +21,12 @@ actual fun RouteViewModel.initialize() {
     launch {
         flow.collect {
             if (it.replace) {
-                window.history.replaceState(null, it.current.route.name, it.current.pathAndParams())
+                window.history.replaceState(null, it.current.route.title, it.current.pathAndParams())
             } else {
-                window.history.pushState(null, it.current.route.name, it.current.pathAndParams())
+                window.history.pushState(null, it.current.route.title, it.current.pathAndParams())
             }
         }
     }
-}
-
-actual fun currentRouting(): Routing {
-    return Routing.from(window.location.pathname)
 }
 
 actual fun currentHrefQueryParam(key: String): List<String> {

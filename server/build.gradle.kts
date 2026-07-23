@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "io.madrona"
@@ -102,20 +102,20 @@ kotlin {
             implementation(project(":libpq"))
             implementation(project(":libzip"))
             implementation(project(":libsqlite"))
-            implementation("io.ktor:ktor-server-core:${ktorVersion}")
-            implementation("io.ktor:ktor-server-cio:${ktorVersion}")
-            implementation("io.ktor:ktor-server-status-pages:${ktorVersion}")
-            implementation("io.ktor:ktor-server-content-negotiation:${ktorVersion}")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
-            implementation("io.ktor:ktor-server-auth:${ktorVersion}")
-            implementation("io.ktor:ktor-server-cors:${ktorVersion}")
-            implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
-            implementation("io.ktor:ktor-server-host-common:${ktorVersion}")
-            implementation("io.ktor:ktor-server-forwarded-header:${ktorVersion}")
-            implementation("io.ktor:ktor-client-curl:${ktorVersion}")
+            implementation(libs.ktor.server.core)
+            implementation(libs.ktor.server.cio)
+            implementation(libs.ktor.server.status.pages)
+            implementation(libs.ktor.server.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.server.auth)
+            implementation(libs.ktor.server.cors)
+            implementation(libs.ktor.server.websockets)
+            implementation(libs.ktor.server.host.common)
+            implementation(libs.ktor.server.forwarded.header)
+            implementation(libs.ktor.client.curl)
         }
         nativeTest.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            implementation(libs.kotlinx.serialization.json)
             implementation(kotlin("test"))
         }
     }

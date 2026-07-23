@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.3.21"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories {

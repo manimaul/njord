@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 
@@ -45,13 +45,13 @@ kotlin {
 
     sourceSets {
         nativeMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-io-core:$ioVersion")
+            implementation(libs.kotlinx.io.core)
         }
         val commonMain by getting {
             dependencies {
                 api(project(":geojson"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
+                api(libs.kotlinx.serialization.json)
+                api(libs.kotlinx.datetime)
             }
         }
         val commonTest by getting {

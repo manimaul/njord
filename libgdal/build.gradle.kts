@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
     id("maven-publish")
 }
 
@@ -46,8 +46,8 @@ kotlin {
 
     sourceSets {
         nativeMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializationVersion")
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization.protobuf)
             implementation(project(":shared"))
         }
         nativeTest.dependencies {

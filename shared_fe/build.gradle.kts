@@ -1,8 +1,8 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.compose") version kotlinVersion
-    id("org.jetbrains.compose") version composeVersion
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 version = "${properties["version"]}"
@@ -18,17 +18,17 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":shared"))
-            api("org.jetbrains.compose.runtime:runtime:${composeVersion}")
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+            api(libs.compose.runtime)
+            api(libs.kotlinx.coroutines.core)
         }
 
         val jsMain by getting {
             dependencies {
-                api("org.jetbrains.compose.html:html-core:${composeVersion}")
-                api("org.jetbrains.compose.html:html-svg:${composeVersion}")
-                api(npm("maplibre-gl", "4.7.1"))
-                api(npm("bootstrap", "5.3.3"))
-                api(npm("@popperjs/core", "2.11.8"))
+                api(libs.compose.html.core)
+                api(libs.compose.html.svg)
+                api(npm("maplibre-gl", libs.versions.maplibre.gl.get()))
+                api(npm("bootstrap", libs.versions.bootstrap.get()))
+                api(npm("@popperjs/core", libs.versions.popperjs.core.get()))
             }
         }
 

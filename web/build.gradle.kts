@@ -1,7 +1,7 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.compose") version kotlinVersion
-    id("org.jetbrains.compose") version composeVersion
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.jetbrains.compose)
 }
 
 kotlin {
@@ -33,7 +33,7 @@ kotlin {
             val jsTest by getting {
                 dependencies {
                     implementation(kotlin("test-js"))
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                    implementation(libs.kotlinx.coroutines.test)
                 }
             }
         }

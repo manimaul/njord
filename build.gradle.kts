@@ -3,11 +3,11 @@ import GitInfo.gitShortHash
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("jvm") version kotlinVersion apply false
-    kotlin("multiplatform") version kotlinVersion apply false
-    kotlin("plugin.compose") version kotlinVersion apply false
-    id("org.jetbrains.compose") version composeVersion apply false
-    kotlin("plugin.serialization") version kotlinVersion apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 version = "${properties["version"]}"

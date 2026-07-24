@@ -91,12 +91,18 @@ task<Exec>("k8sApply") {
 }
 
 /**
- * Cycle K8S Pods
+ * Cycle the njord-ingest ReplicaSet pod (bare ReplicaSet has no rollout support)
  */
-task<Exec>("cyclePods") {
+task<Exec>("cycleIngestPod") {
+    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-ingest")
+}
+
+/**
+ * Rolling restart of the njord-chart-svc deployment
+ */
+task<Exec>("rolloutRestart") {
     mustRunAfter(":k8sApply", ":pubImg", ":holdOn")
-    commandLine("bash", "-c", "kubectl -n njord delete pods -l app=njord-chart-svc && " +
-            "kubectl -n njord delete pods -l app=njord-ingest")
+    commandLine("bash", "-c", "kubectl -n njord rollout restart deployment/njord-chart-dep")
 }
 
 /**
@@ -112,7 +118,7 @@ task<Exec>("holdOn") {
  * eg `./gradlew :buildPublishDeploy`
  */
 tasks.register<GradleBuild>("deploy") {
-    tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":cyclePods")
+    tasks = listOf(":makeImg", ":pubImg", ":k8sApply", ":holdOn", ":rolloutRestart")
 }
 
 tasks.findByPath(":web:jsBrowserProductionWebpack")?.let { it as? KotlinWebpack }?.apply {

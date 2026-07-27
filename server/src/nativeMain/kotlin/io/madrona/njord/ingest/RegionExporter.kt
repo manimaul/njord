@@ -16,7 +16,6 @@ import io.madrona.njord.model.RegionManifestEntry
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
-import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number

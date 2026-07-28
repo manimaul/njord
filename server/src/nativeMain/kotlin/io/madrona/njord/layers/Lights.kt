@@ -87,6 +87,7 @@ class Lights : Layerable() {
                 iconImage = listOf("get", "SI").json,
                 iconAnchor = Anchor.CENTER,
                 iconAllowOverlap = true,
+                iconIgnorePlacement = true,
                 iconSize = 1.0f,
                 iconRotationAlignment = IconRotationAlignment.MAP,
             )

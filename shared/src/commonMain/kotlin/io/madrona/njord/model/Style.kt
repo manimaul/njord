@@ -96,6 +96,7 @@ data class Layout(
     @SerialName("text-size") val textSize: Float? = null,
     @SerialName("text-padding") val textPadding: Float? = null,
     @SerialName("symbol-placement") val symbolPlacement: Placement? = null,
+    @SerialName("symbol-sort-key") val symbolSortKey: JsonElement? = null,
 )
 
 @Serializable

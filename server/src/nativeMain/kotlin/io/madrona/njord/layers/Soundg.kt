@@ -60,6 +60,9 @@ open class Soundg(
         subTextLayer(theme = theme, id = "${key}_meters_tenths_offset", textKey = "METERS_T"),
     )
 
+    /** Ascending METERS gives shallower (more safety-critical) soundings priority when labels collide. */
+    private val sortKeyByDepth = listOf("get", "METERS").json
+
     private fun singleText(theme: Theme, id: String, textKey: String, subTextKey: String? = null) = Layer(
         id = id,
         type = LayerType.SYMBOL,
@@ -80,10 +83,11 @@ open class Soundg(
             textAnchor = Anchor.CENTER,
             textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey).json,
-            textAllowOverlap = true,
+            textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize,
             symbolPlacement = Placement.POINT,
+            symbolSortKey = sortKeyByDepth,
         ),
         paint = Paint(
             textColor = textColor(theme),
@@ -92,6 +96,12 @@ open class Soundg(
         )
     )
 
+    /**
+     * Whole-number depth, anchored so it sits up-and-left of the feature point (its own
+     * bottom-right corner offset down from the point) — paired with [subTextLayer], whose
+     * top-left anchor sits just right of the same point, so the smaller fractional digit tucks
+     * in below and to the right of this number regardless of how many digits it has.
+     */
     private fun primaryTextLayer(theme: Theme, id: String, textKey: String, subTextKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
@@ -109,10 +119,14 @@ open class Soundg(
             textOffset = listOf(0.0f, 0.6f).json,
             textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey).json,
-            textAllowOverlap = true,
+            textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize,
+            // Zeroed so the default 2px collision buffer doesn't bridge the intentional ~1-2px
+            // gap to subTextLayer's box and flag this pair as colliding with each other.
+            textPadding = 0f,
             symbolPlacement = Placement.POINT,
+            symbolSortKey = sortKeyByDepth,
         ),
         paint = Paint(
             textColor = textColor(theme),
@@ -138,10 +152,12 @@ open class Soundg(
             textOffset = listOf(0.1f, 0.0f).json,
             textJustify = TextJustify.CENTER,
             textField = listOf("get", textKey).json,
-            textAllowOverlap = true,
+            textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize - 4f,
+            textPadding = 0f,
             symbolPlacement = Placement.POINT,
+            symbolSortKey = sortKeyByDepth,
         ),
         paint = Paint(
             textColor = textColor(theme),

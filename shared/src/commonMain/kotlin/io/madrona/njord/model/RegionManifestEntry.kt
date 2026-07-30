@@ -1,6 +1,7 @@
 package io.madrona.njord.model
 
 import io.madrona.njord.geojson.GeoJsonObject
+import io.madrona.njord.geojson.Point
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -10,6 +11,7 @@ data class RegionManifestEntry(
     val description: String,
     val coverage: String,
     val coverageGeo: GeoJsonObject,
+    val labelPoint: Point? = null,
     val archive: String?,
     val createdAt: Instant?,
 )

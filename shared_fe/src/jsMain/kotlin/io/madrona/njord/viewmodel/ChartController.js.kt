@@ -3,14 +3,22 @@ package io.madrona.njord.viewmodel
 import io.madrona.njord.buildSectorSvg
 import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.FeatureCollection
+import io.madrona.njord.geojson.Geometry
 import io.madrona.njord.js.*
 import io.madrona.njord.model.*
+import io.madrona.njord.network.Network
 import io.madrona.njord.util.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.encodeToDynamic
+import kotlinx.serialization.json.put
 import org.w3c.dom.HTMLDivElement
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -72,7 +80,10 @@ actual class ChartController actual constructor() {
         val style = stylePath(theme, depth)
         mapView?.let { mv ->
             mv.listImages().filter { it.startsWith("sector_") }.forEach { mv.removeImage(it) }
-            mv.setStyle(style)
+            // diff:false forces a full style reload so "style.load" fires again and loadRegions()
+            // re-adds the regions source/layers; MapLibre's default diff-based setStyle silently
+            // drops sources/layers that aren't part of the new style JSON without re-firing "style.load".
+            mv.setStyle(style, js("{ diff: false }"))
             addScaleControl(mv, depth)
         }
     }
@@ -91,6 +102,7 @@ actual class ChartController actual constructor() {
     }
 
     fun createMapView(container: HTMLDivElement) {
+        themeMode = chartViewModel.flow.value.theme.mode()
         mapView = MapLibre.Map(mapLibreArgs(container)).also { mv ->
             mv.addControl(MapLibre.NavigationControl(), "top-right")
             addScaleControl(mv, chartViewModel.flow.value.depth)
@@ -124,7 +136,146 @@ actual class ChartController actual constructor() {
                     addSectorImage(mv, it)
                 }
             }
+            mv.on("style.load") { event ->
+                loadRegions(mv)
+            }
         }
+    }
+
+    private var regions: List<RegionManifestEntry> = emptyList()
+    private var regionFilter: String? = null
+
+    private fun loadRegions(map: MapLibre.Map) {
+        CoroutineScope(Dispatchers.Default).launch {
+            regions = Network.getRegions().body?.filter { it.name != "WORLD" } ?: emptyList()
+            val source = Source(
+                type = SourceType.GEOJSON,
+                data = regionFeatureCollection(),
+            )
+            map.addSource("regions", json.encodeToDynamic(source))
+            map.addLayer(json.encodeToDynamic(regionFillLayer()))
+            map.addLayer(json.encodeToDynamic(regionOutlineLayer()))
+
+            val labelSource = Source(
+                type = SourceType.GEOJSON,
+                data = regionLabelFeatureCollection(),
+            )
+            map.addSource("region_labels", json.encodeToDynamic(labelSource))
+            map.addLayer(json.encodeToDynamic(regionLabelNameLayer()))
+            map.addLayer(json.encodeToDynamic(regionLabelDescriptionLayer()))
+        }
+    }
+
+    private fun regionFeatureCollection(): FeatureCollection {
+        val filtered = regionFilter?.let { name -> regions.filter { it.name == name } } ?: regions
+        val features = filtered.mapNotNull { entry ->
+            (entry.coverageGeo as? Geometry)?.let { geometry -> Feature(geometry = geometry) }
+        }
+        return FeatureCollection(features)
+    }
+
+    private fun regionLabelFeatureCollection(): FeatureCollection {
+        val filtered = regionFilter?.let { name -> regions.filter { it.name == name } } ?: regions
+        val features = filtered.mapNotNull { entry ->
+            entry.labelPoint?.let { point ->
+                Feature(
+                    geometry = point,
+                    properties = buildJsonObject {
+                        put("name", entry.name)
+                        put("description", entry.description)
+                    },
+                )
+            }
+        }
+        return FeatureCollection(features)
+    }
+
+    private fun regionColor(): String = when (themeMode) {
+        ThemeMode.Dusk, ThemeMode.Night -> "#FFFFFF"
+        ThemeMode.Day, null -> "#000000"
+    }
+
+    private fun regionFillLayer() = Layer(
+        id = "region_fill",
+        type = LayerType.FILL,
+        source = "regions",
+        minZoom = 0,
+        maxZoomExclusive = 7,
+        paint = Paint(
+            fillColor = JsonPrimitive(regionColor()),
+            fillOpacity = 0.5f,
+        )
+    )
+
+    private fun regionOutlineLayer() = Layer(
+        id = "region_outline",
+        type = LayerType.LINE,
+        source = "regions",
+        minZoom = 0,
+        maxZoomExclusive = 7,
+        paint = Paint(
+            lineColor = JsonPrimitive(regionColor()),
+            lineWidth = 1.0f,
+        )
+    )
+
+    private fun regionLabelHaloColor(): String = when (themeMode) {
+        ThemeMode.Dusk, ThemeMode.Night -> "#000000"
+        ThemeMode.Day, null -> "#FFFFFF"
+    }
+
+    private fun regionLabelNameLayer() = Layer(
+        id = "region_label_name",
+        type = LayerType.SYMBOL,
+        source = "region_labels",
+        minZoom = 1,
+        maxZoomExclusive = 7,
+        layout = Layout(
+            textField = JsonArray(listOf(JsonPrimitive("get"), JsonPrimitive("name"))),
+            textFont = listOf(Font.ROBOTO_BOLD),
+            textSize = 13.0f,
+            textAnchor = Anchor.BOTTOM,
+            textJustify = TextJustify.CENTER,
+            textOffset = JsonArray(listOf(JsonPrimitive(0.0f), JsonPrimitive(-0.5f))),
+            textAllowOverlap = true,
+            textIgnorePlacement = true,
+            symbolPlacement = Placement.POINT,
+        ),
+        paint = Paint(
+            textColor = JsonPrimitive(regionColor()),
+            textHaloColor = regionLabelHaloColor(),
+            textHaloWidth = 1.5f,
+        )
+    )
+
+    private fun regionLabelDescriptionLayer() = Layer(
+        id = "region_label_description",
+        type = LayerType.SYMBOL,
+        source = "region_labels",
+        minZoom = 2,
+        maxZoomExclusive = 7,
+        layout = Layout(
+            textField = JsonArray(listOf(JsonPrimitive("get"), JsonPrimitive("description"))),
+            textFont = listOf(Font.ROBOTO_REGULAR),
+            textSize = 11.0f,
+            textAnchor = Anchor.TOP,
+            textJustify = TextJustify.CENTER,
+            textOffset = JsonArray(listOf(JsonPrimitive(0.0f), JsonPrimitive(0.1f))),
+            textAllowOverlap = true,
+            textIgnorePlacement = true,
+            symbolPlacement = Placement.POINT,
+        ),
+        paint = Paint(
+            textColor = JsonPrimitive(regionColor()),
+            textHaloColor = regionLabelHaloColor(),
+            textHaloWidth = 1.5f,
+        )
+    )
+
+    actual fun setRegionFilter(region: String?) {
+        regionFilter = region
+        mapView?.getSource("regions")?.setData(json.encodeToDynamic(regionFeatureCollection()))
+        mapView?.getSource("region_labels")?.setData(json.encodeToDynamic(regionLabelFeatureCollection()))
     }
 
     private fun addSectorImage(map: MapLibre.Map, name: String) {

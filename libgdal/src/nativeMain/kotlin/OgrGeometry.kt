@@ -207,6 +207,26 @@ open class OgrGeometry(
         return centroid
     }
 
+    /**
+     * Centroid of the largest polygonal part of this geometry, by area.
+     *
+     * For a plain POLYGON, [numGeometries] counts rings (exterior + interior holes), not disjoint
+     * parts, and centroid() already accounts for holes correctly on its own. Only for a true
+     * MULTIPOLYGON does getGeometryN(i) yield sibling, disjoint whole-polygon parts that are
+     * meaningful to compare by area (e.g. a region made of a large mainland area plus a couple of
+     * small offshore/inland parts - only the largest should get a label).
+     */
+    fun centroidOfLargestPart(): OgrGeometry {
+        if (type != GeomType.MultiPolygon) {
+            return centroid()
+        }
+        return (0 until numGeometries)
+            .mapNotNull { getGeometryN(it) }
+            .maxByOrNull { it.area }
+            ?.centroid()
+            ?: centroid()
+    }
+
     fun addGeometry(child: OgrGeometry) {
         OGR_G_AddGeometry(ptr, child.ptr).requireSuccess {
             "error adding geometry"

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 data class NavBarState(
     val customColors: Async<List<String>> = Uninitialized,
+    val regions: Async<List<String>> = Uninitialized,
 )
 
 class NavBarViewModel : BaseViewModel<NavBarState>(NavBarState()) {
@@ -27,6 +28,17 @@ class NavBarViewModel : BaseViewModel<NavBarState>(NavBarState()) {
                             cc.keys.toMutableList().also {
                                 it.add(0, "Default")
                             }
+                        }.toAsync()
+                )
+            }
+        }
+        launch {
+            setState { copy(regions = Loading()) }
+            setState {
+                copy(
+                    regions = Network.getRegions()
+                        .map { list ->
+                            list.map { it.name }.filter { it != "WORLD" }.sorted()
                         }.toAsync()
                 )
             }

@@ -34,6 +34,7 @@ data class ChartState(
     val theme: Theme = localStoreGet<Theme>() ?: ThemeMode.Day,
     val depth: Depth = localStoreGet<Depth>() ?: Depth.FEET,
     val query: List<MapGeoJsonFeature> = emptyList(),
+    val region: String? = null,
 )
 
 @Serializable
@@ -117,6 +118,13 @@ class ChartViewModel : BaseViewModel<ChartState>(ChartState()) {
         setState {
             controller.setStyle(theme, depth)
             copy(theme = theme)
+        }
+    }
+
+    fun setRegion(region: String?) {
+        setState {
+            controller.setRegionFilter(region)
+            copy(region = region)
         }
     }
 

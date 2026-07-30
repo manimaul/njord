@@ -12,6 +12,7 @@ import io.madrona.njord.geo.TileEncoder
 import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.GeoJsonObject
+import io.madrona.njord.geojson.Point
 import io.madrona.njord.model.RegionManifestEntry
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.gzipCompress
@@ -301,6 +302,13 @@ class RegionExporter(
         return OgrGeometry.fromWkt4326(this)?.geoJson() ?: Feature(geometry = null)
     }
 
+    private fun String.wktToLabelPoint(): Point? {
+        val centroid = OgrGeometry.fromWkt4326(this)?.centroidOfLargestPart() ?: return null
+        val x = centroid.pointX ?: return null
+        val y = centroid.pointY ?: return null
+        return Point(x, y)
+    }
+
     /**
      * Inverts [currentTimestamp]'s "yyyy-MM-ddTHH-mm-ss" format (dashes in place of colons,
      * for filesystem-safety) back into an [Instant], from an archive filename of the form
@@ -327,6 +335,7 @@ class RegionExporter(
             description = regionConfig.description,
             coverage = regionConfig.coverage,
             coverageGeo = regionConfig.coverage.wktToGeojson(),
+            labelPoint = regionConfig.coverage.wktToLabelPoint(),
             archive = latestArchive?.name,
             createdAt = createdAt,
         )

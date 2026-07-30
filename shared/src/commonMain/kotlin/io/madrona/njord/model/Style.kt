@@ -1,6 +1,6 @@
 package io.madrona.njord.model
 
-import io.madrona.njord.geojson.Feature
+import io.madrona.njord.geojson.GeoJsonObject
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
@@ -164,6 +164,9 @@ enum class Anchor {
     @SerialName("bottom")
     BOTTOM,
 
+    @SerialName("top")
+    TOP,
+
     @SerialName("top-left")
     TOP_LEFT,
 
@@ -233,7 +236,7 @@ data class Source(
 
     @SerialName("promoteId") val promoteId: String? = null,
 
-    val data: Feature? = null,
+    val data: GeoJsonObject? = null,
 ) {
     companion object {
         const val SENC = "src_senc"

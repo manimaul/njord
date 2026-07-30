@@ -124,6 +124,17 @@ actual fun NavBar() {
                             chartViewModel.setCustomColor(it)
                         }
                     }
+                    state.regions.value?.let { regionNames ->
+                        val options: List<String?> = listOf(null) + regionNames
+                        NavDropdown(
+                            chartState.region,
+                            { "Region: ${it ?: "All"}" },
+                            options,
+                            itemLabel = { it ?: "All" },
+                        ) {
+                            chartViewModel.setRegion(it)
+                        }
+                    }
                 }
 
             }

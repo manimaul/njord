@@ -14,5 +14,6 @@ expect class ChartController() {
     fun queryRenderedFeatures(topLeft: MapPoint, bottomRight: MapPoint): List<MapGeoJsonFeature>
     fun setStyle(theme: Theme, depth: Depth)
     fun highlight(feature: Feature)
+    fun setRegionFilter(region: String?)
     fun project(mapLocation: MapLocation): MapPoint?
 }

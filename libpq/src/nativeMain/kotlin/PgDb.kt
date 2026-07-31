@@ -23,6 +23,8 @@ class PgDb(
         PQfinish(conn)
     }
 
+    fun isHealthy(): Boolean = PQstatus(conn) == ConnStatusType.CONNECTION_OK
+
     companion object {
         fun connect(info: String) : PgDb? {
             return PQconnectdb(info)?.let {

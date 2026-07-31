@@ -24,17 +24,17 @@ abstract class Dao(
             return sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
         }
 
-        return conn.use {
-            val result = runCatching {
+        val result = conn.use {
+            runCatching {
                 block(it)
             }
+        }
 
-           if (result.isFailure && result.exceptionOrNull() !is CancellationException && tryCount < maxTryCount) {
-               delay(100L * tryCount)
-               sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
-           } else {
-               result.getOrNull()
-           }
+        return if (result.isFailure && result.exceptionOrNull() !is CancellationException && tryCount < maxTryCount) {
+            delay(100L * tryCount)
+            sqlOpAsyncInternal(msg, tryCount + 1, block, maxTryCount)
+        } else {
+            result.getOrNull()
         }
     }
 

@@ -69,4 +69,20 @@ class RegionDaoTest {
         assertEquals(false, regionDao.regionNeedsRebuild(coverageA, regionA))
         assertEquals(true, regionDao.regionNeedsRebuild(coverageB, regionB))
     }
+
+    @Test
+    fun `clearRegionExportState forces an exported region stale again`() = runBlocking {
+        val region = "${regionNamePrefix}clear"
+        val coverage = "POLYGON((-10 -10, -10 10, 10 10, 10 -10, -10 -10))"
+
+        insertTestChart("${chartNamePrefix}clear", "POINT(0 0)")
+        regionDao.markRegionExported(region)
+        assertEquals(false, regionDao.regionNeedsRebuild(coverage, region))
+
+        assertEquals(true, regionDao.clearRegionExportState(region))
+        assertEquals(true, regionDao.regionNeedsRebuild(coverage, region))
+
+        // Clearing a region with no recorded export reports that nothing was deleted.
+        assertEquals(false, regionDao.clearRegionExportState(region))
+    }
 }

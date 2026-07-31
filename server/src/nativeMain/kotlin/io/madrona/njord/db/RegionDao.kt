@@ -165,6 +165,19 @@ class RegionDao(
     }
 
     /**
+     * Deletes [regionName]'s row from region_export_state so [regionNeedsRebuild] reports it
+     * stale again, forcing the export worker to regenerate its archive on its next pass.
+     * Returns true if a row was deleted, false if the region had no recorded export.
+     */
+    suspend fun clearRegionExportState(regionName: String): Boolean? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            "DELETE FROM region_export_state WHERE region_name = \$1;"
+        ).apply {
+            setString(1, regionName)
+        }.execute() > 0
+    }
+
+    /**
      * Records that [regionName] was just successfully exported, so subsequent [regionNeedsRebuild]
      * checks only report charts ingested after this point.
      */

@@ -190,8 +190,8 @@ fun Application.njord() {
             AdminVerifyHandler(),
 
             // curl https://openenc.com/v1/regions | jq
-            // sig=$(curl -u ${OPEN_ENC_USER}:${OPEN_ENC_PASS} https://openenc.com/v1/admin | jq -r .signatureEncoded)
-            // curl -v -X POST "https://openenc.com/v1/regions?name=REGION_15&signature=$sig"
+            // sig=$(curl -u ${NJORD_ADMIN_USER}:${NJORD_ADMIN_PASS} https://openenc.com/v1/admin | jq -r .signatureEncoded)
+            // curl -v -X POST "https://openenc.com/v1/regions?name=REGION_04&signature=$sig"
             RegionHandler(),
 
             // curl -O https://openenc.com/v1/regions/REGION_15_2026-04-14T07-00-31.sqlite

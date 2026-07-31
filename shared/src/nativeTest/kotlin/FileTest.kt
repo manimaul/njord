@@ -59,6 +59,23 @@ class FileTest {
     }
 
     @Test
+    fun testReadDataRange() {
+        val file = File("/tmp/njord/test/range.txt").apply {
+            parentFile()?.mkdirs()
+            write("0123456789")
+        }
+        assertEquals(10L, file.size())
+        assertEquals("0123456789", file.readData(0, 10).decodeToString())
+        assertEquals("234", file.readData(2, 3).decodeToString())
+        assertEquals("9", file.readData(9, 1).decodeToString())
+        // Ranges that cannot be read in full return empty
+        assertEquals(0, file.readData(8, 5).size)
+        assertEquals(0, file.readData(10, 1).size)
+        assertEquals(0, file.readData(-1, 1).size)
+        assertEquals(0, file.readData(0, 0).size)
+    }
+
+    @Test
     fun testCwd() {
         File.getCurrentDirectory()?.let { cwd ->
             println("cwd = $cwd")

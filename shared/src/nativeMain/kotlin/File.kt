@@ -266,6 +266,33 @@ class File(val path: Path) {
         }
     }
 
+    fun size(): Long {
+        return SystemFileSystem.metadataOrNull(path)?.size ?: 0L
+    }
+
+    /**
+     * Read [length] bytes starting at byte [offset]. Returns an empty array if the range cannot
+     * be read in full (offset past EOF, file shrunk mid-read, etc.).
+     */
+    fun readData(offset: Long, length: Long): ByteArray {
+        if (isDirectory() || !exists() || offset < 0 || length <= 0) {
+            return ByteArray(0)
+        }
+        val file = fopen(path.toString(), "rb") ?: throw IllegalArgumentException("Cannot open input file $path")
+        var buffer: ByteArray? = null
+        try {
+            if (fseek(file, offset, SEEK_SET) == 0) {
+                buffer = ByteArray(length.toInt())
+                if (fread(buffer.refTo(0), 1.toULong(), length.toULong(), file) != length.toULong()) {
+                    buffer = null
+                }
+            }
+        } finally {
+            fclose(file)
+        }
+        return buffer ?: ByteArray(0)
+    }
+
     fun readData(): ByteArray {
         if (isDirectory() || !exists()) {
             return ByteArray(0)

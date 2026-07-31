@@ -3,6 +3,7 @@ package io.madrona.njord.endpoints
 import File
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.madrona.njord.ChartsConfig
 import io.madrona.njord.Singletons
@@ -51,7 +52,9 @@ class RegionHandler(
 }
 
 /**
- * GET /v1/regions/{archive} — streams a region SQLite archive for download.
+ * GET /v1/regions/{archive} — streams a region SQLite archive for download. Supports single-range
+ * `Range: bytes=...` requests (206/416) so interrupted downloads can be resumed; archive files are
+ * timestamp-named and never rewritten in place, so a byte range is stable for a given archive name.
  */
 class RegionArchiveHandler(
     private val regionDir: File = Singletons.regionDir,
@@ -73,12 +76,36 @@ class RegionArchiveHandler(
             call.respond(HttpStatusCode.NotFound)
             return@requireSignature
         }
+        val fileSize = archive.size()
+        val contentType = ContentType("application", "x-sqlite3")
+        call.response.header(HttpHeaders.AcceptRanges, RangeUnits.Bytes.unitToken)
         call.response.header(
             HttpHeaders.ContentDisposition,
             ContentDisposition.Attachment
                 .withParameter(ContentDisposition.Parameters.FileName, archiveName)
                 .toString()
         )
-        call.respondBytes(archive.readData(), ContentType("application", "x-sqlite3"))
+        val rangeSpec = call.request.header(HttpHeaders.Range) ?: run {
+            call.respondBytes(archive.readData(), contentType)
+            return@requireSignature
+        }
+        val range = parseRangesSpecifier(rangeSpec)?.mergeToSingle(fileSize)
+        if (range == null || range.isEmpty()) {
+            call.response.header(
+                HttpHeaders.ContentRange,
+                contentRangeHeaderValue(null, fileSize, RangeUnits.Bytes)
+            )
+            call.respond(HttpStatusCode.RequestedRangeNotSatisfiable)
+            return@requireSignature
+        }
+        call.response.header(
+            HttpHeaders.ContentRange,
+            contentRangeHeaderValue(range, fileSize, RangeUnits.Bytes)
+        )
+        call.respondBytes(
+            archive.readData(range.first, range.last - range.first + 1),
+            contentType,
+            HttpStatusCode.PartialContent,
+        )
     }
 }

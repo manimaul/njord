@@ -1,0 +1,22 @@
+#sudo apt install libexpat1-dev libexpat1
+headers = expat.h
+headerFilter = expat.h expat_external.h
+
+# XML_Parse takes a length delimited, NOT NUL terminated buffer. Without this cinterop maps its
+# `const char *s` to `String?` and there is no way to feed it raw bytes.
+noStringConversion = XML_Parse
+
+# `dpkg-query -L libexpat1-dev`
+compilerOpts.linux = -I/usr/include
+
+# `dpkg-query -L libexpat1`
+# NOTE: no -L here on purpose - `-L/usr/lib/$multiarchTuple` is injected per binary from
+# build.gradle.kts so this file stays architecture agnostic.
+linkerOpts.linux = -lexpat
+
+# brew install expat  (keg-only, NOT symlinked into /opt/homebrew)
+compilerOpts.macos_arm64 = -I/opt/homebrew/opt/expat/include
+linkerOpts.macos_arm64 = -L/opt/homebrew/opt/expat/lib -lexpat
+
+compilerOpts.macos_x64 = -I/usr/local/opt/expat/include
+linkerOpts.macos_x64 = -L/usr/local/opt/expat/lib -lexpat

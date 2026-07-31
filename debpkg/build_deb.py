@@ -45,6 +45,7 @@ DEPENDS = [
     "libssl3t64",
     "libcurl4t64",
     "libgd3",
+    "libexpat1",
     "postgis",
     "postgresql-client",
 ]

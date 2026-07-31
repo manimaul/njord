@@ -16,8 +16,10 @@ Live demo: https://openenc.com
 | `shared_fe` | Kotlin/JS | Frontend UI components, ViewModels, MapLibre bindings |
 | `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2 |
 | `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client (`libpq`) |
-| `libzip` | Kotlin/Native | C interop bindings for ZIP extraction |
+| `libzip` | Kotlin/Native | C interop bindings for ZIP extraction and creation |
 | `libsqlite` | Kotlin/Native | C interop bindings to SQLite (region export) |
+| `libexpat` | Kotlin/Native | C interop bindings to expat (streaming XML SAX) |
+| `enc_cron` | Kotlin/Native | Nightly NOAA catalog diff and download job |
 | `geojson` | Multiplatform | GeoJSON RFC 7946 implementation |
 
 ---
@@ -39,6 +41,7 @@ Live demo: https://openenc.com
 │  /v1/enc_save                 → Upload/delete S-57 ZIPs   │
 │  /v1/chart_ws                 → WebSocket ingest progress │
 │  /v1/chart*                   → Chart CRUD                │
+│  /v1/chart_editions           → Bulk chart revision keys  │
 │  /v1/content/*                → Fonts, sprites            │
 │  /v1/admin                    → HMAC signature endpoint   │
 │  /v1/about/*                  → S-57 object metadata      │
@@ -64,7 +67,7 @@ The server polls for uploaded chart ZIPs and processes them in the background.
 
 ### Flow
 
-1. **Upload**: The user uploads a ZIP of S-57 `.000` files via the web UI. `EncSaveHandler` writes it to the uploads directory (`config.chartTempData/save/`).
+1. **Upload**: A ZIP of S-57 `.000` files lands in the uploads directory (`config.chartTempData/save/`) — either from the web UI via `EncSaveHandler`, or as a bundle published by the nightly `enc_cron` job (see [NOAA ENC update cron](./NOAA_ENC_UPDATE_CRON.md)).
 
 2. **Claim**: `ChartIngestWorker` polls the `save/` directory every 5 seconds. When it finds a ZIP, it atomically renames it to `ingest/{uuid}/` to claim it and prevent duplicate processing.
 

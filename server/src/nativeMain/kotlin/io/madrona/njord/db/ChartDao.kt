@@ -277,6 +277,38 @@ ORDER BY f.chart_id;
         }
     }
 
+    /**
+     * Every chart's revision key as `"<UPDN>:<UADT>:<ISDT>"`, keyed by chart name.
+     *
+     * `updated`/`issued` are dedicated columns (DSID_UADT / DSID_ISDT); the update number only
+     * exists inside the `dsid_props` JSONB blob written by `OgrS57Dataset.chartInsertInfo()`.
+     *
+     * Charts missing any of the three are omitted rather than reported with a partial key, so
+     * enc_cron sees them as absent and re-fetches - the safe direction to fail.
+     *
+     * See [ChartEditions] for why `DSID_EDTN` is not part of the key.
+     *
+     * Unpaginated on purpose: the whole NOAA catalog is ~7k cells, roughly 200 KB of JSON.
+     */
+    suspend fun editionsAsync(): ChartEditions? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """SELECT name, dsid_props->>'DSID_UPDN', updated, issued FROM charts;"""
+        ).executeQuery().use { rs ->
+            val editions = mutableMapOf<String, String>()
+            while (rs.next()) {
+                val name = rs.getString(1)
+                val updn = rs.getString(2)
+                val updated = rs.getString(3)
+                val issued = rs.getString(4)
+                // getString maps SQL NULL to "", so blank means the field was absent.
+                if (name.isNotBlank() && updn.isNotBlank() && updated.isNotBlank() && issued.isNotBlank()) {
+                    editions[name] = "$updn:$updated:$issued"
+                }
+            }
+            ChartEditions(editions)
+        }
+    }
+
     suspend fun insertAsync(chartInsert: ChartInsert, overwrite: Boolean): Chart? = sqlOpAsync(tryCount = 2) {
         insertAsync(chartInsert, overwrite, it)
     }

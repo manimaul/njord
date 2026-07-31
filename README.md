@@ -6,6 +6,8 @@
 
 [Design documentation](docs/DESIGN.md)
 
+[NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
+
 [RELEASE_NOTES](./RELEASE_NOTES.md)
 
 ## Project Overview
@@ -66,6 +68,23 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 ./gradlew :geojson:jvmTest
 ```
 
+### NOAA update job
+
+```bash
+# Report what would be downloaded without fetching anything
+./gradlew :enc_cron:linkDebugExecutableArch
+ENC_CRON_OPTS='{"chartEditionsUrl":"http://localhost:9000/v1/chart_editions","chartTempData":"./build/tmp/enc_cron"}' \
+  ./enc_cron/build/bin/arch/debugExecutable/enc_cron.kexe --dry-run
+
+# Parse a catalog already on disk instead of fetching 52 MB each time
+... enc_cron.kexe --from-file ./ENCProdCat_19115.xml --dry-run
+```
+
+Charts are matched on a revision key of `"<DSID_UPDN>:<DSID_UADT>:<DSID_ISDT>"`, **not** on the
+S-57 edition number. GDAL overwrites `DSID_EDTN` with the value carried by the last applied
+`.00N` update file, and NOAA publishes `0` there for some cells (e.g. `US1GC09M`, catalog edition
+`74.6`), so an edition-based comparison never matches for them and re-downloads them forever.
+
 ### Containerization & Deployment
 
 ```bash
@@ -88,6 +107,8 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 | `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2                        |
 | `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client                 |
 | `libsqlite` | Kotlin/Native | C interop bindings to SQLite (region export for mobile) |
+| `libexpat` | Kotlin/Native | C interop bindings to expat (streaming XML SAX parsing)  |
+| `enc_cron` | Kotlin/Native | Nightly NOAA ENC catalog diff and download job           |
 | `geojson` | Multiplatform | GeoJSON RFC 7946 implementation                         |
 
 ### Data Pipeline
@@ -97,6 +118,7 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 3. **Tile serving**: On tile request, `TileEncoder` queries PostGIS for charts and features within the tile envelope, clips geometries, and encodes as protobuf MVT
 4. **Styling**: Each S-57 object class has a corresponding layer class in `server/src/nativeMain/kotlin/layers/` that defines Mapbox GL style rules. The `TileEncoder` adds symbol properties (e.g., `SY`) to feature properties so the style JSON can reference them via `["get","SY"]`.
 5. **Region export**: After ingestion completes, `RegionExportWorker` generates SQLite archive files for configured geographic regions. Mobile clients download these archives and replay the data into a local SQLite database for offline chart rendering.
+6. **NOAA updates**: The `enc_cron` job (Kubernetes CronJob, nightly) streams NOAA's ISO-19115 product catalog, diffs it against `GET /v1/chart_editions`, and downloads only the cells whose revision changed - bundling them into zips dropped in the ingest `save/` directory.
 
 ### Key Files in `server`
 
@@ -117,6 +139,7 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 - **openjdk-17-jre-headless** — required for Gradle and Kotlin/Native toolchain
 - **libgdal-dev** — Geospatial Data Abstraction Library - Development files
 - **libpq-dev** - header files for libpq5 (PostgreSQL library)
+- **libexpat1-dev** - header files for libexpat1 (XML parsing, used by `enc_cron`)
 - **PostGIS 13** — run in Podman for development (see `chart_server_db/README.md`)
 
 ## Important Notes
@@ -130,7 +153,7 @@ PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_serve
 
 Required packages
 ```shell
-brew install gdal libpq gd libzip sqlite openssl@3 openjdk@21
+brew install gdal libpq gd libzip sqlite expat openssl@3 openjdk@21
 ```
 
 Useful packages 

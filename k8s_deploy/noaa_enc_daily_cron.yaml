@@ -1,4 +1,16 @@
 ---
+# Nightly NOAA ENC update.
+#
+# Parses https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml, asks the chart service which chart
+# revisions it already holds via GET /v1/chart_editions, and downloads only the cells that
+# actually changed - bundling them into zips that ChartIngestWorker picks up from
+# /mnt/njord/charts/save.
+#
+# This replaces an unconditional `curl OneDay_ENCs.zip`, which re-ingested every cell in the
+# bundle nightly and permanently lost anything published while the cluster was down.
+#
+# Needs no database access: the revision baseline comes from the HTTP endpoint, so there is no
+# pgbouncer sidecar here.
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -15,21 +27,32 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: ghreg
           containers:
             - name: enc-download
-              image: curlimages/curl:latest
+              image: ghcr.io/manimaul/njord-chart-server:latest
+              imagePullPolicy: Always
               securityContext:
                 runAsUser: 0
               command:
-                - curl
-                - --fail
-                - --silent
-                - --show-error
-                - --location
-                - --create-dirs
-                - --output
-                - /mnt/njord/charts/save/OneDay_ENCs.zip
-                - https://charts.noaa.gov/ENCs/OneDay_ENCs.zip
+                - /opt/njord/enc_cron.kexe
+                - /opt/njord/enc_cron_resources
+              # Overrides merged over enc_cron_resources/config/enc_cron.json.
+              # Raise maxCellsPerRun temporarily to seed a cold catalog faster (~7.2k cells).
+              env:
+                - name: ENC_CRON_OPTS
+                  value: >-
+                    {"chartEditionsUrl":"http://njord-chart-svc/v1/chart_editions",
+                     "chartTempData":"/mnt/njord/charts",
+                     "maxCellsPerRun":500}
+              resources:
+                limits:
+                  cpu: "1.0"
+                  memory: "1G"
+                requests:
+                  cpu: 250m
+                  memory: "256Mi"
               volumeMounts:
                 - name: njord-shared-data
                   mountPath: /mnt/njord

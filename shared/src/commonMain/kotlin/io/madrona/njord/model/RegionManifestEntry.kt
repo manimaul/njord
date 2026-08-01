@@ -13,5 +13,7 @@ data class RegionManifestEntry(
     val coverageGeo: GeoJsonObject,
     val labelPoint: Point? = null,
     val archive: String?,
+    val archiveSize: Long? = null,
+    val archiveSha256: String? = null,
     val createdAt: Instant?,
 )

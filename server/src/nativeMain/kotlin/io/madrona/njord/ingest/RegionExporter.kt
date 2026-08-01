@@ -17,6 +17,7 @@ import io.madrona.njord.model.RegionManifestEntry
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.gzipCompress
 import io.madrona.njord.util.logger
+import io.madrona.njord.util.sha256File
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
@@ -121,6 +122,7 @@ class RegionExporter(
         }
 
         log.info("region ${regionConfig.name} archive created: $archiveName")
+        writeChecksumSidecar(archiveFile)
         regionDao.markRegionExported(regionConfig.name)
         pruneOldArchives(regionConfig.name)
     }
@@ -288,8 +290,38 @@ class RegionExporter(
             archives.drop(MAX_ARCHIVES).forEach { old ->
                 log.info("pruning old archive ${old.name}")
                 old.deleteRecursively()
+                sidecarFor(old).takeIf { it.exists() }?.deleteRecursively()
             }
         }
+    }
+
+    private fun sidecarFor(archive: File) = File(regionDir, "${archive.name}.sha256")
+
+    /**
+     * The archive's sha256 (lowercase hex), from its cached sidecar file — computed and written
+     * on the first call for archives that predate checksum sidecars. Archives are immutable once
+     * renamed into place, so a cached checksum never goes stale.
+     */
+    private fun checksumForArchive(archive: File): String? {
+        if (sidecarFor(archive).isFile()) {
+            sidecarFor(archive).readContents()
+                .trim()
+                .split(Regex("\\s+"))
+                .firstOrNull()
+                ?.takeIf { it.length == 64 }
+                ?.let { return it }
+        }
+        return writeChecksumSidecar(archive)
+    }
+
+    private fun writeChecksumSidecar(archive: File): String? {
+        val checksum = sha256File(archive) ?: run {
+            log.error("failed to compute sha256 for ${archive.name}")
+            return null
+        }
+        // sha256sum output format, so `sha256sum -c <name>.sha256` works from the region dir
+        sidecarFor(archive).write("$checksum  ${archive.name}\n")
+        return checksum
     }
 
     private fun archivesForRegion(regionName: String): List<File> {
@@ -324,8 +356,9 @@ class RegionExporter(
 
     /**
      * Builds a manifest entry for every region in [ChartsConfig.regionExports], regardless of
-     * whether it has been rendered yet — [RegionManifestEntry.archive] and [RegionManifestEntry.createdAt]
-     * are null until the first successful export.
+     * whether it has been rendered yet — [RegionManifestEntry.archive], [RegionManifestEntry.archiveSize],
+     * [RegionManifestEntry.archiveSha256] and [RegionManifestEntry.createdAt] are null until the
+     * first successful export.
      */
     fun buildManifest(): List<RegionManifestEntry> = config.regionExports.map { regionConfig ->
         val latestArchive = archivesForRegion(regionConfig.name).firstOrNull()
@@ -337,6 +370,8 @@ class RegionExporter(
             coverageGeo = regionConfig.coverage.wktToGeojson(),
             labelPoint = regionConfig.coverage.wktToLabelPoint(),
             archive = latestArchive?.name,
+            archiveSize = latestArchive?.size(),
+            archiveSha256 = latestArchive?.let { checksumForArchive(it) },
             createdAt = createdAt,
         )
     }

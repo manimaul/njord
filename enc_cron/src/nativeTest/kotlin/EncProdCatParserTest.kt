@@ -2,12 +2,14 @@ import io.madrona.njord.enccron.EncCatalogEntry
 import io.madrona.njord.enccron.EncCronConfig
 import io.madrona.njord.enccron.EncProdCatParser
 import io.madrona.njord.enccron.batches
+import io.madrona.njord.enccron.deletableOrphans
 import io.madrona.njord.enccron.selectOrphans
 import io.madrona.njord.enccron.selectStale
 import kotlin.String
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 /**
@@ -311,6 +313,64 @@ class OrphanSelectionTest {
     @Test
     fun `an empty edition set yields nothing`() {
         assertEquals(emptyList(), selectOrphans(listOf(entry("A")), emptyMap()))
+    }
+}
+
+class DeletableOrphanTest {
+
+    private fun entry(cell: String) =
+        EncCatalogEntry(cell, "1.0", "https://example.com/$cell.zip", 15000, 0.1, "20240101", "20240102")
+
+    private val noaaCatalog = listOf(entry("US5WA22M"), entry("US3AK4CM"))
+
+    @Test
+    fun `orphans from a producer the catalog covers are deletable`() {
+        val orphans = listOf("US5WA17M.000", "US5CA93M.000")
+        assertEquals(orphans, deletableOrphans(orphans, noaaCatalog))
+    }
+
+    @Test
+    fun `a chart from another hydrographic office is left alone`() {
+        // CA1234 comes from the Canadian office; NOAA's catalog never listed it and never will.
+        val orphans = listOf("US5WA17M.000", "CA179001.000", "GB5X01SW.000")
+        assertEquals(listOf("US5WA17M.000"), deletableOrphans(orphans, noaaCatalog))
+    }
+
+    @Test
+    fun `the producer set follows the catalog rather than a hardcoded US`() {
+        val orphans = listOf("CA179001.000", "US5WA17M.000")
+        assertEquals(listOf("CA179001.000"), deletableOrphans(orphans, listOf(entry("CA379141"))))
+    }
+
+    @Test
+    fun `producer codes match without regard to case`() {
+        assertEquals(listOf("us5wa17m.000"), deletableOrphans(listOf("us5wa17m.000"), noaaCatalog))
+    }
+
+    @Test
+    fun `an empty catalog deletes nothing`() {
+        // Belt and braces: run() already refuses to continue past an empty catalog.
+        assertEquals(emptyList(), deletableOrphans(listOf("US5WA17M.000"), emptyList()))
+    }
+}
+
+class NjordBaseUrlTest {
+
+    @Test
+    fun `the api root is derived from the editions url`() {
+        assertEquals(
+            "http://njord-chart-svc",
+            encCronConfig().copy(chartEditionsUrl = "http://njord-chart-svc/v1/chart_editions").njordBaseUrl
+        )
+        assertEquals(
+            "https://openenc.com",
+            encCronConfig().copy(chartEditionsUrl = "https://openenc.com/v1/chart_editions").njordBaseUrl
+        )
+    }
+
+    @Test
+    fun `a url with no v1 path yields no base so mutating calls are skipped`() {
+        assertNull(encCronConfig().copy(chartEditionsUrl = "http://localhost:9000/editions").njordBaseUrl)
     }
 }
 

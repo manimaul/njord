@@ -8,5 +8,7 @@
   "maxQueuedBundles": 3,
   "scaleFilter": [],
   "requestTimeoutSeconds": 600,
-  "maxRetries": 3
+  "maxRetries": 3,
+  "deleteOrphans": true,
+  "maxOrphanDeletes": 25
 }

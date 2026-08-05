@@ -317,11 +317,51 @@ has a default, so both layers are optional.
 | `scaleFilter` | `[]` (all) | restrict by compilation scale |
 | `requestTimeoutSeconds` | 600 | |
 | `maxRetries` | 3 | per HTTP resource |
+| `deleteOrphans` | `true` | remove charts the catalog no longer lists |
+| `maxOrphanDeletes` | 25 | ceiling above which the deletion pass is abandoned |
+| `adminUser` / `adminPass` | `""` | basic auth for `GET /v1/admin`; prefer the env vars |
+
+`ENC_CRON_ADMIN_USER` / `ENC_CRON_ADMIN_PASS` override the last two, so a Kubernetes secret can
+supply the password on its own key rather than inside the `ENC_CRON_OPTS` JSON blob.
 
 CLI: `enc_cron [resourcesDir] [--from-file <catalog.xml>] [--dry-run]`. `--from-file` parses a
 catalog already on disk (same `ExpatSax` path); `--dry-run` reports the diff and downloads nothing.
 
-### 6. Deployment
+### 6. Withdrawn cells
+
+The diff is symmetric: `selectOrphans` reports every chart Njord holds that the catalog no longer
+lists. NOAA cancels cells (a harbour re-cut into different coverage, a cell folded into its
+neighbour), and nothing else in the pipeline notices — an ingested chart has no expiry.
+
+Reporting is unconditional. Deleting is guarded twice, because "absent from the catalog" is also
+what a truncated download looks like:
+
+- `deletableOrphans` keeps only cells whose two-letter S-57 producer code appears somewhere in the
+  catalog just parsed. NOAA publishes `US` only, so a chart ingested from another hydrographic
+  office is never a candidate. The producer set is derived from the catalog rather than hardcoded,
+  so pointing `catalogUrl` at a different office still behaves.
+- `maxOrphanDeletes` abandons the whole pass if more cells qualify than a plausible night of
+  withdrawals. Real cancellations arrive a handful at a time; thousands means the catalog is wrong,
+  not that the charts are.
+
+Deletion goes through `DELETE /v1/chart?name=<DSID_DSNM>`, a name-keyed path added alongside the
+existing id-keyed one — enc_cron diffs on chart names and never learns Njord's row ids. The
+handler does more than drop the row, since a deleted chart otherwise keeps being served from two
+caches:
+
+- the tile cache is invalidated, exactly as after an ingest;
+- `region_export_state` is cleared for every region whose coverage contained the chart, and the
+  export worker woken. `regionNeedsRebuild` only looks for charts *ingested* since the last export,
+  so a deletion is invisible to it — the region archive would ship the withdrawn chart until
+  something unrelated in that region happened to be re-ingested. Which regions those are has to be
+  resolved before the delete, while there is still a coverage polygon to intersect. The `WORLD`
+  base map is excluded: it embeds no chart data and is expensive to re-render.
+
+Authorization reuses the existing admin signature flow rather than adding a second mechanism:
+basic auth to `GET /v1/admin` yields a signature scoped to the base URL the server saw, which then
+authorizes the deletes against that same base URL.
+
+### 7. Deployment
 
 Same image, new entrypoint — mirroring how `ingest.kexe` is handled.
 
@@ -429,7 +469,6 @@ becomes a bottleneck.
   a full re-ingest to backfill.
 - **Stream `parseCatalogFile` from disk** rather than reading the whole 52 MB into a `ByteArray`.
   Only affects the `--from-file` debug path; the network path already streams.
-- **Delete cells NOAA has withdrawn.** `selectOrphans` already reports the charts Njord holds that
-  the catalog no longer lists, but nothing acts on the report - a cancelled cell lingers until
-  someone removes it by hand. Automating that needs a way to tell a withdrawn cell from one
-  ingested outside the NOAA pipeline.
+- **Per-region tile cache invalidation.** Deleting a withdrawn chart currently drops the whole
+  tile cache, the same blunt instrument ingestion uses. Fine at the rate withdrawals actually
+  happen; wasteful if deletions ever become frequent.

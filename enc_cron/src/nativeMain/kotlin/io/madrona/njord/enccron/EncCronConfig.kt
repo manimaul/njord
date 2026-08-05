@@ -48,6 +48,27 @@ data class EncCronConfig(
 
     /** Attempts per HTTP resource before giving up on it. */
     val maxRetries: Int,
+
+    /**
+     * Delete charts Njord holds that NOAA's catalog no longer lists, rather than only reporting
+     * them. Silently inert without [adminUser] / [adminPass] - the delete endpoint is signed.
+     */
+    val deleteOrphans: Boolean = true,
+
+    /**
+     * Ceiling on charts deleted in one run. A NOAA outage that serves a truncated catalog looks
+     * exactly like a mass withdrawal, so past this many the whole deletion pass is abandoned and
+     * the orphans are only reported. Real withdrawals arrive a handful at a time.
+     */
+    val maxOrphanDeletes: Int = 25,
+
+    /**
+     * Basic auth credentials for `GET /v1/admin`, which mints the signature every mutating
+     * endpoint requires. Prefer the `ENC_CRON_ADMIN_USER` / `ENC_CRON_ADMIN_PASS` environment
+     * variables so a Kubernetes secret can supply them without a password in a JSON blob.
+     */
+    val adminUser: String = "",
+    val adminPass: String = "",
 ) {
     /** Where ChartIngestWorker polls for `*.zip`. */
     val saveDir: File get() = File(chartTempData, "save")
@@ -55,8 +76,17 @@ data class EncCronConfig(
     /** Scratch space for downloads, staging and bundle assembly. Same filesystem as [saveDir]. */
     val workDir: File get() = File(chartTempData, "enc_cron")
 
+    /**
+     * Njord's API root, derived from [chartEditionsUrl] so one setting names the host. Null when
+     * that URL has no `/v1/` in it, in which case nothing that needs a second endpoint can run.
+     */
+    val njordBaseUrl: String?
+        get() = chartEditionsUrl.takeIf { it.contains("/v1/") }?.substringBefore("/v1/")
+
     companion object {
         private const val ENV_OVERRIDES = "ENC_CRON_OPTS"
+        private const val ENV_ADMIN_USER = "ENC_CRON_ADMIN_USER"
+        private const val ENV_ADMIN_PASS = "ENC_CRON_ADMIN_PASS"
         private val json = Json { ignoreUnknownKeys = true }
 
         /**
@@ -78,7 +108,18 @@ data class EncCronConfig(
                 ?.let { JsonObject(base + json.parseToJsonElement(it).jsonObject) }
                 ?: base
 
-            return json.decodeFromJsonElement(merged)
+            return json.decodeFromJsonElement<EncCronConfig>(merged).withCredentialsFromEnv()
         }
+
+        /**
+         * Overlays [ENV_ADMIN_USER] / [ENV_ADMIN_PASS] on top of whatever the JSON layers set, so
+         * the admin password can come from a secret keyed on its own rather than embedded in the
+         * [ENV_OVERRIDES] blob.
+         */
+        @OptIn(ExperimentalForeignApi::class)
+        private fun EncCronConfig.withCredentialsFromEnv(): EncCronConfig = copy(
+            adminUser = getenv(ENV_ADMIN_USER)?.toKString()?.takeIf { it.isNotBlank() } ?: adminUser,
+            adminPass = getenv(ENV_ADMIN_PASS)?.toKString()?.takeIf { it.isNotBlank() } ?: adminPass,
+        )
     }
 }

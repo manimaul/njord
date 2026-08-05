@@ -19,6 +19,7 @@ import kotlinx.serialization.json.Json
 import platform.posix.fclose
 import platform.posix.fopen
 import platform.posix.fwrite
+import kotlin.io.encoding.Base64
 
 private const val DOWNLOAD_CHUNK = 8 * 1024 * 1024 // 8 MB
 private const val PARSE_CHUNK = 64 * 1024
@@ -80,6 +81,34 @@ class EncHttp(private val config: EncCronConfig) : AutoCloseable {
     }
 
     /**
+     * A short lived admin signature from `GET /v1/admin`, which every mutating endpoint requires.
+     *
+     * The signature is an HMAC over the base URL the server saw on this request, so it is only
+     * valid for calls made against the same [baseUrl].
+     */
+    suspend fun fetchAdminSignature(baseUrl: String, user: String, pass: String): String =
+        withRetry("admin signature") {
+            val credentials = Base64.encode("$user:$pass".encodeToByteArray())
+            val body = client.get("$baseUrl/v1/admin") {
+                header(HttpHeaders.Authorization, "Basic $credentials")
+            }.bodyAsText()
+            json.decodeFromString<AdminSignatureResponse>(body).signatureEncoded
+        }
+
+    /**
+     * Deletes a chart by name. True when a row was removed, false when the server had nothing by
+     * that name - a benign race with a concurrent ingest, not a failure.
+     *
+     * The URL is assembled by hand because [signature] arrives already URL encoded and ktor's
+     * parameter builder would encode it a second time.
+     */
+    suspend fun deleteChart(baseUrl: String, name: String, signature: String): Boolean =
+        withRetry("delete chart $name") {
+            client.delete("$baseUrl/v1/chart?name=$name&signature=$signature")
+                .status == HttpStatusCode.Accepted
+        }
+
+    /**
      * Downloads [url] to [dest] via a sibling `.tmp` file, so a crashed or truncated transfer
      * never leaves a plausible looking zip behind. Returns bytes written.
      */
@@ -139,3 +168,6 @@ class EncHttp(private val config: EncCronConfig) : AutoCloseable {
 
 @kotlinx.serialization.Serializable
 private data class ChartEditionsResponse(val editions: Map<String, String>)
+
+@kotlinx.serialization.Serializable
+private data class AdminSignatureResponse(val signatureEncoded: String)

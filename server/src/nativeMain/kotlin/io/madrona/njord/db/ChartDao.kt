@@ -353,6 +353,16 @@ ORDER BY f.chart_id;
         }
     }
 
+    /**
+     * Deletes a chart and its features by S-57 `DSID_DSNM` - the same key [editionsAsync] reports
+     * and enc_cron diffs against NOAA's catalog, which never sees Njord's row ids.
+     *
+     * False means no chart carried that name; null means the statement failed.
+     */
+    suspend fun deleteByNameAsync(name: String): Boolean? = sqlOpAsync { conn ->
+        delete(name, conn)
+    }
+
     suspend fun deleteAsync(id: Long): Boolean? = sqlOpAsync { conn ->
         conn.prepareStatement(
             "DELETE FROM features WHERE chart_id=\$1;"

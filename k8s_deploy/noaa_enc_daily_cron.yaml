@@ -46,6 +46,23 @@ spec:
                     {"chartEditionsUrl":"http://njord-chart-svc/v1/chart_editions",
                      "chartTempData":"/mnt/njord/charts",
                      "maxCellsPerRun":500}
+                # Authorizes DELETE /v1/chart for cells NOAA has withdrawn. Without both, the job
+                # still reports orphans but deletes nothing. Set deleteOrphans:false above to
+                # switch the behaviour off entirely while leaving the credentials in place.
+                # kubectl -n njord create secret generic njord-admin-basic \
+                #   --from-literal=admin_user=admin --from-literal=admin_pass=...
+                - name: ENC_CRON_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: njord-admin-basic
+                      key: admin_user
+                      optional: true
+                - name: ENC_CRON_ADMIN_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: njord-admin-basic
+                      key: admin_pass
+                      optional: true
               resources:
                 limits:
                   cpu: "1.0"

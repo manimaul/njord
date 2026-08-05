@@ -36,7 +36,29 @@ INFO    US4AK4BM.000
 INFO    US5AK4CM.000
 ```
 
-These are informational only; nothing is deleted. The list is capped at 50 names per run.
+The list is capped at 50 names per run.
+
+## Deleting withdrawn charts
+
+With `deleteOrphans` (default true) and admin credentials configured, those charts are then
+removed via `DELETE /v1/chart?name=...`, which also drops the tile cache and marks any region
+archive containing them for re-export. Credentials come from the environment so a Kubernetes
+secret can supply them without a password inside the `ENC_CRON_OPTS` blob:
+
+```bash
+ENC_CRON_ADMIN_USER=admin ENC_CRON_ADMIN_PASS=admin \
+  ./enc_cron/build/bin/arch/debugExecutable/enc_cron.kexe --dry-run
+```
+
+Without both set, deletion logs a WARN and does nothing. Two guards limit the damage a bad
+catalog can do:
+
+- Only orphans whose two-letter producer code appears in the catalog are eligible, so a chart
+  ingested from a non-NOAA hydrographic office is never deleted.
+- If more than `maxOrphanDeletes` (default 25) charts qualify, the pass is abandoned and they are
+  only reported - a truncated catalog download is indistinguishable from a mass withdrawal.
+
+`--dry-run` prints `would delete ...` instead.
 
 Charts are matched on a revision key of `"<DSID_UPDN>:<DSID_UADT>:<DSID_ISDT>"`, **not** on the
 S-57 edition number. GDAL overwrites `DSID_EDTN` with the value carried by the last applied

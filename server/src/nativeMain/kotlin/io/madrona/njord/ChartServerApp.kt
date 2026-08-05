@@ -150,7 +150,8 @@ fun Application.njord() {
             ChartWebSocketHandler(),
 
             //curl -v -H "Content-Type: application/json" --request POST  --data '{"name": "foo", "scale": 0, "file_name": "foo.000", "updated": "1979", "issued": "1980", "zoom": 1, "dsid_props": {}, "chart_txt": {}}' https://openenc.com/v1/chart
-            //curl -v -X DELETE 'https://openenc.com/v1/chart?id=1'
+            //curl -v -X DELETE "https://openenc.com/v1/chart?id=1&signature=$sig"
+            //curl -v -X DELETE "https://openenc.com/v1/chart?name=US5WA17M.000&signature=$sig"
             //curl -v 'https://openenc.com/v1/chart?id=1' | jq
             ChartHandler(),
 

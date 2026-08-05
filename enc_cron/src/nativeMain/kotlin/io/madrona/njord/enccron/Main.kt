@@ -58,6 +58,7 @@ private suspend fun run(config: EncCronConfig, options: CommandLine) {
             log.info("${orphans.size} chart(s) held but not listed in the catalog:")
             orphans.take(ORPHAN_LOG_LIMIT).forEach { log.info("  $it") }
             if (orphans.size > ORPHAN_LOG_LIMIT) log.info("  ... and ${orphans.size - ORPHAN_LOG_LIMIT} more")
+            deleteOrphans(orphans, catalog, config, http, options.dryRun)
         }
 
         val stale = selectStale(catalog, have, config)
@@ -125,6 +126,80 @@ internal fun selectStale(
 internal fun selectOrphans(catalog: List<EncCatalogEntry>, have: Map<String, String>): List<String> {
     val listed = catalog.mapTo(mutableSetOf()) { it.chartName }
     return have.keys.filterNot { it in listed }.sorted()
+}
+
+/**
+ * The orphans this job is entitled to delete: those whose S-57 producer code - the leading two
+ * letters of the cell name - appears somewhere in the catalog just diffed against.
+ *
+ * NOAA's catalog covers `US` only, so a chart ingested from another hydrographic office is absent
+ * from it for a reason that has nothing to do with withdrawal. Deriving the producer set from the
+ * catalog rather than hardcoding `US` keeps that true if the catalog URL is ever pointed elsewhere.
+ */
+internal fun deletableOrphans(orphans: List<String>, catalog: List<EncCatalogEntry>): List<String> {
+    val producers = catalog.mapTo(mutableSetOf()) { it.cell.take(2).uppercase() }
+    return orphans.filter { it.take(2).uppercase() in producers }
+}
+
+/**
+ * Removes charts NOAA has withdrawn, so cancelled cells stop being served rather than lingering
+ * forever at their last edition.
+ *
+ * Two guards stand between a bad catalog and a wiped database: [deletableOrphans] limits the blast
+ * radius to producers this catalog actually covers, and [EncCronConfig.maxOrphanDeletes] abandons
+ * the pass entirely if the count looks less like withdrawals and more like a truncated download.
+ * Reporting still happens either way - the caller has already logged the full list.
+ */
+private suspend fun deleteOrphans(
+    orphans: List<String>,
+    catalog: List<EncCatalogEntry>,
+    config: EncCronConfig,
+    http: EncHttp,
+    dryRun: Boolean,
+) {
+    if (!config.deleteOrphans) return
+
+    val baseUrl = config.njordBaseUrl ?: run {
+        log.warn("cannot derive an API base url from chartEditionsUrl=${config.chartEditionsUrl}; nothing deleted")
+        return
+    }
+    if (config.adminUser.isBlank() || config.adminPass.isBlank()) {
+        log.warn("orphan deletion is enabled but no admin credentials are configured; nothing deleted")
+        return
+    }
+
+    val deletable = deletableOrphans(orphans, catalog)
+    val foreign = orphans.size - deletable.size
+    if (foreign > 0) {
+        log.info("$foreign orphan(s) come from a producer this catalog does not cover; leaving them in place")
+    }
+    if (deletable.isEmpty()) return
+
+    if (deletable.size > config.maxOrphanDeletes) {
+        log.warn(
+            "${deletable.size} withdrawn chart(s) exceeds maxOrphanDeletes=${config.maxOrphanDeletes}; " +
+                    "deleting none. A truncated catalog looks exactly like a mass withdrawal - confirm the " +
+                    "catalog is complete before raising the ceiling."
+        )
+        return
+    }
+
+    if (dryRun) {
+        deletable.forEach { log.info("  would delete $it") }
+        return
+    }
+
+    val signature = http.fetchAdminSignature(baseUrl, config.adminUser, config.adminPass)
+    var deleted = 0
+    deletable.forEach { name ->
+        if (http.deleteChart(baseUrl, name, signature)) {
+            deleted++
+            log.info("  deleted $name")
+        } else {
+            log.warn("  $name was already gone")
+        }
+    }
+    log.info("deleted $deleted withdrawn chart(s)")
 }
 
 private suspend fun publishBundles(cells: List<EncCatalogEntry>, config: EncCronConfig, http: EncHttp) {

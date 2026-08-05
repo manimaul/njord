@@ -165,6 +165,33 @@ class RegionDao(
     }
 
     /**
+     * Which of [regions] currently hold the chart named [chartName], as `name to coverageWkt`.
+     *
+     * Call this *before* deleting a chart: [regionNeedsRebuild] only notices charts ingested since
+     * the last export, so a deletion is invisible to it and the region archive would keep shipping
+     * the withdrawn chart until something else in that region happened to be re-ingested. The
+     * caller clears the export state of whatever comes back.
+     */
+    suspend fun regionsContainingChart(
+        chartName: String,
+        regions: List<Pair<String, String>>,
+    ): List<String>? = sqlOpAsync { conn ->
+        regions.filter { (_, coverageWkt) ->
+            conn.prepareStatement(
+                """
+                SELECT EXISTS (
+                    SELECT 1 FROM charts
+                    WHERE name = $1 AND ST_Intersects(covr, ST_GeomFromText($2, 4326))
+                );
+                """.trimIndent()
+            ).apply {
+                setString(1, chartName)
+                setString(2, coverageWkt)
+            }.executeQuery().use { rs -> rs.next() && rs.getBoolean(1) }
+        }.map { it.first }
+    }
+
+    /**
      * Deletes [regionName]'s row from region_export_state so [regionNeedsRebuild] reports it
      * stale again, forcing the export worker to regenerate its archive on its next pass.
      * Returns true if a row was deleted, false if the region had no recorded export.

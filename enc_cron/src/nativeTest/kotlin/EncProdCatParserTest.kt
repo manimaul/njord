@@ -3,6 +3,7 @@ import io.madrona.njord.enccron.EncCronConfig
 import io.madrona.njord.enccron.EncProdCatParser
 import io.madrona.njord.enccron.batches
 import io.madrona.njord.enccron.selectStale
+import kotlin.String
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -201,7 +202,7 @@ class EncProdCatParserTest {
 
 class StaleSelectionTest {
 
-    private val config = EncCronConfig()
+    private val config = encCronConfig()
 
     private fun entry(
         cell: String,
@@ -277,7 +278,7 @@ class BatchingTest {
 
     @Test
     fun `splits on the cell count cap`() {
-        val config = EncCronConfig(bundleSizeCells = 2)
+        val config = encCronConfig(bundleSizeCells = 2)
         val cells = (1..5).map { entry("C$it", 0.01) }
         assertEquals(listOf(2, 2, 1), batches(cells, config).map { it.size })
     }
@@ -285,35 +286,53 @@ class BatchingTest {
     @Test
     fun `splits early when the byte cap is hit first`() {
         // 1 MB compressed is estimated at 4 MB uncompressed, so two cells blow a 5 MB cap.
-        val config = EncCronConfig(bundleSizeCells = 100, maxBundleUncompressedBytes = 5L * 1024 * 1024)
+        val config = encCronConfig(bundleSizeCells = 100, maxBundleUncompressedBytes = 5L * 1024 * 1024)
         val cells = (1..4).map { entry("C$it", 1.0) }
         assertEquals(listOf(1, 1, 1, 1), batches(cells, config).map { it.size })
     }
 
     @Test
     fun `an oversized single cell still gets its own bundle rather than being dropped`() {
-        val config = EncCronConfig(bundleSizeCells = 100, maxBundleUncompressedBytes = 1024)
+        val config = encCronConfig(bundleSizeCells = 100, maxBundleUncompressedBytes = 1024)
         val batches = batches(listOf(entry("HUGE", 500.0)), config)
         assertEquals(listOf(listOf("HUGE")), batches.map { b -> b.map { it.cell } })
     }
 
     @Test
     fun `cells with no published size are still batched`() {
-        val config = EncCronConfig(bundleSizeCells = 2)
+        val config = encCronConfig(bundleSizeCells = 2)
         val cells = (1..3).map { entry("C$it", null) }
         assertEquals(listOf(2, 1), batches(cells, config).map { it.size })
     }
 
     @Test
     fun `empty input yields no batches`() {
-        assertTrue(batches(emptyList(), EncCronConfig()).isEmpty())
+        assertTrue(batches(emptyList(), encCronConfig()).isEmpty())
     }
 
     @Test
     fun `every cell appears exactly once across batches`() {
-        val config = EncCronConfig(bundleSizeCells = 7)
+        val config = encCronConfig(bundleSizeCells = 7)
         val cells = (1..50).map { entry("C$it", 0.1) }
         val flattened = batches(cells, config).flatten()
         assertEquals(cells, flattened)
     }
+
 }
+
+fun encCronConfig(
+    bundleSizeCells: Int = 50,
+    maxBundleUncompressedBytes: Long = 256L * 1024 * 1024,
+
+    ) = EncCronConfig(
+    catalogUrl = "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+    chartEditionsUrl = "http://njord-chart-svc/v1/chart_editions",
+    chartTempData = "/mnt/njord/charts",
+    maxCellsPerRun = 500,
+    bundleSizeCells = bundleSizeCells,
+    maxBundleUncompressedBytes = maxBundleUncompressedBytes,
+    maxQueuedBundles = 3,
+    scaleFilter = emptyList(),
+    requestTimeoutSeconds = 600,
+    maxRetries = 3
+)

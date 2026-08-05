@@ -13,41 +13,41 @@ import platform.posix.getenv
 @Serializable
 data class EncCronConfig(
     /** NOAA's ISO-19115 product catalog. ~52 MB, ~7k cells. */
-    val catalogUrl: String = "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+    val catalogUrl: String,
 
     /** Njord's bulk edition listing. In cluster this is the chart service, not the ingest pod. */
-    val chartEditionsUrl: String = "http://njord-chart-svc/v1/chart_editions",
+    val chartEditionsUrl: String,
 
     /** Ingest worker's shared volume. Bundles are published to `<chartTempData>/save`. */
-    val chartTempData: String = "/mnt/njord/charts",
+    val chartTempData: String,
 
     /**
      * Upper bound on cells fetched per invocation. A cold catalog is ~7k cells / ~818 MB, which
      * would be a multi hour run and a large burst of ingest work; capping lets it converge over
      * several nightly runs. Steady state deltas are far below this, so it normally never binds.
      */
-    val maxCellsPerRun: Int = 500,
+    val maxCellsPerRun: Int,
 
     /**
      * Cells per bundle zip. Kept small because ChartIngest opens every .000 in a bundle up front
      * and pre-counts all their features before inserting anything.
      */
-    val bundleSizeCells: Int = 50,
+    val bundleSizeCells: Int,
 
     /** Secondary bundle cap for batches that happen to be large harbour cells. */
-    val maxBundleUncompressedBytes: Long = 256L * 1024 * 1024,
+    val maxBundleUncompressedBytes: Long,
 
     /** Stop publishing when this many bundles are already queued in `save/`. */
     val maxQueuedBundles: Int = 3,
 
     /** Restrict to these S-57 compilation scales. Empty means all scales. */
-    val scaleFilter: List<Int> = emptyList(),
+    val scaleFilter: List<Int>,
 
     /** Per request timeout for cell downloads and the catalog fetch. */
-    val requestTimeoutSeconds: Long = 600,
+    val requestTimeoutSeconds: Long,
 
     /** Attempts per HTTP resource before giving up on it. */
-    val maxRetries: Int = 3,
+    val maxRetries: Int,
 ) {
     /** Where ChartIngestWorker polls for `*.zip`. */
     val saveDir: File get() = File(chartTempData, "save")

@@ -1,7 +1,7 @@
 {
   "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
-  "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
-  "chartTempData": "/mnt/njord/charts",
+  "chartEditionsUrl": "http://localhost:9000/v1/chart_editions",
+  "chartTempData": "/tmp/njord",
   "maxCellsPerRun": 500,
   "bundleSizeCells": 50,
   "maxBundleUncompressedBytes": 268435456,

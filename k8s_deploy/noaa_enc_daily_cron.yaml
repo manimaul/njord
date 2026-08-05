@@ -31,7 +31,7 @@ spec:
             - name: ghreg
           containers:
             - name: enc-download
-              image: ghcr.io/manimaul/njord-chart-server:latest
+              image: ghcr.io/manimaul/njord-chart-server:1.3-SNAPSHOT
               imagePullPolicy: Always
               securityContext:
                 runAsUser: 0
@@ -99,7 +99,7 @@ data:
   enc_cron.json: |
     {
       "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
-      "chartEditionsUrl": "https://njord-chart-svc/v1/chart_editions",
+      "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
       "chartTempData": "/mnt/njord/charts",
       "maxCellsPerRun": 500,
       "bundleSizeCells": 50,

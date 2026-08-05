@@ -16,6 +16,11 @@ function docker_login() {
   echo "$GH_TOKEN" | docker login ghcr.io -u manimaul --password-stdin
 }
 
+function create_cron_secret() {
+  kubectl -n njord create secret generic njord-admin-basic \
+  --from-literal=admin_user="${NJORD_ADMIN_USER}" --from-literal=admin_pass="${NJORD_ADMIN_PASS}"
+}
+
 help() {
    echo "Login to the GitHub Container Registry"
    echo

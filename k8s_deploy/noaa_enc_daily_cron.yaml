@@ -38,19 +38,15 @@ spec:
               command:
                 - /opt/njord/enc_cron.kexe
                 - /opt/njord/enc_cron_resources
-              # Overrides merged over enc_cron_resources/config/enc_cron.json.
-              # Raise maxCellsPerRun temporarily to seed a cold catalog faster (~7.2k cells).
+              # Tunables live in the njord-enc-cron-config ConfigMap below, which replaces the
+              # copy baked into the image. ENC_CRON_OPTS still overlays it if you need a one-off
+              # override on a manually created Job.
               env:
-                - name: ENC_CRON_OPTS
-                  value: >-
-                    {"chartEditionsUrl":"http://njord-chart-svc/v1/chart_editions",
-                     "chartTempData":"/mnt/njord/charts",
-                     "maxCellsPerRun":500}
                 # Authorizes DELETE /v1/chart for cells NOAA has withdrawn. Without both, the job
-                # still reports orphans but deletes nothing. Set deleteOrphans:false above to
-                # switch the behaviour off entirely while leaving the credentials in place.
+                # still reports orphans but deletes nothing. Set deleteOrphans:false in the
+                # ConfigMap to switch the behaviour off entirely while leaving credentials in place.
                 # kubectl -n njord create secret generic njord-admin-basic \
-                #   --from-literal=admin_user=admin --from-literal=admin_pass=...
+                #   --from-literal=admin_user="${NJORD_ADMIN_USER}" --from-literal=admin_pass="${NJORD_ADMIN_PASS}"
                 - name: ENC_CRON_ADMIN_USER
                   valueFrom:
                     secretKeyRef:
@@ -71,9 +67,47 @@ spec:
                   cpu: 250m
                   memory: "256Mi"
               volumeMounts:
+                # subPath so only this file is replaced, leaving the rest of enc_cron_resources
+                # as the image shipped it.
+                - name: njord-enc-cron-config-vol
+                  mountPath: /opt/njord/enc_cron_resources/config/enc_cron.json
+                  subPath: enc_cron.json
+                  readOnly: true
                 - name: njord-shared-data
                   mountPath: /mnt/njord
           volumes:
+            - name: njord-enc-cron-config-vol
+              configMap:
+                name: njord-enc-cron-config
             - name: njord-shared-data
               persistentVolumeClaim:
                 claimName: njord-shared-data
+---
+# The whole of enc_cron.json, not a patch: the mount replaces the file baked into the image, so
+# anything omitted here falls back to the data class default rather than to the image's copy.
+#
+# Raise maxCellsPerRun temporarily to seed a cold catalog faster (~7.2k cells).
+#
+# Edits apply to the next scheduled run - a CronJob builds a fresh pod each time, so there is no
+# rollout to trigger.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: njord-enc-cron-config
+  namespace: njord
+data:
+  enc_cron.json: |
+    {
+      "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+      "chartEditionsUrl": "https://njord-chart-svc/v1/chart_editions",
+      "chartTempData": "/mnt/njord/charts",
+      "maxCellsPerRun": 500,
+      "bundleSizeCells": 50,
+      "maxBundleUncompressedBytes": 268435456,
+      "maxQueuedBundles": 3,
+      "scaleFilter": [],
+      "requestTimeoutSeconds": 600,
+      "maxRetries": 3,
+      "deleteOrphans": true,
+      "maxOrphanDeletes": 25
+    }

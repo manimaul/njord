@@ -322,7 +322,12 @@ has a default, so both layers are optional.
 | `adminUser` / `adminPass` | `""` | basic auth for `GET /v1/admin`; prefer the env vars |
 
 `ENC_CRON_ADMIN_USER` / `ENC_CRON_ADMIN_PASS` override the last two, so a Kubernetes secret can
-supply the password on its own key rather than inside the `ENC_CRON_OPTS` JSON blob.
+supply the password on its own key rather than inside a config blob that is not one.
+
+In cluster the JSON layer is the `njord-enc-cron-config` ConfigMap, mounted with `subPath` over
+`enc_cron_resources/config/enc_cron.json` so only that file is replaced. It carries the whole file,
+not a patch — anything omitted falls back to the data class default rather than to the image's
+copy. `ENC_CRON_OPTS` is left free for one-off overrides on a manually created Job.
 
 CLI: `enc_cron [resourcesDir] [--from-file <catalog.xml>] [--dry-run]`. `--from-file` parses a
 catalog already on disk (same `ExpatSax` path); `--dry-run` reports the diff and downloads nothing.
@@ -373,7 +378,10 @@ Same image, new entrypoint — mirroring how `ingest.kexe` is handled.
   `ghcr.io/manimaul/njord-chart-server:latest` running `/opt/njord/enc_cron.kexe`. Same schedule,
   same `concurrencyPolicy: Forbid`, same PVC mount, same CronJob name (`njord-enc-download`) so the
   existing `kubectl create job --from=cronjob/...` recipes still work. No pgbouncer sidecar, no
-  database secrets.
+  database secrets. Config comes from the `njord-enc-cron-config` ConfigMap in the same file,
+  mirroring how `njord-config` carries the chart server's `application.json`; the admin credentials
+  stay in the `njord-admin-basic` secret, mounted `optional: true` so the manifest applies cleanly
+  before that secret exists.
 
 ---
 
@@ -417,7 +425,8 @@ GDAL applies the bundled `.001`–`.006` updates (`UPDN = 6`).
 ## Operational notes
 
 **Cold seed.** With `maxCellsPerRun = 500` an empty catalog converges over ~15 nightly runs
-(7,229 cells / ~818 MB). Raise it temporarily via `ENC_CRON_OPTS` for a one-off seed. `maxQueuedBundles`
+(7,229 cells / ~818 MB). Raise it temporarily in the `njord-enc-cron-config` ConfigMap, or via
+`ENC_CRON_OPTS` on a manually created Job, for a one-off seed. `maxQueuedBundles`
 independently stops the job from dumping ~145 bundles into `save/` faster than ingest can drain them.
 
 **Steady state.** A typical nightly delta is a handful to a few dozen cells — usually one bundle —

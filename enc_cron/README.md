@@ -26,6 +26,18 @@ Pass both through Gradle properties instead:
   -PencCronOpts='{"chartEditionsUrl":"http://localhost:9000/v1/chart_editions","chartTempData":"./build/tmp/enc_cron"}'
 ```
 
+Every run also reports charts Njord holds that the catalog no longer lists - withdrawn cells, or
+cells ingested from somewhere other than NOAA:
+
+```
+INFO  3 chart(s) held but not listed in the catalog:
+INFO    US3AK4AM.000
+INFO    US4AK4BM.000
+INFO    US5AK4CM.000
+```
+
+These are informational only; nothing is deleted. The list is capped at 50 names per run.
+
 Charts are matched on a revision key of `"<DSID_UPDN>:<DSID_UADT>:<DSID_ISDT>"`, **not** on the
 S-57 edition number. GDAL overwrites `DSID_EDTN` with the value carried by the last applied
 `.00N` update file, and NOAA publishes `0` there for some cells (e.g. `US1GC09M`, catalog edition

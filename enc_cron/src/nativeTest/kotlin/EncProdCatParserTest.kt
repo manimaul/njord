@@ -2,6 +2,7 @@ import io.madrona.njord.enccron.EncCatalogEntry
 import io.madrona.njord.enccron.EncCronConfig
 import io.madrona.njord.enccron.EncProdCatParser
 import io.madrona.njord.enccron.batches
+import io.madrona.njord.enccron.selectOrphans
 import io.madrona.njord.enccron.selectStale
 import kotlin.String
 import kotlin.test.Test
@@ -268,6 +269,48 @@ class StaleSelectionTest {
     fun `selection order is deterministic so capped runs make steady progress`() {
         val catalog = listOf(entry("C", "1.0"), entry("A", "1.0"), entry("B", "1.0"))
         assertEquals(listOf("A", "B", "C"), selectStale(catalog, emptyMap(), config).map { it.cell })
+    }
+}
+
+class OrphanSelectionTest {
+
+    private fun entry(cell: String, scale: Int? = 15000) =
+        EncCatalogEntry(cell, "1.0", "https://example.com/$cell.zip", scale, 0.1, "20240101", "20240102")
+
+    @Test
+    fun `charts absent from the catalog are reported`() {
+        val catalog = listOf(entry("A"), entry("B"))
+        val have = mapOf(
+            "A.000" to "0:20240101:20240102",
+            "B.000" to "0:20240101:20240102",
+            "Z.000" to "0:20240101:20240102",
+        )
+        assertEquals(listOf("Z.000"), selectOrphans(catalog, have))
+    }
+
+    @Test
+    fun `a chart listed in the catalog is never an orphan regardless of its stored key`() {
+        // A stale chart is still a chart NOAA lists; only absence from the catalog counts.
+        val catalog = listOf(entry("A"))
+        assertEquals(emptyList(), selectOrphans(catalog, mapOf("A.000" to "9:20990101:20990102")))
+    }
+
+    @Test
+    fun `report order is deterministic`() {
+        val have = listOf("C.000", "A.000", "B.000").associateWith { "0:20240101:20240102" }
+        assertEquals(listOf("A.000", "B.000", "C.000"), selectOrphans(emptyList(), have))
+    }
+
+    @Test
+    fun `scale is irrelevant to catalog membership`() {
+        // scaleFilter narrows what gets fetched; it must not turn an out-of-scale cell into an orphan.
+        val catalog = listOf(entry("A", scale = 3000000))
+        assertEquals(emptyList(), selectOrphans(catalog, mapOf("A.000" to "0:20240101:20240102")))
+    }
+
+    @Test
+    fun `an empty edition set yields nothing`() {
+        assertEquals(emptyList(), selectOrphans(listOf(entry("A")), emptyMap()))
     }
 }
 

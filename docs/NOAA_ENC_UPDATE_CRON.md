@@ -429,5 +429,7 @@ becomes a bottleneck.
   a full re-ingest to backfill.
 - **Stream `parseCatalogFile` from disk** rather than reading the whole 52 MB into a `ByteArray`.
   Only affects the `--from-file` debug path; the network path already streams.
-- **Report catalog cells Njord holds but NOAA has withdrawn**, so cancelled cells can be deleted
-  rather than lingering.
+- **Delete cells NOAA has withdrawn.** `selectOrphans` already reports the charts Njord holds that
+  the catalog no longer lists, but nothing acts on the report - a cancelled cell lingers until
+  someone removes it by hand. Automating that needs a way to tell a withdrawn cell from one
+  ingested outside the NOAA pipeline.

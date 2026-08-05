@@ -53,6 +53,13 @@ private suspend fun run(config: EncCronConfig, options: CommandLine) {
         log.info("noaa catalog lists ${catalog.size} cells")
         check(catalog.isNotEmpty()) { "product catalog yielded no cells" }
 
+        val orphans = selectOrphans(catalog, have)
+        if (orphans.isNotEmpty()) {
+            log.info("${orphans.size} chart(s) held but not listed in the catalog:")
+            orphans.take(ORPHAN_LOG_LIMIT).forEach { log.info("  $it") }
+            if (orphans.size > ORPHAN_LOG_LIMIT) log.info("  ... and ${orphans.size - ORPHAN_LOG_LIMIT} more")
+        }
+
         val stale = selectStale(catalog, have, config)
         if (stale.isEmpty()) {
             log.info("all cells up to date, nothing to do")
@@ -105,6 +112,20 @@ internal fun selectStale(
     // re-shuffling which cells get deferred.
     .sortedBy { it.cell }
     .toList()
+
+/**
+ * Chart names Njord holds that NOAA's catalog no longer lists.
+ *
+ * Reported only, never acted on: an absent cell may be genuinely withdrawn, or it may have been
+ * ingested from another hydrographic office, so removal stays a human decision.
+ *
+ * [EncCronConfig.scaleFilter] deliberately does not apply - membership in the catalog is what makes
+ * a chart an orphan, not whether this run would have fetched it.
+ */
+internal fun selectOrphans(catalog: List<EncCatalogEntry>, have: Map<String, String>): List<String> {
+    val listed = catalog.mapTo(mutableSetOf()) { it.chartName }
+    return have.keys.filterNot { it in listed }.sorted()
+}
 
 private suspend fun publishBundles(cells: List<EncCatalogEntry>, config: EncCronConfig, http: EncHttp) {
     config.workDir.mkdirs()
@@ -162,6 +183,9 @@ internal fun batches(cells: List<EncCatalogEntry>, config: EncCronConfig): List<
 }
 
 private const val UNCOMPRESSED_RATIO = 4.0
+
+/** Cap on orphan names logged per run, so a catalog hiccup can't bury the rest of the output. */
+private const val ORPHAN_LOG_LIMIT = 50
 
 private fun queuedBundleCount(config: EncCronConfig): Int =
     config.saveDir.listFiles(false).count { it.name.endsWith(".zip", ignoreCase = true) }

@@ -5,53 +5,45 @@ import io.madrona.njord.util.DistributedLock
 import kotlinx.coroutines.*
 
 object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
-    private const val DB_VERSION = 1
     private const val VERSION_KEY = "version"
-    private const val LNAM_BACKFILL_KEY = "lnam_refs_backfill"
-
-    fun run(distributedLock: DistributedLock = Singletons.migrationLock) {
-        runBlocking {
-            while (true) {
-                val version = dbVersion()
-                if (version == DB_VERSION) {
-                    log.info("DB schema version ready $version")
-                    break
-                } else {
-                    if (distributedLock.tryAcquireLock()) {
-                        try {
-                            if (version == 0) {
-                                initializeSchema()
-                            }
-                        } finally {
-                            distributedLock.tryClearLock()
-                        }
-                        break
-                    }
-                    log.info("waiting for schema initialization by another instance")
-                    delay(500)
-                }
-            }
-            applySchemaPatches(distributedLock)
-        }
-    }
 
     /**
-     * Unconditional idempotent patches that run on every startup, independent of [DB_VERSION] —
-     * [initializeSchema] only ever runs once (when the version is 0), so it can't reach databases
-     * that were already provisioned before these columns/tables/indices existed.
+     * A single schema revision. Applied only when the database's recorded version is below
+     * [version], in ascending order, then the version is stamped into `meta_data`.
      *
-     * Index changes are plain `DROP`/`CREATE`, not `CONCURRENTLY`: this holds [distributedLock]
-     * and runs before the server takes traffic, and `CONCURRENTLY` can't run inside a
-     * multi-statement block. Expect the first startup after a new index lands here to spend
-     * minutes building it over `features`.
+     * [sql] is sent as one multi-statement `PQexec`, which PostgreSQL wraps in an implicit
+     * transaction - any failure rolls the whole thing back and leaves no half-applied revision
+     * behind. That also means [sql] cannot contain statements which are illegal inside a
+     * transaction block (`CREATE INDEX CONCURRENTLY`, `VACUUM`); those belong in an [action].
+     * It also cannot contain `$1`-`$9`, which `PgStatement` treats as bind parameters.
+     *
+     * [action] is arbitrary Kotlin run after [sql], for migrations that can't be expressed as one
+     * transactional block - long data backfills that need batching, or statements which must run
+     * outside a transaction. Returning `false` means "not finished, don't stamp the version": the
+     * migration is retried on the next startup, so an [action] must be re-runnable, as must the
+     * [sql] of any migration that carries one.
+     *
+     * When adding a migration, also fold the change into [initializeSchema] so that fresh
+     * databases are created at the current version and skip the migration entirely.
      */
-    private suspend fun applySchemaPatches(distributedLock: DistributedLock) {
-        while (true) {
-            if (distributedLock.tryAcquireLock()) {
-                try {
-                    sqlOpAsync { conn ->
-                        conn.statement(
-                            """
+    private class Migration(
+        val version: Int,
+        val sql: String? = null,
+        val action: (suspend () -> Boolean)? = null,
+    )
+
+    private val migrations = listOf(
+        /**
+         * Version 1 databases were provisioned before these columns/tables/indices existed, and
+         * [initializeSchema] only ever runs against an empty database, so it can't reach them.
+         *
+         * Index changes are plain `DROP`/`CREATE`, not `CONCURRENTLY`: this runs while holding the
+         * distributed lock, before the server takes traffic. Expect the startup that applies this
+         * to spend minutes building indices over `features`.
+         */
+        Migration(
+            version = 2,
+            sql = """
 ALTER TABLE charts ADD COLUMN IF NOT EXISTS ingested_at TIMESTAMPTZ NOT NULL DEFAULT now();
 
 CREATE TABLE IF NOT EXISTS region_export_state
@@ -61,8 +53,7 @@ CREATE TABLE IF NOT EXISTS region_export_state
 );
 
 -- `id` is already covered by each table's PRIMARY KEY unique btree; these duplicates only ever
--- cost write amplification and vacuum time. CREATE INDEX IF NOT EXISTS matches on index *name*,
--- which is why they were created alongside the pkey indices in the first place.
+-- cost write amplification and vacuum time.
 DROP INDEX IF EXISTS charts_idx;
 DROP INDEX IF EXISTS features_idx;
 
@@ -72,50 +63,100 @@ CREATE INDEX IF NOT EXISTS features_layer_id_idx ON features (layer, id);
 
 -- FeatureDao.findFeature looks a feature up by props->>'LNAM'.
 CREATE INDEX IF NOT EXISTS features_lnam_expr_idx ON features ((props->>'LNAM'));
-                            """.trimIndent()
-                        ).execute()
-                    }
-                    backfillLnamRefs()
-                } finally {
-                    distributedLock.tryClearLock()
+            """.trimIndent(),
+            action = { backfillLnamRefs() },
+        ),
+    ).sortedBy { it.version }
+
+    private val DB_VERSION = migrations.last().version
+
+    fun run(distributedLock: DistributedLock = Singletons.migrationLock) {
+        runBlocking {
+            while (true) {
+                val version = dbVersion()
+                if (version >= DB_VERSION) {
+                    log.info("DB schema version ready $version")
+                    break
                 }
-                return
+                if (distributedLock.tryAcquireLock()) {
+                    try {
+                        if (version == 0) {
+                            initializeSchema()
+                        } else {
+                            applyMigrations(version)
+                        }
+                    } finally {
+                        distributedLock.tryClearLock()
+                    }
+                    break
+                }
+                log.info("waiting for schema migration by another instance")
+                delay(500)
             }
-            log.info("waiting for schema patches by another instance")
-            delay(500)
         }
     }
 
     /**
-     * One-time backfill of `features.lnam_refs`, which no insert ever wrote until now — leaving
+     * Applies every migration above [fromVersion] in order, stamping [VERSION_KEY] after each so a
+     * failure part way through leaves the completed ones behind and resumes from there.
+     *
+     * A failing statement throws: the server can't serve against a schema it doesn't match, and
+     * silently continuing would surface as query errors on every request instead. A [Migration.action]
+     * returning `false` is not fatal - it stops the run without stamping so the next startup retries.
+     */
+    private suspend fun applyMigrations(fromVersion: Int) {
+        migrations.filter { it.version > fromVersion }.forEach { migration ->
+            log.info("applying DB migration ${migration.version}")
+
+            // With no action to run in between, the version stamp rides along in the same implicit
+            // transaction as the DDL, making the whole migration atomic.
+            val stampWithSql = migration.sql != null && migration.action == null
+
+            migration.sql?.let { sql ->
+                val statement = if (stampWithSql) "$sql\n${stampVersionSql(migration.version)}" else sql
+                sqlOpAsync { conn -> conn.statement(statement).execute() }
+                    ?: throw IllegalStateException("DB migration ${migration.version} failed")
+            }
+
+            if (!stampWithSql) {
+                migration.action?.let { action ->
+                    if (!action()) {
+                        log.warn("DB migration ${migration.version} incomplete - retrying on next startup")
+                        return
+                    }
+                }
+                sqlOpAsync { conn -> conn.statement(stampVersionSql(migration.version)).execute() }
+                    ?: throw IllegalStateException("DB migration ${migration.version} version stamp failed")
+            }
+
+            log.info("DB schema migrated to version ${migration.version}")
+        }
+    }
+
+    private fun stampVersionSql(version: Int) = """
+INSERT INTO meta_data (key, value) VALUES ('$VERSION_KEY', '$version')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+    """.trimIndent()
+
+    /**
+     * One-time backfill of `features.lnam_refs`, which no insert ever wrote until now - leaving
      * the column NULL for every existing row, the `features_lnam_idx` GIN index empty, and the
      * TOPMAR association lookups that read it silently returning nothing. GDAL always emitted the
      * data (`LNAM_REFS=ON`); it just landed in `props` only.
      *
-     * Guarded by a [LNAM_BACKFILL_KEY] marker in `meta_data` rather than run unconditionally: an
-     * UPDATE over every feature row rewrites row versions, and doing that on every startup would
-     * bloat the table without bound. Batched per chart to bound WAL and lock duration per
-     * statement — `chart_id` is the leading column of `features_chart_zoom_idx`.
-     *
-     * Bails without setting the marker if anything fails, so the next startup retries. Run
-     * `VACUUM ANALYZE features;` out-of-band afterwards.
+     * Batched per chart to bound WAL and lock duration per statement - `chart_id` is the leading
+     * column of `features_chart_zoom_idx`. Returns false without finishing if anything fails, so
+     * the migration is retried on the next startup. Run `VACUUM ANALYZE features;` out-of-band
+     * afterwards.
      */
-    private suspend fun backfillLnamRefs() {
-        val alreadyDone = sqlOpAsync { conn ->
-            conn.prepareStatement("SELECT value FROM meta_data WHERE key = $1")
-                .apply { setString(1, LNAM_BACKFILL_KEY) }
-                .executeQuery()
-                .use { rs -> rs.next() && rs.getString(1) == "done" }
-        } ?: false
-        if (alreadyDone) return
-
+    private suspend fun backfillLnamRefs(): Boolean {
         val chartIds = sqlOpAsync { conn ->
             conn.prepareStatement("SELECT id FROM charts ORDER BY id;")
                 .executeQuery()
                 .use { rs -> generateSequence { if (rs.next()) rs.getLong(1) else null }.toList() }
         } ?: run {
-            log.warn("could not list charts for lnam_refs backfill - retrying on next startup")
-            return
+            log.warn("could not list charts for lnam_refs backfill")
+            return false
         }
 
         log.info("backfilling features.lnam_refs across ${chartIds.size} charts")
@@ -131,23 +172,21 @@ WHERE chart_id = $1
                     """.trimIndent()
                 ).apply { setLong(1, chartId) }.execute()
             } ?: run {
-                log.warn("lnam_refs backfill failed on chart $chartId - retrying on next startup")
-                return
+                log.warn("lnam_refs backfill failed on chart $chartId")
+                return false
             }
             updated += rows
         }
 
-        sqlOpAsync { conn ->
-            conn.prepareStatement(
-                """
-INSERT INTO meta_data (key, value) VALUES ($1, 'done')
-ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
-                """.trimIndent()
-            ).apply { setString(1, LNAM_BACKFILL_KEY) }.execute()
-        }
         log.info("features.lnam_refs backfill complete - $updated rows updated")
+        return true
     }
 
+    /**
+     * The recorded schema version, or 0 for a database that has never been provisioned. Throws
+     * rather than reporting 0 when the database can't be reached, so a connection failure isn't
+     * mistaken for an empty database and answered by replaying every migration.
+     */
     private suspend fun dbVersion(): Int {
         return sqlOpAsync { conn ->
             val tableExists = conn.prepareStatement("SELECT to_regclass('public.meta_data') IS NOT NULL")
@@ -159,7 +198,7 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
                 .executeQuery()
                 .use { rs -> if (rs.next()) rs.getString(1).toIntOrNull() else null }
                 ?: 0
-        } ?: 0
+        } ?: throw IllegalStateException("could not read DB schema version")
     }
 
     private suspend fun initializeSchema() {
@@ -222,7 +261,7 @@ CREATE TABLE IF NOT EXISTS features
 -- indices (id is already covered by the features_pkey unique btree)
 CREATE INDEX IF NOT EXISTS features_gist ON features USING GIST (geom);
 CREATE INDEX IF NOT EXISTS features_chart_zoom_idx ON features (chart_id, z_min, z_max);
--- (layer, id) not (layer): the layer page query is `layer = $2 AND id > $1 ORDER BY id LIMIT`
+-- (layer, id) not (layer): the layer page query is `layer = ? AND id > ? ORDER BY id LIMIT`
 CREATE INDEX IF NOT EXISTS features_layer_id_idx ON features (layer, id);
 CREATE INDEX IF NOT EXISTS features_lnam_expr_idx ON features ((props->>'LNAM'));
 CREATE INDEX IF NOT EXISTS features_lnam_idx ON features USING GIN (lnam_refs);
@@ -245,13 +284,8 @@ CREATE INDEX IF NOT EXISTS base_features_scale_idx ON base_features (scale);
                 """.trimIndent()
             ).execute()
 
-            conn.statement(
-                """
-INSERT INTO meta_data (key, value) VALUES ('$VERSION_KEY', '$DB_VERSION')
-ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
-                """.trimIndent()
-            ).execute()
-        }
+            conn.statement(stampVersionSql(DB_VERSION)).execute()
+        } ?: throw IllegalStateException("DB schema initialization failed")
         log.info("DB schema initialized to version $DB_VERSION")
     }
 }

@@ -24,11 +24,12 @@ class ChartHandler(
     override val route = "/v1/chart"
 
     override suspend fun handleGet(call: ApplicationCall) {
-        call.request.queryParameters["id"]?.toLongOrNull()?.let {
-            dao.findAsync(it)?.let { chart ->
-                call.respond(chart)
-            } ?: call.respond(HttpStatusCode.NotFound)
-        } ?: call.respond(HttpStatusCode.BadRequest)
+        val chart = call.request.queryParameters["name"]?.let {
+            dao.findAsync(it)
+        }  ?: call.request.queryParameters["id"]?.toLongOrNull()?.let {
+            dao.findAsync(it)
+        }
+        chart?.let { call.respond(it) } ?: call.respond(HttpStatusCode.NotFound)
     }
 
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {

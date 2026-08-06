@@ -28,10 +28,10 @@ fun ChartQuery(
     val state by chartObjectsViewModel.flow.collectAsState()
     val colorState by chartObjectsViewModel.colorSelectionFlow.collectAsState()
     val charts =
-        content.mapNotNull { it.properties["CID"]?.valueStr() }.distinct().map { ChartInfoViewModel(it) }
+        content.mapNotNull { it.properties["NAME"]?.valueStr() }.distinct().map { ChartInfoViewModel(it) }
     asyncComplete(chartObjectsViewModel, state.s57Objects, colorState.themeColors) { obj, colors ->
         Accordion(charts, content, { builder ->
-            builder.title = "Chart id:(${builder.item.id})"
+            builder.title = "Chart name:(${builder.item.name})"
             builder.body = { ChartInfoList(builder.item) }
         }, { builder ->
             val feature = builder.item

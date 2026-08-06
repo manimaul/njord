@@ -8,18 +8,18 @@ import io.madrona.njord.viewmodel.utils.Uninitialized
 import io.madrona.njord.viewmodel.utils.toAsync
 
 data class ChartInfoState(
-    val id: String,
+    val name: String,
     val info: Async<Chart> = Uninitialized,
 )
 
 class ChartInfoViewModel(
-    val id: String
-) : BaseViewModel<ChartInfoState>(ChartInfoState(id)) {
+    val name: String
+) : BaseViewModel<ChartInfoState>(ChartInfoState(name)) {
     init {
         reload()
     }
     override fun reload() {
         setState { copy(info = Loading()) }
-        setState { copy(info = Network.getChartInfo(id).toAsync()) }
+        setState { copy(info = Network.getChartInfo(name).toAsync()) }
     }
 }

@@ -117,8 +117,8 @@ WHERE f.chart_id = $2
             ).apply {
                 setBytes(1, inclusionMask)
                 setLong(2, chartId)
-                setInt( 3, zoom)
-                setInt( 4, zoom)
+                setInt(3, zoom)
+                setInt(4, zoom)
             }.executeQuery().use { rs ->
                 generateSequence {
                     if (rs.next()) ChartFeature(
@@ -185,6 +185,7 @@ ORDER BY f.chart_id;
             """
                 SELECT
                     id,
+                    name,
                     scale,
                     zoom,
                     st_asbinary(covr) as wkb
@@ -200,12 +201,42 @@ ORDER BY f.chart_id;
                         val id = rs.getLong(1)
                         ChartInfo(
                             id = id,
-                            scale = rs.getInt(2),
-                            zoom = rs.getInt(3),
-                            covrWKB = rs.getBytes(4),
+                            name = rs.getString(2),
+                            scale = rs.getInt(3),
+                            zoom = rs.getInt(4),
+                            covrWKB = rs.getBytes(5),
                         )
                     } else null
                 }.toList()
+            }
+        }
+    }
+
+    suspend fun findAsync(name: String): Chart? = sqlOpAsync { conn ->
+        conn.prepareStatement(
+            """
+            SELECT
+                id,
+                name,
+                scale,
+                file_name,
+                updated,
+                issued,
+                zoom,
+                st_asgeojson(covr)::JSON,
+                st_asbinary(covr),
+                dsid_props,
+                chart_txt
+            FROM charts
+            WHERE name=$1;
+            """.trimIndent()
+        ).let { statement ->
+            statement.setString(1, name)
+            statement.executeQuery().use { result ->
+                val id = result.getLong(0)
+                val layers = findLayers(id, conn)
+                val count = featureDao.featureCount(conn, id)
+                result.chart(layers, count).firstOrNull()
             }
         }
     }

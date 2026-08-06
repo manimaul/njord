@@ -129,7 +129,7 @@ class TileEncoder(
 
                         val (props, ed) = measureTimedValue {
                             layerFactory.preTileEncode(feature).props.filtered().also {
-                                it["CID"] = chart.id.json
+                                it["NAME"] = chart.name.json
                             }
                         }
                         preEncodeDuration += ed

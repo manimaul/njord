@@ -10,6 +10,7 @@ import kotlinx.serialization.json.JsonElement
 @Serializable
 class ChartInfo(
     val id: Long,
+    val name: String,
     val scale: Int,
     val zoom: Int,
     val covrWKB: ByteArray

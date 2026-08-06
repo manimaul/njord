@@ -256,34 +256,26 @@ CREATE TABLE charts (
     covr        TEXT    NOT NULL,      -- GeoJSON geometry, NOT WKB/WKT
     dsid_props  TEXT    NOT NULL,      -- JSON object, verbatim jsonb::text
     chart_txt   TEXT    NOT NULL,      -- JSON object: { "US5WA22A.TXT": "…" }
-    ingested_at TEXT    NOT NULL,      -- ISO-8601 UTC
-    -- Envelope of covr, denormalized so a client can answer "which charts
-    -- are near here" without parsing every GeoJSON blob.
-    min_lon     REAL    NOT NULL,
-    min_lat     REAL    NOT NULL,
-    max_lon     REAL    NOT NULL,
-    max_lat     REAL    NOT NULL
+    ingested_at TEXT    NOT NULL       -- ISO-8601 UTC
 );
-
-CREATE INDEX charts_bbox_idx ON charts (min_lon, min_lat, max_lon, max_lat);
 
 -- Every tile this chart contributed content to. The join key is the tile
 -- coordinate itself, in the same column names and the same TMS row
 -- convention as the `tiles` table alongside it (tile_row = (2^z - 1) - y),
 -- so no coordinate flipping is needed anywhere downstream.
 CREATE TABLE chart_tiles (
-    chart_id    INTEGER NOT NULL REFERENCES charts(id) ON DELETE CASCADE,
-    zoom_level  INTEGER NOT NULL,
-    tile_column INTEGER NOT NULL,
-    tile_row    INTEGER NOT NULL,
-    PRIMARY KEY (chart_id, zoom_level, tile_column, tile_row)
+    chart_id INTEGER NOT NULL REFERENCES charts(id) ON DELETE CASCADE,
+    z        INTEGER NOT NULL,
+    x        INTEGER NOT NULL,
+    y        INTEGER NOT NULL,
+    PRIMARY KEY (chart_id, z, x, y)
 ) WITHOUT ROWID;
 
 -- The reverse lookup: "which charts require this tile." This index is what
 -- makes the uninstall sweep in §6.3 a lookup rather than a table scan, and
 -- it is not optional.
 CREATE INDEX chart_tiles_tile_idx
-    ON chart_tiles (zoom_level, tile_column, tile_row);
+    ON chart_tiles (z, x, y);
 ```
 
 There is no second `metadata` table — the archive already has one, and it
@@ -307,44 +299,6 @@ multiply rows. It is also the narrowest: four small integers, `WITHOUT
 ROWID` so the primary key *is* the storage. If it becomes a size problem
 for the densest regions, give tiles a surrogate key and reduce the edge to
 two columns — but measure first, don't pre-normalize.
-
-### 5.2 Only tiles that were actually written
-
-`chart_tiles` must never reference a tile that isn't in `tiles`. The
-candidate set compiled from feature envelopes (§2.2) is a superset of what
-gets written, because a candidate tile whose `TileEncoder` output has no
-content is skipped. Because both tables now live in one database, the fix
-is a single statement after rendering:
-
-```sql
-DELETE FROM chart_tiles
- WHERE NOT EXISTS (
-   SELECT 1 FROM tiles t
-    WHERE t.zoom_level  = chart_tiles.zoom_level
-      AND t.tile_column = chart_tiles.tile_column
-      AND t.tile_row    = chart_tiles.tile_row
- );
-```
-
-This lets the exporter stream edges out per chart as it walks
-`compileTileCoordinates`, rather than holding the per-chart coordinate map
-for the whole region in memory and intersecting it with the written set
-before insert. Run it before creating `chart_tiles_tile_idx` so the index
-is built once, over the pruned table.
-
-### 5.3 Chart identity: `name`, not `id`
-
-The archive carries the server's `charts.id` because it's the natural key
-for `chart_tiles` within a single export, but **the device must key charts
-on `name`**. `charts.id` is a `BIGSERIAL`, and re-ingesting a chart deletes
-and re-inserts the row (`ChartDao.insertAsync(..., overwrite = true)`),
-which mints a new id for the same cell. `name` is `DSID_DSNM` and is
-`UNIQUE` in the server schema.
-
-This matters directly for the refcount: chart `US5WA22A` appearing in both
-`REGION_15` and its neighbour must resolve to **one** device-side chart row
-claimed by two regions, or uninstalling either region will delete tiles the
-other still needs.
 
 ### 5.4 Server-side changes
 
@@ -374,262 +328,24 @@ other still needs.
 
 ## 6. On-Device Storage and Region Uninstall
 
-### 6.1 One merged store, not one file per region
+### 6.1 Install and uninstall
 
-§4.2 pointed a source straight at a downloaded `.mbtiles` file. That works
-for a single region, but tiles cannot be reference-counted across regions
-if each region is an independent file, and boundary tiles get downloaded
-and stored twice.
+§4.2 pointed a source straight at a downloaded `region.mbtiles` file. That works
+for a single region, but we need all downloaded regions chart tiles to be accessible.
 
-The resolution is that **the merged device store is another file of exactly
-the same shape as a region archive** — MBTiles `metadata` + `tiles`, with
-the §5 catalog tables alongside them and invisible to MapLibre, plus two
-tables (`regions`, `region_charts`) that only make sense once more than one
-region is present. The device gets one `mbtiles://` source (with
-`setOversampleMissingTiles(true)`), one style, and single-database deletes
-with real foreign keys.
+The resolution is that downloaded region tiles are extraced to a directory. and the `catalog` tables 
+(`charts`, `chart_tiles`, `chart_tiles_tile_idx1`) are merged into the mobile apps central `catalog` sglite database. 
+The downloaded `region.mtiles` files are then discarded.
 
-Because archive and store share a schema, install is mostly `INSERT …
-SELECT` from an `ATTACH`ed archive (§6.3) rather than a hand-written reader
-— the only translation needed is server chart id → device chart id.
+Installation of a single region:
 
-Two consequences worth stating up front:
+All tiles are extracted from the `region.mbtiles` into the mobile device's tile directory. Tiles are overwritten
+only when the region being installed's date is GTEQ the latest chart table ingested_at claiming the existing tile.
 
-- `metadata` is TileJSON to MapLibre, so `minzoom`, `maxzoom`, `bounds`,
-  and `center` describe the *union* of installed regions and must be
-  recomputed after every install and uninstall.
-- The store must be created with `PRAGMA auto_vacuum = INCREMENTAL`.
-  `DELETE` does not shrink a SQLite file, and a full `VACUUM` on a
-  multi-gigabyte tile store needs a second copy's worth of free space —
-  which is exactly what a user uninstalling a region does not have.
-  `PRAGMA incremental_vacuum` after an uninstall returns the pages without
-  rewriting the file.
+Update of a single region:
 
-### 6.2 Device schema
-
-Identical to a region archive (§2.2 `metadata`/`tiles` + §5.1
-`charts`/`chart_tiles`) except for the marked additions: two columns on
-`tiles` and the `regions`/`region_charts` pair, none of which mean anything
-in a single-region archive.
-
-```sql
-PRAGMA foreign_keys = ON;
-PRAGMA auto_vacuum  = INCREMENTAL;   -- must be set at creation; see §6.1
-
--- ---- MapLibre-visible: standard MBTiles, same as an archive -------------
-
-CREATE TABLE metadata (
-    name  TEXT NOT NULL,
-    value TEXT NOT NULL
-);
-
-CREATE TABLE tiles (
-    zoom_level       INTEGER NOT NULL,
-    tile_column      INTEGER NOT NULL,
-    tile_row         INTEGER NOT NULL,  -- TMS, as in the archive
-    tile_data        BLOB    NOT NULL,  -- gzipped MVT, copied verbatim
-    -- ADDED vs. the archive: which region's archive this blob was rendered
-    -- by. Only needed to detect the stale-content case in §6.4. Nullable,
-    -- and deliberately so: uninstalling a region nulls it on the tiles that
-    -- survive, and a NOT NULL column would abort that delete instead.
-    source_region_id INTEGER REFERENCES regions(id) ON DELETE SET NULL,
-    stale            INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE UNIQUE INDEX tile_index ON tiles (zoom_level, tile_column, tile_row);
-
--- ---- Catalog: same tables as the archive carries, invisible to MapLibre --
-
--- ADDED vs. the archive: an archive is one region and doesn't need to say so.
-CREATE TABLE regions (
-    id             INTEGER PRIMARY KEY AUTOINCREMENT,
-    name           TEXT NOT NULL UNIQUE,   -- e.g. "REGION_15"
-    description    TEXT NOT NULL,
-    archive        TEXT NOT NULL,          -- REGION_15_<ts>.mbtiles
-    archive_sha256 TEXT NOT NULL,
-    created_at     TEXT NOT NULL,          -- region version timestamp
-    installed_at   TEXT NOT NULL
-);
-
--- The archive's `charts` table, with one change: the id is device-local
--- and rows are deduped across regions on `name`. See §5.3.
-CREATE TABLE charts (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,  -- device-local
-    server_id   INTEGER,                            -- informational only
-    name        TEXT    NOT NULL UNIQUE,            -- DSID_DSNM
-    scale       INTEGER NOT NULL,
-    file_name   TEXT    NOT NULL,
-    updated     TEXT    NOT NULL,
-    issued      TEXT    NOT NULL,
-    zoom        INTEGER NOT NULL,
-    covr        TEXT    NOT NULL,   -- GeoJSON
-    dsid_props  TEXT    NOT NULL,   -- JSON
-    chart_txt   TEXT    NOT NULL,   -- JSON
-    ingested_at TEXT    NOT NULL,
-    min_lon     REAL    NOT NULL,
-    min_lat     REAL    NOT NULL,
-    max_lon     REAL    NOT NULL,
-    max_lat     REAL    NOT NULL
-);
-
-CREATE INDEX charts_bbox_idx ON charts (min_lon, min_lat, max_lon, max_lat);
-
--- ADDED vs. the archive. THIS is the table that makes region-granular
--- uninstall safe: a chart shared by two regions has two rows here and
--- survives the removal of either one.
-CREATE TABLE region_charts (
-    region_id INTEGER NOT NULL REFERENCES regions(id) ON DELETE CASCADE,
-    chart_id  INTEGER NOT NULL REFERENCES charts(id)  ON DELETE CASCADE,
-    PRIMARY KEY (region_id, chart_id)
-) WITHOUT ROWID;
-
-CREATE INDEX region_charts_chart_idx ON region_charts (chart_id);
-
--- Copied from each archive's chart_tiles (§5.1), remapping the archive's
--- server chart id to the device-local chart id.
-CREATE TABLE chart_tiles (
-    chart_id    INTEGER NOT NULL REFERENCES charts(id) ON DELETE CASCADE,
-    zoom_level  INTEGER NOT NULL,
-    tile_column INTEGER NOT NULL,
-    tile_row    INTEGER NOT NULL,
-    PRIMARY KEY (chart_id, zoom_level, tile_column, tile_row)
-) WITHOUT ROWID;
-
-CREATE INDEX chart_tiles_tile_idx
-    ON chart_tiles (zoom_level, tile_column, tile_row);
-```
-
-The reference chain is `regions → region_charts → charts → chart_tiles →
-tiles`. Everything up to `chart_tiles` is maintained by SQLite's cascades;
-only the final `tiles` step is an explicit sweep, because a tile is not
-owned by any single chart.
-
-### 6.3 Install and uninstall
-
-**Install** region R. Because the downloaded archive carries its own
-catalog in the same file, the whole import is SQL against an attached
-database — no parsing, no intermediate objects:
-
-```sql
-ATTACH DATABASE '…/REGION_15_<ts>.mbtiles' AS src;
-BEGIN IMMEDIATE;
-
--- 1. Register the region (:id is the row this insert produces).
-INSERT INTO regions (name, description, archive, archive_sha256,
-                     created_at, installed_at)
-VALUES (:name, :description, :archive, :sha256, :created_at, :now);
-
--- 2. Charts, deduped on name. A chart already present from an adjacent
---    region is left alone here; §6.5 covers the edition comparison.
-INSERT OR IGNORE INTO charts (server_id, name, scale, file_name, updated,
-                              issued, zoom, covr, dsid_props, chart_txt,
-                              ingested_at, min_lon, min_lat, max_lon, max_lat)
-SELECT id, name, scale, file_name, updated, issued, zoom, covr, dsid_props,
-       chart_txt, ingested_at, min_lon, min_lat, max_lon, max_lat
-  FROM src.charts;
-
--- 3. This region's claim on each of them.
-INSERT OR IGNORE INTO region_charts (region_id, chart_id)
-SELECT :region_id, c.id
-  FROM charts c JOIN src.charts sc ON sc.name = c.name;
-
--- 4. Tile edges, remapping src chart id -> device chart id via name.
-INSERT OR IGNORE INTO chart_tiles (chart_id, zoom_level, tile_column, tile_row)
-SELECT c.id, ct.zoom_level, ct.tile_column, ct.tile_row
-  FROM src.chart_tiles ct
-  JOIN src.charts sc ON sc.id = ct.chart_id
-  JOIN charts     c  ON c.name = sc.name;
-
--- 5. Tile blobs. OR IGNORE keeps a tile already present from another
---    region; see §7 for when that is the wrong choice.
-INSERT OR IGNORE INTO tiles (zoom_level, tile_column, tile_row, tile_data,
-                             source_region_id)
-SELECT zoom_level, tile_column, tile_row, tile_data, :region_id
-  FROM src.tiles;
-
-COMMIT;
-DETACH DATABASE src;
-```
-
-Then recompute the `metadata` TileJSON rows (`minzoom`, `maxzoom`,
-`bounds`, `center`) over all installed regions, and delete the downloaded
-archive — its contents are now fully absorbed, except for the §6.4 repair
-case, which is the one reason to consider keeping it.
-
-**Uninstall** region R — the whole point of the schema:
-
-```sql
-PRAGMA foreign_keys = ON;
-BEGIN IMMEDIATE;
-
--- 1. Release this region's claim on its charts.
-DELETE FROM region_charts WHERE region_id = :region_id;
-
--- 2. Drop charts no surviving region claims. Cascades into chart_tiles,
---    which is what retracts those tiles' claims.
-DELETE FROM charts
- WHERE NOT EXISTS (
-   SELECT 1 FROM region_charts rc WHERE rc.chart_id = charts.id
- );
-
--- 3. Drop every tile that no surviving chart requires. Uses
---    chart_tiles_tile_idx; without that index this is a full scan of
---    chart_tiles per tile row.
-DELETE FROM tiles
- WHERE NOT EXISTS (
-   SELECT 1 FROM chart_tiles ct
-    WHERE ct.zoom_level  = tiles.zoom_level
-      AND ct.tile_column = tiles.tile_column
-      AND ct.tile_row    = tiles.tile_row
- );
-
--- 4. Flag surviving tiles whose blob came from this region (§6.4). This
---    MUST run before the region row goes, because deleting it nulls
---    source_region_id on exactly these rows.
-UPDATE tiles SET stale = 1 WHERE source_region_id = :region_id;
-
-DELETE FROM regions WHERE id = :region_id;
-
--- 5. Recompute metadata (minzoom/maxzoom/bounds/center) over what's left.
-
-COMMIT;
-
-PRAGMA incremental_vacuum;
-```
-
-Steps 1–3 are the requested behavior stated as SQL: a tile is deleted
-exactly when the last chart record requiring it is deleted, and a chart
-record is deleted exactly when the last region claiming it is uninstalled.
-Uninstalling the only installed region deletes everything; uninstalling one
-of two adjacent regions leaves the shared boundary charts and their tiles
-in place.
-
-Individual chart deletion is deliberately not supported. It would work
-mechanically — delete the `charts` row, run step 3 — but the surviving
-tiles would still be *rendered* with that chart's features baked in, and
-there is no way to repair that short of re-rendering. Region granularity
-keeps the blob content and the catalog consistent by construction, with the
-one exception below.
-
-### 6.4 The boundary-tile staleness caveat
-
-A boundary tile is rendered from every chart that intersects it *within the
-region being exported*. If tile T survives the uninstall of region A
-because a chart in region B still requires it, but T's stored blob came
-from A's archive, that blob may still draw features from A-only charts that
-are now gone.
-
-This is cosmetic (extra chart detail, not missing detail) and confined to
-tiles along a shared boundary, which is why the `stale` flag exists rather
-than a re-render: mark them at uninstall, and repair opportunistically —
-re-fetch from the network on next connectivity, or re-copy T from a
-surviving region's archive if that download was kept rather than deleted
-after install. Rendering a stale tile in
-the meantime is strictly better than deleting it and leaving a hole.
-
-Quantify this before building the repair path: it is `O(boundary tiles)`,
-and if §7.5's validation shows adjacent regions produce byte-identical
-overlap tiles, `stale` never has any visible effect at all.
+When a region is updated all the charts in the catalog for that region are deleted first and their corresponding tiles. 
+However, tiles are only removed from the filesystem if no other charts claim the tile. The installation process above follow. 
 
 ### 6.5 Chart editions across regions
 

@@ -78,6 +78,7 @@ class GeoJsonDao : Dao() {
                         geoJson = geometry.jsonStr(),
                         jsonProps = jsonProps,
                         zoomRange = geoJson.minZ()..geoJson.maxZ(),
+                        lnamRefs = geoJson.properties.lnamRefs(),
                     ).insert(conn)
                 } ?: run {
                     //log.warn("skipping inserting layer $layerName chart id ${chart.id} props $jsonProps")
@@ -113,14 +114,15 @@ class GeoJsonDao : Dao() {
         try {
             return conn.prepareStatement(
                 """
-                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max)
+                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max, lnam_refs)
                 VALUES (
                     $1,
                     ST_MakeValid(ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($2), 4326))),
                     $3::json,
                     $4,
                     $5,
-                    $6
+                    $6,
+                    $7
                 );
             """.trimIndent()
             ).let {
@@ -130,6 +132,7 @@ class GeoJsonDao : Dao() {
                 it.setLong(4, chartId)
                 it.setInt(5, zoomRange.first)
                 it.setInt(6, zoomRange.last)
+                it.setArray(7, lnamRefs.toTypedArray())
                 it.execute().toInt()
             }
         } catch (e: SQLException) {
@@ -145,4 +148,5 @@ private data class FeatureRecord(
     val geoJson: String,
     val jsonProps: String = "{}",
     val zoomRange: IntRange = 0..32,
+    val lnamRefs: List<String> = emptyList(),
 )

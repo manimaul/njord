@@ -387,19 +387,22 @@ all.
   produce both the GeoJSON string and the envelope via
   `OgrGeometry.fromWkb4326(covrWkb)` (`geoJson()` / `envelope()`), the same
   helpers `wktToGeojson()` already uses.
-- `RegionExporter.compileTileCoordinates()` — currently returns a single
-  merged `Set<TileCoord>`, unioning per-chart coordinates and discarding
-  exactly the breakdown `chart_tiles` needs. It has to expose the per-chart
-  view as well (either returning `Map<String, Set<TileCoord>>` keyed by chart
-  name and unioning for the render, or invoking a callback per chart so edges
-  stream out instead of being held in memory for a dense region).
+- `RegionExporter.compileTileCoordinates()` — returned a single merged
+  `Set<TileCoord>`, unioning per-chart coordinates and discarding exactly the
+  breakdown `chart_tiles` needs. It now takes a per-chart callback as well, so
+  edges stream to disk as each chart is compiled instead of the whole
+  `Map<String, Set<TileCoord>>` being held in memory for a dense region.
 - `RegionExporter.writeMbtilesArchive()` — this is the only place that
   changes structurally. New order inside the existing `SqliteDb.open(path)`
   block, all before the atomic rename that already exists:
   1. `db.exec` the two existing DDL statements plus `CREATE TABLE charts`
      and `CREATE TABLE chart_tiles`.
-  2. `renderAndWriteTiles(...)` as today.
-  3. Insert `charts` rows and stream `chart_tiles` edges.
+  2. Insert the `charts` rows. These come first because `chart_tiles.chart_name`
+     references them: SQLite leaves `foreign_keys` off by default so the reverse
+     order appears to work, but the file would then fail to load on any
+     connection that turns the pragma on — including the device's (§6.6).
+  3. `compileTileCoordinates(...)`, streaming each chart's edges into
+     `chart_tiles` as it goes, then `renderAndWriteTiles(...)` as today.
   4. Prune orphaned edges (§5.2), then create `chart_tiles_tile_idx`.
   5. `writeMetadata(...)`, extended with the `njord:*` rows — with
      `njord:generated_at` taken from the archive stem instant, not resampled

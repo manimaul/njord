@@ -151,6 +151,14 @@ class SqliteStatement(
     }
 
     /**
+     * Reads a column of the row [step] just returned. Unlike the bind* methods, [index] is
+     * 0-based — that is the sqlite3 C API's own asymmetry, not ours.
+     */
+    fun columnInt(index: Int): Int = sqlite3_column_int(stmt, index)
+
+    fun columnText(index: Int): String? = sqlite3_column_text(stmt, index)?.reinterpret<ByteVar>()?.toKString()
+
+    /**
      * Resets the statement so it can be re-executed with new bindings.
      * Clears all bound values.
      */

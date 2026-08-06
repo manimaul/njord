@@ -13,6 +13,7 @@ import io.madrona.njord.geojson.BoundingBox
 import io.madrona.njord.geojson.Feature
 import io.madrona.njord.geojson.GeoJsonObject
 import io.madrona.njord.geojson.Point
+import io.madrona.njord.geojson.jsonStr
 import io.madrona.njord.model.RegionManifestEntry
 import io.madrona.njord.util.DistributedLock
 import io.madrona.njord.util.gzipCompress
@@ -103,16 +104,26 @@ class RegionExporter(
             found
         }
 
-        val archiveName = "${regionConfig.name}_${currentTimestamp()}.mbtiles"
+        val stamp = currentTimestamp()
+        val archiveName = "${regionConfig.name}_$stamp.mbtiles"
         val archiveFile = File(regionDir, archiveName)
         val tmpFile = File(regionDir, "$archiveName.tmp")
+
+        // `njord:generated_at` must be the same instant `buildManifest()` reports as
+        // RegionManifestEntry.createdAt, and that one is derived by parsing the filename stem —
+        // so derive this one the same way rather than sampling the clock a second time (see
+        // docs/REGION_DATA_EXPORT_MOBILE.md §5.1).
+        val generatedAt = parseTimestampStem(stamp) ?: run {
+            log.error("could not parse archive timestamp stem '$stamp'")
+            return
+        }
 
         if (isWorld) {
             log.info("writing world base map to ${archiveFile.getAbsolutePath()}")
         } else {
             log.info("writing ${charts.size} chart(s) to ${archiveFile.getAbsolutePath()}")
         }
-        writeMbtilesArchive(tmpFile.getAbsolutePath().toString(), regionConfig, charts, isWorld)
+        writeMbtilesArchive(tmpFile.getAbsolutePath().toString(), regionConfig, charts, isWorld, generatedAt)
 
         // Atomic rename
         if (tmpFile.renameTo(archiveFile.getAbsolutePath().toString()) == null) {
@@ -127,23 +138,108 @@ class RegionExporter(
         pruneOldArchives(regionConfig.name)
     }
 
+    /**
+     * Writes the sparse tile archive *and* the chart catalog that rides inside it — an MBTiles
+     * file is a SQLite database and MapLibre's MBTilesFileSource only ever reads `metadata` and
+     * `tiles`, so the `charts`/`chart_tiles` catalog tables are invisible to it while keeping the
+     * region to one downloadable file with one checksum (docs/REGION_DATA_EXPORT_MOBILE.md §5).
+     */
     private suspend fun writeMbtilesArchive(
         path: String,
         regionConfig: RegionExportConfig,
         charts: List<RegionChart>,
         isWorld: Boolean,
+        generatedAt: Instant,
     ) {
-        val tileCoords = if (isWorld) worldTileCoordinates() else compileTileCoordinates(charts)
-        log.info("region ${regionConfig.name}: ${tileCoords.size} candidate tile(s)")
-
         SqliteDb.open(path).use { db ->
             db.exec(CREATE_METADATA_TABLE)
             db.exec(CREATE_TILES_TABLE)
             db.exec(CREATE_TILES_INDEX)
+            db.exec(CREATE_CHARTS_TABLE)
+            db.exec(CREATE_CHART_TILES_TABLE)
+
+            // Charts first: chart_tiles.chart_name references them, and although SQLite leaves
+            // foreign keys off by default, edges pointing at rows that don't exist yet would break
+            // the moment anything opened this file with the pragma on.
+            writeCharts(db, charts)
+
+            // Edges stream straight to disk as each chart is compiled, so a dense region never
+            // holds the per-chart breakdown in memory — only the merged candidate set, which the
+            // render pass needs anyway.
+            val tileCoords = if (isWorld) {
+                worldTileCoordinates()
+            } else {
+                compileTileCoordinates(charts) { chartName, coords ->
+                    writeChartTileEdges(db, chartName, coords)
+                }
+            }
+            log.info("region ${regionConfig.name}: ${tileCoords.size} candidate tile(s)")
 
             val (written, minZ, maxZ) = renderAndWriteTiles(db, tileCoords, isWorld)
-            writeMetadata(db, regionConfig, minZ, maxZ, isWorld)
+
+            // Candidate edges are a superset of the tiles actually written — the encoder finds no
+            // content for many of them, which is what makes the archive sparse. Drop the dangling
+            // ones before indexing, so the device's refcount doesn't believe in tiles that were
+            // never installed (§5.2).
+            db.exec(PRUNE_ORPHANED_CHART_TILES)
+            db.exec(CREATE_CHART_TILES_INDEX)
+
+            writeMetadata(db, regionConfig, minZ, maxZ, isWorld, generatedAt, charts.size, written)
             log.info("region ${regionConfig.name}: wrote $written/${tileCoords.size} non-empty tile(s)")
+        }
+    }
+
+    /**
+     * One `charts` row per chart in this region's archive, mirroring the server's `charts` table
+     * with PostGIS/JSONB flattened to TEXT. The server's surrogate `id` is deliberately not
+     * carried across: it is meaningless on a device that merges archives exported at different
+     * times, so the cell name (DSID_DSNM) is the archive's chart identity (§5.1).
+     */
+    private fun writeCharts(db: SqliteDb, charts: List<RegionChart>) {
+        if (charts.isEmpty()) return
+        db.prepare(INSERT_CHART).use { stmt ->
+            db.transaction {
+                charts.forEach { chart ->
+                    val covrGeoJson = OgrGeometry.fromWkb4326(chart.covrWkb)?.geoJson()?.jsonStr()
+                        ?: run {
+                            log.warn("chart ${chart.name}: could not convert covr WKB to GeoJSON")
+                            "null"
+                        }
+                    stmt.reset()
+                        .bindText(1, chart.name)
+                        .bindInt(2, chart.scale)
+                        .bindText(3, chart.fileName)
+                        .bindText(4, chart.updated)
+                        .bindText(5, chart.issued)
+                        .bindInt(6, chart.zoom)
+                        .bindText(7, covrGeoJson)
+                        .bindText(8, chart.dsidPropsJson)
+                        .bindText(9, chart.chartTxtJson)
+                        .bindText(10, chart.ingestedAt)
+                        .step()
+                }
+            }
+        }
+    }
+
+    /**
+     * The chart → tile edges for one chart, in the same column names and TMS row convention as
+     * the `tiles` table alongside them, so the device's uninstall sweep can correlate the two by
+     * bare column name (§5.1).
+     */
+    private fun writeChartTileEdges(db: SqliteDb, chartName: String, coords: Set<TileCoord>) {
+        if (coords.isEmpty()) return
+        db.prepare(INSERT_CHART_TILE).use { stmt ->
+            db.transaction {
+                coords.forEach { coord ->
+                    stmt.reset()
+                        .bindText(1, chartName)
+                        .bindInt(2, coord.z)
+                        .bindInt(3, coord.x)
+                        .bindInt(4, xyzToTmsRow(coord.z, coord.y))
+                        .step()
+                }
+            }
         }
     }
 
@@ -171,12 +267,20 @@ class RegionExporter(
      * SCAMIN/SCAMAX) is capped at that feature's chart's own compiled-scale zoom (chart.zoom,
      * already derived at ingest time from DSPM_CSCL) — so an overview chart naturally yields a
      * shallow pyramid and a detailed chart a deeper one, with no separate config needed.
+     *
+     * Returns the merged candidate set for the render pass, and hands each chart's own candidate
+     * set to [onChartCoords] as it is compiled so the caller can persist the per-chart breakdown
+     * (which the merged set discards) without holding it all in memory.
      */
-    private suspend fun compileTileCoordinates(charts: List<RegionChart>): Set<TileCoord> {
+    private suspend fun compileTileCoordinates(
+        charts: List<RegionChart>,
+        onChartCoords: (chartName: String, coords: Set<TileCoord>) -> Unit,
+    ): Set<TileCoord> {
         val tileSystem = Singletons.tileSystem
         val coords = mutableSetOf<TileCoord>()
         charts.forEach { chart ->
             val features = regionDao.findFeaturesForChart(chart.id) ?: return@forEach
+            val chartCoords = mutableSetOf<TileCoord>()
             features.forEach { feature ->
                 val props = jsonParser.parseToJsonElement(feature.propsJson).jsonObject
                 val featMinZ = (props["MINZ"]?.jsonPrimitive?.intOrNull ?: 0).coerceAtLeast(0)
@@ -194,11 +298,13 @@ class RegionExporter(
                     val yEnd = br.y.toInt().coerceIn(0, maxTile)
                     for (x in xStart..xEnd) {
                         for (y in yStart..yEnd) {
-                            coords.add(TileCoord(z, x, y))
+                            chartCoords.add(TileCoord(z, x, y))
                         }
                     }
                 }
             }
+            onChartCoords(chart.name, chartCoords)
+            coords.addAll(chartCoords)
         }
         return coords
     }
@@ -253,6 +359,9 @@ class RegionExporter(
         minZ: Int,
         maxZ: Int,
         isWorld: Boolean,
+        generatedAt: Instant,
+        chartCount: Int,
+        tileCount: Int,
     ) {
         val env = if (isWorld) {
             WORLD_ENVELOPE
@@ -271,6 +380,14 @@ class RegionExporter(
                 add("bounds" to "${it.west},${it.south},${it.east},${it.north}")
                 add("center" to "${(it.west + it.east) / 2},${(it.south + it.north) / 2},${(minZ + maxZ) / 2}")
             }
+            // Catalog bookkeeping. MapLibre turns every metadata row into a TileJSON member and
+            // ignores the members it doesn't know, so these are inert to it as long as they don't
+            // collide with the TileJSON names above — hence the "njord:" prefix (§5.1).
+            add("njord:schema_version" to CATALOG_SCHEMA_VERSION.toString())
+            add("njord:region" to regionConfig.name)
+            add("njord:chart_count" to chartCount.toString())
+            add("njord:tile_count" to tileCount.toString())
+            add("njord:generated_at" to generatedAt.toString())
         }
         db.prepare(INSERT_METADATA).use { stmt ->
             db.transaction {
@@ -346,13 +463,19 @@ class RegionExporter(
      * for filesystem-safety) back into an [Instant], from an archive filename of the form
      * "${regionName}_${timestamp}.mbtiles".
      */
-    private fun parseArchiveTimestamp(regionName: String, fileName: String): Instant? {
-        val ts = fileName.removePrefix("${regionName}_").removeSuffix(".mbtiles")
-        return runCatching {
-            val colonized = ts.replaceFirst(Regex("T(\\d{2})-(\\d{2})-(\\d{2})$"), "T$1:$2:$3")
-            LocalDateTime.parse(colonized).toInstant(TimeZone.currentSystemDefault())
-        }.getOrNull()
-    }
+    private fun parseArchiveTimestamp(regionName: String, fileName: String): Instant? =
+        parseTimestampStem(fileName.removePrefix("${regionName}_").removeSuffix(".mbtiles"))
+
+    /**
+     * Inverts a single [currentTimestamp] stem. [currentTimestamp] writes server-local time with
+     * no offset marker, so this has to interpret it in the same zone — which is also why the
+     * `njord:generated_at` metadata row is derived from the stem rather than re-sampled: two
+     * samplings either side of a DST boundary would disagree by a whole offset (§5.1).
+     */
+    private fun parseTimestampStem(ts: String): Instant? = runCatching {
+        val colonized = ts.replaceFirst(Regex("T(\\d{2})-(\\d{2})-(\\d{2})$"), "T$1:$2:$3")
+        LocalDateTime.parse(colonized).toInstant(TimeZone.currentSystemDefault())
+    }.getOrNull()
 
     /**
      * Builds a manifest entry for every region in [ChartsConfig.regionExports], regardless of
@@ -386,6 +509,10 @@ class RegionExporter(
     companion object {
         const val MAX_ARCHIVES = 2
         const val WORLD_REGION_NAME = "WORLD"
+
+        /** Bumped when the `charts`/`chart_tiles` shape changes, so a client can reject a file it doesn't understand. */
+        const val CATALOG_SCHEMA_VERSION = 1
+
         private const val WORLD_MAX_ZOOM = 6
         private const val TILE_INSERT_BATCH_SIZE = 200
         private val WORLD_ENVELOPE = BoundingBox(-180.0, -90.0, 180.0, 90.0)
@@ -404,7 +531,7 @@ class RegionExporter(
             );
         """.trimIndent()
 
-        private val CREATE_TILES_TABLE = """
+        internal val CREATE_TILES_TABLE = """
             CREATE TABLE IF NOT EXISTS tiles (
                 zoom_level  INTEGER NOT NULL,
                 tile_column INTEGER NOT NULL,
@@ -413,7 +540,7 @@ class RegionExporter(
             );
         """.trimIndent()
 
-        private val CREATE_TILES_INDEX = """
+        internal val CREATE_TILES_INDEX = """
             CREATE UNIQUE INDEX IF NOT EXISTS tile_index
                 ON tiles (zoom_level, tile_column, tile_row);
         """.trimIndent()
@@ -422,8 +549,63 @@ class RegionExporter(
             INSERT INTO metadata (name, value) VALUES (?, ?);
         """
 
-        private const val INSERT_TILE = """
+        internal const val INSERT_TILE = """
             INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data)
+            VALUES (?, ?, ?, ?);
+        """
+
+        /**
+         * Mirrors the server's `charts` table (see DbMigrations.kt) with PostGIS/JSONB types
+         * flattened to TEXT. `name` (DSID_DSNM) is the primary key and the server's surrogate
+         * `charts.id` is not carried across at all — see [writeCharts].
+         */
+        internal val CREATE_CHARTS_TABLE = """
+            CREATE TABLE IF NOT EXISTS charts (
+                name        TEXT    PRIMARY KEY,
+                scale       INTEGER NOT NULL,
+                file_name   TEXT    NOT NULL,
+                updated     TEXT    NOT NULL,
+                issued      TEXT    NOT NULL,
+                zoom        INTEGER NOT NULL,
+                covr        TEXT    NOT NULL,
+                dsid_props  TEXT    NOT NULL,
+                chart_txt   TEXT    NOT NULL,
+                ingested_at TEXT    NOT NULL
+            );
+        """.trimIndent()
+
+        internal val CREATE_CHART_TILES_TABLE = """
+            CREATE TABLE IF NOT EXISTS chart_tiles (
+                chart_name  TEXT    NOT NULL REFERENCES charts(name) ON DELETE CASCADE,
+                zoom_level  INTEGER NOT NULL,
+                tile_column INTEGER NOT NULL,
+                tile_row    INTEGER NOT NULL,
+                PRIMARY KEY (chart_name, zoom_level, tile_column, tile_row)
+            ) WITHOUT ROWID;
+        """.trimIndent()
+
+        /** The reverse lookup ("which charts require this tile") the device's uninstall sweep needs. */
+        internal val CREATE_CHART_TILES_INDEX = """
+            CREATE INDEX IF NOT EXISTS chart_tiles_tile_idx
+                ON chart_tiles (zoom_level, tile_column, tile_row);
+        """.trimIndent()
+
+        internal val PRUNE_ORPHANED_CHART_TILES = """
+            DELETE FROM chart_tiles WHERE NOT EXISTS (
+                SELECT 1 FROM tiles t
+                WHERE t.zoom_level  = chart_tiles.zoom_level
+                  AND t.tile_column = chart_tiles.tile_column
+                  AND t.tile_row    = chart_tiles.tile_row);
+        """.trimIndent()
+
+        internal const val INSERT_CHART = """
+            INSERT OR REPLACE INTO charts
+                (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt, ingested_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """
+
+        internal const val INSERT_CHART_TILE = """
+            INSERT OR IGNORE INTO chart_tiles (chart_name, zoom_level, tile_column, tile_row)
             VALUES (?, ?, ?, ?);
         """
     }

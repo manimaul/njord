@@ -17,6 +17,7 @@ data class RegionChart(
     val covrWkb: ByteArray,     // WKB of the coverage polygon
     val dsidPropsJson: String,  // raw JSONB string
     val chartTxtJson: String,   // raw JSONB string
+    val ingestedAt: String,     // ISO-8601, when this row was written to our DB
 )
 
 /**
@@ -52,7 +53,8 @@ class RegionDao(
                 zoom,
                 st_asbinary(covr),
                 dsid_props::text,
-                chart_txt::text
+                chart_txt::text,
+                ingested_at::text
             FROM charts
             WHERE ST_Intersects(covr, ST_GeomFromText($1, 4326))
             ORDER BY id;
@@ -74,6 +76,7 @@ class RegionDao(
                         covrWkb = rs.getBytes(8),
                         dsidPropsJson = rs.getString(9),
                         chartTxtJson = rs.getString(10),
+                        ingestedAt = rs.getString(11),
                     )
                 )
             }

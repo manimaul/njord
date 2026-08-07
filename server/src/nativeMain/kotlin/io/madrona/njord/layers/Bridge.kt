@@ -7,17 +7,18 @@ import io.madrona.njord.model.*
 
 class Bridge : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
-        val categories = feature.catbrg()
-        categories.firstOrNull{
+        val opening = feature.catbrg().any {
             it == Catbrg.OPENING_BRIDGE
                     || it == Catbrg.SWING_BRIDGE
                     || it == Catbrg.LIFTING_BRIDGE
                     || it == Catbrg.BASCULE_BRIDGE
                     || it == Catbrg.DRAW_BRIDGE
                     || it == Catbrg.TRANSPORTER_BRIDGE
-        }?.let {
+        }
+        if (opening) {
             feature.pointSymbol(Sprite.BRIDGE01)
             feature.linePattern(Sprite.BRIDGE01)
+            feature.openingBridge()
         }
     }
 

@@ -250,6 +250,13 @@ class StandardLayers {
 
         //high pri labels
         Soundg(),
+        // clearance text is S-52 display-base, so it goes above the symbology of the objects it
+        // annotates - see ClearanceLabel
+        ClearanceLabel("BRIDGE"),
+        ClearanceLabel("CBLOHD"),
+        ClearanceLabel("CONVYR"),
+        ClearanceLabel("CRANES"),
+        ClearanceLabel("GATCON"),
         Curent(),
 
         // lights

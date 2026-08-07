@@ -191,9 +191,9 @@ class RegionExporter(
 
     /**
      * One `charts` row per chart in this region's archive, mirroring the server's `charts` table
-     * with PostGIS/JSONB flattened to TEXT. The server's surrogate `id` is deliberately not
-     * carried across: it is meaningless on a device that merges archives exported at different
-     * times, so the cell name (DSID_DSNM) is the archive's chart identity (§5.1).
+     * with PostGIS/JSONB flattened to TEXT. The cell name (DSID_DSNM) is the chart's identity on
+     * both sides - a device merging archives exported at different times still sees "the same
+     * chart" mean the same thing (§5.1).
      */
     private fun writeCharts(db: SqliteDb, charts: List<RegionChart>) {
         if (charts.isEmpty()) return
@@ -279,7 +279,7 @@ class RegionExporter(
         val tileSystem = Singletons.tileSystem
         val coords = mutableSetOf<TileCoord>()
         charts.forEach { chart ->
-            val features = regionDao.findFeaturesForChart(chart.id) ?: return@forEach
+            val features = regionDao.findFeaturesForChart(chart.name) ?: return@forEach
             val chartCoords = mutableSetOf<TileCoord>()
             features.forEach { feature ->
                 val props = jsonParser.parseToJsonElement(feature.propsJson).jsonObject
@@ -556,8 +556,8 @@ class RegionExporter(
 
         /**
          * Mirrors the server's `charts` table (see DbMigrations.kt) with PostGIS/JSONB types
-         * flattened to TEXT. `name` (DSID_DSNM) is the primary key and the server's surrogate
-         * `charts.id` is not carried across at all — see [writeCharts].
+         * flattened to TEXT. `name` (DSID_DSNM) is the primary key here, as it is on the server —
+         * see [writeCharts].
          */
         internal val CREATE_CHARTS_TABLE = """
             CREATE TABLE IF NOT EXISTS charts (

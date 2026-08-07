@@ -114,10 +114,10 @@ class TileEncoder(
         chartQueryDuration
         chartQueryDuration = cd
         charts?.let { charts ->
-            val eligibleChartIds = charts.filter { it.zoom in 0..z }.map { it.id }
+            val eligibleChartNames = charts.filter { it.zoom in 0..z }.map { it.name }
 
             val (allFeatures, fd) = measureTimedValue {
-                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartIds, z) ?: emptyMap()
+                chartDao.findAllChartFeaturesAsync4326(tileWkb, eligibleChartNames, z) ?: emptyMap()
             }
             featureQueryDuration += fd
 
@@ -125,7 +125,7 @@ class TileEncoder(
                 val chartGeo = OgrGeometry.fromWkb4326(chart.covrWKB) ?: error("chart cover geo not valid")
                 if (!include.isEmpty() && chart.zoom in 0..z) {
                     val chartInclude = include
-                    allFeatures[chart.id]?.forEach { feature ->
+                    allFeatures[chart.name]?.forEach { feature ->
 
                         val (props, ed) = measureTimedValue {
                             layerFactory.preTileEncode(feature).props.filtered().also {

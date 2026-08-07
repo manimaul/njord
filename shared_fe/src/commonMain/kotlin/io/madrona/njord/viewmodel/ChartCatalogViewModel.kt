@@ -26,7 +26,7 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
     override fun reload() {
         setState { ChartCatalogState(catalog = Loading()) }
         setState {
-            val cat = Network.getChartCatalog(0).toAsync()
+            val cat = Network.getChartCatalog().toAsync()
             copy(
                 catalog = cat,
                 filtered = cat.value?.page?.let { filterItems(filter, it) } ?: emptyList(),
@@ -43,7 +43,7 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
                         val page = catalog.value?.page ?: emptyList()
                         setState { copy(catalog = Loading(catalog.value)) }
                         val combinedCatalog =
-                            Network.getChartCatalog(catalog.value?.nextId ?: 0).toAsync().map { response ->
+                            Network.getChartCatalog(catalog.value?.nextName ?: "").toAsync().map { response ->
                                 response.copy(page = page + response.page)
                             }
                         setState {
@@ -92,7 +92,7 @@ class ChartCatalogViewModel : BaseViewModel<ChartCatalogState>(ChartCatalogState
             }
             launch {
                 delete.forEachIndexed { i, item->
-                    Network.deleteChart(sig, item.id)
+                    Network.deleteChart(sig, item.name)
                     setState {
                         copy(deleteProgress = progress(i + 1, delete.size))
                     }

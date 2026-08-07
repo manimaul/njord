@@ -1,5 +1,20 @@
 # Release Notes
 
+## Unreleased
+
+### Breaking Changes
+
+- **`charts.name` is now the primary key** — the surrogate `charts.id` is gone, and
+  `features.chart_id` is now `features.chart_name`. Applied automatically by DB migration 3, which
+  backfills existing rows in place; on a large database expect a long startup, and run
+  `VACUUM FULL features;` afterwards to reclaim the bloat.
+- **Charts are addressed by name over HTTP** — `/v1/chart` and `/v1/chart_catalog` no longer accept
+  an `id` parameter (use `name`), and `/v1/geojson` takes `chart_name` in place of `chart_id`.
+- **`ChartCatalog.nextId` is now `nextName`** — catalog paging uses the chart name as its cursor.
+  `ChartItem` no longer carries an `id`.
+
+`/v1/chart_editions` is unchanged; enc_cron already keyed on chart names.
+
 ## 1.2
 
 ### New Features

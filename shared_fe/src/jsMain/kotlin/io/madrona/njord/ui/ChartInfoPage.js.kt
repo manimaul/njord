@@ -27,10 +27,6 @@ actual fun ChartInfoPage(name: String) {
                 }
                 Tbody {
                     Tr {
-                        Td { Text("ID") }
-                        Td { Text("${chart.id}") }
-                    }
-                    Tr {
                         Td { Text("Name") }
                         Td {
                             Text("${chart.name} ")
@@ -105,7 +101,7 @@ fun ChartInfoList(
 
         Ol {
             Li {
-                Link(label = "id: ${chart.id}", path = "/chart/${chart.id}")
+                Link(label = chart.name, path = "/chart/${chart.name}")
             }
             Li {
                 B { Text("File name: ") }

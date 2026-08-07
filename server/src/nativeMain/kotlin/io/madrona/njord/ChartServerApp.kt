@@ -162,9 +162,9 @@ fun Application.njord() {
             //curl -v 'https://openenc.com/v1/chart_editions' | jq
             ChartEditionsHandler(),
 
-            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=8&name=BOYSPP'
-            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'https://openenc.com/v1/geojson?chart_id=17&name=BOYSPP'
-            //curl -v 'https://openenc.com/v1/geojson?chart_id=17&layer_name=BOYSPP' | jq
+            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@data/BOYSPP.json" 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP'
+            //curl -v -H "Content-Type: application/json" --request POST --data-binary "@${HOME}/source/madrona/njord/data/US3WA46M/ogr_BOYSPP.json" 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP'
+            //curl -v 'https://openenc.com/v1/geojson?chart_name=US3WA46M.000&layer_name=BOYSPP' | jq
             GeoJsonHandler(),
 
             // curl -v "https://openenc.com/v1/tile/0/0/0"

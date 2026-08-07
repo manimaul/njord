@@ -19,10 +19,10 @@ class GeoJsonHandler(
 
     override suspend fun handleGet(call: ApplicationCall) {
         letTwo(
-            call.request.queryParameters["chart_id"]?.toLongOrNull(),
+            call.request.queryParameters["chart_name"],
             call.request.queryParameters["layer_name"]
-        ) { id, name ->
-            geoJsonDao.fetchAsync(id, name)
+        ) { chartName, layerName ->
+            geoJsonDao.fetchAsync(chartName, layerName)
         }?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.NotFound)
@@ -31,12 +31,12 @@ class GeoJsonHandler(
     override suspend fun handlePost(call: ApplicationCall) = call.requireSignature {
         val geo = call.receive<GeoJsonObject>()
         letTwo(
-            call.request.queryParameters["chart_id"]?.toLongOrNull(),
+            call.request.queryParameters["chart_name"],
             call.request.queryParameters["layer_name"]
-        ) { id, name ->
-            chartDao.findAsync(id)?.let { chart ->
+        ) { chartName, layerName ->
+            chartDao.findAsync(chartName)?.let { chart ->
                 FeatureInsert(
-                    name,
+                    layerName,
                     chart,
                     geo
                 )

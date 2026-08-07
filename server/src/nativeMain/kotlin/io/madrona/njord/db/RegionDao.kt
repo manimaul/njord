@@ -7,7 +7,6 @@ import io.madrona.njord.Singletons
  * A single chart row returned from the region query.
  */
 data class RegionChart(
-    val id: Long,
     val name: String,
     val scale: Int,
     val fileName: String,
@@ -28,7 +27,7 @@ data class RegionFeature(
     val layer: String,
     val geomWkb: ByteArray,   // WKB of the geometry
     val propsJson: String,    // raw JSONB string
-    val chartId: Long,
+    val chartName: String,
     val lnamRefs: List<String>, // may be empty
 )
 
@@ -44,7 +43,6 @@ class RegionDao(
         conn.prepareStatement(
             """
             SELECT
-                id,
                 name,
                 scale,
                 file_name,
@@ -57,7 +55,7 @@ class RegionDao(
                 ingested_at::text
             FROM charts
             WHERE ST_Intersects(covr, ST_GeomFromText($1, 4326))
-            ORDER BY id;
+            ORDER BY name;
             """.trimIndent()
         ).apply {
             setString(1, coverageWkt)
@@ -66,17 +64,16 @@ class RegionDao(
             while (rs.next()) {
                 result.add(
                     RegionChart(
-                        id = rs.getLong(1),
-                        name = rs.getString(2),
-                        scale = rs.getInt(3),
-                        fileName = rs.getString(4),
-                        updated = rs.getString(5),
-                        issued = rs.getString(6),
-                        zoom = rs.getInt(7),
-                        covrWkb = rs.getBytes(8),
-                        dsidPropsJson = rs.getString(9),
-                        chartTxtJson = rs.getString(10),
-                        ingestedAt = rs.getString(11),
+                        name = rs.getString(1),
+                        scale = rs.getInt(2),
+                        fileName = rs.getString(3),
+                        updated = rs.getString(4),
+                        issued = rs.getString(5),
+                        zoom = rs.getInt(6),
+                        covrWkb = rs.getBytes(7),
+                        dsidPropsJson = rs.getString(8),
+                        chartTxtJson = rs.getString(9),
+                        ingestedAt = rs.getString(10),
                     )
                 )
             }
@@ -85,10 +82,10 @@ class RegionDao(
     }
 
     /**
-     * Returns all features for the given [chartIds], excluding base features.
+     * Returns all features for the chart named [chartName], excluding base features.
      * Processes one chart at a time to bound memory usage.
      */
-    suspend fun findFeaturesForChart(chartId: Long): List<RegionFeature>? = sqlOpAsync { conn ->
+    suspend fun findFeaturesForChart(chartName: String): List<RegionFeature>? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """
             SELECT
@@ -96,14 +93,14 @@ class RegionDao(
                 layer,
                 st_asbinary(geom),
                 props::text,
-                chart_id,
+                chart_name,
                 ARRAY(SELECT jsonb_array_elements_text(props->'LNAM_REFS')) AS lnam_refs
             FROM features
-            WHERE chart_id = $1
+            WHERE chart_name = $1
             ORDER BY id;
             """.trimIndent()
         ).apply {
-            setLong(1, chartId)
+            setString(1, chartName)
         }.executeQuery().use { rs ->
             val result = mutableListOf<RegionFeature>()
             while (rs.next()) {
@@ -114,7 +111,7 @@ class RegionDao(
                         layer = rs.getString(2),
                         geomWkb = rs.getBytes(3),
                         propsJson = rs.getString(4),
-                        chartId = rs.getLong(5),
+                        chartName = rs.getString(5),
                         lnamRefs = lnamRefs,
                     )
                 )

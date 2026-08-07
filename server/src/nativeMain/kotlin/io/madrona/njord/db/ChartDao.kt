@@ -19,7 +19,6 @@ class ChartDao(
         if (next()) {
             var i = 0
             Chart(
-                id = getLong(++i),
                 name = getString(++i),
                 scale = getInt(++i),
                 fileName = getString(++i),
@@ -77,11 +76,11 @@ GROUP BY il.lnam;
         )
     }
 
-    private fun findLayers(id: Long, conn: Connection): List<String> {
+    private fun findLayers(name: String, conn: Connection): List<String> {
         return conn.prepareStatement(
-            "SELECT DISTINCT layer FROM features where chart_id=$1;"
+            "SELECT DISTINCT layer FROM features where chart_name=$1;"
         ).let {
-            it.setLong(1, id)
+            it.setString(1, name)
             it.executeQuery().use {
                 generateSequence {
                     if (it.next()) {
@@ -96,7 +95,7 @@ GROUP BY il.lnam;
 
     suspend fun findChartFeaturesAsync4326(
         inclusionMask: ByteArray,
-        chartId: Long,
+        chartName: String,
         zoom: Int,
     ): List<ChartFeature>? =
         sqlOpAsync { conn ->
@@ -110,13 +109,13 @@ SELECT st_asbinary(
     END
 ), f.props, f.layer
 FROM features f
-WHERE f.chart_id = $2
+WHERE f.chart_name = $2
   AND $3 >= f.z_min AND $4 <= f.z_max
   AND st_intersects(f.geom, (table include));
           """.trimIndent()
             ).apply {
                 setBytes(1, inclusionMask)
-                setLong(2, chartId)
+                setString(2, chartName)
                 setInt(3, zoom)
                 setInt(4, zoom)
             }.executeQuery().use { rs ->
@@ -135,33 +134,33 @@ WHERE f.chart_id = $2
 
     suspend fun findAllChartFeaturesAsync4326(
         tileWkb: ByteArray,
-        chartIds: List<Long>,
+        chartNames: List<String>,
         zoom: Int,
-    ): Map<Long, List<ChartFeature>>? {
-        if (chartIds.isEmpty()) return emptyMap()
+    ): Map<String, List<ChartFeature>>? {
+        if (chartNames.isEmpty()) return emptyMap()
         return sqlOpAsync { conn ->
             val features = conn.prepareStatement(
                 """
 WITH tile AS (VALUES (st_geomfromwkb($1, 4326)))
 SELECT st_asbinary(
     ST_ClipByBox2D(f.geom, (table tile)::box2d)
-), f.props, f.layer, f.chart_id
+), f.props, f.layer, f.chart_name
 FROM features f
-WHERE f.chart_id = ANY($2)
+WHERE f.chart_name = ANY($2)
   AND $3 >= f.z_min AND $4 <= f.z_max
   AND st_intersects(f.geom, (table tile))
-ORDER BY f.chart_id;
+ORDER BY f.chart_name;
                 """.trimIndent()
             ).apply {
                 setBytes(1, tileWkb)
-                setArray(2, chartIds.map { it as Any }.toTypedArray())
+                setArray(2, chartNames.map { it as Any }.toTypedArray())
                 setInt(3, zoom)
                 setInt(4, zoom)
             }.executeQuery().use { rs ->
-                val result = mutableMapOf<Long, MutableList<ChartFeature>>()
+                val result = mutableMapOf<String, MutableList<ChartFeature>>()
                 while (rs.next()) {
-                    val chartId = rs.getLong(4)
-                    result.getOrPut(chartId) { mutableListOf() }.add(
+                    val chartName = rs.getString(4)
+                    result.getOrPut(chartName) { mutableListOf() }.add(
                         ChartFeature(
                             geomWKB = rs.getBytes(1),
                             props = decodeFromString(rs.getString(2)),
@@ -184,7 +183,6 @@ ORDER BY f.chart_id;
         conn.prepareStatement(
             """
                 SELECT
-                    id,
                     name,
                     scale,
                     zoom,
@@ -198,13 +196,11 @@ ORDER BY f.chart_id;
             it.executeQuery().use { rs ->
                 generateSequence {
                     if (rs.next()) {
-                        val id = rs.getLong(1)
                         ChartInfo(
-                            id = id,
-                            name = rs.getString(2),
-                            scale = rs.getInt(3),
-                            zoom = rs.getInt(4),
-                            covrWKB = rs.getBytes(5),
+                            name = rs.getString(1),
+                            scale = rs.getInt(2),
+                            zoom = rs.getInt(3),
+                            covrWKB = rs.getBytes(4),
                         )
                     } else null
                 }.toList()
@@ -212,32 +208,16 @@ ORDER BY f.chart_id;
         }
     }
 
-    /**
-     * Resolved to an id first - [chart] needs the layer names and feature count up front, and those
-     * are keyed by chart id, which is only known once a row has been read.
-     */
     suspend fun findAsync(name: String): Chart? = sqlOpAsync { conn ->
-        conn.prepareStatement(
-            "SELECT id FROM charts WHERE name=$1;"
-        ).let { statement ->
-            statement.setString(1, name)
-            statement.executeQuery().use { result ->
-                if (result.next()) result.getLong(1) else null
-            }
-        }?.let { find(it, conn) }
+        find(name, conn)
     }
 
-    suspend fun findAsync(id: Long): Chart? = sqlOpAsync { conn ->
-        find(id, conn)
-    }
-
-    private fun find(id: Long, conn: Connection): Chart? {
-        val layers = findLayers(id, conn)
-        val count = featureDao.featureCount(conn, id)
+    private fun find(name: String, conn: Connection): Chart? {
+        val layers = findLayers(name, conn)
+        val count = featureDao.featureCount(conn, name)
         return conn.prepareStatement(
             """
             SELECT
-                id,
                 name,
                 scale,
                 file_name,
@@ -249,10 +229,10 @@ ORDER BY f.chart_id;
                 dsid_props,
                 chart_txt
             FROM charts
-            WHERE id=$1;
+            WHERE name=$1;
             """.trimIndent()
         ).let { statement ->
-            statement.setLong(1, id)
+            statement.setString(1, name)
             statement.executeQuery().use { result ->
                 result.chart(layers, count).firstOrNull()
             }
@@ -260,38 +240,38 @@ ORDER BY f.chart_id;
     }
 
     private fun chartCount(conn: Connection): Int {
-        return conn.prepareStatement("SELECT COUNT(id) FROM charts;").executeQuery().use {
+        return conn.prepareStatement("SELECT COUNT(name) FROM charts;").executeQuery().use {
             if (it.next()) it.getInt(1) else 0
         }
     }
 
-    suspend fun listAsync(nextPageId: Long? = null): ChartCatalog? = sqlOpAsync { conn ->
+    /**
+     * One page of the catalog, ordered by the primary key. [nextPageName] is the name the previous
+     * page reported as its successor; null (or blank) starts from the beginning - `''` sorts before
+     * every chart name, so it works as the start sentinel the way `0` did for the old row ids.
+     */
+    suspend fun listAsync(nextPageName: String? = null): ChartCatalog? = sqlOpAsync { conn ->
         val totalCount = chartCount(conn)
         conn.prepareStatement(
-            """SELECT id, name FROM charts WHERE id >= $1 ORDER BY id LIMIT ${PAGE_SIZE + 1};
+            """SELECT name FROM charts WHERE name >= $1 ORDER BY name LIMIT ${PAGE_SIZE + 1};
             """.trimIndent()
         ).let {
-            it.setLong(1, nextPageId ?: 0L)
+            it.setString(1, nextPageName ?: "")
             it.executeQuery().use {
                 val page = mutableListOf<ChartItem>()
                 var num = 0
-                var nextId: Long? = null
+                var nextName: String? = null
                 while (it.next() && num <= PAGE_SIZE) {
-                    val id = it.getLong(1)
+                    val name = it.getString(1)
                     if (++num > PAGE_SIZE) {
-                        nextId = id
+                        nextName = name
                     } else {
-                        page.add(
-                            ChartItem(
-                                id = id,
-                                name = it.getString(2),
-                            )
-                        )
+                        page.add(ChartItem(name = name))
                     }
                 }
                 ChartCatalog(
                     totalChartCount = totalCount,
-                    nextId = nextId,
+                    nextName = nextName,
                     page = page
                 )
             }
@@ -342,7 +322,7 @@ ORDER BY f.chart_id;
             """
                 INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt)
                 VALUES ($1, $2, $3, $4, $5, $6, st_setsrid(st_geomfromgeojson($7), 4326), $8::json, $9::json)
-                RETURNING id, name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
+                RETURNING name, scale, file_name, updated, issued, zoom, st_asgeojson(covr)::JSON, st_asbinary(covr), dsid_props, chart_txt""".trimIndent()
         ).let { stmt ->
             stmt.setString(1, chartInsert.name)
             stmt.setInt(2, chartInsert.scale)
@@ -361,7 +341,7 @@ ORDER BY f.chart_id;
 
     private fun delete(name: String, conn: Connection): Boolean {
         conn.prepareStatement(
-            "DELETE FROM features WHERE features.chart_id IN (SELECT id FROM charts WHERE name=\$1);"
+            "DELETE FROM features WHERE chart_name=\$1;"
         ).let {
             it.setString(1, name)
             it.execute()
@@ -376,27 +356,12 @@ ORDER BY f.chart_id;
 
     /**
      * Deletes a chart and its features by S-57 `DSID_DSNM` - the same key [editionsAsync] reports
-     * and enc_cron diffs against NOAA's catalog, which never sees Njord's row ids.
+     * and enc_cron diffs against NOAA's catalog.
      *
      * False means no chart carried that name; null means the statement failed.
      */
     suspend fun deleteByNameAsync(name: String): Boolean? = sqlOpAsync { conn ->
         delete(name, conn)
-    }
-
-    suspend fun deleteAsync(id: Long): Boolean? = sqlOpAsync { conn ->
-        conn.prepareStatement(
-            "DELETE FROM features WHERE chart_id=\$1;"
-        ).let {
-            it.setLong(1, id)
-            it.execute()
-        }
-        conn.prepareStatement(
-            "DELETE FROM charts WHERE id=\$1;"
-        ).let {
-            it.setLong(1, id)
-            it.execute() > 0
-        }
     }
 
     companion object {

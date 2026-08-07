@@ -177,8 +177,7 @@ Managed by `DbMigrations.kt` (sequential SQL migrations applied at startup).
 ### `charts`
 
 ```sql
-id          BIGSERIAL PRIMARY KEY
-name        VARCHAR UNIQUE           -- DSID dataset name (e.g., US5WA46M)
+name        VARCHAR PRIMARY KEY      -- DSID dataset name (e.g., US5WA46M) — the chart's identity
 scale       INTEGER                  -- chart scale denominator
 file_name   VARCHAR                  -- source .000 filename
 updated     VARCHAR                  -- DSID_UADT update date
@@ -196,7 +195,7 @@ id          BIGSERIAL PRIMARY KEY
 layer       VARCHAR                  -- S-57 object class (DEPARE, BOYSPP, …)
 geom        GEOMETRY                 -- WKB in EPSG:4326 (GIST indexed)
 props       JSONB                    -- S-57 attributes + computed display props
-chart_id    BIGINT REFERENCES charts
+chart_name  VARCHAR REFERENCES charts (name)
 lnam_refs   VARCHAR[]                -- LNAM cross-references (GIN indexed)
 z_range     INT4RANGE                -- [SCAMIN, SCAMAX] zoom range (GIST indexed)
 ```
@@ -273,7 +272,7 @@ Region exports produce SQLite archive files that mobile clients can download for
 
 ```sql
 chart        — mirrors the PostGIS `charts` table (covr stored as WKB BLOB)
-feature      — layer, WKB geometry, JSON props, chart_id FK
+feature      — layer, WKB geometry, JSON props, chart_name FK
 lnam_refs    — (fid, lnam_ref) cross-reference rows
 feature_bbox — pre-computed bounding boxes (min/max z, x, y) used by mobile to
                build a virtual rtree index without re-parsing geometry WKB

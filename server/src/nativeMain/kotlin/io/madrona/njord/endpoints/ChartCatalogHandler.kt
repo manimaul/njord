@@ -12,7 +12,7 @@ class ChartCatalogHandler(
     override val route = "/v1/chart_catalog"
 
     override suspend fun handleGet(call: ApplicationCall) {
-        dao.listAsync(call.request.queryParameters["id"]?.toLongOrNull())?.let {
+        dao.listAsync(call.request.queryParameters["name"])?.let {
             call.respond(it)
         } ?: call.respond(HttpStatusCode.InternalServerError)
     }

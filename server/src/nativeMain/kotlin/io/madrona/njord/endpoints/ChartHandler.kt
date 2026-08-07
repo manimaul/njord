@@ -26,8 +26,6 @@ class ChartHandler(
     override suspend fun handleGet(call: ApplicationCall) {
         val chart = call.request.queryParameters["name"]?.let {
             dao.findAsync(it)
-        }  ?: call.request.queryParameters["id"]?.toLongOrNull()?.let {
-            dao.findAsync(it)
         }
         chart?.let { call.respond(it) } ?: call.respond(HttpStatusCode.NotFound)
     }
@@ -40,14 +38,10 @@ class ChartHandler(
     }
 
     /**
-     * Deletes by `id`, or by `name` (the S-57 `DSID_DSNM`) - enc_cron diffs NOAA's catalog against
-     * chart names and never learns Njord's row ids.
+     * Deletes by `name` (the S-57 `DSID_DSNM`) - the same key enc_cron diffs NOAA's catalog against.
      */
     override suspend fun handleDelete(call: ApplicationCall) = call.requireSignature {
-        val params = call.request.queryParameters
-        val name = params["name"] ?: params["id"]?.toLongOrNull()?.let {
-            dao.findAsync(it)?.name ?: return@requireSignature call.respond(HttpStatusCode.NoContent)
-        }
+        val name = call.request.queryParameters["name"]
         when (name?.let { delete(it) }) {
             true -> call.respond(HttpStatusCode.Accepted)
             false -> call.respond(HttpStatusCode.NoContent)

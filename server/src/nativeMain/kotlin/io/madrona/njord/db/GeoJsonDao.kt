@@ -28,7 +28,7 @@ class GeoJsonDao : Dao() {
         }
     }
 
-    suspend fun fetchAsync(chartId: Long, layerName: String): FeatureCollection? =
+    suspend fun fetchAsync(chartName: String, layerName: String): FeatureCollection? =
         sqlOpAsync("error fetching feature") { conn ->
             conn.prepareStatement(
                 """SELECT
@@ -41,11 +41,11 @@ class GeoJsonDao : Dao() {
                  ST_AsGeoJSON(geom)::JSON AS geometry,
                  props AS properties
              FROM features
-             WHERE layer=? AND chart_id=?
+             WHERE layer=$1 AND chart_name=$2
             ) f;"""
             ).let {
                 it.setString(1, layerName)
-                it.setLong(2, chartId)
+                it.setString(2, chartName)
                 it.let {
                     it.executeQuery().use {
                         FeatureCollection(features = it.featureRecords().toList())
@@ -61,7 +61,7 @@ class GeoJsonDao : Dao() {
     private fun featureInsert(featureInsert: FeatureInsert, conn: Connection): Int {
         return when (val geoJson = featureInsert.geo) {
             is Geometry -> FeatureRecord(
-                chartId = featureInsert.chart.id,
+                chartName = featureInsert.chart.name,
                 layerName = featureInsert.layerName,
                 geoJson = geoJson.jsonStr()
             ).insert(conn)
@@ -73,7 +73,7 @@ class GeoJsonDao : Dao() {
                 val jsonProps = geoJson.propertyJson()
                 geoJson.geometry?.let { geometry ->
                     FeatureRecord(
-                        chartId = featureInsert.chart.id,
+                        chartName = featureInsert.chart.name,
                         layerName = featureInsert.layerName,
                         geoJson = geometry.jsonStr(),
                         jsonProps = jsonProps,
@@ -81,7 +81,7 @@ class GeoJsonDao : Dao() {
                         lnamRefs = geoJson.properties.lnamRefs(),
                     ).insert(conn)
                 } ?: run {
-                    //log.warn("skipping inserting layer $layerName chart id ${chart.id} props $jsonProps")
+                    //log.warn("skipping inserting layer $layerName chart ${chart.name} props $jsonProps")
                     0
                 }
             }
@@ -114,7 +114,7 @@ class GeoJsonDao : Dao() {
         try {
             return conn.prepareStatement(
                 """
-                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max, lnam_refs)
+                INSERT INTO features (layer, geom, props, chart_name, z_min, z_max, lnam_refs)
                 VALUES (
                     $1,
                     ST_MakeValid(ST_Force2D(ST_SetSRID(ST_GeomFromGeoJSON($2), 4326))),
@@ -129,21 +129,21 @@ class GeoJsonDao : Dao() {
                 it.setString(1, layerName)
                 it.setString(2, geoJson)
                 it.setString(3, jsonProps)
-                it.setLong(4, chartId)
+                it.setString(4, chartName)
                 it.setInt(5, zoomRange.first)
                 it.setInt(6, zoomRange.last)
                 it.setArray(7, lnamRefs.toTypedArray())
                 it.execute().toInt()
             }
         } catch (e: SQLException) {
-            log.error("error inserting json $geoJson layer $layerName chart id $chartId props $jsonProps", e)
+            log.error("error inserting json $geoJson layer $layerName chart $chartName props $jsonProps", e)
             return 0
         }
     }
 }
 
 private data class FeatureRecord(
-    val chartId: Long,
+    val chartName: String,
     val layerName: String,
     val geoJson: String,
     val jsonProps: String = "{}",

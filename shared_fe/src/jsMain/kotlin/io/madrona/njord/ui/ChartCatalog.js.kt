@@ -25,16 +25,12 @@ fun ChartTable(
     ) {
         Thead {
             Tr {
-                Th { Text("Record ID") }
                 Th { Text("Chart Name") }
             }
         }
         Tbody {
             state.filtered.forEachIndexed { i, ea ->
                 Tr {
-                    Td {
-                        B { Text("${ea.id} ") }
-                    }
                     Td {
                         Link(
                             label = ea.name,

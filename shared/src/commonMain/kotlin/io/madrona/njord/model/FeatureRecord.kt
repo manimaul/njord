@@ -18,7 +18,7 @@ data class FeatureRecord(
     val layer: String,
     val props: Map<String, JsonElement>,
     val geom: GeoJsonObject,
-    @SerialName("chart_id") val chartId: Long,
+    @SerialName("chart_name") val chartName: String,
     val zoomMin: Int,
     val zoomMax: Int,
 )

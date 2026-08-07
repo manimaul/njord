@@ -90,7 +90,7 @@ class ChartQueryTest {
         run loop@ {
             chartDao.findInfoAsync(poly.wkb)?.forEach { info ->
                 val chartCoverage = OgrGeometry.fromWkb(info.covrWKB, epsg4326) ?: error("error parsing chart coverage")
-                chartDao.findChartFeaturesAsync4326(poly.wkb, info.id, z)
+                chartDao.findChartFeaturesAsync4326(poly.wkb, info.name, z)
                     ?.forEach { feature ->
                         feature.geomWKB?.let { OgrGeometry.fromWkb(it, epsg4326) }?.let { geo ->
                             mvtDataset.addFeature(feature.layer, feature.props, geo)
@@ -131,7 +131,7 @@ class ChartQueryTest {
         run loop@ {
             chartDao.findInfoAsync(poly.wkb)?.forEach { info ->
                 val chartCoverage = OgrGeometry.fromWkb(info.covrWKB, epsg4326) ?: error("error parsing chart coverage")
-                chartDao.findChartFeaturesAsync4326(poly.wkb, info.id, z)
+                chartDao.findChartFeaturesAsync4326(poly.wkb, info.name, z)
                     ?.forEach { feature ->
                         feature.geomWKB?.let { OgrGeometry.fromWkb(it, epsg4326) }?.let { geo ->
                             mvtDataset.addFeature(feature.layer, feature.props, geo)

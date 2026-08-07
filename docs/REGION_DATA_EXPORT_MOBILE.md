@@ -249,13 +249,11 @@ writes `metadata` and `tiles`:
 -- server's `charts` table (server/src/nativeMain/kotlin/io/madrona/njord/db/DbMigrations.kt),
 -- with PostGIS/JSONB types flattened to TEXT.
 --
--- `name` (DSID_DSNM) is the primary key, and the server's surrogate
--- `charts.id` is deliberately not carried into the archive at all. That id is
--- meaningless on the device: the same cell can come back under a different id
--- after a re-ingest, and the device merges rows from archives exported at
--- different times from different regions. Keying on the cell name makes "the
--- same chart" mean the same thing in every archive and lets the install merge
--- dedupe with a plain UPSERT (§6.3).
+-- `name` (DSID_DSNM) is the primary key here, exactly as it is on the server.
+-- The device merges rows from archives exported at different times from
+-- different regions, so it needs an identity that survives a re-ingest and
+-- means the same thing in every archive; the cell name is that identity, and
+-- it lets the install merge dedupe with a plain UPSERT (§6.3).
 CREATE TABLE charts (
     name        TEXT    PRIMARY KEY,   -- DSID_DSNM — the stable identity
     scale       INTEGER NOT NULL,      -- DSPM_CSCL
@@ -328,9 +326,10 @@ therefore a contract:
 `chart_tiles` is the largest table by row count — it is the per-chart
 expansion of a set `tiles` only stores unioned, so overlapping charts
 multiply rows. It is also the narrowest, and `WITHOUT ROWID` makes the primary
-key *be* the storage. Keying it on `charts.name` rather than a surrogate
-`INTEGER` costs roughly 8 bytes per row over a numeric key; if it becomes a size
-problem on the densest regions, give tiles a surrogate key and reduce the edge —
+key *be* the storage. Keying it on `charts.name` — the chart's identity on both
+sides — rather than a surrogate `INTEGER` costs roughly 8 bytes per row over a
+numeric key; if it becomes a size problem on the densest regions, give tiles a
+surrogate key and reduce the edge —
 but measure on a real dense region first, don't pre-normalize.
 
 ### 5.2 Pruning orphaned edges

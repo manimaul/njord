@@ -25,7 +25,7 @@ class FeatureDao(
     suspend fun findLayerPositionsPage(layer: String, startId: Long): LayerQueryResultPage? = sqlOpAsync { conn ->
         conn.prepareStatement(
             """SELECT features.id, ST_AsBinary(ST_Centroid(geom)), ST_GeometryType(geom), props, charts.name, charts.zoom
-                FROM features JOIN charts ON features.chart_id = charts.id WHERE features.id > $1 AND features.layer = $2 ORDER BY features.id LIMIT 5; 
+                FROM features JOIN charts ON features.chart_name = charts.name WHERE features.id > $1 AND features.layer = $2 ORDER BY features.id LIMIT 5;
             """.trimIndent()
         ).let{ statement ->
             statement.setLong(1, startId)
@@ -92,7 +92,7 @@ class FeatureDao(
      */
     suspend fun findFeature(lnam: String): FeatureRecord? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_id, z_min, z_max
+            """ SELECT id, layer, ST_AsGeoJSON(geom)::JSON as geo, props, chart_name, z_min, z_max
                 FROM features WHERE props->>'LNAM' = $1;""".trimIndent()
         ).let {
             it.setString(1, lnam)
@@ -117,7 +117,7 @@ class FeatureDao(
         properties: JsonObject
     ): Long {
         return conn.statement("""
-                INSERT INTO features (layer, geom, props, chart_id, z_min, z_max, lnam_refs)
+                INSERT INTO features (layer, geom, props, chart_name, z_min, z_max, lnam_refs)
                 VALUES (
                     $1,
                     st_force2d(st_setsrid(st_geomfromwkb($2), 4326)),
@@ -131,7 +131,7 @@ class FeatureDao(
             .setString(1, layerName)
             .setBytes(2, wkb)
             .setString(3, properties.propertyJson())
-            .setLong(4, chart.id)
+            .setString(4, chart.name)
             .setInt(5, properties.minZ())
             .setInt(6, properties.maxZ())
             .setArray(7, properties.lnamRefs().toTypedArray()).execute()
@@ -148,9 +148,9 @@ class FeatureDao(
     private fun JsonObject.maxZ(): Int {
         return this["MAXZ"]?.jsonPrimitive?.intOrNull ?: 32
     }
-    fun featureCount(conn: Connection, chartId: Long): Int {
-        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_id = $1;").let {
-            it.setLong(1, chartId)
+    fun featureCount(conn: Connection, chartName: String): Int {
+        return conn.prepareStatement("SELECT COUNT(id) FROM features WHERE chart_name = $1;").let {
+            it.setString(1, chartName)
             it.executeQuery().use {
                 if (it.next()) it.getInt(1) else 0
             }
@@ -166,7 +166,7 @@ class FeatureDao(
                     layer = getString(++i),
                     geom = decodeFromString(getString(++i)),
                     props = decodeFromString(getString(++i)),
-                    chartId = getLong(++i),
+                    chartName = getString(++i),
                     zoomMax = getInt(++i),
                     zoomMin = getInt(++i),
                 )

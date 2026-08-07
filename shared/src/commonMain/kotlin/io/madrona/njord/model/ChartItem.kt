@@ -4,14 +4,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChartItem(
-    val id: Long,
     val name: String,
 )
 
+/**
+ * One page of the chart catalog. [nextName] is the name to start the next page at - the catalog is
+ * paged by `charts.name`, which is the primary key, so the cursor is lexicographic rather than
+ * monotonic. Null once the last page has been served.
+ */
 @Serializable
 data class ChartCatalog(
     val totalChartCount: Int,
-    val nextId: Long?,
+    val nextName: String?,
     val page: List<ChartItem>,
 )
 

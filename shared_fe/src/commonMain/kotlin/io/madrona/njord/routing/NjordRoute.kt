@@ -7,7 +7,7 @@ enum class NjordRoute(
     About("/", "About"),
     Enc("/enc", "ENC"),
     ControlPanel("/control/:tab/:*path", "Control Panel"),
-    Chart("/chart/:id", "Chart"),
+    Chart("/chart/:name", "Chart"),
     Layer("/layer/:name", "Layer"),
     NotFound("/404", "Not Found");
 

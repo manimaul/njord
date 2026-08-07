@@ -25,8 +25,8 @@ fun Router(viewModel: RouteViewModel<NjordRoute> = routeViewModel) {
             }
 
             NjordRoute.Chart -> RouteContent {
-                state.current.args?.get("id")?.let { id ->
-                    ChartInfoPage(id)
+                state.current.args?.get("name")?.let {
+                    ChartInfoPage(it)
                 } ?: NotFound()
             }
             NjordRoute.Layer -> RouteContent {

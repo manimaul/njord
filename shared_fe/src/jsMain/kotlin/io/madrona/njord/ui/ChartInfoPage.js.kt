@@ -9,8 +9,8 @@ import io.madrona.njord.viewmodel.*
 import org.jetbrains.compose.web.dom.*
 
 @Composable
-actual fun ChartInfoPage(id: String) {
-    val viewModel = remember { ChartInfoViewModel(id) }
+actual fun ChartInfoPage(name: String) {
+    val viewModel = remember { ChartInfoViewModel(name) }
     val state by viewModel.flow.collectAsState()
     state.info.complete(viewModel) { chart ->
         Div(attrs = {

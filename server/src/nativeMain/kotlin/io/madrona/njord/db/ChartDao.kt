@@ -212,39 +212,29 @@ ORDER BY f.chart_id;
         }
     }
 
+    /**
+     * Resolved to an id first - [chart] needs the layer names and feature count up front, and those
+     * are keyed by chart id, which is only known once a row has been read.
+     */
     suspend fun findAsync(name: String): Chart? = sqlOpAsync { conn ->
         conn.prepareStatement(
-            """
-            SELECT
-                id,
-                name,
-                scale,
-                file_name,
-                updated,
-                issued,
-                zoom,
-                st_asgeojson(covr)::JSON,
-                st_asbinary(covr),
-                dsid_props,
-                chart_txt
-            FROM charts
-            WHERE name=$1;
-            """.trimIndent()
+            "SELECT id FROM charts WHERE name=$1;"
         ).let { statement ->
             statement.setString(1, name)
             statement.executeQuery().use { result ->
-                val id = result.getLong(0)
-                val layers = findLayers(id, conn)
-                val count = featureDao.featureCount(conn, id)
-                result.chart(layers, count).firstOrNull()
+                if (result.next()) result.getLong(1) else null
             }
-        }
+        }?.let { find(it, conn) }
     }
 
     suspend fun findAsync(id: Long): Chart? = sqlOpAsync { conn ->
+        find(id, conn)
+    }
+
+    private fun find(id: Long, conn: Connection): Chart? {
         val layers = findLayers(id, conn)
         val count = featureDao.featureCount(conn, id)
-        conn.prepareStatement(
+        return conn.prepareStatement(
             """
             SELECT
                 id,

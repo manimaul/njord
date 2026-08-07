@@ -1,0 +1,77 @@
+---
+# One-off reclaim of `features` bloat. Not part of a normal deploy - apply it by hand:
+#
+#   kubectl apply -f k8s_deploy/vacuum_job.yaml
+#   kubectl logs -n njord -f job/features-vacuum-full
+#   kubectl delete job -n njord features-vacuum-full
+#
+# Why this exists: migration 3 (see server/.../db/DbMigrations.kt) rewrites every row of
+# `features` to swap chart_id for chart_name, leaving roughly a table's worth of dead tuples
+# behind. Ingesting NOAA updates does the same on a smaller scale.
+#
+# READ BEFORE RUNNING:
+#
+#  * VACUUM FULL holds ACCESS EXCLUSIVE on `features` for the whole rewrite - every tile query
+#    blocks behind it. This is an outage for the chart server, so pick a quiet window. Use
+#    pg_repack (available on the server, not installed) if that isn't acceptable, or plain
+#    `VACUUM (ANALYZE) features;` if you only want the space marked reusable rather than
+#    returned to the filesystem.
+#  * It writes a complete second copy of the table and its indices before dropping the
+#    original - the database volume needs free space greater than pg_total_relation_size.
+#  * Wait for "DB schema migrated to version 3" in the njord-chart-dep logs first. Running this
+#    against the in-progress migration just fights it for the lock.
+#
+# Progress, from a separate psql session:
+#
+#   select phase, heap_blks_scanned, heap_blks_total from pg_stat_progress_cluster;
+#
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: features-vacuum-full
+  namespace: njord
+spec:
+  # A partial rewrite rolls back and leaves the table as it was, so a retry would silently
+  # restart hours of work. Fail visibly instead.
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: psql
+          # Match the server (PostgreSQL 14) so psql doesn't warn about version skew.
+          image: postgres:14-alpine
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -eu
+
+              # Connect straight to the database rather than through a pgbouncer sidecar: the
+              # pools are pool_mode=transaction with default_pool_size=10 and are shared with
+              # live traffic, and this statement would pin one server connection for its whole
+              # run. Host/port/db/user come from the same secret the sidecars mount, so there is
+              # one place to change them.
+              eval "$(sed -n 's/^s57server *= *//p' /etc/pgbouncer/pgbouncer.ini)"
+              PGPASSWORD=$(awk '/^"'"$user"'"/ {gsub(/"/, "", $2); print $2}' /etc/pgbouncer/userlist.txt)
+              export PGPASSWORD
+
+              # Separate -c flags on purpose: psql keeps one session across them, so
+              # statement_timeout sticks, while folding them into a single string would make it
+              # a multi-statement simple query - an implicit transaction, which VACUUM refuses
+              # to run inside.
+              exec psql "postgresql://$user@$host:$port/$dbname?sslmode=require" \
+                -v ON_ERROR_STOP=1 \
+                -c "SET statement_timeout = 0" \
+                -c "VACUUM (FULL, VERBOSE, ANALYZE) features;"
+          volumeMounts:
+            - name: pgbouncer-config
+              mountPath: /etc/pgbouncer
+              readOnly: true
+      volumes:
+        - name: pgbouncer-config
+          projected:
+            sources:
+              - secret:
+                  name: njord-pgbouncer-ini
+              - secret:
+                  name: njord-pgbouncer-userlist-txt

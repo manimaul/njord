@@ -1,6 +1,7 @@
 # Njord 
 
-![Logo](./web/src/jsMain/resources/njord.png "Logo")
+![Logo](./frontend/src/jsMain/resources/images/njord.webp "Logo")
+
 
 ## Documentation
 

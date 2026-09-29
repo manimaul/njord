@@ -18,6 +18,11 @@ ENV KONAN_DATA_DIR=/root/.konan
 WORKDIR /build
 COPY . .
 
+# Supplied by `./gradlew makeImg`; read by buildSrc GitInfo in place of running git.
+ARG GIT_HASH
+ARG GIT_BRANCH
+ARG GIT_DIRTY
+
 # RUN ./gradlew :web:jsBrowserDistribution --no-daemon
 RUN --mount=type=cache,target=/root/.konan,sharing=locked \
     --mount=type=cache,target=/root/.gradle \

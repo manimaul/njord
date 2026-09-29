@@ -67,7 +67,13 @@ task("showSecret") {
 task<Exec>("makeImg") {
     dependsOn(":web:jsBrowserDistribution")
     mustRunAfter(":web:jsBrowserDistribution")
-    commandLine("bash", "-c", "podman build --platform linux/amd64 -t ghcr.io/manimaul/njord-chart-server:${project.version} .")
+    // Git metadata is resolved here on the host: inside the builder stage git can't see the
+    // repo (see GitInfo).
+    commandLine("bash", "-c", "podman build --platform linux/amd64 " +
+            "--build-arg GIT_HASH='${GitInfo.gitShortHash()}' " +
+            "--build-arg GIT_BRANCH='${GitInfo.gitBranch()}' " +
+            "--build-arg GIT_DIRTY='${GitInfo.gitUntracked()}' " +
+            "-t ghcr.io/manimaul/njord-chart-server:${project.version} .")
 }
 
 /**

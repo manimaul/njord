@@ -3,8 +3,7 @@ package io.madrona.njord.layers
 import io.madrona.njord.ext.json
 import io.madrona.njord.geo.symbols.stringValue
 import io.madrona.njord.layers.attributehelpers.Trafic.Companion.trafic
-import io.madrona.njord.model.ChartFeature
-import io.madrona.njord.model.Sprite
+import io.madrona.njord.model.*
 
 /**
  * Geometry Primitives: Point, Line
@@ -22,8 +21,13 @@ class Rdocal : Layerable() {
         } else {
             feature.pointSymbol(Sprite.RCLDEF01)
         }
-        feature.props.stringValue("COMCHA")?.let {
-            feature.props["_L"] = "ch $it".json
+        // S-52: TE('Nr %s','OBJNAM',...,1,-1,...) above TE('ch %s','COMCHA',...,1,1,...), both
+        // left justified one text body right of the symbol.
+        listOfNotNull(
+            feature.props.stringValue("OBJNAM")?.let { "Nr $it" },
+            feature.props.stringValue("COMCHA")?.let { "ch $it" },
+        ).takeIf { it.isNotEmpty() }?.let {
+            feature.props["_L"] = it.joinToString("\n").json
         }
     }
 
@@ -38,6 +42,11 @@ class Rdocal : Layerable() {
         ), pointLayerWithLabel(
             label = Label.Property("_L"),
             theme = options.theme,
+            labelColor = Color.CHBLK,
+            highlightColor = Color.CHWHT,
+            textAnchor = Anchor.LEFT,
+            textJustify = TextJustify.LEFT,
+            textOffset = Offset.Coord(x = 1.2f, y = 0f),
         )
     )
 }

@@ -12,9 +12,12 @@ import io.madrona.njord.model.*
  * Code: 107
  */
 class Rcrtcl : Layerable() {
-    override suspend fun preTileEncode(feature: ChartFeature) {}
+    override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.bearingLabel()
+    }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
         lineLayerWithColor(theme = options.theme, color = Color.PLRTE),
+        bearingLabelLayer(options),
     )
 }

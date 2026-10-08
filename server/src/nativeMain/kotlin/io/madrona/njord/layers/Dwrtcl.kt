@@ -17,9 +17,11 @@ class Dwrtcl : Layerable() {
 
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
+        feature.bearingLabel()
     }
 
     override fun layers(options: LayerableOptions) = sequenceOf(
-        lineLayerWithColor(theme = options.theme, color = lineColor)
+        lineLayerWithColor(theme = options.theme, color = lineColor),
+        bearingLabelLayer(options),
     )
 }

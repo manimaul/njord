@@ -16,6 +16,7 @@ class Navlne : Layerable() {
     private val lineColor = Color.CHGRD
     override suspend fun preTileEncode(feature: ChartFeature) {
         feature.lineColor(lineColor)
+        feature.bearingLabel()
     }
 
     override fun layers(options: LayerableOptions): Sequence<Layer> {
@@ -25,7 +26,7 @@ class Navlne : Layerable() {
                 color = lineColor,
                 width = 1f,
                 style = LineStyle.CustomDash(10f, 5f)),
-            lineLayerWithLabel(theme = options.theme, label = Label.Property("INFORM")),
+            bearingLabelLayer(options),
         )
     }
 }

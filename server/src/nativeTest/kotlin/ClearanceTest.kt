@@ -73,21 +73,29 @@ class ClearanceTest {
     }
 
     @Test
-    fun `vertical clearance prefers the opening bridge pair and falls back to VERCLR`() {
+    fun `vertical clearance prefers the opening bridge pair and falls back to VERCLR and VERCSA`() {
         val (branches, fallback) = branches(Depth.METERS, "BRIDGE_CLEARANCE_vertical")
 
-        assertEquals(listOf("clr cl ", "clr cl ", "clr op ", "clr "), branches.map { it.prefix })
+        assertEquals(
+            listOf("clr cl ", "clr cl ", "clr op ", "clr ", "clr ", "sf clr "),
+            branches.map { it.prefix },
+        )
         assertTrue(branches[0].reads("VERCCL") && branches[0].reads("VERCOP"))
         assertTrue(branches[1].reads("VERCCL"))
         assertTrue(branches[2].reads("VERCOP"))
-        assertTrue(branches[3].reads("VERCLR"))
+        assertTrue(branches[3].reads("VERCLR") && branches[3].reads("VERCSA"))
+        assertTrue(branches[4].reads("VERCLR"))
+        assertTrue(branches[5].reads("VERCSA"))
 
-        // only the closed-and-open branch is two lines
-        assertEquals(listOf(true, false, false, false), branches.map { it.isTwoLine() })
+        // the closed-and-open and clearance-and-safe-clearance branches are two lines
+        assertEquals(listOf(true, false, false, true, false, false), branches.map { it.isTwoLine() })
 
         // VERCCL/VERCOP are only read for an opening bridge - S-52 selects those lookups by
-        // CATBRG - but an opening bridge encoding neither still falls through to VERCLR
-        assertEquals(listOf(true, true, true, false), branches.map { it.gatedOnOpeningBridge() })
+        // CATBRG - but an opening bridge encoding neither still falls through to VERCLR/VERCSA
+        assertEquals(
+            listOf(true, true, true, false, false, false),
+            branches.map { it.gatedOnOpeningBridge() },
+        )
 
         assertEquals("", fallback)
     }

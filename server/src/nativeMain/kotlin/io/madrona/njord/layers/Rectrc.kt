@@ -18,6 +18,7 @@ import io.madrona.njord.model.Sprite
  */
 class Rectrc : Layerable() {
     override suspend fun preTileEncode(feature: ChartFeature) {
+        feature.bearingLabel()
         when (feature.cattrk()) {
             Cattrk.BASED_ON_A_SYSTEM_OF_MARKS -> {
                 when (feature.trafic()) {
@@ -50,5 +51,6 @@ class Rectrc : Layerable() {
             spacing = 15f,
             allowOverlap = false
         ),
+        bearingLabelLayer(options),
     )
 }

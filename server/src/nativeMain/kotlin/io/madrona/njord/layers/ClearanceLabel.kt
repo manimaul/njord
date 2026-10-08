@@ -101,8 +101,9 @@ class ClearanceLabel(
 
     /**
      * An opening bridge carries a closed and/or an open clearance; everything else carries a
-     * single VERCLR. An opening bridge encoding neither (which happens in real NOAA data) falls
-     * through to the VERCLR branch.
+     * VERCLR and/or a VERCSA (safe clearance, `TE('sf clr %4.1lf','VERCSA',...)` - S-52 has lookups
+     * for it on CBLOHD, and lists it for BRIDGE in text group 11). An opening bridge encoding
+     * neither (which happens in real NOAA data) falls through to the VERCLR/VERCSA branches.
      */
     private fun verticalText(depth: Depth): JsonElement = listOf(
         "case",
@@ -112,8 +113,12 @@ class ClearanceLabel(
         listOf("concat", "clr cl ", clearance("VERCCL", depth)),
         listOf("all", opening, present("VERCOP")),
         listOf("concat", "clr op ", clearance("VERCOP", depth)),
+        listOf("all", present("VERCLR"), present("VERCSA")),
+        listOf("concat", "clr ", clearance("VERCLR", depth), "\n", "sf clr ", clearance("VERCSA", depth)),
         present("VERCLR"),
         listOf("concat", "clr ", clearance("VERCLR", depth)),
+        present("VERCSA"),
+        listOf("concat", "sf clr ", clearance("VERCSA", depth)),
         "",
     ).json
 

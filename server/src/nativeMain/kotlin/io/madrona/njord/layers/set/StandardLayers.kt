@@ -265,6 +265,10 @@ class StandardLayers {
         Lights(),
         Prdare(),
 
+        // S-52 text group 21, names for position reporting - after every mark symbol and the
+        // light descriptions so the names win placement - see NameLabel
+        *NameLabel.all().toTypedArray(),
+
 //        todo: Missing Layers
 //        Sbdare(),
 //        Tsfeb(),

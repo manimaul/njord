@@ -3,7 +3,10 @@
 #
 #   kubectl apply -f k8s_deploy/vacuum_job.yaml
 #   kubectl logs -n njord -f job/features-vacuum-full
-#   kubectl delete job -n njord features-vacuum-full
+#   kubectl delete job -n njord features-vacuum-full   # optional, see below
+#
+# The Job deletes itself (and its pod) 24h after it finishes via ttlSecondsAfterFinished, so
+# grab the logs before then. Delete it by hand sooner if you want to re-apply it.
 #
 # Why this exists: migration 3 (see server/.../db/DbMigrations.kt) rewrites every row of
 # `features` to swap chart_id for chart_name, leaving roughly a table's worth of dead tuples
@@ -34,6 +37,7 @@ spec:
   # A partial rewrite rolls back and leaves the table as it was, so a retry would silently
   # restart hours of work. Fail visibly instead.
   backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
   template:
     spec:
       restartPolicy: Never

@@ -24,6 +24,9 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
+      # Delete the Job (and its pod) a day after it finishes, so the last run's logs survive
+      # until the next morning but completed pods don't accumulate.
+      ttlSecondsAfterFinished: 86400
       template:
         spec:
           restartPolicy: OnFailure

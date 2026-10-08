@@ -44,8 +44,8 @@ class NameLabel(
                 symbolPlacement = Placement.POINT,
             ),
             paint = Paint(
-                textColor = colorFrom(Color.CHBLK, options.theme).json,
-                textHaloColor = colorFrom(Color.CHWHT, options.theme),
+                textColor = colorFrom(Color.SNDG2, options.theme).json,
+                textHaloColor = colorFrom(Color.DEPDW, options.theme),
                 textHaloWidth = 2.5f
             )
         )

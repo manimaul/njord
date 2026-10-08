@@ -93,8 +93,8 @@ class ClearanceLabel(
             symbolPlacement = Placement.POINT,
         ),
         paint = Paint(
-            textColor = colorFrom(Color.CHBLK, theme).json,
-            textHaloColor = colorFrom(Color.CHWHT, theme),
+            textColor = colorFrom(Color.SNDG2, theme).json,
+            textHaloColor = colorFrom(Color.DEPDW, theme),
             textHaloWidth = 2.5f
         )
     )

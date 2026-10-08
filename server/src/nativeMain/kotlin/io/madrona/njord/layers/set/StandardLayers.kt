@@ -145,6 +145,7 @@ class StandardLayers {
         Dykcon(),
         Siltnk(),
         Ctrpnt(),
+        Lndelv(),
         Cgusta(),
 
         // water boundary layers
@@ -168,6 +169,7 @@ class StandardLayers {
         Cblare(),
         Cblsub(),
         Cblohd(),
+        Pipohd(),
         Resare(),
         Ctnare(),
         Ctsare(),
@@ -191,6 +193,7 @@ class StandardLayers {
         Radlne(),
         Radrng(),
         Radrfl(),
+        Radsta(),
         Rtpbcn(),
         Rdocal(),
         Dismar(),
@@ -199,6 +202,9 @@ class StandardLayers {
         Chkpnt(),
         Prcare(),
         Sndwav(),
+        Sbdare(),
+        Tidewy(),
+        //Magvar(),
         Berths(),
 
         // obstructions
@@ -254,6 +260,7 @@ class StandardLayers {
         // annotates - see ClearanceLabel
         ClearanceLabel("BRIDGE"),
         ClearanceLabel("CBLOHD"),
+        ClearanceLabel("PIPOHD"),
         ClearanceLabel("CONVYR"),
         ClearanceLabel("CRANES"),
         ClearanceLabel("GATCON"),
@@ -270,7 +277,6 @@ class StandardLayers {
         *NameLabel.all().toTypedArray(),
 
 //        todo: Missing Layers
-//        Sbdare(),
 //        Tsfeb(),
 //        Watfal(),
 //
@@ -279,13 +285,10 @@ class StandardLayers {
 //        Rscsta(),
 //        Spring(),
 //        Locmag(),
-//        Magvar(),
-//        Lndelv(),
 //        Mnpub(),
 //        Wattur(),
 //
 //        // conditional points
-//        Radsta(),
 //        Vegatn(),
 //        Slotop(),
 //        Hrbfac(),
@@ -305,9 +308,7 @@ class StandardLayers {
 //
 //        // line features
 //        Railwy(),
-//        Pipohd(),
 //        Pipsol(),
-//        Tidewy(),
 //        Roadwy(),
 //        Rapids(),
 //

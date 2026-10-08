@@ -308,6 +308,40 @@ abstract class Layerable(
         )
     }
 
+    /**
+     * S-52 `TX`/`TE` text - CHBLK on a CHWHT halo. Unfiltered by geometry type and point placed
+     * (see [ClearanceLabel]), so a point, a line or an area each get one upright label.
+     */
+    fun textLayer(
+        textField: JsonElement,
+        theme: Theme,
+        textAnchor: Anchor = Anchor.CENTER,
+        textJustify: TextJustify = TextJustify.CENTER,
+        textOffset: Offset? = null,
+        filter: JsonElement? = null,
+    ): Layer {
+        return Layer(
+            id = "${key}_text_${++nextId}",
+            type = LayerType.SYMBOL,
+            sourceLayer = sourceLayer,
+            filter = filter,
+            layout = Layout(
+                textFont = listOf(Font.ROBOTO_BOLD),
+                textAnchor = textAnchor,
+                textJustify = textJustify,
+                textField = textField,
+                textOffset = textOffset?.property,
+                textSize = 14f,
+                symbolPlacement = Placement.POINT,
+            ),
+            paint = Paint(
+                textColor = colorFrom(Color.CHBLK, theme).json,
+                textHaloColor = colorFrom(Color.CHWHT, theme),
+                textHaloWidth = 2.5f
+            )
+        )
+    }
+
     fun areaLayerWithText(
         label: Label,
         theme: Theme,

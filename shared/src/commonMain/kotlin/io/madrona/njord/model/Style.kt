@@ -155,6 +155,9 @@ enum class Anchor {
     @SerialName("center")
     CENTER,
 
+    @SerialName("left")
+    LEFT,
+
     @SerialName("bottom-left")
     BOTTOM_LEFT,
 

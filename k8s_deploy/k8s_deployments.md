@@ -180,6 +180,10 @@ kubectl -n njord logs -f job/<name>
 Jobs created from a CronJob inherit `ttlSecondsAfterFinished: 86400` and delete themselves a day
 after they finish.
 
+### Regenerate region archives
+
+See [regenerate_region_archives.md](regenerate_region_archives.md).
+
 ### VACUUM FULL on `features`
 
 This causes a chart server outage. Read the header of `vacuum_job.yaml` first.

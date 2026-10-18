@@ -27,7 +27,11 @@ fun ingestMain(args: Array<String>) {
         signal(SIGTERM, staticCFunction { _ -> exitProcess(0) })
         runBlocking {
             launch { ChartIngestWorker().run() }
-            launch { Singletons.regionExportWorker.run() }
+            if (Singletons.config.enableRegionExport) {
+                launch { Singletons.regionExportWorker.run() }
+            } else {
+                println("region export disabled by config")
+            }
         }
     } ?: run {
         println("Path to resources directory was not supplied")

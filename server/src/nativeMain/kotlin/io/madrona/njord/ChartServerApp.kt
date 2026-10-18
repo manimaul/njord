@@ -92,8 +92,12 @@ fun Application.njord() {
         launch {
             ChartIngestWorker().run()
         }
-        launch {
-            Singletons.regionExportWorker.run()
+        if (Singletons.config.enableRegionExport) {
+            launch {
+                Singletons.regionExportWorker.run()
+            }
+        } else {
+            log.info("region export disabled by config")
         }
     }
     install(CORS) {

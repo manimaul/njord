@@ -233,6 +233,8 @@ adminUser / adminPass  — Basic auth credentials for /v1/admin
 adminExpirationSeconds — Signature TTL (default 604800 = 7 days)
 chartIngestWorkers     — Concurrent S-57 processing workers (default 5)
 enableIngestion        — Enable/disable the chart ingest worker (default true)
+enableRegionExport     — Enable/disable the region export worker; ingestion still runs and
+                         GET /v1/regions still serves existing archives (default true)
 useTileCache           — Enable/disable in-memory tile LRU cache (default true)
 debugTile              — Include debug envelope layer; disable tile caching
 regionExports          — List of RegionExportConfig objects (default empty)

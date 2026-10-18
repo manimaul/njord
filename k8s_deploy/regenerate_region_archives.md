@@ -10,6 +10,11 @@ In k8s, the worker runs **only in the `njord-ingest-rs` pod**, because `enableIn
 reach the ingest pod. The ingest worker finds the stale regions on its next idle poll, which can
 take up to 15 minutes (`IDLE_DELAY_MS`). Cycle the ingest pod to make it check right away.
 
+`enableRegionExport` in the configmap must be `true` for any of this to happen. When it is
+`false`, ingestion keeps running and `GET /v1/regions` keeps serving the archives already on
+disk, but no region is rendered; stale regions are picked up once the flag is turned back on and
+the ingest pod is cycled.
+
 ## Steps
 
 ```shell

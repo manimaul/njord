@@ -15,6 +15,7 @@
     "debugTile": false,
     "chartIngestWorkers": 5,
     "enableIngestion": true,
+    "enableRegionExport": true,
     "useTileCache": true,
     "regionExports": []
 }

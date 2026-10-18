@@ -28,5 +28,6 @@ data class ChartsConfig(
     val chartIngestWorkers: Int,
     val useTileCache: Boolean = true,
     val enableIngestion: Boolean = true,
+    val enableRegionExport: Boolean = true,
     val regionExports: List<RegionExportConfig> = emptyList(),
 )

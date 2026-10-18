@@ -1,5 +1,11 @@
 # Release Notes
 
+## Unreleased
+
+- **`enableRegionExport` config flag** (default `true`) — set `false` to stop the region export
+  worker without stopping ingestion or the region manifest. Regions that go stale while it is
+  off are rendered once it is re-enabled.
+
 ## 1.3
 
 ### Offline Regions: MBTiles Archives

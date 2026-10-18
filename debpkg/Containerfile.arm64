@@ -15,7 +15,7 @@
 #       --target artifact \
 #       -f debpkg/Containerfile.arm64 .
 
-FROM debian:trixie-slim AS builder
+FROM debian:13.7-slim AS builder
 
 # Enable ARM64 multiarch so we can install ARM64 libraries for cross-linking.
 # openjdk/git/python3 are x86_64 (needed to run Gradle/Kotlin/Native on the host).

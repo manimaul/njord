@@ -1,9 +1,9 @@
-FROM debian:12.9-slim AS builder
+FROM debian:13.7-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     git \
-    openjdk-17-jdk-headless \
+    openjdk-21-jdk-headless \
     libgdal-dev \
     libpq-dev \
     libssl-dev \
@@ -29,15 +29,15 @@ RUN --mount=type=cache,target=/root/.konan,sharing=locked \
     ./gradlew :server:linkReleaseExecutableArch :server:linkIngestReleaseExecutableArch \
                 :enc_cron:linkReleaseExecutableArch --no-daemon
 
-FROM debian:12.9-slim
+FROM debian:13.7-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
-    libgdal32 \
+    libgdal36 \
     libpq5 \
-    libzip4 \
-    libssl3 \
-    libcurl4 \
+    libzip5 \
+    libssl3t64 \
+    libcurl4t64 \
     libgd3 \
     libexpat1 \
     && rm -rf /var/lib/apt/lists/*

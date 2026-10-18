@@ -1,18 +1,18 @@
 [versions]
 # https://kotlinlang.org/
-kotlin = "2.4.10"
+kotlin = "2.4.21"
 # https://ktor.io/
-ktor = "3.5.1"
+ktor = "3.6.0"
 # https://kotlinlang.org/docs/multiplatform/get-started.html
-compose = "1.11.1"
+compose = "1.12.2"
 # https://kotlinlang.org/docs/coroutines-overview.html
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 # https://kotlinlang.org/docs/serialization.html
 serialization = "1.11.0"
 # https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/kotlinx.datetime/
 kotlinx-datetime = "0.8.0"
 # https://kotlinlang.org/api/kotlinx-io/kotlinx-io-core/
-kotlinx-io = "0.8.2"
+kotlinx-io = "0.9.1"
 # https://www.npmjs.com/package/maplibre-gl
 maplibre-gl = "4.7.1"
 # https://www.npmjs.com/package/bootstrap

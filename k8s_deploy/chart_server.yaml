@@ -243,7 +243,7 @@ data:
       "debugTile": false,
       "chartIngestWorkers": 3,
       "enableIngestion": false,
-      "enableRegionExport": false,
+      "enableRegionExport": true,
       "useTileCache": true,
       "regionExports": [
         {

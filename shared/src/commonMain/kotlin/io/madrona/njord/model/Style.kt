@@ -70,6 +70,9 @@ enum class IconRotationAlignment {
 data class Layout(
     @SerialName("icon-image") val iconImage: JsonElement? = null, //List<String> or String>
     @SerialName("icon-anchor") val iconAnchor: Anchor? = null,
+    @SerialName("icon-text-fit") val iconTextFit: IconTextFit? = null,
+    // top, right, bottom, left - extra area around the text box the fitted icon is scaled to
+    @SerialName("icon-text-fit-padding") val iconTextFitPadding: List<Float>? = null,
     @SerialName("icon-allow-overlap") val iconAllowOverlap: Boolean? = null,
     @SerialName("icon-ignore-placement") val iconIgnorePlacement: Boolean? = null,
     @SerialName("icon-keep-upright") val iconKeepUpright: Boolean? = null,
@@ -98,6 +101,22 @@ data class Layout(
     @SerialName("symbol-placement") val symbolPlacement: Placement? = null,
     @SerialName("symbol-sort-key") val symbolSortKey: JsonElement? = null,
 )
+
+/** Scales an icon to the text drawn on the same symbol - a stretchable sprite becomes a text background or underline. */
+@Serializable
+enum class IconTextFit {
+    @SerialName("none")
+    NONE,
+
+    @SerialName("width")
+    WIDTH,
+
+    @SerialName("height")
+    HEIGHT,
+
+    @SerialName("both")
+    BOTH,
+}
 
 @Serializable
 enum class LineCap {

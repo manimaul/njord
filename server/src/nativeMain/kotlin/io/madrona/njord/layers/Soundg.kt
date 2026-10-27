@@ -26,6 +26,11 @@ import kotlinx.serialization.json.JsonElement
  * Drying heights (drying soundings) are indicated by a negative value.
  * Distinction:
  * depth area; wreck; underwater/awash rock; obstruction;
+ *
+ * Drying heights (S-52 PresLib SNDFRM04): the depth parts in the tile are negative, so every text
+ * field renders `abs` of its part - the digits are drawn positive, never with a minus sign - the
+ * shallow colour applies (a negative value is always under the safety depth) and the layers that
+ * draw the whole number carry the SOUNDSA1 underline, fitted to the digits with icon-text-fit.
  */
 open class Soundg(
     private val config: ChartsConfig = Singletons.config
@@ -63,6 +68,30 @@ open class Soundg(
     /** Ascending METERS gives shallower (more safety-critical) soundings priority when labels collide. */
     private val sortKeyByDepth = listOf("get", "METERS").json
 
+    /** The magnitude of a depth part - drying heights are stored negative and drawn without a sign. */
+    private fun absText(key: String): JsonElement = listOf("to-string", listOf("abs", listOf("get", key))).json
+
+    /**
+     * S-52 SOUNDSA1, the drying-height underline, only for negative soundings. An empty image name
+     * resolves to no icon. The sprite is stretchable (see sprites/create_sheet.py) and fitted to the
+     * text box with [dryingUnderlineFit]; the bottom padding keeps the line clear of the text halo.
+     *
+     * The icon takes no part in collision detection ([Layout.iconAllowOverlap] and
+     * [Layout.iconIgnorePlacement]): its fitted box reaches into the subscript digit's box, which
+     * is placed first, and MapLibre would then drop the whole leading-digit symbol. With the icon
+     * exempt, the symbol places on its text alone and the underline shows exactly when the digits do.
+     */
+    private val dryingUnderline: JsonElement =
+        listOf("case", listOf("<", listOf("get", "METERS"), 0), Sprite.SOUNDSA1.name, "").json
+    private val dryingUnderlineFit = IconTextFit.BOTH
+    private val dryingUnderlinePadding = listOf(0f, 0f, 3f, 0f)
+
+    private fun paint(theme: Theme) = Paint(
+        textColor = textColor(theme),
+        textHaloColor = colorFrom(Color.DEPDW, theme),
+        textHaloWidth = 2.5f
+    )
+
     private fun singleText(theme: Theme, id: String, textKey: String, subTextKey: String? = null) = Layer(
         id = id,
         type = LayerType.SYMBOL,
@@ -79,21 +108,22 @@ open class Soundg(
             ).json
         } ?: Filters.eqTypePoint,
         layout = Layout(
+            iconImage = dryingUnderline,
+            iconTextFit = dryingUnderlineFit,
+            iconTextFitPadding = dryingUnderlinePadding,
+            iconAllowOverlap = true,
+            iconIgnorePlacement = true,
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.CENTER,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey).json,
+            textField = absText(textKey),
             textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize,
             symbolPlacement = Placement.POINT,
             symbolSortKey = sortKeyByDepth,
         ),
-        paint = Paint(
-            textColor = textColor(theme),
-            textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 2.5f
-        )
+        paint = paint(theme),
     )
 
     /**
@@ -109,16 +139,21 @@ open class Soundg(
         filter = listOf(
             Filters.all,
             Filters.eqTypePoint,
-            listOf(">", subTextKey, 0),
+            listOf("!=", subTextKey, 0),
             listOf("<", "METERS", config.deepDepth),
         ).json,
         layout = Layout(
+            iconImage = dryingUnderline,
+            iconTextFit = dryingUnderlineFit,
+            iconTextFitPadding = dryingUnderlinePadding,
+            iconAllowOverlap = true,
+            iconIgnorePlacement = true,
             textFont = listOf(Font.ROBOTO_BOLD),
             textAnchor = Anchor.BOTTOM_RIGHT,
             //x (neg left / pos right), y (neg up / pos down)
             textOffset = listOf(0.0f, 0.6f).json,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey).json,
+            textField = absText(textKey),
             textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize,
@@ -128,13 +163,10 @@ open class Soundg(
             symbolPlacement = Placement.POINT,
             symbolSortKey = sortKeyByDepth,
         ),
-        paint = Paint(
-            textColor = textColor(theme),
-            textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 2.5f
-        )
+        paint = paint(theme),
     )
 
+    /** The fractional digit. SOUNDSA1 underlines only the leading digits, so no icon here. */
     private fun subTextLayer(theme: Theme, id: String, textKey: String) = Layer(
         id = id,
         type = LayerType.SYMBOL,
@@ -142,7 +174,7 @@ open class Soundg(
         filter = listOf(
             Filters.all,
             Filters.eqTypePoint,
-            listOf(">", textKey, 0),
+            listOf("!=", textKey, 0),
             listOf("<", "METERS", config.deepDepth),
         ).json,
         layout = Layout(
@@ -151,7 +183,7 @@ open class Soundg(
             //x (neg left / pos right), y (neg up / pos down)
             textOffset = listOf(0.1f, 0.0f).json,
             textJustify = TextJustify.CENTER,
-            textField = listOf("get", textKey).json,
+            textField = absText(textKey),
             textAllowOverlap = false,
             textIgnorePlacement = false,
             textSize = textSize - 4f,
@@ -159,11 +191,7 @@ open class Soundg(
             symbolPlacement = Placement.POINT,
             symbolSortKey = sortKeyByDepth,
         ),
-        paint = Paint(
-            textColor = textColor(theme),
-            textHaloColor = colorFrom(Color.DEPDW, theme),
-            textHaloWidth = 2.5f
-        )
+        paint = paint(theme),
     )
 
     private fun textColor(theme: Theme): JsonElement = listOf(

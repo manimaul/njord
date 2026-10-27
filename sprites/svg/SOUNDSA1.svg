@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="daySvgStyle.css" type="text/css"?><svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" xml:space="preserve" style="shape-rendering:geometricPrecision; fill-rule:evenodd;" width="3.2mm" height="3.2mm" viewBox="0 0 3.2 3.2">
+  <title>SOUNDSA1</title>
+  <desc>symbol for drying height, used for shallow soundings, less than or equal to safety depth. Stretchable: transparent box with the underline along its bottom edge, fitted to the sounding text with icon-text-fit (see create_sheet.py stretchable).</desc>
+  <metadata>
+    <iho:S100SVG xmlns:iho="http://www.iho.int/SVGMetadata/5.0">
+      <iho:Description iho:publisher="IHB" iho:creationDate="2014-06-09" iho:source="S52Preslib4.0" iho:format="S100SVG" iho:version="0.1"/>
+    </iho:S100SVG>
+  </metadata>
+  <rect class="symbolBox layout" fill="none" x="0" y="0" height="3.2" width="3.2"/>
+  <rect class="svgBox layout" fill="none" x="0" y="0" height="3.2" width="3.2"/>
+  <path d=" M 0,2.95 L 3.2,2.95" class="f0 sSNDG2" style="stroke-width: 0.5; stroke-linecap: butt;"/>
+  <circle class="pivotPoint layout" fill="none" cx="1.6" cy="1.6" r="1"/>
+</svg>

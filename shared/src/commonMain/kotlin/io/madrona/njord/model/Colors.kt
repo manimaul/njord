@@ -298,6 +298,7 @@ enum class Sprite {
     SMCFAC02,
     SNDWAV01P,
     SNDWAV02,
+    SOUNDSA1,
     SPRING02,
     TIDEHT01,
     TIDSTR01,

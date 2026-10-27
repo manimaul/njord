@@ -51,6 +51,22 @@ patterns = {"VEGATN04P": standard_pattern,
             }
 
 
+# Sprites fitted to text with MapLibre's icon-text-fit. The sheet entry gains stretchX/stretchY
+# (pixel bands that may be scaled) and content (the box the text is fitted into), all in the
+# sheet's own pixels, so 1x and 2x get the values scaled by pixel ratio.
+def underline_stretch(width: int, height: int, pixel_ratio: int) -> dict:
+    line = 2 * pixel_ratio   # rows along the bottom edge that hold the underline
+    edge = 1 * pixel_ratio   # fixed border so the stretched interior never touches the line
+    return {
+        "stretchX": [[edge, width - edge]],
+        "stretchY": [[edge, height - line - edge]],
+        "content": [0, 0, width, height - line],
+    }
+
+
+stretchable = {"SOUNDSA1": underline_stretch}
+
+
 @dataclass
 class Frame:
     name: str
@@ -137,6 +153,8 @@ def save_sprite_sheet(retna: bool, theme: str):
             "y": int(top),
             "pixelRatio": each.pixel_ratio
         }
+        if each.name in stretchable:
+            sprite_json[each.name].update(stretchable[each.name](width, height, each.pixel_ratio))
         print("tile_width={}, tile_height={}".format(tile_width, tile_height))
         print("column={}, row={}, name={}, width={}, height={}".format(column, row, each.name, width, height))
 

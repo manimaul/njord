@@ -45,9 +45,27 @@ class SoundingsTest {
 
     @Test
     fun `drying heights keep their sign on both parts`() {
-        // Existing behaviour, pinned so the tenths fix does not change it.
+        // S-57 encodes a drying height as a negative depth. The parts stay negative so the style
+        // can tell a drying height apart; it renders them with abs() and the SOUNDSA1 underline.
         assertEquals(-1 to -5, split(-1.5))
         assertEquals(0 to -3, split(-0.3))
+        assertEquals(-12 to 0, split(-12.0))
+    }
+
+    @Test
+    fun `a drying height carries the same digits as the equivalent depth in every unit`() {
+        listOf(0.3, 1.5, 2.3, 7.6, 12.0).forEach { m ->
+            val depth = displayDepths(m)
+            val drying = displayDepths(-m)
+            assertEquals(-depth.metersWhole, drying.metersWhole, "whole metres of -$m")
+            assertEquals(-depth.metersTenths, drying.metersTenths, "tenths of -$m")
+            assertEquals(-depth.feet, drying.feet, "feet of -$m")
+            assertEquals(-depth.fathoms, drying.fathoms, "fathoms of -$m")
+            assertEquals(-depth.fathomsFeet, drying.fathomsFeet, "fathom feet of -$m")
+        }
+        // 1.5 m is 4.92 ft, which rounds up past .9 - and so must -1.5 m.
+        assertEquals(5, displayDepths(1.5).feet)
+        assertEquals(-5, displayDepths(-1.5).feet)
     }
 
     @Test

@@ -12,29 +12,36 @@ data class DisplayDepths(
     val fathomsFeet: Int
 )
 
+/**
+ * Every part is computed on the magnitude and then given the sounding's sign, so a drying height
+ * (negative, S-57 convention) carries the same digits as the equivalent depth with every part
+ * negative. S-52 SNDFRM04 draws those digits positive with the SOUNDSA1 underline; the style
+ * applies `abs` and reads the sign from `METERS` (see Soundg.kt).
+ */
 fun displayDepths(meters: Double) : DisplayDepths {
-    val feet: Double = meters * 3.28084
+    val magnitude = abs(meters)
+    val sgn = sign(meters).toInt()
+
+    val feet: Double = magnitude * 3.28084
     var feetWhole: Int = feet.toInt()
     if (feet - feetWhole >= 0.9) {
         feetWhole += 1
     }
-    val fathoms: Double = (meters * 0.546807)
+    val fathoms: Double = (magnitude * 0.546807)
     val fathomsWhole: Int = fathoms.toInt()
     val fathomsFeet: Int = ((fathoms - fathomsWhole) * 6.0).toInt()
     // S-57 encodes depths to one decimal, so split on the decimal tenths rather than the binary
     // double: 2.3 is 2.29999… and truncating (2.3 - 2) * 10 would read 2.2. The epsilon absorbs
-    // that representation error; anything beyond the first decimal still truncates (toward zero,
-    // so a label never reads deeper than the sounding and drying heights keep their sign).
-    val tenthsTotal: Int = (floor(abs(meters) * 10.0 + 1e-6) * sign(meters)).toInt()
-    val metersWhole: Int = tenthsTotal / 10
-    val metersTenths: Int = tenthsTotal % 10
+    // that representation error; anything beyond the first decimal still truncates, so a label
+    // never reads deeper than the sounding.
+    val tenthsTotal: Int = floor(magnitude * 10.0 + 1e-6).toInt()
     return DisplayDepths(
         meters = meters,
-        metersWhole = metersWhole,
-        metersTenths = metersTenths,
-        feet = feetWhole,
-        fathoms = fathomsWhole,
-        fathomsFeet = fathomsFeet
+        metersWhole = sgn * (tenthsTotal / 10),
+        metersTenths = sgn * (tenthsTotal % 10),
+        feet = sgn * feetWhole,
+        fathoms = sgn * fathomsWhole,
+        fathomsFeet = sgn * fathomsFeet,
     )
 }
 

@@ -1,4 +1,7 @@
 import kotlinx.serialization.json.JsonElement
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.sign
 
 data class DisplayDepths(
     val meters: Double,
@@ -18,8 +21,13 @@ fun displayDepths(meters: Double) : DisplayDepths {
     val fathoms: Double = (meters * 0.546807)
     val fathomsWhole: Int = fathoms.toInt()
     val fathomsFeet: Int = ((fathoms - fathomsWhole) * 6.0).toInt()
-    val metersWhole: Int = meters.toInt()
-    val metersTenths = ((meters - metersWhole) * 10.0).toInt()
+    // S-57 encodes depths to one decimal, so split on the decimal tenths rather than the binary
+    // double: 2.3 is 2.29999… and truncating (2.3 - 2) * 10 would read 2.2. The epsilon absorbs
+    // that representation error; anything beyond the first decimal still truncates (toward zero,
+    // so a label never reads deeper than the sounding and drying heights keep their sign).
+    val tenthsTotal: Int = (floor(abs(meters) * 10.0 + 1e-6) * sign(meters)).toInt()
+    val metersWhole: Int = tenthsTotal / 10
+    val metersTenths: Int = tenthsTotal % 10
     return DisplayDepths(
         meters = meters,
         metersWhole = metersWhole,

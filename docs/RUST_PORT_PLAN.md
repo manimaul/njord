@@ -2,6 +2,18 @@
 
 _Written 2026-10-27. Companion to [TEST_COVERAGE_AUDIT.md](TEST_COVERAGE_AUDIT.md), whose test IDs (SY-3, TE-1, …) are referenced below._
 
+## 0. Why
+
+Njord started life in Rust as [s57tiler](https://github.com/manimaul/s57tiler). It was reinvented in Kotlin because Kotlin/Native plus Kotlin/JS let one person move fast with one language across server and browser. That trade-off has shifted:
+
+- **Performance.** The tile hot path is CPU-bound geometry clipping and protobuf encoding. Kotlin/Native's garbage collector and the copying across its C interop boundary are measurable there, and Kotlin/Native is the slowest of Kotlin's backends. Rust gives predictable latency, no GC pauses, and zero-cost calls into GDAL and PostGIS clients.
+- **Library availability and maturity.** Kotlin/Native has almost no server-side ecosystem, so this repo hand-maintains five C interop modules (`libgdal`, `libpq`, `libzip`, `libsqlite`, `libexpat`) plus an in-house GeoJSON model and MVT encoder. Rust has maintained, widely used crates for every one of those (§4), leaving GDAL as the only C dependency.
+- **Container size and runtime.** The runtime image today pulls in `libgdal`, `libpq5`, `libzip`, `libssl`, `libcurl`, `libgd` and `libexpat`; a Rust build statically links everything except GDAL (§4.3). The build side also simplifies: no JDK, no multi-gigabyte Konan toolchain cache, and ARM64 cross-compilation for the Raspberry Pi `.deb` without the linker workarounds in `debpkg/Containerfile.arm64`.
+- **Developer productivity is no longer the deciding factor.** Kotlin was chosen for how quickly a small team could write it. With AI-assisted development the cost of writing Rust has fallen sharply, and Rust's stricter compiler becomes an asset rather than a tax: when much of the code is machine-generated, a type system and borrow checker that reject whole classes of bugs are the cheapest reviewer available.
+- **One language front and back is preserved.** Leptos compiled to WebAssembly keeps the shared-types-across-the-wire benefit (`njord-model`, §3.1) that justified Kotlin multiplatform, while the UI framework (Compose HTML) and the Kotlin/Native Linux targets have remained niche with an uncertain roadmap. Rust, Tokio, Axum and wasm32 are mainstream targets with large communities.
+
+None of this is urgent; the Kotlin server works. The port is worth doing because every item above compounds over the project's remaining life, and the test-first approach below makes it low risk.
+
 ## 1. Goals
 
 1. Re-implement the Njord backend in Rust and the web UI in Leptos, as **two separately built and deployed artifacts** that only meet at the HTTP API.

@@ -241,6 +241,7 @@ The lock file, status file and worker loops are the inter-process protocol betwe
 Each phase ends when its conformance/fixture tests pass in Rust. No phase starts porting code whose fixtures don't exist yet.
 
 ### Phase 0 — Characterization (Kotlin repo)
+Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Write the §5 tests in Kotlin; make them emit `testdata/`.
 - Add CI (PostGIS service + `./gradlew allTests`) so the fixtures are regenerated and validated on every change.
 - Fix or formally accept each suspected defect (D1–D9) **before** fixtures are frozen. Every fixture is a decision about which behavior the port must copy.

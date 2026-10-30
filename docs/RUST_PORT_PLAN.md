@@ -278,10 +278,17 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Exit: `testdata/` committed; conformance suite green against the Kotlin server.
 
 ### Phase 1 — Workspace and the contract crate
-- [ ] **Phase 1 complete**
+- [x] **Phase 1 complete** (2026-10-30). Root `Cargo.toml` workspace, `crates/njord-model`, and a `rust` CI job (fmt, clippy `-D warnings`, tests, `wasm32-unknown-unknown` check).
 - `njord-model`: every wire type (`Chart`, `ChartCatalog`, `ChartEditions`, `FeatureRecord`, `LayerQueryResultPage`, `RegionManifestEntry`, `AdminSignature`/`AdminResponse`, `EncUpload`, `EncUrlRequest`, `WsMsg`, `Style`/`Layer`/`Paint`/`Layout`, `S57Object`, `About`, `TileJson`, `Depth`, `ThemeMode`, `Sprite`, `Color`).
 - Serde round-trip tests against `testdata/` JSON (P-IN-7, P-SY-7 types, P-API golden bodies).
 - Exit: `cargo test -p njord-model` deserialises every golden response and re-serialises it identically.
+- Done 2026-10-30:
+  - `tests/golden.rs` round-trips all 68 JSON bodies in `conformance/golden/`, each through the type its route returns. A golden whose route has no mapped type fails the test. Masked values are swapped for typed placeholders first. Request bodies are checked too, including that `chart_post_invalid` is rejected.
+  - `tests/testdata.rs` covers `ws/messages.json`, all 27 `symbology/style/` files, `sprites.json` (including the `Sprite` declaration order), `regions/manifest.json`, `s57/chart_insert.json` and `admin/signature_vectors.json`. The admin test is byte-exact: base64 of the serialised `AdminSignature` must equal Kotlin's `signatureEncoded`.
+  - "Identically" means the same JSON values with keys in the same order, and integers kept distinct from floats (except inside GeoJSON, see below). Fixtures that Kotlin wrote with `explicitNulls = false` (manifest, chart insert) are compared after dropping nulls.
+  - GeoJSON is the georust `geojson` crate (1.x, without its `geo-types` feature; §4.1). It reads Kotlin's output, but it doesn't write the `"id": null` / `"bbox": null` members or the member order of the Kotlin `geojson` module. Nothing on the wire depends on those, so the round-trip tests ignore member order and `null` members inside GeoJSON objects only. One quirk: `"crs": null` on a Kotlin-written geometry is kept as a foreign member and written back out.
+  - Decision: `kotlin.time.Instant` is `jiff::Timestamp` with a formatter that pads the fraction to 0/3/6/9 digits as Kotlin does (`njord_model::instant`). The admin HMAC signs that exact text.
+  - Not modelled, because they are server-internal and never on the wire: `ChartInfo`, `ChartFeature` (WKB byte arrays) and `LayerGeoJson`. `Theme` has no serde impl because Kotlin never serialises it.
 
 ### Phase 2 — Pure libraries
 - [ ] **Phase 2 complete**

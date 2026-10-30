@@ -149,16 +149,16 @@ Done 2026-10-30 (`ConcurrencyPrimitivesTest`, plus `concurrency/lock_semantics.j
 
 ## 4. CI
 
-Written 2026-10-30 (`.github/workflows/ci.yml`), not yet run: a `debian:13-slim` container job matching the Containerfile toolchain with a PostGIS 13 service forwarded to `localhost:6432`, `./gradlew allTests`, a regenerate-and-diff step, and a conformance job against the linked server on :9000.
+Decided 2026-10-30: **no hosted CI.** A GitHub Actions workflow (`.github/workflows/ci.yml`) was written and then removed without ever running. The same checks are run locally before committing, against the dev PostGIS (`chart_server_db`, `localhost:6432`):
 
-- [x] CI workflow with a PostGIS service container running `./gradlew allTests`
-- [x] CI fails if regenerating fixtures produces a diff against committed `testdata/`
-- [x] Conformance suite job: `actions/setup-python` (3.12) + `pip install -r conformance/requirements.txt` + `pytest conformance --base-url=http://localhost:9000` against a Kotlin server started in CI
+- [x] `./gradlew allTests` (verify mode)
+- [x] `NJORD_FIXTURES=regenerate ./gradlew allTests` then `git diff --exit-code -- testdata/`: a diff is a behaviour change to review and commit deliberately
+- [x] `pytest conformance --base-url=http://localhost:9000` against a locally running Kotlin server (`conformance/README.md`)
 
 ## 5. Exit criteria
 
 - [x] All D1–D9 resolved, each decision recorded — plus D10–D12 found while generating fixtures (TEST_COVERAGE_AUDIT.md §3)
-- [x] `testdata/` committed; validated locally (219 native tests, verify mode, regenerate produces no diff). CI validation runs on the first push of `.github/workflows/ci.yml`, which could not be exercised from this machine; expect its first run to regenerate GDAL-derived fixtures under Debian 13's GDAL (headers pin 3.13.1 today)
+- [x] `testdata/` committed; validated locally (219 native tests, verify mode, regenerate produces no diff). GDAL-derived fixtures pin the macOS GDAL 3.13.1; regenerating under Debian 13's GDAL may change them
 - [x] Conformance suite green in verify mode against the Kotlin server locally — 232 passed, 2 `port_only` skipped (2026-10-30, build 76a4e0f)
 - [ ] Conformance suite green in verify mode against `https://openenc.com` (read-only routes) — **134 passed, 19 skipped with `style` and `content/sprites` deselected**; those 59 cases fail only because production runs `505032bc` (2026-10-18, before `b4800ae soundg - drying heights` on master) with the old SOUNDG style and sprite sheet. Re-run after the next `openenc.com` deploy; everything else (about, tile_json, icons, sector_svg, 401/405/404/CORS, data routes by shape) is green
 - [x] Diff mode exercised once: local Kotlin vs local Kotlin on a second port must report zero differences (proves the masking list before Rust exists) — 0 differences (both servers must hold region archives: `region_export_state` is per database, so a second server on the same database never renders its own)

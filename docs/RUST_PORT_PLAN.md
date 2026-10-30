@@ -270,6 +270,7 @@ The lock file, status file and worker loops are the inter-process protocol betwe
 Each phase ends when its conformance/fixture tests pass in Rust. No phase starts porting code whose fixtures don't exist yet.
 
 ### Phase 0 — Characterization (Kotlin repo)
+- [x] **Phase 0 complete** (2026-10-30). One follow-up remains: re-run the conformance suite against `https://openenc.com` after its next deploy (see the checklist).
 Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Write the §5 tests in Kotlin; make them emit `testdata/`.
 - Add CI (PostGIS service + `./gradlew allTests`) so the fixtures are regenerated and validated on every change.
@@ -277,17 +278,20 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Exit: `testdata/` committed; conformance suite green against the Kotlin server.
 
 ### Phase 1 — Workspace and the contract crate
+- [ ] **Phase 1 complete**
 - `njord-model`: every wire type (`Chart`, `ChartCatalog`, `ChartEditions`, `FeatureRecord`, `LayerQueryResultPage`, `RegionManifestEntry`, `AdminSignature`/`AdminResponse`, `EncUpload`, `EncUrlRequest`, `WsMsg`, `Style`/`Layer`/`Paint`/`Layout`, `S57Object`, `About`, `TileJson`, `Depth`, `ThemeMode`, `Sprite`, `Color`).
 - Serde round-trip tests against `testdata/` JSON (P-IN-7, P-SY-7 types, P-API golden bodies).
 - Exit: `cargo test -p njord-model` deserialises every golden response and re-serialises it identically.
 
 ### Phase 2 — Pure libraries
+- [ ] **Phase 2 complete**
 - `njord-geo`: tile system, clip polygons, MVT encoder (`geozero`/`mvt`), prop filtering. Pass P-TE-1…4.
 - `njord-symbology`: port the 128 `Layerable`s and attribute helpers. Pass P-SY-1…9. Suggested order: `Layerable` base helpers → `Depare`, `Soundg`, `Obstrn`, `Wrecks`, `Uwtroc`, `Lights`, `Topmar` (tier-0 symbology) → buoys/beacons → everything else via P-SY-2 generated cases.
 - `njord-s57`: `gdal` crate reader behind `trait S57Reader`; shapefile reading via `shapefile` crate. Pass P-IN-1…4.
 - Exit: all §5.1–5.3 fixtures pass natively.
 
 ### Phase 3 — Read-only server, side by side
+- [ ] **Phase 3 complete**
 - `njord-db` (sqlx) with the migration runner reading the same `meta_data` version. Pass P-DB-1, 3, 4, 5, 6.
 - `njord-server` read routes: `about`, `style`, `content`, `icon`, `sector_svg`, `tile_json`, `tile`, `chart`, `chart_catalog`, `chart_editions`, `feature`, `geojson` GET, `regions` GET, `regions/{archive}`, `cache` GET.
 - Tile cache: same on-disk layout under `chartTempData` so the deb package and the operational docs stay valid. In Kubernetes each environment has its own PVC; nothing is shared between namespaces.
@@ -295,7 +299,8 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Stand up the `mxmariner` environment (§10.4): the Rust image for `njord-chart-dep`, the existing Kotlin image for `njord-ingest-rs` and `njord-enc-download`, all pointed at the new `njord` database and PVC. Kotlin fills the database, Rust reads it (P-DB-1 makes the schema handshake safe). Run the suite against `https://openenc.com` and `https://njord.mxmariner.com`.
 - Exit: conformance suite green on read routes against both environments; `njord.mxmariner.com` serves tiles from its own data.
 
-### Phase 4 — Write path and workers
+### Phase 4 — Write path and workers (FM)
+- [ ] **Phase 4 complete**
 - Admin signatures (P-SEC-1/2, cross-compatible with Kotlin-minted signatures), `enc_save`, `enc_url`, `chart` POST/DELETE, `geojson` POST, `cache` DELETE, `nuke`, `regions` POST, WebSocket status.
 - `ChartIngestWorker` / `ChartIngest` / `NaturalEarthIngest` on `spawn_blocking`; lock + status files per P-CC-*.
 - `RegionExporter` + worker with `rusqlite`. Pass P-RE-1…5.
@@ -303,12 +308,15 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Exit: P-API-7…10, P-RE-*, P-CC-* green. The `mxmariner` environment ingests and exports regions without any Kotlin binary.
 
 ### Phase 5 — `enc_cron`
+- [ ] **Phase 5 complete**
 - Port with `quick-xml`, `reqwest`, `zip`. Pass P-EC-1…5. Swap the `njord-enc-download` CronJob in `mxmariner` to the Rust image. (Until then the Kotlin `enc_cron` runs there unchanged: it only needs the PVC, `GET /v1/chart_editions` and `DELETE /v1/chart`.)
 
 ### Phase 6 — Leptos frontend
+- [ ] **Phase 6 complete**
 - See §7. Exit: route parity with `shared_fe/routing`, every API call typed through `njord-model`, manual QA on the map.
 
 ### Phase 7 — Cutover and removal
+- [ ] **Phase 7 complete**
 - Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only. Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
 - Cutover per §10.6: switch the `openenc.com` consumers to `njord.mxmariner.com`, move regatta's DB relay, turn `openenc.com` into a redirect, retire the `njord` namespace. This is the first point at which anything in `njord` changes.
 - Delete Kotlin modules once the conformance suite has run green against Rust alone for a release cycle. Keep `testdata/` and `conformance/`.

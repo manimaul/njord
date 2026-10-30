@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/chart_editions",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 1,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "editions": {
+        "US5WA22M.000": "4:20190319:20200626",
+        "US5ZZ02M.000": "0:20260101:20260101",
+        "US4ZZ01M.000": "0:20260101:20260101"
+      }
+    }
+  }
+}

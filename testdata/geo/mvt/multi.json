@@ -1,0 +1,61 @@
+{
+  "pins": "a MultiPoint is one POINT feature with one MoveTo of count n; a GeometryCollection is split into one feature per member sharing the same id",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "three soundings as a multipoint, a collection of a point and a line; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "multi.bin",
+  "bytes": 95,
+  "decoded": {
+    "layers": [
+      {
+        "name": "SOUNDG",
+        "version": 2,
+        "extent": 4096,
+        "features": []
+      },
+      {
+        "name": "MIXED",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 3,
+            "type": "POINT",
+            "props": {
+              "K": "v"
+            },
+            "geometry": [
+              [
+                [
+                  500,
+                  500
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 3,
+            "type": "LINESTRING",
+            "props": {
+              "K": "v"
+            },
+            "geometry": [
+              [
+                [
+                  500,
+                  500
+                ],
+                [
+                  600,
+                  700
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

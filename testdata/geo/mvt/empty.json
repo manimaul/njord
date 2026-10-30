@@ -1,0 +1,13 @@
+{
+  "pins": "an encoder with no features encodes to an empty tile",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "no input; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "empty.bin",
+  "bytes": 0,
+  "decoded": {
+    "layers": []
+  }
+}

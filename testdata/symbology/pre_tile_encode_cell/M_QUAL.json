@@ -1,0 +1,1830 @@
+{
+  "pins": "preTileEncode over every M_QUAL feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2783,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 193472091,
+          "FIDS": 1906,
+          "LNAM": "02260B88265B0772",
+          "CATZOC": 1,
+          "SUREND": "20010330",
+          "SURSTA": "20010329",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2783,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 193472091,
+        "FIDS": 1906,
+        "LNAM": "02260B88265B0772",
+        "CATZOC": 1,
+        "SUREND": "20010330",
+        "SURSTA": "20010329",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2784,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 278199876,
+          "FIDS": 1906,
+          "LNAM": "02261094FE440772",
+          "CATZOC": 1,
+          "SUREND": "20070414",
+          "SURSTA": "20070410",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2784,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 278199876,
+        "FIDS": 1906,
+        "LNAM": "02261094FE440772",
+        "CATZOC": 1,
+        "SUREND": "20070414",
+        "SURSTA": "20070410",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2785,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 243670524,
+          "FIDS": 1906,
+          "LNAM": "02260E861DFC0772",
+          "CATZOC": 1,
+          "SUREND": "20091010",
+          "SURSTA": "20090815",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2785,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 243670524,
+        "FIDS": 1906,
+        "LNAM": "02260E861DFC0772",
+        "CATZOC": 1,
+        "SUREND": "20091010",
+        "SURSTA": "20090815",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2786,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 973650430,
+          "FIDS": 1906,
+          "LNAM": "02263A08B9FE0772",
+          "CATZOC": 1,
+          "SUREND": "20080430",
+          "SURSTA": "20080410",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2786,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 973650430,
+        "FIDS": 1906,
+        "LNAM": "02263A08B9FE0772",
+        "CATZOC": 1,
+        "SUREND": "20080430",
+        "SURSTA": "20080410",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2787,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 285204507,
+          "FIDS": 1906,
+          "LNAM": "022610FFE01B0772",
+          "CATZOC": 5,
+          "SUREND": "1919",
+          "SURSTA": "1910",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2787,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 285204507,
+        "FIDS": 1906,
+        "LNAM": "022610FFE01B0772",
+        "CATZOC": 5,
+        "SUREND": "1919",
+        "SURSTA": "1910",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2788,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 362388510,
+          "FIDS": 1906,
+          "LNAM": "022615999C1E0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2788,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 362388510,
+        "FIDS": 1906,
+        "LNAM": "022615999C1E0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2789,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 942037088,
+          "FIDS": 7299,
+          "LNAM": "0226382658601C83",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2789,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 942037088,
+        "FIDS": 7299,
+        "LNAM": "0226382658601C83",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2790,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 628935973,
+          "FIDS": 1906,
+          "LNAM": "0226257CCD250772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2790,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 628935973,
+        "FIDS": 1906,
+        "LNAM": "0226257CCD250772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2791,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 134435445,
+          "FIDS": 7299,
+          "LNAM": "0226080352751C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2791,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 134435445,
+        "FIDS": 7299,
+        "LNAM": "0226080352751C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2792,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 636617286,
+          "FIDS": 1906,
+          "LNAM": "022625F202460772",
+          "CATZOC": 3,
+          "SUREND": "19960903",
+          "SURSTA": "19960806",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2792,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 636617286,
+        "FIDS": 1906,
+        "LNAM": "022625F202460772",
+        "CATZOC": 3,
+        "SUREND": "19960903",
+        "SURSTA": "19960806",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2793,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 792043535,
+          "FIDS": 1906,
+          "LNAM": "02262F35A00F0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2793,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 792043535,
+        "FIDS": 1906,
+        "LNAM": "02262F35A00F0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2794,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 764128031,
+          "FIDS": 1906,
+          "LNAM": "02262D8BAB1F0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2794,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 764128031,
+        "FIDS": 1906,
+        "LNAM": "02262D8BAB1F0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2795,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 798696242,
+          "FIDS": 1906,
+          "LNAM": "02262F9B23320772",
+          "CATZOC": 1,
+          "SUREND": "20080430",
+          "SURSTA": "20080410",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2795,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 798696242,
+        "FIDS": 1906,
+        "LNAM": "02262F9B23320772",
+        "CATZOC": 1,
+        "SUREND": "20080430",
+        "SURSTA": "20080410",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2796,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 826609847,
+          "FIDS": 1906,
+          "LNAM": "0226314510B70772",
+          "CATZOC": 5,
+          "SUREND": "1919",
+          "SURSTA": "1910",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2796,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 826609847,
+        "FIDS": 1906,
+        "LNAM": "0226314510B70772",
+        "CATZOC": 5,
+        "SUREND": "1919",
+        "SURSTA": "1910",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2797,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 213204127,
+          "FIDS": 1906,
+          "LNAM": "02260CB53C9F0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2797,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 213204127,
+        "FIDS": 1906,
+        "LNAM": "02260CB53C9F0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2798,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 319306356,
+          "FIDS": 10005,
+          "LNAM": "022613083A742715",
+          "CATZOC": 3,
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20181111",
+          "SORIND": "US,US,reprt,DD-30458"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2798,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 319306356,
+        "FIDS": 10005,
+        "LNAM": "022613083A742715",
+        "CATZOC": 3,
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20181111",
+        "SORIND": "US,US,reprt,DD-30458"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2799,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 172791958,
+          "FIDS": 1906,
+          "LNAM": "02260A4C98960772",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20080519",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2799,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 172791958,
+        "FIDS": 1906,
+        "LNAM": "02260A4C98960772",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20080519",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2800,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 403664720,
+          "FIDS": 7299,
+          "LNAM": "0226180F6F501C83",
+          "CATZOC": 3,
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20181115",
+          "SORIND": "US,US,graph,DD-30196"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2800,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 403664720,
+        "FIDS": 7299,
+        "LNAM": "0226180F6F501C83",
+        "CATZOC": 3,
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20181115",
+        "SORIND": "US,US,graph,DD-30196"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2801,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 969422751,
+          "FIDS": 1906,
+          "LNAM": "022639C8379F0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2801,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 969422751,
+        "FIDS": 1906,
+        "LNAM": "022639C8379F0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2802,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 238493301,
+          "FIDS": 7299,
+          "LNAM": "02260E371E751C83",
+          "CATZOC": 4,
+          "SUREND": "1939",
+          "SURSTA": "1930",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2802,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 238493301,
+        "FIDS": 7299,
+        "LNAM": "02260E371E751C83",
+        "CATZOC": 4,
+        "SUREND": "1939",
+        "SURSTA": "1930",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2803,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 960919248,
+          "FIDS": 1906,
+          "LNAM": "0226394676D00772",
+          "CATZOC": 5,
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2803,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 960919248,
+        "FIDS": 1906,
+        "LNAM": "0226394676D00772",
+        "CATZOC": 5,
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2804,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 9,
+          "AGEN": 550,
+          "FIDN": 460988255,
+          "FIDS": 7299,
+          "LNAM": "02261B7A1F5F1C83",
+          "CATZOC": 1,
+          "SUREND": "20170822",
+          "SURSTA": "20170517",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170822",
+          "SORIND": "US,US,graph,W-00429"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2804,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 9,
+        "AGEN": 550,
+        "FIDN": 460988255,
+        "FIDS": 7299,
+        "LNAM": "02261B7A1F5F1C83",
+        "CATZOC": 1,
+        "SUREND": "20170822",
+        "SURSTA": "20170517",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170822",
+        "SORIND": "US,US,graph,W-00429"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2805,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 850907943,
+          "FIDS": 1906,
+          "LNAM": "022632B7D3270772",
+          "CATZOC": 1,
+          "SUREND": "20091010",
+          "SURSTA": "20090815",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2805,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 850907943,
+        "FIDS": 1906,
+        "LNAM": "022632B7D3270772",
+        "CATZOC": 1,
+        "SUREND": "20091010",
+        "SURSTA": "20090815",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2806,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 417182251,
+          "FIDS": 1906,
+          "LNAM": "022618DDB22B0772",
+          "CATZOC": 5,
+          "SUREND": "1919",
+          "SURSTA": "1910",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2806,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 417182251,
+        "FIDS": 1906,
+        "LNAM": "022618DDB22B0772",
+        "CATZOC": 5,
+        "SUREND": "1919",
+        "SURSTA": "1910",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2807,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 489765408,
+          "FIDS": 1906,
+          "LNAM": "02261D313A200772",
+          "CATZOC": 1,
+          "SUREND": "20091010",
+          "SURSTA": "20090815",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2807,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 489765408,
+        "FIDS": 1906,
+        "LNAM": "02261D313A200772",
+        "CATZOC": 1,
+        "SUREND": "20091010",
+        "SURSTA": "20090815",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2808,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 829212185,
+          "FIDS": 1906,
+          "LNAM": "0226316CC6190772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2808,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 829212185,
+        "FIDS": 1906,
+        "LNAM": "0226316CC6190772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2809,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 926856718,
+          "FIDS": 1906,
+          "LNAM": "0226373EB60E0772",
+          "CATZOC": 4,
+          "SUREND": "1939",
+          "SURSTA": "1930",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2809,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 926856718,
+        "FIDS": 1906,
+        "LNAM": "0226373EB60E0772",
+        "CATZOC": 4,
+        "SUREND": "1939",
+        "SURSTA": "1930",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2810,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 9,
+          "AGEN": 550,
+          "FIDN": 13830132,
+          "FIDS": 10005,
+          "LNAM": "022600D307F42715",
+          "CATZOC": 3,
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20181115",
+          "SORIND": "US,US,reprt,DD-30196"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2810,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 9,
+        "AGEN": 550,
+        "FIDN": 13830132,
+        "FIDS": 10005,
+        "LNAM": "022600D307F42715",
+        "CATZOC": 3,
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20181115",
+        "SORIND": "US,US,reprt,DD-30196"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2811,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 820400382,
+          "FIDS": 1906,
+          "LNAM": "022630E650FE0772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2811,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 820400382,
+        "FIDS": 1906,
+        "LNAM": "022630E650FE0772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2812,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 31875138,
+          "FIDS": 1906,
+          "LNAM": "022601E660420772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2812,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 31875138,
+        "FIDS": 1906,
+        "LNAM": "022601E660420772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2813,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 225620178,
+          "FIDS": 1906,
+          "LNAM": "02260D72B0D20772",
+          "CATZOC": 3,
+          "SUREND": "19960903",
+          "SURSTA": "19960806",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2813,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 225620178,
+        "FIDS": 1906,
+        "LNAM": "02260D72B0D20772",
+        "CATZOC": 3,
+        "SUREND": "19960903",
+        "SURSTA": "19960806",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2814,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 645466480,
+          "FIDS": 1906,
+          "LNAM": "0226267909700772",
+          "CATZOC": 1,
+          "SUREND": "20010330",
+          "SURSTA": "20010329",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2814,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 645466480,
+        "FIDS": 1906,
+        "LNAM": "0226267909700772",
+        "CATZOC": 1,
+        "SUREND": "20010330",
+        "SURSTA": "20010329",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2815,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 941980599,
+          "FIDS": 7299,
+          "LNAM": "022638257BB71C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2815,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 941980599,
+        "FIDS": 7299,
+        "LNAM": "022638257BB71C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2816,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 443044964,
+          "FIDS": 1906,
+          "LNAM": "02261A6854640772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2816,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 443044964,
+        "FIDS": 1906,
+        "LNAM": "02261A6854640772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2817,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 947297363,
+          "FIDS": 1906,
+          "LNAM": "022638769C530772",
+          "CATZOC": 3,
+          "SUREND": "19960903",
+          "SURSTA": "19960806",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2817,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 947297363,
+        "FIDS": 1906,
+        "LNAM": "022638769C530772",
+        "CATZOC": 3,
+        "SUREND": "19960903",
+        "SURSTA": "19960806",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2818,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 629129757,
+          "FIDS": 1906,
+          "LNAM": "0226257FC21D0772",
+          "CATZOC": 1,
+          "SUREND": "20100719",
+          "SURSTA": "20100719",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2818,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 629129757,
+        "FIDS": 1906,
+        "LNAM": "0226257FC21D0772",
+        "CATZOC": 1,
+        "SUREND": "20100719",
+        "SURSTA": "20100719",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2819,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 120945479,
+          "FIDS": 1906,
+          "LNAM": "022607357B470772",
+          "CATZOC": 3,
+          "SUREND": "19960903",
+          "SURSTA": "19960806",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2819,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 120945479,
+        "FIDS": 1906,
+        "LNAM": "022607357B470772",
+        "CATZOC": 3,
+        "SUREND": "19960903",
+        "SURSTA": "19960806",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2820,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 391378796,
+          "FIDS": 7299,
+          "LNAM": "02261753F76C1C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2820,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 391378796,
+        "FIDS": 7299,
+        "LNAM": "02261753F76C1C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2821,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 270358145,
+          "FIDS": 7299,
+          "LNAM": "0226101D56811C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2821,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 270358145,
+        "FIDS": 7299,
+        "LNAM": "0226101D56811C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2822,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 523401252,
+          "FIDS": 8527,
+          "LNAM": "02261F327824214F",
+          "CATZOC": 4,
+          "SUREND": "1939",
+          "SURSTA": "1930",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2822,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 523401252,
+        "FIDS": 8527,
+        "LNAM": "02261F327824214F",
+        "CATZOC": 4,
+        "SUREND": "1939",
+        "SURSTA": "1930",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2823,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 169794346,
+          "FIDS": 1906,
+          "LNAM": "02260A1EDB2A0772",
+          "CATZOC": 5,
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2823,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 169794346,
+        "FIDS": 1906,
+        "LNAM": "02260A1EDB2A0772",
+        "CATZOC": 5,
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2824,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 3,
+          "AGEN": 550,
+          "FIDN": 487176790,
+          "FIDS": 1906,
+          "LNAM": "02261D09BA560772",
+          "CATZOC": 5,
+          "SUREND": "1919",
+          "SURSTA": "1910",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2824,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 3,
+        "AGEN": 550,
+        "FIDN": 487176790,
+        "FIDS": 1906,
+        "LNAM": "02261D09BA560772",
+        "CATZOC": 5,
+        "SUREND": "1919",
+        "SURSTA": "1910",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2825,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 426531960,
+          "FIDS": 1906,
+          "LNAM": "0226196C5C780772",
+          "CATZOC": 3,
+          "SUREND": "1979",
+          "SURSTA": "1970",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2825,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 426531960,
+        "FIDS": 1906,
+        "LNAM": "0226196C5C780772",
+        "CATZOC": 3,
+        "SUREND": "1979",
+        "SURSTA": "1970",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2826,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 691147454,
+          "FIDS": 1906,
+          "LNAM": "0226293212BE0772",
+          "CATZOC": 4,
+          "SUREND": "1939",
+          "SURSTA": "1930",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2826,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 691147454,
+        "FIDS": 1906,
+        "LNAM": "0226293212BE0772",
+        "CATZOC": 4,
+        "SUREND": "1939",
+        "SURSTA": "1930",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2827,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 64410185,
+          "FIDS": 7299,
+          "LNAM": "022603D6D2491C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2827,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 64410185,
+        "FIDS": 7299,
+        "LNAM": "022603D6D2491C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2828,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 308,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 981748141,
+          "FIDS": 7299,
+          "LNAM": "02263A8449AD1C83",
+          "CATZOC": 1,
+          "SUREND": "20090403",
+          "SURSTA": "20070619",
+          "TXTDSC": "US5WA22D.TXT",
+          "SORDAT": "20170104",
+          "SORIND": "US,US,reprt,L-14/17"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2828,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 308,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 981748141,
+        "FIDS": 7299,
+        "LNAM": "02263A8449AD1C83",
+        "CATZOC": 1,
+        "SUREND": "20090403",
+        "SURSTA": "20070619",
+        "TXTDSC": "US5WA22D.TXT",
+        "SORDAT": "20170104",
+        "SORIND": "US,US,reprt,L-14/17"
+      }
+    }
+  ]
+}

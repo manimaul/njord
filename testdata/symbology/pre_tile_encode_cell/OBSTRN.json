@@ -1,0 +1,5471 @@
+{
+  "pins": "preTileEncode over every OBSTRN feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1832,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308035829,
+          "FIDS": 1,
+          "LNAM": "02264DF70AF50001",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683, DD-10885(CEF)"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1832,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1308035829,
+        "FIDS": 1,
+        "LNAM": "02264DF70AF50001",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683, DD-10885(CEF)",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1833,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19509131,
+          "FIDS": 50,
+          "LNAM": "02260129AF8B0032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1833,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19509131,
+        "FIDS": 50,
+        "LNAM": "02260129AF8B0032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1834,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440299,
+          "FIDS": 50,
+          "LNAM": "02260128A2AB0032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "INFORM": "Net",
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1834,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440299,
+        "FIDS": 50,
+        "LNAM": "02260128A2AB0032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "INFORM": "Net",
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1835,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024570,
+          "FIDS": 50,
+          "LNAM": "022600D5FF7A0032",
+          "CATOBS": 6,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1835,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024570,
+        "FIDS": 50,
+        "LNAM": "022600D5FF7A0032",
+        "CATOBS": 6,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "AP": "FOULAR01P",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1836,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 278473950,
+          "FIDS": 1,
+          "LNAM": "022610992CDE0001",
+          "CATOBS": 5,
+          "EXPSOU": 1,
+          "QUASOU": [
+            "7"
+          ],
+          "VALSOU": 6.4,
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1836,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 278473950,
+        "FIDS": 1,
+        "LNAM": "022610992CDE0001",
+        "CATOBS": 5,
+        "EXPSOU": 1,
+        "QUASOU": [
+          "7"
+        ],
+        "VALSOU": 6.4,
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FSHHAV01",
+        "AC": "DEPMD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1837,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440296,
+          "FIDS": 50,
+          "LNAM": "02260128A2A80032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "INFORM": "Net",
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1837,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440296,
+        "FIDS": 50,
+        "LNAM": "02260128A2A80032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "INFORM": "Net",
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1838,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 98295,
+          "FIDS": 1,
+          "LNAM": "022600017FF70001",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1838,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 98295,
+        "FIDS": 1,
+        "LNAM": "022600017FF70001",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1839,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 195837879,
+          "FIDS": 1,
+          "LNAM": "02260BAC3FB70001",
+          "CATOBS": 4,
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 5.4,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1839,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 195837879,
+        "FIDS": 1,
+        "LNAM": "02260BAC3FB70001",
+        "CATOBS": 4,
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 5.4,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 5.400000095367432,
+        "METERS_W": 5,
+        "METERS_T": 4,
+        "FEET": 17,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1840,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024377,
+          "FIDS": 50,
+          "LNAM": "022600D5FEB90032",
+          "CATOBS": 5,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1840,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024377,
+        "FIDS": 50,
+        "LNAM": "022600D5FEB90032",
+        "CATOBS": 5,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FSHHAV01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1841,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 3,
+          "AGEN": 550,
+          "FIDN": 14024607,
+          "FIDS": 50,
+          "LNAM": "022600D5FF9F0032",
+          "CATOBS": 6,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1841,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 3,
+        "AGEN": 550,
+        "FIDN": 14024607,
+        "FIDS": 50,
+        "LNAM": "022600D5FF9F0032",
+        "CATOBS": 6,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "AP": "FOULAR01P",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1842,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1828146052,
+          "FIDS": 12345,
+          "LNAM": "02269308B47C3039",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1842,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1828146052,
+        "FIDS": 12345,
+        "LNAM": "02269308B47C3039",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1843,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 941400088,
+          "FIDS": 8527,
+          "LNAM": "0226381CA018214F",
+          "WATLEV": 2,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1843,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 941400088,
+        "FIDS": 8527,
+        "LNAM": "0226381CA018214F",
+        "WATLEV": 2,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1844,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 131711497,
+          "FIDS": 7299,
+          "LNAM": "022607D9C2091C83",
+          "CONDTN": 2,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1844,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 131711497,
+        "FIDS": 7299,
+        "LNAM": "022607D9C2091C83",
+        "CONDTN": 2,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1845,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 15493621,
+          "FIDS": 50,
+          "LNAM": "022600EC69F50032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20170622",
+          "SORIND": "US,US,graph,W-00429"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1845,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 15493621,
+        "FIDS": 50,
+        "LNAM": "022600EC69F50032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20170622",
+        "SORIND": "US,US,graph,W-00429",
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1846,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 327852644,
+          "FIDS": 8527,
+          "LNAM": "0226138AA264214F",
+          "CONDTN": 2,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1846,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 327852644,
+        "FIDS": 8527,
+        "LNAM": "0226138AA264214F",
+        "CONDTN": 2,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1847,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 573783118,
+          "FIDS": 7299,
+          "LNAM": "022622333C4E1C83",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20170622",
+          "SORIND": "US,US,graph,W-00429"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1847,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 573783118,
+        "FIDS": 7299,
+        "LNAM": "022622333C4E1C83",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20170622",
+        "SORIND": "US,US,graph,W-00429",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1848,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1298303519,
+          "FIDS": 12345,
+          "LNAM": "02264D628A1F3039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1848,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1298303519,
+        "FIDS": 12345,
+        "LNAM": "02264D628A1F3039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1849,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1357439662,
+          "FIDS": 12345,
+          "LNAM": "022650E8E2AE3039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1849,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1357439662,
+        "FIDS": 12345,
+        "LNAM": "022650E8E2AE3039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1850,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1402015403,
+          "FIDS": 12345,
+          "LNAM": "022653910EAB3039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1850,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1402015403,
+        "FIDS": 12345,
+        "LNAM": "022653910EAB3039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1851,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19448398,
+          "FIDS": 50,
+          "LNAM": "02260128C24E0032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1851,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19448398,
+        "FIDS": 50,
+        "LNAM": "02260128C24E0032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1852,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19448401,
+          "FIDS": 50,
+          "LNAM": "02260128C2510032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1852,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19448401,
+        "FIDS": 50,
+        "LNAM": "02260128C2510032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1853,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1005432343,
+          "FIDS": 12345,
+          "LNAM": "02263BEDAE173039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1853,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1005432343,
+        "FIDS": 12345,
+        "LNAM": "02263BEDAE173039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1854,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440333,
+          "FIDS": 50,
+          "LNAM": "02260128A2CD0032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1854,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440333,
+        "FIDS": 50,
+        "LNAM": "02260128A2CD0032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1855,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440332,
+          "FIDS": 50,
+          "LNAM": "02260128A2CC0032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1855,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440332,
+        "FIDS": 50,
+        "LNAM": "02260128A2CC0032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1856,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1401378412,
+          "FIDS": 12345,
+          "LNAM": "02265387566C3039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1856,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1401378412,
+        "FIDS": 12345,
+        "LNAM": "02265387566C3039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1857,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 105483,
+          "FIDS": 1,
+          "LNAM": "022600019C0B0001",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1857,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 105483,
+        "FIDS": 1,
+        "LNAM": "022600019C0B0001",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1858,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106158578,
+          "FIDS": 12345,
+          "LNAM": "02260653D9F23039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1858,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106158578,
+        "FIDS": 12345,
+        "LNAM": "02260653D9F23039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1859,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19448400,
+          "FIDS": 50,
+          "LNAM": "02260128C2500032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1859,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19448400,
+        "FIDS": 50,
+        "LNAM": "02260128C2500032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1860,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 66473253,
+          "FIDS": 12345,
+          "LNAM": "022603F64D253039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1860,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 66473253,
+        "FIDS": 12345,
+        "LNAM": "022603F64D253039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1863,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 745834897,
+          "FIDS": 1,
+          "LNAM": "02262C7489910001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1863,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 745834897,
+        "FIDS": 1,
+        "LNAM": "02262C7489910001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1864,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 14024523,
+          "FIDS": 50,
+          "LNAM": "022600D5FF4B0032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 14.6,
+          "WATLEV": 3,
+          "SORDAT": "20100824",
+          "SORIND": "US,US,reprt,DD-20340"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1864,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 14024523,
+        "FIDS": 50,
+        "LNAM": "022600D5FF4B0032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 14.6,
+        "WATLEV": 3,
+        "SORDAT": "20100824",
+        "SORIND": "US,US,reprt,DD-20340",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 14.600000381469727,
+        "METERS_W": 14,
+        "METERS_T": 6,
+        "FEET": 48,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1865,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024783,
+          "FIDS": 50,
+          "LNAM": "022600D6004F0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1865,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024783,
+        "FIDS": 50,
+        "LNAM": "022600D6004F0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1866,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 688631332,
+          "FIDS": 1,
+          "LNAM": "0226290BAE240001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1866,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 688631332,
+        "FIDS": 1,
+        "LNAM": "0226290BAE240001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1867,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025102,
+          "FIDS": 50,
+          "LNAM": "022600D6018E0032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 7.3,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1867,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025102,
+        "FIDS": 50,
+        "LNAM": "022600D6018E0032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 7.3,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 7.300000190734863,
+        "METERS_W": 7,
+        "METERS_T": 3,
+        "FEET": 24,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1868,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 526449659,
+          "FIDS": 1,
+          "LNAM": "02261F60FBFB0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1868,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 526449659,
+        "FIDS": 1,
+        "LNAM": "02261F60FBFB0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1869,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024985,
+          "FIDS": 50,
+          "LNAM": "022600D601190032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 3.3,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1869,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024985,
+        "FIDS": 50,
+        "LNAM": "022600D601190032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 3.3,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 3.299999952316284,
+        "METERS_W": 3,
+        "METERS_T": 3,
+        "FEET": 10,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1870,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 620399174,
+          "FIDS": 1,
+          "LNAM": "022624FA8A460001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1870,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 620399174,
+        "FIDS": 1,
+        "LNAM": "022624FA8A460001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1871,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025051,
+          "FIDS": 50,
+          "LNAM": "022600D6015B0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1871,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025051,
+        "FIDS": 50,
+        "LNAM": "022600D6015B0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1872,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024485,
+          "FIDS": 50,
+          "LNAM": "022600D5FF250032",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1872,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024485,
+        "FIDS": 50,
+        "LNAM": "022600D5FF250032",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1873,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19472670,
+          "FIDS": 50,
+          "LNAM": "02260129211E0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1873,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19472670,
+        "FIDS": 50,
+        "LNAM": "02260129211E0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1874,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024462,
+          "FIDS": 50,
+          "LNAM": "022600D5FF0E0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "INFORM": "Log",
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1874,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024462,
+        "FIDS": 50,
+        "LNAM": "022600D5FF0E0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "INFORM": "Log",
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1875,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025095,
+          "FIDS": 50,
+          "LNAM": "022600D601870032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 3.6,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1875,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025095,
+        "FIDS": 50,
+        "LNAM": "022600D601870032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 3.6,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 3.5999999046325684,
+        "METERS_W": 3,
+        "METERS_T": 6,
+        "FEET": 11,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1876,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 932952702,
+          "FIDS": 1,
+          "LNAM": "0226379BBA7E0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1876,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 932952702,
+        "FIDS": 1,
+        "LNAM": "0226379BBA7E0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1877,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024490,
+          "FIDS": 50,
+          "LNAM": "022600D5FF2A0032",
+          "CATOBS": 4,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1877,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024490,
+        "FIDS": 50,
+        "LNAM": "022600D5FF2A0032",
+        "CATOBS": 4,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1878,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 861417402,
+          "FIDS": 1,
+          "LNAM": "022633582FBA0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1878,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 861417402,
+        "FIDS": 1,
+        "LNAM": "022633582FBA0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1879,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106285,
+          "FIDS": 1,
+          "LNAM": "022600019F2D0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1879,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106285,
+        "FIDS": 1,
+        "LNAM": "022600019F2D0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1880,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -10468286,
+          "FIDS": 12345,
+          "LNAM": "0226FF6044423039",
+          "CATOBS": 10,
+          "WATLEV": 7,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1880,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -10468286,
+        "FIDS": 12345,
+        "LNAM": "0226FF6044423039",
+        "CATOBS": 10,
+        "WATLEV": 7,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1881,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024649,
+          "FIDS": 50,
+          "LNAM": "022600D5FFC90032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1881,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024649,
+        "FIDS": 50,
+        "LNAM": "022600D5FFC90032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1882,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025120,
+          "FIDS": 50,
+          "LNAM": "022600D601A00032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 12.8,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1882,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025120,
+        "FIDS": 50,
+        "LNAM": "022600D601A00032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 12.8,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 12.800000190734863,
+        "METERS_W": 12,
+        "METERS_T": 8,
+        "FEET": 42,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1883,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024631,
+          "FIDS": 50,
+          "LNAM": "022600D5FFB70032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1883,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024631,
+        "FIDS": 50,
+        "LNAM": "022600D5FFB70032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1884,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 503774917,
+          "FIDS": 1,
+          "LNAM": "02261E06FEC50001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1884,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 503774917,
+        "FIDS": 1,
+        "LNAM": "02261E06FEC50001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1885,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 758585341,
+          "FIDS": 1,
+          "LNAM": "02262D3717FD0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1885,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 758585341,
+        "FIDS": 1,
+        "LNAM": "02262D3717FD0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1886,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024647,
+          "FIDS": 50,
+          "LNAM": "022600D5FFC70032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 6.0,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1886,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024647,
+        "FIDS": 50,
+        "LNAM": "022600D5FFC70032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 6.0,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1887,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025086,
+          "FIDS": 50,
+          "LNAM": "022600D6017E0032",
+          "CATOBS": 6,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1887,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025086,
+        "FIDS": 50,
+        "LNAM": "022600D6017E0032",
+        "CATOBS": 6,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "AP": "FOULAR01P",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1888,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024472,
+          "FIDS": 50,
+          "LNAM": "022600D5FF180032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1888,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024472,
+        "FIDS": 50,
+        "LNAM": "022600D5FF180032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1889,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308213046,
+          "FIDS": 1,
+          "LNAM": "02264DF9BF360001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1889,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1308213046,
+        "FIDS": 1,
+        "LNAM": "02264DF9BF360001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1890,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025089,
+          "FIDS": 50,
+          "LNAM": "022600D601810032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 10.3,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1890,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025089,
+        "FIDS": 50,
+        "LNAM": "022600D601810032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 10.3,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 10.300000190734863,
+        "METERS_W": 10,
+        "METERS_T": 3,
+        "FEET": 33,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1891,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 848646182,
+          "FIDS": 7297,
+          "LNAM": "0226329550261C81",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20140430",
+          "SORIND": "US,US,graph,GC-11140"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1891,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 848646182,
+        "FIDS": 7297,
+        "LNAM": "0226329550261C81",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20140430",
+        "SORIND": "US,US,graph,GC-11140",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1892,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024625,
+          "FIDS": 50,
+          "LNAM": "022600D5FFB10032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1892,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024625,
+        "FIDS": 50,
+        "LNAM": "022600D5FFB10032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1893,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024551,
+          "FIDS": 50,
+          "LNAM": "022600D5FF670032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1893,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024551,
+        "FIDS": 50,
+        "LNAM": "022600D5FF670032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1894,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106286,
+          "FIDS": 1,
+          "LNAM": "022600019F2E0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1894,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106286,
+        "FIDS": 1,
+        "LNAM": "022600019F2E0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1895,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19388862,
+          "FIDS": 50,
+          "LNAM": "02260127D9BE0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1895,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19388862,
+        "FIDS": 50,
+        "LNAM": "02260127D9BE0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1896,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024556,
+          "FIDS": 50,
+          "LNAM": "022600D5FF6C0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1896,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024556,
+        "FIDS": 50,
+        "LNAM": "022600D5FF6C0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1897,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19388860,
+          "FIDS": 50,
+          "LNAM": "02260127D9BC0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1897,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19388860,
+        "FIDS": 50,
+        "LNAM": "02260127D9BC0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1898,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19383044,
+          "FIDS": 50,
+          "LNAM": "02260127C3040032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 7.0,
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1898,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19383044,
+        "FIDS": 50,
+        "LNAM": "02260127C3040032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 7.0,
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 7.0,
+        "METERS_W": 7,
+        "METERS_T": 0,
+        "FEET": 23,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1899,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 76222883,
+          "FIDS": 7297,
+          "LNAM": "0226048B11A31C81",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20140430",
+          "SORIND": "US,US,graph, GC-11140"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1899,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 76222883,
+        "FIDS": 7297,
+        "LNAM": "0226048B11A31C81",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20140430",
+        "SORIND": "US,US,graph, GC-11140",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1900,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 670408233,
+          "FIDS": 1,
+          "LNAM": "022627F59E290001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1900,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 670408233,
+        "FIDS": 1,
+        "LNAM": "022627F59E290001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1901,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19472173,
+          "FIDS": 50,
+          "LNAM": "022601291F2D0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1901,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19472173,
+        "FIDS": 50,
+        "LNAM": "022601291F2D0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1902,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024550,
+          "FIDS": 50,
+          "LNAM": "022600D5FF660032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1902,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024550,
+        "FIDS": 50,
+        "LNAM": "022600D5FF660032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1903,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 269465680,
+          "FIDS": 12345,
+          "LNAM": "0226100FB8503039",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1903,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 269465680,
+        "FIDS": 12345,
+        "LNAM": "0226100FB8503039",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1904,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024463,
+          "FIDS": 50,
+          "LNAM": "022600D5FF0F0032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 6.0,
+          "WATLEV": 3,
+          "SORDAT": "20070709",
+          "SORIND": "US,US,reprt,DD-13255"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1904,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024463,
+        "FIDS": 50,
+        "LNAM": "022600D5FF0F0032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 6.0,
+        "WATLEV": 3,
+        "SORDAT": "20070709",
+        "SORIND": "US,US,reprt,DD-13255",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1905,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024648,
+          "FIDS": 50,
+          "LNAM": "022600D5FFC80032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 6.0,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1905,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024648,
+        "FIDS": 50,
+        "LNAM": "022600D5FFC80032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 6.0,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1906,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024815,
+          "FIDS": 50,
+          "LNAM": "022600D6006F0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1906,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024815,
+        "FIDS": 50,
+        "LNAM": "022600D6006F0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1907,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024810,
+          "FIDS": 50,
+          "LNAM": "022600D6006A0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1907,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024810,
+        "FIDS": 50,
+        "LNAM": "022600D6006A0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1908,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024622,
+          "FIDS": 50,
+          "LNAM": "022600D5FFAE0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1908,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024622,
+        "FIDS": 50,
+        "LNAM": "022600D5FFAE0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1909,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024379,
+          "FIDS": 50,
+          "LNAM": "022600D5FEBB0032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 5.7,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1909,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024379,
+        "FIDS": 50,
+        "LNAM": "022600D5FEBB0032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 5.7,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 5.699999809265137,
+        "METERS_W": 5,
+        "METERS_T": 6,
+        "FEET": 18,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1910,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025103,
+          "FIDS": 50,
+          "LNAM": "022600D6018F0032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 11.2,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1910,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025103,
+        "FIDS": 50,
+        "LNAM": "022600D6018F0032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 11.2,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 11.199999809265137,
+        "METERS_W": 11,
+        "METERS_T": 1,
+        "FEET": 36,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1911,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106287,
+          "FIDS": 1,
+          "LNAM": "022600019F2F0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1911,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106287,
+        "FIDS": 1,
+        "LNAM": "022600019F2F0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1912,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025078,
+          "FIDS": 50,
+          "LNAM": "022600D601760032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1912,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025078,
+        "FIDS": 50,
+        "LNAM": "022600D601760032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1913,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024812,
+          "FIDS": 50,
+          "LNAM": "022600D6006C0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1913,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024812,
+        "FIDS": 50,
+        "LNAM": "022600D6006C0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1914,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024526,
+          "FIDS": 50,
+          "LNAM": "022600D5FF4E0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1914,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024526,
+        "FIDS": 50,
+        "LNAM": "022600D5FF4E0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1915,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024623,
+          "FIDS": 50,
+          "LNAM": "022600D5FFAF0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1915,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024623,
+        "FIDS": 50,
+        "LNAM": "022600D5FFAF0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1916,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024650,
+          "FIDS": 50,
+          "LNAM": "022600D5FFCA0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1916,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024650,
+        "FIDS": 50,
+        "LNAM": "022600D5FFCA0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1917,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024820,
+          "FIDS": 50,
+          "LNAM": "022600D600740032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1917,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024820,
+        "FIDS": 50,
+        "LNAM": "022600D600740032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1918,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025106,
+          "FIDS": 50,
+          "LNAM": "022600D601920032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 14.9,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1918,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025106,
+        "FIDS": 50,
+        "LNAM": "022600D601920032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 14.9,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 14.899999618530273,
+        "METERS_W": 14,
+        "METERS_T": 8,
+        "FEET": 48,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1919,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024473,
+          "FIDS": 50,
+          "LNAM": "022600D5FF190032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1919,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024473,
+        "FIDS": 50,
+        "LNAM": "022600D5FF190032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1920,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025072,
+          "FIDS": 50,
+          "LNAM": "022600D601700032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 9.7,
+          "WATLEV": 3,
+          "SORDAT": "20091010",
+          "SORIND": "US,US,graph,H-12052"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1920,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025072,
+        "FIDS": 50,
+        "LNAM": "022600D601700032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 9.7,
+        "WATLEV": 3,
+        "SORDAT": "20091010",
+        "SORIND": "US,US,graph,H-12052",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 9.699999809265137,
+        "METERS_W": 9,
+        "METERS_T": 6,
+        "FEET": 31,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1921,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024548,
+          "FIDS": 50,
+          "LNAM": "022600D5FF640032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1921,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024548,
+        "FIDS": 50,
+        "LNAM": "022600D5FF640032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1922,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1922598770,
+          "FIDS": 12345,
+          "LNAM": "02268D67788E3039",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1922,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1922598770,
+        "FIDS": 12345,
+        "LNAM": "02268D67788E3039",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1923,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024817,
+          "FIDS": 50,
+          "LNAM": "022600D600710032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1923,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024817,
+        "FIDS": 50,
+        "LNAM": "022600D600710032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1924,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024553,
+          "FIDS": 50,
+          "LNAM": "022600D5FF690032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1924,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024553,
+        "FIDS": 50,
+        "LNAM": "022600D5FF690032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1925,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106231,
+          "FIDS": 1,
+          "LNAM": "022600019EF70001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1925,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106231,
+        "FIDS": 1,
+        "LNAM": "022600019EF70001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1926,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 78536636,
+          "FIDS": 1,
+          "LNAM": "022604AE5FBC0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1926,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 78536636,
+        "FIDS": 1,
+        "LNAM": "022604AE5FBC0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1927,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024634,
+          "FIDS": 50,
+          "LNAM": "022600D5FFBA0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1927,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024634,
+        "FIDS": 50,
+        "LNAM": "022600D5FFBA0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1928,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024645,
+          "FIDS": 50,
+          "LNAM": "022600D5FFC50032",
+          "CATOBS": 4,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1928,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024645,
+        "FIDS": 50,
+        "LNAM": "022600D5FFC50032",
+        "CATOBS": 4,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1929,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025053,
+          "FIDS": 50,
+          "LNAM": "022600D6015D0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1929,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025053,
+        "FIDS": 50,
+        "LNAM": "022600D6015D0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1930,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025046,
+          "FIDS": 50,
+          "LNAM": "022600D601560032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1930,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025046,
+        "FIDS": 50,
+        "LNAM": "022600D601560032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1931,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -101172149,
+          "FIDS": 12345,
+          "LNAM": "0226F9F83C4B3039",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1931,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -101172149,
+        "FIDS": 12345,
+        "LNAM": "0226F9F83C4B3039",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1932,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024651,
+          "FIDS": 50,
+          "LNAM": "022600D5FFCB0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1932,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024651,
+        "FIDS": 50,
+        "LNAM": "022600D5FFCB0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1933,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 937026304,
+          "FIDS": 12345,
+          "LNAM": "022637D9E3003039",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1933,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 937026304,
+        "FIDS": 12345,
+        "LNAM": "022637D9E3003039",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1934,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 873466456,
+          "FIDS": 1,
+          "LNAM": "022634100A580001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201004",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1934,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 873466456,
+        "FIDS": 1,
+        "LNAM": "022634100A580001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201004",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1935,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024825,
+          "FIDS": 50,
+          "LNAM": "022600D600790032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1935,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024825,
+        "FIDS": 50,
+        "LNAM": "022600D600790032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1936,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 795310958,
+          "FIDS": 1,
+          "LNAM": "02262F677B6E0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1936,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 795310958,
+        "FIDS": 1,
+        "LNAM": "02262F677B6E0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1937,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 104343935,
+          "FIDS": 1,
+          "LNAM": "02260638297F0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1937,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 104343935,
+        "FIDS": 1,
+        "LNAM": "02260638297F0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1938,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024798,
+          "FIDS": 50,
+          "LNAM": "022600D6005E0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1938,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024798,
+        "FIDS": 50,
+        "LNAM": "022600D6005E0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1939,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 879106218,
+          "FIDS": 1,
+          "LNAM": "0226346618AA0001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1939,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 879106218,
+        "FIDS": 1,
+        "LNAM": "0226346618AA0001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1940,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024633,
+          "FIDS": 50,
+          "LNAM": "022600D5FFB90032",
+          "EXPSOU": 2,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 3.6,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1940,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024633,
+        "FIDS": 50,
+        "LNAM": "022600D5FFB90032",
+        "EXPSOU": 2,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 3.6,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 3.5999999046325684,
+        "METERS_W": 3,
+        "METERS_T": 6,
+        "FEET": 11,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1941,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025052,
+          "FIDS": 50,
+          "LNAM": "022600D6015C0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1941,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025052,
+        "FIDS": 50,
+        "LNAM": "022600D6015C0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1942,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024632,
+          "FIDS": 50,
+          "LNAM": "022600D5FFB80032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": 9.7,
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1942,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024632,
+        "FIDS": 50,
+        "LNAM": "022600D5FFB80032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": 9.7,
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 9.699999809265137,
+        "METERS_W": 9,
+        "METERS_T": 6,
+        "FEET": 31,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1943,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 138883,
+          "FIDS": 1,
+          "LNAM": "022600021E830001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201004",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1943,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 138883,
+        "FIDS": 1,
+        "LNAM": "022600021E830001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201004",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1944,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19388863,
+          "FIDS": 50,
+          "LNAM": "02260127D9BF0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1944,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19388863,
+        "FIDS": 50,
+        "LNAM": "02260127D9BF0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1945,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024816,
+          "FIDS": 50,
+          "LNAM": "022600D600700032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1945,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024816,
+        "FIDS": 50,
+        "LNAM": "022600D600700032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1946,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 147561305,
+          "FIDS": 1,
+          "LNAM": "022608CB9B590001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1946,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 147561305,
+        "FIDS": 1,
+        "LNAM": "022608CB9B590001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1947,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024471,
+          "FIDS": 50,
+          "LNAM": "022600D5FF170032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11642"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1947,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024471,
+        "FIDS": 50,
+        "LNAM": "022600D5FF170032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11642",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1948,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024546,
+          "FIDS": 50,
+          "LNAM": "022600D5FF620032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1948,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024546,
+        "FIDS": 50,
+        "LNAM": "022600D5FF620032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1949,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025080,
+          "FIDS": 50,
+          "LNAM": "022600D601780032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1949,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025080,
+        "FIDS": 50,
+        "LNAM": "022600D601780032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1950,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 15492620,
+          "FIDS": 50,
+          "LNAM": "022600EC660C0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1950,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 15492620,
+        "FIDS": 50,
+        "LNAM": "022600EC660C0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1951,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 786422034,
+          "FIDS": 1,
+          "LNAM": "02262EDFD9120001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1951,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 786422034,
+        "FIDS": 1,
+        "LNAM": "02262EDFD9120001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1952,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024479,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1F0032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1952,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024479,
+        "FIDS": 50,
+        "LNAM": "022600D5FF1F0032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1953,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024819,
+          "FIDS": 50,
+          "LNAM": "022600D600730032",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "20090403",
+          "SORIND": "US,US,graph,H-11458"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1953,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024819,
+        "FIDS": 50,
+        "LNAM": "022600D600730032",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "20090403",
+        "SORIND": "US,US,graph,H-11458",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1954,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 35709927,
+          "FIDS": 1,
+          "LNAM": "02260220E3E70001",
+          "CATOBS": 6,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1954,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 35709927,
+        "FIDS": 1,
+        "LNAM": "02260220E3E70001",
+        "CATOBS": 6,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "AP": "FOULAR01P",
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1955,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1151433937,
+          "FIDS": 12345,
+          "LNAM": "0226BB5E832F3039",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1955,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1151433937,
+        "FIDS": 12345,
+        "LNAM": "0226BB5E832F3039",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1956,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 86,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 154508384,
+          "FIDS": 1,
+          "LNAM": "022609359C600001",
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1956,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 86,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 154508384,
+        "FIDS": 1,
+        "LNAM": "022609359C600001",
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    }
+  ]
+}

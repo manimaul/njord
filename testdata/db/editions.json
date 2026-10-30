@@ -1,0 +1,80 @@
+{
+  "pins": "ChartDao.editionsAsync key per chart: \"<dsid_props.DSID_UPDN>:<updated>:<issued>\"; charts missing any part are omitted (null); DSID_EDTN is never part of the key; a numeric UPDN reads the same as a string",
+  "decisions": [
+    "API-1"
+  ],
+  "generator": "ChartDaoTest.P-DB-5",
+  "cases": [
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_UPDN": "6"
+        },
+        "updated": "20251209",
+        "issued": "20260520"
+      },
+      "expected": "6:20251209:20260520"
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_EDTN": "0",
+          "DSID_UPDN": "6"
+        },
+        "updated": "20251209",
+        "issued": "20260520"
+      },
+      "expected": "6:20251209:20260520"
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_UPDN": "0"
+        },
+        "updated": "20251209",
+        "issued": "20251209"
+      },
+      "expected": "0:20251209:20251209"
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_EDTN": "44"
+        },
+        "updated": "20251209",
+        "issued": "20260520"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_UPDN": "2"
+        },
+        "updated": "",
+        "issued": "20260520"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_UPDN": "2"
+        },
+        "updated": "20251209",
+        "issued": ""
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "dsidProps": {
+          "DSID_UPDN": 6
+        },
+        "updated": "20251209",
+        "issued": "20260520"
+      },
+      "expected": "6:20251209:20260520"
+    }
+  ]
+}

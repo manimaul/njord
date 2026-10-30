@@ -1,0 +1,5 @@
+# HTTP conformance suite (RUST_PORT_PLAN.md §5.5). Python >= 3.12.
+pytest==9.2.0
+requests==2.34.2
+websockets==17.4
+mapbox-vector-tile==2.2.0

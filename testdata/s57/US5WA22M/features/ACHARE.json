@@ -1,0 +1,37 @@
+{
+  "pins": "GDAL S57 driver output for ACHARE under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5051,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 4,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024358,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA60032",
+          "CATACH": [
+            "1"
+          ],
+          "OBJNAM": "Commencement Bay General Anchorage",
+          "INFORM": "33 CFR 110.230",
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "20130212",
+          "SORIND": "US,US,reprt,L-0345/13"
+        },
+        "wkt": "POLYGON ((-122.4329641 47.2933366,-122.4345694 47.2934333,-122.4345726 47.2929047,-122.4345694 47.2884333,-122.4272489 47.2884506,-122.4179028 47.2884333,-122.4179352 47.2890658,-122.4179028 47.2923222,-122.4205663 47.2925105,-122.4245008 47.2927727,-122.4329641 47.2933366))"
+      }
+    }
+  ]
+}

@@ -78,6 +78,7 @@ kotlin {
         }
         nativeTest.dependencies {
             implementation(kotlin("test"))
+            implementation(project(":test_fixtures"))
         }
     }
 }

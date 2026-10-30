@@ -36,7 +36,7 @@ class StyleHandler(
         } ?: call.respond(HttpStatusCode.NotFound, Any())
     }
 
-    private fun styleString(baseUrl: String, name: String, depth: Depth, theme: Theme): String {
+    internal fun styleString(baseUrl: String, name: String, depth: Depth, theme: Theme): String {
         return styleJson.encodeToString(
             Style.serializer(),
             Style(

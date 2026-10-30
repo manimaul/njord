@@ -1,7 +1,6 @@
 import io.ktor.http.*
 import io.madrona.njord.endpoints.contentType
 import io.madrona.njord.endpoints.resourceName
-import io.madrona.njord.resources
 import io.madrona.njord.util.resourceBytes
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -13,7 +12,7 @@ class StaticResourceContentTest {
 
     @BeforeTest
     fun before() {
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
+        TestEnv.init()
     }
 
     @Test

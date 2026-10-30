@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/13/1309/2872",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decoded": {}
+    }
+  }
+}

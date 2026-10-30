@@ -1,0 +1,70 @@
+{
+  "pins": "preTileEncode over every M_COVR feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5186,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 302,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -10468285,
+          "FIDS": 7299,
+          "LNAM": "0226FF6044431C83",
+          "CATCOV": 1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5186,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 302,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -10468285,
+        "FIDS": 7299,
+        "LNAM": "0226FF6044431C83",
+        "CATCOV": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5187,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 302,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -10468284,
+          "FIDS": 7299,
+          "LNAM": "0226FF6044441C83",
+          "CATCOV": 2
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5187,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 302,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -10468284,
+        "FIDS": 7299,
+        "LNAM": "0226FF6044441C83",
+        "CATCOV": 2
+      }
+    }
+  ]
+}

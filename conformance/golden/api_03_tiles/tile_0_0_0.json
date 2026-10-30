@@ -1,0 +1,119 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/0/0/0",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 80,
+      "sha256": "0b05f9e2290b431fc92a77efb26a6d323cd68def0695ea24557c3c439c474200",
+      "decoded": {
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  646,
+                  2654
+                ],
+                [
+                  651,
+                  2654
+                ],
+                [
+                  651,
+                  2657
+                ],
+                [
+                  646,
+                  2657
+                ],
+                [
+                  646,
+                  2654
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  648,
+                  2655
+                ],
+                [
+                  649,
+                  2655
+                ],
+                [
+                  649,
+                  2656
+                ],
+                [
+                  648,
+                  2656
+                ],
+                [
+                  648,
+                  2655
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  655,
+                  2661
+                ],
+                [
+                  656,
+                  2661
+                ],
+                [
+                  656,
+                  2659
+                ],
+                [
+                  654,
+                  2659
+                ],
+                [
+                  654,
+                  2661
+                ],
+                [
+                  655,
+                  2661
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

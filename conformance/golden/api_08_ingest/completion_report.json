@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "-",
+    "path": "<computed:api_08_ingest/completion_report>",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "CompletionReport of ingesting testdata/fixtures/US5WA22M through the API",
+  "masks": [
+    "/ms"
+  ],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": null,
+    "content_type": "",
+    "headers": {},
+    "body": {
+      "type": "io.madrona.njord.model.ws.WsMsg.CompletionReport",
+      "totalFeatureCount": 5163,
+      "totalChartCount": 1,
+      "items": [
+        {
+          "chartName": "US5WA22M.000",
+          "featureCount": 5158
+        }
+      ],
+      "failedCharts": [],
+      "ms": "<masked>"
+    }
+  }
+}

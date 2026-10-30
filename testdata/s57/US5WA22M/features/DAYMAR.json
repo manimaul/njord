@@ -1,0 +1,221 @@
+{
+  "pins": "GDAL S57 driver output for DAYMAR under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 44,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 964226730,
+          "FIDS": 12345,
+          "LNAM": "02263978EEAA3039",
+          "COLOUR": [
+            "6",
+            "6"
+          ],
+          "COLPAT": [
+            "6"
+          ],
+          "TOPSHP": 12,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110208",
+          "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+        },
+        "wkt": "POINT (-122.4032833 47.2815)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 45,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1575889579,
+          "FIDS": 12345,
+          "LNAM": "02265DEE2AAB3039",
+          "COLOUR": [
+            "3",
+            "2",
+            "3"
+          ],
+          "COLPAT": [
+            "2"
+          ],
+          "TOPSHP": 21,
+          "INFORM": "Green light tube",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "POINT (-122.3733047 47.2531872)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 46,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1606532587,
+          "FIDS": 12345,
+          "LNAM": "0226A03E42153039",
+          "COLOUR": [
+            "11",
+            "1"
+          ],
+          "COLPAT": [
+            "6"
+          ],
+          "TOPSHP": 12,
+          "INFORM": "Supports floating barrier",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3886189 47.2768919)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 47,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106519,
+          "FIDS": 1,
+          "LNAM": "02260001A0170001",
+          "COLOUR": [
+            "6",
+            "6"
+          ],
+          "COLPAT": [
+            "6"
+          ],
+          "TOPSHP": 12,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110208",
+          "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+        },
+        "wkt": "POINT (-122.4004667 47.2797333)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 48,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106500,
+          "FIDS": 1,
+          "LNAM": "02260001A0040001",
+          "COLOUR": [
+            "11",
+            "1"
+          ],
+          "COLPAT": [
+            "6"
+          ],
+          "TOPSHP": 12,
+          "INFORM": "Supports floating barrier",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3929222 47.2779194)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 49,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 676620941,
+          "FIDS": 12345,
+          "LNAM": "022628546A8D3039",
+          "COLOUR": [
+            "11",
+            "1"
+          ],
+          "COLPAT": [
+            "6"
+          ],
+          "TOPSHP": 12,
+          "INFORM": "Supports floating barrier",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3901194 47.2771389)"
+      }
+    },
+    {
+      "input": 6,
+      "expected": {
+        "props": {
+          "RCID": 50,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 39,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106517,
+          "FIDS": 1,
+          "LNAM": "02260001A0150001",
+          "COLOUR": [
+            "3",
+            "2",
+            "3"
+          ],
+          "COLPAT": [
+            "2"
+          ],
+          "TOPSHP": 21,
+          "INFORM": "Green light tube",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "POINT (-122.3703372 47.2513194)"
+      }
+    }
+  ]
+}

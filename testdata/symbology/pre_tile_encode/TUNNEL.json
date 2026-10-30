@@ -1,0 +1,699 @@
+{
+  "pins": "preTileEncode of Tunnel (layer key TUNNEL): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "46 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": -1.5,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.5,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 2.9,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.1,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 5.9,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.1,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 8.9,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 9.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 9.1,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 15.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 100.0,
+        "AC": "DEPVS",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "",
+        "LC": "CHGRD",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "(1)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "(1)",
+        "LC": "CHGRD",
+        "_name": "(1)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "(2)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "(2)",
+        "LC": "CHGRD",
+        "_name": "(2)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "Test",
+        "LC": "CHGRD",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "LC": "CHGRD",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(1)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(1)",
+        "LC": "CHGRD",
+        "_name": "(1)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(2)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(2)",
+        "LC": "CHGRD",
+        "_name": "(2)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "LC": "CHGRD",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.0,
+          "NOBJNM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.0,
+        "NOBJNM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.0,
+          "NOBJNM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.0,
+        "NOBJNM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.0,
+          "NOBJNM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.0,
+        "NOBJNM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.0,
+          "NOBJNM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.0,
+        "NOBJNM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.0,
+          "NOBJNM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.0,
+        "NOBJNM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.0,
+          "NOBJNM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.0,
+        "NOBJNM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 10.0,
+          "NOBJNM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 10.0,
+        "NOBJNM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 10.0,
+          "NOBJNM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 10.0,
+        "NOBJNM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.0,
+        "OBJNAM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 0.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 0.0,
+        "OBJNAM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.0,
+        "OBJNAM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 3.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 3.0,
+        "OBJNAM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.0,
+        "OBJNAM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 6.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 6.0,
+        "OBJNAM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 10.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 10.0,
+        "OBJNAM": "",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BURDEP": 10.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BURDEP": 10.0,
+        "OBJNAM": "Test",
+        "AC": "DEPVS",
+        "LC": "CHBLK",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "",
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "",
+        "OBJNAM": "",
+        "LC": "CHGRD",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "",
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "",
+        "OBJNAM": "Test",
+        "LC": "CHGRD",
+        "_name": ""
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "Test",
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "Test",
+        "OBJNAM": "",
+        "LC": "CHGRD",
+        "_name": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NOBJNM": "Test",
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NOBJNM": "Test",
+        "OBJNAM": "Test",
+        "LC": "CHGRD",
+        "_name": "Test"
+      }
+    }
+  ]
+}

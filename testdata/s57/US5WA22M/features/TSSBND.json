@@ -1,0 +1,31 @@
+{
+  "pins": "GDAL S57 driver output for TSSBND under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5185,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 146,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026326,
+          "FIDS": 50,
+          "LNAM": "022600D606560032",
+          "CATTSS": 1,
+          "SORDAT": "20060807",
+          "SORIND": "US,US,reprt,L-865/06"
+        },
+        "wkt": "LINESTRING (-122.4401501 47.3211222,-122.4415184 47.3203302,-122.443352 47.319269)"
+      }
+    }
+  ]
+}

@@ -31,6 +31,7 @@ import libssl.HMAC_Update
 import kotlin.io.encoding.Base64
 import kotlin.time.Clock
 import kotlin.time.DurationUnit
+import kotlin.time.Instant
 import kotlin.time.toDuration
 
 fun ApplicationCall.isAdminAuthorized(): Boolean {
@@ -60,8 +61,12 @@ class AdminUtil(
 ) {
     val log = logger()
 
-    fun createSignatureResponse(baseUrl: String): AdminResponse {
-        val signature = createSignature(baseUrl)
+    fun createSignatureResponse(baseUrl: String): AdminResponse =
+        createSignatureResponse(baseUrl, Clock.System.now(), UUID.randomUUID().toString())
+
+    /** [createSignatureResponse] with the clock and nonce supplied, so the output is reproducible (P-SEC-1). */
+    internal fun createSignatureResponse(baseUrl: String, now: Instant, uuid: String): AdminResponse {
+        val signature = createSignature(baseUrl, now, uuid)
 
         return AdminResponse(
             signature = signature,
@@ -69,11 +74,9 @@ class AdminUtil(
         )
     }
 
-    private fun createSignature(baseUrl: String): AdminSignature {
-        val now = Clock.System.now()
+    internal fun createSignature(baseUrl: String, now: Instant, uuid: String): AdminSignature {
         val expiration = now.plus(config.adminExpirationSeconds.toDuration(DurationUnit.SECONDS))
         val dateString = now.toString()
-        val uuid = UUID.randomUUID().toString()
         val hmac = HmacSHA256(config.adminKey)
         hmac.update(baseUrl.toByteArray())
         hmac.update(dateString.toByteArray())
@@ -87,14 +90,13 @@ class AdminUtil(
         )
     }
 
-    fun verifySignature(query: String, baseUrl: String): Boolean {
+    fun verifySignature(query: String, baseUrl: String, now: Instant = Clock.System.now()): Boolean {
         val data = Base64.decode(query.decodeURLPart()).decodeToString()
         val sig = decodeFromString<AdminSignature>(data)
-        return verifySignature(sig, baseUrl)
+        return verifySignature(sig, baseUrl, now)
     }
 
-    fun verifySignature(signature: AdminSignature, baseUrl: String): Boolean {
-        val now = Clock.System.now()
+    fun verifySignature(signature: AdminSignature, baseUrl: String, now: Instant = Clock.System.now()): Boolean {
         val then = signature.date
         val elapsed = then.until(now, DateTimeUnit.SECOND)
         log.info("then=$then now=$now elapsed=$elapsed max=${config.adminExpirationSeconds}")

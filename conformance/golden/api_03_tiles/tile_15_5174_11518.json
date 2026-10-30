@@ -1,0 +1,156 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/15/5174/11518",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 714,
+      "sha256": "222175a972c8c0e2545234360068539ed3bc65d5922f3e202e91c8595e90e0f6",
+      "decoded": {
+        "BOYLAT": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Point",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1004,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003EC0001",
+                "OBJL": 17,
+                "PRIM": 1,
+                "RCID": 5,
+                "RVER": 1,
+                "BOYSHP": 4,
+                "CATLAM": 2,
+                "COLOUR": "[\"3\"]",
+                "OBJNAM": "Outer Buoy West",
+                "SY": "BOYLAT14",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                2512,
+                1276
+              ]
+            }
+          ]
+        },
+        "DEPARE": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1001,
+                "FIDS": 1,
+                "GRUP": 1,
+                "LNAM": "0226000003E90001",
+                "OBJL": 42,
+                "PRIM": 3,
+                "RCID": 2,
+                "RVER": 1,
+                "DRVAL1": 10.0,
+                "DRVAL2": 20.0,
+                "AC": "DEPDW",
+                "LC": "CHGRD",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        "M_COVR": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1000,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003E80001",
+                "OBJL": 302,
+                "PRIM": 3,
+                "RCID": 1,
+                "RVER": 1,
+                "CATCOV": 1,
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

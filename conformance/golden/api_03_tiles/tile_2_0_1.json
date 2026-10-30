@@ -1,0 +1,127 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/2/0/1",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 84,
+      "sha256": "66f0e903c2d3d092e4ab506c7a072f09373aa4ac3f29a23d1f49a9e791ec855b",
+      "decoded": {
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2585,
+                  2423
+                ],
+                [
+                  2603,
+                  2423
+                ],
+                [
+                  2603,
+                  2436
+                ],
+                [
+                  2585,
+                  2436
+                ],
+                [
+                  2585,
+                  2423
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2592,
+                  2427
+                ],
+                [
+                  2596,
+                  2427
+                ],
+                [
+                  2596,
+                  2431
+                ],
+                [
+                  2592,
+                  2431
+                ],
+                [
+                  2592,
+                  2427
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2620,
+                  2451
+                ],
+                [
+                  2623,
+                  2451
+                ],
+                [
+                  2623,
+                  2445
+                ],
+                [
+                  2615,
+                  2445
+                ],
+                [
+                  2615,
+                  2447
+                ],
+                [
+                  2616,
+                  2447
+                ],
+                [
+                  2616,
+                  2451
+                ],
+                [
+                  2620,
+                  2451
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

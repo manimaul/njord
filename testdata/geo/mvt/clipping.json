@@ -1,0 +1,115 @@
+{
+  "pins": "geometries are clipped to the tile extent plus an 8px buffer: a point inside the buffer is kept and one outside dropped, a polygon/line crossing the edge is cut at the buffer, a geometry wholly outside is dropped",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "points at x=4100 (kept) and 4105 (dropped), a polygon reaching 5000, a line to 6000, a square beyond the tile; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "clipping.bin",
+  "bytes": 151,
+  "decoded": {
+    "layers": [
+      {
+        "name": "BOYLAT",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "POINT",
+            "props": {
+              "N": 1
+            },
+            "geometry": [
+              [
+                [
+                  4100,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 4,
+            "type": "POINT",
+            "props": {
+              "N": 3
+            },
+            "geometry": [
+              [
+                [
+                  -8,
+                  -8
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DEPARE",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 6,
+            "type": "POLYGON",
+            "props": {
+              "N": 5
+            },
+            "geometry": [
+              [
+                [
+                  4104,
+                  4104
+                ],
+                [
+                  3000,
+                  4104
+                ],
+                [
+                  3000,
+                  3000
+                ],
+                [
+                  4104,
+                  3000
+                ],
+                [
+                  4104,
+                  4104
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DEPCNT",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 7,
+            "type": "LINESTRING",
+            "props": {
+              "N": 6
+            },
+            "geometry": [
+              [
+                [
+                  2000,
+                  2000
+                ],
+                [
+                  4104,
+                  2000
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

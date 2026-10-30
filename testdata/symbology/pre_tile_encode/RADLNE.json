@@ -1,0 +1,251 @@
+{
+  "pins": "preTileEncode of Radlne (layer key RADLNE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "18 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "TRFCD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "TRFCD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "TRFCD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": -1.5,
+        "LC": "TRFCD",
+        "_BRG": "0-1 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "LC": "TRFCD",
+        "_BRG": "000 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.5,
+        "LC": "TRFCD",
+        "_BRG": "001 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 2.9,
+        "LC": "TRFCD",
+        "_BRG": "003 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "LC": "TRFCD",
+        "_BRG": "003 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.1,
+        "LC": "TRFCD",
+        "_BRG": "003 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 5.9,
+        "LC": "TRFCD",
+        "_BRG": "006 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "LC": "TRFCD",
+        "_BRG": "006 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.1,
+        "LC": "TRFCD",
+        "_BRG": "006 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 8.9,
+        "LC": "TRFCD",
+        "_BRG": "009 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.0,
+        "LC": "TRFCD",
+        "_BRG": "009 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.1,
+        "LC": "TRFCD",
+        "_BRG": "009 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "LC": "TRFCD",
+        "_BRG": "010 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 15.0,
+        "LC": "TRFCD",
+        "_BRG": "015 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 100.0,
+        "LC": "TRFCD",
+        "_BRG": "100 deg"
+      }
+    }
+  ]
+}

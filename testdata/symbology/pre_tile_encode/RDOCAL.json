@@ -1,0 +1,1242 @@
+{
+  "pins": "preTileEncode of Rdocal (layer key RDOCAL): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "84 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "(1)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "(1)",
+        "SY": "RCLDEF01",
+        "_L": "ch (1)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "(2)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "(2)",
+        "SY": "RCLDEF01",
+        "_L": "ch (2)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(1)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(1)",
+        "SY": "RCLDEF01",
+        "_L": "Nr (1)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(2)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(2)",
+        "SY": "RCLDEF01",
+        "_L": "Nr (2)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": -1.5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 2.9,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.1,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 5.9,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.1,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 8.9,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.1,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 15.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 100.0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 0,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 1,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 2,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 3,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 4,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TRAFIC": 5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "OBJNAM": "",
+        "SY": "RCLDEF01",
+        "_L": "Nr \nch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "OBJNAM": "Test",
+        "SY": "RCLDEF01",
+        "_L": "Nr Test\nch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "OBJNAM": "",
+        "SY": "RCLDEF01",
+        "_L": "Nr \nch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "OBJNAM": "Test",
+        "SY": "RCLDEF01",
+        "_L": "Nr Test\nch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "ORIENT": 0.0,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "ORIENT": 3.0,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "ORIENT": 6.0,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "ORIENT": 10.0,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "ORIENT": 0.0,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "ORIENT": 3.0,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "ORIENT": 6.0,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "ORIENT": 10.0,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "TRAFIC": 1,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "TRAFIC": 2,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "TRAFIC": 3,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "",
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "",
+        "TRAFIC": 5,
+        "SY": "RCLDEF01",
+        "_L": "ch "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "TRAFIC": 1,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "TRAFIC": 2,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "TRAFIC": 3,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "COMCHA": "Test",
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "COMCHA": "Test",
+        "TRAFIC": 5,
+        "SY": "RCLDEF01",
+        "_L": "ch Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 0.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 3.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 6.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 10.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 0.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 3.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 6.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 10.0,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "TRAFIC": 1,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "TRAFIC": 2,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "TRAFIC": 3,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "TRAFIC": 5,
+        "SY": "RCLDEF01",
+        "_L": "Nr "
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "TRAFIC": 1,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "TRAFIC": 2,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "TRAFIC": 3,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "TRAFIC": 5,
+        "SY": "RCLDEF01",
+        "_L": "Nr Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0,
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "TRAFIC": 1,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0,
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "TRAFIC": 2,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0,
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "TRAFIC": 3,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0,
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "TRAFIC": 5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0,
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "TRAFIC": 1,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0,
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "TRAFIC": 2,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0,
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "TRAFIC": 3,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0,
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "TRAFIC": 5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0,
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "TRAFIC": 1,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0,
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "TRAFIC": 2,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0,
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "TRAFIC": 3,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0,
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "TRAFIC": 5,
+        "SY": "RCLDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0,
+          "TRAFIC": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "TRAFIC": 1,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0,
+          "TRAFIC": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "TRAFIC": 2,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0,
+          "TRAFIC": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "TRAFIC": 3,
+        "SY": "RDOCAL02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0,
+          "TRAFIC": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "TRAFIC": 5,
+        "SY": "RCLDEF01"
+      }
+    }
+  ]
+}

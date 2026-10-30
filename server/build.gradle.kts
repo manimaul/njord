@@ -116,7 +116,9 @@ kotlin {
         }
         nativeTest.dependencies {
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.test)
             implementation(kotlin("test"))
+            implementation(project(":test_fixtures"))
         }
     }
 }

@@ -1,0 +1,218 @@
+{
+  "pins": "exterior rings are emitted clockwise on screen and interior rings counter-clockwise regardless of input winding; holes stay with their shell; a MultiPolygon is one feature with several ring groups",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "a CCW square, a CW square, a square with a hole given CW, a multipolygon of two parts one with a hole; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "polygons.bin",
+  "bytes": 258,
+  "decoded": {
+    "layers": [
+      {
+        "name": "DEPARE",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "POLYGON",
+            "props": {
+              "DRVAL1": 0.0,
+              "DRVAL2": 5.0
+            },
+            "geometry": [
+              [
+                [
+                  100,
+                  100
+                ],
+                [
+                  500,
+                  100
+                ],
+                [
+                  500,
+                  500
+                ],
+                [
+                  100,
+                  500
+                ],
+                [
+                  100,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 3,
+            "type": "POLYGON",
+            "props": {
+              "DRVAL1": 5.0,
+              "DRVAL2": 10.0
+            },
+            "geometry": [
+              [
+                [
+                  600,
+                  100
+                ],
+                [
+                  1000,
+                  100
+                ],
+                [
+                  1000,
+                  500
+                ],
+                [
+                  600,
+                  500
+                ],
+                [
+                  600,
+                  100
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "LNDARE",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 4,
+            "type": "POLYGON",
+            "props": {
+              "OBJNAM": "Island"
+            },
+            "geometry": [
+              [
+                [
+                  1200,
+                  1200
+                ],
+                [
+                  2000,
+                  1200
+                ],
+                [
+                  2000,
+                  2000
+                ],
+                [
+                  1200,
+                  2000
+                ],
+                [
+                  1200,
+                  1200
+                ]
+              ],
+              [
+                [
+                  1400,
+                  1400
+                ],
+                [
+                  1400,
+                  1800
+                ],
+                [
+                  1800,
+                  1800
+                ],
+                [
+                  1800,
+                  1400
+                ],
+                [
+                  1400,
+                  1400
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 5,
+            "type": "POLYGON",
+            "props": {},
+            "geometry": [
+              [
+                [
+                  2500,
+                  2500
+                ],
+                [
+                  2600,
+                  2500
+                ],
+                [
+                  2600,
+                  2600
+                ],
+                [
+                  2500,
+                  2600
+                ],
+                [
+                  2500,
+                  2500
+                ]
+              ],
+              [
+                [
+                  3000,
+                  3000
+                ],
+                [
+                  3500,
+                  3000
+                ],
+                [
+                  3500,
+                  3500
+                ],
+                [
+                  3000,
+                  3500
+                ],
+                [
+                  3000,
+                  3000
+                ]
+              ],
+              [
+                [
+                  3100,
+                  3100
+                ],
+                [
+                  3100,
+                  3200
+                ],
+                [
+                  3200,
+                  3200
+                ],
+                [
+                  3200,
+                  3100
+                ],
+                [
+                  3100,
+                  3100
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

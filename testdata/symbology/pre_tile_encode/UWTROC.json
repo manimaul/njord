@@ -1,0 +1,281 @@
+{
+  "pins": "preTileEncode of Uwtroc (layer key UWTROC): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "12 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 9 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 0,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "SY": "UWTROC04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 6,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 0,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "SY": "UWTROC04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 6,
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    }
+  ]
+}

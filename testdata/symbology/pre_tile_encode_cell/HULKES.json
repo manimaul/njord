@@ -1,0 +1,205 @@
+{
+  "pins": "preTileEncode over every HULKES feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 3982,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 65,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 772687286,
+          "FIDS": 1,
+          "LNAM": "02262E0E45B60001",
+          "CATHLK": [
+            "5"
+          ],
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3982,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 65,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 772687286,
+        "FIDS": 1,
+        "LNAM": "02262E0E45B60001",
+        "CATHLK": [
+          "5"
+        ],
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "HULKES01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 3983,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 65,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 450195703,
+          "FIDS": 1,
+          "LNAM": "02261AD570F70001",
+          "CATHLK": [
+            "5"
+          ],
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3983,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 65,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 450195703,
+        "FIDS": 1,
+        "LNAM": "02261AD570F70001",
+        "CATHLK": [
+          "5"
+        ],
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "HULKES01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 3984,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 65,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 149727902,
+          "FIDS": 1,
+          "LNAM": "022608ECAA9E0001",
+          "CATHLK": [
+            "5"
+          ],
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3984,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 65,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 149727902,
+        "FIDS": 1,
+        "LNAM": "022608ECAA9E0001",
+        "CATHLK": [
+          "5"
+        ],
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "HULKES01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 3985,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 65,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 368063756,
+          "FIDS": 1,
+          "LNAM": "022615F0350C0001",
+          "CATHLK": [
+            "5"
+          ],
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3985,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 65,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 368063756,
+        "FIDS": 1,
+        "LNAM": "022615F0350C0001",
+        "CATHLK": [
+          "5"
+        ],
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "HULKES01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 3986,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 65,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3055776,
+          "FIDS": 4173,
+          "LNAM": "0226002EA0A0104D",
+          "CATHLK": [
+            "5"
+          ],
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3986,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 65,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3055776,
+        "FIDS": 4173,
+        "LNAM": "0226002EA0A0104D",
+        "CATHLK": [
+          "5"
+        ],
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "HULKES01"
+      }
+    }
+  ]
+}

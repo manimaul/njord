@@ -1,0 +1,104 @@
+{
+  "pins": "GDAL S57 driver output for NAVLNE under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5180,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27766540,
+          "FIDS": 50,
+          "LNAM": "022601A7AF0C0032",
+          "CATNAV": 2,
+          "ORIENT": 223.5,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4790457 47.2806896,-122.4723081 47.285576)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 5181,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 138909,
+          "FIDS": 1,
+          "LNAM": "022600021E9D0001",
+          "CATNAV": 2,
+          "ORIENT": 132.05,
+          "INFORM": "Measured nautical mile course",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4905559 47.296715,-122.4723081 47.285576)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 5182,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106463,
+          "FIDS": 1,
+          "LNAM": "022600019FDF0001",
+          "CATNAV": 3,
+          "ORIENT": 132.8,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "LINESTRING (-122.415428 47.2797,-122.4149041 47.2793703,-122.4049828 47.2731257,-122.4041055 47.2725735,-122.4014851 47.2709242,-122.4012108 47.2707516,-122.3933046 47.2657753,-122.3813478 47.2582496,-122.3766625 47.2553006,-122.374742 47.2540918,-122.3703372 47.2513194)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 5183,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1427158147,
+          "FIDS": 12345,
+          "LNAM": "02265510B4833039",
+          "CATNAV": 2,
+          "ORIENT": 223.5,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4964071 47.2924641,-122.4955312 47.2931004,-122.4945588 47.2938069,-122.4905559 47.296715)"
+      }
+    }
+  ]
+}

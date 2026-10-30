@@ -1,0 +1,145 @@
+{
+  "pins": "preTileEncode over every FOGSIG feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 51,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 713351998,
+          "FIDS": 12345,
+          "LNAM": "02262A84E33E3039",
+          "CATFOG": 3,
+          "SIGGRP": "(1)",
+          "SIGPER": 25.0,
+          "SIGSEQ": "05.0+(20.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120403",
+          "SORIND": "US,US,reprt,13thCGD,LNM 14/12"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 51,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 58,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 713351998,
+        "FIDS": 12345,
+        "LNAM": "02262A84E33E3039",
+        "CATFOG": 3,
+        "SIGGRP": "(1)",
+        "SIGPER": 25.0,
+        "SIGSEQ": "05.0+(20.0)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20120403",
+        "SORIND": "US,US,reprt,13thCGD,LNM 14/12",
+        "SY": "FOGSIG01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 52,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -315880616,
+          "FIDS": 12345,
+          "LNAM": "0226ED2C0B583039",
+          "CATFOG": 7,
+          "SIGGRP": "(1)",
+          "SIGPER": 14.0,
+          "SIGSEQ": "01.0+(13.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 52,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 58,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -315880616,
+        "FIDS": 12345,
+        "LNAM": "0226ED2C0B583039",
+        "CATFOG": 7,
+        "SIGGRP": "(1)",
+        "SIGPER": 14.0,
+        "SIGSEQ": "01.0+(13.0)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FOGSIG01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 53,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106534,
+          "FIDS": 1,
+          "LNAM": "02260001A0260001",
+          "CATFOG": 10,
+          "SIGGRP": "(1)",
+          "SIGPER": 15.0,
+          "SIGSEQ": "02.0+(13.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030401",
+          "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 53,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 58,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106534,
+        "FIDS": 1,
+        "LNAM": "02260001A0260001",
+        "CATFOG": 10,
+        "SIGGRP": "(1)",
+        "SIGPER": 15.0,
+        "SIGSEQ": "02.0+(13.0)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030401",
+        "SORIND": "US,US,reprt,13thCGD,LNM 13/03",
+        "SY": "FOGSIG01"
+      }
+    }
+  ]
+}

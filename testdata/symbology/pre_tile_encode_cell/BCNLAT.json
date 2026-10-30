@@ -1,0 +1,347 @@
+{
+  "pins": "preTileEncode over every BCNLAT feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 7,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1293682620,
+          "FIDS": 12345,
+          "LNAM": "02264D1C07BC3039",
+          "LNAM_REFS": [
+            "022622AC04503039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BCNSHP": 4,
+          "CATLAM": 1,
+          "COLOUR": [
+            "4"
+          ],
+          "OBJNAM": "Blair Waterway Light 5",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20180130",
+          "SORIND": "US,US,reprt,13thCGD,LNM 05/18"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 7,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1293682620,
+        "FIDS": 12345,
+        "LNAM": "02264D1C07BC3039",
+        "LNAM_REFS": [
+          "022622AC04503039"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BCNSHP": 4,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Blair Waterway Light 5",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20180130",
+        "SORIND": "US,US,reprt,13thCGD,LNM 05/18",
+        "SY": "BCNLAT16"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 7,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106478,
+          "FIDS": 1,
+          "LNAM": "022600019FEE0001",
+          "LNAM_REFS": [
+            "022600019FEF0001"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BCNSHP": 4,
+          "CATLAM": 1,
+          "COLOUR": [
+            "4"
+          ],
+          "OBJNAM": "Blair Waterway Light 3",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20180130",
+          "SORIND": "US,US,reprt,13thCGD,LNM 05/18"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 7,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106478,
+        "FIDS": 1,
+        "LNAM": "022600019FEE0001",
+        "LNAM_REFS": [
+          "022600019FEF0001"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BCNSHP": 4,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Blair Waterway Light 3",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20180130",
+        "SORIND": "US,US,reprt,13thCGD,LNM 05/18",
+        "SY": "BCNLAT16"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 3,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 7,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -196062320,
+          "FIDS": 12345,
+          "LNAM": "0226F45053903039",
+          "LNAM_REFS": [
+            "022600019FF80001"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BCNSHP": 4,
+          "CATLAM": 2,
+          "COLOUR": [
+            "3"
+          ],
+          "OBJNAM": "Blair Waterway Light 6",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20180130",
+          "SORIND": "US,US,reprt,13thCGD,LNM 05/18"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 7,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -196062320,
+        "FIDS": 12345,
+        "LNAM": "0226F45053903039",
+        "LNAM_REFS": [
+          "022600019FF80001"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BCNSHP": 4,
+        "CATLAM": 2,
+        "COLOUR": [
+          "3"
+        ],
+        "OBJNAM": "Blair Waterway Light 6",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20180130",
+        "SORIND": "US,US,reprt,13thCGD,LNM 05/18",
+        "SY": "BCNLAT15"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 4,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 7,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106523,
+          "FIDS": 1,
+          "LNAM": "02260001A01B0001",
+          "LNAM_REFS": [
+            "022680570A933039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BCNSHP": 4,
+          "CATLAM": 2,
+          "COLOUR": [
+            "3"
+          ],
+          "OBJNAM": "Blair Waterway Light 4",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20180130",
+          "SORIND": "US,US,reprt,13thCGD,LNM 05/18"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 4,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 7,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106523,
+        "FIDS": 1,
+        "LNAM": "02260001A01B0001",
+        "LNAM_REFS": [
+          "022680570A933039"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BCNSHP": 4,
+        "CATLAM": 2,
+        "COLOUR": [
+          "3"
+        ],
+        "OBJNAM": "Blair Waterway Light 4",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20180130",
+        "SORIND": "US,US,reprt,13thCGD,LNM 05/18",
+        "SY": "BCNLAT15"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 7,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 106482,
+          "FIDS": 1,
+          "LNAM": "022600019FF20001",
+          "LNAM_REFS": [
+            "022664DC7D653039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BCNSHP": 1,
+          "CATLAM": 1,
+          "COLOUR": [
+            "4"
+          ],
+          "OBJNAM": "Tyee Marina Entrance Light",
+          "STATUS": [
+            "8"
+          ],
+          "INFORM": "On floating breakwater",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20191224",
+          "SORIND": "US,US,reprt,13thCGD,LNM 52/19"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 7,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 106482,
+        "FIDS": 1,
+        "LNAM": "022600019FF20001",
+        "LNAM_REFS": [
+          "022664DC7D653039"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BCNSHP": 1,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Tyee Marina Entrance Light",
+        "STATUS": [
+          "8"
+        ],
+        "INFORM": "On floating breakwater",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20191224",
+        "SORIND": "US,US,reprt,13thCGD,LNM 52/19",
+        "SY": "BCNLAT22"
+      }
+    }
+  ]
+}

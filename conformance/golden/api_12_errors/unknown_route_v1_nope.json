@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/nope",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "html"
+  },
+  "note": "SPA fallback: 200 text/html",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": true,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "headers": {},
+    "body": {
+      "size": 32
+    }
+  }
+}

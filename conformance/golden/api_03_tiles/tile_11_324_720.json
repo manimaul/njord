@@ -1,0 +1,220 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/11/324/720",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 952,
+      "sha256": "8eb555453856f94e613e2b139507ede9f4dce4e8b14c700d587f4d883049f6cc",
+      "decoded": {
+        "BOYLAT": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Point",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1003,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003EB0001",
+                "OBJL": 17,
+                "PRIM": 1,
+                "RCID": 4,
+                "RVER": 1,
+                "BOYSHP": 4,
+                "CATLAM": 1,
+                "COLOUR": "[\"4\"]",
+                "OBJNAM": "Outer Buoy In Overlap",
+                "SY": "BOYLAT23",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                1092,
+                2723
+              ]
+            }
+          ]
+        },
+        "DEPARE": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1001,
+                "FIDS": 1,
+                "GRUP": 1,
+                "LNAM": "0226000003E90001",
+                "OBJL": 42,
+                "PRIM": 3,
+                "RCID": 2,
+                "RVER": 1,
+                "DRVAL1": 10.0,
+                "DRVAL2": 20.0,
+                "AC": "DEPDW",
+                "LC": "CHGRD",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        "DEPCNT": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1002,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003EA0001",
+                "OBJL": 43,
+                "PRIM": 2,
+                "RCID": 3,
+                "RVER": 1,
+                "VALDCO": 10.0,
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  -8,
+                  2470
+                ],
+                [
+                  1092,
+                  2381
+                ],
+                [
+                  4104,
+                  2626
+                ]
+              ]
+            }
+          ]
+        },
+        "M_COVR": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1000,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003E80001",
+                "OBJL": 302,
+                "PRIM": 3,
+                "RCID": 1,
+                "RVER": 1,
+                "CATCOV": 1,
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  -8,
+                  1698
+                ],
+                [
+                  2257,
+                  1698
+                ],
+                [
+                  2257,
+                  3748
+                ],
+                [
+                  -8,
+                  3748
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

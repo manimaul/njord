@@ -20,7 +20,7 @@ class ChartIngestWorker(
         workDir.mkdirs()
         ingestStatus.initIfNeeded()
         while (true) {
-            delay(5_000)
+            delay(POLL_DELAY_MS)
             tryClaimAndIngest()
         }
     }
@@ -58,5 +58,10 @@ class ChartIngestWorker(
             }
         }
 
+    }
+
+    companion object {
+        /** How often `save/` is checked for a new zip (P-CC-3). */
+        internal const val POLL_DELAY_MS = 5_000L
     }
 }

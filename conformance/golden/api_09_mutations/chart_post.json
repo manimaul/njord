@@ -1,0 +1,129 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/v1/chart",
+    "headers": {},
+    "json": {
+      "name": "ZZ_CONFORMANCE.000",
+      "scale": 20000,
+      "file_name": "ZZ_CONFORMANCE.000",
+      "updated": "20260101",
+      "issued": "20260101",
+      "zoom": 13,
+      "covr": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                10.0,
+                10.0
+              ],
+              [
+                10.1,
+                10.0
+              ],
+              [
+                10.1,
+                10.1
+              ],
+              [
+                10.0,
+                10.1
+              ],
+              [
+                10.0,
+                10.0
+              ]
+            ]
+          ]
+        },
+        "properties": {}
+      },
+      "dsid_props": {
+        "DSID_DSNM": "ZZ_CONFORMANCE.000",
+        "DSID_UPDN": "0",
+        "DSID_EDTN": "1"
+      },
+      "chart_txt": {
+        "ZZ_CONFORMANCE.TXT": "conformance suite chart"
+      }
+    },
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "name": "ZZ_CONFORMANCE.000",
+      "scale": 20000,
+      "file_name": "ZZ_CONFORMANCE.000",
+      "updated": "20260101",
+      "issued": "20260101",
+      "zoom": 13,
+      "covr": {
+        "id": null,
+        "geometry": {
+          "coordinates": [
+            [
+              [
+                10.0,
+                10.0
+              ],
+              [
+                10.1,
+                10.0
+              ],
+              [
+                10.1,
+                10.1
+              ],
+              [
+                10.0,
+                10.1
+              ],
+              [
+                10.0,
+                10.0
+              ]
+            ]
+          ],
+          "bbox": null,
+          "crs": null,
+          "type": "Polygon"
+        },
+        "properties": {},
+        "type": "Feature"
+      },
+      "bounds": [
+        10.0,
+        10.0,
+        10.1,
+        10.1
+      ],
+      "layers": [],
+      "dsid_props": {
+        "DSID_DSNM": "ZZ_CONFORMANCE.000",
+        "DSID_EDTN": "1",
+        "DSID_UPDN": "0"
+      },
+      "chart_txt": {
+        "ZZ_CONFORMANCE.TXT": "conformance suite chart"
+      },
+      "featureCount": 0
+    }
+  }
+}

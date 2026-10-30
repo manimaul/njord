@@ -1,0 +1,26 @@
+{
+  "pins": "ChartDao.insertAsync(overwrite = true) when the insert itself fails: Kotlin deletes outside the insert's transaction (and retries), so the previous chart and features are lost; the port does delete + insert in one transaction and keeps them",
+  "decisions": [
+    "D5",
+    "DB-2"
+  ],
+  "generator": "ChartDaoTest.D5",
+  "cases": [
+    {
+      "input": "overwrite with a chart insert that violates covr NOT NULL",
+      "expected": {
+        "insertReturned": false,
+        "previousChartSurvives": false,
+        "previousFeaturesSurvive": false
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "insertReturned": false,
+          "previousChartSurvives": true,
+          "previousFeaturesSurvive": true
+        }
+      }
+    }
+  ]
+}

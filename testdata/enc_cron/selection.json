@@ -1,0 +1,930 @@
+{
+  "pins": "selectStale (opaque revision-key mismatch in either direction, null key always stale, scaleFilter, sorted by cell), selectOrphans (held but unlisted, sorted), deletableOrphans (producer prefix present in the catalog, case-insensitive), batches (cell count cap and 4x compressed-size byte cap, oversized cell alone)",
+  "decisions": [
+    "EC-2",
+    "EC-5"
+  ],
+  "generator": "SelectionFixtureTest",
+  "source": "cases of StaleSelectionTest, OrphanSelectionTest, DeletableOrphanTest and BatchingTest",
+  "cases": [
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "B",
+            "edition": "2.5",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C",
+            "edition": "3.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102",
+          "B.000": "4:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240909"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20250505",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.10",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "1:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.10",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "10:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "9:20990101:20990102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "B",
+            "edition": "1.0",
+            "scale": 3000000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [
+          15000
+        ],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "C",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "B",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectStale",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "44.2",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20241218",
+            "publication": "20260121"
+          }
+        ],
+        "have": {
+          "A.000": "2:20241218:20260121"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "selectOrphans",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "B",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102",
+          "B.000": "0:20240101:20240102",
+          "Z.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "Z.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectOrphans",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "9:20990101:20990102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "selectOrphans",
+        "catalog": [],
+        "have": {
+          "C.000": "0:20240101:20240102",
+          "A.000": "0:20240101:20240102",
+          "B.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "A.000",
+        "B.000",
+        "C.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "selectOrphans",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 3000000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {
+          "A.000": "0:20240101:20240102"
+        },
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "selectOrphans",
+        "catalog": [
+          {
+            "cell": "A",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "deletableOrphans",
+        "catalog": [
+          {
+            "cell": "US5WA22M",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "US3AK4CM",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "US5WA17M.000",
+        "US5CA93M.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "deletableOrphans",
+        "catalog": [
+          {
+            "cell": "US5WA22M",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "US3AK4CM",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [
+          "US5WA17M.000",
+          "CA179001.000",
+          "GB5X01SW.000"
+        ],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "US5WA17M.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "deletableOrphans",
+        "catalog": [
+          {
+            "cell": "CA379141",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [
+          "CA179001.000",
+          "US5WA17M.000"
+        ],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "CA179001.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "deletableOrphans",
+        "catalog": [
+          {
+            "cell": "US5WA22M",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [
+          "us5wa17m.000"
+        ],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        "us5wa17m.000"
+      ]
+    },
+    {
+      "input": {
+        "op": "deletableOrphans",
+        "catalog": [],
+        "have": {},
+        "orphans": [
+          "US5WA17M.000"
+        ],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [
+          {
+            "cell": "C1",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.01,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C2",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.01,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C3",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.01,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C4",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.01,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C5",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.01,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 2,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        [
+          "C1",
+          "C2"
+        ],
+        [
+          "C3",
+          "C4"
+        ],
+        [
+          "C5"
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [
+          {
+            "cell": "C1",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 1.0,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C2",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 1.0,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C3",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 1.0,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C4",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 1.0,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 100,
+        "maxBundleUncompressedBytes": 5242880
+      },
+      "expected": [
+        [
+          "C1"
+        ],
+        [
+          "C2"
+        ],
+        [
+          "C3"
+        ],
+        [
+          "C4"
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [
+          {
+            "cell": "HUGE",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 500.0,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 100,
+        "maxBundleUncompressedBytes": 1024
+      },
+      "expected": [
+        [
+          "HUGE"
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [
+          {
+            "cell": "C1",
+            "edition": "1.0",
+            "scale": 15000,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C2",
+            "edition": "1.0",
+            "scale": 15000,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C3",
+            "edition": "1.0",
+            "scale": 15000,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 2,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        [
+          "C1",
+          "C2"
+        ],
+        [
+          "C3"
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 50,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "batches",
+        "catalog": [
+          {
+            "cell": "C1",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C2",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C3",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C4",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C5",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C6",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C7",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C8",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C9",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C10",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C11",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C12",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C13",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C14",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C15",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C16",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          },
+          {
+            "cell": "C17",
+            "edition": "1.0",
+            "scale": 15000,
+            "sizeMb": 0.1,
+            "revision": "20240101",
+            "publication": "20240102"
+          }
+        ],
+        "have": {},
+        "orphans": [],
+        "scaleFilter": [],
+        "bundleSizeCells": 7,
+        "maxBundleUncompressedBytes": 268435456
+      },
+      "expected": [
+        [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5",
+          "C6",
+          "C7"
+        ],
+        [
+          "C8",
+          "C9",
+          "C10",
+          "C11",
+          "C12",
+          "C13",
+          "C14"
+        ],
+        [
+          "C15",
+          "C16",
+          "C17"
+        ]
+      ]
+    }
+  ]
+}

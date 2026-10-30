@@ -1,0 +1,222 @@
+{
+  "pins": "decoded /v1/tile/11/324/720: layers sorted by name, features sorted by LNAM, props, geometry; feature ids dropped",
+  "decisions": [
+    "TE-1",
+    "TE-2",
+    "TE-4",
+    "TE-5",
+    "TE-6"
+  ],
+  "generator": "GoldenTilesTest.golden tiles",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic/US4ZZ01M+US5ZZ02M, libgdal ne_110_extract coastline at 110m; GDAL 3.13.1; shallow/safety/deep = 3.0/6.0/9.0",
+  "cases": [
+    {
+      "input": {
+        "z": 11,
+        "x": 324,
+        "y": 720
+      },
+      "expected": {
+        "layers": [
+          {
+            "name": "BOYLAT",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POINT",
+                "props": {
+                  "AGEN": 550,
+                  "BOYSHP": 4,
+                  "CATLAM": 1,
+                  "COLOUR": "[\"4\"]",
+                  "FIDN": 1003,
+                  "FIDS": 1,
+                  "GRUP": 2,
+                  "LNAM": "0226000003EB0001",
+                  "NAME": "US4ZZ01M.000",
+                  "OBJL": 17,
+                  "OBJNAM": "Outer Buoy In Overlap",
+                  "PRIM": 1,
+                  "RCID": 4,
+                  "RVER": 1,
+                  "SY": "BOYLAT23"
+                },
+                "geometry": [
+                  [
+                    [
+                      1092,
+                      1373
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "DEPARE",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AC": "DEPDW",
+                  "AGEN": 550,
+                  "DRVAL1": 10.0,
+                  "DRVAL2": 20.0,
+                  "FIDN": 1001,
+                  "FIDS": 1,
+                  "GRUP": 1,
+                  "LC": "CHGRD",
+                  "LNAM": "0226000003E90001",
+                  "NAME": "US4ZZ01M.000",
+                  "OBJL": 42,
+                  "PRIM": 3,
+                  "RCID": 2,
+                  "RVER": 1
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "DEPCNT",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "LINESTRING",
+                "props": {
+                  "AGEN": 550,
+                  "FIDN": 1002,
+                  "FIDS": 1,
+                  "GRUP": 2,
+                  "LNAM": "0226000003EA0001",
+                  "NAME": "US4ZZ01M.000",
+                  "OBJL": 43,
+                  "PRIM": 2,
+                  "RCID": 3,
+                  "RVER": 1,
+                  "VALDCO": 10.0
+                },
+                "geometry": [
+                  [
+                    [
+                      -8,
+                      1626
+                    ],
+                    [
+                      1092,
+                      1715
+                    ],
+                    [
+                      4104,
+                      1470
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M_COVR",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "CATCOV": 1,
+                  "FIDN": 1000,
+                  "FIDS": 1,
+                  "GRUP": 2,
+                  "LNAM": "0226000003E80001",
+                  "NAME": "US4ZZ01M.000",
+                  "OBJL": 302,
+                  "PRIM": 3,
+                  "RCID": 1,
+                  "RVER": 1
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "PLY",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      -8,
+                      2398
+                    ],
+                    [
+                      2257,
+                      2398
+                    ],
+                    [
+                      2257,
+                      348
+                    ],
+                    [
+                      -8,
+                      348
+                    ]
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

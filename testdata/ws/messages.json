@@ -1,0 +1,95 @@
+{
+  "pins": "Json.encodeToString(WsMsg.serializer(), msg) for every WsMsg subtype: class-name \"type\" discriminator, field names and float/long formatting",
+  "decisions": [
+    "SH-1"
+  ],
+  "generator": "WireFormatFixtureTest.wsMessages",
+  "cases": [
+    {
+      "input": "idle",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Idle"
+      }
+    },
+    {
+      "input": "extracting_start",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Extracting",
+        "progress": 0.0
+      }
+    },
+    {
+      "input": "extracting_half",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Extracting",
+        "progress": 0.5
+      }
+    },
+    {
+      "input": "extracting_done",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Extracting",
+        "progress": 1.0
+      }
+    },
+    {
+      "input": "info",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Info",
+        "feature": 1234,
+        "totalFeatures": 5164,
+        "chart": 0,
+        "totalCharts": 3
+      }
+    },
+    {
+      "input": "error_fatal",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Error",
+        "isFatal": true,
+        "message": "cell zip for US5ZZ99M contained no ENC_ROOT/US5ZZ99M/ entries"
+      }
+    },
+    {
+      "input": "error_warning",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.Error",
+        "isFatal": false,
+        "message": ""
+      }
+    },
+    {
+      "input": "completion_report",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.CompletionReport",
+        "totalFeatureCount": 5164,
+        "totalChartCount": 2,
+        "items": [
+          {
+            "chartName": "US5WA22M.000",
+            "featureCount": 5159
+          },
+          {
+            "chartName": "US4ZZ01M.000",
+            "featureCount": 6
+          }
+        ],
+        "failedCharts": [
+          "US5ZZ02M.000 msg: dsid is missing"
+        ],
+        "ms": 12345
+      }
+    },
+    {
+      "input": "completion_report_empty",
+      "expected": {
+        "type": "io.madrona.njord.model.ws.WsMsg.CompletionReport",
+        "totalFeatureCount": 0,
+        "totalChartCount": 0,
+        "items": [],
+        "failedCharts": [],
+        "ms": 0
+      }
+    }
+  ]
+}

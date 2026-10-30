@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile_json",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "bounds": [
+        -180.0,
+        -85.05112877980659,
+        180.0,
+        85.0511287798066
+      ],
+      "format": "pbf",
+      "maxzoom": 30.0,
+      "minzoom": 0.0,
+      "scheme": "xyz",
+      "tilejson": "2.2.0",
+      "tiles": [
+        "{BASE}/v1/tile/{z}/{x}/{y}"
+      ]
+    }
+  }
+}

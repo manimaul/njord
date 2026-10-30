@@ -1,0 +1,101 @@
+{
+  "pins": "LineString and MultiLineString command streams: zig-zag deltas, consecutive duplicate vertices collapsed, a multi-part line whose parts are separate MoveTo runs",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "diagonal across the tile, a line with repeated points, a two-part multilinestring; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "lines.bin",
+  "bytes": 128,
+  "decoded": {
+    "layers": [
+      {
+        "name": "DEPCNT",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "LINESTRING",
+            "props": {
+              "VALDCO": 10.0
+            },
+            "geometry": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  4096,
+                  4096
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 3,
+            "type": "LINESTRING",
+            "props": {
+              "VALDCO": 2.0
+            },
+            "geometry": [
+              [
+                [
+                  10,
+                  10
+                ],
+                [
+                  20,
+                  10
+                ],
+                [
+                  20,
+                  30
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "COALNE",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 4,
+            "type": "LINESTRING",
+            "props": {},
+            "geometry": [
+              [
+                [
+                  100,
+                  100
+                ],
+                [
+                  200,
+                  100
+                ]
+              ],
+              [
+                [
+                  300,
+                  300
+                ],
+                [
+                  300,
+                  400
+                ],
+                [
+                  350,
+                  450
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

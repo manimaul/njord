@@ -1,0 +1,155 @@
+{
+  "pins": "GDAL S57 driver output for PIPSOL under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 2990,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026063,
+          "FIDS": 50,
+          "LNAM": "022600D6054F0032",
+          "CATPIP": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20070711",
+          "SORIND": "US,US,reprt,L-162/09"
+        },
+        "wkt": "LINESTRING (-122.430866 47.2661484,-122.4312927 47.2663893,-122.4313233 47.2664066,-122.4313582 47.2664263,-122.4314224 47.2664595,-122.4318302 47.2666705,-122.4326972 47.2671416,-122.4327022 47.2671442,-122.4336667 47.2676389)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 2991,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026030,
+          "FIDS": 50,
+          "LNAM": "022600D6052E0032",
+          "CATPIP": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.5044351 47.3003126,-122.5043166 47.3003699,-122.5042807 47.3003872,-122.5041925 47.3004298,-122.5040931 47.3004779,-122.5040655 47.3004912)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 2992,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19383053,
+          "FIDS": 50,
+          "LNAM": "02260127C30D0032",
+          "CATPIP": [
+            "3"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.5186541 47.3080415,-122.5186604 47.3080395,-122.5187149 47.3079514,-122.5187641 47.3078838,-122.5189285 47.3076561,-122.519118 47.3074812)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 2993,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026008,
+          "FIDS": 50,
+          "LNAM": "022600D605180032",
+          "CATPIP": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4180377 47.2759332,-122.4212684 47.2779469)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 2994,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308124619,
+          "FIDS": 1,
+          "LNAM": "02264DF865CB0001",
+          "CATPIP": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4484819 47.2689302,-122.4477842 47.2691028)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 2995,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 94,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026020,
+          "FIDS": 50,
+          "LNAM": "022600D605240032",
+          "CATPIP": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4062294 47.2757405,-122.4063679 47.2756386,-122.406421 47.2755999,-122.406453 47.2755766,-122.4066241 47.2754519)"
+      }
+    }
+  ]
+}

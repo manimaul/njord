@@ -1,0 +1,955 @@
+{
+  "pins": "preTileEncode over every DRGARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2354,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 325871642,
+          "FIDS": 17879,
+          "LNAM": "0226136C681A45D7",
+          "DRVAL1": 14.5,
+          "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W ROQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2354,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 325871642,
+        "FIDS": 17879,
+        "LNAM": "0226136C681A45D7",
+        "DRVAL1": 14.5,
+        "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W ROQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2355,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 763347344,
+          "FIDS": 17879,
+          "LNAM": "02262D7FC19045D7",
+          "DRVAL1": 14.9,
+          "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W LOQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2355,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 763347344,
+        "FIDS": 17879,
+        "LNAM": "02262D7FC19045D7",
+        "DRVAL1": 14.9,
+        "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W LOQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2356,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 494944871,
+          "FIDS": 12345,
+          "LNAM": "02261D8042673039",
+          "DRVAL1": 5.9,
+          "OBJNAM": "Hybelos Waterway, Lower Turning Basin",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2356,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 494944871,
+        "FIDS": 12345,
+        "LNAM": "02261D8042673039",
+        "DRVAL1": 5.9,
+        "OBJNAM": "Hybelos Waterway, Lower Turning Basin",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "AC": "DEPMS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2357,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 198803495,
+          "FIDS": 17879,
+          "LNAM": "02260BD9802745D7",
+          "DRVAL1": 15.6,
+          "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W LIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2357,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 198803495,
+        "FIDS": 17879,
+        "LNAM": "02260BD9802745D7",
+        "DRVAL1": 15.6,
+        "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W LIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2358,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 796498329,
+          "FIDS": 17879,
+          "LNAM": "02262F79999945D7",
+          "DRVAL1": 15.2,
+          "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W RIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2358,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 796498329,
+        "FIDS": 17879,
+        "LNAM": "02262F79999945D7",
+        "DRVAL1": 15.2,
+        "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W RIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2359,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 771671309,
+          "FIDS": 17879,
+          "LNAM": "02262DFEC50D45D7",
+          "DRVAL1": 15.0,
+          "OBJNAM": "Thence to Turing Basin LOQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2359,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 771671309,
+        "FIDS": 17879,
+        "LNAM": "02262DFEC50D45D7",
+        "DRVAL1": 15.0,
+        "OBJNAM": "Thence to Turing Basin LOQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2360,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 3,
+          "AGEN": 550,
+          "FIDN": 290691417,
+          "FIDS": 17879,
+          "LNAM": "02261153995945D7",
+          "DRVAL1": 7.6,
+          "OBJNAM": "Hybelos Waterway ROQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2360,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 3,
+        "AGEN": 550,
+        "FIDN": 290691417,
+        "FIDS": 17879,
+        "LNAM": "02261153995945D7",
+        "DRVAL1": 7.6,
+        "OBJNAM": "Hybelos Waterway ROQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2361,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 161344375,
+          "FIDS": 17879,
+          "LNAM": "0226099DEB7745D7",
+          "DRVAL1": 15.6,
+          "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W LIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2361,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 161344375,
+        "FIDS": 17879,
+        "LNAM": "0226099DEB7745D7",
+        "DRVAL1": 15.6,
+        "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W LIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2362,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 329758091,
+          "FIDS": 17879,
+          "LNAM": "022613A7B58B45D7",
+          "DRVAL1": 14.2,
+          "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W LOQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2362,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 329758091,
+        "FIDS": 17879,
+        "LNAM": "022613A7B58B45D7",
+        "DRVAL1": 14.2,
+        "OBJNAM": "Thence to: 47°16'15.70\"N/122°24'04.90\"W LOQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2363,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 144203875,
+          "FIDS": 17879,
+          "LNAM": "02260898606345D7",
+          "DRVAL1": 7.8,
+          "OBJNAM": "Hybelos Waterway, Upper Turning Basin",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2363,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 144203875,
+        "FIDS": 17879,
+        "LNAM": "02260898606345D7",
+        "DRVAL1": 7.8,
+        "OBJNAM": "Hybelos Waterway, Upper Turning Basin",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2364,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": -2086397874,
+          "FIDS": 12345,
+          "LNAM": "022683A4184E3039",
+          "DRVAL1": 6.4,
+          "OBJNAM": "Hybelos Waterway, Turning Basin",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2364,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": -2086397874,
+        "FIDS": 12345,
+        "LNAM": "022683A4184E3039",
+        "DRVAL1": 6.4,
+        "OBJNAM": "Hybelos Waterway, Turning Basin",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2365,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 210620649,
+          "FIDS": 17879,
+          "LNAM": "02260C8DD0E945D7",
+          "DRVAL1": 8.5,
+          "OBJNAM": "Hybelos Waterway MH",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2365,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 210620649,
+        "FIDS": 17879,
+        "LNAM": "02260C8DD0E945D7",
+        "DRVAL1": 8.5,
+        "OBJNAM": "Hybelos Waterway MH",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2366,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 251739270,
+          "FIDS": 17879,
+          "LNAM": "02260F013C8645D7",
+          "DRVAL1": 15.2,
+          "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W ROQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2366,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 251739270,
+        "FIDS": 17879,
+        "LNAM": "02260F013C8645D7",
+        "DRVAL1": 15.2,
+        "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W ROQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2367,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 333794354,
+          "FIDS": 17879,
+          "LNAM": "022613E54C3245D7",
+          "DRVAL1": 14.7,
+          "OBJNAM": "Thence to Turing Basin RIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2367,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 333794354,
+        "FIDS": 17879,
+        "LNAM": "022613E54C3245D7",
+        "DRVAL1": 14.7,
+        "OBJNAM": "Thence to Turing Basin RIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2368,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 548596318,
+          "FIDS": 17879,
+          "LNAM": "022620B2EA5E45D7",
+          "DRVAL1": 15.3,
+          "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W RIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2368,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 548596318,
+        "FIDS": 17879,
+        "LNAM": "022620B2EA5E45D7",
+        "DRVAL1": 15.3,
+        "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W RIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2369,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 420620804,
+          "FIDS": 17879,
+          "LNAM": "022619122A0445D7",
+          "DRVAL1": 15.0,
+          "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W RIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2369,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 420620804,
+        "FIDS": 17879,
+        "LNAM": "022619122A0445D7",
+        "DRVAL1": 15.0,
+        "OBJNAM": "Thence to: 47°15'57.20\"N/122°23'35.30\"W RIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2370,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 6,
+          "AGEN": 550,
+          "FIDN": 263411876,
+          "FIDS": 1949,
+          "LNAM": "02260FB358A4079D",
+          "DRVAL1": 6.9,
+          "OBJNAM": "Hybelos Waterway LOQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2370,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 6,
+        "AGEN": 550,
+        "FIDN": 263411876,
+        "FIDS": 1949,
+        "LNAM": "02260FB358A4079D",
+        "DRVAL1": 6.9,
+        "OBJNAM": "Hybelos Waterway LOQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2371,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 946771835,
+          "FIDS": 17879,
+          "LNAM": "0226386E977B45D7",
+          "DRVAL1": 14.6,
+          "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W LOQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2371,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 946771835,
+        "FIDS": 17879,
+        "LNAM": "0226386E977B45D7",
+        "DRVAL1": 14.6,
+        "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W LOQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2372,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 420043982,
+          "FIDS": 17879,
+          "LNAM": "022619095CCE45D7",
+          "DRVAL1": 15.0,
+          "OBJNAM": "Turning Basin",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2372,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 420043982,
+        "FIDS": 17879,
+        "LNAM": "022619095CCE45D7",
+        "DRVAL1": 15.0,
+        "OBJNAM": "Turning Basin",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2373,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 58437543,
+          "FIDS": 17879,
+          "LNAM": "0226037BAFA745D7",
+          "DRVAL1": 15.4,
+          "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W LIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2373,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 58437543,
+        "FIDS": 17879,
+        "LNAM": "0226037BAFA745D7",
+        "DRVAL1": 15.4,
+        "OBJNAM": "Commencement Bay to point at 47°16'23.50\"N/122°24'17.60\"W LIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2374,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 46,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 224071279,
+          "FIDS": 17879,
+          "LNAM": "02260D5B0E6F45D7",
+          "DRVAL1": 15.1,
+          "OBJNAM": "Thence to Turing Basin LIQ",
+          "QUASOU": [
+            "10"
+          ],
+          "SORDAT": "20200205",
+          "SORIND": "US,US,reprt,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2374,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 46,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 224071279,
+        "FIDS": 17879,
+        "LNAM": "02260D5B0E6F45D7",
+        "DRVAL1": 15.1,
+        "OBJNAM": "Thence to Turing Basin LIQ",
+        "QUASOU": [
+          "10"
+        ],
+        "SORDAT": "20200205",
+        "SORIND": "US,US,reprt,DD-32263",
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    }
+  ]
+}

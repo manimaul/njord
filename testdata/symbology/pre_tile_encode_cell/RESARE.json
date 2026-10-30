@@ -1,0 +1,334 @@
+{
+  "pins": "preTileEncode over every RESARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5060,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 467611226,
+          "FIDS": 1,
+          "LNAM": "02261BDF2E5A0001",
+          "OBJNAM": "Olympic View Resource Area",
+          "RESTRN": [
+            "1",
+            "9",
+            "24"
+          ],
+          "INFORM": "Regulated navigation area, 33 CFR 165.1311",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110701",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5060,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 467611226,
+        "FIDS": 1,
+        "LNAM": "02261BDF2E5A0001",
+        "OBJNAM": "Olympic View Resource Area",
+        "RESTRN": [
+          "1",
+          "9",
+          "24"
+        ],
+        "INFORM": "Regulated navigation area, 33 CFR 165.1311",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20110701",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5061,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 241179204,
+          "FIDS": 1,
+          "LNAM": "02260E601A440001",
+          "RESTRN": [
+            "1",
+            "5",
+            "24"
+          ],
+          "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20101208",
+          "SORIND": "US,US,reprt,L-1501/10"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5061,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 241179204,
+        "FIDS": 1,
+        "LNAM": "02260E601A440001",
+        "RESTRN": [
+          "1",
+          "5",
+          "24"
+        ],
+        "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20101208",
+        "SORIND": "US,US,reprt,L-1501/10",
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5062,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 415585437,
+          "FIDS": 1,
+          "LNAM": "022618C5549D0001",
+          "RESTRN": [
+            "1",
+            "5",
+            "24"
+          ],
+          "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20101208",
+          "SORIND": "US,US,reprt,l-1501/10"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5062,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 415585437,
+        "FIDS": 1,
+        "LNAM": "022618C5549D0001",
+        "RESTRN": [
+          "1",
+          "5",
+          "24"
+        ],
+        "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20101208",
+        "SORIND": "US,US,reprt,l-1501/10",
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5063,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 61012987,
+          "FIDS": 1,
+          "LNAM": "022603A2FBFB0001",
+          "RESTRN": [
+            "1",
+            "5",
+            "24"
+          ],
+          "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20101208",
+          "SORIND": "US,US,reprt,L-1501/10"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5063,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 61012987,
+        "FIDS": 1,
+        "LNAM": "022603A2FBFB0001",
+        "RESTRN": [
+          "1",
+          "5",
+          "24"
+        ],
+        "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20101208",
+        "SORIND": "US,US,reprt,L-1501/10",
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5064,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 105877,
+          "FIDS": 1,
+          "LNAM": "022600019D950001",
+          "CATREA": [
+            "1"
+          ],
+          "RESTRN": [
+            "8"
+          ],
+          "INFORM": "Security Zone; 33 CFR 165.1321; (see note A)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20040827",
+          "SORIND": "US,US,reprt,L-1280/04"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5064,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 105877,
+        "FIDS": 1,
+        "LNAM": "022600019D950001",
+        "CATREA": [
+          "1"
+        ],
+        "RESTRN": [
+          "8"
+        ],
+        "INFORM": "Security Zone; 33 CFR 165.1321; (see note A)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20040827",
+        "SORIND": "US,US,reprt,L-1280/04",
+        "SY": "ENTRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5188,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 112,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 885149507,
+          "FIDS": 7299,
+          "LNAM": "022634C24F431C83",
+          "OBJNAM": "Thea Foss, Middle Waterway, and Wheeler-Osgood Waterways EPA Superfund Cleanup Site, Commencement Bay, Tacoma, WA",
+          "RESTRN": [
+            "1",
+            "9",
+            "20",
+            "24"
+          ],
+          "STATUS": [
+            "1"
+          ],
+          "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20200103",
+          "SORIND": "US,US,reprt,L-19-2020"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5188,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 112,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 885149507,
+        "FIDS": 7299,
+        "LNAM": "022634C24F431C83",
+        "OBJNAM": "Thea Foss, Middle Waterway, and Wheeler-Osgood Waterways EPA Superfund Cleanup Site, Commencement Bay, Tacoma, WA",
+        "RESTRN": [
+          "1",
+          "9",
+          "20",
+          "24"
+        ],
+        "STATUS": [
+          "1"
+        ],
+        "INFORM": "Regulated navigation area, 33 CFR 165.1329; (see note A)",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20200103",
+        "SORIND": "US,US,reprt,L-19-2020",
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    }
+  ]
+}

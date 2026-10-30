@@ -1,0 +1,35 @@
+{
+  "pins": "GDAL S57 driver output for HRBFAC under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 4578,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 64,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 682372487,
+          "FIDS": 1,
+          "LNAM": "022628AC2D870001",
+          "CATHAF": [
+            "3"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5141214 47.306287)"
+      }
+    }
+  ]
+}

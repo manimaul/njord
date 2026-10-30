@@ -1,0 +1,53 @@
+{
+  "pins": "Worker timing the replicas and enc_cron rely on: ingest poll, region export poll/idle, wake semantics, websocket status poll",
+  "decisions": [
+    "RE-9",
+    "IN-7",
+    "CC-5"
+  ],
+  "generator": "ConcurrencyPrimitivesTest.cadence",
+  "cases": [
+    {
+      "input": {
+        "question": "ingest worker poll ms"
+      },
+      "expected": 5000
+    },
+    {
+      "input": {
+        "question": "region worker poll ms (zips pending, lock held, or lock busy)"
+      },
+      "expected": 5000
+    },
+    {
+      "input": {
+        "question": "region worker idle ms (nothing to do)"
+      },
+      "expected": 900000
+    },
+    {
+      "input": {
+        "question": "region worker after a render"
+      },
+      "expected": "loops again immediately"
+    },
+    {
+      "input": {
+        "question": "wake()"
+      },
+      "expected": "conflated signal; cuts a poll or idle wait short; called after ingest completes, chart delete and POST /v1/regions"
+    },
+    {
+      "input": {
+        "question": "ingest worker claim"
+      },
+      "expected": "one zip per lock cycle: acquire lock, clear ingest/, rename save/<zip> to ingest/<uuid>/<zip>"
+    },
+    {
+      "input": {
+        "question": "websocket status poll ms"
+      },
+      "expected": 500
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "pins": "preTileEncode of Chkpnt (layer key CHKPNT): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "3 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04",
+        "LC": "CHBLK"
+      }
+    }
+  ]
+}

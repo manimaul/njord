@@ -1,0 +1,496 @@
+{
+  "pins": "preTileEncode of Daymar (layer key DAYMAR): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "38 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 0,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 1,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 2,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 3,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 4,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 5,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 6,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 7,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 8,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 9,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 10,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 11,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 12
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 12,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 13
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 13,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 14
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 14,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 15
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 15,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 16
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 16,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 17
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 17,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 18
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 18,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 19
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 19,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 20
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 20,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 21
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 21,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 22
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 22,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 23
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 23,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 24
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 24,
+        "SY": "DAYTRI01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 25
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 25,
+        "SY": "DAYTRI05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 26
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 26,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 27
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 27,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 28
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 28,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 29
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 29,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 30
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 30,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 31
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 31,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 32
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 32,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 33
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 33,
+        "SY": "DAYSQR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 34
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 34,
+        "SY": "DAYSQR01"
+      }
+    }
+  ]
+}

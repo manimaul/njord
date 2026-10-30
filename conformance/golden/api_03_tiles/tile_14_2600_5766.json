@@ -1,0 +1,161 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/14/2600/5766",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 805,
+      "sha256": "bb49851ef99ea40c6cbe6475ca0074640f977c6bba0697c556039500add1d71b",
+      "decoded": {
+        "DEPARE": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1001,
+                "FIDS": 1,
+                "GRUP": 1,
+                "LNAM": "0226000003E90001",
+                "OBJL": 42,
+                "PRIM": 3,
+                "RCID": 2,
+                "RVER": 1,
+                "DRVAL1": 10.0,
+                "DRVAL2": 20.0,
+                "AC": "DEPDW",
+                "LC": "CHGRD",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        "LIGHTS": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Point",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1005,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003ED0001",
+                "OBJL": 75,
+                "PRIM": 1,
+                "RCID": 6,
+                "RVER": 1,
+                "CATLIT": "[\"1\"]",
+                "COLOUR": "[\"1\"]",
+                "LITCHR": 2,
+                "OBJNAM": "Outer Light East",
+                "SIGPER": 4.0,
+                "VALNMR": 6.0,
+                "SY": "LIGHTS13",
+                "LC": "LITYW",
+                "_LDH": "Dir Fl W 4s",
+                "_LDT": "6M",
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                3932,
+                4024
+              ]
+            }
+          ]
+        },
+        "M_COVR": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1000,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003E80001",
+                "OBJL": 302,
+                "PRIM": 3,
+                "RCID": 1,
+                "RVER": 1,
+                "CATCOV": 1,
+                "NAME": "US4ZZ01M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

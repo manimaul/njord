@@ -1,0 +1,170 @@
+{
+  "pins": "NaturalEarthIngest.normalizeLayerName / scaleFromFilename: shapefile name -> base_features layer and scale (110m=110000000, 50m=50000000, else 10000000)",
+  "decisions": [
+    "IN-8"
+  ],
+  "generator": "WireFormatFixtureTest.naturalEarthNames",
+  "cases": [
+    {
+      "input": "ne_10m_land.shp",
+      "expected": {
+        "layer": "land",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_50m_land.shp",
+      "expected": {
+        "layer": "land",
+        "scale": 50000000
+      }
+    },
+    {
+      "input": "ne_110m_land.shp",
+      "expected": {
+        "layer": "land",
+        "scale": 110000000
+      }
+    },
+    {
+      "input": "ne_10m_coastline.shp",
+      "expected": {
+        "layer": "coastline",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_110m_coastline.shp",
+      "expected": {
+        "layer": "coastline",
+        "scale": 110000000
+      }
+    },
+    {
+      "input": "ne_10m_lakes.shp",
+      "expected": {
+        "layer": "lakes",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_lakes_europe.shp",
+      "expected": {
+        "layer": "lakes",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_50m_lakes_historic.shp",
+      "expected": {
+        "layer": "lakes",
+        "scale": 50000000
+      }
+    },
+    {
+      "input": "ne_10m_bathymetry_A_10000.shp",
+      "expected": {
+        "layer": "bathymetry",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_bathymetry_L_0.shp",
+      "expected": {
+        "layer": "bathymetry",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_110m_bathymetry_K_200.shp",
+      "expected": {
+        "layer": "bathymetry",
+        "scale": 110000000
+      }
+    },
+    {
+      "input": "ne_10m_minor_islands.shp",
+      "expected": {
+        "layer": "minor_islands",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_reefs.shp",
+      "expected": {
+        "layer": "reefs",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_glaciated_areas.shp",
+      "expected": {
+        "layer": "glaciated_areas",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_50m_antarctic_ice_shelves_polys.shp",
+      "expected": {
+        "layer": "antarctic_ice_shelves_polys",
+        "scale": 50000000
+      }
+    },
+    {
+      "input": "ne_10m_playas.shp",
+      "expected": {
+        "layer": "playas",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_rivers_lake_centerlines.shp",
+      "expected": {
+        "layer": "rivers_lake_centerlines",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_ocean.shp",
+      "expected": {
+        "layer": "ocean",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "ne_10m_land",
+      "expected": {
+        "layer": "land",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "land.shp",
+      "expected": {
+        "layer": "land",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "custom_50m_thing.shp",
+      "expected": {
+        "layer": "custom_50m_thing",
+        "scale": 50000000
+      }
+    },
+    {
+      "input": "ne_10m_land.tar.gz",
+      "expected": {
+        "layer": "land.tar",
+        "scale": 10000000
+      }
+    },
+    {
+      "input": "",
+      "expected": {
+        "layer": "",
+        "scale": 10000000
+      }
+    }
+  ]
+}

@@ -1,0 +1,388 @@
+{
+  "pins": "preTileEncode over every BUAARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1227,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024346,
+          "FIDS": 50,
+          "LNAM": "022600D5FE9A0032",
+          "CATBUA": 1,
+          "OBJNAM": "Browns Point",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1227,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024346,
+        "FIDS": 50,
+        "LNAM": "022600D5FE9A0032",
+        "CATBUA": 1,
+        "OBJNAM": "Browns Point",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1228,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 310160271,
+          "FIDS": 7299,
+          "LNAM": "0226127CAB8F1C83",
+          "CATBUA": 1,
+          "OBJNAM": "Tacoma",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1228,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 310160271,
+        "FIDS": 7299,
+        "LNAM": "0226127CAB8F1C83",
+        "CATBUA": 1,
+        "OBJNAM": "Tacoma",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1229,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 4,
+          "AGEN": 550,
+          "FIDN": 453992894,
+          "FIDS": 8527,
+          "LNAM": "02261B0F61BE214F",
+          "CATBUA": 1,
+          "OBJNAM": "Tacoma",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1229,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 4,
+        "AGEN": 550,
+        "FIDN": 453992894,
+        "FIDS": 8527,
+        "LNAM": "02261B0F61BE214F",
+        "CATBUA": 1,
+        "OBJNAM": "Tacoma",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1230,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024336,
+          "FIDS": 50,
+          "LNAM": "022600D5FE900032",
+          "CATBUA": 1,
+          "OBJNAM": "Tacoma",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1230,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024336,
+        "FIDS": 50,
+        "LNAM": "022600D5FE900032",
+        "CATBUA": 1,
+        "OBJNAM": "Tacoma",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1610,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024364,
+          "FIDS": 50,
+          "LNAM": "022600D5FEAC0032",
+          "CATBUA": 1,
+          "OBJNAM": "Old Tacoma",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1610,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024364,
+        "FIDS": 50,
+        "LNAM": "022600D5FEAC0032",
+        "CATBUA": 1,
+        "OBJNAM": "Old Tacoma",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1611,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024339,
+          "FIDS": 50,
+          "LNAM": "022600D5FE930032",
+          "CATBUA": 1,
+          "OBJNAM": "Port of Tacoma",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1611,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024339,
+        "FIDS": 50,
+        "LNAM": "022600D5FE930032",
+        "CATBUA": 1,
+        "OBJNAM": "Port of Tacoma",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1612,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024333,
+          "FIDS": 50,
+          "LNAM": "022600D5FE8D0032",
+          "CATBUA": 1,
+          "OBJNAM": "Ruston",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1612,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024333,
+        "FIDS": 50,
+        "LNAM": "022600D5FE8D0032",
+        "CATBUA": 1,
+        "OBJNAM": "Ruston",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1613,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024341,
+          "FIDS": 50,
+          "LNAM": "022600D5FE950032",
+          "CATBUA": 1,
+          "OBJNAM": "Caledonia",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1613,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024341,
+        "FIDS": 50,
+        "LNAM": "022600D5FE950032",
+        "CATBUA": 1,
+        "OBJNAM": "Caledonia",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1614,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 13,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024342,
+          "FIDS": 50,
+          "LNAM": "022600D5FE960032",
+          "CATBUA": 1,
+          "OBJNAM": "Caledonia Beach",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1614,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 13,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024342,
+        "FIDS": 50,
+        "LNAM": "022600D5FE960032",
+        "CATBUA": 1,
+        "OBJNAM": "Caledonia Beach",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BUAARE02",
+        "AC": "LANDF"
+      }
+    }
+  ]
+}

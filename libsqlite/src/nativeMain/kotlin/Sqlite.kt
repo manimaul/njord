@@ -158,6 +158,14 @@ class SqliteStatement(
 
     fun columnText(index: Int): String? = sqlite3_column_text(stmt, index)?.reinterpret<ByteVar>()?.toKString()
 
+    fun columnLong(index: Int): Long = sqlite3_column_int64(stmt, index)
+
+    fun columnBlob(index: Int): ByteArray? {
+        val size = sqlite3_column_bytes(stmt, index)
+        val ptr = sqlite3_column_blob(stmt, index) ?: return null
+        return ptr.reinterpret<ByteVar>().readBytes(size)
+    }
+
     /**
      * Resets the statement so it can be re-executed with new bindings.
      * Clears all bound values.

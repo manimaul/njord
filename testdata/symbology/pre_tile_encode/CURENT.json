@@ -1,0 +1,1002 @@
+{
+  "pins": "preTileEncode of Curent (layer key CURENT): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "69 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": -1.5,
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.5,
+        "SY": "CURDEF01",
+        "_PL": "0.5 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 2.9,
+        "SY": "CURDEF01",
+        "_PL": "2.9 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "SY": "CURDEF01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.1,
+        "SY": "CURDEF01",
+        "_PL": "3.1 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 5.9,
+        "SY": "CURDEF01",
+        "_PL": "5.9 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "SY": "CURDEF01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.1,
+        "SY": "CURDEF01",
+        "_PL": "6.1 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 8.9,
+        "SY": "CURDEF01",
+        "_PL": "8.9 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 9.0,
+        "SY": "CURDEF01",
+        "_PL": "9.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 9.1,
+        "SY": "CURDEF01",
+        "_PL": "9.1 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "SY": "CURDEF01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 15.0,
+        "SY": "CURDEF01",
+        "_PL": "15.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 100.0,
+        "SY": "CURDEF01",
+        "_PL": "100.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(1)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(1)",
+        "SY": "CURDEF01",
+        "_PL": "(1)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "(2)"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "(2)",
+        "SY": "CURDEF01",
+        "_PL": "(2)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "SY": "CURDEF01",
+        "_PL": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": -1.5,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 0.5,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 2.9,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 3.1,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 5.9,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 6.1,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 8.9,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 9.1,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 10.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 15.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "ORIENT": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "ORIENT": 100.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "OBJNAM": "",
+        "SY": "CURDEF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "OBJNAM": "Test",
+        "SY": "CURDEF01",
+        "_PL": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "OBJNAM": "",
+        "SY": "CURDEF01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "OBJNAM": "Test",
+        "SY": "CURDEF01",
+        "_PL": "Test 3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "OBJNAM": "",
+        "SY": "CURDEF01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "OBJNAM": "Test",
+        "SY": "CURDEF01",
+        "_PL": "Test 6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "OBJNAM": ""
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "OBJNAM": "",
+        "SY": "CURDEF01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "OBJNAM": "Test"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "OBJNAM": "Test",
+        "SY": "CURDEF01",
+        "_PL": "Test 10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "ORIENT": 0.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "ORIENT": 3.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "ORIENT": 6.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 0.0,
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 0.0,
+        "ORIENT": 10.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "ORIENT": 0.0,
+        "SY": "CURENT01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "ORIENT": 3.0,
+        "SY": "CURENT01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "ORIENT": 6.0,
+        "SY": "CURENT01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 3.0,
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 3.0,
+        "ORIENT": 10.0,
+        "SY": "CURENT01",
+        "_PL": "3.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "ORIENT": 0.0,
+        "SY": "CURENT01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "ORIENT": 3.0,
+        "SY": "CURENT01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "ORIENT": 6.0,
+        "SY": "CURENT01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 6.0,
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 6.0,
+        "ORIENT": 10.0,
+        "SY": "CURENT01",
+        "_PL": "6.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "ORIENT": 0.0,
+        "SY": "CURENT01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "ORIENT": 3.0,
+        "SY": "CURENT01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "ORIENT": 6.0,
+        "SY": "CURENT01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CURVEL": 10.0,
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CURVEL": 10.0,
+        "ORIENT": 10.0,
+        "SY": "CURENT01",
+        "_PL": "10.0 kts (max)"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 0.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 3.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 6.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "",
+        "ORIENT": 10.0,
+        "SY": "CURENT01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 0.0,
+        "SY": "CURENT01",
+        "_PL": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 3.0,
+        "SY": "CURENT01",
+        "_PL": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 6.0,
+        "SY": "CURENT01",
+        "_PL": "Test"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "OBJNAM": "Test",
+          "ORIENT": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "OBJNAM": "Test",
+        "ORIENT": 10.0,
+        "SY": "CURENT01",
+        "_PL": "Test"
+      }
+    }
+  ]
+}

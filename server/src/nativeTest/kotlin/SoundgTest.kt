@@ -6,7 +6,6 @@ import io.madrona.njord.model.IconTextFit
 import io.madrona.njord.model.Layer
 import io.madrona.njord.model.Sprite
 import io.madrona.njord.model.ThemeMode
-import io.madrona.njord.resources
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -30,7 +29,7 @@ class SoundgTest {
 
     @BeforeTest
     fun setup() {
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
+        TestEnv.init()
     }
 
     private fun layers(depth: Depth): List<Layer> =

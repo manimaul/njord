@@ -6,7 +6,6 @@ import io.madrona.njord.model.Depth
 import io.madrona.njord.model.Layer
 import io.madrona.njord.model.Placement
 import io.madrona.njord.model.ThemeMode
-import io.madrona.njord.resources
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,7 +19,7 @@ class TextGroupLabelTest {
 
     @BeforeTest
     fun setup() {
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
+        TestEnv.init()
     }
 
     @Test

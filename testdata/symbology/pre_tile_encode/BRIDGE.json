@@ -1,0 +1,310 @@
+{
+  "pins": "preTileEncode of Bridge (layer key BRIDGE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "19 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "0"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "1"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "2"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "3"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "4"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "5"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "6"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "7"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "8"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "9"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "10"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "11"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "12"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "13"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": []
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATBRG": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATBRG": [
+          "1",
+          "2"
+        ],
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    }
+  ]
+}

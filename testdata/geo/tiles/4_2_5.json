@@ -1,0 +1,127 @@
+{
+  "pins": "decoded /v1/tile/4/2/5: layers sorted by name, features sorted by LNAM, props, geometry; feature ids dropped",
+  "decisions": [
+    "TE-1",
+    "TE-2",
+    "TE-4",
+    "TE-5",
+    "TE-6"
+  ],
+  "generator": "GoldenTilesTest.golden tiles",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic/US4ZZ01M+US5ZZ02M, libgdal ne_110_extract coastline at 110m; GDAL 3.13.1; shallow/safety/deep = 3.0/6.0/9.0",
+  "cases": [
+    {
+      "input": {
+        "z": 4,
+        "x": 2,
+        "y": 5
+      },
+      "expected": {
+        "layers": [
+          {
+            "name": "PLY",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      2148,
+                      2597
+                    ],
+                    [
+                      2221,
+                      2597
+                    ],
+                    [
+                      2221,
+                      2544
+                    ],
+                    [
+                      2148,
+                      2544
+                    ],
+                    [
+                      2148,
+                      2597
+                    ]
+                  ]
+                ]
+              },
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      2175,
+                      2579
+                    ],
+                    [
+                      2194,
+                      2579
+                    ],
+                    [
+                      2194,
+                      2563
+                    ],
+                    [
+                      2175,
+                      2563
+                    ],
+                    [
+                      2175,
+                      2579
+                    ]
+                  ]
+                ]
+              },
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      2286,
+                      2485
+                    ],
+                    [
+                      2301,
+                      2485
+                    ],
+                    [
+                      2301,
+                      2508
+                    ],
+                    [
+                      2267,
+                      2508
+                    ],
+                    [
+                      2267,
+                      2500
+                    ],
+                    [
+                      2271,
+                      2500
+                    ],
+                    [
+                      2271,
+                      2485
+                    ],
+                    [
+                      2286,
+                      2485
+                    ]
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

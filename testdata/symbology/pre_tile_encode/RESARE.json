@@ -1,0 +1,367 @@
+{
+  "pins": "preTileEncode of Resare (layer key RESARE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "22 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "0"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "1"
+        ],
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "2"
+        ],
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "3"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "4"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "5"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "6"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "7"
+        ],
+        "SY": "ENTRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "8"
+        ],
+        "SY": "ENTRES51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "9"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "10"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "11"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "12"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "13"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "14"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "15"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "15"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "16"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "16"
+        ],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [],
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RESTRN": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RESTRN": [
+          "1",
+          "2"
+        ],
+        "SY": "ACHRES51",
+        "LC": "CHMGD"
+      }
+    }
+  ]
+}

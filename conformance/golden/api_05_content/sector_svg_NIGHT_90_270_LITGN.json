@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/sector_svg/NIGHT/90/270/LITGN",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "text"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "image/svg+xml",
+    "headers": {},
+    "body": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\">\n  <path d=\"M 26.0 100.0 A 74.0 74.0 0 0 1 174.0 100.0\"\n      fill=\"none\" stroke=\"#0C3406\" stroke-width=\"4\" stroke-linecap=\"butt\"/>\n    <line x1=\"100.0\" y1=\"100.0\" x2=\"26.0\" y2=\"100.0\"\n        stroke=\"#252D31\" stroke-width=\"2\"\n        stroke-dasharray=\"4 6\" stroke-linecap=\"butt\"/>\n  <line x1=\"100.0\" y1=\"100.0\" x2=\"174.0\" y2=\"100.0\"\n        stroke=\"#252D31\" stroke-width=\"2\"\n        stroke-dasharray=\"4 6\" stroke-linecap=\"butt\"/>\n</svg>"
+  }
+}

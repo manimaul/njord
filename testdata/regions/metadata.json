@@ -1,0 +1,49 @@
+{
+  "pins": "every metadata row of a region archive in insertion order; njord:generated_at is an RFC 3339 instant equal to the archive name stem and replaced by <instant> here; bounds/center come from the configured coverage (WORLD: -180..180 x -90..90), min/maxzoom from the tiles written",
+  "decisions": [
+    "RE-1",
+    "RE-2"
+  ],
+  "generator": "RegionExportTest",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic/US4ZZ01M+US5ZZ02M, libgdal ne_110_extract coastline at 110m; GDAL 3.13.1; shallow/safety/deep = 3.0/6.0/9.0",
+  "cases": [
+    {
+      "input": "REGION_TEST",
+      "expected": {
+        "name": "REGION_TEST",
+        "description": "fixture cells",
+        "format": "pbf",
+        "type": "baselayer",
+        "version": "1",
+        "minzoom": "0",
+        "maxzoom": "14",
+        "bounds": "-124.0,46.5,-122.0,47.5",
+        "center": "-123.0,47.0,7",
+        "njord:schema_version": "1",
+        "njord:region": "REGION_TEST",
+        "njord:chart_count": "3",
+        "njord:tile_count": "116",
+        "njord:generated_at": "<instant>"
+      }
+    },
+    {
+      "input": "WORLD",
+      "expected": {
+        "name": "WORLD",
+        "description": "World Base Map",
+        "format": "pbf",
+        "type": "baselayer",
+        "version": "1",
+        "minzoom": "0",
+        "maxzoom": "2",
+        "bounds": "-180.0,-90.0,180.0,90.0",
+        "center": "0.0,0.0,1",
+        "njord:schema_version": "1",
+        "njord:region": "WORLD",
+        "njord:chart_count": "0",
+        "njord:tile_count": "21",
+        "njord:generated_at": "<instant>"
+      }
+    }
+  ]
+}

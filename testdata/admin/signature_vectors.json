@@ -1,0 +1,106 @@
+{
+  "pins": "AdminUtil.createSignatureResponse with a fixed clock and nonce: date re-serialised as kotlinx Instant.toString (RFC 3339 Z, fractional seconds trimmed in groups of three), HMAC over baseUrl+date+uuid base64, expirationDate = date + adminExpirationSeconds, signatureEncoded = URL-path-encoded base64 of the signature JSON",
+  "decisions": [
+    "SEC-1",
+    "D4"
+  ],
+  "generator": "AdminSignatureFixtureTest.hmacVectors",
+  "cases": [
+    {
+      "input": {
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:05Z",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "adminKey": "test-key",
+        "expirationSeconds": 600
+      },
+      "expected": {
+        "date": "2026-01-02T03:04:05Z",
+        "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "expirationDate": "2026-01-02T03:14:05Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNVoiLCJzaWduYXR1cmUiOiJYM1B5UVJ6bmd5RHRiWDc2VTR2cTRmNHc2Y1FXdW92a3NTaCtWQlJxZ3lRPSIsInV1aWQiOiJBYkNkRWZHaC1JaktsLU1uT3AtUXJTdC1Vdld4WXowMTIzNDUiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjYtMDEtMDJUMDM6MTQ6MDVaIn0="
+      }
+    },
+    {
+      "input": {
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:05.123Z",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "adminKey": "test-key",
+        "expirationSeconds": 600
+      },
+      "expected": {
+        "date": "2026-01-02T03:04:05.123Z",
+        "signature": "yorsMx1Icr96153X34QX4HdOyHSy+RnuJjiDIoJHO/8=",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "expirationDate": "2026-01-02T03:14:05.123Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNS4xMjNaIiwic2lnbmF0dXJlIjoieW9yc014MUljcjk2MTUzWDM0UVg0SGRPeUhTeStSbnVKamlESW9KSE8vOD0iLCJ1dWlkIjoiQWJDZEVmR2gtSWpLbC1Nbk9wLVFyU3QtVXZXeFl6MDEyMzQ1IiwiZXhwaXJhdGlvbkRhdGUiOiIyMDI2LTAxLTAyVDAzOjE0OjA1LjEyM1oifQ=="
+      }
+    },
+    {
+      "input": {
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:05.123456789Z",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "adminKey": "test-key",
+        "expirationSeconds": 600
+      },
+      "expected": {
+        "date": "2026-01-02T03:04:05.123456789Z",
+        "signature": "yWbKTPg7afYQGwiw2I8UuIV+LFEOm1V4NP1xgqgBTQc=",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "expirationDate": "2026-01-02T03:14:05.123456789Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNS4xMjM0NTY3ODlaIiwic2lnbmF0dXJlIjoieVdiS1RQZzdhZllRR3dpdzJJOFV1SVYrTEZFT20xVjROUDF4Z3FnQlRRYz0iLCJ1dWlkIjoiQWJDZEVmR2gtSWpLbC1Nbk9wLVFyU3QtVXZXeFl6MDEyMzQ1IiwiZXhwaXJhdGlvbkRhdGUiOiIyMDI2LTAxLTAyVDAzOjE0OjA1LjEyMzQ1Njc4OVoifQ=="
+      }
+    },
+    {
+      "input": {
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:05.100Z",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "adminKey": "test-key",
+        "expirationSeconds": 604800
+      },
+      "expected": {
+        "date": "2026-01-02T03:04:05.100Z",
+        "signature": "BVz2zQD2z7jN6Uq1o2GfpQV3tD/4cTgQ+pARheBbxzk=",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "expirationDate": "2026-01-09T03:04:05.100Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNS4xMDBaIiwic2lnbmF0dXJlIjoiQlZ6MnpRRDJ6N2pONlVxMW8yR2ZwUVYzdEQvNGNUZ1ErcEFSaGVCYnh6az0iLCJ1dWlkIjoiQWJDZEVmR2gtSWpLbC1Nbk9wLVFyU3QtVXZXeFl6MDEyMzQ1IiwiZXhwaXJhdGlvbkRhdGUiOiIyMDI2LTAxLTA5VDAzOjA0OjA1LjEwMFoifQ=="
+      }
+    },
+    {
+      "input": {
+        "baseUrl": "http://localhost:9000",
+        "now": "2026-01-02T03:04:05Z",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "adminKey": "test-key",
+        "expirationSeconds": 600
+      },
+      "expected": {
+        "date": "2026-01-02T03:04:05Z",
+        "signature": "LtjD8RxfCq42sKX4Y7FfkqR++An91jCSiTvD1Rgh2wM=",
+        "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+        "expirationDate": "2026-01-02T03:14:05Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNVoiLCJzaWduYXR1cmUiOiJMdGpEOFJ4ZkNxNDJzS1g0WTdGZmtxUisrQW45MWpDU2lUdkQxUmdoMndNPSIsInV1aWQiOiJBYkNkRWZHaC1JaktsLU1uT3AtUXJTdC1Vdld4WXowMTIzNDUiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjYtMDEtMDJUMDM6MTQ6MDVaIn0="
+      }
+    },
+    {
+      "input": {
+        "baseUrl": "https://openenc.com",
+        "now": "2026-06-30T23:59:59Z",
+        "uuid": "zyxwvuts-rqpo-nmlk-jihg-fedcba987654",
+        "adminKey": "changeme",
+        "expirationSeconds": 604800
+      },
+      "expected": {
+        "date": "2026-06-30T23:59:59Z",
+        "signature": "1PHw46qe4tUQoPlsHIUgwKHHR0NDz/kmfx4oTmo6uMs=",
+        "uuid": "zyxwvuts-rqpo-nmlk-jihg-fedcba987654",
+        "expirationDate": "2026-07-07T23:59:59Z",
+        "signatureEncoded": "eyJkYXRlIjoiMjAyNi0wNi0zMFQyMzo1OTo1OVoiLCJzaWduYXR1cmUiOiIxUEh3NDZxZTR0VVFvUGxzSElVZ3dLSEhSME5Eei9rbWZ4NG9UbW82dU1zPSIsInV1aWQiOiJ6eXh3dnV0cy1ycXBvLW5tbGstamloZy1mZWRjYmE5ODc2NTQiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjYtMDctMDdUMjM6NTk6NTlaIn0="
+      }
+    }
+  ]
+}

@@ -8,3 +8,6 @@ data/
 .claude/
 **/VersionInfo.kt
 local.properties
+conformance/.venv/
+.pytest_cache/
+__pycache__/

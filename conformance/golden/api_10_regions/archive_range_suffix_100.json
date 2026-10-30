@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/regions/REGION_04_2026-10-30T12-20-40.mbtiles",
+    "headers": {
+      "Range": "bytes=-100"
+    },
+    "json": null,
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "bytes"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [
+    "Accept-Ranges",
+    "Content-Disposition",
+    "Content-Range",
+    "Content-Length"
+  ],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": true,
+  "port": null,
+  "expected": {
+    "status": 206,
+    "content_type": "application/x-sqlite3",
+    "headers": {
+      "Accept-Ranges": "bytes",
+      "Content-Disposition": "attachment; filename=REGION_04_2026-10-30T12-20-40.mbtiles",
+      "Content-Range": "bytes 515996-516095/516096",
+      "Content-Length": "100"
+    },
+    "body": {
+      "size": 100,
+      "sha256": "6b1feeab40a773a6ff72e3e3dea214bb15541a02798c6ff0251cbe6fccac1109"
+    }
+  }
+}

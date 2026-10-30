@@ -1,0 +1,881 @@
+{
+  "pins": "GDAL S57 driver output for LIGHTS under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 54,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106474,
+          "FIDS": 1,
+          "LNAM": "022600019FEA0001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19950805",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4216667 47.2780556)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 55,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1014549562,
+          "FIDS": 12345,
+          "LNAM": "02263C78CC3A3039",
+          "CATLIT": [],
+          "COLOUR": [
+            "1"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3929222 47.2779194)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 56,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1007970561,
+          "FIDS": 12345,
+          "LNAM": "02263C1469013039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 3.3,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030701",
+          "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+        },
+        "wkt": "POINT (-122.3863468 47.2607102)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 57,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1016957642,
+          "FIDS": 12345,
+          "LNAM": "02263C9D8ACA3039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110208",
+          "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+        },
+        "wkt": "POINT (-122.4032833 47.2815)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 58,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106506,
+          "FIDS": 1,
+          "LNAM": "02260001A00A0001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 10.0,
+          "SIGSEQ": "01.0+(09.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5138958 47.3066353)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 59,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106450,
+          "FIDS": 1,
+          "LNAM": "022600019FD20001",
+          "CATLIT": [
+            "4",
+            "13"
+          ],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 7,
+          "SIGGRP": "(1)",
+          "SIGPER": 6.0,
+          "SIGSEQ": "03.0+(03.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "POINT (-122.3703372 47.2513194)"
+      }
+    },
+    {
+      "input": 6,
+      "expected": {
+        "props": {
+          "RCID": 60,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 589896121,
+          "FIDS": 12345,
+          "LNAM": "0226232919B93039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030401",
+          "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+        },
+        "wkt": "POINT (-122.4145227 47.2848543)"
+      }
+    },
+    {
+      "input": 7,
+      "expected": {
+        "props": {
+          "RCID": 61,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106498,
+          "FIDS": 1,
+          "LNAM": "02260001A0020001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 4.8,
+          "LITCHR": 4,
+          "SIGGRP": "(1)",
+          "SIGPER": 1.0,
+          "SIGSEQ": "00.3+(00.7)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030415",
+          "SORIND": "US,US,reprt,13thCGD,LNM 15/03"
+        },
+        "wkt": "POINT (-122.4205558 47.2705556)"
+      }
+    },
+    {
+      "input": 8,
+      "expected": {
+        "props": {
+          "RCID": 62,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1229590322,
+          "FIDS": 12345,
+          "LNAM": "0226494A0F323039",
+          "CATLIT": [],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20111011",
+          "SORIND": "US,US,reprt,13thCGD,LNM 41/11"
+        },
+        "wkt": "POINT (-122.3827 47.2743)"
+      }
+    },
+    {
+      "input": 9,
+      "expected": {
+        "props": {
+          "RCID": 63,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1717857552,
+          "FIDS": 12345,
+          "LNAM": "022666646D103039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4841649 47.2872331)"
+      }
+    },
+    {
+      "input": 10,
+      "expected": {
+        "props": {
+          "RCID": 64,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106457,
+          "FIDS": 1,
+          "LNAM": "022600019FD90001",
+          "CATLIT": [
+            "4",
+            "12"
+          ],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 4,
+          "SIGGRP": "(1)",
+          "SIGPER": 1.0,
+          "SIGSEQ": "00.3+(00.7)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "POINT (-122.3733047 47.2531872)"
+      }
+    },
+    {
+      "input": 11,
+      "expected": {
+        "props": {
+          "RCID": 65,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -2141779309,
+          "FIDS": 12345,
+          "LNAM": "022680570A933039",
+          "CATLIT": [],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 1,
+          "LITCHR": 4,
+          "SIGGRP": "(1)",
+          "SIGPER": 1.0,
+          "SIGSEQ": "00.3+(00.7)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20150616",
+          "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+        },
+        "wkt": "POINT (-122.4038528 47.271455)"
+      }
+    },
+    {
+      "input": 12,
+      "expected": {
+        "props": {
+          "RCID": 66,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -188842587,
+          "FIDS": 12345,
+          "LNAM": "0226F4BE7DA53039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 3.3,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030701",
+          "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+        },
+        "wkt": "POINT (-122.3826369 47.2584944)"
+      }
+    },
+    {
+      "input": 13,
+      "expected": {
+        "props": {
+          "RCID": 67,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106475,
+          "FIDS": 1,
+          "LNAM": "022600019FEB0001",
+          "CATLIT": [],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20040720",
+          "SORIND": "US,US,reprt,13thCGD,LNM 29/04"
+        },
+        "wkt": "POINT (-122.4161667 47.2783889)"
+      }
+    },
+    {
+      "input": 14,
+      "expected": {
+        "props": {
+          "RCID": 68,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106490,
+          "FIDS": 1,
+          "LNAM": "022600019FFA0001",
+          "CATLIT": [],
+          "COLOUR": [
+            "1"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 11.5,
+          "LITCHR": 2,
+          "SECTR1": 2.0,
+          "SECTR2": 217.0,
+          "SIGGRP": "(1)",
+          "SIGPER": 5.0,
+          "SIGSEQ": "00.5+(04.5)",
+          "VALNMR": 14.0,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19941116",
+          "SORIND": "US,US,reprt,L-106/95"
+        },
+        "wkt": "POINT (-122.4442639 47.3059103)"
+      }
+    },
+    {
+      "input": 15,
+      "expected": {
+        "props": {
+          "RCID": 69,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106497,
+          "FIDS": 1,
+          "LNAM": "02260001A0010001",
+          "CATLIT": [],
+          "COLOUR": [
+            "1"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3886189 47.2768919)"
+      }
+    },
+    {
+      "input": 16,
+      "expected": {
+        "props": {
+          "RCID": 70,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 581698640,
+          "FIDS": 12345,
+          "LNAM": "022622AC04503039",
+          "CATLIT": [],
+          "COLOUR": [
+            "4"
+          ],
+          "EXCLIT": 1,
+          "LITCHR": 8,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "(01.0)+03.0",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20150616",
+          "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+        },
+        "wkt": "POINT (-122.4014847 47.2718169)"
+      }
+    },
+    {
+      "input": 17,
+      "expected": {
+        "props": {
+          "RCID": 71,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106488,
+          "FIDS": 1,
+          "LNAM": "022600019FF80001",
+          "CATLIT": [],
+          "COLOUR": [
+            "3"
+          ],
+          "EXCLIT": 1,
+          "LITCHR": 8,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "(01.0)+03.0",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20150616",
+          "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+        },
+        "wkt": "POINT (-122.4028439 47.2708269)"
+      }
+    },
+    {
+      "input": 18,
+      "expected": {
+        "props": {
+          "RCID": 72,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 250008821,
+          "FIDS": 12345,
+          "LNAM": "02260EE6D4F53039",
+          "CATLIT": [],
+          "COLOUR": [
+            "4"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "VALNMR": 4.0,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4127682 47.2872345)"
+      }
+    },
+    {
+      "input": 19,
+      "expected": {
+        "props": {
+          "RCID": 73,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106512,
+          "FIDS": 1,
+          "LNAM": "02260001A0100001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030401",
+          "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+        },
+        "wkt": "POINT (-122.4143866 47.2849402)"
+      }
+    },
+    {
+      "input": 20,
+      "expected": {
+        "props": {
+          "RCID": 74,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1694913158,
+          "FIDS": 12345,
+          "LNAM": "0226650652863039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 4.2,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030701",
+          "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+        },
+        "wkt": "POINT (-122.4194038 47.2718404)"
+      }
+    },
+    {
+      "input": 21,
+      "expected": {
+        "props": {
+          "RCID": 75,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 398963213,
+          "FIDS": 12345,
+          "LNAM": "022617C7B20D3039",
+          "CATLIT": [],
+          "COLOUR": [
+            "1"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 7.0,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 6.0,
+          "SIGSEQ": "00.6+(05.4)",
+          "VALNMR": 7.0,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20061017",
+          "SORIND": "US,US,reprt,13thCGD,LNM 42/06"
+        },
+        "wkt": "POINT (-122.4364426 47.2616788)"
+      }
+    },
+    {
+      "input": 22,
+      "expected": {
+        "props": {
+          "RCID": 76,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 106472,
+          "FIDS": 1,
+          "LNAM": "022600019FE80001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19900925",
+          "SORIND": "US,US,reprt,13thCGD,LNM 39/90"
+        },
+        "wkt": "POINT (-122.4326864 47.2728033)"
+      }
+    },
+    {
+      "input": 23,
+      "expected": {
+        "props": {
+          "RCID": 77,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -519967805,
+          "FIDS": 12345,
+          "LNAM": "0226E101EBC33039",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "HEIGHT": 4.8,
+          "LITCHR": 4,
+          "SIGGRP": "(1)",
+          "SIGPER": 1.0,
+          "SIGSEQ": "00.3+(00.7)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030415",
+          "SORIND": "US,US,reprt,13thCGD,LNM 15/03"
+        },
+        "wkt": "POINT (-122.4202854 47.2702867)"
+      }
+    },
+    {
+      "input": 24,
+      "expected": {
+        "props": {
+          "RCID": 78,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 1692171621,
+          "FIDS": 12345,
+          "LNAM": "022664DC7D653039",
+          "CATLIT": [],
+          "COLOUR": [
+            "4"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 10.0,
+          "SIGSEQ": "01.0+(09.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110208",
+          "SORIND": "US,US,reprt,LNM 06/11"
+        },
+        "wkt": "POINT (-122.4198797 47.2944931)"
+      }
+    },
+    {
+      "input": 25,
+      "expected": {
+        "props": {
+          "RCID": 79,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106487,
+          "FIDS": 1,
+          "LNAM": "022600019FF70001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 1,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030701",
+          "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+        },
+        "wkt": "POINT (-122.411285 47.2848421)"
+      }
+    },
+    {
+      "input": 26,
+      "expected": {
+        "props": {
+          "RCID": 80,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106479,
+          "FIDS": 1,
+          "LNAM": "022600019FEF0001",
+          "CATLIT": [],
+          "COLOUR": [
+            "4"
+          ],
+          "EXCLIT": 1,
+          "LITCHR": 4,
+          "SIGGRP": "(1)",
+          "SIGPER": 1.0,
+          "SIGSEQ": "00.3+(00.7)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20150616",
+          "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+        },
+        "wkt": "POINT (-122.4024978 47.2724589)"
+      }
+    },
+    {
+      "input": 27,
+      "expected": {
+        "props": {
+          "RCID": 81,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106452,
+          "FIDS": 1,
+          "LNAM": "022600019FD40001",
+          "CATLIT": [],
+          "COLOUR": [
+            "6"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20110208",
+          "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+        },
+        "wkt": "POINT (-122.4004667 47.2797333)"
+      }
+    },
+    {
+      "input": 28,
+      "expected": {
+        "props": {
+          "RCID": 82,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 874806735,
+          "FIDS": 12345,
+          "LNAM": "022634247DCF3039",
+          "CATLIT": [],
+          "COLOUR": [
+            "1"
+          ],
+          "EXCLIT": 4,
+          "LITCHR": 2,
+          "SIGGRP": "(1)",
+          "SIGPER": 4.0,
+          "SIGSEQ": "00.4+(03.6)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120221",
+          "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+        },
+        "wkt": "POINT (-122.3901194 47.2771389)"
+      }
+    }
+  ]
+}

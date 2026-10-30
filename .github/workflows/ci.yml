@@ -1,0 +1,164 @@
+# Phase 0 CI (docs/RUST_PORT_PHASE0_CHECKLIST.md §4): run every Kotlin test against a PostGIS
+# service, fail if regenerating the golden fixtures under testdata/ changes anything, and run the
+# HTTP conformance suite against a freshly built Kotlin server.
+#
+# The build runs inside debian:13 with the same apt toolchain as the Containerfile so that the
+# fixtures are produced by Debian 13's GDAL. GDAL versions differ (macOS brew ships 3.13, Debian 13
+# ships 3.10/3.11) and GDAL's S-57 reader, MakeValid and geometry operations can produce slightly
+# different output; the regenerate check here is the authoritative one, a local diff on another
+# GDAL is advisory.
+name: ci
+
+on:
+  push:
+    branches: [master, rust_port]
+  pull_request:
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g
+  KONAN_DATA_DIR: /root/.konan
+
+jobs:
+  build-and-test:
+    name: Kotlin tests + fixture regenerate check
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    container:
+      image: debian:13-slim
+    services:
+      postgres:
+        image: postgis/postgis:13-3.1
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: s57server
+        options: >-
+          --health-cmd "pg_isready -U admin -d s57server"
+          --health-interval 10s --health-timeout 5s --health-retries 10
+    steps:
+      - name: Install the Containerfile toolchain
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates git curl socat openjdk-21-jdk-headless \
+            libgdal-dev libpq-dev libssl-dev libzip-dev libcurl4-openssl-dev libgd-dev \
+            libexpat1-dev libsqlite3-dev postgresql-client
+          gdal-config --version
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # buildSrc GitInfo reads the git hash and branch
+
+      - name: Cache Kotlin/Native and Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            /root/.konan
+            /root/.gradle/caches
+            /root/.gradle/wrapper
+          key: ${{ runner.os }}-konan-gradle-${{ hashFiles('gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-konan-gradle-
+
+      # The tests (server TestEnv and the older DB tests) reach PostGIS at localhost:6432, the
+      # port chart_server_db/compose.yaml publishes. In a container job the service is a separate
+      # host, so forward the port instead of changing the Kotlin side.
+      - name: Forward localhost:6432 to the PostGIS service
+        run: |
+          nohup socat TCP-LISTEN:6432,fork,reuseaddr TCP:postgres:5432 > /tmp/socat.log 2>&1 &
+          for i in $(seq 1 30); do pg_isready -h localhost -p 6432 -U admin -d s57server && break; sleep 2; done
+          PGPASSWORD=mysecretpassword psql -h localhost -p 6432 -U admin -d s57server -c 'select postgis_version();'
+
+      - name: Run every test in verify mode
+        run: ./gradlew allTests --console=plain
+
+      # Regenerate every fixture from the current implementation and demand that nothing changed:
+      # a diff is a behaviour change that must be reviewed and committed deliberately
+      # (testdata/README.md "Verify and regenerate").
+      - name: Regenerate fixtures and fail on any diff
+        run: |
+          NJORD_FIXTURES=regenerate ./gradlew allTests --console=plain
+          git status --porcelain -- testdata/
+          git diff --exit-code -- testdata/
+
+      - name: Link the server binary for the conformance job
+        run: ./gradlew :server:linkDebugExecutableArch --console=plain
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: server-kexe
+          path: |
+            server/build/bin/arch/debugExecutable/server.kexe
+          retention-days: 3
+
+      - name: Test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/**'
+          retention-days: 7
+
+  conformance:
+    name: HTTP conformance suite against the Kotlin server
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: debian:13-slim  # same runtime libraries the binary was linked against
+    services:
+      postgres:
+        image: postgis/postgis:13-3.1
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: s57server
+        options: >-
+          --health-cmd "pg_isready -U admin -d s57server"
+          --health-interval 10s --health-timeout 5s --health-retries 10
+    steps:
+      - name: Install runtime libraries, Python and psql
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates curl socat postgresql-client python3 python3-venv python3-pip \
+            libgdal36 libpq5 libzip5 libssl3t64 libcurl4t64 libgd3 libexpat1 libsqlite3-0
+          python3 --version  # Debian 13 ships 3.13; the suite needs >= 3.12
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: server-kexe
+          path: server/build/bin/arch/debugExecutable
+
+      - name: Forward localhost:6432 to the PostGIS service and create the conformance database
+        run: |
+          nohup socat TCP-LISTEN:6432,fork,reuseaddr TCP:postgres:5432 > /tmp/socat.log 2>&1 &
+          for i in $(seq 1 30); do pg_isready -h localhost -p 6432 -U admin -d s57server && break; sleep 2; done
+          export PGPASSWORD=mysecretpassword
+          psql -h localhost -p 6432 -U admin -d s57server -c 'CREATE DATABASE njord_conformance'
+          psql -h localhost -p 6432 -U admin -d njord_conformance -c 'CREATE EXTENSION IF NOT EXISTS postgis'
+
+      - name: Start the Kotlin server on :9000
+        run: |
+          chmod +x server/build/bin/arch/debugExecutable/server.kexe
+          mkdir -p /tmp/njord-conf/data /tmp/njord-conf/web
+          echo '<html><body>njord</body></html>' > /tmp/njord-conf/web/index.html
+          export CHART_SERVER_OPTS='{"pgConnectionInfo":"postgresql://admin:mysecretpassword@localhost:6432/njord_conformance","chartTempData":"/tmp/njord-conf/data","webStaticContent":"/tmp/njord-conf/web","useTileCache":true,"port":9000}'
+          nohup server/build/bin/arch/debugExecutable/server.kexe server/src/nativeMain/resources > /tmp/njord-conf/server.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:9000/v1/about/version && break; sleep 2; done
+          curl -sf http://localhost:9000/v1/about/version
+
+      - name: Install the suite
+        run: |
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install -r conformance/requirements.txt
+
+      # Verify mode against the recorded goldens. The seeded fixture ingests testdata/fixtures
+      # through the API first (P-API-8), so this also covers the end-to-end ingest.
+      - name: pytest conformance (verify)
+        run: /tmp/venv/bin/pytest conformance --base-url=http://localhost:9000 -rsf
+
+      - name: Server log
+        if: always()
+        run: tail -n 200 /tmp/njord-conf/server.log

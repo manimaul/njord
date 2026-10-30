@@ -1,0 +1,272 @@
+{
+  "pins": "preTileEncode of Drgare (layer key DRGARE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "18 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -1.5,
+        "AC": "DEPIT",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.0,
+        "AC": "DEPIT",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.5,
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.9,
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 3.0,
+        "AC": "DEPVS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 3.1,
+        "AC": "DEPMS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.9,
+        "AC": "DEPMS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 6.0,
+        "AC": "DEPMS",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 6.1,
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 8.9,
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 9.0,
+        "AC": "DEPMD",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 9.1,
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 10.0,
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 15.0,
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 100.0,
+        "AC": "DEPDW",
+        "AP": "DRGARE01P",
+        "LC": "CHGRD"
+      }
+    }
+  ]
+}

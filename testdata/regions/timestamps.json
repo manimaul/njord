@@ -1,0 +1,104 @@
+{
+  "pins": "RegionExporter stem parsing in TZ=America/Los_Angeles (yyyy-MM-ddTHH-mm-ss local -> RFC 3339 instant, null when unparsable), archive name parsing, archivesForRegion ordering (newest first, unparsable stems last) and pruneOldArchives keeping MAX_ARCHIVES=2 newest; the WA/WA_SOUND prefix overlap is pinned as is",
+  "decisions": [
+    "RE-3",
+    "RE-4"
+  ],
+  "generator": "RegionExportTest.P-RE-4",
+  "cases": [
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "2026-01-15T13-45-30"
+      },
+      "expected": "2026-01-15T21:45:30Z"
+    },
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "2026-07-15T13-45-30"
+      },
+      "expected": "2026-07-15T20:45:30Z"
+    },
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "2026-03-08T02-30-00"
+      },
+      "expected": "2026-03-08T10:30:00Z"
+    },
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "2026-11-01T01-30-00"
+      },
+      "expected": "2026-11-01T08:30:00Z"
+    },
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "2026-01-15T13:45:30"
+      },
+      "expected": "2026-01-15T21:45:30Z"
+    },
+    {
+      "input": {
+        "op": "parseTimestampStem",
+        "a": "garbage"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "op": "parseArchiveTimestamp",
+        "a": "REGION_04",
+        "b": "REGION_04_2026-04-14T07-00-31.mbtiles"
+      },
+      "expected": "2026-04-14T14:00:31Z"
+    },
+    {
+      "input": {
+        "op": "parseArchiveTimestamp",
+        "a": "WA",
+        "b": "WA_SOUND_2026-04-01T00-00-00.mbtiles"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "op": "parseArchiveTimestamp",
+        "a": "WA",
+        "b": "WA_2026-02-01T00-00-00.mbtiles"
+      },
+      "expected": "2026-02-01T08:00:00Z"
+    },
+    {
+      "input": {
+        "op": "archivesForRegion",
+        "a": "WA"
+      },
+      "expected": "WA_2026-03-01T00-00-00.mbtiles,WA_2026-02-01T00-00-00.mbtiles,WA_2026-01-01T00-00-00.mbtiles,WA_not-a-stamp.mbtiles,WAX_2026-05-01T00-00-00.mbtiles,WA_SOUND_2026-04-01T00-00-00.mbtiles"
+    },
+    {
+      "input": {
+        "op": "archivesForRegion",
+        "a": "WA_SOUND"
+      },
+      "expected": "WA_SOUND_2026-04-01T00-00-00.mbtiles"
+    },
+    {
+      "input": {
+        "op": "archivesForRegion",
+        "a": "NOPE"
+      },
+      "expected": ""
+    },
+    {
+      "input": {
+        "op": "pruneOldArchives",
+        "a": "WA"
+      },
+      "expected": "WA_2026-02-01T00-00-00.mbtiles,WA_2026-02-01T00-00-00.mbtiles.sha256,WA_2026-03-01T00-00-00.mbtiles"
+    }
+  ]
+}

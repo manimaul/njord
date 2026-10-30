@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/style/meters/bogus",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "Kotlin answers 500 where 404 was intended",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 500,
+    "content_type": "text/plain; charset=UTF-8",
+    "headers": {},
+    "body": "Serializer for class 'Any' is not found.\nPlease ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.\n"
+  }
+}

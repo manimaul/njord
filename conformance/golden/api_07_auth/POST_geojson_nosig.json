@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/v1/geojson?chart_name=a&layer_name=b",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 401,
+    "content_type": "",
+    "headers": {},
+    "body": null
+  }
+}

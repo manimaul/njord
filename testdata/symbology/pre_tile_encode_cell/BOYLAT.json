@@ -1,0 +1,211 @@
+{
+  "pins": "preTileEncode over every BOYLAT feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 31,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 17,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106533,
+          "FIDS": 1,
+          "LNAM": "02260001A0250001",
+          "LNAM_REFS": [
+            "02260EE6D4F53039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATLAM": 1,
+          "COLOUR": [
+            "4"
+          ],
+          "OBJNAM": "Hylebos Waterway Lighted Buoy 1",
+          "STATUS": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 31,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 17,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106533,
+        "FIDS": 1,
+        "LNAM": "02260001A0250001",
+        "LNAM_REFS": [
+          "02260EE6D4F53039"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BOYSHP": 4,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Hylebos Waterway Lighted Buoy 1",
+        "STATUS": [
+          "1"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "BOYLAT23"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 32,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 17,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1118397768,
+          "FIDS": 12345,
+          "LNAM": "0226BD569AB83039",
+          "LNAM_REFS": [
+            "022600019FEB0001"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATLAM": 2,
+          "COLOUR": [
+            "3"
+          ],
+          "OBJNAM": "Blair Waterway Lighted Buoy 2",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20040720",
+          "SORIND": "US,US,reprt,13thCGD,LNM 29/04"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 32,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 17,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1118397768,
+        "FIDS": 12345,
+        "LNAM": "0226BD569AB83039",
+        "LNAM_REFS": [
+          "022600019FEB0001"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BOYSHP": 4,
+        "CATLAM": 2,
+        "COLOUR": [
+          "3"
+        ],
+        "OBJNAM": "Blair Waterway Lighted Buoy 2",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20040720",
+        "SORIND": "US,US,reprt,13thCGD,LNM 29/04",
+        "SY": "BOYLAT14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 33,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 17,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 620114898,
+          "FIDS": 12345,
+          "LNAM": "022624F633D23039",
+          "LNAM_REFS": [
+            "0226494A0F323039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATLAM": 2,
+          "COLOUR": [
+            "3"
+          ],
+          "OBJNAM": "Hylebos Waterway Lighted Buoy 2",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20111011",
+          "SORIND": "US,US,reprt,13thCGD,LNM 41/11"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 33,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 17,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 620114898,
+        "FIDS": 12345,
+        "LNAM": "022624F633D23039",
+        "LNAM_REFS": [
+          "0226494A0F323039"
+        ],
+        "FFPT_RIND": [
+          2
+        ],
+        "BOYSHP": 4,
+        "CATLAM": 2,
+        "COLOUR": [
+          "3"
+        ],
+        "OBJNAM": "Hylebos Waterway Lighted Buoy 2",
+        "STATUS": [
+          "8"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20111011",
+        "SORIND": "US,US,reprt,13thCGD,LNM 41/11",
+        "SY": "BOYLAT14"
+      }
+    }
+  ]
+}

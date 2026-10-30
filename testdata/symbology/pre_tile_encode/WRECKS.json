@@ -1,0 +1,1362 @@
+{
+  "pins": "preTileEncode of Wrecks (layer key WRECKS): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "82 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 14 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 0,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 4,
+        "SY": "WRECKS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 5,
+        "SY": "WRECKS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": -1.5,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.5,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 2.9,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.1,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 5.9,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.1,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 8.9,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 9.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 9.1,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 15.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 100.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 0,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 6,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 0.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 3.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 10.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "VALSOU": 0.0,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "VALSOU": 3.0,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "VALSOU": 6.0,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "VALSOU": 10.0,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "VALSOU": 0.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "VALSOU": 3.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "VALSOU": 10.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "VALSOU": 0.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "VALSOU": 3.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "VALSOU": 10.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "WATLEV": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "WATLEV": 1,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "WATLEV": 2,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "WATLEV": 3,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "WATLEV": 8,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "WATLEV": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "WATLEV": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "WATLEV": 2,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 6,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 6,
+        "WATLEV": 8,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 1,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 2,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 3,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 8,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 1,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 2,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 3,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 8,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 1,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 2,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 3,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 8,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 1,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 2,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 8,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 2,
+        "SY": "WRECKS05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 3,
+        "SY": "ISODGR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 4,
+        "SY": "WRECKS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 5,
+        "SY": "WRECKS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 5.9,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATWRK": 1,
+          "VALSOU": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATWRK": 1,
+        "VALSOU": 6.1,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "VALSOU": 2.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "VALSOU": 2.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "VALSOU": 8.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "VALSOU": 8.0,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "SY": "DANGER01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.01
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.01,
+        "SY": "WRECKS04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "SY": "ISODGR01"
+      }
+    }
+  ]
+}

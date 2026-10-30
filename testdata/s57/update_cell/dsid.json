@@ -1,0 +1,43 @@
+{
+  "pins": "UPDATES=APPLY: with .001-.004 beside the .000 GDAL applies them, so DSID_UPDN/EDTN/UADT/ISDT and the feature count change and the .TXT siblings become chart_txt; the lone .000 reads as update 0 with no chart_txt",
+  "decisions": [
+    "IN-10"
+  ],
+  "generator": "S57FixtureTest.P-IN-4",
+  "source": "fixtures/US5WA22M/US5WA22M.000 copied alone (base) vs in place with its updates (updated); GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": "base",
+      "expected": {
+        "name": "US5WA22M.000",
+        "updated": "20190319",
+        "issued": "20190319",
+        "dsidUpdn": "0",
+        "dsidEdtn": "40",
+        "dsidUadt": "20190319",
+        "dsidIsdt": "20190319",
+        "featureCount": 5164,
+        "chartTxt": []
+      }
+    },
+    {
+      "input": "updated",
+      "expected": {
+        "name": "US5WA22M.000",
+        "updated": "20190319",
+        "issued": "20200626",
+        "dsidUpdn": "4",
+        "dsidEdtn": "40",
+        "dsidUadt": "20190319",
+        "dsidIsdt": "20200626",
+        "featureCount": 5163,
+        "chartTxt": [
+          "US5WA22A.TXT",
+          "US5WA22B.TXT",
+          "US5WA22C.TXT",
+          "US5WA22D.TXT"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "pins": "preTileEncode over every FERYRT feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5179,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 53,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 2012151718,
+          "FIDS": 12345,
+          "LNAM": "022677EEFFA63039",
+          "CATFRY": 1,
+          "INFORM": "Mariners are cautioned that the Washington State Ferries may deviate from the published standard routes due to inclement weather, traffic conditions, navigational hazards or other emergency conditions.",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5179,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 53,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 2012151718,
+        "FIDS": 12345,
+        "LNAM": "022677EEFFA63039",
+        "CATFRY": 1,
+        "INFORM": "Mariners are cautioned that the Washington State Ferries may deviate from the published standard routes due to inclement weather, traffic conditions, navigational hazards or other emergency conditions.",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHBLK",
+        "LP": "FRYARE51"
+      }
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 import io.madrona.njord.db.ChartDao
-import io.madrona.njord.resources
 import kotlinx.coroutines.runBlocking
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -23,7 +22,7 @@ import kotlin.test.assertTrue
  */
 class ChartCatalogTest {
 
-    lateinit var ds: PgDataSource
+    private val ds: DataSource get() = TestEnv.ds
     lateinit var chartDao: ChartDao
 
     private val prefix = "zz_chart_catalog_test_"
@@ -35,9 +34,7 @@ class ChartCatalogTest {
 
     @BeforeTest
     fun beforeEach() {
-        // ChartDao's default FeatureDao comes from Singletons, which reads the config file.
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
-        ds = PgDataSource("postgresql://admin:mysecretpassword@localhost:6432/s57server")
+        TestEnv.init()
         chartDao = ChartDao(ds)
         runBlocking {
             cleanup()

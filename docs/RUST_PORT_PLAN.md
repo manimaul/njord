@@ -273,7 +273,7 @@ Each phase ends when its conformance/fixture tests pass in Rust. No phase starts
 Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Write the §5 tests in Kotlin; make them emit `testdata/`.
 - Add CI (PostGIS service + `./gradlew allTests`) so the fixtures are regenerated and validated on every change.
-- Fix or formally accept each suspected defect (D1–D9) **before** fixtures are frozen. Every fixture is a decision about which behavior the port must copy.
+- Fix or formally accept each suspected defect (D1–D9) **before** fixtures are frozen. Every fixture is a decision about which behavior the port must copy. Done 2026-10-30: D1 fixed, D2–D9 accepted in Kotlin and fixed in the port (TEST_COVERAGE_AUDIT.md §3.1).
 - Exit: `testdata/` committed; conformance suite green against the Kotlin server.
 
 ### Phase 1 — Workspace and the contract crate
@@ -336,7 +336,7 @@ The current UI is ~4.5k lines of Compose-HTML across `web` and `shared_fe`: a ro
 | Cluster-scoped resources leak between the two environments (image tag pulled with `Always`, the `nfs` StorageClass, the relay's host port) | §10.2: distinct image repository, distinct NFS release and StorageClass, relay on host port 6433. |
 | Both environments run on the same three 2 vCPU / 4 GiB nodes | Right-size the Rust pods from measurement (§10.2 item 5), `minReplicas: 1` until cutover, check `kubectl describe nodes` before applying; add a node rather than squeeze the old environment. |
 | Shipped mobile builds hard-code `https://openenc.com/v1/regions` and `/v1/style` | `openenc.com` must keep answering (serve, then 301) for as long as those builds are in the field (§10.6). |
-| Fixtures freeze bugs as behavior | Resolve D1–D9 in Phase 0; each fixture file gets a header comment naming the decision. |
+| Fixtures freeze bugs as behavior | Resolved 2026-10-30 (TEST_COVERAGE_AUDIT.md §3.1): D1 fixed in Kotlin; D2–D9 accepted in Kotlin and fixed in the port. Every fixture names the decisions it depends on in its header; a case where Kotlin and the port legitimately differ carries `port.expected`, and conformance cases that only pass on the port are tagged `port_only` and skipped against a Kotlin server. |
 | Kotlin's `Dispatchers.IO` + GDAL vs tokio | All GDAL work in `spawn_blocking`; GDAL datasets are `!Send` in the `gdal` crate, so open/iterate/close within one blocking task per chart. |
 | Floating point formatting (`format()` in `LightDescription`, bearings, clearances, `Double.toString`) | Golden fixtures in P-SY-4/5; use `ryu`-based formatting deliberately matched to Kotlin's output. |
 

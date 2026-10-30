@@ -1,0 +1,433 @@
+{
+  "pins": "preTileEncode of Lndrgn (layer key LNDRGN): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "26 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "0"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "1"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "2"
+        ],
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "3"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "4"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "5"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "6"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "7"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "8"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "9"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "10"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "11"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "12"
+        ],
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "13"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "14"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "15"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "15"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "16"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "16"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "17"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "17"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "18"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "18"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "19"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "19"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "20"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "20"
+        ],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [],
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLND": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLND": [
+          "1",
+          "2"
+        ],
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    }
+  ]
+}

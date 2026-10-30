@@ -1,0 +1,137 @@
+{
+  "pins": "preTileEncode of Fshfac (layer key FSHFAC): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "9 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHHAV02P"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHHAV02P"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHHAV02P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 0,
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHHAV02P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 1,
+        "LC": "CHGRD",
+        "SY": "FSHFAC03",
+        "AP": "FSHFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 2,
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHFAC04P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 3,
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHFAC04P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 4,
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHFAC04P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATFIF": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATFIF": 5,
+        "LC": "CHGRD",
+        "SY": "FSHFAC02",
+        "AP": "FSHHAV02P"
+      }
+    }
+  ]
+}

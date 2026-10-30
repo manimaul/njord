@@ -1,0 +1,1054 @@
+{
+  "pins": "preTileEncode of Pipare (layer key PIPARE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "54 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "0"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "4"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "5"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "6"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "7"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2",
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2",
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "0"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "1"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "2"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "4"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "5"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "6"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "7"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "8"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "9"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "10"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "11"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "12"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "13"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "14"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "15"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "15"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "16"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "16"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "17"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "17"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "18"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "18"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "19"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "19"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "20"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "20"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "21"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "21"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "22"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "22"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "23"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "PRODCT": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "PRODCT": [
+          "1",
+          "2"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2"
+          ],
+          "PRODCT": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2"
+        ],
+        "PRODCT": [
+          "1"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2"
+          ],
+          "PRODCT": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2"
+        ],
+        "PRODCT": [
+          "2"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2"
+          ],
+          "PRODCT": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2"
+        ],
+        "PRODCT": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "2"
+          ],
+          "PRODCT": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "2"
+        ],
+        "PRODCT": [
+          "23"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "3"
+          ],
+          "PRODCT": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "3"
+        ],
+        "PRODCT": [
+          "1"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "3"
+          ],
+          "PRODCT": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "3"
+        ],
+        "PRODCT": [
+          "2"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "3"
+          ],
+          "PRODCT": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "3"
+        ],
+        "PRODCT": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "3"
+          ],
+          "PRODCT": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "3"
+        ],
+        "PRODCT": [
+          "23"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "4"
+          ],
+          "PRODCT": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "4"
+        ],
+        "PRODCT": [
+          "1"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "4"
+          ],
+          "PRODCT": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "4"
+        ],
+        "PRODCT": [
+          "2"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "4"
+          ],
+          "PRODCT": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "4"
+        ],
+        "PRODCT": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "4"
+          ],
+          "PRODCT": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "4"
+        ],
+        "PRODCT": [
+          "23"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "7"
+          ],
+          "PRODCT": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "7"
+        ],
+        "PRODCT": [
+          "1"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "7"
+          ],
+          "PRODCT": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "7"
+        ],
+        "PRODCT": [
+          "2"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "7"
+          ],
+          "PRODCT": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "7"
+        ],
+        "PRODCT": [
+          "3"
+        ],
+        "LC": "CHGRD",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPIP": [
+            "7"
+          ],
+          "PRODCT": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPIP": [
+          "7"
+        ],
+        "PRODCT": [
+          "23"
+        ],
+        "LC": "CHMGD",
+        "SY": "CHINFO07"
+      }
+    }
+  ]
+}

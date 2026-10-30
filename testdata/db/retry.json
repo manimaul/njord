@@ -1,0 +1,360 @@
+{
+  "pins": "Dao.sqlOpAsync: up to tryCount (default 7) attempts; a null connection or a thrown block retries after 100 ms × attempt; CancellationException is never retried and is swallowed to null; null when attempts run out",
+  "decisions": [
+    "D5",
+    "DB-13"
+  ],
+  "generator": "DaoRetryFixtureTest.retryTable",
+  "source": "virtual time (kotlinx-coroutines-test), fake DataSource",
+  "cases": [
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 1,
+        "blockInvocations": 1,
+        "totalDelayMs": 0
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 1,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 2,
+        "blockInvocations": 1,
+        "totalDelayMs": 100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 3,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 4,
+        "blockInvocations": 1,
+        "totalDelayMs": 600
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 6,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 7,
+        "blockInvocations": 1,
+        "totalDelayMs": 2100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 7,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "connectionAttempts": 7,
+        "blockInvocations": 0,
+        "totalDelayMs": 2100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": -1,
+        "blockFailures": 0,
+        "cancel": false
+      },
+      "expected": {
+        "connectionAttempts": 7,
+        "blockInvocations": 0,
+        "totalDelayMs": 2100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 1,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 2",
+        "connectionAttempts": 2,
+        "blockInvocations": 2,
+        "totalDelayMs": 100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 3,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 4",
+        "connectionAttempts": 4,
+        "blockInvocations": 4,
+        "totalDelayMs": 600
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 6,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 7",
+        "connectionAttempts": 7,
+        "blockInvocations": 7,
+        "totalDelayMs": 2100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 7,
+        "cancel": false
+      },
+      "expected": {
+        "connectionAttempts": 7,
+        "blockInvocations": 7,
+        "totalDelayMs": 2100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": -1,
+        "cancel": false
+      },
+      "expected": {
+        "connectionAttempts": 7,
+        "blockInvocations": 7,
+        "totalDelayMs": 2100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 2,
+        "blockFailures": 2,
+        "cancel": false
+      },
+      "expected": {
+        "result": "ok after 3",
+        "connectionAttempts": 5,
+        "blockInvocations": 3,
+        "totalDelayMs": 1000
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 3,
+          "blockInvocations": 1,
+          "totalDelayMs": 300
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 3,
+        "blockFailures": 4,
+        "cancel": false
+      },
+      "expected": {
+        "connectionAttempts": 7,
+        "blockInvocations": 4,
+        "totalDelayMs": 2100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 4,
+          "blockInvocations": 1,
+          "totalDelayMs": 600
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 0,
+        "cancel": true
+      },
+      "expected": {
+        "connectionAttempts": 1,
+        "blockInvocations": 1,
+        "totalDelayMs": 0
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 2,
+        "blockFailures": 0,
+        "cancel": true
+      },
+      "expected": {
+        "connectionAttempts": 3,
+        "blockInvocations": 1,
+        "totalDelayMs": 300
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 0,
+        "cancel": false,
+        "tryCount": 2
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 1,
+        "blockInvocations": 1,
+        "totalDelayMs": 0
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 1,
+        "blockFailures": 0,
+        "cancel": false,
+        "tryCount": 2
+      },
+      "expected": {
+        "result": "ok after 1",
+        "connectionAttempts": 2,
+        "blockInvocations": 1,
+        "totalDelayMs": 100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 2,
+        "blockFailures": 0,
+        "cancel": false,
+        "tryCount": 2
+      },
+      "expected": {
+        "connectionAttempts": 2,
+        "blockInvocations": 0,
+        "totalDelayMs": 100
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 1,
+        "cancel": false,
+        "tryCount": 2
+      },
+      "expected": {
+        "result": "ok after 2",
+        "connectionAttempts": 2,
+        "blockInvocations": 2,
+        "totalDelayMs": 100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": 2,
+        "cancel": false,
+        "tryCount": 2
+      },
+      "expected": {
+        "connectionAttempts": 2,
+        "blockInvocations": 2,
+        "totalDelayMs": 100
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    },
+    {
+      "input": {
+        "nullConnections": 0,
+        "blockFailures": -1,
+        "cancel": false,
+        "tryCount": 1
+      },
+      "expected": {
+        "connectionAttempts": 1,
+        "blockInvocations": 1,
+        "totalDelayMs": 0
+      },
+      "port": {
+        "decision": "D5",
+        "expected": {
+          "connectionAttempts": 1,
+          "blockInvocations": 1,
+          "totalDelayMs": 0
+        }
+      }
+    }
+  ]
+}

@@ -47,6 +47,9 @@ class LayerFactory(
         }
     }
 
+    /** Every registered layerable by key, for the symbology characterization tests (P-SY-1). */
+    internal val layerables: Map<String, Layerable> get() = layerablesMap
+
     fun layers(options: LayerableOptions) = layers[options]?.toList() ?: throw RuntimeException(
         "layers not available for options $options"
     )

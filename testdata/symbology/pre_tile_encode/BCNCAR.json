@@ -1,0 +1,1151 @@
+{
+  "pins": "preTileEncode of Bcncar (layer key BCNCAR): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "9 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 54 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 0,
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 1,
+        "SY": "BCNCAR01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 2,
+        "SY": "BCNCAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 3,
+        "SY": "BCNCAR03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 4,
+        "SY": "BCNCAR04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATCAM": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATCAM": 5,
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 0,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 0,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 1,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 1,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 2,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 2,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 3,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 3,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 4,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 4,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 5,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 5,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 6,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 6,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 7,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 7,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BCNDEF13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BCNSHP": 8,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BCNSHP": 8,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BCNDEF13"
+      }
+    }
+  ]
+}

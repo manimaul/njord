@@ -1,0 +1,92 @@
+{
+  "pins": "preTileEncode over every FAIRWY feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5175,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 51,
+          "RVER": 9,
+          "AGEN": 550,
+          "FIDN": 957874655,
+          "FIDS": 1949,
+          "LNAM": "0226391801DF079D",
+          "OBJNAM": "Hylebos Waterway",
+          "TRAFIC": 4,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5175,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 51,
+        "RVER": 9,
+        "AGEN": 550,
+        "FIDN": 957874655,
+        "FIDS": 1949,
+        "LNAM": "0226391801DF079D",
+        "OBJNAM": "Hylebos Waterway",
+        "TRAFIC": 4,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5176,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 51,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 998510333,
+          "FIDS": 17879,
+          "LNAM": "02263B840EFD45D7",
+          "OBJNAM": "Blair Waterway",
+          "TRAFIC": 4,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5176,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 51,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 998510333,
+        "FIDS": 17879,
+        "LNAM": "02263B840EFD45D7",
+        "OBJNAM": "Blair Waterway",
+        "TRAFIC": 4,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHBLK"
+      }
+    }
+  ]
+}

@@ -73,35 +73,8 @@ class TileEncoder(
         mutableListOf<ChartFeatureInfo>()
     }
 
-    private fun MutableMap<String, JsonElement>.filtered(): MutableMap<String, JsonElement> {
-        iterator().also { itor ->
-            while (itor.hasNext()) {
-                itor.next().also { entry ->
-                    when (val jp = entry.value) {
-                        is JsonPrimitive -> {
-                            if (jp.isString && jp.content.isBlank()) {
-                                itor.remove()
-                            }
-                            if (jp.content == "0" && s57ObjectLibrary.attributes[entry.key]?.attributeType == "E") {
-                                itor.remove()
-                            }
-                        }
-
-                        is JsonArray -> {
-                            if (jp.isEmpty()) {
-                                itor.remove()
-                            }
-                        }
-
-                        else -> {
-                            error("unable to filter unexpected element type ${jp::class.simpleName}")
-                        }
-                    }
-                }
-            }
-        }
-        return this
-    }
+    private fun MutableMap<String, JsonElement>.filtered(): MutableMap<String, JsonElement> =
+        filteredProps(s57ObjectLibrary)
 
     suspend fun addCharts(info: Boolean): TileEncoder {
         //we need to expand the polygon so that lines are not drawn on the edge of the tile
@@ -253,4 +226,40 @@ class TileEncoder(
         return infoFeatures
     }
 
+}
+
+/**
+ * Drops the feature properties that carry no information for the style: blank strings, empty
+ * arrays, and the value `0` on an *enumerated* S-57 attribute (`attributeType == "E"`), where it
+ * is "not set" rather than a value - a float or integer `0` (`VALSOU = 0`) is real and kept.
+ * Nested objects never occur in S-57 props and are an error. Pinned by P-TE-3.
+ */
+internal fun MutableMap<String, JsonElement>.filteredProps(s57ObjectLibrary: S57ObjectLibrary): MutableMap<String, JsonElement> {
+    iterator().also { itor ->
+        while (itor.hasNext()) {
+            itor.next().also { entry ->
+                when (val jp = entry.value) {
+                    is JsonPrimitive -> {
+                        if (jp.isString && jp.content.isBlank()) {
+                            itor.remove()
+                        }
+                        if (jp.content == "0" && s57ObjectLibrary.attributes[entry.key]?.attributeType == "E") {
+                            itor.remove()
+                        }
+                    }
+
+                    is JsonArray -> {
+                        if (jp.isEmpty()) {
+                            itor.remove()
+                        }
+                    }
+
+                    else -> {
+                        error("unable to filter unexpected element type ${jp::class.simpleName}")
+                    }
+                }
+            }
+        }
+    }
+    return this
 }

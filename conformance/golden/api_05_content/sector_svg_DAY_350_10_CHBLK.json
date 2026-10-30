@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/sector_svg/DAY/350/10/CHBLK",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "text"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "image/svg+xml",
+    "headers": {},
+    "body": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 200\">\n  <path d=\"M 113.9 178.8 A 80.0 80.0 0 0 1 86.1 178.8\"\n      fill=\"none\" stroke=\"#000000\" stroke-width=\"4\" stroke-linecap=\"butt\"/>\n    <line x1=\"100.0\" y1=\"100.0\" x2=\"113.9\" y2=\"178.8\"\n        stroke=\"#4C5B63\" stroke-width=\"2\"\n        stroke-dasharray=\"4 6\" stroke-linecap=\"butt\"/>\n  <line x1=\"100.0\" y1=\"100.0\" x2=\"86.1\" y2=\"178.8\"\n        stroke=\"#4C5B63\" stroke-width=\"2\"\n        stroke-dasharray=\"4 6\" stroke-linecap=\"butt\"/>\n</svg>"
+  }
+}

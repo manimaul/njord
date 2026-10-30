@@ -1,0 +1,881 @@
+{
+  "pins": "Depare.preTileEncode colour band (AC) with shallowDepth=2, safetyDepth=5, deepDepth=20: DEPIT when DRVAL1<0 and DRVAL2<=0, else DEPVS/DEPMS/DEPMD by DRVAL1 <= threshold, DEPDW above deepDepth, CHBLK when a bound is missing; LC is always CHGRD",
+  "decisions": [
+    "SY-3"
+  ],
+  "generator": "PreTileEncodeFixtureTest.depthBands",
+  "source": "DRVAL1 at every threshold and its neighbours × DRVAL2 around zero",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -5.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -5.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPIT",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -5.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -5.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPIT",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -5.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -5.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -5.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -5.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -0.1,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -0.1,
+        "DRVAL2": -1.0,
+        "AC": "DEPIT",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -0.1,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -0.1,
+        "DRVAL2": 0.0,
+        "AC": "DEPIT",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -0.1,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -0.1,
+        "DRVAL2": 0.1,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": -0.1,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": -0.1,
+        "DRVAL2": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 0.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 0.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 1.9,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 1.9,
+        "DRVAL2": -1.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 1.9,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 1.9,
+        "DRVAL2": 0.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 1.9,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 1.9,
+        "DRVAL2": 0.1,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 1.9,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 1.9,
+        "DRVAL2": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPVS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.1,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.1,
+        "DRVAL2": -1.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.1,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.1,
+        "DRVAL2": 0.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.1,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.1,
+        "DRVAL2": 0.1,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 2.1,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 2.1,
+        "DRVAL2": 10.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 4.9,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 4.9,
+        "DRVAL2": -1.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 4.9,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 4.9,
+        "DRVAL2": 0.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 4.9,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 4.9,
+        "DRVAL2": 0.1,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 4.9,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 4.9,
+        "DRVAL2": 10.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPMS",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.1,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.1,
+        "DRVAL2": -1.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.1,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.1,
+        "DRVAL2": 0.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.1,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.1,
+        "DRVAL2": 0.1,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 5.1,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 5.1,
+        "DRVAL2": 10.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 19.9,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 19.9,
+        "DRVAL2": -1.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 19.9,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 19.9,
+        "DRVAL2": 0.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 19.9,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 19.9,
+        "DRVAL2": 0.1,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 19.9,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 19.9,
+        "DRVAL2": 10.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPMD",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.1,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.1,
+        "DRVAL2": -1.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.1,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.1,
+        "DRVAL2": 0.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.1,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.1,
+        "DRVAL2": 0.1,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 20.1,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 20.1,
+        "DRVAL2": 10.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 100.0,
+          "DRVAL2": -1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 100.0,
+        "DRVAL2": -1.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 100.0,
+          "DRVAL2": 0.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 100.0,
+        "DRVAL2": 0.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 100.0,
+          "DRVAL2": 0.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 100.0,
+        "DRVAL2": 0.1,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 100.0,
+          "DRVAL2": 10.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 100.0,
+        "DRVAL2": 10.0,
+        "AC": "DEPDW",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL1": 1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL1": 1.0,
+        "AC": "CHBLK",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "DRVAL2": 1.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "DRVAL2": 1.0,
+        "AC": "CHBLK",
+        "LC": "CHGRD"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBLK",
+        "LC": "CHGRD"
+      }
+    }
+  ]
+}

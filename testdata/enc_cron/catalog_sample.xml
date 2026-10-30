@@ -1,0 +1,1002 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  njord fixture P-EC-1 (testdata/enc_cron/catalog_sample.xml)
+  Pins: EncProdCatParser element-path rules - cell/edition/url/scale/size/revision/publication
+        extraction, the dataQualityInfo sourceCitation/title "0" decoy never becoming a cell
+        name, and incomplete MD_Metadata records (US5ZZ99M without <onLine>, and the trailing
+        seriesMetadata record) being skipped rather than fatal.
+  Source: https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml dateStamp 2026-10-30T04:52:47Z, trimmed by
+        testdata/tools/trim_catalog.py to US1EEZ1M, US3AK12M, US509890, US5A1KFV plus the synthetic US5ZZ99M.
+  Regenerate: python3 testdata/tools/trim_catalog.py <full catalog> testdata/enc_cron/catalog_sample.xml
+-->
+<DS_Series 
+    xmlns="http://www.isotc211.org/2005/gmd" 
+    xmlns:gco="http://www.isotc211.org/2005/gco" 
+    xmlns:gml="http://www.opengis.net/gml/3.2" 
+    xmlns:gsr="http://www.isotc211.org/2005/gsr" 
+    xmlns:gss="http://www.isotc211.org/2005/gss" 
+    xmlns:gts="http://www.isotc211.org/2005/gts" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20070417/gmd/gmd.xsd">
+    <composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2026-10-30T04:52:47Z</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US1EEZ1M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>West Pacific; Wake Island, Mariana Islands, Guam</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2025-12-09</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2026-08-04</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>10.1</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+<gco:CharacterString>coast guard district: 14</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: AK</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: CA</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: HI</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: OR</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: PO</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: WA</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 30</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 32</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 34</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 36</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 40</gco:CharacterString>
+</keyword>
+
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>3000000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+						    
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.20743846893310547</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>https://www.charts.noaa.gov/ENCs/US1EEZ1M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2026-10-30T04:46:59Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>0</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf><composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2026-10-30T04:52:47Z</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US3AK12M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Cook Inlet  Southern Part</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2023-06-09</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2026-06-10</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>13.1</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+<gco:CharacterString>coast guard district: 17</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: AK</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 32</gco:CharacterString>
+</keyword>
+
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>200000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+						    
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.8561716079711914</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>https://www.charts.noaa.gov/ENCs/US3AK12M.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2026-10-30T04:46:33Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>0</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf><composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2026-10-30T04:52:47Z</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US509890</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Golfo De San Blas</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2015-07-22</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2026-03-25</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>1.1</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+<gco:CharacterString>coast guard district: 14</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: HI</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 10</gco:CharacterString>
+</keyword>
+
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>35000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+						    
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.5547800064086914</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>https://www.charts.noaa.gov/ENCs/US509890.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2026-10-30T04:38:55Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>0</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf><composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2026-10-30T04:52:47Z</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US5A1KFV</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Constantine Harbor</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2024-12-20</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2024-12-20</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>1.0</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+<gco:CharacterString>coast guard district: 17</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: AK</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 34</gco:CharacterString>
+</keyword>
+
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>12000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+						    			<extent>
+                <EX_Extent>
+                    <description>
+                        <gco:CharacterString>panel number: 1; type: E</gco:CharacterString>
+                    </description>
+                    <geographicElement>
+                        <EX_BoundingPolygon>
+                            <polygon>
+                                <gml:Polygon gml:id="US5A1KFV_P1">
+                                    <gml:exterior>
+                                        <gml:LinearRing>
+                                            <gml:pos>51.375 -180.6330509</gml:pos>
+                                            <gml:pos>51.375 -180.6</gml:pos>
+                                            <gml:pos>51.45 -180.6</gml:pos>
+                                            <gml:pos>51.45 -180.75</gml:pos>
+                                            <gml:pos>51.375 -180.75</gml:pos>
+                                            <gml:pos>51.375 -180.6330509</gml:pos>
+                                        </gml:LinearRing>
+                                    </gml:exterior>
+
+                                </gml:Polygon>
+                            </polygon>
+                        </EX_BoundingPolygon>
+                    </geographicElement>
+                </EX_Extent>
+			</extent>
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.23301410675048828</gco:Real>
+									</transferSize>
+									<onLine>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>https://www.charts.noaa.gov/ENCs/US5A1KFV.zip</URL>
+											</linkage>
+											<description>
+												<gco:CharacterString>zipfile date and time: 2026-10-30T04:38:55Z</gco:CharacterString>
+											</description>
+										</CI_OnlineResource>
+									</onLine>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>0</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf><composedOf>
+		<DS_DataSet>
+			<has>
+				<MD_Metadata>
+					<parentIdentifier>
+						<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+					</parentIdentifier>
+					<hierarchyLevel>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+					</hierarchyLevel>
+					<hierarchyLevelName>
+						<gco:CharacterString>NOAA ENC</gco:CharacterString>
+					</hierarchyLevelName>
+					<contact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</contact>
+					<dateStamp>
+						<gco:DateTime>2026-10-30T04:52:47Z</gco:DateTime>
+					</dateStamp>
+					<identificationInfo>
+						<MD_DataIdentification>
+							<citation>
+								<CI_Citation>
+									<title>
+										<gco:CharacterString>US5ZZ99M</gco:CharacterString>
+									</title>
+									<alternateTitle>
+										<gco:CharacterString>Cook Inlet  Southern Part</gco:CharacterString>
+									</alternateTitle>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2023-06-09</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<date>
+										<CI_Date>
+											<date>
+												<gco:Date>2026-06-10</gco:Date>
+											</date>
+											<dateType>
+												<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+											</dateType>
+										</CI_Date>
+									</date>
+									<edition>
+										<gco:CharacterString>13.1</gco:CharacterString>
+									</edition>
+								</CI_Citation>
+							</citation>
+							<abstract>
+								<gco:CharacterString>ENC cell</gco:CharacterString>
+							</abstract>
+							<status>
+								<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed">completed</MD_ProgressCode>
+							</status>
+							<resourceMaintenance>
+								<MD_MaintenanceInformation>
+									<maintenanceAndUpdateFrequency>
+										<MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual">continual</MD_MaintenanceFrequencyCode>
+									</maintenanceAndUpdateFrequency>
+									<updateScope>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</updateScope>
+								</MD_MaintenanceInformation>
+							</resourceMaintenance>
+							<descriptiveKeywords>
+								<MD_Keywords>
+									<keyword>
+<gco:CharacterString>coast guard district: 17</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>state: AK</gco:CharacterString>
+</keyword>
+<keyword>
+<gco:CharacterString>region: 32</gco:CharacterString>
+</keyword>
+
+								</MD_Keywords>
+							</descriptiveKeywords>
+							<spatialResolution>
+								<MD_Resolution>
+									<equivalentScale>
+										<MD_RepresentativeFraction>
+											<denominator>
+												<gco:Integer>200000</gco:Integer>
+											</denominator>
+										</MD_RepresentativeFraction>
+									</equivalentScale>
+								</MD_Resolution>
+							</spatialResolution>
+							<language>
+								<gco:CharacterString>eng</gco:CharacterString>
+							</language>
+						    
+						</MD_DataIdentification>
+					</identificationInfo>
+					<distributionInfo>
+						<MD_Distribution>
+							<transferOptions>
+								<MD_DigitalTransferOptions>
+									<unitsOfDistribution>
+										<gco:CharacterString>dataset</gco:CharacterString>
+									</unitsOfDistribution>
+									<transferSize>
+										<gco:Real>0.8561716079711914</gco:Real>
+									</transferSize>
+								</MD_DigitalTransferOptions>
+							</transferOptions>
+						</MD_Distribution>
+					</distributionInfo>
+					<dataQualityInfo>
+						<DQ_DataQuality>
+							<scope>
+								<DQ_Scope>
+									<level>
+										<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset">dataset</MD_ScopeCode>
+									</level>
+								</DQ_Scope>
+							</scope>
+							<lineage>
+								<LI_Lineage>
+									<source>
+										<LI_Source>
+											<description>
+												<gco:CharacterString>NOAA paper chart</gco:CharacterString>
+											</description>
+											<sourceCitation>
+												<CI_Citation>
+													<title>
+														<gco:CharacterString>0</gco:CharacterString>
+													</title>
+													<date gco:nilReason="Date uknown"/>
+												</CI_Citation>
+											</sourceCitation>
+										</LI_Source>
+									</source>
+								</LI_Lineage>
+							</lineage>
+						</DQ_DataQuality>
+					</dataQualityInfo>
+				</MD_Metadata>
+			</has>
+		</DS_DataSet>
+	</composedOf>\r\n
+    <seriesMetadata>
+		<MD_Metadata>
+			<fileIdentifier>
+				<gco:CharacterString>NOAA ENC Product Catalog</gco:CharacterString>
+			</fileIdentifier>
+			<language>
+				<gco:CharacterString>eng</gco:CharacterString>
+			</language>
+			<characterSet>
+				<MD_CharacterSetCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</MD_CharacterSetCode>
+			</characterSet>
+			<hierarchyLevel>
+				<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ScopeCode" codeListValue="series">series</MD_ScopeCode>
+			</hierarchyLevel>
+			<hierarchyLevelName>
+				<gco:CharacterString>NOAA ENC product series</gco:CharacterString>
+			</hierarchyLevelName>
+			<contact>
+				<CI_ResponsibleParty>
+					<organisationName>
+						<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+					</organisationName>
+					<contactInfo>
+						<CI_Contact>
+							<onlineResource>
+								<CI_OnlineResource>
+									<linkage>
+										<URL>http://ocsdata.ncd.noaa.gov/idrs/inquiry.aspx</URL>
+									</linkage>
+									<description>
+										<gco:CharacterString>NOAA's Nautical Inquiry Webpage</gco:CharacterString>
+									</description>
+								</CI_OnlineResource>
+							</onlineResource>
+						</CI_Contact>
+					</contactInfo>
+					<role>
+						<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="publisher">publisher</CI_RoleCode>
+					</role>
+				</CI_ResponsibleParty>
+			</contact>
+			<dateStamp>
+				<gco:DateTime>ENC Product Catalog</gco:DateTime>
+			</dateStamp>
+			<metadataStandardName>
+				<gco:CharacterString>ISO19115</gco:CharacterString>
+			</metadataStandardName>
+			<metadataStandardVersion>
+				<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+			</metadataStandardVersion>
+			<identificationInfo>
+				<MD_DataIdentification>
+					<citation>
+						<CI_Citation>
+							<title>
+								<gco:CharacterString>ENC Product Catalog</gco:CharacterString>
+							</title>
+							<date>
+								<CI_Date>
+									<date>
+										<gco:DateTime>2026-10-30T00:54:59.1231045-04:00</gco:DateTime>
+									</date>
+									<dateType>
+										<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</CI_DateTypeCode>
+									</dateType>
+								</CI_Date>
+							</date>
+						</CI_Citation>
+					</citation>
+					<abstract>
+						<gco:CharacterString>NOAA's Electronic Navigational Charts (NOAA ENCs) have been developed to support the marine transportation infrastructure and coastal management. The NOAA ENCs are in S-57, a data standard developed by the International Hydrographic Organization (IHO) to be used for the exchange of digital hydrographic data. Nautical chart features contained within an NOAA ENC provide a detailed representation of the U.S. coastal and marine environment. This data includes coastal topography, bathymetry, landmarks, geographic place names and marine boundaries.For each ENC there is information that includes the tags &lt;name&gt;, &lt;lname&gt; (title), &lt;src_chart&gt; (equivalent raster chart number), &lt;cscale&gt; (equivalent raster chart scale), &lt;coast_guard_districts&gt;  and  &lt;states&gt;. Each ENC dataset is available for download as a .ZIP file. The &lt;zipfile_location&gt; tag includes the URL of download location, and the &lt;zipfile_datetime&gt; tag includes the date and time that the .ZIP file was created. ENCs have edition numbers and dates. The &lt;edtn&gt; tag is the Edition Number, the &lt;updn&gt; tag is the Update Number, the &lt;uadt&gt; tag is the Update Application date and the &lt;isdt&gt; tag is the Issue Date. The Update Application Date is the date that a Base Cell (000 file extension) is created. The Issue Date is the date that an Update Patch (001, 002, etc., file extension) is created. Other information for each ENC includes the &lt;nm_agency&gt; tag which designates either the National Geospatial-Intelligence Agency (NGA) or U.S. Coast Guard, and the tags &lt;doc&gt; and &lt;date&gt; which represent the latest published document through which the ENC is cleared. The &lt;cov&gt; tag includes information describing the geographic coverage of the ENC.</gco:CharacterString>
+					</abstract>
+					<pointOfContact>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>National Oceanic and Atmospheric Administration (NOAA), National Ocean Service (NOS), Office of Coast Survey (OCS)</gco:CharacterString>
+							</organisationName>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</pointOfContact>
+					<spatialRepresentationType>
+						<MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector">vector</MD_SpatialRepresentationTypeCode>
+					</spatialRepresentationType>
+					<language>
+						<gco:CharacterString>eng</gco:CharacterString>
+					</language>
+					<topicCategory>
+						<MD_TopicCategoryCode>oceans</MD_TopicCategoryCode>
+					</topicCategory>
+				</MD_DataIdentification>
+			</identificationInfo>
+			<distributionInfo>
+				<MD_Distribution>
+					<distributionFormat>
+						<MD_Format>
+							<name>
+								<gco:CharacterString>S57 - IHO Transfer Standard for Digital Hydrographic Data</gco:CharacterString>
+							</name>
+							<version>
+								<gco:CharacterString>3.1</gco:CharacterString>
+							</version>
+							<specification>
+								<gco:CharacterString>ENC - Electronic Navigational Chart Product Specification</gco:CharacterString>
+							</specification>
+						</MD_Format>
+					</distributionFormat>
+				</MD_Distribution>
+			</distributionInfo>
+		</MD_Metadata>
+	</seriesMetadata>
+</DS_Series>

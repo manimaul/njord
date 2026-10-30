@@ -401,7 +401,7 @@ class RegionExporter(
     private suspend fun needsRebuild(regionConfig: RegionExportConfig): Boolean =
         regionDao.regionNeedsRebuild(regionConfig.coverage, regionConfig.name) ?: true // fail-open: rebuild on DB error
 
-    private fun pruneOldArchives(regionName: String) {
+    internal fun pruneOldArchives(regionName: String) {
         val archives = archivesForRegion(regionName)
         if (archives.size > MAX_ARCHIVES) {
             archives.drop(MAX_ARCHIVES).forEach { old ->
@@ -412,14 +412,14 @@ class RegionExporter(
         }
     }
 
-    private fun sidecarFor(archive: File) = File(regionDir, "${archive.name}.sha256")
+    internal fun sidecarFor(archive: File) = File(regionDir, "${archive.name}.sha256")
 
     /**
      * The archive's sha256 (lowercase hex), from its cached sidecar file — computed and written
      * on the first call for archives that predate checksum sidecars. Archives are immutable once
      * renamed into place, so a cached checksum never goes stale.
      */
-    private fun checksumForArchive(archive: File): String? {
+    internal fun checksumForArchive(archive: File): String? {
         if (sidecarFor(archive).isFile()) {
             sidecarFor(archive).readContents()
                 .trim()
@@ -441,7 +441,7 @@ class RegionExporter(
         return checksum
     }
 
-    private fun archivesForRegion(regionName: String): List<File> {
+    internal fun archivesForRegion(regionName: String): List<File> {
         return regionDir.listFiles(false)
             .filter { it.name.startsWith(regionName) && it.name.endsWith(".mbtiles") }
             .sortedByDescending { parseArchiveTimestamp(regionName, it.name) ?: Instant.DISTANT_PAST }
@@ -463,7 +463,7 @@ class RegionExporter(
      * for filesystem-safety) back into an [Instant], from an archive filename of the form
      * "${regionName}_${timestamp}.mbtiles".
      */
-    private fun parseArchiveTimestamp(regionName: String, fileName: String): Instant? =
+    internal fun parseArchiveTimestamp(regionName: String, fileName: String): Instant? =
         parseTimestampStem(fileName.removePrefix("${regionName}_").removeSuffix(".mbtiles"))
 
     /**
@@ -472,7 +472,7 @@ class RegionExporter(
      * `njord:generated_at` metadata row is derived from the stem rather than re-sampled: two
      * samplings either side of a DST boundary would disagree by a whole offset (§5.1).
      */
-    private fun parseTimestampStem(ts: String): Instant? = runCatching {
+    internal fun parseTimestampStem(ts: String): Instant? = runCatching {
         val colonized = ts.replaceFirst(Regex("T(\\d{2})-(\\d{2})-(\\d{2})$"), "T$1:$2:$3")
         LocalDateTime.parse(colonized).toInstant(TimeZone.currentSystemDefault())
     }.getOrNull()
@@ -499,7 +499,7 @@ class RegionExporter(
         )
     }
 
-    private fun currentTimestamp(): String {
+    internal fun currentTimestamp(): String {
         // Use a filesystem-safe ISO-8601-style timestamp (colons replaced with hyphens)
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         fun Int.pad2() = toString().padStart(2, '0')

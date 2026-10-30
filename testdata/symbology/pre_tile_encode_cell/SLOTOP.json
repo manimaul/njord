@@ -1,0 +1,1302 @@
+{
+  "pins": "preTileEncode over every SLOTOP feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2947,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -846301277,
+          "FIDS": 12345,
+          "LNAM": "0226CD8E77A33039",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2947,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -846301277,
+        "FIDS": 12345,
+        "LNAM": "0226CD8E77A33039",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2948,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106350,
+          "FIDS": 1,
+          "LNAM": "022600019F6E0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2948,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106350,
+        "FIDS": 1,
+        "LNAM": "022600019F6E0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2949,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440305,
+          "FIDS": 50,
+          "LNAM": "02260128A2B10032",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2949,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440305,
+        "FIDS": 50,
+        "LNAM": "02260128A2B10032",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2950,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106344,
+          "FIDS": 1,
+          "LNAM": "022600019F680001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2950,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106344,
+        "FIDS": 1,
+        "LNAM": "022600019F680001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2951,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 456150818,
+          "FIDS": 7297,
+          "LNAM": "02261B304F221C81",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2951,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 456150818,
+        "FIDS": 7297,
+        "LNAM": "02261B304F221C81",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2952,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106351,
+          "FIDS": 1,
+          "LNAM": "022600019F6F0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2952,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106351,
+        "FIDS": 1,
+        "LNAM": "022600019F6F0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2953,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106332,
+          "FIDS": 1,
+          "LNAM": "022600019F5C0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2953,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106332,
+        "FIDS": 1,
+        "LNAM": "022600019F5C0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2954,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 42162459,
+          "FIDS": 7297,
+          "LNAM": "02260283591B1C81",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2954,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 42162459,
+        "FIDS": 7297,
+        "LNAM": "02260283591B1C81",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2955,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440306,
+          "FIDS": 50,
+          "LNAM": "02260128A2B20032",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2955,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440306,
+        "FIDS": 50,
+        "LNAM": "02260128A2B20032",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2956,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -2140270774,
+          "FIDS": 12345,
+          "LNAM": "0226806E0F4A3039",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2956,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -2140270774,
+        "FIDS": 12345,
+        "LNAM": "0226806E0F4A3039",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2957,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106357,
+          "FIDS": 1,
+          "LNAM": "022600019F750001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2957,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106357,
+        "FIDS": 1,
+        "LNAM": "022600019F750001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2958,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106349,
+          "FIDS": 1,
+          "LNAM": "022600019F6D0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2958,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106349,
+        "FIDS": 1,
+        "LNAM": "022600019F6D0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2959,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106355,
+          "FIDS": 1,
+          "LNAM": "022600019F730001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2959,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106355,
+        "FIDS": 1,
+        "LNAM": "022600019F730001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2960,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106393,
+          "FIDS": 1,
+          "LNAM": "022600019F990001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2960,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106393,
+        "FIDS": 1,
+        "LNAM": "022600019F990001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2961,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106347,
+          "FIDS": 1,
+          "LNAM": "022600019F6B0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2961,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106347,
+        "FIDS": 1,
+        "LNAM": "022600019F6B0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2962,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 349351774,
+          "FIDS": 12345,
+          "LNAM": "022614D2AF5E3039",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2962,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 349351774,
+        "FIDS": 12345,
+        "LNAM": "022614D2AF5E3039",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2963,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106327,
+          "FIDS": 1,
+          "LNAM": "022600019F570001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2963,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106327,
+        "FIDS": 1,
+        "LNAM": "022600019F570001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2964,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106336,
+          "FIDS": 1,
+          "LNAM": "022600019F600001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2964,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106336,
+        "FIDS": 1,
+        "LNAM": "022600019F600001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2965,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106333,
+          "FIDS": 1,
+          "LNAM": "022600019F5D0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2965,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106333,
+        "FIDS": 1,
+        "LNAM": "022600019F5D0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2966,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106342,
+          "FIDS": 1,
+          "LNAM": "022600019F660001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2966,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106342,
+        "FIDS": 1,
+        "LNAM": "022600019F660001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2967,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106329,
+          "FIDS": 1,
+          "LNAM": "022600019F590001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2967,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106329,
+        "FIDS": 1,
+        "LNAM": "022600019F590001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2968,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1069845897,
+          "FIDS": 12345,
+          "LNAM": "0226C03B72773039",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2968,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1069845897,
+        "FIDS": 12345,
+        "LNAM": "0226C03B72773039",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2969,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19448190,
+          "FIDS": 50,
+          "LNAM": "02260128C17E0032",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2969,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19448190,
+        "FIDS": 50,
+        "LNAM": "02260128C17E0032",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2970,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106341,
+          "FIDS": 1,
+          "LNAM": "022600019F650001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2970,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106341,
+        "FIDS": 1,
+        "LNAM": "022600019F650001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2971,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106356,
+          "FIDS": 1,
+          "LNAM": "022600019F740001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2971,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106356,
+        "FIDS": 1,
+        "LNAM": "022600019F740001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2972,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106338,
+          "FIDS": 1,
+          "LNAM": "022600019F620001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2972,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106338,
+        "FIDS": 1,
+        "LNAM": "022600019F620001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2973,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1575802930,
+          "FIDS": 12345,
+          "LNAM": "0226A21327CE3039",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2973,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1575802930,
+        "FIDS": 12345,
+        "LNAM": "0226A21327CE3039",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2974,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106334,
+          "FIDS": 1,
+          "LNAM": "022600019F5E0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2974,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106334,
+        "FIDS": 1,
+        "LNAM": "022600019F5E0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2975,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106346,
+          "FIDS": 1,
+          "LNAM": "022600019F6A0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2975,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106346,
+        "FIDS": 1,
+        "LNAM": "022600019F6A0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2976,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106328,
+          "FIDS": 1,
+          "LNAM": "022600019F580001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2976,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106328,
+        "FIDS": 1,
+        "LNAM": "022600019F580001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2977,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106335,
+          "FIDS": 1,
+          "LNAM": "022600019F5F0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2977,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106335,
+        "FIDS": 1,
+        "LNAM": "022600019F5F0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2978,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106330,
+          "FIDS": 1,
+          "LNAM": "022600019F5A0001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2978,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106330,
+        "FIDS": 1,
+        "LNAM": "022600019F5A0001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2979,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 705508311,
+          "FIDS": 7297,
+          "LNAM": "02262A0D33D71C81",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2979,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 705508311,
+        "FIDS": 7297,
+        "LNAM": "02262A0D33D71C81",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2980,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 126,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106352,
+          "FIDS": 1,
+          "LNAM": "022600019F700001",
+          "CATSLO": 6,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2980,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 126,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106352,
+        "FIDS": 1,
+        "LNAM": "022600019F700001",
+        "CATSLO": 6,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    }
+  ]
+}

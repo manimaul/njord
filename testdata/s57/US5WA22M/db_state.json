@@ -1,0 +1,497 @@
+{
+  "pins": "DB contract after ingest: charts row (ingested_at excluded) and per layer count, min(z_min), max(z_max), count(lnam_refs); MINZ/MAXZ default to 0/32, LNAM_REFS mirrored into lnam_refs, geometry forced 2D",
+  "decisions": [
+    "DB-6",
+    "IN-1",
+    "D7"
+  ],
+  "generator": "ChartIngestTest.P-IN-5",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic; GDAL 3.13.1",
+  "cases": [
+    {
+      "input": "US5WA22M.000",
+      "expected": {
+        "name": "US5WA22M.000",
+        "scale": 15000,
+        "fileName": "US5WA22M.000",
+        "updated": "20190319",
+        "issued": "20200626",
+        "zoom": 14,
+        "covrWkt": "POLYGON((-122.4420325 47.3211223,-122.4401501 47.3211222,-122.4224013 47.3211222,-122.4218378 47.3211222,-122.4210121 47.3211222,-122.420854 47.3211222,-122.4205543 47.3211222,-122.4203316 47.3211222,-122.4198222 47.3211222,-122.4193662 47.3211222,-122.4192818 47.3211222,-122.4107195 47.3211222,-122.4106796 47.3211222,-122.4101808 47.3211222,-122.4101054 47.3211222,-122.3584583 47.3211222,-122.3584578 47.2651445,-122.3584578 47.2597874,-122.3584578 47.2595576,-122.3584578 47.2356551,-122.3900056 47.235655,-122.3900086 47.2356551,-122.39155 47.2356521,-122.460356 47.2356551,-122.5480844 47.2356551,-122.5480844 47.2593658,-122.5480834 47.2631667,-122.5480833 47.2634724,-122.5476342 47.2634724,-122.5476342 47.2631667,-122.5471219 47.2631667,-122.5464505 47.2631667,-122.5460995 47.2631667,-122.5457666 47.2631667,-122.5455399 47.2631667,-122.525 47.2631667,-122.5250001 47.2724541,-122.5250003 47.3108412,-122.5250004 47.3111179,-122.5250004 47.3112498,-122.5250005 47.3113005,-122.5250005 47.3113622,-122.5250005 47.3114042,-122.5250005 47.3115221,-122.5250005 47.3117955,-122.5250005 47.3118377,-122.5250005 47.3124587,-122.5250004 47.3141591,-122.5250003 47.3155462,-122.5250003 47.3161244,-122.5250002 47.3168539,-122.525 47.3211221,-122.5245622 47.3211222,-122.5120986 47.3211222,-122.5107171 47.3211222,-122.5087923 47.3211222,-122.5030973 47.3211222,-122.5021755 47.3211222,-122.496282 47.3211222,-122.4706335 47.3211222,-122.4588356 47.3211223,-122.4532602 47.3211223,-122.4526514 47.3211223,-122.4420325 47.3211223))",
+        "dsidProps": {
+          "DSID_AGEN": 550,
+          "DSID_COMT": "Produced by ESRI Nautical Solution",
+          "DSID_DSNM": "US5WA22M.000",
+          "DSID_EDTN": "40",
+          "DSID_EXPP": 1,
+          "DSID_INTU": 5,
+          "DSID_ISDT": "20200626",
+          "DSID_PRED": "2.0",
+          "DSID_PROF": 1,
+          "DSID_PRSP": 1,
+          "DSID_PSDN": "",
+          "DSID_STED": 3.1,
+          "DSID_UADT": "20190319",
+          "DSID_UPDN": "4",
+          "DSPM_COMF": 10000000,
+          "DSPM_COMT": "Produced by ESRI Nautical Solution",
+          "DSPM_COUN": 1,
+          "DSPM_CSCL": 15000,
+          "DSPM_DUNI": 1,
+          "DSPM_HDAT": 2,
+          "DSPM_HUNI": 1,
+          "DSPM_PUNI": 1,
+          "DSPM_SDAT": 12,
+          "DSPM_SOMF": 10,
+          "DSPM_VDAT": 16,
+          "DSSI_AALL": 1,
+          "DSSI_DSTR": 2,
+          "DSSI_NALL": 1,
+          "DSSI_NOCN": 5531,
+          "DSSI_NOCR": 0,
+          "DSSI_NOED": 6837,
+          "DSSI_NOFA": 0,
+          "DSSI_NOGR": 4153,
+          "DSSI_NOIN": 951,
+          "DSSI_NOLR": 5,
+          "DSSI_NOMR": 50
+        },
+        "chartTxtKeys": [
+          "US5WA22A.TXT",
+          "US5WA22B.TXT",
+          "US5WA22C.TXT",
+          "US5WA22D.TXT"
+        ],
+        "layers": [
+          {
+            "layer": "ACHARE",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "BCNLAT",
+            "count": 5,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 5
+          },
+          {
+            "layer": "BCNSPP",
+            "count": 25,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 25
+          },
+          {
+            "layer": "BOYLAT",
+            "count": 3,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 3
+          },
+          {
+            "layer": "BOYSPP",
+            "count": 10,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 10
+          },
+          {
+            "layer": "BRIDGE",
+            "count": 18,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 18
+          },
+          {
+            "layer": "BUAARE",
+            "count": 9,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 9
+          },
+          {
+            "layer": "BUISGL",
+            "count": 447,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 447
+          },
+          {
+            "layer": "CBLARE",
+            "count": 7,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 7
+          },
+          {
+            "layer": "CBLOHD",
+            "count": 7,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 7
+          },
+          {
+            "layer": "COALNE",
+            "count": 123,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 123
+          },
+          {
+            "layer": "CONVYR",
+            "count": 1,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "CTNARE",
+            "count": 12,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 12
+          },
+          {
+            "layer": "DAYMAR",
+            "count": 7,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 7
+          },
+          {
+            "layer": "DEPARE",
+            "count": 364,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 364
+          },
+          {
+            "layer": "DEPCNT",
+            "count": 406,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 406
+          },
+          {
+            "layer": "DMPGRD",
+            "count": 4,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 4
+          },
+          {
+            "layer": "DRGARE",
+            "count": 21,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 21
+          },
+          {
+            "layer": "DRYDOC",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "DYKCON",
+            "count": 9,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 9
+          },
+          {
+            "layer": "FAIRWY",
+            "count": 2,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 2
+          },
+          {
+            "layer": "FERYRT",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "FOGSIG",
+            "count": 3,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 3
+          },
+          {
+            "layer": "GATCON",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "HRBFAC",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "HULKES",
+            "count": 5,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 5
+          },
+          {
+            "layer": "LAKARE",
+            "count": 28,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 28
+          },
+          {
+            "layer": "LIGHTS",
+            "count": 29,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 29
+          },
+          {
+            "layer": "LNDARE",
+            "count": 67,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 67
+          },
+          {
+            "layer": "LNDMRK",
+            "count": 16,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 16
+          },
+          {
+            "layer": "LNDRGN",
+            "count": 12,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 12
+          },
+          {
+            "layer": "LOGPON",
+            "count": 4,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 4
+          },
+          {
+            "layer": "MAGVAR",
+            "count": 3,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 3
+          },
+          {
+            "layer": "M_COVR",
+            "count": 2,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 2
+          },
+          {
+            "layer": "M_NPUB",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "M_NSYS",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "MORFAC",
+            "count": 114,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 114
+          },
+          {
+            "layer": "M_QUAL",
+            "count": 46,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 46
+          },
+          {
+            "layer": "NAVLNE",
+            "count": 4,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 4
+          },
+          {
+            "layer": "OBSTRN",
+            "count": 123,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 123
+          },
+          {
+            "layer": "PILPNT",
+            "count": 358,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 358
+          },
+          {
+            "layer": "PIPARE",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "PIPOHD",
+            "count": 2,
+            "minZ": 12,
+            "maxZ": 32,
+            "withLnamRefs": 2
+          },
+          {
+            "layer": "PIPSOL",
+            "count": 6,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 6
+          },
+          {
+            "layer": "PONTON",
+            "count": 582,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 582
+          },
+          {
+            "layer": "PRCARE",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "PYLONS",
+            "count": 2,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 2
+          },
+          {
+            "layer": "RDOSTA",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "RECTRC",
+            "count": 1,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "RESARE",
+            "count": 6,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 6
+          },
+          {
+            "layer": "SBDARE",
+            "count": 85,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 85
+          },
+          {
+            "layer": "SEAARE",
+            "count": 12,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 12
+          },
+          {
+            "layer": "SILTNK",
+            "count": 110,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 110
+          },
+          {
+            "layer": "SLCONS",
+            "count": 1003,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1003
+          },
+          {
+            "layer": "SLOTOP",
+            "count": 34,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 34
+          },
+          {
+            "layer": "SOUNDG",
+            "count": 977,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 977
+          },
+          {
+            "layer": "TSSBND",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "TSSLPT",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "UWTROC",
+            "count": 9,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 9
+          },
+          {
+            "layer": "WATTUR",
+            "count": 3,
+            "minZ": 13,
+            "maxZ": 32,
+            "withLnamRefs": 3
+          },
+          {
+            "layer": "WRECKS",
+            "count": 20,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 20
+          }
+        ]
+      }
+    }
+  ]
+}

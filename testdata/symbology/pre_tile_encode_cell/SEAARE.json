@@ -1,0 +1,472 @@
+{
+  "pins": "preTileEncode over every SEAARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2935,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024361,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA90032",
+          "CATSEA": 12,
+          "OBJNAM": "The Narrows",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2935,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024361,
+        "FIDS": 50,
+        "LNAM": "022600D5FEA90032",
+        "CATSEA": 12,
+        "OBJNAM": "The Narrows",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2936,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024338,
+          "FIDS": 50,
+          "LNAM": "022600D5FE920032",
+          "OBJNAM": "Sitcum Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2936,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024338,
+        "FIDS": 50,
+        "LNAM": "022600D5FE920032",
+        "OBJNAM": "Sitcum Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2937,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024334,
+          "FIDS": 50,
+          "LNAM": "022600D5FE8E0032",
+          "OBJNAM": "Saint Paul Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2937,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024334,
+        "FIDS": 50,
+        "LNAM": "022600D5FE8E0032",
+        "OBJNAM": "Saint Paul Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2938,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 14024326,
+          "FIDS": 50,
+          "LNAM": "022600D5FE860032",
+          "OBJNAM": "Middle Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2938,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 14024326,
+        "FIDS": 50,
+        "LNAM": "022600D5FE860032",
+        "OBJNAM": "Middle Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2939,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 262114739,
+          "FIDS": 1,
+          "LNAM": "02260F9F8DB30001",
+          "OBJNAM": "Commencement Bay General Anchorage",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20130212",
+          "SORIND": "US,US,reprt,L-0345/13"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2939,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 262114739,
+        "FIDS": 1,
+        "LNAM": "02260F9F8DB30001",
+        "OBJNAM": "Commencement Bay General Anchorage",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20130212",
+        "SORIND": "US,US,reprt,L-0345/13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2940,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19472164,
+          "FIDS": 50,
+          "LNAM": "022601291F240032",
+          "OBJNAM": "Puyallup Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2940,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19472164,
+        "FIDS": 50,
+        "LNAM": "022601291F240032",
+        "OBJNAM": "Puyallup Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2941,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19472162,
+          "FIDS": 50,
+          "LNAM": "022601291F220032",
+          "CATSEA": 53,
+          "OBJNAM": "Puyallup River",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2941,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19472162,
+        "FIDS": 50,
+        "LNAM": "022601291F220032",
+        "CATSEA": 53,
+        "OBJNAM": "Puyallup River",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2942,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27766512,
+          "FIDS": 50,
+          "LNAM": "022601A7AEF00032",
+          "OBJNAM": "Dalco Passage",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20110809",
+          "SORIND": "US,US,graph,Chart 18474"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2942,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27766512,
+        "FIDS": 50,
+        "LNAM": "022601A7AEF00032",
+        "OBJNAM": "Dalco Passage",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20110809",
+        "SORIND": "US,US,graph,Chart 18474"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2943,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27766515,
+          "FIDS": 50,
+          "LNAM": "022601A7AEF30032",
+          "OBJNAM": "Thea Foss Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2943,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27766515,
+        "FIDS": 50,
+        "LNAM": "022601A7AEF30032",
+        "OBJNAM": "Thea Foss Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2944,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 474260204,
+          "FIDS": 7299,
+          "LNAM": "02261C44A2EC1C83",
+          "OBJNAM": "Hylebos Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2944,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 474260204,
+        "FIDS": 7299,
+        "LNAM": "02261C44A2EC1C83",
+        "OBJNAM": "Hylebos Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2945,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 105879,
+          "FIDS": 1,
+          "LNAM": "022600019D970001",
+          "OBJNAM": "Blair Waterway",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2945,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 105879,
+        "FIDS": 1,
+        "LNAM": "022600019D970001",
+        "OBJNAM": "Blair Waterway",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2946,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 119,
+          "RVER": 3,
+          "AGEN": 550,
+          "FIDN": 846855987,
+          "FIDS": 8527,
+          "LNAM": "02263279FF33214F",
+          "CATSEA": 5,
+          "OBJNAM": "Commencement Bay",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2946,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 119,
+        "RVER": 3,
+        "AGEN": 550,
+        "FIDN": 846855987,
+        "FIDS": 8527,
+        "LNAM": "02263279FF33214F",
+        "CATSEA": 5,
+        "OBJNAM": "Commencement Bay",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    }
+  ]
+}

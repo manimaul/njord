@@ -1,0 +1,321 @@
+{
+  "pins": "AdminUtil.verifySignature: HMAC over baseUrl+date+uuid must match the presented base64 text, rejected only when date.until(now) exceeds adminExpirationSeconds (600 here); expirationDate unchecked; malformed encoded input throws in Kotlin (port: false, constant-time compare)",
+  "decisions": [
+    "D4",
+    "SEC-1"
+  ],
+  "generator": "AdminSignatureFixtureTest.verifyCases",
+  "source": "a signature minted at 2026-01-02T03:04:05Z for https://njord.test with key \"test-key\"",
+  "cases": [
+    {
+      "input": {
+        "description": "fresh",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "description": "exactly at expiry (elapsed == adminExpirationSeconds passes)",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:14:05Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "description": "one second past expiry",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:14:06Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "far past expiry",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-09T03:04:05Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "future-dated signature (HMAC covers the date, expiry only checks age)",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:02:25Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "description": "expirationDate is informational and never checked",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:04:04Z"
+        }
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "description": "tampered uuid",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "ZbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "tampered date",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:06Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "tampered signature byte",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "A3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "signature not base64",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "not base64!",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "signature decodes to the wrong length",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "AAAAAAAAAAAAAAAAAAAAAA==",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "different base url (scheme)",
+        "baseUrl": "http://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "different base url (port)",
+        "baseUrl": "https://njord.test:8443",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "different admin key",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "other-key",
+        "signature": {
+          "date": "2026-01-02T03:04:05Z",
+          "signature": "X3PyQRzngyDtbX76U4vq4f4w6cQWuovksSh+VBRqgyQ=",
+          "uuid": "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345",
+          "expirationDate": "2026-01-02T03:14:05Z"
+        }
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "encoded query, fresh",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNVoiLCJzaWduYXR1cmUiOiJYM1B5UVJ6bmd5RHRiWDc2VTR2cTRmNHc2Y1FXdW92a3NTaCtWQlJxZ3lRPSIsInV1aWQiOiJBYkNkRWZHaC1JaktsLU1uT3AtUXJTdC1Vdld4WXowMTIzNDUiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjYtMDEtMDJUMDM6MTQ6MDVaIn0="
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "description": "encoded query, expired",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:14:06Z",
+        "adminKey": "test-key",
+        "query": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNVoiLCJzaWduYXR1cmUiOiJYM1B5UVJ6bmd5RHRiWDc2VTR2cTRmNHc2Y1FXdW92a3NTaCtWQlJxZ3lRPSIsInV1aWQiOiJBYkNkRWZHaC1JaktsLU1uT3AtUXJTdC1Vdld4WXowMTIzNDUiLCJleHBpcmF0aW9uRGF0ZSI6IjIwMjYtMDEtMDJUMDM6MTQ6MDVaIn0="
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "description": "encoded query, not base64",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": "not-base64!"
+      },
+      "expected": {
+        "throws": "IllegalArgumentException"
+      },
+      "port": {
+        "decision": "D4",
+        "expected": false
+      }
+    },
+    {
+      "input": {
+        "description": "encoded query, base64 of non-JSON",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": "aGVsbG8="
+      },
+      "expected": {
+        "throws": "JsonDecodingException"
+      },
+      "port": {
+        "decision": "D4",
+        "expected": false
+      }
+    },
+    {
+      "input": {
+        "description": "encoded query, JSON missing a field",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": "eyJkYXRlIjoiMjAyNi0wMS0wMlQwMzowNDowNVoiLCJ1dWlkIjoieCJ9"
+      },
+      "expected": {
+        "throws": "MissingFieldException"
+      },
+      "port": {
+        "decision": "D4",
+        "expected": false
+      }
+    },
+    {
+      "input": {
+        "description": "encoded query, unparsable date",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": "eyJkYXRlIjoieWVzdGVyZGF5Iiwic2lnbmF0dXJlIjoieCIsInV1aWQiOiJ4IiwiZXhwaXJhdGlvbkRhdGUiOiIyMDI2LTAxLTAyVDAzOjA0OjA1WiJ9"
+      },
+      "expected": {
+        "throws": "InstantFormatException"
+      },
+      "port": {
+        "decision": "D4",
+        "expected": false
+      }
+    },
+    {
+      "input": {
+        "description": "encoded query, empty",
+        "baseUrl": "https://njord.test",
+        "now": "2026-01-02T03:04:15Z",
+        "adminKey": "test-key",
+        "query": ""
+      },
+      "expected": {
+        "throws": "JsonDecodingException"
+      },
+      "port": {
+        "decision": "D4",
+        "expected": false
+      }
+    }
+  ]
+}

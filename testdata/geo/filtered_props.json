@@ -1,0 +1,133 @@
+{
+  "pins": "TileEncoder filtered(): blank strings removed, empty arrays removed, \"0\" removed only when the key is an enumerated (E) S-57 attribute, everything else kept; a nested object throws",
+  "decisions": [
+    "TE-3"
+  ],
+  "generator": "TileEncoderPureFixtureTest.filteredProps",
+  "source": "hand-written against resources/s57attributes.json attribute types",
+  "cases": [
+    {
+      "input": {
+        "OBJNAM": "",
+        "INFORM": "   ",
+        "NINFOM": "kept"
+      },
+      "expected": {
+        "NINFOM": "kept"
+      }
+    },
+    {
+      "input": {
+        "CATOBS": 0,
+        "WATLEV": 0,
+        "BOYSHP": 0,
+        "TOPSHP": 1
+      },
+      "expected": {
+        "TOPSHP": 1
+      }
+    },
+    {
+      "input": {
+        "CATOBS": "0",
+        "CATOBS2": "0",
+        "VALSOU": "0"
+      },
+      "expected": {
+        "CATOBS2": "0",
+        "VALSOU": "0"
+      }
+    },
+    {
+      "input": {
+        "VALSOU": 0,
+        "DRVAL1": 0.0,
+        "SCAMIN": 0,
+        "ORIENT": 0,
+        "METERS": 0
+      },
+      "expected": {
+        "VALSOU": 0,
+        "DRVAL1": 0.0,
+        "SCAMIN": 0,
+        "ORIENT": 0,
+        "METERS": 0
+      }
+    },
+    {
+      "input": {
+        "WATLEV": 0.0,
+        "CATOBS": 0.5
+      },
+      "expected": {
+        "WATLEV": 0.0,
+        "CATOBS": 0.5
+      }
+    },
+    {
+      "input": {
+        "COLOUR": [],
+        "STATUS": [
+          0
+        ],
+        "LNAM_REFS": [],
+        "CATSPM": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "STATUS": [
+          0
+        ],
+        "CATSPM": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "input": {
+        "EA": true,
+        "_OPBR": false,
+        "LNAM": "0226",
+        "NAME": "US5WA22M.000",
+        "MINZ": 11,
+        "MAXZ": 32
+      },
+      "expected": {
+        "EA": true,
+        "_OPBR": false,
+        "LNAM": "0226",
+        "NAME": "US5WA22M.000",
+        "MINZ": 11,
+        "MAXZ": 32
+      }
+    },
+    {
+      "input": {
+        "UNKNOWN_ATTR": 0,
+        "UNKNOWN_STR": "0",
+        "unknown": ""
+      },
+      "expected": {
+        "UNKNOWN_ATTR": 0,
+        "UNKNOWN_STR": "0"
+      }
+    },
+    {
+      "input": {
+        "BAD": {
+          "x": 1
+        }
+      },
+      "expected": {
+        "throws": "IllegalStateException"
+      }
+    },
+    {
+      "input": {},
+      "expected": {}
+    }
+  ]
+}

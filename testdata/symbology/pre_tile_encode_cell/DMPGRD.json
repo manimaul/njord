@@ -1,0 +1,188 @@
+{
+  "pins": "preTileEncode over every DMPGRD feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5052,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 48,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024332,
+          "FIDS": 50,
+          "LNAM": "022600D5FE8C0032",
+          "CATDPG": [
+            "5"
+          ],
+          "INFORM": "Depths from survey of 2009",
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5052,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 48,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024332,
+        "FIDS": 50,
+        "LNAM": "022600D5FE8C0032",
+        "CATDPG": [
+          "5"
+        ],
+        "INFORM": "Depths from survey of 2009",
+        "MINZ": 13,
+        "SCAMIN": 21999,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5053,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 48,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024353,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA10032",
+          "CATDPG": [
+            "5"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5053,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 48,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024353,
+        "FIDS": 50,
+        "LNAM": "022600D5FEA10032",
+        "CATDPG": [
+          "5"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 21999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5054,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 48,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024335,
+          "FIDS": 50,
+          "LNAM": "022600D5FE8F0032",
+          "CATDPG": [
+            "5"
+          ],
+          "INFORM": "Depths from survey of 2009",
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "201007",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5054,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 48,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024335,
+        "FIDS": 50,
+        "LNAM": "022600D5FE8F0032",
+        "CATDPG": [
+          "5"
+        ],
+        "INFORM": "Depths from survey of 2009",
+        "MINZ": 13,
+        "SCAMIN": 21999,
+        "SORDAT": "201007",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5055,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 48,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024357,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA50032",
+          "CATDPG": [
+            "5"
+          ],
+          "INFORM": "Depths from survey of 2001",
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "2001",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5055,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 48,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024357,
+        "FIDS": 50,
+        "LNAM": "022600D5FEA50032",
+        "CATDPG": [
+          "5"
+        ],
+        "INFORM": "Depths from survey of 2001",
+        "MINZ": 13,
+        "SCAMIN": 21999,
+        "SORDAT": "2001",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO07"
+      }
+    }
+  ]
+}

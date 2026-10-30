@@ -1,0 +1,2433 @@
+{
+  "pins": "preTileEncode of Topmar (layer key TOPMAR): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "38 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 105 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 0,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 1,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 2,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR24"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 3,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 4,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR32"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 5,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 6,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 7,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR85"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 8,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 9,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR36"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 10,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR28"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 11,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR27"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 12
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 12,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 13
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 13,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR25"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 14
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 14,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR26"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 15
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 15,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR88"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 16
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 16,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR87"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 17
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 17,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 18
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 18,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 19
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 19,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 20
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 20,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 21
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 21,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 22
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 22,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 23
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 23,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 24
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 24,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 25
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 25,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR24"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 26
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 26,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 27
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 27,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 28
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 28,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR89"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 29
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 29,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 30
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 30,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 31
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 31,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 32
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 32,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 33
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 33,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 34
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 34,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 0,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 0,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 0,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 1,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 1,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 1,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 2,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR24"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 2,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 2,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 3,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 3,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 3,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 4,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR32"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 4,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 4,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 5,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 5,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 5,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 6,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 6,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 6,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 7,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR85"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 7,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR65"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 7,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR65"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 8,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 8,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 8,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 9,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR36"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 9,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR16"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 9,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR16"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 10,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR28"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 10,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR08"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 10,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR08"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 11,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR27"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 11,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 11,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR07"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 12
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 12,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 12
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 12,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 12
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 12,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 13
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 13,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR25"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 13
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 13,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 13
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 13,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 14
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 14,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR26"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 14
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 14,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 14
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 14,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 15
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 15,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR88"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 15
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 15,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 15
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 15,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 16
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 16,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR87"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 16
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 16,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 16
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 16,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 17
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 17,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 17
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 17,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 17
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 17,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 18
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 18,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 18
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 18,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 18
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 18,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 19
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 19,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 19
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 19,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 19
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 19,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 20
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 20,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 20
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 20,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 20
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 20,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 21
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 21,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR33"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 21
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 21,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 21
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 21,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR13"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 22
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 22,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 22
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 22,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 22
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 22,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 23
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 23,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR34"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 23
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 23,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 23
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 23,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 24
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 24,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 24
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 24,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 24
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 24,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 25
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 25,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR24"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 25
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 25,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 25
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 25,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 26
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 26,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 26
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 26,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 26
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 26,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 27
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 27,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 27
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 27,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 27
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 27,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 28
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 28,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR89"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 28
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 28,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR18"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 28
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 28,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR18"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 29
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 29,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR22"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 29
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 29,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 29
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 29,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 30
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 30,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR86"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 30
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 30,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 30
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 30,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR17"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 31
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 31,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 31
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 31,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 31
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 31,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR14"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 32
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 32,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TOPMAR30"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 32
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 32,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 32
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 32,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TOPMAR10"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 33
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 33,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 33
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 33,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 33
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 33,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 34
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "TOPSHP": 34,
+        "_PTFM": "RIGID",
+        "_ASOC": [],
+        "SY": "TMARDEF1"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 34
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BOYLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 34,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BOYLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "TOPSHP": 34
+        },
+        "geometry_type": "POINT",
+        "assoc": [
+          "BCNLAT"
+        ]
+      },
+      "expected": {
+        "TOPSHP": 34,
+        "_PTFM": "FLOATING",
+        "_ASOC": [
+          "BCNLAT"
+        ],
+        "SY": "TMARDEF2"
+      }
+    }
+  ]
+}

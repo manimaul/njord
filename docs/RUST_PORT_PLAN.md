@@ -35,7 +35,7 @@ Three layers of safety net, from cheapest to most complete:
 |---|---|---|
 | **Golden fixtures** (JSON / binary files under `testdata/`) | Pure functions: symbology, depth formatting, style JSON, tile math, MVT bytes, HMAC, S-57 metadata extraction | Either implementation's unit tests |
 | **Database contract tests** | SQL behavior: migrations, chart overwrite, feature queries, region flags | Either implementation, shared PostGIS |
-| **HTTP conformance suite** (black box, takes a base URL) | Every route's status codes, headers, JSON shape, tile bytes | Kotlin server, then Rust server, then both with a diff |
+| **HTTP conformance suite** (black box, Python/pytest, takes one or two base URLs) | Every route's status codes, headers, JSON shape, decoded tile content | Kotlin server, then Rust server, then both live with a diff |
 
 ## 3. Target architecture
 
@@ -54,7 +54,7 @@ njord/
 │   ├── njord-enc-cron/         # NOAA catalog diff/download binary
 │   └── njord-web/              # Leptos (CSR, wasm32) — depends only on njord-model
 ├── testdata/                   # golden fixtures, shared with the Kotlin repo during transition
-└── conformance/                # HTTP black-box suite (Rust integration tests + hurl files)
+└── conformance/                # HTTP black-box suite (Python/pytest; see §5.5). Independent of both implementations
 ```
 
 `njord-web` must **not** depend on any backend crate other than `njord-model`. That is the mechanical guarantee of frontend/backend separation; a CI check (`cargo tree -p njord-web`) enforces it.
@@ -179,7 +179,36 @@ In Kubernetes the Rust server gets its own database (§10), but during Phase 3 t
 
 ### 5.5 HTTP conformance suite (`conformance/`)
 
-Black box. Written once in Rust (`reqwest` + `serde_json`, or `hurl` files for the simple cases), parameterised by `NJORD_BASE_URL`. Run against Kotlin first to record, then against Rust to compare. In production the two base URLs are `https://openenc.com` and `https://njord.mxmariner.com` (§10.5); both environments ingest the same NOAA catalog, so once the new database has caught up the recorded bodies and decoded tiles should match apart from the masked volatile fields and the host name.
+Black box, written once in **Python (pytest)**, parameterised by a base URL. It is the one test layer that must be independent of *both* implementations: a suite written in Rust would share `serde`/MVT crates with the code under test, a suite in Kotlin would share the model classes, and either could pass on a shared bug. `hurl` was considered and rejected because it cannot decode protobuf tiles or drive the WebSocket route. Python is already the repo's operator language (`data/post_noaa_regions.py`, `data/upload_noaa_region_encs.py`, `data/walk_tiles.py` drive `/v1/admin`, `/v1/enc_url`, `/v1/ws/enc_process` and the tile routes with the standard library alone) and already runs in the cluster (`k8s_deploy/walk_tiles_cronjob.yaml` uses `python:3.12-slim`), so it adds no new toolchain.
+
+Validated 2026-10-30 on Python 3.14 (floor is 3.12, matching the cluster image): `pytest` 9.2, `requests` 2.34, `websockets` 17.3, `mapbox-vector-tile` 2.2 (pulls `protobuf` and `shapely`) install cleanly and an MVT tile encodes and decodes to a stable, sortable dict. No GDAL, no JVM, no `cargo` is needed to run the suite.
+
+Layout and tooling:
+
+```
+conformance/
+├── requirements.txt            # pinned: pytest, requests, websockets, mapbox-vector-tile
+├── conftest.py                 # --base-url, --compare-url, --record, --golden-dir options; session fixtures
+├── lib/
+│   ├── client.py               # requests.Session with base URL, admin login (GET /v1/admin, basic auth), signed calls
+│   ├── mask.py                 # volatile-field masking by JSON pointer; host normalisation to "{BASE}"
+│   ├── tiles.py                # gunzip if needed, mapbox_vector_tile.decode, canonical sort (layer, id/LNAM, props)
+│   └── ws.py                   # websockets.sync client for /v1/ws/enc_process, collects the WsMsg sequence
+├── test_api_01_about.py …      # one module per P-API-n row below
+└── golden/<route>.json         # recorded, masked bodies; tiles as decoded JSON + sha256 of the raw bytes
+```
+
+Three modes, selected on the `pytest` command line:
+
+| Mode | Invocation | Use |
+|---|---|---|
+| **record** | `pytest conformance --base-url=$URL --record` | Against the Kotlin server; rewrites `golden/`. |
+| **verify** (default) | `pytest conformance --base-url=$URL` | Against either server; fails on any difference from `golden/`. |
+| **diff** | `pytest conformance --base-url=$A --compare-url=$B` | Two live servers (local Kotlin vs local Rust, or §10.5 `openenc.com` vs `njord.mxmariner.com`); fetches both, masks both, asserts equal. No golden files involved, so catalog drift between environments shows up as a per-route failure rather than a stale fixture. |
+
+Comparison rules: JSON bodies are compared after masking with keys sorted; tiles are compared **decoded**, after the canonical sort, because two correct MVT encoders may legally order fields and layers differently. The raw-byte sha256 is recorded and reported, but byte equality is informational, not a gate (the byte-exact MVT contract lives in P-TE-2 / P-TE-5 unit fixtures). The suite reuses `testdata/` only to read the expected tile list for P-API-3 and the style JSON for P-API-2; it never imports Kotlin or Rust code.
+
+Run against Kotlin first to record, then against Rust to verify, then both live in diff mode. In production the two base URLs are `https://openenc.com` and `https://njord.mxmariner.com` (§10.5); both environments ingest the same NOAA catalog, so once the new database has caught up the bodies and decoded tiles should match apart from the masked volatile fields and the host name.
 
 | ID | Routes | What it pins | Audit ref |
 |---|---|---|---|
@@ -196,7 +225,7 @@ Black box. Written once in Rust (`reqwest` + `serde_json`, or `hurl` files for t
 | P-API-11 | Forwarded headers: `X-Forwarded-Proto/Host/Port` → `externalBaseUrl` reflected in style URLs and signature validity | SEC-8 |
 | P-API-12 | 405 for unimplemented verbs; 404 for unknown routes; CORS headers | API-8 |
 
-Record responses as `conformance/golden/<route>.json` with volatile fields (timestamps, uuids, durations) masked.
+Record responses as `conformance/golden/<route>.json` with volatile fields (timestamps, uuids, durations) masked by JSON pointer and the base URL replaced by `{BASE}`; the masking list is part of the fixture so a new volatile field is a visible decision, not a silent skip.
 
 ### 5.6 Region export (`RegionExporter` → `njord-server`)
 
@@ -262,7 +291,7 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - `njord-db` (sqlx) with the migration runner reading the same `meta_data` version. Pass P-DB-1, 3, 4, 5, 6.
 - `njord-server` read routes: `about`, `style`, `content`, `icon`, `sector_svg`, `tile_json`, `tile`, `chart`, `chart_catalog`, `chart_editions`, `feature`, `geojson` GET, `regions` GET, `regions/{archive}`, `cache` GET.
 - Tile cache: same on-disk layout under `chartTempData` so the deb package and the operational docs stay valid. In Kubernetes each environment has its own PVC; nothing is shared between namespaces.
-- Locally, run both servers against the same dev PostGIS and run the conformance suite against each, `diff`ing the recorded bodies and tiles (P-TE-5 decoded).
+- Locally, run both servers against the same dev PostGIS and run the conformance suite in diff mode (`pytest conformance --base-url=http://localhost:9000 --compare-url=http://localhost:9001`), which compares masked bodies and decoded tiles (P-TE-5) between the two live servers.
 - Stand up the `mxmariner` environment (§10.4): the Rust image for `njord-chart-dep`, the existing Kotlin image for `njord-ingest-rs` and `njord-enc-download`, all pointed at the new `njord` database and PVC. Kotlin fills the database, Rust reads it (P-DB-1 makes the schema handshake safe). Run the suite against `https://openenc.com` and `https://njord.mxmariner.com`.
 - Exit: conformance suite green on read routes against both environments; `njord.mxmariner.com` serves tiles from its own data.
 
@@ -422,7 +451,7 @@ Phase 3 runs this with the **Rust** image for `njord-chart-dep` and the existing
 
 ### 10.5 Comparing the two environments
 
-The conformance suite (§5.5) takes a base URL; in production it runs against `https://openenc.com` and `https://njord.mxmariner.com`. Expected differences: `about/version`, host names in `tile_json` and style URLs, `regions` manifests (`createdAt`, archive names), and cells one environment has ingested and the other has not yet. Admin signatures are per host by design (`externalBaseUrl()` is part of the HMAC input), so each environment is driven through its own `/v1/admin`.
+The conformance suite (§5.5) runs in diff mode against the two production hosts: `pytest conformance --base-url=https://openenc.com --compare-url=https://njord.mxmariner.com`. Expected differences, all handled by the masking list or by skipping the route in diff mode: `about/version`, host names in `tile_json` and style URLs, `regions` manifests (`createdAt`, archive names), and cells one environment has ingested and the other has not yet. Admin signatures are per host by design (`externalBaseUrl()` is part of the HMAC input), so each environment is driven through its own `/v1/admin`.
 
 ### 10.6 Cutover and retirement of `openenc.com`
 

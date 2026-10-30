@@ -73,8 +73,14 @@ Fix or formally accept each one; record the decision in `TEST_COVERAGE_AUDIT.md`
 
 ### 3.5 HTTP conformance suite (`conformance/`)
 
-- [ ] Scaffold the black-box suite parameterised by `NJORD_BASE_URL` (Rust `reqwest` + `serde_json`, or `hurl`)
-- [ ] Volatile-field masking (timestamps, uuids, durations) and `conformance/golden/<route>.json` recording
+- [x] Decide the implementation: **Python / pytest** (validated 2026-10-30; see §5.5 of the plan for why not Rust or `hurl`)
+- [ ] Scaffold `conformance/` with `requirements.txt` (pinned `pytest`, `requests`, `websockets`, `mapbox-vector-tile`; Python ≥ 3.12) and a `conftest.py` taking `--base-url`, `--compare-url`, `--record`, `--golden-dir`
+- [ ] `lib/client.py`: admin login via `GET /v1/admin` basic auth, signed GET/POST/DELETE, multipart upload (lift from `data/upload_noaa_region_encs.py`)
+- [ ] `lib/ws.py`: `/v1/ws/enc_process` client on `websockets.sync`, returns the ordered `WsMsg` list
+- [ ] `lib/tiles.py`: gunzip, `mapbox_vector_tile.decode`, canonical sort by (layer, id/`LNAM`, props); sha256 of raw bytes recorded but not asserted
+- [ ] `lib/mask.py`: volatile-field masking by JSON pointer (timestamps, uuids, durations) and base-URL → `{BASE}` normalisation; masking list committed next to each golden file
+- [ ] Record / verify / diff modes wired up; `golden/<route>.json` written by record mode against the Kotlin server
+- [ ] Suite imports nothing from `server/`, `shared/` or (later) `crates/`
 - [ ] **P-API-1** `about/version`, `s57objects`, `s57attributes`
 - [ ] **P-API-2** `style/{depth}/{theme}[?c=]` — equal to P-SY-7 after normalising `baseUrl`
 - [ ] **P-API-3** `tile_json`, `tile/{z}/{x}/{y}`, `?info=true`
@@ -125,11 +131,12 @@ Fix or formally accept each one; record the decision in `TEST_COVERAGE_AUDIT.md`
 
 - [ ] CI workflow with a PostGIS service container running `./gradlew allTests`
 - [ ] CI fails if regenerating fixtures produces a diff against committed `testdata/`
-- [ ] Conformance suite job against a Kotlin server started in CI
+- [ ] Conformance suite job: `actions/setup-python` (3.12) + `pip install -r conformance/requirements.txt` + `pytest conformance --base-url=http://localhost:9000` against a Kotlin server started in CI
 
 ## 5. Exit criteria
 
 - [ ] All D1–D9 resolved, each decision recorded
 - [ ] `testdata/` committed and validated in CI
-- [ ] Conformance suite green against the Kotlin server locally
-- [ ] Conformance suite green against `https://openenc.com` (read-only routes)
+- [ ] Conformance suite green in verify mode against the Kotlin server locally
+- [ ] Conformance suite green in verify mode against `https://openenc.com` (read-only routes)
+- [ ] Diff mode exercised once: local Kotlin vs local Kotlin on a second port must report zero differences (proves the masking list before Rust exists)

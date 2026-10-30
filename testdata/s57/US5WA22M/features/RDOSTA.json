@@ -1,0 +1,35 @@
+{
+  "pins": "GDAL S57 driver output for RDOSTA under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 83,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 105,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106458,
+          "FIDS": 1,
+          "LNAM": "022600019FDA0001",
+          "CALSGN": "(KTNT)",
+          "CATROS": [],
+          "SIGFRQ": 1400000,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4688762 47.2411483)"
+      }
+    }
+  ]
+}

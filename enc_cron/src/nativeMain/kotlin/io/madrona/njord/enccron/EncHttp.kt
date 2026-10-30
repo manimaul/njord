@@ -25,9 +25,19 @@ private const val DOWNLOAD_CHUNK = 8 * 1024 * 1024 // 8 MB
 private const val PARSE_CHUNK = 64 * 1024
 
 /**
+ * The calls [BundleBuilder] and `deleteOrphans` make, so tests can stand in a fake for the network
+ * (EC-1, EC-2). [EncHttp] is the only production implementation.
+ */
+internal interface EncTransport {
+    suspend fun download(url: String, dest: File): Long
+    suspend fun fetchAdminSignature(baseUrl: String, user: String, pass: String): String
+    suspend fun deleteChart(baseUrl: String, name: String, signature: String): Boolean
+}
+
+/**
  * All outbound HTTP for the cron job: the NOAA catalog, Njord's edition listing, and cell zips.
  */
-class EncHttp(private val config: EncCronConfig) : AutoCloseable {
+class EncHttp(private val config: EncCronConfig) : AutoCloseable, EncTransport {
 
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -86,7 +96,7 @@ class EncHttp(private val config: EncCronConfig) : AutoCloseable {
      * The signature is an HMAC over the base URL the server saw on this request, so it is only
      * valid for calls made against the same [baseUrl].
      */
-    suspend fun fetchAdminSignature(baseUrl: String, user: String, pass: String): String =
+    override suspend fun fetchAdminSignature(baseUrl: String, user: String, pass: String): String =
         withRetry("admin signature") {
             val credentials = Base64.encode("$user:$pass".encodeToByteArray())
             val body = client.get("$baseUrl/v1/admin") {
@@ -102,7 +112,7 @@ class EncHttp(private val config: EncCronConfig) : AutoCloseable {
      * The URL is assembled by hand because [signature] arrives already URL encoded and ktor's
      * parameter builder would encode it a second time.
      */
-    suspend fun deleteChart(baseUrl: String, name: String, signature: String): Boolean =
+    override suspend fun deleteChart(baseUrl: String, name: String, signature: String): Boolean =
         withRetry("delete chart $name") {
             client.delete("$baseUrl/v1/chart?name=$name&signature=$signature")
                 .status == HttpStatusCode.Accepted
@@ -112,7 +122,7 @@ class EncHttp(private val config: EncCronConfig) : AutoCloseable {
      * Downloads [url] to [dest] via a sibling `.tmp` file, so a crashed or truncated transfer
      * never leaves a plausible looking zip behind. Returns bytes written.
      */
-    suspend fun download(url: String, dest: File): Long = withRetry("download $url") {
+    override suspend fun download(url: String, dest: File): Long = withRetry("download $url") {
         val tmp = File(dest.parentFile()!!, "${dest.name}.tmp")
         val tmpPath = tmp.getAbsolutePath().toString()
         try {

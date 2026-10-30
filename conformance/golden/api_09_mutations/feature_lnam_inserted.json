@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/feature/lnam/ZZCONF00000001",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [
+    "/id"
+  ],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "id": "<masked>",
+      "layer": "BOYLAT",
+      "props": {
+        "LNAM": "ZZCONF00000001",
+        "BOYSHP": 4,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Conformance Buoy",
+        "SCAMIN": 29999
+      },
+      "geom": {
+        "coordinates": [
+          10.05,
+          10.05
+        ],
+        "bbox": null,
+        "crs": null,
+        "type": "Point"
+      },
+      "chart_name": "ZZ_CONFORMANCE.000",
+      "zoomMin": 32,
+      "zoomMax": 0
+    }
+  }
+}

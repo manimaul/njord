@@ -1,0 +1,391 @@
+{
+  "pins": "preTileEncode over every UWTROC feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1957,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024791,
+          "FIDS": 50,
+          "LNAM": "022600D600570032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1957,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024791,
+        "FIDS": 50,
+        "LNAM": "022600D600570032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1958,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024806,
+          "FIDS": 50,
+          "LNAM": "022600D600660032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": -2.4,
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1958,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024806,
+        "FIDS": 50,
+        "LNAM": "022600D600660032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": -2.4,
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1959,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024774,
+          "FIDS": 50,
+          "LNAM": "022600D600460032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": -2.4,
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1959,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024774,
+        "FIDS": 50,
+        "LNAM": "022600D600460032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": -2.4,
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1960,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024808,
+          "FIDS": 50,
+          "LNAM": "022600D600680032",
+          "EXPSOU": 1,
+          "QUASOU": [
+            "6"
+          ],
+          "VALSOU": -0.6,
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1960,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024808,
+        "FIDS": 50,
+        "LNAM": "022600D600680032",
+        "EXPSOU": 1,
+        "QUASOU": [
+          "6"
+        ],
+        "VALSOU": -0.6,
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1961,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 309681675,
+          "FIDS": 7297,
+          "LNAM": "022612755E0B1C81",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20140430",
+          "SORIND": "US,US,graph,GC-11140"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1961,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 309681675,
+        "FIDS": 7297,
+        "LNAM": "022612755E0B1C81",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20140430",
+        "SORIND": "US,US,graph,GC-11140",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1962,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024787,
+          "FIDS": 50,
+          "LNAM": "022600D600530032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1962,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024787,
+        "FIDS": 50,
+        "LNAM": "022600D600530032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1963,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024789,
+          "FIDS": 50,
+          "LNAM": "022600D600550032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1963,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024789,
+        "FIDS": 50,
+        "LNAM": "022600D600550032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1964,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024796,
+          "FIDS": 50,
+          "LNAM": "022600D6005C0032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1964,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024796,
+        "FIDS": 50,
+        "LNAM": "022600D6005C0032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1965,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 153,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024795,
+          "FIDS": 50,
+          "LNAM": "022600D6005B0032",
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 4,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1965,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 153,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024795,
+        "FIDS": 50,
+        "LNAM": "022600D6005B0032",
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 4,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "UWTROC03"
+      }
+    }
+  ]
+}

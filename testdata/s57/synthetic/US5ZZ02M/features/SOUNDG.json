@@ -1,0 +1,95 @@
+{
+  "pins": "GDAL S57 driver output for SOUNDG under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/synthetic/US5ZZ02M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "METERS": 1.2,
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 129,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1004,
+          "FIDS": 1,
+          "LNAM": "0226000003EC0001",
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "wkt": "POINT (-123.03 46.99 1.2)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "METERS": 3.4,
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 129,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1004,
+          "FIDS": 1,
+          "LNAM": "0226000003EC0001",
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "wkt": "POINT (-123.01 47.01 3.4)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "METERS": 4.5,
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 129,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1004,
+          "FIDS": 1,
+          "LNAM": "0226000003EC0001",
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "wkt": "POINT (-122.97 46.98 4.5)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "METERS": -0.6,
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 129,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1004,
+          "FIDS": 1,
+          "LNAM": "0226000003EC0001",
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "wkt": "POINT (-122.98 47.02 -0.6)"
+      }
+    }
+  ]
+}

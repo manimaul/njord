@@ -1,0 +1,35 @@
+{
+  "pins": "GDAL S57 driver output for RECTRC under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5184,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 109,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106464,
+          "FIDS": 1,
+          "LNAM": "022600019FE00001",
+          "CATTRK": 1,
+          "ORIENT": 132.8,
+          "TRAFIC": 3,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "wkt": "LINESTRING (-122.415428 47.2797,-122.4149041 47.2793703,-122.4049828 47.2731257,-122.4041055 47.2725735,-122.4014851 47.2709242,-122.4012108 47.2707516,-122.3933046 47.2657753,-122.3813478 47.2582496)"
+      }
+    }
+  ]
+}

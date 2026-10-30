@@ -1,0 +1,109 @@
+{
+  "pins": "TileEncoder.findBaseMapScale: Natural Earth scale denominator per tile zoom (110m z0-2, 50m z3-4, 10m z5+)",
+  "decisions": [
+    "TE-6"
+  ],
+  "generator": "TileEncoderPureFixtureTest.baseMapScale",
+  "cases": [
+    {
+      "input": 0,
+      "expected": 110000000
+    },
+    {
+      "input": 1,
+      "expected": 110000000
+    },
+    {
+      "input": 2,
+      "expected": 110000000
+    },
+    {
+      "input": 3,
+      "expected": 50000000
+    },
+    {
+      "input": 4,
+      "expected": 50000000
+    },
+    {
+      "input": 5,
+      "expected": 10000000
+    },
+    {
+      "input": 6,
+      "expected": 10000000
+    },
+    {
+      "input": 7,
+      "expected": 10000000
+    },
+    {
+      "input": 8,
+      "expected": 10000000
+    },
+    {
+      "input": 9,
+      "expected": 10000000
+    },
+    {
+      "input": 10,
+      "expected": 10000000
+    },
+    {
+      "input": 11,
+      "expected": 10000000
+    },
+    {
+      "input": 12,
+      "expected": 10000000
+    },
+    {
+      "input": 13,
+      "expected": 10000000
+    },
+    {
+      "input": 14,
+      "expected": 10000000
+    },
+    {
+      "input": 15,
+      "expected": 10000000
+    },
+    {
+      "input": 16,
+      "expected": 10000000
+    },
+    {
+      "input": 17,
+      "expected": 10000000
+    },
+    {
+      "input": 18,
+      "expected": 10000000
+    },
+    {
+      "input": 19,
+      "expected": 10000000
+    },
+    {
+      "input": 20,
+      "expected": 10000000
+    },
+    {
+      "input": 21,
+      "expected": 10000000
+    },
+    {
+      "input": 22,
+      "expected": 10000000
+    },
+    {
+      "input": 23,
+      "expected": 10000000
+    },
+    {
+      "input": 24,
+      "expected": 10000000
+    }
+  ]
+}

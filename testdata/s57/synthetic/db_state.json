@@ -1,0 +1,188 @@
+{
+  "pins": "DB contract after ingest: charts row (ingested_at excluded) and per layer count, min(z_min), max(z_max), count(lnam_refs); MINZ/MAXZ default to 0/32, LNAM_REFS mirrored into lnam_refs, geometry forced 2D",
+  "decisions": [
+    "DB-6",
+    "IN-1",
+    "D7"
+  ],
+  "generator": "ChartIngestTest.P-IN-5",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic; GDAL 3.13.1",
+  "cases": [
+    {
+      "input": "US4ZZ01M.000",
+      "expected": {
+        "name": "US4ZZ01M.000",
+        "scale": 80000,
+        "fileName": "US4ZZ01M.000",
+        "updated": "20260101",
+        "issued": "20260101",
+        "zoom": 11,
+        "covrWkt": "POLYGON((-123.2 46.9,-122.8 46.9,-122.8 47.1,-123.2 47.1,-123.2 46.9))",
+        "dsidProps": {
+          "DSID_AGEN": 550,
+          "DSID_COMT": "njord synthetic fixture - outer approach cell",
+          "DSID_DSNM": "US4ZZ01M.000",
+          "DSID_EDTN": "1",
+          "DSID_EXPP": 1,
+          "DSID_INTU": 4,
+          "DSID_ISDT": "20260101",
+          "DSID_PRED": "2.0",
+          "DSID_PROF": 1,
+          "DSID_PRSP": 1,
+          "DSID_PSDN": "",
+          "DSID_STED": 3.1,
+          "DSID_UADT": "20260101",
+          "DSID_UPDN": "0",
+          "DSPM_COMF": 10000000,
+          "DSPM_COMT": "",
+          "DSPM_COUN": 1,
+          "DSPM_CSCL": 80000,
+          "DSPM_DUNI": 1,
+          "DSPM_HDAT": 2,
+          "DSPM_HUNI": 1,
+          "DSPM_PUNI": 1,
+          "DSPM_SDAT": 12,
+          "DSPM_SOMF": 10,
+          "DSPM_VDAT": 16,
+          "DSSI_AALL": 1,
+          "DSSI_DSTR": 2,
+          "DSSI_NALL": 1,
+          "DSSI_NOCN": 3,
+          "DSSI_NOCR": 0,
+          "DSSI_NOED": 3,
+          "DSSI_NOFA": 0,
+          "DSSI_NOGR": 6,
+          "DSSI_NOIN": 3,
+          "DSSI_NOLR": 0,
+          "DSSI_NOMR": 1
+        },
+        "chartTxtKeys": [],
+        "layers": [
+          {
+            "layer": "BOYLAT",
+            "count": 2,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 2
+          },
+          {
+            "layer": "DEPARE",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "DEPCNT",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "LIGHTS",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "M_COVR",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          }
+        ]
+      }
+    },
+    {
+      "input": "US5ZZ02M.000",
+      "expected": {
+        "name": "US5ZZ02M.000",
+        "scale": 10000,
+        "fileName": "US5ZZ02M.000",
+        "updated": "20260101",
+        "issued": "20260101",
+        "zoom": 14,
+        "covrWkt": "POLYGON((-123.05 46.97,-122.95 46.97,-122.95 47.03,-123.05 47.03,-123.05 46.97))",
+        "dsidProps": {
+          "DSID_AGEN": 550,
+          "DSID_COMT": "njord synthetic fixture - inner harbour cell",
+          "DSID_DSNM": "US5ZZ02M.000",
+          "DSID_EDTN": "1",
+          "DSID_EXPP": 1,
+          "DSID_INTU": 5,
+          "DSID_ISDT": "20260101",
+          "DSID_PRED": "2.0",
+          "DSID_PROF": 1,
+          "DSID_PRSP": 1,
+          "DSID_PSDN": "",
+          "DSID_STED": 3.1,
+          "DSID_UADT": "20260101",
+          "DSID_UPDN": "0",
+          "DSPM_COMF": 10000000,
+          "DSPM_COMT": "",
+          "DSPM_COUN": 1,
+          "DSPM_CSCL": 10000,
+          "DSPM_DUNI": 1,
+          "DSPM_HDAT": 2,
+          "DSPM_HUNI": 1,
+          "DSPM_PUNI": 1,
+          "DSPM_SDAT": 12,
+          "DSPM_SOMF": 10,
+          "DSPM_VDAT": 16,
+          "DSSI_AALL": 1,
+          "DSSI_DSTR": 2,
+          "DSSI_NALL": 1,
+          "DSSI_NOCN": 3,
+          "DSSI_NOCR": 0,
+          "DSSI_NOED": 3,
+          "DSSI_NOFA": 0,
+          "DSSI_NOGR": 5,
+          "DSSI_NOIN": 2,
+          "DSSI_NOLR": 0,
+          "DSSI_NOMR": 1
+        },
+        "chartTxtKeys": [],
+        "layers": [
+          {
+            "layer": "BOYSPP",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "DEPARE",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "DEPCNT",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "M_COVR",
+            "count": 1,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 1
+          },
+          {
+            "layer": "SOUNDG",
+            "count": 4,
+            "minZ": 0,
+            "maxZ": 32,
+            "withLnamRefs": 4
+          }
+        ]
+      }
+    }
+  ]
+}

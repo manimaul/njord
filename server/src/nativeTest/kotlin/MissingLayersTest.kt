@@ -4,7 +4,6 @@ import io.madrona.njord.layers.Sbdare
 import io.madrona.njord.layers.set.StandardLayers
 import io.madrona.njord.model.Depth
 import io.madrona.njord.model.ThemeMode
-import io.madrona.njord.resources
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -18,7 +17,7 @@ class MissingLayersTest {
 
     @BeforeTest
     fun setup() {
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
+        TestEnv.init()
     }
 
     @Test

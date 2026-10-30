@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "DELETE",
+    "path": "/v1/cache?signature=eyJ4IjoxfQ%3D%3D",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "text"
+  },
+  "note": "D4: malformed signature is 500 on Kotlin, 401 on the port",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": {
+    "decision": "D4",
+    "status": 401,
+    "content_type": "",
+    "body": null
+  },
+  "expected": {
+    "status": 500,
+    "content_type": "text/plain; charset=UTF-8",
+    "headers": {},
+    "body": "Unexpected JSON token at offset 2: Encountered an unknown key 'x' at path: $\nUse 'ignoreUnknownKeys = true' in 'Json {}' builder or '@JsonIgnoreUnknownKeys' annotation to ignore unknown keys.\nJSON input: {\"x\":1}"
+  }
+}

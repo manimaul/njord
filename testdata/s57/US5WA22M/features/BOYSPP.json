@@ -1,0 +1,371 @@
+{
+  "pins": "GDAL S57 driver output for BOYSPP under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 34,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106516,
+          "FIDS": 1,
+          "LNAM": "02260001A0140001",
+          "BOYSHP": 2,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "OBJNAM": "Tacoma Harbor Regulatory Bouys",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19841101",
+          "SORIND": "US,US,reprt,13thCGD,LNM 45/84"
+        },
+        "wkt": "POINT (-122.4840871 47.2862345)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 35,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106473,
+          "FIDS": 1,
+          "LNAM": "022600019FE90001",
+          "LNAM_REFS": [
+            "022600019FEA0001"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATSPM": [
+            "8"
+          ],
+          "COLOUR": [
+            "6"
+          ],
+          "OBJNAM": "Tacoma Outfall Lighted Buoy",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20181204",
+          "SORIND": "US,US,reprt,13thCGD,LNM 49/18"
+        },
+        "wkt": "POINT (-122.4216667 47.2780556)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 36,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 470275251,
+          "FIDS": 12345,
+          "LNAM": "02261C07D4B33039",
+          "BOYSHP": 4,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "OBJNAM": "Tacoma Harbor Regulatory Buoy",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030708",
+          "SORIND": "US,US,reprt,13thCGD,LNM 27/03"
+        },
+        "wkt": "POINT (-122.4362499 47.2636947)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 37,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1617862032,
+          "FIDS": 12345,
+          "LNAM": "0226606E9D903039",
+          "BOYSHP": 1,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "STATUS": [
+            "1"
+          ],
+          "INFORM": "Float",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19950805",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4796194 47.2826803)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 38,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106451,
+          "FIDS": 1,
+          "LNAM": "022600019FD30001",
+          "BOYSHP": 2,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "OBJNAM": "Tacoma Harbor Regulatory Bouys",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19841101",
+          "SORIND": "US,US,reprt,13thCGD,LNM 45/84"
+        },
+        "wkt": "POINT (-122.4798843 47.2834799)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 39,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 961875561,
+          "FIDS": 12345,
+          "LNAM": "022639550E693039",
+          "LNAM_REFS": [
+            "022666646D103039"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATSPM": [
+            "8"
+          ],
+          "COLOUR": [
+            "6"
+          ],
+          "OBJNAM": "Ruston Way Outfall Lighted Buoy",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20071218",
+          "SORIND": "US,US,reprt,13thCGD,LNM 51/07"
+        },
+        "wkt": "POINT (-122.4841649 47.2872331)"
+      }
+    },
+    {
+      "input": 6,
+      "expected": {
+        "props": {
+          "RCID": 40,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": -1573207481,
+          "FIDS": 12345,
+          "LNAM": "0226A23AC2473039",
+          "LNAM_REFS": [
+            "022600019FE80001"
+          ],
+          "FFPT_RIND": [
+            2
+          ],
+          "BOYSHP": 4,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "6"
+          ],
+          "OBJNAM": "Commencement Bay Shoal Lighted Buoy A",
+          "STATUS": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20200107",
+          "SORIND": "US,US,reprt,13thCGD,LNM 01/20"
+        },
+        "wkt": "POINT (-122.4326864 47.2728033)"
+      }
+    },
+    {
+      "input": 7,
+      "expected": {
+        "props": {
+          "RCID": 41,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1117043128,
+          "FIDS": 12345,
+          "LNAM": "0226BD6B46483039",
+          "BOYSHP": 1,
+          "CATSPM": [
+            "52"
+          ],
+          "COLOUR": [],
+          "STATUS": [
+            "1"
+          ],
+          "INFORM": "Float",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "19950805",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4891558 47.2883011)"
+      }
+    },
+    {
+      "input": 8,
+      "expected": {
+        "props": {
+          "RCID": 42,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1728704182,
+          "FIDS": 12345,
+          "LNAM": "02266709EEB63039",
+          "BOYSHP": 4,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "OBJNAM": "Tacoma Harbor Regulatory Buoy",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030708",
+          "SORIND": "US,US,reprt,13thCGD,LNM 27/03"
+        },
+        "wkt": "POINT (-122.4373058 47.2626666)"
+      }
+    },
+    {
+      "input": 9,
+      "expected": {
+        "props": {
+          "RCID": 43,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 19,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106447,
+          "FIDS": 1,
+          "LNAM": "022600019FCF0001",
+          "BOYSHP": 4,
+          "CATSPM": [
+            "27"
+          ],
+          "COLOUR": [
+            "1",
+            "11"
+          ],
+          "COLPAT": [
+            "1"
+          ],
+          "OBJNAM": "Tacoma Harbor Regulatory Buoy",
+          "STATUS": [
+            "8"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030708",
+          "SORIND": "US,US,reprt,13thCGD,LNM 27/03"
+        },
+        "wkt": "POINT (-122.435167 47.26475)"
+      }
+    }
+  ]
+}

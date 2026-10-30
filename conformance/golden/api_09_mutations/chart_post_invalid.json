@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/v1/chart",
+    "headers": {},
+    "json": {
+      "not": "a chart"
+    },
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "text"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 400,
+    "content_type": "text/plain; charset=UTF-8",
+    "headers": {},
+    "body": "Failed to convert request body to class io.madrona.njord.model.ChartInsert"
+  }
+}

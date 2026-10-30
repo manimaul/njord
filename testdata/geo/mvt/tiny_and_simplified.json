@@ -1,0 +1,90 @@
+{
+  "pins": "polygons under 1px² and lines under 1px are dropped before encoding; vertices within 0.1px of the line through their neighbours are simplified away; sub-pixel coordinates round to the nearest integer",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "a 0.5px square, a 0.5px line, a 1.5px line, a line with a 0.05px kink, a polygon with 0.3px jitter; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "tiny_and_simplified.bin",
+  "bytes": 95,
+  "decoded": {
+    "layers": [
+      {
+        "name": "TINY",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 4,
+            "type": "LINESTRING",
+            "props": {
+              "N": 3
+            },
+            "geometry": [
+              [
+                [
+                  10,
+                  10
+                ],
+                [
+                  12,
+                  10
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 5,
+            "type": "LINESTRING",
+            "props": {
+              "N": 4
+            },
+            "geometry": [
+              [
+                [
+                  100,
+                  100
+                ],
+                [
+                  200,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 6,
+            "type": "POLYGON",
+            "props": {
+              "N": 5
+            },
+            "geometry": [
+              [
+                [
+                  300,
+                  300
+                ],
+                [
+                  400,
+                  300
+                ],
+                [
+                  400,
+                  400
+                ],
+                [
+                  300,
+                  400
+                ],
+                [
+                  300,
+                  300
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "pins": "GDAL S57 driver output for LIGHTS under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/synthetic/US4ZZ01M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 6,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 75,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1005,
+          "FIDS": 1,
+          "LNAM": "0226000003ED0001",
+          "CATLIT": [
+            "1"
+          ],
+          "COLOUR": [
+            "1"
+          ],
+          "LITCHR": 2,
+          "OBJNAM": "Outer Light East",
+          "SIGPER": 4.0,
+          "VALNMR": 6.0
+        },
+        "wkt": "POINT (-122.85 46.95)"
+      }
+    }
+  ]
+}

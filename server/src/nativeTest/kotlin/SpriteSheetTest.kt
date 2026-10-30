@@ -1,5 +1,4 @@
 import io.madrona.njord.model.Sprite
-import io.madrona.njord.resources
 import io.madrona.njord.util.SpriteSheet
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -10,7 +9,7 @@ class SpriteSheetTest {
 
     @BeforeTest
     fun before() {
-        resources = File("./src/nativeMain/resources").getAbsolutePath().toString()
+        TestEnv.init()
     }
 
     @Test

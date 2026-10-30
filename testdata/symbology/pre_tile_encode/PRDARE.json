@@ -1,0 +1,452 @@
+{
+  "pins": "preTileEncode of Prdare (layer key PRDARE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "30 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 0,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 1,
+        "LC": "LANDF",
+        "SY": "QUARRY01",
+        "LP": "QUARRY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 2,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 3,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 4,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 5,
+        "LC": "LANDF",
+        "SY": "RFNERY11",
+        "LP": "RFNERY11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 6,
+        "LC": "LANDF",
+        "SY": "TMBYRD01",
+        "LP": "TMBYRD01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 7,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 8,
+        "LC": "LANDF",
+        "SY": "TNKFRM11",
+        "LP": "TNKFRM11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 9,
+        "LC": "LANDF",
+        "SY": "WNDFRM61",
+        "LP": "WNDFRM61"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 10,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 0,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 1,
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 1,
+        "CONVIS": 1,
+        "LC": "CHBLK",
+        "SY": "QUARRY01",
+        "LP": "QUARRY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 1,
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 1,
+        "CONVIS": 2,
+        "LC": "LANDF",
+        "SY": "QUARRY01",
+        "LP": "QUARRY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 1,
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 1,
+        "CONVIS": 3,
+        "LC": "LANDF",
+        "SY": "QUARRY01",
+        "LP": "QUARRY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 2,
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 2,
+        "CONVIS": 1,
+        "LC": "CHBLK",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 2,
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 2,
+        "CONVIS": 2,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 2,
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 2,
+        "CONVIS": 3,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 3,
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 3,
+        "CONVIS": 1,
+        "LC": "CHBLK",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 3,
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 3,
+        "CONVIS": 2,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 3,
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 3,
+        "CONVIS": 3,
+        "LC": "LANDF",
+        "SY": "PRDINS02",
+        "LP": "PRDINS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 10,
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 10,
+        "CONVIS": 1,
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 10,
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 10,
+        "CONVIS": 2,
+        "LC": "LANDF"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATPRA": 10,
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATPRA": 10,
+        "CONVIS": 3,
+        "LC": "LANDF"
+      }
+    }
+  ]
+}

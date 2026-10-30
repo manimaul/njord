@@ -1,0 +1,45 @@
+{
+  "pins": "preTileEncode over every TSSBND feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5185,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 146,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026326,
+          "FIDS": 50,
+          "LNAM": "022600D606560032",
+          "CATTSS": 1,
+          "SORDAT": "20060807",
+          "SORIND": "US,US,reprt,L-865/06"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5185,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 146,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026326,
+        "FIDS": 50,
+        "LNAM": "022600D606560032",
+        "CATTSS": 1,
+        "SORDAT": "20060807",
+        "SORIND": "US,US,reprt,L-865/06",
+        "LC": "TRFCF"
+      }
+    }
+  ]
+}

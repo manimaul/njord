@@ -1,0 +1,7 @@
+{
+  "version": "1.4-SNAPSHOT",
+  "gdalVersion": "3.13.1",
+  "gitHash": "76a4e0f",
+  "gitBranch": "rust_port",
+  "buildDate": "2026-10-30-12:18:14"
+}

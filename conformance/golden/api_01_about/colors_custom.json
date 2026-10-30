@@ -1,0 +1,49 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/about/colors/custom",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "sweden": {
+        "DAY": {
+          "NODTA": "#d0d8d9",
+          "CHBRN": "#d7bb72",
+          "LITRD": "#fa5050",
+          "LANDA": "#faf1a3",
+          "LANDF": "#d7bb72",
+          "DEPDW": "#fafafa",
+          "DEPMD": "#ebf3ff",
+          "DEPMS": "#c7e1ff",
+          "DEPVS": "#9ec6fd"
+        }
+      },
+      "shom": {
+        "DAY": {
+          "LANDA": "#ffe0b7",
+          "NODTA": "#e1e0de",
+          "DEPDW": "#fff9f5",
+          "LANDF": "#ffc87d",
+          "CHBRN": "#e2c09c"
+        }
+      }
+    }
+  }
+}

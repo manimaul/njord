@@ -1,0 +1,151 @@
+{
+  "pins": "GDAL S57 driver output for C_AGGR under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 3064,
+          "PRIM": 255,
+          "GRUP": 2,
+          "OBJL": 400,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026566,
+          "FIDS": 50,
+          "LNAM": "022600D607460032",
+          "LNAM_REFS": [
+            "022600D6057C0032",
+            "022600D600CD0032",
+            "022600D606560032"
+          ],
+          "FFPT_RIND": [
+            3,
+            3,
+            3
+          ],
+          "OBJNAM": "Puget Sound Traffic Separation Scheme",
+          "TXTDSC": "US5WA22C.TXT",
+          "SORDAT": "20060807",
+          "SORIND": "US,US,reprt,L-865/06"
+        }
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 3065,
+          "PRIM": 255,
+          "GRUP": 2,
+          "OBJL": 400,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 704242520,
+          "FIDS": 17879,
+          "LNAM": "022629F9E35845D7",
+          "LNAM_REFS": [
+            "02263AD341563039",
+            "022600019FD80001",
+            "022600019FDF0001",
+            "022600019FE00001"
+          ],
+          "FFPT_RIND": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "OBJNAM": "Blair Waterway Range",
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        }
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 3859,
+          "PRIM": 255,
+          "GRUP": 2,
+          "OBJL": 400,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 262061218,
+          "FIDS": 8527,
+          "LNAM": "02260F9EBCA2214F",
+          "LNAM_REFS": [
+            "0226228A9FED3039",
+            "022600019FE30001",
+            "02265510B4833039"
+          ],
+          "FFPT_RIND": [
+            3,
+            3,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 3860,
+          "PRIM": 255,
+          "GRUP": 2,
+          "OBJL": 400,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 512830501,
+          "FIDS": 8527,
+          "LNAM": "02261E912C25214F",
+          "LNAM_REFS": [
+            "02261EF66E033039",
+            "0226CE4FF6EB3039",
+            "022601A7AF0C0032"
+          ],
+          "FFPT_RIND": [
+            3,
+            3,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 3861,
+          "PRIM": 255,
+          "GRUP": 2,
+          "OBJL": 400,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 369167605,
+          "FIDS": 8527,
+          "LNAM": "022616010CF5214F",
+          "LNAM_REFS": [
+            "022600021E9D0001",
+            "02260F9EBCA2214F",
+            "02261E912C25214F"
+          ],
+          "FFPT_RIND": [
+            3,
+            3,
+            3
+          ],
+          "INFORM": "MEASURED NAUTICAL MILE COURSE 132°05' TRUE"
+        }
+      }
+    }
+  ]
+}

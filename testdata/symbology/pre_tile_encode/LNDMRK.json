@@ -1,0 +1,2318 @@
+{
+  "pins": "preTileEncode of Lndmrk (layer key LNDMRK): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "116 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "0"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "DSHAER11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "5"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "FLGSTF01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "6"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "FLASTK01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "7"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "MSTCON04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "8"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "9"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "MONUMT12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "10"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "MONUMT12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "11"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "12"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "MONUMT12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "13"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "MONUMT12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "14"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "BUIREL01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "15"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "15"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "DOMES001"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "16"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "16"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "RASCAN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "17"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "17"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "TOWERS02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "18"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "18"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "WNDMIL12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "19"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "19"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "WIMCON01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "20"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "20"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1",
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 0,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "0"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "5"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "6"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "7"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "8"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "9"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "10"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "11"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "12"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "13"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "13"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "14"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "15"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "15"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "16"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "16"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "17"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "17"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "18"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "18"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "19"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "19"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "20"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "20"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "BUIREL01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "21"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "21"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "BUIREL01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "22"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "22"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "23"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "23"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "24"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "24"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "25"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "25"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "26"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "26"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "BUIREL05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "27"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "27"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "BUIREL05"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "28"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "28"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "29"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "29"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "30"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "30"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "31"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "31"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "32"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "32"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "33"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "33"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "34"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "34"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "35"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "35"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "36"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "36"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "37"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "37"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "38"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "38"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "39"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "39"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "40"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "40"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "41"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "41"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "42"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "42"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "FUNCTN": [
+            "2",
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "FUNCTN": [
+          "2",
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "CONVIS": 1,
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "CAIRNS11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "CONVIS": 2,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "CONVIS": 3,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "CONVIS": 1,
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "CONVIS": 2,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "CONVIS": 3,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "CONVIS": 1,
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "CHIMNY11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "CONVIS": 2,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "CONVIS": 3,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "CONVIS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "CONVIS": 1,
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "CONVIS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "CONVIS": 2,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "CONVIS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "CONVIS": 3,
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "1"
+          ],
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "1"
+        ],
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CAIRNS01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "2"
+          ],
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "2"
+        ],
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "3"
+          ],
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "3"
+        ],
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "CHIMNY01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLMK": [
+            "21"
+          ],
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLMK": [
+          "21"
+        ],
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1,
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1,
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1,
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 1,
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 1,
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "CHBLK",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2,
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2,
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2,
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 2,
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 2,
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3,
+          "FUNCTN": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "FUNCTN": [
+          "2"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3,
+          "FUNCTN": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "FUNCTN": [
+          "3"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3,
+          "FUNCTN": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "FUNCTN": [
+          "4"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CONVIS": 3,
+          "FUNCTN": [
+            "43"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CONVIS": 3,
+        "FUNCTN": [
+          "43"
+        ],
+        "AC": "CHBRN",
+        "LC": "LANDF",
+        "SY": "POSGEN01"
+      }
+    }
+  ]
+}

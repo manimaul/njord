@@ -1,0 +1,34 @@
+{
+  "pins": "GDAL S57 driver output for FERYRT under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5179,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 53,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 2012151718,
+          "FIDS": 12345,
+          "LNAM": "022677EEFFA63039",
+          "CATFRY": 1,
+          "INFORM": "Mariners are cautioned that the Washington State Ferries may deviate from the published standard routes due to inclement weather, traffic conditions, navigational hazards or other emergency conditions.",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.5107171 47.3211222,-122.5107137 47.3210882,-122.5120461 47.3150817,-122.5122621 47.3141262,-122.5124014 47.3134625,-122.5129187 47.311136,-122.5139005 47.3066623,-122.513945 47.3064816,-122.5139556 47.3064191,-122.5139828 47.3063553,-122.5140693 47.3062871)"
+      }
+    }
+  ]
+}

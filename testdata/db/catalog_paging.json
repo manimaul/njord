@@ -1,0 +1,52 @@
+{
+  "pins": "ChartDao.listAsync(cursor) over 105 charts named zz_…0001-0105: name >= cursor ORDER BY name LIMIT PAGE_SIZE + 1, the extra row is nextName and the first row of the next page; null nextName on the last page; totalChartCount is not pinned (it counts the whole table)",
+  "decisions": [
+    "API-1"
+  ],
+  "generator": "ChartDaoTest.P-DB-5",
+  "cases": [
+    {
+      "input": {
+        "cursor": "zz_f2_chartdao_0001.000",
+        "chartsBefore": 105
+      },
+      "expected": {
+        "pageSize": 100,
+        "first": "zz_f2_chartdao_0001.000",
+        "last": "zz_f2_chartdao_0100.000",
+        "nextName": "zz_f2_chartdao_0101.000"
+      }
+    },
+    {
+      "input": {
+        "cursor": "zz_f2_chartdao_0101.000",
+        "chartsBefore": 105
+      },
+      "expected": {
+        "pageSize": 5,
+        "first": "zz_f2_chartdao_0101.000",
+        "last": "zz_f2_chartdao_0105.000"
+      }
+    },
+    {
+      "input": {
+        "cursor": "zz_f2_chartdao_0105.000",
+        "chartsBefore": 105
+      },
+      "expected": {
+        "pageSize": 1,
+        "first": "zz_f2_chartdao_0105.000",
+        "last": "zz_f2_chartdao_0105.000"
+      }
+    },
+    {
+      "input": {
+        "cursor": "zz_f2_chartdao_0105.000~",
+        "chartsBefore": 105
+      },
+      "expected": {
+        "pageSize": 0
+      }
+    }
+  ]
+}

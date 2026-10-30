@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/content/sprites/day_simplified.png",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "bytes"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "image/png",
+    "headers": {},
+    "body": {
+      "size": 150755,
+      "sha256": "a531bc41e37ae5bf5df453b2ece9090ce6050557fda7b9a2063636dc433f1020"
+    }
+  }
+}

@@ -1,0 +1,346 @@
+{
+  "pins": "preTileEncode over every CBLARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2982,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 14024348,
+          "FIDS": 50,
+          "LNAM": "022600D5FE9C0032",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2982,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 14024348,
+        "FIDS": 50,
+        "LNAM": "022600D5FE9C0032",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2983,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024356,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA40032",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2983,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024356,
+        "FIDS": 50,
+        "LNAM": "022600D5FEA40032",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2984,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 875161380,
+          "FIDS": 8527,
+          "LNAM": "02263429E724214F",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2984,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 875161380,
+        "FIDS": 8527,
+        "LNAM": "02263429E724214F",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2985,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024351,
+          "FIDS": 50,
+          "LNAM": "022600D5FE9F0032",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2985,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024351,
+        "FIDS": 50,
+        "LNAM": "022600D5FE9F0032",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2986,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 892809091,
+          "FIDS": 1,
+          "LNAM": "022635372F830001",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2986,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 892809091,
+        "FIDS": 1,
+        "LNAM": "022635372F830001",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2987,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024325,
+          "FIDS": 50,
+          "LNAM": "022600D5FE850032",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2987,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024325,
+        "FIDS": 50,
+        "LNAM": "022600D5FE850032",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2988,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 20,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024350,
+          "FIDS": 50,
+          "LNAM": "022600D5FE9E0032",
+          "RESTRN": [
+            "2",
+            "6",
+            "24"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2988,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 20,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024350,
+        "FIDS": 50,
+        "LNAM": "022600D5FE9E0032",
+        "RESTRN": [
+          "2",
+          "6",
+          "24"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CBLARE51",
+        "LC": "CHMGD"
+      }
+    }
+  ]
+}

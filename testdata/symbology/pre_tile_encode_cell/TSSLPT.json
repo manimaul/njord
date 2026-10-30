@@ -1,0 +1,49 @@
+{
+  "pins": "preTileEncode over every TSSLPT feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5178,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 148,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026108,
+          "FIDS": 50,
+          "LNAM": "022600D6057C0032",
+          "CATTSS": 1,
+          "ORIENT": 50.0,
+          "INFORM": "Northbound Puget Sound Traffic Lane",
+          "SORDAT": "20060807",
+          "SORIND": "US,US,reprt,L-865/06"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5178,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 148,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026108,
+        "FIDS": 50,
+        "LNAM": "022600D6057C0032",
+        "CATTSS": 1,
+        "ORIENT": 50.0,
+        "INFORM": "Northbound Puget Sound Traffic Lane",
+        "SORDAT": "20060807",
+        "SORIND": "US,US,reprt,L-865/06",
+        "SY": "RCTLPT52"
+      }
+    }
+  ]
+}

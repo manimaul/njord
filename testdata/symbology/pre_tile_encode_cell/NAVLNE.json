@@ -1,0 +1,180 @@
+{
+  "pins": "preTileEncode over every NAVLNE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5180,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27766540,
+          "FIDS": 50,
+          "LNAM": "022601A7AF0C0032",
+          "CATNAV": 2,
+          "ORIENT": 223.5,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5180,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 85,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27766540,
+        "FIDS": 50,
+        "LNAM": "022601A7AF0C0032",
+        "CATNAV": 2,
+        "ORIENT": 223.5,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "200301",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHGRD",
+        "_BRG": "224 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5181,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 138909,
+          "FIDS": 1,
+          "LNAM": "022600021E9D0001",
+          "CATNAV": 2,
+          "ORIENT": 132.05,
+          "INFORM": "Measured nautical mile course",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5181,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 85,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 138909,
+        "FIDS": 1,
+        "LNAM": "022600021E9D0001",
+        "CATNAV": 2,
+        "ORIENT": 132.05,
+        "INFORM": "Measured nautical mile course",
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "200301",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHGRD",
+        "_BRG": "132 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5182,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106463,
+          "FIDS": 1,
+          "LNAM": "022600019FDF0001",
+          "CATNAV": 3,
+          "ORIENT": 132.8,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5182,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 85,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106463,
+        "FIDS": 1,
+        "LNAM": "022600019FDF0001",
+        "CATNAV": 3,
+        "ORIENT": 132.8,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20120110",
+        "SORIND": "US,US,reprt,13thCGD,LNM 02/12",
+        "LC": "CHGRD",
+        "_BRG": "133 deg"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5183,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 85,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1427158147,
+          "FIDS": 12345,
+          "LNAM": "02265510B4833039",
+          "CATNAV": 2,
+          "ORIENT": 223.5,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "200301",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5183,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 85,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1427158147,
+        "FIDS": 12345,
+        "LNAM": "02265510B4833039",
+        "CATNAV": 2,
+        "ORIENT": 223.5,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "200301",
+        "SORIND": "US,US,graph,Chart 18453",
+        "LC": "CHGRD",
+        "_BRG": "224 deg"
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "pins": "preTileEncode over every PYLONS feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1759,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 98,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 190390803,
+          "FIDS": 1,
+          "LNAM": "02260B5922130001",
+          "CATPYL": 1,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1759,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 98,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 190390803,
+        "FIDS": 1,
+        "LNAM": "02260B5922130001",
+        "CATPYL": 1,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "AC": "CHBRN",
+        "LC": "CSTLN",
+        "SY": "POSGEN03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1760,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 98,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 216503835,
+          "FIDS": 1,
+          "LNAM": "02260CE7961B0001",
+          "CATPYL": 1,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1760,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 98,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 216503835,
+        "FIDS": 1,
+        "LNAM": "02260CE7961B0001",
+        "CATPYL": 1,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "AC": "CHBRN",
+        "LC": "CSTLN",
+        "SY": "POSGEN03"
+      }
+    }
+  ]
+}

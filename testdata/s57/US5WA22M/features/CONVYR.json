@@ -1,0 +1,33 @@
+{
+  "pins": "GDAL S57 driver output for CONVYR under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 1607,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 34,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307189076,
+          "FIDS": 1,
+          "LNAM": "02264DEA1F540001",
+          "CATCON": 2,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.4301037 47.2657341,-122.4305847 47.2655232,-122.4307196 47.2654711,-122.4309126 47.2657068)"
+      }
+    }
+  ]
+}

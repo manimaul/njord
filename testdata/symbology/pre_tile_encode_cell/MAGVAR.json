@@ -1,0 +1,136 @@
+{
+  "pins": "preTileEncode over every MAGVAR feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5172,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 81,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 553545693,
+          "FIDS": 7299,
+          "LNAM": "022620FE6FDD1C83",
+          "RYRMGV": "2018",
+          "VALACM": -9.0,
+          "VALMAG": 15.0,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "2018",
+          "SORIND": "US,US,reprt,L-523-2018"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5172,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 81,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 553545693,
+        "FIDS": 7299,
+        "LNAM": "022620FE6FDD1C83",
+        "RYRMGV": "2018",
+        "VALACM": -9.0,
+        "VALMAG": 15.0,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "2018",
+        "SORIND": "US,US,reprt,L-523-2018"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5173,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 81,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 252447852,
+          "FIDS": 7299,
+          "LNAM": "02260F0C0C6C1C83",
+          "RYRMGV": "2018",
+          "VALACM": -8.4,
+          "VALMAG": 15.67,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "2018",
+          "SORIND": "US,US,reprt,L-523-2018"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5173,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 81,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 252447852,
+        "FIDS": 7299,
+        "LNAM": "02260F0C0C6C1C83",
+        "RYRMGV": "2018",
+        "VALACM": -8.4,
+        "VALMAG": 15.67,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "2018",
+        "SORIND": "US,US,reprt,L-523-2018"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5174,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 81,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 74608143,
+          "FIDS": 7299,
+          "LNAM": "022604726E0F1C83",
+          "RYRMGV": "2018",
+          "VALACM": -8.4,
+          "VALMAG": 15.65,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "2018",
+          "SORIND": "US,US,reprt,L-523-2018"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5174,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 81,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 74608143,
+        "FIDS": 7299,
+        "LNAM": "022604726E0F1C83",
+        "RYRMGV": "2018",
+        "VALACM": -8.4,
+        "VALMAG": 15.65,
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "2018",
+        "SORIND": "US,US,reprt,L-523-2018"
+      }
+    }
+  ]
+}

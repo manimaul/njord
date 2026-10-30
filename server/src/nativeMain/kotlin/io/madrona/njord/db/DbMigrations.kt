@@ -1,11 +1,22 @@
 package io.madrona.njord.db
 
+import DataSource
 import io.madrona.njord.Singletons
 import io.madrona.njord.util.DistributedLock
 import kotlinx.coroutines.*
 
-object DbMigrations : Dao(), CoroutineScope by CoroutineScope(Dispatchers.IO) {
-    private const val VERSION_KEY = "version"
+/**
+ * Schema provisioning and migration against the server's configured database. The logic lives in
+ * [DbMigrator] so tests (and the Rust port's P-DB-1 contract test) can run it against a database
+ * of their choosing; this object is the production entry point.
+ */
+object DbMigrations {
+    const val VERSION_KEY = DbMigrator.VERSION_KEY
+
+    fun run(distributedLock: DistributedLock = Singletons.migrationLock) = DbMigrator().run(distributedLock)
+}
+
+class DbMigrator(ds: DataSource = Singletons.ds) : Dao(ds) {
 
     /**
      * A single schema revision. Applied only when the database's recorded version is below
@@ -88,8 +99,14 @@ CREATE INDEX IF NOT EXISTS features_lnam_expr_idx ON features ((props->>'LNAM'))
         ),
     ).sortedBy { it.version }
 
-    private val DB_VERSION = migrations.last().version
+    /** The highest migration version, i.e. what [initializeSchema] stamps and [run] waits for. */
+    val currentVersion: Int = migrations.last().version
+    private val DB_VERSION get() = currentVersion
 
+    /**
+     * Brings the database up to [currentVersion], holding [distributedLock] while provisioning or
+     * migrating so only one instance does the work; the others wait for the version stamp.
+     */
     fun run(distributedLock: DistributedLock = Singletons.migrationLock) {
         runBlocking {
             while (true) {
@@ -303,7 +320,7 @@ ALTER TABLE features ADD CONSTRAINT features_chart_name_fkey
      * rather than reporting 0 when the database can't be reached, so a connection failure isn't
      * mistaken for an empty database and answered by replaying every migration.
      */
-    private suspend fun dbVersion(): Int {
+    suspend fun dbVersion(): Int {
         return sqlOpAsync { conn ->
             val tableExists = conn.prepareStatement("SELECT to_regclass('public.meta_data') IS NOT NULL")
                 .executeQuery()
@@ -402,5 +419,9 @@ CREATE INDEX IF NOT EXISTS base_features_scale_idx ON base_features (scale);
             conn.statement(stampVersionSql(DB_VERSION)).execute()
         } ?: throw IllegalStateException("DB schema initialization failed")
         log.info("DB schema initialized to version $DB_VERSION")
+    }
+
+    companion object {
+        const val VERSION_KEY = "version"
     }
 }

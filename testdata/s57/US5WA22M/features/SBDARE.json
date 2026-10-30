@@ -1,0 +1,2073 @@
+{
+  "pins": "GDAL S57 driver output for SBDARE under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 5065,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024790,
+          "FIDS": 50,
+          "LNAM": "022600D600560032",
+          "NATSUR": [
+            "9"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4449386 47.3023084)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 5066,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025084,
+          "FIDS": 50,
+          "LNAM": "022600D6017C0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4174251 47.2883445)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 5067,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024902,
+          "FIDS": 50,
+          "LNAM": "022600D600C60032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4522563 47.2981722)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 5068,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025090,
+          "FIDS": 50,
+          "LNAM": "022600D601820032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4265508 47.2875954)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 5069,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025065,
+          "FIDS": 50,
+          "LNAM": "022600D601690032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4931754 47.2936453)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 5070,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024778,
+          "FIDS": 50,
+          "LNAM": "022600D6004A0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4337678 47.3143359)"
+      }
+    },
+    {
+      "input": 6,
+      "expected": {
+        "props": {
+          "RCID": 5071,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024890,
+          "FIDS": 50,
+          "LNAM": "022600D600BA0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.436448 47.2968534)"
+      }
+    },
+    {
+      "input": 7,
+      "expected": {
+        "props": {
+          "RCID": 5072,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024788,
+          "FIDS": 50,
+          "LNAM": "022600D600540032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4466956 47.3043213)"
+      }
+    },
+    {
+      "input": 8,
+      "expected": {
+        "props": {
+          "RCID": 5073,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024630,
+          "FIDS": 50,
+          "LNAM": "022600D5FFB60032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4335583 47.2653167)"
+      }
+    },
+    {
+      "input": 9,
+      "expected": {
+        "props": {
+          "RCID": 5074,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1408546535,
+          "FIDS": 12345,
+          "LNAM": "0226AC0B49193039",
+          "NATSUR": [
+            "9"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.503294 47.3008507)"
+      }
+    },
+    {
+      "input": 10,
+      "expected": {
+        "props": {
+          "RCID": 5075,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024500,
+          "FIDS": 50,
+          "LNAM": "022600D5FF340032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4643734 47.2813749)"
+      }
+    },
+    {
+      "input": 11,
+      "expected": {
+        "props": {
+          "RCID": 5076,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024804,
+          "FIDS": 50,
+          "LNAM": "022600D600640032",
+          "NATSUR": [
+            "4",
+            "6",
+            "17"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.503106 47.3196501)"
+      }
+    },
+    {
+      "input": 12,
+      "expected": {
+        "props": {
+          "RCID": 5077,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024784,
+          "FIDS": 50,
+          "LNAM": "022600D600500032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4472741 47.2888232)"
+      }
+    },
+    {
+      "input": 13,
+      "expected": {
+        "props": {
+          "RCID": 5078,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025118,
+          "FIDS": 50,
+          "LNAM": "022600D6019E0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4412991 47.2649537)"
+      }
+    },
+    {
+      "input": 14,
+      "expected": {
+        "props": {
+          "RCID": 5079,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024800,
+          "FIDS": 50,
+          "LNAM": "022600D600600032",
+          "NATSUR": [
+            "1",
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4898619 47.3169349)"
+      }
+    },
+    {
+      "input": 15,
+      "expected": {
+        "props": {
+          "RCID": 5080,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024814,
+          "FIDS": 50,
+          "LNAM": "022600D6006E0032",
+          "NATQUA": [
+            "6"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5173775 47.312323)"
+      }
+    },
+    {
+      "input": 16,
+      "expected": {
+        "props": {
+          "RCID": 5081,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025104,
+          "FIDS": 50,
+          "LNAM": "022600D601900032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4289419 47.2948847)"
+      }
+    },
+    {
+      "input": 17,
+      "expected": {
+        "props": {
+          "RCID": 5082,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024603,
+          "FIDS": 50,
+          "LNAM": "022600D5FF9B0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4337904 47.2671355)"
+      }
+    },
+    {
+      "input": 18,
+      "expected": {
+        "props": {
+          "RCID": 5083,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024803,
+          "FIDS": 50,
+          "LNAM": "022600D600630032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4955945 47.3142365)"
+      }
+    },
+    {
+      "input": 19,
+      "expected": {
+        "props": {
+          "RCID": 5084,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 15466630,
+          "FIDS": 50,
+          "LNAM": "022600EC00860032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "wkt": "POINT (-122.4566935 47.3171291)"
+      }
+    },
+    {
+      "input": 20,
+      "expected": {
+        "props": {
+          "RCID": 5085,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024565,
+          "FIDS": 50,
+          "LNAM": "022600D5FF750032",
+          "NATSUR": [
+            "1",
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4896596 47.3065142)"
+      }
+    },
+    {
+      "input": 21,
+      "expected": {
+        "props": {
+          "RCID": 5086,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025050,
+          "FIDS": 50,
+          "LNAM": "022600D6015A0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4827598 47.2946786)"
+      }
+    },
+    {
+      "input": 22,
+      "expected": {
+        "props": {
+          "RCID": 5087,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024575,
+          "FIDS": 50,
+          "LNAM": "022600D5FF7F0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4622947 47.30297)"
+      }
+    },
+    {
+      "input": 23,
+      "expected": {
+        "props": {
+          "RCID": 5088,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024477,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1D0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4516458 47.282929)"
+      }
+    },
+    {
+      "input": 24,
+      "expected": {
+        "props": {
+          "RCID": 5089,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024601,
+          "FIDS": 50,
+          "LNAM": "022600D5FF990032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4359867 47.2691148)"
+      }
+    },
+    {
+      "input": 25,
+      "expected": {
+        "props": {
+          "RCID": 5090,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024545,
+          "FIDS": 50,
+          "LNAM": "022600D5FF610032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4230428 47.2765648)"
+      }
+    },
+    {
+      "input": 26,
+      "expected": {
+        "props": {
+          "RCID": 5091,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024818,
+          "FIDS": 50,
+          "LNAM": "022600D600720032",
+          "NATSUR": [
+            "4",
+            "6",
+            "17"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5194904 47.3099909)"
+      }
+    },
+    {
+      "input": 27,
+      "expected": {
+        "props": {
+          "RCID": 5092,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024502,
+          "FIDS": 50,
+          "LNAM": "022600D5FF360032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4222432 47.2796231)"
+      }
+    },
+    {
+      "input": 28,
+      "expected": {
+        "props": {
+          "RCID": 5093,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024610,
+          "FIDS": 50,
+          "LNAM": "022600D5FFA20032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4323096 47.2742722)"
+      }
+    },
+    {
+      "input": 29,
+      "expected": {
+        "props": {
+          "RCID": 5094,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024776,
+          "FIDS": 50,
+          "LNAM": "022600D600480032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4322405 47.3139554)"
+      }
+    },
+    {
+      "input": 30,
+      "expected": {
+        "props": {
+          "RCID": 5095,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025083,
+          "FIDS": 50,
+          "LNAM": "022600D6017B0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.414905 47.2923832)"
+      }
+    },
+    {
+      "input": 31,
+      "expected": {
+        "props": {
+          "RCID": 5096,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025066,
+          "FIDS": 50,
+          "LNAM": "022600D6016A0032",
+          "NATSUR": [
+            "1",
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4963371 47.2965102)"
+      }
+    },
+    {
+      "input": 32,
+      "expected": {
+        "props": {
+          "RCID": 5097,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025123,
+          "FIDS": 50,
+          "LNAM": "022600D601A30032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.444784 47.2753702)"
+      }
+    },
+    {
+      "input": 33,
+      "expected": {
+        "props": {
+          "RCID": 5098,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024785,
+          "FIDS": 50,
+          "LNAM": "022600D600510032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4370023 47.2916797)"
+      }
+    },
+    {
+      "input": 34,
+      "expected": {
+        "props": {
+          "RCID": 5099,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024605,
+          "FIDS": 50,
+          "LNAM": "022600D5FF9D0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4312804 47.265505)"
+      }
+    },
+    {
+      "input": 35,
+      "expected": {
+        "props": {
+          "RCID": 5100,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024476,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1C0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4327097 47.2835403)"
+      }
+    },
+    {
+      "input": 36,
+      "expected": {
+        "props": {
+          "RCID": 5101,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024719,
+          "FIDS": 50,
+          "LNAM": "022600D6000F0032",
+          "NATSUR": [
+            "1",
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4233164 47.2638255)"
+      }
+    },
+    {
+      "input": 37,
+      "expected": {
+        "props": {
+          "RCID": 5102,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024458,
+          "FIDS": 50,
+          "LNAM": "022600D5FF0A0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4592481 47.2809363)"
+      }
+    },
+    {
+      "input": 38,
+      "expected": {
+        "props": {
+          "RCID": 5103,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024901,
+          "FIDS": 50,
+          "LNAM": "022600D600C50032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4462793 47.2969466)"
+      }
+    },
+    {
+      "input": 39,
+      "expected": {
+        "props": {
+          "RCID": 5104,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024480,
+          "FIDS": 50,
+          "LNAM": "022600D5FF200032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4566209 47.2768367)"
+      }
+    },
+    {
+      "input": 40,
+      "expected": {
+        "props": {
+          "RCID": 5105,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025049,
+          "FIDS": 50,
+          "LNAM": "022600D601590032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.477006 47.2960567)"
+      }
+    },
+    {
+      "input": 41,
+      "expected": {
+        "props": {
+          "RCID": 5106,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024805,
+          "FIDS": 50,
+          "LNAM": "022600D600650032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.508043 47.3125501)"
+      }
+    },
+    {
+      "input": 42,
+      "expected": {
+        "props": {
+          "RCID": 5107,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024571,
+          "FIDS": 50,
+          "LNAM": "022600D5FF7B0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5022079 47.3013225)"
+      }
+    },
+    {
+      "input": 43,
+      "expected": {
+        "props": {
+          "RCID": 5108,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025076,
+          "FIDS": 50,
+          "LNAM": "022600D601740032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4874637 47.2985814)"
+      }
+    },
+    {
+      "input": 44,
+      "expected": {
+        "props": {
+          "RCID": 5109,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024481,
+          "FIDS": 50,
+          "LNAM": "022600D5FF210032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.468723 47.2829195)"
+      }
+    },
+    {
+      "input": 45,
+      "expected": {
+        "props": {
+          "RCID": 5110,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024466,
+          "FIDS": 50,
+          "LNAM": "022600D5FF120032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4719177 47.2879025)"
+      }
+    },
+    {
+      "input": 46,
+      "expected": {
+        "props": {
+          "RCID": 5111,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024794,
+          "FIDS": 50,
+          "LNAM": "022600D6005A0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4502146 47.3093622)"
+      }
+    },
+    {
+      "input": 47,
+      "expected": {
+        "props": {
+          "RCID": 5112,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024813,
+          "FIDS": 50,
+          "LNAM": "022600D6006D0032",
+          "NATSUR": [
+            "4",
+            "6",
+            "17"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.5238601 47.3140998)"
+      }
+    },
+    {
+      "input": 48,
+      "expected": {
+        "props": {
+          "RCID": 5113,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025059,
+          "FIDS": 50,
+          "LNAM": "022600D601630032",
+          "NATSUR": [
+            "4",
+            "17"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4994251 47.2996753)"
+      }
+    },
+    {
+      "input": 49,
+      "expected": {
+        "props": {
+          "RCID": 5114,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024489,
+          "FIDS": 50,
+          "LNAM": "022600D5FF290032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4727631 47.280128)"
+      }
+    },
+    {
+      "input": 50,
+      "expected": {
+        "props": {
+          "RCID": 5115,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024841,
+          "FIDS": 50,
+          "LNAM": "022600D600890032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4320474 47.2625862)"
+      }
+    },
+    {
+      "input": 51,
+      "expected": {
+        "props": {
+          "RCID": 5116,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024474,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1A0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4206749 47.284994)"
+      }
+    },
+    {
+      "input": 52,
+      "expected": {
+        "props": {
+          "RCID": 5117,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 180894,
+          "FIDS": 1,
+          "LNAM": "02260002C29E0001",
+          "NATQUA": [
+            "2"
+          ],
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20091010",
+          "SORIND": "US,US,graph,H-12052"
+        },
+        "wkt": "POINT (-122.4881257 47.2892801)"
+      }
+    },
+    {
+      "input": 53,
+      "expected": {
+        "props": {
+          "RCID": 5118,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 58768,
+          "FIDS": 1,
+          "LNAM": "02260000E5900001",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "wkt": "POINT (-122.4404264 47.3184339)"
+      }
+    },
+    {
+      "input": 54,
+      "expected": {
+        "props": {
+          "RCID": 5119,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024619,
+          "FIDS": 50,
+          "LNAM": "022600D5FFAB0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4270736 47.2675732)"
+      }
+    },
+    {
+      "input": 55,
+      "expected": {
+        "props": {
+          "RCID": 5120,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024781,
+          "FIDS": 50,
+          "LNAM": "022600D6004D0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4382851 47.308053)"
+      }
+    },
+    {
+      "input": 56,
+      "expected": {
+        "props": {
+          "RCID": 5121,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025100,
+          "FIDS": 50,
+          "LNAM": "022600D6018C0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4210968 47.2941818)"
+      }
+    },
+    {
+      "input": 57,
+      "expected": {
+        "props": {
+          "RCID": 5122,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024799,
+          "FIDS": 50,
+          "LNAM": "022600D6005F0032",
+          "NATSUR": [
+            "1",
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4752855 47.3130964)"
+      }
+    },
+    {
+      "input": 58,
+      "expected": {
+        "props": {
+          "RCID": 5123,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024718,
+          "FIDS": 50,
+          "LNAM": "022600D6000E0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4218278 47.2643582)"
+      }
+    },
+    {
+      "input": 59,
+      "expected": {
+        "props": {
+          "RCID": 5124,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025099,
+          "FIDS": 50,
+          "LNAM": "022600D6018B0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.461473 47.2928122)"
+      }
+    },
+    {
+      "input": 60,
+      "expected": {
+        "props": {
+          "RCID": 5125,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024478,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1E0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4522423 47.2731578)"
+      }
+    },
+    {
+      "input": 61,
+      "expected": {
+        "props": {
+          "RCID": 5126,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024797,
+          "FIDS": 50,
+          "LNAM": "022600D6005D0032",
+          "NATQUA": [
+            "6"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.450391 47.3012266)"
+      }
+    },
+    {
+      "input": 62,
+      "expected": {
+        "props": {
+          "RCID": 5127,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 180880,
+          "FIDS": 1,
+          "LNAM": "02260002C2900001",
+          "NATQUA": [
+            "1"
+          ],
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20091010",
+          "SORIND": "US,US,graph,H-12052"
+        },
+        "wkt": "POINT (-122.4386615 47.3094382)"
+      }
+    },
+    {
+      "input": 63,
+      "expected": {
+        "props": {
+          "RCID": 5128,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 58762,
+          "FIDS": 1,
+          "LNAM": "02260000E58A0001",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "wkt": "POINT (-122.4326267 47.3183373)"
+      }
+    },
+    {
+      "input": 64,
+      "expected": {
+        "props": {
+          "RCID": 5129,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024793,
+          "FIDS": 50,
+          "LNAM": "022600D600590032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4448359 47.3084773)"
+      }
+    },
+    {
+      "input": 65,
+      "expected": {
+        "props": {
+          "RCID": 5130,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024482,
+          "FIDS": 50,
+          "LNAM": "022600D5FF220032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4775554 47.2829393)"
+      }
+    },
+    {
+      "input": 66,
+      "expected": {
+        "props": {
+          "RCID": 5131,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024779,
+          "FIDS": 50,
+          "LNAM": "022600D6004B0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4389661 47.3135361)"
+      }
+    },
+    {
+      "input": 67,
+      "expected": {
+        "props": {
+          "RCID": 5132,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025098,
+          "FIDS": 50,
+          "LNAM": "022600D6018A0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4318762 47.2930628)"
+      }
+    },
+    {
+      "input": 68,
+      "expected": {
+        "props": {
+          "RCID": 5133,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024501,
+          "FIDS": 50,
+          "LNAM": "022600D5FF350032",
+          "NATSUR": [
+            "4",
+            "6"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4381134 47.2798697)"
+      }
+    },
+    {
+      "input": 69,
+      "expected": {
+        "props": {
+          "RCID": 5134,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024455,
+          "FIDS": 50,
+          "LNAM": "022600D5FF070032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4819541 47.2857867)"
+      }
+    },
+    {
+      "input": 70,
+      "expected": {
+        "props": {
+          "RCID": 5135,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 58761,
+          "FIDS": 1,
+          "LNAM": "02260000E5890001",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "wkt": "POINT (-122.4469588 47.3174947)"
+      }
+    },
+    {
+      "input": 71,
+      "expected": {
+        "props": {
+          "RCID": 5136,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024604,
+          "FIDS": 50,
+          "LNAM": "022600D5FF9C0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4409228 47.2687068)"
+      }
+    },
+    {
+      "input": 72,
+      "expected": {
+        "props": {
+          "RCID": 5137,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024465,
+          "FIDS": 50,
+          "LNAM": "022600D5FF110032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4382275 47.2880455)"
+      }
+    },
+    {
+      "input": 73,
+      "expected": {
+        "props": {
+          "RCID": 5138,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 58769,
+          "FIDS": 1,
+          "LNAM": "02260000E5910001",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "wkt": "POINT (-122.4330902 47.3196814)"
+      }
+    },
+    {
+      "input": 74,
+      "expected": {
+        "props": {
+          "RCID": 5139,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025124,
+          "FIDS": 50,
+          "LNAM": "022600D601A40032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4478916 47.270448)"
+      }
+    },
+    {
+      "input": 75,
+      "expected": {
+        "props": {
+          "RCID": 5140,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024563,
+          "FIDS": 50,
+          "LNAM": "022600D5FF730032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4581922 47.3063173)"
+      }
+    },
+    {
+      "input": 76,
+      "expected": {
+        "props": {
+          "RCID": 5141,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024524,
+          "FIDS": 50,
+          "LNAM": "022600D5FF4C0032",
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4299586 47.2785783)"
+      }
+    },
+    {
+      "input": 77,
+      "expected": {
+        "props": {
+          "RCID": 5142,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024464,
+          "FIDS": 50,
+          "LNAM": "022600D5FF100032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4079112 47.2868872)"
+      }
+    },
+    {
+      "input": 78,
+      "expected": {
+        "props": {
+          "RCID": 5143,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025085,
+          "FIDS": 50,
+          "LNAM": "022600D6017D0032",
+          "NATQUA": [
+            "5"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4138648 47.2904538)"
+      }
+    },
+    {
+      "input": 79,
+      "expected": {
+        "props": {
+          "RCID": 5144,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024457,
+          "FIDS": 50,
+          "LNAM": "022600D5FF090032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4592111 47.2846235)"
+      }
+    },
+    {
+      "input": 80,
+      "expected": {
+        "props": {
+          "RCID": 5145,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 180893,
+          "FIDS": 1,
+          "LNAM": "02260002C29D0001",
+          "NATQUA": [
+            "1"
+          ],
+          "NATSUR": [
+            "4"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20091010",
+          "SORIND": "US,US,graph,H-12052"
+        },
+        "wkt": "POINT (-122.4975828 47.3059131)"
+      }
+    },
+    {
+      "input": 81,
+      "expected": {
+        "props": {
+          "RCID": 5146,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024475,
+          "FIDS": 50,
+          "LNAM": "022600D5FF1B0032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.441179 47.2831204)"
+      }
+    },
+    {
+      "input": 82,
+      "expected": {
+        "props": {
+          "RCID": 5147,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024499,
+          "FIDS": 50,
+          "LNAM": "022600D5FF330032",
+          "NATSUR": [
+            "6"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4536354 47.2798987)"
+      }
+    },
+    {
+      "input": 83,
+      "expected": {
+        "props": {
+          "RCID": 5148,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024564,
+          "FIDS": 50,
+          "LNAM": "022600D5FF740032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4805839 47.3054711)"
+      }
+    },
+    {
+      "input": 84,
+      "expected": {
+        "props": {
+          "RCID": 5149,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 121,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024609,
+          "FIDS": 50,
+          "LNAM": "022600D5FFA10032",
+          "NATSUR": [
+            "1"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.4272194 47.2731057)"
+      }
+    }
+  ]
+}

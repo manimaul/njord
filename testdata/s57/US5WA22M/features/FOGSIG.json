@@ -1,0 +1,86 @@
+{
+  "pins": "GDAL S57 driver output for FOGSIG under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 51,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 713351998,
+          "FIDS": 12345,
+          "LNAM": "02262A84E33E3039",
+          "CATFOG": 3,
+          "SIGGRP": "(1)",
+          "SIGPER": 25.0,
+          "SIGSEQ": "05.0+(20.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120403",
+          "SORIND": "US,US,reprt,13thCGD,LNM 14/12"
+        },
+        "wkt": "POINT (-122.5138958 47.3066353)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 52,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -315880616,
+          "FIDS": 12345,
+          "LNAM": "0226ED2C0B583039",
+          "CATFOG": 7,
+          "SIGGRP": "(1)",
+          "SIGPER": 14.0,
+          "SIGSEQ": "01.0+(13.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "POINT (-122.411285 47.2848421)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 53,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 58,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106534,
+          "FIDS": 1,
+          "LNAM": "02260001A0260001",
+          "CATFOG": 10,
+          "SIGGRP": "(1)",
+          "SIGPER": 15.0,
+          "SIGSEQ": "02.0+(13.0)",
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20030401",
+          "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+        },
+        "wkt": "POINT (-122.4145227 47.2848543)"
+      }
+    }
+  ]
+}

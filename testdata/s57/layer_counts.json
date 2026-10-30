@@ -1,0 +1,142 @@
+{
+  "pins": "OgrS57Dataset.layerNames() order and OGR_L_GetFeatureCount per layer; total = featureCount(ChartIngest.exLayers), the number ChartIngest reports as totalFeatures; the excluded set is pinned alongside",
+  "decisions": [
+    "IN-1"
+  ],
+  "generator": "S57FixtureTest.P-IN-3",
+  "source": "all three fixture cells; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": "fixtures/US5WA22M/US5WA22M.000",
+      "expected": {
+        "excluded": [
+          "DSID",
+          "IsolatedNode",
+          "ConnectedNode",
+          "Edge",
+          "Face"
+        ],
+        "total": 5163,
+        "layers": {
+          "DSID": 1,
+          "IsolatedNode": 0,
+          "ConnectedNode": 0,
+          "Edge": 0,
+          "Face": 0,
+          "ACHARE": 1,
+          "BCNLAT": 5,
+          "BCNSPP": 25,
+          "BRIDGE": 18,
+          "BUISGL": 447,
+          "BUAARE": 9,
+          "BOYLAT": 3,
+          "BOYSPP": 10,
+          "CBLARE": 7,
+          "CBLOHD": 7,
+          "CTNARE": 12,
+          "COALNE": 123,
+          "CONVYR": 1,
+          "DAYMAR": 7,
+          "DEPARE": 364,
+          "DEPCNT": 406,
+          "DRGARE": 21,
+          "DRYDOC": 1,
+          "DMPGRD": 4,
+          "DYKCON": 9,
+          "FAIRWY": 2,
+          "FERYRT": 1,
+          "FOGSIG": 3,
+          "GATCON": 1,
+          "HRBFAC": 1,
+          "HULKES": 5,
+          "LAKARE": 28,
+          "LNDARE": 67,
+          "LNDRGN": 12,
+          "LNDMRK": 16,
+          "LIGHTS": 29,
+          "LOGPON": 4,
+          "MAGVAR": 3,
+          "MORFAC": 114,
+          "NAVLNE": 4,
+          "OBSTRN": 123,
+          "PILPNT": 358,
+          "PIPARE": 1,
+          "PIPOHD": 2,
+          "PIPSOL": 6,
+          "PONTON": 582,
+          "PRCARE": 1,
+          "PYLONS": 2,
+          "RDOSTA": 1,
+          "RECTRC": 1,
+          "RESARE": 6,
+          "SEAARE": 12,
+          "SBDARE": 85,
+          "SLCONS": 1003,
+          "SILTNK": 110,
+          "SLOTOP": 34,
+          "SOUNDG": 977,
+          "TSSBND": 1,
+          "TSSLPT": 1,
+          "UWTROC": 9,
+          "WATTUR": 3,
+          "WRECKS": 20,
+          "M_COVR": 2,
+          "M_NPUB": 1,
+          "M_NSYS": 1,
+          "M_QUAL": 46,
+          "C_AGGR": 5
+        }
+      }
+    },
+    {
+      "input": "fixtures/synthetic/US4ZZ01M.000",
+      "expected": {
+        "excluded": [
+          "DSID",
+          "IsolatedNode",
+          "ConnectedNode",
+          "Edge",
+          "Face"
+        ],
+        "total": 6,
+        "layers": {
+          "DSID": 1,
+          "IsolatedNode": 0,
+          "ConnectedNode": 0,
+          "Edge": 0,
+          "Face": 0,
+          "BOYLAT": 2,
+          "DEPARE": 1,
+          "DEPCNT": 1,
+          "LIGHTS": 1,
+          "M_COVR": 1
+        }
+      }
+    },
+    {
+      "input": "fixtures/synthetic/US5ZZ02M.000",
+      "expected": {
+        "excluded": [
+          "DSID",
+          "IsolatedNode",
+          "ConnectedNode",
+          "Edge",
+          "Face"
+        ],
+        "total": 8,
+        "layers": {
+          "DSID": 1,
+          "IsolatedNode": 0,
+          "ConnectedNode": 0,
+          "Edge": 0,
+          "Face": 0,
+          "BOYSPP": 1,
+          "DEPARE": 1,
+          "DEPCNT": 1,
+          "SOUNDG": 4,
+          "M_COVR": 1
+        }
+      }
+    }
+  ]
+}

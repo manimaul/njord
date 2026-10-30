@@ -1,0 +1,1858 @@
+{
+  "pins": "OgrGeometry over GDAL/GEOS: type, validity, emptiness, area/length (planar, degrees), envelopes, centroids, boundary, makeValid of a bow-tie, simplify vs simplifyPreserveTopology, intersection/difference/union/contains/intersects incl. against an empty polygon, WKB/WKT/GeoJSON round trips; difference(other) is null when `other` is invalid",
+  "decisions": [
+    "LB-1",
+    "TE-10"
+  ],
+  "generator": "OgrGeometryFixtureTest",
+  "source": "hand-written WKT incl. a real z16 tile clip polygon and a chart coverage; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": {
+        "op": "type",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "Polygon"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": 100.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": 40.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": 1
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              10.0,
+              0.0
+            ],
+            [
+              10.0,
+              10.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": "Polygon"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": 48.2842712474619
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": 1
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": "010300000001000000050000000000000000000000000000000000000000000000000024400000000000002440000000000000244000000000000000000000000000000000000000000000244000000000000000000000000000000000"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              10.0,
+              10.0
+            ],
+            [
+              10.0,
+              0.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "Polygon"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": 96.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": 48.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": 2
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        10.0,
+        10.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "010300000002000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000050000000000000000000040000000000000004000000000000010400000000000000040000000000000104000000000000010400000000000000040000000000000104000000000000000400000000000000040"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              10.0,
+              0.0
+            ],
+            [
+              10.0,
+              10.0
+            ],
+            [
+              0.0,
+              10.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          [
+            [
+              2.0,
+              2.0
+            ],
+            [
+              4.0,
+              2.0
+            ],
+            [
+              4.0,
+              4.0
+            ],
+            [
+              2.0,
+              4.0
+            ],
+            [
+              2.0,
+              2.0
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "MultiPolygon"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": 104.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": 48.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": 2
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "010600000002000000010300000001000000050000000000000000000000000000000000000000000000000024400000000000000000000000000000244000000000000024400000000000000000000000000000244000000000000000000000000000000000010300000001000000050000000000000000003440000000000000344000000000000036400000000000003440000000000000364000000000000036400000000000003440000000000000364000000000000034400000000000003440"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                10.0,
+                0.0
+              ],
+              [
+                10.0,
+                10.0
+              ],
+              [
+                0.0,
+                10.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                20.0,
+                20.0
+              ],
+              [
+                22.0,
+                20.0
+              ],
+              [
+                22.0,
+                22.0
+              ],
+              [
+                20.0,
+                22.0
+              ],
+              [
+                20.0,
+                20.0
+              ]
+            ]
+          ]
+        ],
+        "type": "MultiPolygon"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "LineString"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": 20.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": 2
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": [
+        -5.0,
+        5.0,
+        15.0,
+        5.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "01020000000200000000000000000014c000000000000014400000000000002e400000000000001440"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "LINESTRING (-5 5,15 5)"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            -5.0,
+            5.0
+          ],
+          [
+            15.0,
+            5.0
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "LINESTRING (-5 5,15 5)"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": [
+        [
+          -5.0,
+          5.0
+        ],
+        [
+          15.0,
+          5.0
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "POINT (5 5)"
+      },
+      "expected": "Point"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "POINT (5 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "POINT (5 5)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "POINT (5 5)"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "POINT (5 5)"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "POINT (5 5)"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "POINT (5 5)"
+      },
+      "expected": 1
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "POINT (5 5)"
+      },
+      "expected": [
+        5.0,
+        5.0,
+        5.0,
+        5.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "POINT (5 5)"
+      },
+      "expected": "010100000000000000000014400000000000001440"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "POINT (5 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "POINT (5 5)"
+      },
+      "expected": {
+        "coordinates": [
+          5.0,
+          5.0
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "POINT (5 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "POINT (5 5)"
+      },
+      "expected": [
+        [
+          5.0,
+          5.0
+        ]
+      ]
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": "MultiPoint"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": 2
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": [
+        1.0,
+        1.0,
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": "0104000000020000000101000000000000000000f03f000000000000f03f010100000000000000000000400000000000000040"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": "MULTIPOINT (1 1,2 2)"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": {
+        "coordinates": [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            2.0
+          ]
+        ],
+        "type": "MultiPoint"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": "MULTIPOINT (1 1,2 2)"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "MULTIPOINT ((1 1),(2 2))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": "Polygon"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": "010300000000000000"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON EMPTY"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": {
+        "type": "Polygon"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON EMPTY"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "type",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "GeometryCollection"
+    },
+    {
+      "input": {
+        "op": "isValid",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "isEmpty",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "area",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": 0.0
+    },
+    {
+      "input": {
+        "op": "length",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": 1.4142135623730951
+    },
+    {
+      "input": {
+        "op": "numGeometries",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": 2
+    },
+    {
+      "input": {
+        "op": "numCoordinates",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "envelope",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "input": {
+        "op": "wkbHex",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "0107000000020000000101000000000000000000f03f000000000000f03f01020000000200000000000000000000000000000000000000000000000000f03f000000000000f03f"
+    },
+    {
+      "input": {
+        "op": "wkbRoundTrip",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+    },
+    {
+      "input": {
+        "op": "geoJson",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": {
+        "geometries": [
+          {
+            "coordinates": [
+              1.0,
+              1.0
+            ],
+            "type": "Point"
+          },
+          {
+            "coordinates": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                1.0,
+                1.0
+              ]
+            ],
+            "type": "LineString"
+          }
+        ],
+        "type": "GeometryCollection"
+      }
+    },
+    {
+      "input": {
+        "op": "clone",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+    },
+    {
+      "input": {
+        "op": "coordinateSequence",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "op": "numInteriorRings",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": 0
+    },
+    {
+      "input": {
+        "op": "exteriorRing",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "LINEARRING (0 0,10 0,10 10,0 10,0 0)"
+    },
+    {
+      "input": {
+        "op": "interiorRing0",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "op": "numInteriorRings",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": 1
+    },
+    {
+      "input": {
+        "op": "exteriorRing",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "LINEARRING (0 0,10 0,10 10,0 10,0 0)"
+    },
+    {
+      "input": {
+        "op": "interiorRing0",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "LINEARRING (2 2,4 2,4 4,2 4,2 2)"
+    },
+    {
+      "input": {
+        "op": "numInteriorRings",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": 1
+    },
+    {
+      "input": {
+        "op": "exteriorRing",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "interiorRing0",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "POLYGON ((20 20,22 20,22 22,20 22,20 20))"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "LINESTRING (0 0,10 0,10 10,0 10,0 0)"
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "MULTILINESTRING ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POINT (5.08333333333333 5.08333333333333)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POINT (5.08333333333333 5.08333333333333)"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "MULTILINESTRING ((0 0,10 0,10 10,0 10,0 0),(20 20,22 20,22 22,20 22,20 20))"
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "POINT (5.61538461538461 5.61538461538461)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "MULTIPOINT (-5 5,15 5)"
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "POINT (5 5)"
+      },
+      "expected": "GEOMETRYCOLLECTION EMPTY"
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "POINT (5 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "POINT (5 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "boundary",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "op": "centroid",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "POINT (0.5 0.5)"
+    },
+    {
+      "input": {
+        "op": "centroidOfLargestPart",
+        "a": "GEOMETRYCOLLECTION (POINT (1 1),LINESTRING (0 0,1 1))"
+      },
+      "expected": "POINT (0.5 0.5)"
+    },
+    {
+      "input": {
+        "op": "makeValid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "makeValid",
+        "a": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": "MULTIPOLYGON (((0 10,5 5,0 0,0 10)),((10 0,5 5,10 10,10 0)))"
+    },
+    {
+      "input": {
+        "op": "makeValid",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "makeValid",
+        "a": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON EMPTY"
+    },
+    {
+      "input": {
+        "op": "envelopeGeometry",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "n": 0.0
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+    },
+    {
+      "input": {
+        "op": "envelopeGeometry",
+        "a": "LINESTRING (-5 5,15 5)",
+        "n": 0.0
+      },
+      "expected": "POLYGON ((-5 5,15 5,15 5,-5 5,-5 5))"
+    },
+    {
+      "input": {
+        "op": "envelopeGeometry",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "n": 1.0
+      },
+      "expected": "POLYGON ((-1 -1,11 -1,11 11,-1 11,-1 -1))"
+    },
+    {
+      "input": {
+        "op": "envelopeGeometry",
+        "a": "LINESTRING (-5 5,15 5)",
+        "n": 1.0
+      },
+      "expected": "POLYGON ((-6 4,16 4,16 6,-6 6,-6 4))"
+    },
+    {
+      "input": {
+        "op": "simplify",
+        "a": "LINESTRING (0 0,1 0.01,2 0,3 0.01,4 0,10 0)",
+        "n": 0.1
+      },
+      "expected": "LINESTRING (0 0,10 0)"
+    },
+    {
+      "input": {
+        "op": "simplifyPreserveTopology",
+        "a": "LINESTRING (0 0,1 0.01,2 0,3 0.01,4 0,10 0)",
+        "n": 0.1
+      },
+      "expected": "LINESTRING (0 0,10 0)"
+    },
+    {
+      "input": {
+        "op": "simplify",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))",
+        "n": 0.1
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "simplify",
+        "a": "LINESTRING (0 0,1 0.01,2 0,3 0.01,4 0,10 0)",
+        "n": 0.5
+      },
+      "expected": "LINESTRING (0 0,10 0)"
+    },
+    {
+      "input": {
+        "op": "simplifyPreserveTopology",
+        "a": "LINESTRING (0 0,1 0.01,2 0,3 0.01,4 0,10 0)",
+        "n": 0.5
+      },
+      "expected": "LINESTRING (0 0,10 0)"
+    },
+    {
+      "input": {
+        "op": "simplify",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))",
+        "n": 0.5
+      },
+      "expected": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": "POLYGON ((10 10,10 5,5 5,5 10,10 10))"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": "POLYGON ((10 0,0 0,0 10,5 10,5 5,10 5,10 0))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": "POLYGON ((10 0,0 0,0 10,5 10,5 15,15 15,15 5,10 5,10 0))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": "POLYGON EMPTY"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,30 20,30 30,20 30,20 20)))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((20 20,30 20,30 30,20 30,20 20))"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((0 0,0 10,10 10,10 0,0 0),(4 2,4 4,2 4,2 2,4 2))"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((2 4,4 4,4 2,2 2,2 4))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": "POLYGON ((0 0,0 10,10 10,10 0,0 0))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0),(2 2,4 2,4 4,2 4,2 2))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "LINESTRING (0 5,10 5)"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "POLYGON ((10 0,0 0,0 5,0 10,10 10,10 5,10 0))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": "GEOMETRYCOLLECTION (POLYGON ((10 0,0 0,0 5,0 10,10 10,10 5,10 0)),LINESTRING (-5 5,0 5),LINESTRING (10 5,15 5))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "LINESTRING (-5 5,15 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": "POINT (5 5)"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (5 5)"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": "POINT EMPTY"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": "GEOMETRYCOLLECTION (POLYGON ((0 0,10 0,10 10,0 10,0 0)),POINT (50 50))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POINT (50 50)"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON EMPTY"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "union",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": "POLYGON ((0 10,10 10,10 0,0 0,0 10))"
+    },
+    {
+      "input": {
+        "op": "contains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedContains",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "preparedIntersects",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON EMPTY"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))",
+        "b": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))"
+      },
+      "expected": "POLYGON ((-122.404174804688 47.2792290025708,-122.404174804688 47.2829555769123,-122.4 47.2829555769123,-122.4 47.2792290025708,-122.404174804688 47.2792290025708))"
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))",
+        "b": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))"
+      },
+      "expected": "POLYGON ((-122.4 47.2792290025708,-122.404174804688 47.2792290025708,-122.404174804688 47.2829555769123,-122.4 47.2829555769123,-122.4 47.2792290025708))"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))",
+        "b": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))"
+      },
+      "expected": "POLYGON ((-122.398681640625 47.2829555769123,-122.398681640625 47.2792290025708,-122.4 47.2792290025708,-122.4 47.2829555769123,-122.398681640625 47.2829555769123))"
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))",
+        "b": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))"
+      },
+      "expected": "POLYGON ((-122.4 47.27,-122.41 47.27,-122.41 47.29,-122.4 47.29,-122.4 47.2829555769123,-122.404174804688 47.2829555769123,-122.404174804688 47.2792290025708,-122.4 47.2792290025708,-122.4 47.27))"
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))",
+        "b": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "intersects",
+        "a": "POLYGON ((-122.41 47.27,-122.40 47.27,-122.40 47.29,-122.41 47.29,-122.41 47.27))",
+        "b": "POLYGON ((-122.4041748046875 47.27922900257082,-122.398681640625 47.27922900257082,-122.398681640625 47.28295557691229,-122.4041748046875 47.28295557691229,-122.4041748046875 47.27922900257082))"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "op": "difference",
+        "a": "POLYGON ((0 0,10 0,10 10,0 10,0 0))",
+        "b": "POLYGON ((0 0,10 10,10 0,0 10,0 0))"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "LINESTRING (-5 5,15 5)",
+        "b": "POLYGON ((0 0,10 0,10 10,0 10,0 0))"
+      },
+      "expected": "LINESTRING (0 5,10 5)"
+    },
+    {
+      "input": {
+        "op": "intersection",
+        "a": "MULTIPOLYGON (((0 0,10 0,10 10,0 10,0 0)),((20 20,22 20,22 22,20 22,20 20)))",
+        "b": "POLYGON ((5 5,15 5,15 15,5 15,5 5))"
+      },
+      "expected": "POLYGON ((10 10,10 5,5 5,5 10,10 10))"
+    }
+  ]
+}

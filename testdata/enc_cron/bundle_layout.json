@@ -1,0 +1,167 @@
+{
+  "pins": "BundleBuilder.buildAndPublish: only ENC_ROOT/<CELL>/… entries (no CATALOG.031, README.TXT, USERAGREEMENT.TXT), .000/.00N/.TXT colocated, published atomically into save/, staging and download dirs removed, a failed cell skipped while the others publish, all failing -> null with nothing published. D3 (zip-slip): Kotlin writes the escaping entry outside staging and keeps the cell; the port fails that cell",
+  "decisions": [
+    "EC-1",
+    "D3"
+  ],
+  "generator": "BundleLayoutFixtureTest",
+  "source": "zips built with ZipWriter from fixtures/US5WA22M and fixtures/synthetic in NOAA's ENC_ROOT layout",
+  "cases": [
+    {
+      "input": {
+        "name": "two_cells",
+        "cells": [
+          "US4ZZ01M",
+          "US5ZZ02M"
+        ],
+        "failing": [],
+        "slip": []
+      },
+      "expected": {
+        "published": true,
+        "bundle": "save/two_cells.zip",
+        "entries": [
+          "ENC_ROOT/US4ZZ01M/US4ZZ01M.000",
+          "ENC_ROOT/US5ZZ02M/US5ZZ02M.000"
+        ],
+        "stagingRemoved": true,
+        "downloadRemoved": true,
+        "escaped": [],
+        "downloads": [
+          "https://example.com/US4ZZ01M.zip",
+          "https://example.com/US5ZZ02M.zip"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "real_cell_with_updates",
+        "cells": [
+          "US5WA22M"
+        ],
+        "failing": [],
+        "slip": []
+      },
+      "expected": {
+        "published": true,
+        "bundle": "save/real_cell_with_updates.zip",
+        "entries": [
+          "ENC_ROOT/US5WA22M/US5WA22A.TXT",
+          "ENC_ROOT/US5WA22M/US5WA22B.TXT",
+          "ENC_ROOT/US5WA22M/US5WA22C.TXT",
+          "ENC_ROOT/US5WA22M/US5WA22D.TXT",
+          "ENC_ROOT/US5WA22M/US5WA22M.000",
+          "ENC_ROOT/US5WA22M/US5WA22M.001",
+          "ENC_ROOT/US5WA22M/US5WA22M.002",
+          "ENC_ROOT/US5WA22M/US5WA22M.003",
+          "ENC_ROOT/US5WA22M/US5WA22M.004"
+        ],
+        "stagingRemoved": true,
+        "downloadRemoved": true,
+        "escaped": [],
+        "downloads": [
+          "https://example.com/US5WA22M.zip"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "one_failing",
+        "cells": [
+          "US4ZZ01M",
+          "US5ZZ02M"
+        ],
+        "failing": [
+          "US4ZZ01M"
+        ],
+        "slip": []
+      },
+      "expected": {
+        "published": true,
+        "bundle": "save/one_failing.zip",
+        "entries": [
+          "ENC_ROOT/US5ZZ02M/US5ZZ02M.000"
+        ],
+        "stagingRemoved": true,
+        "downloadRemoved": true,
+        "escaped": [],
+        "downloads": [
+          "https://example.com/US4ZZ01M.zip",
+          "https://example.com/US5ZZ02M.zip"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "all_failing",
+        "cells": [
+          "US4ZZ01M",
+          "US5ZZ02M"
+        ],
+        "failing": [
+          "US4ZZ01M",
+          "US5ZZ02M"
+        ],
+        "slip": []
+      },
+      "expected": {
+        "published": false,
+        "entries": [],
+        "stagingRemoved": true,
+        "downloadRemoved": false,
+        "escaped": [],
+        "downloads": [
+          "https://example.com/US4ZZ01M.zip",
+          "https://example.com/US5ZZ02M.zip"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "zip_slip",
+        "cells": [
+          "US4ZZ01M",
+          "US5ZZ02M"
+        ],
+        "failing": [],
+        "slip": [
+          "US4ZZ01M"
+        ]
+      },
+      "expected": {
+        "published": true,
+        "bundle": "save/zip_slip.zip",
+        "entries": [
+          "ENC_ROOT/US4ZZ01M/US4ZZ01M.000",
+          "ENC_ROOT/US5ZZ02M/US5ZZ02M.000"
+        ],
+        "stagingRemoved": true,
+        "downloadRemoved": true,
+        "escaped": [
+          "enc_cron/evil.txt"
+        ],
+        "downloads": [
+          "https://example.com/US4ZZ01M.zip",
+          "https://example.com/US5ZZ02M.zip"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "published": true,
+          "bundle": "save/zip_slip.zip",
+          "entries": [
+            "ENC_ROOT/US5ZZ02M/US5ZZ02M.000"
+          ],
+          "stagingRemoved": true,
+          "downloadRemoved": true,
+          "escaped": [],
+          "downloads": [
+            "https://example.com/US4ZZ01M.zip",
+            "https://example.com/US5ZZ02M.zip"
+          ]
+        }
+      }
+    }
+  ]
+}

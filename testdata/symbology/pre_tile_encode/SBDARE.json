@@ -1,0 +1,733 @@
+{
+  "pins": "preTileEncode of Sbdare (layer key SBDARE): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "45 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "0"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1"
+        ],
+        "_NS": "M"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "2"
+        ],
+        "_NS": "Cy"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "3"
+        ],
+        "_NS": "Si"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "4"
+        ],
+        "_NS": "S"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "5"
+        ],
+        "_NS": "St"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "6"
+        ],
+        "_NS": "G"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "7"
+        ],
+        "_NS": "P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "8"
+        ],
+        "_NS": "Cb"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "9"
+        ],
+        "_NS": "R"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "11"
+        ],
+        "_NS": "R"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "14"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "14"
+        ],
+        "_NS": "Co"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "17"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "17"
+        ],
+        "_NS": "Sh"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "18"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "18"
+        ],
+        "_NS": "R"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "19"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "19"
+        ]
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": []
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1",
+          "2"
+        ],
+        "_NS": "M Cy"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 6
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 8
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1"
+        ],
+        "WATLEV": 1,
+        "_NS": "M"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1"
+        ],
+        "WATLEV": 2,
+        "_NS": "M"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1"
+        ],
+        "WATLEV": 3,
+        "_NS": "M",
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "1"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "1"
+        ],
+        "WATLEV": 8,
+        "_NS": "M"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "2"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "2"
+        ],
+        "WATLEV": 1,
+        "_NS": "Cy"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "2"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "2"
+        ],
+        "WATLEV": 2,
+        "_NS": "Cy"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "2"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "_NS": "Cy",
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "2"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "2"
+        ],
+        "WATLEV": 8,
+        "_NS": "Cy"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "3"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "3"
+        ],
+        "WATLEV": 1,
+        "_NS": "Si"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "3"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "3"
+        ],
+        "WATLEV": 2,
+        "_NS": "Si"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "3"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "3"
+        ],
+        "WATLEV": 3,
+        "_NS": "Si",
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "3"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "3"
+        ],
+        "WATLEV": 8,
+        "_NS": "Si"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "19"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "19"
+        ],
+        "WATLEV": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "19"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "19"
+        ],
+        "WATLEV": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "19"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "19"
+        ],
+        "WATLEV": 3,
+        "_DO": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "NATSUR": [
+            "19"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "NATSUR": [
+          "19"
+        ],
+        "WATLEV": 8
+      }
+    }
+  ]
+}

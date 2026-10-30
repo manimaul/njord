@@ -1,0 +1,170 @@
+{
+  "pins": "preTileEncode over every LOGPON feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5056,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 80,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025708,
+          "FIDS": 50,
+          "LNAM": "022600D603EC0032",
+          "INFORM": "Limits of log storage and booming grounds are subject to change",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5056,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 80,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025708,
+        "FIDS": 50,
+        "LNAM": "022600D603EC0032",
+        "INFORM": "Limits of log storage and booming grounds are subject to change",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5057,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 80,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14025813,
+          "FIDS": 50,
+          "LNAM": "022600D604550032",
+          "INFORM": "Limits of log storage and booming grounds are subject to change",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5057,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 80,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14025813,
+        "FIDS": 50,
+        "LNAM": "022600D604550032",
+        "INFORM": "Limits of log storage and booming grounds are subject to change",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5058,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 80,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 14025678,
+          "FIDS": 50,
+          "LNAM": "022600D603CE0032",
+          "INFORM": "Limits of log storage and booming grounds are subject to change",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5058,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 80,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 14025678,
+        "FIDS": 50,
+        "LNAM": "022600D603CE0032",
+        "INFORM": "Limits of log storage and booming grounds are subject to change",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02",
+        "LC": "CHBLK"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 5059,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 80,
+          "RVER": 5,
+          "AGEN": 550,
+          "FIDN": 14025612,
+          "FIDS": 50,
+          "LNAM": "022600D6038C0032",
+          "INFORM": "Limits of log storage and booming grounds are subject to change",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5059,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 80,
+        "RVER": 5,
+        "AGEN": 550,
+        "FIDN": 14025612,
+        "FIDS": 50,
+        "LNAM": "022600D6038C0032",
+        "INFORM": "Limits of log storage and booming grounds are subject to change",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "FLTHAZ02",
+        "LC": "CHBLK"
+      }
+    }
+  ]
+}

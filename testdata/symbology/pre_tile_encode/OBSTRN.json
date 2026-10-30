@@ -1,0 +1,3440 @@
+{
+  "pins": "preTileEncode of Obstrn (layer key OBSTRN): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "150 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 40 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 4,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 5,
+        "SY": "FSHHAV01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 6,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 7,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 9,
+        "SY": "ACHARE02",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 10,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "0"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "0"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "4"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "4"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "5"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "5"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "6"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "6"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "7"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "7"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "8"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "8"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "9"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "9"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "10"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "10"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "11"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "11"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": []
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1",
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1",
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": -1.5,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.5,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 2.9,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 5.9,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 8.9,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 9.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 9.1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 15.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 100.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 6,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          "1"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          "3"
+        ],
+        "SY": "LOWACC01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          "12"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "QUASOU": [
+          "1"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "QUASOU": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "QUASOU": [
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "QUASOU": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "QUASOU": [
+          "3"
+        ],
+        "SY": "LOWACC01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "QUASOU": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "QUASOU": [
+          "12"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "QUASOU": [
+          "1"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "QUASOU": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "QUASOU": [
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "QUASOU": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "QUASOU": [
+          "3"
+        ],
+        "SY": "LOWACC01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "QUASOU": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "QUASOU": [
+          "12"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "QUASOU": [
+            "1"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "QUASOU": [
+          "1"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "QUASOU": [
+            "2"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "QUASOU": [
+          "2"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "QUASOU": [
+            "3"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "QUASOU": [
+          "3"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "QUASOU": [
+            "12"
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "QUASOU": [
+          "12"
+        ],
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "WATLEV": 2,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "WATLEV": 3,
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "WATLEV": 2,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "WATLEV": 3,
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 2,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 2,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "WATLEV": 2,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "WATLEV": 3,
+        "SY": "ISODGR01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 3,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 3,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 11,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 11,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 0.0,
+        "METERS_W": 0,
+        "METERS_T": 0,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 3.0,
+        "METERS_W": 3,
+        "METERS_T": 0,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 10.0,
+        "METERS_W": 10,
+        "METERS_T": 0,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "VALSOU": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "VALSOU": 0.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "VALSOU": 3.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "VALSOU": 6.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "VALSOU": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "VALSOU": 10.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "1"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "1"
+        ],
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "2"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "2"
+        ],
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "LOWACC01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "3"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "3"
+        ],
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "QUASOU": [
+            "12"
+          ],
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "QUASOU": [
+          "12"
+        ],
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 0.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 0.0,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 3.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 3.0,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 6.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 6.0,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 3,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "VALSOU": 10.0,
+          "WATLEV": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "VALSOU": 10.0,
+        "WATLEV": 8,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 5,
+        "SY": "FSHHAV01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 5
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 5,
+        "SY": "FSHHAV01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 6,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 6
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 6,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 7,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 7
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 7,
+        "AP": "FOULAR01P",
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 9,
+        "SY": "ACHARE02",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 9
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 9,
+        "SY": "ACHARE02",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 10
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 10,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 10
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 10,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 2.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 2.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 2.0,
+        "METERS_W": 2,
+        "METERS_T": 0,
+        "FEET": 6,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATOBS": 1,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 2.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "CATOBS": 1,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 2.0,
+        "SY": "ISODGR01",
+        "AC": "DEPIT",
+        "METERS": 2.0,
+        "METERS_W": 2,
+        "METERS_T": 0,
+        "FEET": 6,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 2.9,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPVS",
+        "METERS": 2.9000000953674316,
+        "METERS_W": 2,
+        "METERS_T": 9,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 2.9
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 2.9,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPVS",
+        "METERS": 2.9000000953674316,
+        "METERS_W": 2,
+        "METERS_T": 9,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 3.0,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPVS",
+        "METERS": 3.0,
+        "METERS_W": 3,
+        "METERS_T": 0,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 3.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 3.0,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPVS",
+        "METERS": 3.0,
+        "METERS_W": 3,
+        "METERS_T": 0,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 6.0,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 6.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 6.0,
+        "EA": true,
+        "SY": "DANGER01",
+        "AC": "DEPMS",
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 6.1,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 6.099999904632568,
+        "METERS_W": 6,
+        "METERS_T": 1,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 6.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 6.1,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 6.099999904632568,
+        "METERS_W": 6,
+        "METERS_T": 1,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 9.0,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 9.0,
+        "METERS_W": 9,
+        "METERS_T": 0,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 9.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 9.0,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPMD",
+        "METERS": 9.0,
+        "METERS_W": 9,
+        "METERS_T": 0,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 9.1,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 9.100000381469727,
+        "METERS_W": 9,
+        "METERS_T": 1,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            1
+          ],
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          1
+        ],
+        "VALSOU": 9.1,
+        "EA": true,
+        "SY": "DANGER02",
+        "AC": "DEPDW",
+        "METERS": 9.100000381469727,
+        "METERS_W": 9,
+        "METERS_T": 1,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            2
+          ],
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          2
+        ],
+        "VALSOU": 9.1,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            2
+          ],
+          "VALSOU": 9.1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          2
+        ],
+        "VALSOU": 9.1,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            3
+          ],
+          "VALSOU": 2.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          3
+        ],
+        "VALSOU": 2.0,
+        "EA": true,
+        "SY": "LOWACC01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "QUASOU": [
+            3
+          ],
+          "VALSOU": 2.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "QUASOU": [
+          3
+        ],
+        "VALSOU": 2.0,
+        "EA": true,
+        "SY": "LOWACC01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "VALSOU": 12.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "VALSOU": 12.0,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 3,
+          "VALSOU": 12.0
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 3,
+        "VALSOU": 12.0,
+        "EA": true,
+        "SY": "OBSTRN01",
+        "AC": "DEPVS"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4,
+          "QUASOU": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "QUASOU": [
+          3
+        ],
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 4,
+          "QUASOU": [
+            3
+          ]
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 4,
+        "QUASOU": [
+          3
+        ],
+        "EA": true,
+        "SY": "OBSTRN03",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7,
+          "VALSOU": 1.0,
+          "QUASOU": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "VALSOU": 1.0,
+        "QUASOU": [
+          1
+        ],
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 7,
+          "VALSOU": 1.0,
+          "QUASOU": [
+            1
+          ]
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 7,
+        "VALSOU": 1.0,
+        "QUASOU": [
+          1
+        ],
+        "SY": "FLTHAZ02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 2
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 2,
+        "EA": true,
+        "SY": "OBSTRN11",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 5
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 5,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "WATLEV": 1
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "WATLEV": 1,
+        "SY": "ISODGR01",
+        "AC": "DEPIT"
+      }
+    }
+  ]
+}

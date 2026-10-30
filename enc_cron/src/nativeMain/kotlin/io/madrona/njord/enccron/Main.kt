@@ -150,11 +150,11 @@ internal fun deletableOrphans(orphans: List<String>, catalog: List<EncCatalogEnt
  * the pass entirely if the count looks less like withdrawals and more like a truncated download.
  * Reporting still happens either way - the caller has already logged the full list.
  */
-private suspend fun deleteOrphans(
+internal suspend fun deleteOrphans(
     orphans: List<String>,
     catalog: List<EncCatalogEntry>,
     config: EncCronConfig,
-    http: EncHttp,
+    http: EncTransport,
     dryRun: Boolean,
 ) {
     if (!config.deleteOrphans) return

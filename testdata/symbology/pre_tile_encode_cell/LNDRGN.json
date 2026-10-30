@@ -1,0 +1,528 @@
+{
+  "pins": "preTileEncode over every LNDRGN feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2923,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440290,
+          "FIDS": 50,
+          "LNAM": "02260128A2A20032",
+          "OBJNAM": "Browns Point",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2923,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440290,
+        "FIDS": 50,
+        "LNAM": "02260128A2A20032",
+        "OBJNAM": "Browns Point",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2924,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 549020828,
+          "FIDS": 8527,
+          "LNAM": "022620B9649C214F",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2924,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 549020828,
+        "FIDS": 8527,
+        "LNAM": "022620B9649C214F",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2925,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 838643379,
+          "FIDS": 8527,
+          "LNAM": "022631FCAEB3214F",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2925,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 838643379,
+        "FIDS": 8527,
+        "LNAM": "022631FCAEB3214F",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2926,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308568307,
+          "FIDS": 1,
+          "LNAM": "02264DFF2AF30001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2926,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1308568307,
+        "FIDS": 1,
+        "LNAM": "02264DFF2AF30001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2927,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308568302,
+          "FIDS": 1,
+          "LNAM": "02264DFF2AEE0001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2927,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1308568302,
+        "FIDS": 1,
+        "LNAM": "02264DFF2AEE0001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2928,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307684676,
+          "FIDS": 1,
+          "LNAM": "02264DF1AF440001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2928,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307684676,
+        "FIDS": 1,
+        "LNAM": "02264DF1AF440001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2929,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307600692,
+          "FIDS": 1,
+          "LNAM": "02264DF067340001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2929,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307600692,
+        "FIDS": 1,
+        "LNAM": "02264DF067340001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2930,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307421310,
+          "FIDS": 1,
+          "LNAM": "02264DEDAA7E0001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2930,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307421310,
+        "FIDS": 1,
+        "LNAM": "02264DEDAA7E0001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2931,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307684672,
+          "FIDS": 1,
+          "LNAM": "02264DF1AF400001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2931,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307684672,
+        "FIDS": 1,
+        "LNAM": "02264DF1AF400001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2932,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19440302,
+          "FIDS": 50,
+          "LNAM": "02260128A2AE0032",
+          "OBJNAM": "Dash Point",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2932,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19440302,
+        "FIDS": 50,
+        "LNAM": "02260128A2AE0032",
+        "OBJNAM": "Dash Point",
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,chart 18453",
+        "SY": "POSGEN04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2933,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106121,
+          "FIDS": 1,
+          "LNAM": "022600019E890001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2933,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106121,
+        "FIDS": 1,
+        "LNAM": "022600019E890001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2934,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 73,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307684800,
+          "FIDS": 1,
+          "LNAM": "02264DF1AFC00001",
+          "CATLND": [
+            "2"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2934,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 73,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307684800,
+        "FIDS": 1,
+        "LNAM": "02264DF1AFC00001",
+        "CATLND": [
+          "2"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "POSGEN04",
+        "AP": "MARSHES1P"
+      }
+    }
+  ]
+}

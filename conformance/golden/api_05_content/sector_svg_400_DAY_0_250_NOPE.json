@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/sector_svg/DAY/0/250/NOPE",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "text"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 400,
+    "content_type": "text/plain; charset=UTF-8",
+    "headers": {},
+    "body": "SECTR1 and SECTR2 are required numeric parameters"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/content/sprites/night_simplified@2x.png",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "bytes"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "image/png",
+    "headers": {},
+    "body": {
+      "size": 356350,
+      "sha256": "9fb23b0db6aacffb41e288f60e8c5aa4385a5839e6c8a5fb59f9683e9968357a"
+    }
+  }
+}

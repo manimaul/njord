@@ -1,0 +1,818 @@
+{
+  "pins": "preTileEncode over every BRIDGE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1210,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192540,
+          "FIDS": 3,
+          "LNAM": "02264DEA2CDC0003",
+          "CATBRG": [
+            "1"
+          ],
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1210,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192540,
+        "FIDS": 3,
+        "LNAM": "02264DEA2CDC0003",
+        "CATBRG": [
+          "1"
+        ],
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1211,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19509096,
+          "FIDS": 50,
+          "LNAM": "02260129AF680032",
+          "CATBRG": [
+            "5"
+          ],
+          "HORCLR": 45.7,
+          "OBJNAM": "Hylebos Bridge East 11th Street",
+          "VERCCL": 6.4,
+          "INFORM": "Vertical clearance for middle width of 29.8 meters/98 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "TXTDSC": "US5WA22B.TXT",
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1211,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19509096,
+        "FIDS": 50,
+        "LNAM": "02260129AF680032",
+        "CATBRG": [
+          "5"
+        ],
+        "HORCLR": 45.7,
+        "OBJNAM": "Hylebos Bridge East 11th Street",
+        "VERCCL": 6.4,
+        "INFORM": "Vertical clearance for middle width of 29.8 meters/98 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "TXTDSC": "US5WA22B.TXT",
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1212,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307341395,
+          "FIDS": 7,
+          "LNAM": "02264DEC72530007",
+          "CATBRG": [
+            "1"
+          ],
+          "OBJNAM": "Hylebos Bridge East 11th Street",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1212,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307341395,
+        "FIDS": 7,
+        "LNAM": "02264DEC72530007",
+        "CATBRG": [
+          "1"
+        ],
+        "OBJNAM": "Hylebos Bridge East 11th Street",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1213,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192540,
+          "FIDS": 4,
+          "LNAM": "02264DEA2CDC0004",
+          "CATBRG": [
+            "1"
+          ],
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1213,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192540,
+        "FIDS": 4,
+        "LNAM": "02264DEA2CDC0004",
+        "CATBRG": [
+          "1"
+        ],
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1214,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192540,
+          "FIDS": 6,
+          "LNAM": "02264DEA2CDC0006",
+          "CATBRG": [
+            "1"
+          ],
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1214,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192540,
+        "FIDS": 6,
+        "LNAM": "02264DEA2CDC0006",
+        "CATBRG": [
+          "1"
+        ],
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1215,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026524,
+          "FIDS": 50,
+          "LNAM": "022600D6071C0032",
+          "CATBRG": [
+            "1"
+          ],
+          "HORCLR": 45.7,
+          "VERCLR": 8.8,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1215,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026524,
+        "FIDS": 50,
+        "LNAM": "022600D6071C0032",
+        "CATBRG": [
+          "1"
+        ],
+        "HORCLR": 45.7,
+        "VERCLR": 8.8,
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1216,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 3,
+          "AGEN": 550,
+          "FIDN": 1307344591,
+          "FIDS": 2,
+          "LNAM": "02264DEC7ECF0002",
+          "CATBRG": [
+            "1"
+          ],
+          "OBJNAM": "Hylebos Bridge East 11th Street",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1216,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 3,
+        "AGEN": 550,
+        "FIDN": 1307344591,
+        "FIDS": 2,
+        "LNAM": "02264DEC7ECF0002",
+        "CATBRG": [
+          "1"
+        ],
+        "OBJNAM": "Hylebos Bridge East 11th Street",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1217,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192691,
+          "FIDS": 1,
+          "LNAM": "02264DEA2D730001",
+          "CATBRG": [
+            "1"
+          ],
+          "INFORM": "Railway bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1217,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192691,
+        "FIDS": 1,
+        "LNAM": "02264DEA2D730001",
+        "CATBRG": [
+          "1"
+        ],
+        "INFORM": "Railway bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1218,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307115108,
+          "FIDS": 3,
+          "LNAM": "02264DE8FE640003",
+          "CATBRG": [
+            "1"
+          ],
+          "OBJNAM": "11th Street Bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1218,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307115108,
+        "FIDS": 3,
+        "LNAM": "02264DE8FE640003",
+        "CATBRG": [
+          "1"
+        ],
+        "OBJNAM": "11th Street Bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1219,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026448,
+          "FIDS": 50,
+          "LNAM": "022600D606D00032",
+          "CATBRG": [
+            "1"
+          ],
+          "INFORM": "Railway bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1219,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026448,
+        "FIDS": 50,
+        "LNAM": "022600D606D00032",
+        "CATBRG": [
+          "1"
+        ],
+        "INFORM": "Railway bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1220,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192540,
+          "FIDS": 5,
+          "LNAM": "02264DEA2CDC0005",
+          "CATBRG": [
+            "1"
+          ],
+          "INFORM": "Railway bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1220,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192540,
+        "FIDS": 5,
+        "LNAM": "02264DEA2CDC0005",
+        "CATBRG": [
+          "1"
+        ],
+        "INFORM": "Railway bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1221,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026449,
+          "FIDS": 50,
+          "LNAM": "022600D606D10032",
+          "CATBRG": [
+            "1"
+          ],
+          "HORCLR": 111.5,
+          "OBJNAM": "SR 509 Bridge",
+          "VERCLR": 8.5,
+          "INFORM": "VERCLR for Middle width 10.9 meters/36 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1221,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026449,
+        "FIDS": 50,
+        "LNAM": "022600D606D10032",
+        "CATBRG": [
+          "1"
+        ],
+        "HORCLR": 111.5,
+        "OBJNAM": "SR 509 Bridge",
+        "VERCLR": 8.5,
+        "INFORM": "VERCLR for Middle width 10.9 meters/36 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1222,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307115108,
+          "FIDS": 1,
+          "LNAM": "02264DE8FE640001",
+          "CATBRG": [
+            "1"
+          ],
+          "OBJNAM": "11th Street Bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1222,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307115108,
+        "FIDS": 1,
+        "LNAM": "02264DE8FE640001",
+        "CATBRG": [
+          "1"
+        ],
+        "OBJNAM": "11th Street Bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1223,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026509,
+          "FIDS": 50,
+          "LNAM": "022600D6070D0032",
+          "CATBRG": [
+            "1"
+          ],
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1223,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026509,
+        "FIDS": 50,
+        "LNAM": "022600D6070D0032",
+        "CATBRG": [
+          "1"
+        ],
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1224,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 27417448,
+          "FIDS": 50,
+          "LNAM": "022601A25B680032",
+          "CATBRG": [
+            "1"
+          ],
+          "INFORM": "Railway bridge",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1224,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 27417448,
+        "FIDS": 50,
+        "LNAM": "022601A25B680032",
+        "CATBRG": [
+          "1"
+        ],
+        "INFORM": "Railway bridge",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1225,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307192540,
+          "FIDS": 1,
+          "LNAM": "02264DEA2CDC0001",
+          "CATBRG": [
+            "1"
+          ],
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1225,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307192540,
+        "FIDS": 1,
+        "LNAM": "02264DEA2CDC0001",
+        "CATBRG": [
+          "1"
+        ],
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1226,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026510,
+          "FIDS": 50,
+          "LNAM": "022600D6070E0032",
+          "CATBRG": [
+            "4"
+          ],
+          "HORCLR": 60.9,
+          "OBJNAM": "11th Street Bridge",
+          "VERCCL": 19.5,
+          "VERCOP": 42.3,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1226,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026510,
+        "FIDS": 50,
+        "LNAM": "022600D6070E0032",
+        "CATBRG": [
+          "4"
+        ],
+        "HORCLR": 60.9,
+        "OBJNAM": "11th Street Bridge",
+        "VERCCL": 19.5,
+        "VERCOP": 42.3,
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "BRIDGE01",
+        "LP": "BRIDGE01",
+        "_OPBR": true
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1599,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 11,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307411329,
+          "FIDS": 2,
+          "LNAM": "02264DED83810002",
+          "CATBRG": [
+            "9"
+          ],
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1599,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 11,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307411329,
+        "FIDS": 2,
+        "LNAM": "02264DED83810002",
+        "CATBRG": [
+          "9"
+        ],
+        "MINZ": 13,
+        "SCAMIN": 17999,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683"
+      }
+    }
+  ]
+}

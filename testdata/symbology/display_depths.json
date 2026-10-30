@@ -1,0 +1,3818 @@
+{
+  "pins": "displayDepths/addSoundingConversions: METERS plus METERS_W/METERS_T (decimal tenths, truncated), FEET (rounded up past .9), FATHOMS/FATHOMS_FT; drying heights negative on every part",
+  "decisions": [
+    "D1",
+    "SY-1",
+    "SY-2"
+  ],
+  "generator": "SymbologyTablesFixtureTest.displayDepths",
+  "source": "0.0..31.0 in 0.1 steps, -0.1..-3.0 in 0.1 steps, and the SoundingsTest edge values",
+  "cases": [
+    {
+      "input": 0.0,
+      "expected": {
+        "METERS": 0.0,
+        "METERS_W": 0,
+        "METERS_T": 0,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 0.1,
+      "expected": {
+        "METERS": 0.1,
+        "METERS_W": 0,
+        "METERS_T": 1,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 0.2,
+      "expected": {
+        "METERS": 0.2,
+        "METERS_W": 0,
+        "METERS_T": 2,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 0.3,
+      "expected": {
+        "METERS": 0.3,
+        "METERS_W": 0,
+        "METERS_T": 3,
+        "FEET": 1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 0.4,
+      "expected": {
+        "METERS": 0.4,
+        "METERS_W": 0,
+        "METERS_T": 4,
+        "FEET": 1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 0.5,
+      "expected": {
+        "METERS": 0.5,
+        "METERS_W": 0,
+        "METERS_T": 5,
+        "FEET": 1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 0.6,
+      "expected": {
+        "METERS": 0.6,
+        "METERS_W": 0,
+        "METERS_T": 6,
+        "FEET": 2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 0.7,
+      "expected": {
+        "METERS": 0.7,
+        "METERS_W": 0,
+        "METERS_T": 7,
+        "FEET": 2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 0.8,
+      "expected": {
+        "METERS": 0.8,
+        "METERS_W": 0,
+        "METERS_T": 8,
+        "FEET": 2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 0.9,
+      "expected": {
+        "METERS": 0.9,
+        "METERS_W": 0,
+        "METERS_T": 9,
+        "FEET": 3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 1.0,
+      "expected": {
+        "METERS": 1.0,
+        "METERS_W": 1,
+        "METERS_T": 0,
+        "FEET": 3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 1.1,
+      "expected": {
+        "METERS": 1.1,
+        "METERS_W": 1,
+        "METERS_T": 1,
+        "FEET": 3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 1.2,
+      "expected": {
+        "METERS": 1.2,
+        "METERS_W": 1,
+        "METERS_T": 2,
+        "FEET": 4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 1.3,
+      "expected": {
+        "METERS": 1.3,
+        "METERS_W": 1,
+        "METERS_T": 3,
+        "FEET": 4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 1.4,
+      "expected": {
+        "METERS": 1.4,
+        "METERS_W": 1,
+        "METERS_T": 4,
+        "FEET": 4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 1.5,
+      "expected": {
+        "METERS": 1.5,
+        "METERS_W": 1,
+        "METERS_T": 5,
+        "FEET": 5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 1.6,
+      "expected": {
+        "METERS": 1.6,
+        "METERS_W": 1,
+        "METERS_T": 6,
+        "FEET": 5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 1.7,
+      "expected": {
+        "METERS": 1.7,
+        "METERS_W": 1,
+        "METERS_T": 7,
+        "FEET": 5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 1.8,
+      "expected": {
+        "METERS": 1.8,
+        "METERS_W": 1,
+        "METERS_T": 8,
+        "FEET": 6,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 1.9,
+      "expected": {
+        "METERS": 1.9,
+        "METERS_W": 1,
+        "METERS_T": 9,
+        "FEET": 6,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 2.0,
+      "expected": {
+        "METERS": 2.0,
+        "METERS_W": 2,
+        "METERS_T": 0,
+        "FEET": 6,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 2.1,
+      "expected": {
+        "METERS": 2.1,
+        "METERS_W": 2,
+        "METERS_T": 1,
+        "FEET": 6,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 2.2,
+      "expected": {
+        "METERS": 2.2,
+        "METERS_W": 2,
+        "METERS_T": 2,
+        "FEET": 7,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 2.3,
+      "expected": {
+        "METERS": 2.3,
+        "METERS_W": 2,
+        "METERS_T": 3,
+        "FEET": 7,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 2.4,
+      "expected": {
+        "METERS": 2.4,
+        "METERS_W": 2,
+        "METERS_T": 4,
+        "FEET": 7,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 2.5,
+      "expected": {
+        "METERS": 2.5,
+        "METERS_W": 2,
+        "METERS_T": 5,
+        "FEET": 8,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 2.6,
+      "expected": {
+        "METERS": 2.6,
+        "METERS_W": 2,
+        "METERS_T": 6,
+        "FEET": 8,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 2.7,
+      "expected": {
+        "METERS": 2.7,
+        "METERS_W": 2,
+        "METERS_T": 7,
+        "FEET": 8,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 2.8,
+      "expected": {
+        "METERS": 2.8,
+        "METERS_W": 2,
+        "METERS_T": 8,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 2.9,
+      "expected": {
+        "METERS": 2.9,
+        "METERS_W": 2,
+        "METERS_T": 9,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 3.0,
+      "expected": {
+        "METERS": 3.0,
+        "METERS_W": 3,
+        "METERS_T": 0,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 3.1,
+      "expected": {
+        "METERS": 3.1,
+        "METERS_W": 3,
+        "METERS_T": 1,
+        "FEET": 10,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 3.2,
+      "expected": {
+        "METERS": 3.2,
+        "METERS_W": 3,
+        "METERS_T": 2,
+        "FEET": 10,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 3.3,
+      "expected": {
+        "METERS": 3.3,
+        "METERS_W": 3,
+        "METERS_T": 3,
+        "FEET": 10,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 3.4,
+      "expected": {
+        "METERS": 3.4,
+        "METERS_W": 3,
+        "METERS_T": 4,
+        "FEET": 11,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 3.5,
+      "expected": {
+        "METERS": 3.5,
+        "METERS_W": 3,
+        "METERS_T": 5,
+        "FEET": 11,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 3.6,
+      "expected": {
+        "METERS": 3.6,
+        "METERS_W": 3,
+        "METERS_T": 6,
+        "FEET": 11,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 3.7,
+      "expected": {
+        "METERS": 3.7,
+        "METERS_W": 3,
+        "METERS_T": 7,
+        "FEET": 12,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 3.8,
+      "expected": {
+        "METERS": 3.8,
+        "METERS_W": 3,
+        "METERS_T": 8,
+        "FEET": 12,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 3.9,
+      "expected": {
+        "METERS": 3.9,
+        "METERS_W": 3,
+        "METERS_T": 9,
+        "FEET": 12,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 4.0,
+      "expected": {
+        "METERS": 4.0,
+        "METERS_W": 4,
+        "METERS_T": 0,
+        "FEET": 13,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 4.1,
+      "expected": {
+        "METERS": 4.1,
+        "METERS_W": 4,
+        "METERS_T": 1,
+        "FEET": 13,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 4.2,
+      "expected": {
+        "METERS": 4.2,
+        "METERS_W": 4,
+        "METERS_T": 2,
+        "FEET": 13,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 4.3,
+      "expected": {
+        "METERS": 4.3,
+        "METERS_W": 4,
+        "METERS_T": 3,
+        "FEET": 14,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 4.4,
+      "expected": {
+        "METERS": 4.4,
+        "METERS_W": 4,
+        "METERS_T": 4,
+        "FEET": 14,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 4.5,
+      "expected": {
+        "METERS": 4.5,
+        "METERS_W": 4,
+        "METERS_T": 5,
+        "FEET": 14,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 4.6,
+      "expected": {
+        "METERS": 4.6,
+        "METERS_W": 4,
+        "METERS_T": 6,
+        "FEET": 15,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 4.7,
+      "expected": {
+        "METERS": 4.7,
+        "METERS_W": 4,
+        "METERS_T": 7,
+        "FEET": 15,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 4.8,
+      "expected": {
+        "METERS": 4.8,
+        "METERS_W": 4,
+        "METERS_T": 8,
+        "FEET": 15,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 4.9,
+      "expected": {
+        "METERS": 4.9,
+        "METERS_W": 4,
+        "METERS_T": 9,
+        "FEET": 16,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 5.0,
+      "expected": {
+        "METERS": 5.0,
+        "METERS_W": 5,
+        "METERS_T": 0,
+        "FEET": 16,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 5.1,
+      "expected": {
+        "METERS": 5.1,
+        "METERS_W": 5,
+        "METERS_T": 1,
+        "FEET": 16,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 5.2,
+      "expected": {
+        "METERS": 5.2,
+        "METERS_W": 5,
+        "METERS_T": 2,
+        "FEET": 17,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 5.3,
+      "expected": {
+        "METERS": 5.3,
+        "METERS_W": 5,
+        "METERS_T": 3,
+        "FEET": 17,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 5.4,
+      "expected": {
+        "METERS": 5.4,
+        "METERS_W": 5,
+        "METERS_T": 4,
+        "FEET": 17,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 5.5,
+      "expected": {
+        "METERS": 5.5,
+        "METERS_W": 5,
+        "METERS_T": 5,
+        "FEET": 18,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 5.6,
+      "expected": {
+        "METERS": 5.6,
+        "METERS_W": 5,
+        "METERS_T": 6,
+        "FEET": 18,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 5.7,
+      "expected": {
+        "METERS": 5.7,
+        "METERS_W": 5,
+        "METERS_T": 7,
+        "FEET": 18,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 5.8,
+      "expected": {
+        "METERS": 5.8,
+        "METERS_W": 5,
+        "METERS_T": 8,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 5.9,
+      "expected": {
+        "METERS": 5.9,
+        "METERS_W": 5,
+        "METERS_T": 9,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 6.0,
+      "expected": {
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 6.1,
+      "expected": {
+        "METERS": 6.1,
+        "METERS_W": 6,
+        "METERS_T": 1,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 6.2,
+      "expected": {
+        "METERS": 6.2,
+        "METERS_W": 6,
+        "METERS_T": 2,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 6.3,
+      "expected": {
+        "METERS": 6.3,
+        "METERS_W": 6,
+        "METERS_T": 3,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 6.4,
+      "expected": {
+        "METERS": 6.4,
+        "METERS_W": 6,
+        "METERS_T": 4,
+        "FEET": 21,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 6.5,
+      "expected": {
+        "METERS": 6.5,
+        "METERS_W": 6,
+        "METERS_T": 5,
+        "FEET": 21,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 6.6,
+      "expected": {
+        "METERS": 6.6,
+        "METERS_W": 6,
+        "METERS_T": 6,
+        "FEET": 21,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 6.7,
+      "expected": {
+        "METERS": 6.7,
+        "METERS_W": 6,
+        "METERS_T": 7,
+        "FEET": 22,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 6.8,
+      "expected": {
+        "METERS": 6.8,
+        "METERS_W": 6,
+        "METERS_T": 8,
+        "FEET": 22,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 6.9,
+      "expected": {
+        "METERS": 6.9,
+        "METERS_W": 6,
+        "METERS_T": 9,
+        "FEET": 22,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 7.0,
+      "expected": {
+        "METERS": 7.0,
+        "METERS_W": 7,
+        "METERS_T": 0,
+        "FEET": 23,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 7.1,
+      "expected": {
+        "METERS": 7.1,
+        "METERS_W": 7,
+        "METERS_T": 1,
+        "FEET": 23,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 7.2,
+      "expected": {
+        "METERS": 7.2,
+        "METERS_W": 7,
+        "METERS_T": 2,
+        "FEET": 23,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 7.3,
+      "expected": {
+        "METERS": 7.3,
+        "METERS_W": 7,
+        "METERS_T": 3,
+        "FEET": 24,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 7.4,
+      "expected": {
+        "METERS": 7.4,
+        "METERS_W": 7,
+        "METERS_T": 4,
+        "FEET": 24,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 7.5,
+      "expected": {
+        "METERS": 7.5,
+        "METERS_W": 7,
+        "METERS_T": 5,
+        "FEET": 24,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 7.6,
+      "expected": {
+        "METERS": 7.6,
+        "METERS_W": 7,
+        "METERS_T": 6,
+        "FEET": 25,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 7.7,
+      "expected": {
+        "METERS": 7.7,
+        "METERS_W": 7,
+        "METERS_T": 7,
+        "FEET": 25,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 7.8,
+      "expected": {
+        "METERS": 7.8,
+        "METERS_W": 7,
+        "METERS_T": 8,
+        "FEET": 25,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 7.9,
+      "expected": {
+        "METERS": 7.9,
+        "METERS_W": 7,
+        "METERS_T": 9,
+        "FEET": 26,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 8.0,
+      "expected": {
+        "METERS": 8.0,
+        "METERS_W": 8,
+        "METERS_T": 0,
+        "FEET": 26,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 8.1,
+      "expected": {
+        "METERS": 8.1,
+        "METERS_W": 8,
+        "METERS_T": 1,
+        "FEET": 26,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 8.2,
+      "expected": {
+        "METERS": 8.2,
+        "METERS_W": 8,
+        "METERS_T": 2,
+        "FEET": 27,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 8.3,
+      "expected": {
+        "METERS": 8.3,
+        "METERS_W": 8,
+        "METERS_T": 3,
+        "FEET": 27,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 8.4,
+      "expected": {
+        "METERS": 8.4,
+        "METERS_W": 8,
+        "METERS_T": 4,
+        "FEET": 27,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 8.5,
+      "expected": {
+        "METERS": 8.5,
+        "METERS_W": 8,
+        "METERS_T": 5,
+        "FEET": 27,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 8.6,
+      "expected": {
+        "METERS": 8.6,
+        "METERS_W": 8,
+        "METERS_T": 6,
+        "FEET": 28,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 8.7,
+      "expected": {
+        "METERS": 8.7,
+        "METERS_W": 8,
+        "METERS_T": 7,
+        "FEET": 28,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 8.8,
+      "expected": {
+        "METERS": 8.8,
+        "METERS_W": 8,
+        "METERS_T": 8,
+        "FEET": 28,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 8.9,
+      "expected": {
+        "METERS": 8.9,
+        "METERS_W": 8,
+        "METERS_T": 9,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 9.0,
+      "expected": {
+        "METERS": 9.0,
+        "METERS_W": 9,
+        "METERS_T": 0,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 9.1,
+      "expected": {
+        "METERS": 9.1,
+        "METERS_W": 9,
+        "METERS_T": 1,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 9.2,
+      "expected": {
+        "METERS": 9.2,
+        "METERS_W": 9,
+        "METERS_T": 2,
+        "FEET": 30,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 9.3,
+      "expected": {
+        "METERS": 9.3,
+        "METERS_W": 9,
+        "METERS_T": 3,
+        "FEET": 30,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 9.4,
+      "expected": {
+        "METERS": 9.4,
+        "METERS_W": 9,
+        "METERS_T": 4,
+        "FEET": 30,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 9.5,
+      "expected": {
+        "METERS": 9.5,
+        "METERS_W": 9,
+        "METERS_T": 5,
+        "FEET": 31,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 9.6,
+      "expected": {
+        "METERS": 9.6,
+        "METERS_W": 9,
+        "METERS_T": 6,
+        "FEET": 31,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 9.7,
+      "expected": {
+        "METERS": 9.7,
+        "METERS_W": 9,
+        "METERS_T": 7,
+        "FEET": 31,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 9.8,
+      "expected": {
+        "METERS": 9.8,
+        "METERS_W": 9,
+        "METERS_T": 8,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 9.9,
+      "expected": {
+        "METERS": 9.9,
+        "METERS_W": 9,
+        "METERS_T": 9,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 10.0,
+      "expected": {
+        "METERS": 10.0,
+        "METERS_W": 10,
+        "METERS_T": 0,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 10.1,
+      "expected": {
+        "METERS": 10.1,
+        "METERS_W": 10,
+        "METERS_T": 1,
+        "FEET": 33,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 10.2,
+      "expected": {
+        "METERS": 10.2,
+        "METERS_W": 10,
+        "METERS_T": 2,
+        "FEET": 33,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 10.3,
+      "expected": {
+        "METERS": 10.3,
+        "METERS_W": 10,
+        "METERS_T": 3,
+        "FEET": 33,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 10.4,
+      "expected": {
+        "METERS": 10.4,
+        "METERS_W": 10,
+        "METERS_T": 4,
+        "FEET": 34,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 10.5,
+      "expected": {
+        "METERS": 10.5,
+        "METERS_W": 10,
+        "METERS_T": 5,
+        "FEET": 34,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 10.6,
+      "expected": {
+        "METERS": 10.6,
+        "METERS_W": 10,
+        "METERS_T": 6,
+        "FEET": 34,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 10.7,
+      "expected": {
+        "METERS": 10.7,
+        "METERS_W": 10,
+        "METERS_T": 7,
+        "FEET": 35,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 10.8,
+      "expected": {
+        "METERS": 10.8,
+        "METERS_W": 10,
+        "METERS_T": 8,
+        "FEET": 35,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 10.9,
+      "expected": {
+        "METERS": 10.9,
+        "METERS_W": 10,
+        "METERS_T": 9,
+        "FEET": 35,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 11.0,
+      "expected": {
+        "METERS": 11.0,
+        "METERS_W": 11,
+        "METERS_T": 0,
+        "FEET": 36,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 11.1,
+      "expected": {
+        "METERS": 11.1,
+        "METERS_W": 11,
+        "METERS_T": 1,
+        "FEET": 36,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 11.2,
+      "expected": {
+        "METERS": 11.2,
+        "METERS_W": 11,
+        "METERS_T": 2,
+        "FEET": 36,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 11.3,
+      "expected": {
+        "METERS": 11.3,
+        "METERS_W": 11,
+        "METERS_T": 3,
+        "FEET": 37,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 11.4,
+      "expected": {
+        "METERS": 11.4,
+        "METERS_W": 11,
+        "METERS_T": 4,
+        "FEET": 37,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 11.5,
+      "expected": {
+        "METERS": 11.5,
+        "METERS_W": 11,
+        "METERS_T": 5,
+        "FEET": 37,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 11.6,
+      "expected": {
+        "METERS": 11.6,
+        "METERS_W": 11,
+        "METERS_T": 6,
+        "FEET": 38,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 11.7,
+      "expected": {
+        "METERS": 11.7,
+        "METERS_W": 11,
+        "METERS_T": 7,
+        "FEET": 38,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 11.8,
+      "expected": {
+        "METERS": 11.8,
+        "METERS_W": 11,
+        "METERS_T": 8,
+        "FEET": 38,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 11.9,
+      "expected": {
+        "METERS": 11.9,
+        "METERS_W": 11,
+        "METERS_T": 9,
+        "FEET": 39,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 12.0,
+      "expected": {
+        "METERS": 12.0,
+        "METERS_W": 12,
+        "METERS_T": 0,
+        "FEET": 39,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 12.1,
+      "expected": {
+        "METERS": 12.1,
+        "METERS_W": 12,
+        "METERS_T": 1,
+        "FEET": 39,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 12.2,
+      "expected": {
+        "METERS": 12.2,
+        "METERS_W": 12,
+        "METERS_T": 2,
+        "FEET": 40,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 12.3,
+      "expected": {
+        "METERS": 12.3,
+        "METERS_W": 12,
+        "METERS_T": 3,
+        "FEET": 40,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 12.4,
+      "expected": {
+        "METERS": 12.4,
+        "METERS_W": 12,
+        "METERS_T": 4,
+        "FEET": 40,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 12.5,
+      "expected": {
+        "METERS": 12.5,
+        "METERS_W": 12,
+        "METERS_T": 5,
+        "FEET": 41,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 12.6,
+      "expected": {
+        "METERS": 12.6,
+        "METERS_W": 12,
+        "METERS_T": 6,
+        "FEET": 41,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 12.7,
+      "expected": {
+        "METERS": 12.7,
+        "METERS_W": 12,
+        "METERS_T": 7,
+        "FEET": 41,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 12.8,
+      "expected": {
+        "METERS": 12.8,
+        "METERS_W": 12,
+        "METERS_T": 8,
+        "FEET": 42,
+        "FATHOMS": 6,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 12.9,
+      "expected": {
+        "METERS": 12.9,
+        "METERS_W": 12,
+        "METERS_T": 9,
+        "FEET": 42,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 13.0,
+      "expected": {
+        "METERS": 13.0,
+        "METERS_W": 13,
+        "METERS_T": 0,
+        "FEET": 42,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 13.1,
+      "expected": {
+        "METERS": 13.1,
+        "METERS_W": 13,
+        "METERS_T": 1,
+        "FEET": 43,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 13.2,
+      "expected": {
+        "METERS": 13.2,
+        "METERS_W": 13,
+        "METERS_T": 2,
+        "FEET": 43,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 13.3,
+      "expected": {
+        "METERS": 13.3,
+        "METERS_W": 13,
+        "METERS_T": 3,
+        "FEET": 43,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 13.4,
+      "expected": {
+        "METERS": 13.4,
+        "METERS_W": 13,
+        "METERS_T": 4,
+        "FEET": 44,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 13.5,
+      "expected": {
+        "METERS": 13.5,
+        "METERS_W": 13,
+        "METERS_T": 5,
+        "FEET": 44,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 13.6,
+      "expected": {
+        "METERS": 13.6,
+        "METERS_W": 13,
+        "METERS_T": 6,
+        "FEET": 44,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 13.7,
+      "expected": {
+        "METERS": 13.7,
+        "METERS_W": 13,
+        "METERS_T": 7,
+        "FEET": 45,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 13.8,
+      "expected": {
+        "METERS": 13.8,
+        "METERS_W": 13,
+        "METERS_T": 8,
+        "FEET": 45,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 13.9,
+      "expected": {
+        "METERS": 13.9,
+        "METERS_W": 13,
+        "METERS_T": 9,
+        "FEET": 45,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 14.0,
+      "expected": {
+        "METERS": 14.0,
+        "METERS_W": 14,
+        "METERS_T": 0,
+        "FEET": 46,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 14.1,
+      "expected": {
+        "METERS": 14.1,
+        "METERS_W": 14,
+        "METERS_T": 1,
+        "FEET": 46,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 14.2,
+      "expected": {
+        "METERS": 14.2,
+        "METERS_W": 14,
+        "METERS_T": 2,
+        "FEET": 46,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 14.3,
+      "expected": {
+        "METERS": 14.3,
+        "METERS_W": 14,
+        "METERS_T": 3,
+        "FEET": 47,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 14.4,
+      "expected": {
+        "METERS": 14.4,
+        "METERS_W": 14,
+        "METERS_T": 4,
+        "FEET": 47,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 14.5,
+      "expected": {
+        "METERS": 14.5,
+        "METERS_W": 14,
+        "METERS_T": 5,
+        "FEET": 47,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 14.6,
+      "expected": {
+        "METERS": 14.6,
+        "METERS_W": 14,
+        "METERS_T": 6,
+        "FEET": 48,
+        "FATHOMS": 7,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 14.7,
+      "expected": {
+        "METERS": 14.7,
+        "METERS_W": 14,
+        "METERS_T": 7,
+        "FEET": 48,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 14.8,
+      "expected": {
+        "METERS": 14.8,
+        "METERS_W": 14,
+        "METERS_T": 8,
+        "FEET": 48,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 14.9,
+      "expected": {
+        "METERS": 14.9,
+        "METERS_W": 14,
+        "METERS_T": 9,
+        "FEET": 48,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 15.0,
+      "expected": {
+        "METERS": 15.0,
+        "METERS_W": 15,
+        "METERS_T": 0,
+        "FEET": 49,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 15.1,
+      "expected": {
+        "METERS": 15.1,
+        "METERS_W": 15,
+        "METERS_T": 1,
+        "FEET": 49,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 15.2,
+      "expected": {
+        "METERS": 15.2,
+        "METERS_W": 15,
+        "METERS_T": 2,
+        "FEET": 49,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 15.3,
+      "expected": {
+        "METERS": 15.3,
+        "METERS_W": 15,
+        "METERS_T": 3,
+        "FEET": 50,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 15.4,
+      "expected": {
+        "METERS": 15.4,
+        "METERS_W": 15,
+        "METERS_T": 4,
+        "FEET": 50,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 15.5,
+      "expected": {
+        "METERS": 15.5,
+        "METERS_W": 15,
+        "METERS_T": 5,
+        "FEET": 50,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 15.6,
+      "expected": {
+        "METERS": 15.6,
+        "METERS_W": 15,
+        "METERS_T": 6,
+        "FEET": 51,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 15.7,
+      "expected": {
+        "METERS": 15.7,
+        "METERS_W": 15,
+        "METERS_T": 7,
+        "FEET": 51,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 15.8,
+      "expected": {
+        "METERS": 15.8,
+        "METERS_W": 15,
+        "METERS_T": 8,
+        "FEET": 51,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 15.9,
+      "expected": {
+        "METERS": 15.9,
+        "METERS_W": 15,
+        "METERS_T": 9,
+        "FEET": 52,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 16.0,
+      "expected": {
+        "METERS": 16.0,
+        "METERS_W": 16,
+        "METERS_T": 0,
+        "FEET": 52,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 16.1,
+      "expected": {
+        "METERS": 16.1,
+        "METERS_W": 16,
+        "METERS_T": 1,
+        "FEET": 52,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 16.2,
+      "expected": {
+        "METERS": 16.2,
+        "METERS_W": 16,
+        "METERS_T": 2,
+        "FEET": 53,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 16.3,
+      "expected": {
+        "METERS": 16.3,
+        "METERS_W": 16,
+        "METERS_T": 3,
+        "FEET": 53,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 16.4,
+      "expected": {
+        "METERS": 16.4,
+        "METERS_W": 16,
+        "METERS_T": 4,
+        "FEET": 53,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 16.5,
+      "expected": {
+        "METERS": 16.5,
+        "METERS_W": 16,
+        "METERS_T": 5,
+        "FEET": 54,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 16.6,
+      "expected": {
+        "METERS": 16.6,
+        "METERS_W": 16,
+        "METERS_T": 6,
+        "FEET": 54,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 16.7,
+      "expected": {
+        "METERS": 16.7,
+        "METERS_W": 16,
+        "METERS_T": 7,
+        "FEET": 54,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 16.8,
+      "expected": {
+        "METERS": 16.8,
+        "METERS_W": 16,
+        "METERS_T": 8,
+        "FEET": 55,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 16.9,
+      "expected": {
+        "METERS": 16.9,
+        "METERS_W": 16,
+        "METERS_T": 9,
+        "FEET": 55,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 17.0,
+      "expected": {
+        "METERS": 17.0,
+        "METERS_W": 17,
+        "METERS_T": 0,
+        "FEET": 55,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 17.1,
+      "expected": {
+        "METERS": 17.1,
+        "METERS_W": 17,
+        "METERS_T": 1,
+        "FEET": 56,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 17.2,
+      "expected": {
+        "METERS": 17.2,
+        "METERS_W": 17,
+        "METERS_T": 2,
+        "FEET": 56,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 17.3,
+      "expected": {
+        "METERS": 17.3,
+        "METERS_W": 17,
+        "METERS_T": 3,
+        "FEET": 56,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 17.4,
+      "expected": {
+        "METERS": 17.4,
+        "METERS_W": 17,
+        "METERS_T": 4,
+        "FEET": 57,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 17.5,
+      "expected": {
+        "METERS": 17.5,
+        "METERS_W": 17,
+        "METERS_T": 5,
+        "FEET": 57,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 17.6,
+      "expected": {
+        "METERS": 17.6,
+        "METERS_W": 17,
+        "METERS_T": 6,
+        "FEET": 57,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 17.7,
+      "expected": {
+        "METERS": 17.7,
+        "METERS_W": 17,
+        "METERS_T": 7,
+        "FEET": 58,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 17.8,
+      "expected": {
+        "METERS": 17.8,
+        "METERS_W": 17,
+        "METERS_T": 8,
+        "FEET": 58,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 17.9,
+      "expected": {
+        "METERS": 17.9,
+        "METERS_W": 17,
+        "METERS_T": 9,
+        "FEET": 58,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 18.0,
+      "expected": {
+        "METERS": 18.0,
+        "METERS_W": 18,
+        "METERS_T": 0,
+        "FEET": 59,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 18.1,
+      "expected": {
+        "METERS": 18.1,
+        "METERS_W": 18,
+        "METERS_T": 1,
+        "FEET": 59,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 18.2,
+      "expected": {
+        "METERS": 18.2,
+        "METERS_W": 18,
+        "METERS_T": 2,
+        "FEET": 59,
+        "FATHOMS": 9,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 18.3,
+      "expected": {
+        "METERS": 18.3,
+        "METERS_W": 18,
+        "METERS_T": 3,
+        "FEET": 60,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 18.4,
+      "expected": {
+        "METERS": 18.4,
+        "METERS_W": 18,
+        "METERS_T": 4,
+        "FEET": 60,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 18.5,
+      "expected": {
+        "METERS": 18.5,
+        "METERS_W": 18,
+        "METERS_T": 5,
+        "FEET": 60,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 18.6,
+      "expected": {
+        "METERS": 18.6,
+        "METERS_W": 18,
+        "METERS_T": 6,
+        "FEET": 61,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 18.7,
+      "expected": {
+        "METERS": 18.7,
+        "METERS_W": 18,
+        "METERS_T": 7,
+        "FEET": 61,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 18.8,
+      "expected": {
+        "METERS": 18.8,
+        "METERS_W": 18,
+        "METERS_T": 8,
+        "FEET": 61,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 18.9,
+      "expected": {
+        "METERS": 18.9,
+        "METERS_W": 18,
+        "METERS_T": 9,
+        "FEET": 62,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 19.0,
+      "expected": {
+        "METERS": 19.0,
+        "METERS_W": 19,
+        "METERS_T": 0,
+        "FEET": 62,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 19.1,
+      "expected": {
+        "METERS": 19.1,
+        "METERS_W": 19,
+        "METERS_T": 1,
+        "FEET": 62,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 19.2,
+      "expected": {
+        "METERS": 19.2,
+        "METERS_W": 19,
+        "METERS_T": 2,
+        "FEET": 63,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 19.3,
+      "expected": {
+        "METERS": 19.3,
+        "METERS_W": 19,
+        "METERS_T": 3,
+        "FEET": 63,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 19.4,
+      "expected": {
+        "METERS": 19.4,
+        "METERS_W": 19,
+        "METERS_T": 4,
+        "FEET": 63,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 19.5,
+      "expected": {
+        "METERS": 19.5,
+        "METERS_W": 19,
+        "METERS_T": 5,
+        "FEET": 64,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 19.6,
+      "expected": {
+        "METERS": 19.6,
+        "METERS_W": 19,
+        "METERS_T": 6,
+        "FEET": 64,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 19.7,
+      "expected": {
+        "METERS": 19.7,
+        "METERS_W": 19,
+        "METERS_T": 7,
+        "FEET": 64,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 19.8,
+      "expected": {
+        "METERS": 19.8,
+        "METERS_W": 19,
+        "METERS_T": 8,
+        "FEET": 65,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 19.9,
+      "expected": {
+        "METERS": 19.9,
+        "METERS_W": 19,
+        "METERS_T": 9,
+        "FEET": 65,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 20.0,
+      "expected": {
+        "METERS": 20.0,
+        "METERS_W": 20,
+        "METERS_T": 0,
+        "FEET": 65,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 20.1,
+      "expected": {
+        "METERS": 20.1,
+        "METERS_W": 20,
+        "METERS_T": 1,
+        "FEET": 66,
+        "FATHOMS": 10,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 20.2,
+      "expected": {
+        "METERS": 20.2,
+        "METERS_W": 20,
+        "METERS_T": 2,
+        "FEET": 66,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 20.3,
+      "expected": {
+        "METERS": 20.3,
+        "METERS_W": 20,
+        "METERS_T": 3,
+        "FEET": 66,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 20.4,
+      "expected": {
+        "METERS": 20.4,
+        "METERS_W": 20,
+        "METERS_T": 4,
+        "FEET": 67,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 20.5,
+      "expected": {
+        "METERS": 20.5,
+        "METERS_W": 20,
+        "METERS_T": 5,
+        "FEET": 67,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 20.6,
+      "expected": {
+        "METERS": 20.6,
+        "METERS_W": 20,
+        "METERS_T": 6,
+        "FEET": 67,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 20.7,
+      "expected": {
+        "METERS": 20.7,
+        "METERS_W": 20,
+        "METERS_T": 7,
+        "FEET": 68,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 20.8,
+      "expected": {
+        "METERS": 20.8,
+        "METERS_W": 20,
+        "METERS_T": 8,
+        "FEET": 68,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 20.9,
+      "expected": {
+        "METERS": 20.9,
+        "METERS_W": 20,
+        "METERS_T": 9,
+        "FEET": 68,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 21.0,
+      "expected": {
+        "METERS": 21.0,
+        "METERS_W": 21,
+        "METERS_T": 0,
+        "FEET": 68,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 21.1,
+      "expected": {
+        "METERS": 21.1,
+        "METERS_W": 21,
+        "METERS_T": 1,
+        "FEET": 69,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 21.2,
+      "expected": {
+        "METERS": 21.2,
+        "METERS_W": 21,
+        "METERS_T": 2,
+        "FEET": 69,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 21.3,
+      "expected": {
+        "METERS": 21.3,
+        "METERS_W": 21,
+        "METERS_T": 3,
+        "FEET": 69,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 21.4,
+      "expected": {
+        "METERS": 21.4,
+        "METERS_W": 21,
+        "METERS_T": 4,
+        "FEET": 70,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 21.5,
+      "expected": {
+        "METERS": 21.5,
+        "METERS_W": 21,
+        "METERS_T": 5,
+        "FEET": 70,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 21.6,
+      "expected": {
+        "METERS": 21.6,
+        "METERS_W": 21,
+        "METERS_T": 6,
+        "FEET": 70,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 21.7,
+      "expected": {
+        "METERS": 21.7,
+        "METERS_W": 21,
+        "METERS_T": 7,
+        "FEET": 71,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 21.8,
+      "expected": {
+        "METERS": 21.8,
+        "METERS_W": 21,
+        "METERS_T": 8,
+        "FEET": 71,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 21.9,
+      "expected": {
+        "METERS": 21.9,
+        "METERS_W": 21,
+        "METERS_T": 9,
+        "FEET": 71,
+        "FATHOMS": 11,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 22.0,
+      "expected": {
+        "METERS": 22.0,
+        "METERS_W": 22,
+        "METERS_T": 0,
+        "FEET": 72,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 22.1,
+      "expected": {
+        "METERS": 22.1,
+        "METERS_W": 22,
+        "METERS_T": 1,
+        "FEET": 72,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 22.2,
+      "expected": {
+        "METERS": 22.2,
+        "METERS_W": 22,
+        "METERS_T": 2,
+        "FEET": 72,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 22.3,
+      "expected": {
+        "METERS": 22.3,
+        "METERS_W": 22,
+        "METERS_T": 3,
+        "FEET": 73,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 22.4,
+      "expected": {
+        "METERS": 22.4,
+        "METERS_W": 22,
+        "METERS_T": 4,
+        "FEET": 73,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 22.5,
+      "expected": {
+        "METERS": 22.5,
+        "METERS_W": 22,
+        "METERS_T": 5,
+        "FEET": 73,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 22.6,
+      "expected": {
+        "METERS": 22.6,
+        "METERS_W": 22,
+        "METERS_T": 6,
+        "FEET": 74,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 22.7,
+      "expected": {
+        "METERS": 22.7,
+        "METERS_W": 22,
+        "METERS_T": 7,
+        "FEET": 74,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 22.8,
+      "expected": {
+        "METERS": 22.8,
+        "METERS_W": 22,
+        "METERS_T": 8,
+        "FEET": 74,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 22.9,
+      "expected": {
+        "METERS": 22.9,
+        "METERS_W": 22,
+        "METERS_T": 9,
+        "FEET": 75,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 23.0,
+      "expected": {
+        "METERS": 23.0,
+        "METERS_W": 23,
+        "METERS_T": 0,
+        "FEET": 75,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 23.1,
+      "expected": {
+        "METERS": 23.1,
+        "METERS_W": 23,
+        "METERS_T": 1,
+        "FEET": 75,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 23.2,
+      "expected": {
+        "METERS": 23.2,
+        "METERS_W": 23,
+        "METERS_T": 2,
+        "FEET": 76,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 23.3,
+      "expected": {
+        "METERS": 23.3,
+        "METERS_W": 23,
+        "METERS_T": 3,
+        "FEET": 76,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 23.4,
+      "expected": {
+        "METERS": 23.4,
+        "METERS_W": 23,
+        "METERS_T": 4,
+        "FEET": 76,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 23.5,
+      "expected": {
+        "METERS": 23.5,
+        "METERS_W": 23,
+        "METERS_T": 5,
+        "FEET": 77,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 23.6,
+      "expected": {
+        "METERS": 23.6,
+        "METERS_W": 23,
+        "METERS_T": 6,
+        "FEET": 77,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 23.7,
+      "expected": {
+        "METERS": 23.7,
+        "METERS_W": 23,
+        "METERS_T": 7,
+        "FEET": 77,
+        "FATHOMS": 12,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 23.8,
+      "expected": {
+        "METERS": 23.8,
+        "METERS_W": 23,
+        "METERS_T": 8,
+        "FEET": 78,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 23.9,
+      "expected": {
+        "METERS": 23.9,
+        "METERS_W": 23,
+        "METERS_T": 9,
+        "FEET": 78,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 24.0,
+      "expected": {
+        "METERS": 24.0,
+        "METERS_W": 24,
+        "METERS_T": 0,
+        "FEET": 78,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 24.1,
+      "expected": {
+        "METERS": 24.1,
+        "METERS_W": 24,
+        "METERS_T": 1,
+        "FEET": 79,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 24.2,
+      "expected": {
+        "METERS": 24.2,
+        "METERS_W": 24,
+        "METERS_T": 2,
+        "FEET": 79,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 24.3,
+      "expected": {
+        "METERS": 24.3,
+        "METERS_W": 24,
+        "METERS_T": 3,
+        "FEET": 79,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 24.4,
+      "expected": {
+        "METERS": 24.4,
+        "METERS_W": 24,
+        "METERS_T": 4,
+        "FEET": 80,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 24.5,
+      "expected": {
+        "METERS": 24.5,
+        "METERS_W": 24,
+        "METERS_T": 5,
+        "FEET": 80,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 24.6,
+      "expected": {
+        "METERS": 24.6,
+        "METERS_W": 24,
+        "METERS_T": 6,
+        "FEET": 80,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 24.7,
+      "expected": {
+        "METERS": 24.7,
+        "METERS_W": 24,
+        "METERS_T": 7,
+        "FEET": 81,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 24.8,
+      "expected": {
+        "METERS": 24.8,
+        "METERS_W": 24,
+        "METERS_T": 8,
+        "FEET": 81,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 24.9,
+      "expected": {
+        "METERS": 24.9,
+        "METERS_W": 24,
+        "METERS_T": 9,
+        "FEET": 81,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 25.0,
+      "expected": {
+        "METERS": 25.0,
+        "METERS_W": 25,
+        "METERS_T": 0,
+        "FEET": 82,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 25.1,
+      "expected": {
+        "METERS": 25.1,
+        "METERS_W": 25,
+        "METERS_T": 1,
+        "FEET": 82,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 25.2,
+      "expected": {
+        "METERS": 25.2,
+        "METERS_W": 25,
+        "METERS_T": 2,
+        "FEET": 82,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 25.3,
+      "expected": {
+        "METERS": 25.3,
+        "METERS_W": 25,
+        "METERS_T": 3,
+        "FEET": 83,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 25.4,
+      "expected": {
+        "METERS": 25.4,
+        "METERS_W": 25,
+        "METERS_T": 4,
+        "FEET": 83,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 25.5,
+      "expected": {
+        "METERS": 25.5,
+        "METERS_W": 25,
+        "METERS_T": 5,
+        "FEET": 83,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 25.6,
+      "expected": {
+        "METERS": 25.6,
+        "METERS_W": 25,
+        "METERS_T": 6,
+        "FEET": 84,
+        "FATHOMS": 13,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 25.7,
+      "expected": {
+        "METERS": 25.7,
+        "METERS_W": 25,
+        "METERS_T": 7,
+        "FEET": 84,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 25.8,
+      "expected": {
+        "METERS": 25.8,
+        "METERS_W": 25,
+        "METERS_T": 8,
+        "FEET": 84,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 25.9,
+      "expected": {
+        "METERS": 25.9,
+        "METERS_W": 25,
+        "METERS_T": 9,
+        "FEET": 85,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 26.0,
+      "expected": {
+        "METERS": 26.0,
+        "METERS_W": 26,
+        "METERS_T": 0,
+        "FEET": 85,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 26.1,
+      "expected": {
+        "METERS": 26.1,
+        "METERS_W": 26,
+        "METERS_T": 1,
+        "FEET": 85,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 26.2,
+      "expected": {
+        "METERS": 26.2,
+        "METERS_W": 26,
+        "METERS_T": 2,
+        "FEET": 86,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 26.3,
+      "expected": {
+        "METERS": 26.3,
+        "METERS_W": 26,
+        "METERS_T": 3,
+        "FEET": 86,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 26.4,
+      "expected": {
+        "METERS": 26.4,
+        "METERS_W": 26,
+        "METERS_T": 4,
+        "FEET": 86,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 26.5,
+      "expected": {
+        "METERS": 26.5,
+        "METERS_W": 26,
+        "METERS_T": 5,
+        "FEET": 87,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 26.6,
+      "expected": {
+        "METERS": 26.6,
+        "METERS_W": 26,
+        "METERS_T": 6,
+        "FEET": 87,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 26.7,
+      "expected": {
+        "METERS": 26.7,
+        "METERS_W": 26,
+        "METERS_T": 7,
+        "FEET": 87,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 26.8,
+      "expected": {
+        "METERS": 26.8,
+        "METERS_W": 26,
+        "METERS_T": 8,
+        "FEET": 88,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 26.9,
+      "expected": {
+        "METERS": 26.9,
+        "METERS_W": 26,
+        "METERS_T": 9,
+        "FEET": 88,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 27.0,
+      "expected": {
+        "METERS": 27.0,
+        "METERS_W": 27,
+        "METERS_T": 0,
+        "FEET": 88,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 27.1,
+      "expected": {
+        "METERS": 27.1,
+        "METERS_W": 27,
+        "METERS_T": 1,
+        "FEET": 89,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 27.2,
+      "expected": {
+        "METERS": 27.2,
+        "METERS_W": 27,
+        "METERS_T": 2,
+        "FEET": 89,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 27.3,
+      "expected": {
+        "METERS": 27.3,
+        "METERS_W": 27,
+        "METERS_T": 3,
+        "FEET": 89,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 27.4,
+      "expected": {
+        "METERS": 27.4,
+        "METERS_W": 27,
+        "METERS_T": 4,
+        "FEET": 89,
+        "FATHOMS": 14,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 27.5,
+      "expected": {
+        "METERS": 27.5,
+        "METERS_W": 27,
+        "METERS_T": 5,
+        "FEET": 90,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 27.6,
+      "expected": {
+        "METERS": 27.6,
+        "METERS_W": 27,
+        "METERS_T": 6,
+        "FEET": 90,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 27.7,
+      "expected": {
+        "METERS": 27.7,
+        "METERS_W": 27,
+        "METERS_T": 7,
+        "FEET": 90,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 27.8,
+      "expected": {
+        "METERS": 27.8,
+        "METERS_W": 27,
+        "METERS_T": 8,
+        "FEET": 91,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 27.9,
+      "expected": {
+        "METERS": 27.9,
+        "METERS_W": 27,
+        "METERS_T": 9,
+        "FEET": 91,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 28.0,
+      "expected": {
+        "METERS": 28.0,
+        "METERS_W": 28,
+        "METERS_T": 0,
+        "FEET": 91,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 28.1,
+      "expected": {
+        "METERS": 28.1,
+        "METERS_W": 28,
+        "METERS_T": 1,
+        "FEET": 92,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 28.2,
+      "expected": {
+        "METERS": 28.2,
+        "METERS_W": 28,
+        "METERS_T": 2,
+        "FEET": 92,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 28.3,
+      "expected": {
+        "METERS": 28.3,
+        "METERS_W": 28,
+        "METERS_T": 3,
+        "FEET": 92,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 28.4,
+      "expected": {
+        "METERS": 28.4,
+        "METERS_W": 28,
+        "METERS_T": 4,
+        "FEET": 93,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 28.5,
+      "expected": {
+        "METERS": 28.5,
+        "METERS_W": 28,
+        "METERS_T": 5,
+        "FEET": 93,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 28.6,
+      "expected": {
+        "METERS": 28.6,
+        "METERS_W": 28,
+        "METERS_T": 6,
+        "FEET": 93,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 28.7,
+      "expected": {
+        "METERS": 28.7,
+        "METERS_W": 28,
+        "METERS_T": 7,
+        "FEET": 94,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 28.8,
+      "expected": {
+        "METERS": 28.8,
+        "METERS_W": 28,
+        "METERS_T": 8,
+        "FEET": 94,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 28.9,
+      "expected": {
+        "METERS": 28.9,
+        "METERS_W": 28,
+        "METERS_T": 9,
+        "FEET": 94,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 29.0,
+      "expected": {
+        "METERS": 29.0,
+        "METERS_W": 29,
+        "METERS_T": 0,
+        "FEET": 95,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 29.1,
+      "expected": {
+        "METERS": 29.1,
+        "METERS_W": 29,
+        "METERS_T": 1,
+        "FEET": 95,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 29.2,
+      "expected": {
+        "METERS": 29.2,
+        "METERS_W": 29,
+        "METERS_T": 2,
+        "FEET": 95,
+        "FATHOMS": 15,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 29.3,
+      "expected": {
+        "METERS": 29.3,
+        "METERS_W": 29,
+        "METERS_T": 3,
+        "FEET": 96,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 29.4,
+      "expected": {
+        "METERS": 29.4,
+        "METERS_W": 29,
+        "METERS_T": 4,
+        "FEET": 96,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 29.5,
+      "expected": {
+        "METERS": 29.5,
+        "METERS_W": 29,
+        "METERS_T": 5,
+        "FEET": 96,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": 29.6,
+      "expected": {
+        "METERS": 29.6,
+        "METERS_W": 29,
+        "METERS_T": 6,
+        "FEET": 97,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 29.7,
+      "expected": {
+        "METERS": 29.7,
+        "METERS_W": 29,
+        "METERS_T": 7,
+        "FEET": 97,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 29.8,
+      "expected": {
+        "METERS": 29.8,
+        "METERS_W": 29,
+        "METERS_T": 8,
+        "FEET": 97,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 29.9,
+      "expected": {
+        "METERS": 29.9,
+        "METERS_W": 29,
+        "METERS_T": 9,
+        "FEET": 98,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 30.0,
+      "expected": {
+        "METERS": 30.0,
+        "METERS_W": 30,
+        "METERS_T": 0,
+        "FEET": 98,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 30.1,
+      "expected": {
+        "METERS": 30.1,
+        "METERS_W": 30,
+        "METERS_T": 1,
+        "FEET": 98,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 30.2,
+      "expected": {
+        "METERS": 30.2,
+        "METERS_W": 30,
+        "METERS_T": 2,
+        "FEET": 99,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 30.3,
+      "expected": {
+        "METERS": 30.3,
+        "METERS_W": 30,
+        "METERS_T": 3,
+        "FEET": 99,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 30.4,
+      "expected": {
+        "METERS": 30.4,
+        "METERS_W": 30,
+        "METERS_T": 4,
+        "FEET": 99,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": 30.5,
+      "expected": {
+        "METERS": 30.5,
+        "METERS_W": 30,
+        "METERS_T": 5,
+        "FEET": 100,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 30.6,
+      "expected": {
+        "METERS": 30.6,
+        "METERS_W": 30,
+        "METERS_T": 6,
+        "FEET": 100,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 30.7,
+      "expected": {
+        "METERS": 30.7,
+        "METERS_W": 30,
+        "METERS_T": 7,
+        "FEET": 100,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 30.8,
+      "expected": {
+        "METERS": 30.8,
+        "METERS_W": 30,
+        "METERS_T": 8,
+        "FEET": 101,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 30.9,
+      "expected": {
+        "METERS": 30.9,
+        "METERS_W": 30,
+        "METERS_T": 9,
+        "FEET": 101,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": 31.0,
+      "expected": {
+        "METERS": 31.0,
+        "METERS_W": 31,
+        "METERS_T": 0,
+        "FEET": 101,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": -0.1,
+      "expected": {
+        "METERS": -0.1,
+        "METERS_W": 0,
+        "METERS_T": -1,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -0.2,
+      "expected": {
+        "METERS": -0.2,
+        "METERS_W": 0,
+        "METERS_T": -2,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -0.3,
+      "expected": {
+        "METERS": -0.3,
+        "METERS_W": 0,
+        "METERS_T": -3,
+        "FEET": -1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -0.4,
+      "expected": {
+        "METERS": -0.4,
+        "METERS_W": 0,
+        "METERS_T": -4,
+        "FEET": -1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -0.5,
+      "expected": {
+        "METERS": -0.5,
+        "METERS_W": 0,
+        "METERS_T": -5,
+        "FEET": -1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -0.6,
+      "expected": {
+        "METERS": -0.6,
+        "METERS_W": 0,
+        "METERS_T": -6,
+        "FEET": -2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -0.7,
+      "expected": {
+        "METERS": -0.7,
+        "METERS_W": 0,
+        "METERS_T": -7,
+        "FEET": -2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -0.8,
+      "expected": {
+        "METERS": -0.8,
+        "METERS_W": 0,
+        "METERS_T": -8,
+        "FEET": -2,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -0.9,
+      "expected": {
+        "METERS": -0.9,
+        "METERS_W": 0,
+        "METERS_T": -9,
+        "FEET": -3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -1.0,
+      "expected": {
+        "METERS": -1.0,
+        "METERS_W": -1,
+        "METERS_T": 0,
+        "FEET": -3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": -1.1,
+      "expected": {
+        "METERS": -1.1,
+        "METERS_W": -1,
+        "METERS_T": -1,
+        "FEET": -3,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": -1.2,
+      "expected": {
+        "METERS": -1.2,
+        "METERS_W": -1,
+        "METERS_T": -2,
+        "FEET": -4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": -1.3,
+      "expected": {
+        "METERS": -1.3,
+        "METERS_W": -1,
+        "METERS_T": -3,
+        "FEET": -4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -4
+      }
+    },
+    {
+      "input": -1.4,
+      "expected": {
+        "METERS": -1.4,
+        "METERS_W": -1,
+        "METERS_T": -4,
+        "FEET": -4,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -4
+      }
+    },
+    {
+      "input": -1.5,
+      "expected": {
+        "METERS": -1.5,
+        "METERS_W": -1,
+        "METERS_T": -5,
+        "FEET": -5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -4
+      }
+    },
+    {
+      "input": -1.6,
+      "expected": {
+        "METERS": -1.6,
+        "METERS_W": -1,
+        "METERS_T": -6,
+        "FEET": -5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -5
+      }
+    },
+    {
+      "input": -1.7,
+      "expected": {
+        "METERS": -1.7,
+        "METERS_W": -1,
+        "METERS_T": -7,
+        "FEET": -5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -5
+      }
+    },
+    {
+      "input": -1.8,
+      "expected": {
+        "METERS": -1.8,
+        "METERS_W": -1,
+        "METERS_T": -8,
+        "FEET": -6,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -5
+      }
+    },
+    {
+      "input": -1.9,
+      "expected": {
+        "METERS": -1.9,
+        "METERS_W": -1,
+        "METERS_T": -9,
+        "FEET": -6,
+        "FATHOMS": -1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -2.0,
+      "expected": {
+        "METERS": -2.0,
+        "METERS_W": -2,
+        "METERS_T": 0,
+        "FEET": -6,
+        "FATHOMS": -1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -2.1,
+      "expected": {
+        "METERS": -2.1,
+        "METERS_W": -2,
+        "METERS_T": -1,
+        "FEET": -6,
+        "FATHOMS": -1,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": -2.2,
+      "expected": {
+        "METERS": -2.2,
+        "METERS_W": -2,
+        "METERS_T": -2,
+        "FEET": -7,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -2.3,
+      "expected": {
+        "METERS": -2.3,
+        "METERS_W": -2,
+        "METERS_T": -3,
+        "FEET": -7,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -2.4,
+      "expected": {
+        "METERS": -2.4,
+        "METERS_W": -2,
+        "METERS_T": -4,
+        "FEET": -7,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -1
+      }
+    },
+    {
+      "input": -2.5,
+      "expected": {
+        "METERS": -2.5,
+        "METERS_W": -2,
+        "METERS_T": -5,
+        "FEET": -8,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -2.6,
+      "expected": {
+        "METERS": -2.6,
+        "METERS_W": -2,
+        "METERS_T": -6,
+        "FEET": -8,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -2.7,
+      "expected": {
+        "METERS": -2.7,
+        "METERS_W": -2,
+        "METERS_T": -7,
+        "FEET": -8,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -2
+      }
+    },
+    {
+      "input": -2.8,
+      "expected": {
+        "METERS": -2.8,
+        "METERS_W": -2,
+        "METERS_T": -8,
+        "FEET": -9,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": -2.9,
+      "expected": {
+        "METERS": -2.9,
+        "METERS_W": -2,
+        "METERS_T": -9,
+        "FEET": -9,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": -3.0,
+      "expected": {
+        "METERS": -3.0,
+        "METERS_W": -3,
+        "METERS_T": 0,
+        "FEET": -9,
+        "FATHOMS": -1,
+        "FATHOMS_FT": -3
+      }
+    },
+    {
+      "input": 2.29999,
+      "expected": {
+        "METERS": 2.29999,
+        "METERS_W": 2,
+        "METERS_T": 2,
+        "FEET": 7,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": 4.35,
+      "expected": {
+        "METERS": 4.35,
+        "METERS_W": 4,
+        "METERS_T": 3,
+        "FEET": 14,
+        "FATHOMS": 2,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 9.99,
+      "expected": {
+        "METERS": 9.99,
+        "METERS_W": 9,
+        "METERS_T": 9,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": 1.5,
+      "expected": {
+        "METERS": 1.5,
+        "METERS_W": 1,
+        "METERS_T": 5,
+        "FEET": 5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": 7.6,
+      "expected": {
+        "METERS": 7.6,
+        "METERS_W": 7,
+        "METERS_T": 6,
+        "FEET": 25,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 0
+      }
+    }
+  ]
+}

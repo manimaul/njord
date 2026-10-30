@@ -1,0 +1,276 @@
+{
+  "pins": "EncCronConfig.load: config/enc_cron.json then ENC_CRON_OPTS as a shallow top-level merge (blank ignored), then ENC_CRON_ADMIN_USER/PASS when non-blank; unknown keys ignored; required fields without defaults make a missing/absent file throw; saveDir/workDir/njordBaseUrl derivation",
+  "decisions": [
+    "EC-3"
+  ],
+  "generator": "ConfigFixtureTest",
+  "source": "the shipped enc_cron/src/nativeMain/resources/config/enc_cron.json plus hand-written variants",
+  "cases": [
+    {
+      "input": {
+        "name": "shipped_defaults",
+        "file": "{\n  \"catalogUrl\": \"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\n  \"chartEditionsUrl\": \"http://localhost:9000/v1/chart_editions\",\n  \"chartTempData\": \"/tmp/njord\",\n  \"maxCellsPerRun\": 500,\n  \"bundleSizeCells\": 50,\n  \"maxBundleUncompressedBytes\": 268435456,\n  \"maxQueuedBundles\": 3,\n  \"scaleFilter\": [],\n  \"requestTimeoutSeconds\": 600,\n  \"maxRetries\": 3,\n  \"deleteOrphans\": true,\n  \"maxOrphanDeletes\": 25\n}\n",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://localhost:9000/v1/chart_editions",
+          "chartTempData": "/tmp/njord",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/tmp/njord/save",
+        "workDir": "/tmp/njord/enc_cron",
+        "njordBaseUrl": "http://localhost:9000"
+      }
+    },
+    {
+      "input": {
+        "name": "minimal_file",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "opts_shallow_merge",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "opts": "{\"maxCellsPerRun\":5,\"scaleFilter\":[15000,80000],\"deleteOrphans\":false,\"chartEditionsUrl\":\"https://openenc.com/v1/chart_editions\"}",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "https://openenc.com/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 5,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [
+            15000,
+            80000
+          ],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3,
+          "deleteOrphans": false
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "https://openenc.com"
+      }
+    },
+    {
+      "input": {
+        "name": "opts_blank_is_ignored",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "opts": "   ",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "credentials_from_env",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "envUser": "cron",
+        "envPass": "secret",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3,
+          "adminUser": "cron",
+          "adminPass": "secret"
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "env_credentials_win_over_json",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3,\"adminUser\":\"json-user\",\"adminPass\":\"json-pass\"}",
+        "envUser": "env-user",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3,
+          "adminUser": "env-user",
+          "adminPass": "json-pass"
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "blank_env_credentials_fall_back_to_json",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3,\"adminUser\":\"json-user\",\"adminPass\":\"json-pass\"}",
+        "envUser": "",
+        "envPass": "",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3,
+          "adminUser": "json-user",
+          "adminPass": "json-pass"
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "opts_alone_without_file",
+        "opts": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    },
+    {
+      "input": {
+        "name": "no_v1_in_editions_url",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3}",
+        "opts": "{\"chartEditionsUrl\":\"http://localhost:9000/editions\"}",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://localhost:9000/editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": null
+      }
+    },
+    {
+      "input": {
+        "name": "missing_file_throws",
+        "resourcesDir": true
+      },
+      "expected": {
+        "throws": "MissingFieldException"
+      }
+    },
+    {
+      "input": {
+        "name": "no_resources_dir_throws",
+        "resourcesDir": false
+      },
+      "expected": {
+        "throws": "MissingFieldException"
+      }
+    },
+    {
+      "input": {
+        "name": "unknown_keys_ignored",
+        "file": "{\"catalogUrl\":\"https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml\",\"chartEditionsUrl\":\"http://njord-chart-svc/v1/chart_editions\",\"chartTempData\":\"/mnt/njord/charts\",\"maxCellsPerRun\":500,\"bundleSizeCells\":50,\"maxBundleUncompressedBytes\":268435456,\"scaleFilter\":[],\"requestTimeoutSeconds\":600,\"maxRetries\":3,\"futureKnob\":true}",
+        "resourcesDir": true
+      },
+      "expected": {
+        "config": {
+          "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+          "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+          "chartTempData": "/mnt/njord/charts",
+          "maxCellsPerRun": 500,
+          "bundleSizeCells": 50,
+          "maxBundleUncompressedBytes": 268435456,
+          "scaleFilter": [],
+          "requestTimeoutSeconds": 600,
+          "maxRetries": 3
+        },
+        "saveDir": "/mnt/njord/charts/save",
+        "workDir": "/mnt/njord/charts/enc_cron",
+        "njordBaseUrl": "http://njord-chart-svc"
+      }
+    }
+  ]
+}

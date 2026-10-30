@@ -1,0 +1,58 @@
+{
+  "pins": "preTileEncode over every ACHARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5051,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 4,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024358,
+          "FIDS": 50,
+          "LNAM": "022600D5FEA60032",
+          "CATACH": [
+            "1"
+          ],
+          "OBJNAM": "Commencement Bay General Anchorage",
+          "INFORM": "33 CFR 110.230",
+          "MINZ": 13,
+          "SCAMIN": 21999,
+          "SORDAT": "20130212",
+          "SORIND": "US,US,reprt,L-0345/13"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5051,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 4,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024358,
+        "FIDS": 50,
+        "LNAM": "022600D5FEA60032",
+        "CATACH": [
+          "1"
+        ],
+        "OBJNAM": "Commencement Bay General Anchorage",
+        "INFORM": "33 CFR 110.230",
+        "MINZ": 13,
+        "SCAMIN": 21999,
+        "SORDAT": "20130212",
+        "SORIND": "US,US,reprt,L-0345/13",
+        "SY": "ACHARE02",
+        "LP": "ACHARE02"
+      }
+    }
+  ]
+}

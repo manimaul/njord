@@ -1,0 +1,103 @@
+{
+  "pins": "decoded /v1/tile/8/40/89: layers sorted by name, features sorted by LNAM, props, geometry; feature ids dropped",
+  "decisions": [
+    "TE-1",
+    "TE-2",
+    "TE-4",
+    "TE-5",
+    "TE-6"
+  ],
+  "generator": "GoldenTilesTest.golden tiles",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic/US4ZZ01M+US5ZZ02M, libgdal ne_110_extract coastline at 110m; GDAL 3.13.1; shallow/safety/deep = 3.0/6.0/9.0",
+  "cases": [
+    {
+      "input": {
+        "z": 8,
+        "x": 40,
+        "y": 89
+      },
+      "expected": {
+        "layers": [
+          {
+            "name": "PLY",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      2767,
+                      4104
+                    ],
+                    [
+                      2767,
+                      3840
+                    ],
+                    [
+                      1602,
+                      3840
+                    ],
+                    [
+                      1602,
+                      4104
+                    ]
+                  ]
+                ]
+              },
+              {
+                "type": "LINESTRING",
+                "props": {},
+                "geometry": [
+                  [
+                    [
+                      3810,
+                      2892
+                    ],
+                    [
+                      4053,
+                      2892
+                    ],
+                    [
+                      4053,
+                      3259
+                    ],
+                    [
+                      3501,
+                      3259
+                    ],
+                    [
+                      3501,
+                      3140
+                    ],
+                    [
+                      3502,
+                      3140
+                    ],
+                    [
+                      3502,
+                      3141
+                    ],
+                    [
+                      3568,
+                      3141
+                    ],
+                    [
+                      3568,
+                      2892
+                    ],
+                    [
+                      3810,
+                      2892
+                    ]
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

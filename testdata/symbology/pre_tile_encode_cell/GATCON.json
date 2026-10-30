@@ -1,0 +1,48 @@
+{
+  "pins": "preTileEncode over every GATCON feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 3981,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 61,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026962,
+          "FIDS": 50,
+          "LNAM": "022600D608D20032",
+          "CATGAT": 4,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 3981,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 61,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14026962,
+        "FIDS": 50,
+        "LNAM": "022600D608D20032",
+        "CATGAT": 4,
+        "SORDAT": "20070704",
+        "SORIND": "US,US,graph,GC-10683",
+        "SY": "GATCON03",
+        "LP": "GATCON03",
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "pins": "GDAL S57 driver output for M_COVR under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/synthetic/US5ZZ02M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 1,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 302,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1000,
+          "FIDS": 1,
+          "LNAM": "0226000003E80001",
+          "CATCOV": 1
+        },
+        "wkt": "POLYGON ((-123.05 46.97,-122.95 46.97,-122.95 47.03,-123.05 47.03,-123.05 46.97))"
+      }
+    }
+  ]
+}

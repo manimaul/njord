@@ -1,0 +1,478 @@
+{
+  "pins": "preTileEncode over every CTNARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 1822,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27486150,
+          "FIDS": 50,
+          "LNAM": "022601A367C60032",
+          "INFORM": "For width of 45.7 meters/150 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1822,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27486150,
+        "FIDS": 50,
+        "LNAM": "022601A367C60032",
+        "INFORM": "For width of 45.7 meters/150 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1823,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 772668444,
+          "FIDS": 7299,
+          "LNAM": "02262E0DFC1C1C83",
+          "INFORM": "Shoaling to 21 ft / 6.4 meters",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20181115",
+          "SORIND": "US,US,graph,DD-30196"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1823,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 772668444,
+        "FIDS": 7299,
+        "LNAM": "02262E0DFC1C1C83",
+        "INFORM": "Shoaling to 21 ft / 6.4 meters",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20181115",
+        "SORIND": "US,US,graph,DD-30196",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1824,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 976507574,
+          "FIDS": 7299,
+          "LNAM": "02263A3452B61C83",
+          "INFORM": "Shoaling to 2.4 ft / 0.73 meter",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1824,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 976507574,
+        "FIDS": 7299,
+        "LNAM": "02263A3452B61C83",
+        "INFORM": "Shoaling to 2.4 ft / 0.73 meter",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1825,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 2,
+          "AGEN": 550,
+          "FIDN": 863881383,
+          "FIDS": 7299,
+          "LNAM": "0226337DC8A71C83",
+          "INFORM": "Shoaling to 2.59 ft / 0.78 meter",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20200204",
+          "SORIND": "US,US,graph,DD-32263"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1825,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 2,
+        "AGEN": 550,
+        "FIDN": 863881383,
+        "FIDS": 7299,
+        "LNAM": "0226337DC8A71C83",
+        "INFORM": "Shoaling to 2.59 ft / 0.78 meter",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20200204",
+        "SORIND": "US,US,graph,DD-32263",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1826,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27486107,
+          "FIDS": 50,
+          "LNAM": "022601A3679B0032",
+          "INFORM": "For width of 13.1 meters/43 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1826,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27486107,
+        "FIDS": 50,
+        "LNAM": "022601A3679B0032",
+        "INFORM": "For width of 13.1 meters/43 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1827,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14024323,
+          "FIDS": 50,
+          "LNAM": "022600D5FE830032",
+          "INFORM": "Most features, including bathymetry, are omitted in this area.  The minimal depiction of detail in this area does not support safe navigation, mariners should use a more appropriate navigational purpose.",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1827,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 14024323,
+        "FIDS": 50,
+        "LNAM": "022600D5FE830032",
+        "INFORM": "Most features, including bathymetry, are omitted in this area.  The minimal depiction of detail in this area does not support safe navigation, mariners should use a more appropriate navigational purpose.",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1828,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 406850746,
+          "FIDS": 1949,
+          "LNAM": "022618400CBA079D",
+          "INFORM": "For width of 45.7 meters/150 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1828,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 406850746,
+        "FIDS": 1949,
+        "LNAM": "022618400CBA079D",
+        "INFORM": "For width of 45.7 meters/150 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1829,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27486110,
+          "FIDS": 50,
+          "LNAM": "022601A3679E0032",
+          "INFORM": "For width of 9.1 meters/30 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1829,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27486110,
+        "FIDS": 50,
+        "LNAM": "022601A3679E0032",
+        "INFORM": "For width of 9.1 meters/30 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1830,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27486151,
+          "FIDS": 50,
+          "LNAM": "022601A367C70032",
+          "INFORM": "For width of 45.7 meters/150 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1830,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27486151,
+        "FIDS": 50,
+        "LNAM": "022601A367C70032",
+        "INFORM": "For width of 45.7 meters/150 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1831,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 375566643,
+          "FIDS": 1949,
+          "LNAM": "02261662B133079D",
+          "INFORM": "For width of 45.7 meters/150 feet",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1831,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 375566643,
+        "FIDS": 1949,
+        "LNAM": "02261662B133079D",
+        "INFORM": "For width of 45.7 meters/150 feet",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1861,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 15491201,
+          "FIDS": 50,
+          "LNAM": "022600EC60810032",
+          "INFORM": "Sewer",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1861,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 15491201,
+        "FIDS": 50,
+        "LNAM": "022600EC60810032",
+        "INFORM": "Sewer",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 1862,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 27,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1455928494,
+          "FIDS": 12345,
+          "LNAM": "022656C7B4AE3039",
+          "INFORM": "Limits of log storage and booming grounds are subject to change",
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 1862,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 27,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1455928494,
+        "FIDS": 12345,
+        "LNAM": "022656C7B4AE3039",
+        "INFORM": "Limits of log storage and booming grounds are subject to change",
+        "MINZ": 12,
+        "SCAMIN": 44999,
+        "SORDAT": "201303",
+        "SORIND": "US,US,graph,Chart 18453",
+        "SY": "CHINFO06"
+      }
+    }
+  ]
+}

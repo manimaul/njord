@@ -1,0 +1,54 @@
+{
+  "pins": "preTileEncode over every RECTRC feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 5184,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 109,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 106464,
+          "FIDS": 1,
+          "LNAM": "022600019FE00001",
+          "CATTRK": 1,
+          "ORIENT": 132.8,
+          "TRAFIC": 3,
+          "MINZ": 13,
+          "SCAMIN": 29999,
+          "SORDAT": "20120110",
+          "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+        },
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 5184,
+        "PRIM": 2,
+        "GRUP": 2,
+        "OBJL": 109,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 106464,
+        "FIDS": 1,
+        "LNAM": "022600019FE00001",
+        "CATTRK": 1,
+        "ORIENT": 132.8,
+        "TRAFIC": 3,
+        "MINZ": 13,
+        "SCAMIN": 29999,
+        "SORDAT": "20120110",
+        "SORIND": "US,US,reprt,13thCGD,LNM 02/12",
+        "_BRG": "133 deg",
+        "LP": "RECTRC58"
+      }
+    }
+  ]
+}

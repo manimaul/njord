@@ -1,0 +1,57 @@
+{
+  "pins": "HmacSHA256(key).update(each data chunk).doFinal() as lowercase hex; RFC 4231 TC1/TC2 included; chunking does not change the digest",
+  "decisions": [
+    "SEC-2"
+  ],
+  "generator": "AdminSignatureFixtureTest.hmacVectors",
+  "cases": [
+    {
+      "input": {
+        "key": "\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b\u000b",
+        "data": [
+          "Hi There"
+        ]
+      },
+      "expected": "b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7"
+    },
+    {
+      "input": {
+        "key": "Jefe",
+        "data": [
+          "what do ya want for nothing?"
+        ]
+      },
+      "expected": "5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"
+    },
+    {
+      "input": {
+        "key": "Jefe",
+        "data": [
+          "what do ya want ",
+          "for nothing?"
+        ]
+      },
+      "expected": "5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843"
+    },
+    {
+      "input": {
+        "key": "key",
+        "data": [
+          "The quick brown fox jumps over the lazy dog"
+        ]
+      },
+      "expected": "f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8"
+    },
+    {
+      "input": {
+        "key": "test-key",
+        "data": [
+          "https://njord.test",
+          "2026-01-02T03:04:05Z",
+          "AbCdEfGh-IjKl-MnOp-QrSt-UvWxYz012345"
+        ]
+      },
+      "expected": "5f73f2411ce78320ed6d7efa538beae1fe30e9c416ba8be4b1287e54146a8324"
+    }
+  ]
+}

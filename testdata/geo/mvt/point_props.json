@@ -1,0 +1,46 @@
+{
+  "pins": "property value mapping: strings (incl. empty and \"0\") stay strings, ints -> int_value, longs beyond Int -> sint_value, doubles -> double_value, booleans -> bool_value, arrays -> their JSON text as a string",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "one BOYLAT point at (100, 200); GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "point_props.bin",
+  "bytes": 241,
+  "decoded": {
+    "layers": [
+      {
+        "name": "BOYLAT",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "POINT",
+            "props": {
+              "str": "red can",
+              "empty": "",
+              "zero": "0",
+              "int": 7,
+              "negative": -42,
+              "long": 9007199254740993,
+              "double": 12.3,
+              "negativeDouble": -0.6,
+              "bool": true,
+              "list": "[\"2\",\"4\"]",
+              "LNAM": "0226F7A5C0ED2C4E"
+            },
+            "geometry": [
+              [
+                [
+                  100,
+                  200
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/v1/regions?name=NOPE",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 404,
+    "content_type": "text/plain; charset=UTF-8",
+    "headers": {},
+    "body": "no configured region named NOPE"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/4/2/5",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 86,
+      "sha256": "c4f048a41fac9eb4e813338c7b0a05c5f863e28b8a07c52e604b49641f3fc5e3",
+      "decoded": {
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2148,
+                  1499
+                ],
+                [
+                  2221,
+                  1499
+                ],
+                [
+                  2221,
+                  1552
+                ],
+                [
+                  2148,
+                  1552
+                ],
+                [
+                  2148,
+                  1499
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2175,
+                  1517
+                ],
+                [
+                  2194,
+                  1517
+                ],
+                [
+                  2194,
+                  1533
+                ],
+                [
+                  2175,
+                  1533
+                ],
+                [
+                  2175,
+                  1517
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2286,
+                  1611
+                ],
+                [
+                  2301,
+                  1611
+                ],
+                [
+                  2301,
+                  1588
+                ],
+                [
+                  2267,
+                  1588
+                ],
+                [
+                  2267,
+                  1596
+                ],
+                [
+                  2271,
+                  1596
+                ],
+                [
+                  2271,
+                  1611
+                ],
+                [
+                  2286,
+                  1611
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

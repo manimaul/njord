@@ -1,0 +1,161 @@
+{
+  "pins": "Sbdare.natsur: PresLib §14.6.3 seabed abbreviations, space separated, repeats dropped (lava/boulders/rock all R), null when nothing maps",
+  "decisions": [],
+  "generator": "SymbologyTablesFixtureTest.attributeHelpers",
+  "cases": [
+    {
+      "input": [
+        0
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        1
+      ],
+      "expected": "M"
+    },
+    {
+      "input": [
+        2
+      ],
+      "expected": "Cy"
+    },
+    {
+      "input": [
+        3
+      ],
+      "expected": "Si"
+    },
+    {
+      "input": [
+        4
+      ],
+      "expected": "S"
+    },
+    {
+      "input": [
+        5
+      ],
+      "expected": "St"
+    },
+    {
+      "input": [
+        6
+      ],
+      "expected": "G"
+    },
+    {
+      "input": [
+        7
+      ],
+      "expected": "P"
+    },
+    {
+      "input": [
+        8
+      ],
+      "expected": "Cb"
+    },
+    {
+      "input": [
+        9
+      ],
+      "expected": "R"
+    },
+    {
+      "input": [
+        10
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        11
+      ],
+      "expected": "R"
+    },
+    {
+      "input": [
+        12
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        13
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        14
+      ],
+      "expected": "Co"
+    },
+    {
+      "input": [
+        15
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        16
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        17
+      ],
+      "expected": "Sh"
+    },
+    {
+      "input": [
+        18
+      ],
+      "expected": "R"
+    },
+    {
+      "input": [
+        19
+      ],
+      "expected": null
+    },
+    {
+      "input": [
+        1,
+        4,
+        6
+      ],
+      "expected": "M S G"
+    },
+    {
+      "input": [
+        9,
+        11,
+        18
+      ],
+      "expected": "R"
+    },
+    {
+      "input": [
+        4,
+        4
+      ],
+      "expected": "S"
+    },
+    {
+      "input": [
+        10,
+        12
+      ],
+      "expected": null
+    },
+    {
+      "input": [],
+      "expected": null
+    }
+  ]
+}

@@ -1,0 +1,5455 @@
+{
+  "pins": "attributehelpers/* and Colour decode: S-57 enumerated ID -> enum name (null when unknown), list attributes (arrays of strings as GDAL emits them, integers accepted too) element-wise dropping unknown IDs; a string \"3\" decodes like 3, a real 3.0 does not",
+  "decisions": [
+    "SY-9"
+  ],
+  "generator": "SymbologyTablesFixtureTest.attributeHelpers",
+  "source": "0..max+1 of the catalogue's expected inputs per attribute",
+  "cases": [
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 1
+      },
+      "expected": "STAKE_POLE_PERCH_POST"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 2
+      },
+      "expected": "WHITY"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 3
+      },
+      "expected": "BEACON_TOWER"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 4
+      },
+      "expected": "LATTICE_BEACON"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 5
+      },
+      "expected": "PILE_BEACON"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 6
+      },
+      "expected": "CAIRN"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 7
+      },
+      "expected": "BUOYANT_BEACON"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 8
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": "3"
+      },
+      "expected": "BEACON_TOWER"
+    },
+    {
+      "input": {
+        "helper": "Bcnshp",
+        "attribute": "BCNSHP",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 1
+      },
+      "expected": "CONICAL"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 2
+      },
+      "expected": "CAN"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 3
+      },
+      "expected": "SPHERICAL"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 4
+      },
+      "expected": "PILLAR"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 5
+      },
+      "expected": "SPAR"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 6
+      },
+      "expected": "BARREL"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 7
+      },
+      "expected": "SUPERBUOY"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 8
+      },
+      "expected": "ICEBUOY"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 9
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": "3"
+      },
+      "expected": "SPHERICAL"
+    },
+    {
+      "input": {
+        "helper": "Boyshp",
+        "attribute": "BOYSHP",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "FIXED_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "OPENING_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "SWING_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "LIFTING_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "BASCULE_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "PONTOON_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "DRAW_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "TRANSPORTER_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "FOOTBRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "VIADUCT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "AQUEDUCT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "SUSPENSION_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "FIXED_BRIDGE",
+        "OPENING_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catbrg",
+        "attribute": "CATBRG",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "FIXED_BRIDGE",
+        "OPENING_BRIDGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 1
+      },
+      "expected": "NORTH_CARDINAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 2
+      },
+      "expected": "EAST_CARDINAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 3
+      },
+      "expected": "SOUTH_CARDINAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 4
+      },
+      "expected": "WEST_CARDINAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 5
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": "3"
+      },
+      "expected": "SOUTH_CARDINAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catcam",
+        "attribute": "CATCAM",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 1
+      },
+      "expected": "WEIR"
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 2
+      },
+      "expected": "DAM"
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 3
+      },
+      "expected": "FLOOD_BARRAGE"
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 4
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": "3"
+      },
+      "expected": "FLOOD_BARRAGE"
+    },
+    {
+      "input": {
+        "helper": "Catdam",
+        "attribute": "CATDAM",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 1
+      },
+      "expected": "FISHING_STAKE"
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 2
+      },
+      "expected": "FISH_TRAP"
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 3
+      },
+      "expected": "FISH_WEIR"
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 4
+      },
+      "expected": "TUNNY_NET"
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 5
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": "3"
+      },
+      "expected": "FISH_WEIR"
+    },
+    {
+      "input": {
+        "helper": "Catfif",
+        "attribute": "CATFIF",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 1
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 2
+      },
+      "expected": "FLOOD_BARRAGE_GATE"
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 3
+      },
+      "expected": "CAISSON"
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 4
+      },
+      "expected": "LOCK_GATE"
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 5
+      },
+      "expected": "DYKE_GATE"
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 6
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": "3"
+      },
+      "expected": "CAISSON"
+    },
+    {
+      "input": {
+        "helper": "Catgat",
+        "attribute": "CATGAT",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 1
+      },
+      "expected": "PORT_HAND_LATERAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 2
+      },
+      "expected": "STARBOARD_HAND_LATERAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 3
+      },
+      "expected": "PREFERRED_CHANNEL_TO_STARBOARD_LATERAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 4
+      },
+      "expected": "PREFERRED_CHANNEL_TO_PORT_LATERAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 5
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": "3"
+      },
+      "expected": "PREFERRED_CHANNEL_TO_STARBOARD_LATERAL_MARK"
+    },
+    {
+      "input": {
+        "helper": "Catlam",
+        "attribute": "CATLAM",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "CAIRN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "CEMETERY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "CHIMNEY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "DISH_AERIAL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "FLAGSTAFF_FLAGPOLE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "FLARE_STACK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "MAST"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "WINDSOCK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "MONUMENT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "COLUMN_PILLAR"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "MEMORIAL_PLAQUE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "OBELISK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "STATUE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "CROSS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "DOME"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": [
+        "RADAR_SCANNER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": [
+        "TOWER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "WINDMILL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "WINDMOTOR"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": [
+        "SPIRE_MINARET"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "21"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "CAIRN",
+        "CEMETERY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlmk",
+        "attribute": "CATLMK",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "CAIRN",
+        "CEMETERY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "FEN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "MARSH"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "MOOR_BOG"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "HEATHLAND"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "MOUNTAIN_RANGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "LOWLANDS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "CANYON_LANDS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "PADDY_FIELD"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "AGRICULTURAL_LAND"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "SAVANNA_GRASSLAND"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "PARKLAND"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "SWAMP"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "LANDSLIDE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "LAVA_FLOW"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "SALT_PAN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": [
+        "MORAINE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": [
+        "CRATER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "CAVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "ROCK_COLUMN_OR_PINNACLE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "FEN",
+        "MARSH"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catlnd",
+        "attribute": "CATLND",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "FEN",
+        "MARSH"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 1
+      },
+      "expected": "DOLPHIN"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 2
+      },
+      "expected": "DEVIATION_DOLPHIN"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 3
+      },
+      "expected": "BOLLARD"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 4
+      },
+      "expected": "TIE_UP_WALL"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 5
+      },
+      "expected": "POST_OR_PILE"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 6
+      },
+      "expected": "CHAIN_WIRE_CABLE"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 7
+      },
+      "expected": "MOORING_BUOY"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 8
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": "3"
+      },
+      "expected": "BOLLARD"
+    },
+    {
+      "input": {
+        "helper": "Catmor",
+        "attribute": "CATMOR",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 1
+      },
+      "expected": "SNAG_STUMP"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 2
+      },
+      "expected": "WELLHEAD"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 3
+      },
+      "expected": "DIFFUSER"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 4
+      },
+      "expected": "CRIB"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 5
+      },
+      "expected": "FISH_HAVEN"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 6
+      },
+      "expected": "FOUL_AREA"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 7
+      },
+      "expected": "FOUL_GROUND"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 8
+      },
+      "expected": "ICE_BOOM"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 9
+      },
+      "expected": "GROUND_TACKLE"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 10
+      },
+      "expected": "BOOM"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 11
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": "3"
+      },
+      "expected": "DIFFUSER"
+    },
+    {
+      "input": {
+        "helper": "Catobs",
+        "attribute": "CATOBS",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "OUTFALL_PIPE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "INTAKE_PIPE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "SEWER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "BUBBLER_SYSTEM"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "SUPPLY_PIPE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "OUTFALL_PIPE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpip",
+        "attribute": "CATPIP",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "OUTFALL_PIPE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 1
+      },
+      "expected": "QUARRY"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 2
+      },
+      "expected": "MINE"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 3
+      },
+      "expected": "STOCKPILE"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 4
+      },
+      "expected": "POWER_STATION_AREA"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 5
+      },
+      "expected": "REFINERY_AREA"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 6
+      },
+      "expected": "TIMBER_YARD"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 7
+      },
+      "expected": "FACTORY_AREA"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 8
+      },
+      "expected": "TANK_FARM"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 9
+      },
+      "expected": "WIND_FARM"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 10
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": "3"
+      },
+      "expected": "STOCKPILE"
+    },
+    {
+      "input": {
+        "helper": "Catpra",
+        "attribute": "CATPRA",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "OFFSHORE_SAFETY_ZONE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "NATURE_RESERVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "BIRD_SANCTUARY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "GAME_PRESERVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "SEAL_SANCTUARY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "DEGAUSSING_RANGE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "MILITARY_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "HISTORIC_WRECK_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "NAVIGATIONAL_AID_SAFETY_ZONE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "MINEFIELD"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "SWIMMING_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "WAITING_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": [
+        "RESEARCH_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "21"
+        ]
+      },
+      "expected": [
+        "DREDGING_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "22"
+        ]
+      },
+      "expected": [
+        "FISH_SANCTUARY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "23"
+        ]
+      },
+      "expected": [
+        "ECOLOGICAL_RESERVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "24"
+        ]
+      },
+      "expected": [
+        "NO_WAKE_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "25"
+        ]
+      },
+      "expected": [
+        "SWINGING_AREA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "26"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "OFFSHORE_SAFETY_ZONE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catrea",
+        "attribute": "CATREA",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "OFFSHORE_SAFETY_ZONE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 1
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 2
+      },
+      "expected": "GAT"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 3
+      },
+      "expected": "BANK"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 4
+      },
+      "expected": "DEEP"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 5
+      },
+      "expected": "BAY"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 6
+      },
+      "expected": "TRENCH"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 7
+      },
+      "expected": "BASIN"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 8
+      },
+      "expected": "MUD_FLATS"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 9
+      },
+      "expected": "REEF"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 10
+      },
+      "expected": "LEDGE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 11
+      },
+      "expected": "CANYON"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 12
+      },
+      "expected": "NARROWS"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 13
+      },
+      "expected": "SHOAL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 14
+      },
+      "expected": "KNOLL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 15
+      },
+      "expected": "RIDGE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 16
+      },
+      "expected": "SEAMOUNT"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 17
+      },
+      "expected": "PINNACLE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 18
+      },
+      "expected": "ABYSSAL_PLAIN"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 19
+      },
+      "expected": "PLATEAU"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 20
+      },
+      "expected": "SPUR"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 21
+      },
+      "expected": "SHELF"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 22
+      },
+      "expected": "TROUGH"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 23
+      },
+      "expected": "SADDLE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 24
+      },
+      "expected": "ABYSSAL_HILLS"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 25
+      },
+      "expected": "APRON"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 26
+      },
+      "expected": "ARCHIPELAGIC_APRON"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 27
+      },
+      "expected": "BORDERLAND"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 28
+      },
+      "expected": "CONTINENTAL_MARGIN"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 29
+      },
+      "expected": "CONTINENTAL_RISE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 30
+      },
+      "expected": "ESCARPMENT"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 31
+      },
+      "expected": "FAN"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 32
+      },
+      "expected": "FRACTURE_ZONE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 33
+      },
+      "expected": "GAP"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 34
+      },
+      "expected": "GUYOT"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 35
+      },
+      "expected": "HILL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 36
+      },
+      "expected": "HOLE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 37
+      },
+      "expected": "LEVEE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 38
+      },
+      "expected": "MEDIAN_VALLEY"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 39
+      },
+      "expected": "MOAT"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 40
+      },
+      "expected": "MOUNTAINS"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 41
+      },
+      "expected": "PEAK"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 42
+      },
+      "expected": "PROVINCE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 43
+      },
+      "expected": "RISE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 44
+      },
+      "expected": "SEACHANNEL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 45
+      },
+      "expected": "SEAMOUNT_CHAIN"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 46
+      },
+      "expected": "SHELF_EDGE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 47
+      },
+      "expected": "SILL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 48
+      },
+      "expected": "SLOPE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 49
+      },
+      "expected": "TERRACE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 50
+      },
+      "expected": "VALLEY"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 51
+      },
+      "expected": "CANAL"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 52
+      },
+      "expected": "LAKE"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 53
+      },
+      "expected": "RIVER"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 54
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": "3"
+      },
+      "expected": "BANK"
+    },
+    {
+      "input": {
+        "helper": "Catsea",
+        "attribute": "CATSEA",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 1
+      },
+      "expected": "SILO_IN_GENERAL"
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 2
+      },
+      "expected": "TANK_IN_GENERAL"
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 3
+      },
+      "expected": "GRAIN_ELEVATOR"
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 4
+      },
+      "expected": "WATER_TOWER"
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 5
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": "3"
+      },
+      "expected": "GRAIN_ELEVATOR"
+    },
+    {
+      "input": {
+        "helper": "Catsil",
+        "attribute": "CATSIL",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "FIRING_DANGER_AREA_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "TARGET_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "MARKER_SHIP_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "DEGAUSSING_RANGE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "BARGE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "CABLE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "SPOIL_GROUND_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "OUTFALL_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "ODAS_OCEAN_DATA_ACQUISITION_SYSTEM"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "RECORDING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "SEAPLANE_ANCHORAGE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "RECREATION_ZONE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "PRIVATE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "MOORING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "LANBY_LARGE_AUTOMATIC_NAVIGATIONAL_BUOY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": [
+        "LEADING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": [
+        "MEASURED_DISTANCE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "NOTICE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "TSS_MARK_TRAFFIC_SEPARATION_SCHEME"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": [
+        "ANCHORING_PROHIBITED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "21"
+        ]
+      },
+      "expected": [
+        "BERTHING_PROHIBITED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "22"
+        ]
+      },
+      "expected": [
+        "OVERTAKING_PROHIBITED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "23"
+        ]
+      },
+      "expected": [
+        "TWO_WAY_TRAFFIC_PROHIBITED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "24"
+        ]
+      },
+      "expected": [
+        "REDUCED_WAKE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "25"
+        ]
+      },
+      "expected": [
+        "SPEED_LIMIT_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "26"
+        ]
+      },
+      "expected": [
+        "STOP_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "27"
+        ]
+      },
+      "expected": [
+        "GENERAL_WARNING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "28"
+        ]
+      },
+      "expected": [
+        "SOUND_SHIPS_SIREN_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "29"
+        ]
+      },
+      "expected": [
+        "RESTRICTED_VERTICAL_CLEARENCE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "30"
+        ]
+      },
+      "expected": [
+        "MAXIMUM_VESSELS_DRAUGHT_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "31"
+        ]
+      },
+      "expected": [
+        "RESTRICTED_HORIZONTAL_CLEARANCE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "32"
+        ]
+      },
+      "expected": [
+        "STRONG_CURRENT_WARNING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "33"
+        ]
+      },
+      "expected": [
+        "BERTHING_PERMITTED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "34"
+        ]
+      },
+      "expected": [
+        "OVERHEAD_POWER_CABLE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "35"
+        ]
+      },
+      "expected": [
+        "CHANNEL_EDGE_GRADIENT_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "36"
+        ]
+      },
+      "expected": [
+        "TELEPHONE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "37"
+        ]
+      },
+      "expected": [
+        "FERRY_CROSSING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "38"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "39"
+        ]
+      },
+      "expected": [
+        "PIPLINE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "40"
+        ]
+      },
+      "expected": [
+        "ANCHORAGE_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "41"
+        ]
+      },
+      "expected": [
+        "CLEARING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "42"
+        ]
+      },
+      "expected": [
+        "CONTROL_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "43"
+        ]
+      },
+      "expected": [
+        "DIVING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "44"
+        ]
+      },
+      "expected": [
+        "REFUGE_BEACON"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "45"
+        ]
+      },
+      "expected": [
+        "FOUL_GROUND_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "46"
+        ]
+      },
+      "expected": [
+        "YACHTING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "47"
+        ]
+      },
+      "expected": [
+        "HELIPORT_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "48"
+        ]
+      },
+      "expected": [
+        "GPS_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "49"
+        ]
+      },
+      "expected": [
+        "SEAPLANE_LANDING_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "50"
+        ]
+      },
+      "expected": [
+        "ENTRY_PROHIBITED_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "51"
+        ]
+      },
+      "expected": [
+        "WORK_IN_PROGRESS_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "52"
+        ]
+      },
+      "expected": [
+        "MARK_WITH_UNKNOWN_PURPOSE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "53"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "FIRING_DANGER_AREA_MARK",
+        "TARGET_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Catspm",
+        "attribute": "CATSPM",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "FIRING_DANGER_AREA_MARK",
+        "TARGET_MARK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": 1
+      },
+      "expected": "BASED_ON_A_SYSTEM_OF_MARKS"
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": 2
+      },
+      "expected": "NOT_BASED_ON_A_SYSTEM_OF_MARKS"
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": 3
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": "3"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Cattrk",
+        "attribute": "CATTRK",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 1
+      },
+      "expected": "NON_DANGEROUS_WRECK"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 2
+      },
+      "expected": "DANGEROUS_WRECK"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 3
+      },
+      "expected": "DISTRIBUTED_REMAINS_OF_WRECK"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 4
+      },
+      "expected": "WRECK_SHOWING_MAST_MASTS"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 5
+      },
+      "expected": "WRECK_SHOWING_ANY_PORTION_OF_HULL_OR_SUPERSTRUCTURE"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 6
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": "3"
+      },
+      "expected": "DISTRIBUTED_REMAINS_OF_WRECK"
+    },
+    {
+      "input": {
+        "helper": "Catwrk",
+        "attribute": "CATWRK",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 1
+      },
+      "expected": "RADAR_CONSPICUOUS"
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 2
+      },
+      "expected": "NOT_RADAR_CONSPICUOUS"
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 3
+      },
+      "expected": "RADAR_CONSPICUOUS_HAS_RADAR_REFLECTOR"
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 4
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": "3"
+      },
+      "expected": "RADAR_CONSPICUOUS_HAS_RADAR_REFLECTOR"
+    },
+    {
+      "input": {
+        "helper": "Conrad",
+        "attribute": "CONRAD",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": 1
+      },
+      "expected": "VISUAL_CONSPICUOUS"
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": 2
+      },
+      "expected": "NOT_VISUAL_CONSPICUOUS"
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": 3
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": "3"
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Convis",
+        "attribute": "CONVIS",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "HARBOUR_MASTERS_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "CUSTOM_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "HEALTH_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "HOSPITAL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "POST_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "HOTEL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "RAILWAY_STATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "POLICE_STATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "WATER_POLICE_STATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "PILOT_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "PILOT_LOOKOUT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "BANK_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "HEADQUARTERS_FOR_DISTRICT_CONTROL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "TRANSIT_SHED_WAREHOUSE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": [
+        "FACTORY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": [
+        "POWER_STATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "ADMINISTRATIVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "EDUCATIONAL_FACILITY"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": [
+        "CHURCH"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "21"
+        ]
+      },
+      "expected": [
+        "CHAPEL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "22"
+        ]
+      },
+      "expected": [
+        "TEMPLE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "23"
+        ]
+      },
+      "expected": [
+        "PAGODA"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "24"
+        ]
+      },
+      "expected": [
+        "SHINTO_SHRINE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "25"
+        ]
+      },
+      "expected": [
+        "BUDDHIST_TEMPLE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "26"
+        ]
+      },
+      "expected": [
+        "MOSQUE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "27"
+        ]
+      },
+      "expected": [
+        "MARABOUT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "28"
+        ]
+      },
+      "expected": [
+        "LOOKOUT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "29"
+        ]
+      },
+      "expected": [
+        "COMMUNICATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "30"
+        ]
+      },
+      "expected": [
+        "TELEVISION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "31"
+        ]
+      },
+      "expected": [
+        "RADIO"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "32"
+        ]
+      },
+      "expected": [
+        "RADAR"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "33"
+        ]
+      },
+      "expected": [
+        "LIGHT_SUPPORT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "34"
+        ]
+      },
+      "expected": [
+        "MICROWAVE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "35"
+        ]
+      },
+      "expected": [
+        "COOLING"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "36"
+        ]
+      },
+      "expected": [
+        "OBSERVATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "37"
+        ]
+      },
+      "expected": [
+        "TIMEBALL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "38"
+        ]
+      },
+      "expected": [
+        "CLOCK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "39"
+        ]
+      },
+      "expected": [
+        "CONTROL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "40"
+        ]
+      },
+      "expected": [
+        "AIRSHIP_MOORING"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "41"
+        ]
+      },
+      "expected": [
+        "STADIUM"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "42"
+        ]
+      },
+      "expected": [
+        "BUS_STATION"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "43"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "HARBOUR_MASTERS_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Functn",
+        "attribute": "FUNCTN",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "HARBOUR_MASTERS_OFFICE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "OIL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "GAS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "WATER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "STONE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "COAL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "ORE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "CHEMICALS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "DRINKING_WATER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "MILK"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "BAUXITE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "COKE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "IRON_INGOTS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "SALT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "SAND"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "TIMBER"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": [
+        "SAWDUST_WOOD_CHIPS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "17"
+        ]
+      },
+      "expected": [
+        "SCRAP_METAL"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "18"
+        ]
+      },
+      "expected": [
+        "LIQUIFIED_NATURAL_GAS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "19"
+        ]
+      },
+      "expected": [
+        "LIQUIFIED_PETROLEUM_GAS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "20"
+        ]
+      },
+      "expected": [
+        "WINE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "21"
+        ]
+      },
+      "expected": [
+        "CEMENT"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "22"
+        ]
+      },
+      "expected": [
+        "GRAIN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "23"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "OIL",
+        "GAS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Prodct",
+        "attribute": "PRODCT",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "OIL",
+        "GAS"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "DEPTH_KNOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "DEPTH_UNKNOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "DOUBTFUL_SOUNDING"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "UNRELIABLE_SOUNDING"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "NO_BOTTOM_FOUND_AT_VALUE_SHOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "LEAST_DEPTH_KNOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "LEAST_DEPTH_UNKNOWN_SAFE_CLEARANCE_AT_VALUE_SHOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "VALUE_REPORTED_NOT_SURVEYED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "VALUE_REPORTED_NOT_CONFIRMED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "MAINTAINED_DEPTH"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "NOT_REGULARLY_MAINTAINED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "DEPTH_KNOWN",
+        "DEPTH_UNKNOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Quasou",
+        "attribute": "QUASOU",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "DEPTH_KNOWN",
+        "DEPTH_UNKNOWN"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "ANCHORING_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "ANCHORING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "FISHING_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "FISHING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "TRAWLING_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "TRAWLING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "ENTRY_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "ENTRY_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "DREDGING_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "DREDGING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "DIVING_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "DIVING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "NO_WAKE"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": [
+        "AREA_TO_BE_AVOIDED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "15"
+        ]
+      },
+      "expected": [
+        "CONSTRUCTION_PROHIBITED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "16"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "ANCHORING_PROHIBITED",
+        "ANCHORING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Restrn",
+        "attribute": "RESTRN",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "ANCHORING_PROHIBITED",
+        "ANCHORING_RESTRICTED"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 1
+      },
+      "expected": "CONE_POINT_UP"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 2
+      },
+      "expected": "CONE_POINT_DOWN"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 3
+      },
+      "expected": "SPHERE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 4
+      },
+      "expected": "TWO_SPHERE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 5
+      },
+      "expected": "CYLINDER_CAN"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 6
+      },
+      "expected": "BOARD"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 7
+      },
+      "expected": "X_SHAPE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 8
+      },
+      "expected": "UPRIGHT_CROSS"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 9
+      },
+      "expected": "CUBE_POINT_UP"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 10
+      },
+      "expected": "TWO_CONES_POINT_TO_POINT"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 11
+      },
+      "expected": "TWO_CONES_BASE_TO_BASE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 12
+      },
+      "expected": "RHOMBUS_DIAMOND"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 13
+      },
+      "expected": "TWO_CONES_POINTS_UPWARD"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 14
+      },
+      "expected": "TWO_CONES_POINTS_DOWNWARD"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 15
+      },
+      "expected": "BESOM_POINT_UP_BROOM_OR_PERCH"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 16
+      },
+      "expected": "BESOM_POINT_DOWN_BROOM_OR_PERCH"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 17
+      },
+      "expected": "FLAG"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 18
+      },
+      "expected": "SPHERE_OVER_RHOMBUS"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 19
+      },
+      "expected": "SQUARE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 20
+      },
+      "expected": "RECTANGLE_HORIZONTAL"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 21
+      },
+      "expected": "RECTANGLE_VERTICAL"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 22
+      },
+      "expected": "TRAPEZIUM_UP"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 23
+      },
+      "expected": "TRAPEZIUM_DOWN"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 24
+      },
+      "expected": "TRIANGLE_POINT_UP"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 25
+      },
+      "expected": "TRIANGLE_POINT_DOWN"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 26
+      },
+      "expected": "CIRCLE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 27
+      },
+      "expected": "TWO_UPRIGHT_CROSSES_ONE_OVER_THE_OTHER"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 28
+      },
+      "expected": "T_SHAPE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 29
+      },
+      "expected": "TRIANGLE_POINTING_UP_OVER_A_CIRCLE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 30
+      },
+      "expected": "UPRIGHT_CROSS_OVER_A_CIRCLE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 31
+      },
+      "expected": "RHOMBUS_OVER_A_CIRCLE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 32
+      },
+      "expected": "CIRCLE_OVER_A_TRIANGLE_POINTING_UP"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 33
+      },
+      "expected": "OTHER_SHAPE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 34
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": "3"
+      },
+      "expected": "SPHERE"
+    },
+    {
+      "input": {
+        "helper": "Topshp",
+        "attribute": "TOPSHP",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 1
+      },
+      "expected": "INBOUND"
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 2
+      },
+      "expected": "OUTBOUND"
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 3
+      },
+      "expected": "ONE_WAY"
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 4
+      },
+      "expected": "TWO_WAY"
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 5
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": "3"
+      },
+      "expected": "ONE_WAY"
+    },
+    {
+      "input": {
+        "helper": "Trafic",
+        "attribute": "TRAFIC",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 1
+      },
+      "expected": "PARTLY_SUBMERGED_AT_HIGH_WATER"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 2
+      },
+      "expected": "ALWAYS_DRY"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 3
+      },
+      "expected": "ALWAYS_UNDER_WATER_SUBMERGED"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 4
+      },
+      "expected": "COVERS_AND_UNCOVERS"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 5
+      },
+      "expected": "AWASH"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 6
+      },
+      "expected": "SUBJECT_TO_INUNDATION_OR_FLOODING"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 7
+      },
+      "expected": "FLOATING"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 8
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": "3"
+      },
+      "expected": "ALWAYS_UNDER_WATER_SUBMERGED"
+    },
+    {
+      "input": {
+        "helper": "Watlev",
+        "attribute": "WATLEV",
+        "value": 3.0
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "0"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "1"
+        ]
+      },
+      "expected": [
+        "White"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "2"
+        ]
+      },
+      "expected": [
+        "Black"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "3"
+        ]
+      },
+      "expected": [
+        "Red"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "4"
+        ]
+      },
+      "expected": [
+        "Green"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "5"
+        ]
+      },
+      "expected": [
+        "Blue"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "6"
+        ]
+      },
+      "expected": [
+        "Yellow"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "7"
+        ]
+      },
+      "expected": [
+        "Grey"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "8"
+        ]
+      },
+      "expected": [
+        "Brown"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "9"
+        ]
+      },
+      "expected": [
+        "Amber"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "10"
+        ]
+      },
+      "expected": [
+        "Violet"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "11"
+        ]
+      },
+      "expected": [
+        "Orange"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "12"
+        ]
+      },
+      "expected": [
+        "Magenta"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "13"
+        ]
+      },
+      "expected": [
+        "Pink"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "14"
+        ]
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": []
+      },
+      "expected": []
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          "1",
+          "2",
+          "999"
+        ]
+      },
+      "expected": [
+        "White",
+        "Black"
+      ]
+    },
+    {
+      "input": {
+        "helper": "Colour",
+        "attribute": "COLOUR",
+        "value": [
+          1,
+          2
+        ]
+      },
+      "expected": [
+        "White",
+        "Black"
+      ]
+    }
+  ]
+}

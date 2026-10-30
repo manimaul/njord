@@ -1,0 +1,32 @@
+{
+  "pins": "GDAL S57 driver output for DRYDOC under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 3980,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 47,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307198271,
+          "FIDS": 1,
+          "LNAM": "02264DEA433F0001",
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "POLYGON ((-122.4020201 47.2693442,-122.4017761 47.2691878,-122.403174 47.2681515,-122.4032294 47.2681761,-122.4033548 47.2681429,-122.4034427 47.2680919,-122.403554 47.2680789,-122.4037752 47.2682042,-122.403637 47.2683347,-122.4036148 47.2683712,-122.4036542 47.2684065,-122.4022242 47.269475,-122.4020201 47.2693442))"
+      }
+    }
+  ]
+}

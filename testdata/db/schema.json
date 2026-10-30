@@ -1,0 +1,229 @@
+{
+  "pins": "the PostGIS schema DbMigrator.initializeSchema provisions: columns (udt, nullability, default), pg_indexes definitions and constraints per table, each sorted; the migration runner of the port must produce exactly this and stamp meta_data.version",
+  "decisions": [
+    "DB-1"
+  ],
+  "generator": "DbMigrationsTest",
+  "source": "DbMigrations.kt initializeSchema, schema version 3",
+  "cases": [
+    {
+      "input": "meta_data",
+      "expected": {
+        "columns": [
+          {
+            "name": "key",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "value",
+            "type": "varchar",
+            "nullable": false
+          }
+        ],
+        "indexes": [
+          "CREATE UNIQUE INDEX meta_data_pkey ON public.meta_data USING btree (key)"
+        ],
+        "constraints": [
+          "meta_data_pkey: PRIMARY KEY (key)"
+        ]
+      }
+    },
+    {
+      "input": "charts",
+      "expected": {
+        "columns": [
+          {
+            "name": "chart_txt",
+            "type": "jsonb",
+            "nullable": false
+          },
+          {
+            "name": "covr",
+            "type": "geometry",
+            "nullable": false
+          },
+          {
+            "name": "dsid_props",
+            "type": "jsonb",
+            "nullable": false
+          },
+          {
+            "name": "file_name",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "ingested_at",
+            "type": "timestamptz",
+            "nullable": false,
+            "default": "now()"
+          },
+          {
+            "name": "issued",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "scale",
+            "type": "int4",
+            "nullable": false
+          },
+          {
+            "name": "updated",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "zoom",
+            "type": "int4",
+            "nullable": false
+          }
+        ],
+        "indexes": [
+          "CREATE INDEX charts_gist ON public.charts USING gist (covr)",
+          "CREATE UNIQUE INDEX charts_pkey ON public.charts USING btree (name)"
+        ],
+        "constraints": [
+          "charts_pkey: PRIMARY KEY (name)"
+        ]
+      }
+    },
+    {
+      "input": "features",
+      "expected": {
+        "columns": [
+          {
+            "name": "chart_name",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "geom",
+            "type": "geometry",
+            "nullable": false
+          },
+          {
+            "name": "id",
+            "type": "int8",
+            "nullable": false,
+            "default": "nextval('features_id_seq'::regclass)"
+          },
+          {
+            "name": "layer",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "lnam_refs",
+            "type": "_varchar",
+            "nullable": true
+          },
+          {
+            "name": "props",
+            "type": "jsonb",
+            "nullable": false
+          },
+          {
+            "name": "z_max",
+            "type": "int4",
+            "nullable": false,
+            "default": "22"
+          },
+          {
+            "name": "z_min",
+            "type": "int4",
+            "nullable": false,
+            "default": "0"
+          }
+        ],
+        "indexes": [
+          "CREATE INDEX features_chart_zoom_idx ON public.features USING btree (chart_name, z_min, z_max)",
+          "CREATE INDEX features_gist ON public.features USING gist (geom)",
+          "CREATE INDEX features_layer_id_idx ON public.features USING btree (layer, id)",
+          "CREATE INDEX features_lnam_expr_idx ON public.features USING btree (((props ->> 'LNAM'::text)))",
+          "CREATE INDEX features_lnam_idx ON public.features USING gin (lnam_refs)",
+          "CREATE UNIQUE INDEX features_pkey ON public.features USING btree (id)"
+        ],
+        "constraints": [
+          "features_chart_name_fkey: FOREIGN KEY (chart_name) REFERENCES charts(name)",
+          "features_pkey: PRIMARY KEY (id)"
+        ]
+      }
+    },
+    {
+      "input": "base_features",
+      "expected": {
+        "columns": [
+          {
+            "name": "geom",
+            "type": "geometry",
+            "nullable": false
+          },
+          {
+            "name": "id",
+            "type": "int8",
+            "nullable": false,
+            "default": "nextval('base_features_id_seq'::regclass)"
+          },
+          {
+            "name": "layer",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "props",
+            "type": "jsonb",
+            "nullable": false
+          },
+          {
+            "name": "scale",
+            "type": "int4",
+            "nullable": false
+          }
+        ],
+        "indexes": [
+          "CREATE INDEX base_features_gist ON public.base_features USING gist (geom)",
+          "CREATE INDEX base_features_scale_idx ON public.base_features USING btree (scale)",
+          "CREATE UNIQUE INDEX base_features_pkey ON public.base_features USING btree (id)"
+        ],
+        "constraints": [
+          "base_features_pkey: PRIMARY KEY (id)"
+        ]
+      }
+    },
+    {
+      "input": "region_export_state",
+      "expected": {
+        "columns": [
+          {
+            "name": "exported_at",
+            "type": "timestamptz",
+            "nullable": false
+          },
+          {
+            "name": "region_name",
+            "type": "varchar",
+            "nullable": false
+          }
+        ],
+        "indexes": [
+          "CREATE UNIQUE INDEX region_export_state_pkey ON public.region_export_state USING btree (region_name)"
+        ],
+        "constraints": [
+          "region_export_state_pkey: PRIMARY KEY (region_name)"
+        ]
+      }
+    }
+  ]
+}

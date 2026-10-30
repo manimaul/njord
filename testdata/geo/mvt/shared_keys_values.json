@@ -1,0 +1,86 @@
+{
+  "pins": "a layer's key and value tables are deduplicated in first-seen order and each feature's tags index into them; equal values of different JSON types stay distinct entries",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "four BOYLAT points sharing CATLAM/COLOUR values, one with the string \"1\" vs the int 1; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "shared_keys_values.bin",
+  "bytes": 146,
+  "decoded": {
+    "layers": [
+      {
+        "name": "BOYLAT",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "POINT",
+            "props": {
+              "CATLAM": 1,
+              "COLOUR": "3"
+            },
+            "geometry": [
+              [
+                [
+                  100,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 3,
+            "type": "POINT",
+            "props": {
+              "CATLAM": 2,
+              "COLOUR": "4"
+            },
+            "geometry": [
+              [
+                [
+                  200,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 4,
+            "type": "POINT",
+            "props": {
+              "CATLAM": 1,
+              "COLOUR": "3",
+              "OBJNAM": "A"
+            },
+            "geometry": [
+              [
+                [
+                  300,
+                  100
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 5,
+            "type": "POINT",
+            "props": {
+              "CATLAM": "1",
+              "COLOUR": "4"
+            },
+            "geometry": [
+              [
+                [
+                  400,
+                  100
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

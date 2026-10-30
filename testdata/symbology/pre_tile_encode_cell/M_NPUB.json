@@ -1,0 +1,44 @@
+{
+  "pins": "preTileEncode over every M_NPUB feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2781,
+          "PRIM": 3,
+          "GRUP": 2,
+          "OBJL": 305,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3065393,
+          "FIDS": 4173,
+          "LNAM": "0226002EC631104D",
+          "TXTDSC": "US5WA22A.TXT",
+          "SORDAT": "20030107",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2781,
+        "PRIM": 3,
+        "GRUP": 2,
+        "OBJL": 305,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3065393,
+        "FIDS": 4173,
+        "LNAM": "0226002EC631104D",
+        "TXTDSC": "US5WA22A.TXT",
+        "SORDAT": "20030107",
+        "SORIND": "US,US,graph,Chart 18453"
+      }
+    }
+  ]
+}

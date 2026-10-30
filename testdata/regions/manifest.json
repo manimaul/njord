@@ -1,0 +1,197 @@
+{
+  "pins": "RegionManifestEntry per configured region: nulls until rendered; newest archive by stem with size, sha256 from the sidecar when it holds 64 hex chars (not verified against the file) else recomputed and the sidecar rewritten; createdAt is the stem in TZ=America/Los_Angeles; coverageGeo and labelPoint from the coverage WKT",
+  "decisions": [
+    "RE-2"
+  ],
+  "generator": "RegionExportTest.P-RE-5",
+  "cases": [
+    {
+      "input": {
+        "scenario": "no archives"
+      },
+      "expected": {
+        "name": "MANIFEST_TEST",
+        "description": "manifest fixture",
+        "coverage": "POLYGON ((-123 47, -122 47, -122 48, -123 48, -123 47))",
+        "coverageGeo": {
+          "coordinates": [
+            [
+              [
+                -123.0,
+                47.0
+              ],
+              [
+                -122.0,
+                47.0
+              ],
+              [
+                -122.0,
+                48.0
+              ],
+              [
+                -123.0,
+                48.0
+              ],
+              [
+                -123.0,
+                47.0
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "labelPoint": {
+          "coordinates": [
+            -122.5,
+            47.5
+          ],
+          "type": "Point"
+        }
+      }
+    },
+    {
+      "input": {
+        "scenario": "two archives, newest has a sidecar"
+      },
+      "expected": {
+        "name": "MANIFEST_TEST",
+        "description": "manifest fixture",
+        "coverage": "POLYGON ((-123 47, -122 47, -122 48, -123 48, -123 47))",
+        "coverageGeo": {
+          "coordinates": [
+            [
+              [
+                -123.0,
+                47.0
+              ],
+              [
+                -122.0,
+                47.0
+              ],
+              [
+                -122.0,
+                48.0
+              ],
+              [
+                -123.0,
+                48.0
+              ],
+              [
+                -123.0,
+                47.0
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "labelPoint": {
+          "coordinates": [
+            -122.5,
+            47.5
+          ],
+          "type": "Point"
+        },
+        "archive": "MANIFEST_TEST_2026-02-03T04-05-06.mbtiles",
+        "archiveSize": 20,
+        "archiveSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "createdAt": "2026-02-03T12:05:06Z"
+      }
+    },
+    {
+      "input": {
+        "scenario": "archive without sidecar"
+      },
+      "expected": {
+        "name": "MANIFEST_TEST",
+        "description": "manifest fixture",
+        "coverage": "POLYGON ((-123 47, -122 47, -122 48, -123 48, -123 47))",
+        "coverageGeo": {
+          "coordinates": [
+            [
+              [
+                -123.0,
+                47.0
+              ],
+              [
+                -122.0,
+                47.0
+              ],
+              [
+                -122.0,
+                48.0
+              ],
+              [
+                -123.0,
+                48.0
+              ],
+              [
+                -123.0,
+                47.0
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "labelPoint": {
+          "coordinates": [
+            -122.5,
+            47.5
+          ],
+          "type": "Point"
+        },
+        "archive": "MANIFEST_TEST_2026-02-03T04-05-06.mbtiles",
+        "archiveSize": 20,
+        "archiveSha256": "cc2941c518faab85d5f6a591ac98031b122ca6c85690408ec299a4428eefd5f4",
+        "createdAt": "2026-02-03T12:05:06Z"
+      }
+    },
+    {
+      "input": {
+        "scenario": "archive with a corrupt sidecar"
+      },
+      "expected": {
+        "name": "MANIFEST_TEST",
+        "description": "manifest fixture",
+        "coverage": "POLYGON ((-123 47, -122 47, -122 48, -123 48, -123 47))",
+        "coverageGeo": {
+          "coordinates": [
+            [
+              [
+                -123.0,
+                47.0
+              ],
+              [
+                -122.0,
+                47.0
+              ],
+              [
+                -122.0,
+                48.0
+              ],
+              [
+                -123.0,
+                48.0
+              ],
+              [
+                -123.0,
+                47.0
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "labelPoint": {
+          "coordinates": [
+            -122.5,
+            47.5
+          ],
+          "type": "Point"
+        },
+        "archive": "MANIFEST_TEST_2026-02-03T04-05-06.mbtiles",
+        "archiveSize": 20,
+        "archiveSha256": "cc2941c518faab85d5f6a591ac98031b122ca6c85690408ec299a4428eefd5f4",
+        "createdAt": "2026-02-03T12:05:06Z"
+      }
+    }
+  ]
+}

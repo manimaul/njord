@@ -1,0 +1,168 @@
+{
+  "pins": "GDAL S57 driver output for CBLOHD under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/US5WA22M/US5WA22M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 1600,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026508,
+          "FIDS": 50,
+          "LNAM": "022600D6070C0032",
+          "CATCBL": 1,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.4114945 47.2510077,-122.4116332 47.250814,-122.4118114 47.2505288,-122.4118124 47.2505272,-122.4123191 47.2497051,-122.4124232 47.2495407,-122.4125551 47.2493389,-122.4132167 47.2483268,-122.413283 47.2482253,-122.413303 47.2481867)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 1601,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 138515078,
+          "FIDS": 12345,
+          "LNAM": "0226084192863039",
+          "CATCBL": 1,
+          "VERCLR": 52.7,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.3934529 47.278139,-122.3932599 47.2782054,-122.3931462 47.2782567,-122.3917497 47.2792199,-122.3916403 47.2793202)"
+      }
+    },
+    {
+      "input": 2,
+      "expected": {
+        "props": {
+          "RCID": 1602,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026447,
+          "FIDS": 50,
+          "LNAM": "022600D606CF0032",
+          "CATCBL": 1,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.4039229 47.2433247,-122.4045097 47.243318,-122.4060974 47.2432997,-122.406622 47.2432937)"
+      }
+    },
+    {
+      "input": 3,
+      "expected": {
+        "props": {
+          "RCID": 1603,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 14026446,
+          "FIDS": 50,
+          "LNAM": "022600D606CE0032",
+          "CATCBL": 1,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.3962143 47.2383755,-122.3949195 47.2389294)"
+      }
+    },
+    {
+      "input": 4,
+      "expected": {
+        "props": {
+          "RCID": 1604,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27766529,
+          "FIDS": 50,
+          "LNAM": "022601A7AF010032",
+          "CATCBL": 1,
+          "VERCLR": 52.7,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.3934529 47.278139,-122.393528 47.2781081,-122.3935581 47.278072,-122.3938501 47.2777223,-122.394275 47.2772134,-122.3943037 47.277179,-122.3944344 47.2770225,-122.3945283 47.2769099,-122.3945914 47.2768344,-122.3945755 47.2767842,-122.3944867 47.2767861,-122.394414 47.2768755,-122.3943229 47.2769875,-122.3943155 47.2769967,-122.3941998 47.2771388,-122.3941679 47.2771781,-122.3937468 47.2776959,-122.3934633 47.2780444,-122.3934529 47.278139)"
+      }
+    },
+    {
+      "input": 5,
+      "expected": {
+        "props": {
+          "RCID": 1605,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 105811,
+          "FIDS": 1,
+          "LNAM": "022600019D530001",
+          "CATCBL": 1,
+          "MINZ": 12,
+          "SCAMIN": 44999,
+          "SORDAT": "201303",
+          "SORIND": "US,US,graph,Chart 18453"
+        },
+        "wkt": "LINESTRING (-122.4063187 47.2434549,-122.4047185 47.2434616,-122.4037323 47.2434657)"
+      }
+    },
+    {
+      "input": 6,
+      "expected": {
+        "props": {
+          "RCID": 1606,
+          "PRIM": 2,
+          "GRUP": 2,
+          "OBJL": 21,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307951548,
+          "FIDS": 1,
+          "LNAM": "02264DF5C1BC0001",
+          "CATCBL": 1,
+          "VERCLR": 14.0,
+          "MINZ": 13,
+          "SCAMIN": 17999,
+          "SORDAT": "20070704",
+          "SORIND": "US,US,graph,GC-10683"
+        },
+        "wkt": "LINESTRING (-122.4176719 47.2605068,-122.4178703 47.2603941,-122.4188236 47.2598528,-122.4194492 47.2594975,-122.4196233 47.2593986)"
+      }
+    }
+  ]
+}

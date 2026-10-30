@@ -1,0 +1,466 @@
+{
+  "pins": "preTileEncode of Soundg (layer key SOUNDG): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "18 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 10 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {}
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": -1.5,
+        "METERS_W": -1,
+        "METERS_T": -5,
+        "FEET": -5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 0.0,
+        "METERS_W": 0,
+        "METERS_T": 0,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 0.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 0.5,
+        "METERS_W": 0,
+        "METERS_T": 5,
+        "FEET": 1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 2.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 2.9,
+        "METERS_W": 2,
+        "METERS_T": 9,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 3.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 3.0,
+        "METERS_W": 3,
+        "METERS_T": 0,
+        "FEET": 9,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 3
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 3.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 3.1,
+        "METERS_W": 3,
+        "METERS_T": 1,
+        "FEET": 10,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 5.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 5.9,
+        "METERS_W": 5,
+        "METERS_T": 9,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 6.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 6.0,
+        "METERS_W": 6,
+        "METERS_T": 0,
+        "FEET": 19,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 6.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 6.1,
+        "METERS_W": 6,
+        "METERS_T": 1,
+        "FEET": 20,
+        "FATHOMS": 3,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 8.9
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 8.9,
+        "METERS_W": 8,
+        "METERS_T": 9,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 9.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 9.0,
+        "METERS_W": 9,
+        "METERS_T": 0,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 9.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 9.1,
+        "METERS_W": 9,
+        "METERS_T": 1,
+        "FEET": 29,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 10.0,
+        "METERS_W": 10,
+        "METERS_T": 0,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 15.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 15.0,
+        "METERS_W": 15,
+        "METERS_T": 0,
+        "FEET": 49,
+        "FATHOMS": 8,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 100.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 100.0,
+        "METERS_W": 100,
+        "METERS_T": 0,
+        "FEET": 328,
+        "FATHOMS": 54,
+        "FATHOMS_FT": 4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 0.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 0.0,
+        "METERS_W": 0,
+        "METERS_T": 0,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 0.1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 0.1,
+        "METERS_W": 0,
+        "METERS_T": 1,
+        "FEET": 0,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 2.3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 2.3,
+        "METERS_W": 2,
+        "METERS_T": 3,
+        "FEET": 7,
+        "FATHOMS": 1,
+        "FATHOMS_FT": 1
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 7.6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 7.6,
+        "METERS_W": 7,
+        "METERS_T": 6,
+        "FEET": 25,
+        "FATHOMS": 4,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 9.95
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 9.95,
+        "METERS_W": 9,
+        "METERS_T": 9,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 10.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 10.0,
+        "METERS_W": 10,
+        "METERS_T": 0,
+        "FEET": 32,
+        "FATHOMS": 5,
+        "FATHOMS_FT": 2
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": 31.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": 31.0,
+        "METERS_W": 31,
+        "METERS_T": 0,
+        "FEET": 101,
+        "FATHOMS": 16,
+        "FATHOMS_FT": 5
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": -0.3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": -0.3,
+        "METERS_W": 0,
+        "METERS_T": -3,
+        "FEET": -1,
+        "FATHOMS": 0,
+        "FATHOMS_FT": 0
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": -1.5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": -1.5,
+        "METERS_W": -1,
+        "METERS_T": -5,
+        "FEET": -5,
+        "FATHOMS": 0,
+        "FATHOMS_FT": -4
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "METERS": -12.0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "METERS": -12.0,
+        "METERS_W": -12,
+        "METERS_T": 0,
+        "FEET": -39,
+        "FATHOMS": -6,
+        "FATHOMS_FT": -3
+      }
+    }
+  ]
+}

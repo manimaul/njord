@@ -1,0 +1,250 @@
+{
+  "pins": "FeatureDao.findAssociatedLayerNames(LNAM) for every LNAM referenced by a US5WA22M feature's lnam_refs: the distinct layers of the referencing features, sorted (the GIN @> lookup behind the TOPMAR association)",
+  "decisions": [
+    "DB-5"
+  ],
+  "generator": "ChartDaoTest.P-DB-4",
+  "source": "fixtures/US5WA22M (edition 40 update 4); GDAL 3.13.1",
+  "cases": [
+    {
+      "input": "022600019FD20001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022600019FD40001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022600019FD90001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022600019FDA0001",
+      "expected": [
+        "LNDMRK"
+      ]
+    },
+    {
+      "input": "022600019FE80001",
+      "expected": [
+        "BOYSPP"
+      ]
+    },
+    {
+      "input": "022600019FEA0001",
+      "expected": [
+        "BOYSPP"
+      ]
+    },
+    {
+      "input": "022600019FEB0001",
+      "expected": [
+        "BOYLAT"
+      ]
+    },
+    {
+      "input": "022600019FEF0001",
+      "expected": [
+        "BCNLAT"
+      ]
+    },
+    {
+      "input": "022600019FF70001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022600019FF80001",
+      "expected": [
+        "BCNLAT"
+      ]
+    },
+    {
+      "input": "022600019FFA0001",
+      "expected": [
+        "LNDMRK"
+      ]
+    },
+    {
+      "input": "02260001A0010001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0020001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0040001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A00A0001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0100001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0150001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0170001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260001A0260001",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02260EE6D4F53039",
+      "expected": [
+        "BOYLAT"
+      ]
+    },
+    {
+      "input": "022617C7B20D3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022622AC04503039",
+      "expected": [
+        "BCNLAT"
+      ]
+    },
+    {
+      "input": "0226232919B93039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022628546A8D3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02262A84E33E3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022634247DCF3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02263978EEAA3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02263C1469013039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02263C78CC3A3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "02263C9D8ACA3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "0226494A0F323039",
+      "expected": [
+        "BOYLAT"
+      ]
+    },
+    {
+      "input": "02265DEE2AAB3039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022664DC7D653039",
+      "expected": [
+        "BCNLAT"
+      ]
+    },
+    {
+      "input": "0226650652863039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "022666646D103039",
+      "expected": [
+        "BOYSPP"
+      ]
+    },
+    {
+      "input": "022680570A933039",
+      "expected": [
+        "BCNLAT"
+      ]
+    },
+    {
+      "input": "0226A03E42153039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "0226E101EBC33039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "0226ED2C0B583039",
+      "expected": [
+        "BCNSPP"
+      ]
+    },
+    {
+      "input": "0226F4BE7DA53039",
+      "expected": [
+        "BCNSPP"
+      ]
+    }
+  ]
+}

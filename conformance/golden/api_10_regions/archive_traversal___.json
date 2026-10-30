@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/regions/..",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": true,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 400,
+    "content_type": "",
+    "headers": {},
+    "body": null
+  }
+}

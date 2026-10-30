@@ -62,7 +62,7 @@ class RegionExportWorker(
     }
 
     companion object {
-        private const val POLL_DELAY_MS = 5_000L
-        private const val IDLE_DELAY_MS = 15 * 60 * 1000L
+        internal const val POLL_DELAY_MS = 5_000L
+        internal const val IDLE_DELAY_MS = 15 * 60 * 1000L
     }
 }

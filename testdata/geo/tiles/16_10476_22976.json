@@ -1,0 +1,475 @@
+{
+  "pins": "decoded /v1/tile/16/10476/22976: layers sorted by name, features sorted by LNAM, props, geometry; feature ids dropped",
+  "decisions": [
+    "TE-1",
+    "TE-2",
+    "TE-4",
+    "TE-5",
+    "TE-6"
+  ],
+  "generator": "GoldenTilesTest.golden tiles",
+  "source": "fixtures/US5WA22M (edition 40 update 4), fixtures/synthetic/US4ZZ01M+US5ZZ02M, libgdal ne_110_extract coastline at 110m; GDAL 3.13.1; shallow/safety/deep = 3.0/6.0/9.0",
+  "cases": [
+    {
+      "input": {
+        "z": 16,
+        "x": 10476,
+        "y": 22976
+      },
+      "expected": {
+        "layers": [
+          {
+            "name": "DEPARE",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AC": "DEPDW",
+                  "AGEN": 550,
+                  "DRVAL1": 9.1,
+                  "DRVAL2": 182.8,
+                  "FIDN": 658859294,
+                  "FIDS": 7299,
+                  "GRUP": 1,
+                  "LC": "CHGRD",
+                  "LNAM": "02262745651E1C83",
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 42,
+                  "PRIM": 3,
+                  "RCID": 2183,
+                  "RVER": 9
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "MAGVAR",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "FIDN": 553545693,
+                  "FIDS": 7299,
+                  "GRUP": 2,
+                  "LNAM": "022620FE6FDD1C83",
+                  "MINZ": 13,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 81,
+                  "PRIM": 3,
+                  "RCID": 5172,
+                  "RVER": 1,
+                  "RYRMGV": "2018",
+                  "SCAMIN": 17999,
+                  "SORDAT": "2018",
+                  "SORIND": "US,US,reprt,L-523-2018",
+                  "VALACM": -9.0,
+                  "VALMAG": 15.0
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M_COVR",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "CATCOV": 1,
+                  "FIDN": -10468285,
+                  "FIDS": 7299,
+                  "GRUP": 2,
+                  "LNAM": "0226FF6044431C83",
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 302,
+                  "PRIM": 3,
+                  "RCID": 5186,
+                  "RVER": 1
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M_NPUB",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "FIDN": 3065393,
+                  "FIDS": 4173,
+                  "GRUP": 2,
+                  "LNAM": "0226002EC631104D",
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 305,
+                  "PRIM": 3,
+                  "RCID": 2781,
+                  "RVER": 1,
+                  "SORDAT": "20030107",
+                  "SORIND": "US,US,graph,Chart 18453",
+                  "TXTDSC": "US5WA22A.TXT"
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M_NSYS",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "FIDN": 3065410,
+                  "FIDS": 4173,
+                  "GRUP": 2,
+                  "LNAM": "0226002EC642104D",
+                  "MARSYS": 2,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 306,
+                  "PRIM": 3,
+                  "RCID": 2782,
+                  "RVER": 1,
+                  "SORDAT": "20030107",
+                  "SORIND": "US,US,graph,Chart 18453"
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M_QUAL",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "CATZOC": 1,
+                  "FIDN": 645466480,
+                  "FIDS": 1906,
+                  "GRUP": 2,
+                  "LNAM": "0226267909700772",
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 308,
+                  "PRIM": 3,
+                  "RCID": 2814,
+                  "RVER": 1,
+                  "SORDAT": "20170104",
+                  "SORIND": "US,US,reprt,L-14/17",
+                  "SUREND": "20010330",
+                  "SURSTA": "20010329",
+                  "TXTDSC": "US5WA22D.TXT"
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SEAARE",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POLYGON",
+                "props": {
+                  "AGEN": 550,
+                  "CATSEA": 5,
+                  "FIDN": 846855987,
+                  "FIDS": 8527,
+                  "GRUP": 2,
+                  "LNAM": "02263279FF33214F",
+                  "MINZ": 13,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 119,
+                  "OBJNAM": "Commencement Bay",
+                  "PRIM": 3,
+                  "RCID": 2946,
+                  "RVER": 3,
+                  "SCAMIN": 17999,
+                  "SORDAT": "20030107",
+                  "SORIND": "US,US,graph,Chart 18453"
+                },
+                "geometry": [
+                  [
+                    [
+                      4104,
+                      4104
+                    ],
+                    [
+                      -8,
+                      4104
+                    ],
+                    [
+                      -8,
+                      -8
+                    ],
+                    [
+                      4104,
+                      -8
+                    ],
+                    [
+                      4104,
+                      4104
+                    ]
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SOUNDG",
+            "extent": 4096,
+            "features": [
+              {
+                "type": "POINT",
+                "props": {
+                  "AGEN": 550,
+                  "FATHOMS": 64,
+                  "FATHOMS_FT": 2,
+                  "FEET": 386,
+                  "FIDN": -1365690441,
+                  "FIDS": 7299,
+                  "GRUP": 2,
+                  "LNAM": "0226AE9937B71C83",
+                  "METERS": 117.9,
+                  "METERS_T": 9,
+                  "METERS_W": 117,
+                  "MINZ": 13,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 129,
+                  "PRIM": 1,
+                  "RCID": 5152,
+                  "RVER": 1,
+                  "SCAMIN": 17999,
+                  "SORDAT": "20030107",
+                  "SORIND": "US,US,graph,Chart 18453"
+                },
+                "geometry": [
+                  [
+                    [
+                      3681,
+                      145
+                    ]
+                  ]
+                ]
+              },
+              {
+                "type": "POINT",
+                "props": {
+                  "AGEN": 550,
+                  "FATHOMS": 64,
+                  "FATHOMS_FT": 3,
+                  "FEET": 387,
+                  "FIDN": -77384243,
+                  "FIDS": 7299,
+                  "GRUP": 2,
+                  "LNAM": "0226FB6335CD1C83",
+                  "METERS": 118.2,
+                  "METERS_T": 2,
+                  "METERS_W": 118,
+                  "MINZ": 13,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 129,
+                  "PRIM": 1,
+                  "RCID": 5151,
+                  "RVER": 1,
+                  "SCAMIN": 17999,
+                  "SORDAT": "20090403",
+                  "SORIND": "US,US,graph,H-11458"
+                },
+                "geometry": [
+                  [
+                    [
+                      2019,
+                      1274
+                    ]
+                  ]
+                ]
+              },
+              {
+                "type": "POINT",
+                "props": {
+                  "AGEN": 550,
+                  "FATHOMS": 66,
+                  "FATHOMS_FT": 4,
+                  "FEET": 401,
+                  "FIDN": -77384243,
+                  "FIDS": 7299,
+                  "GRUP": 2,
+                  "LNAM": "0226FB6335CD1C83",
+                  "METERS": 122.2,
+                  "METERS_T": 2,
+                  "METERS_W": 122,
+                  "MINZ": 13,
+                  "NAME": "US5WA22M.000",
+                  "OBJL": 129,
+                  "PRIM": 1,
+                  "RCID": 5151,
+                  "RVER": 1,
+                  "SCAMIN": 17999,
+                  "SORDAT": "20090403",
+                  "SORIND": "US,US,graph,H-11458"
+                },
+                "geometry": [
+                  [
+                    [
+                      886,
+                      2312
+                    ]
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

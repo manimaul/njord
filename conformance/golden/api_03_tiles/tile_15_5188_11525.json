@@ -1,0 +1,162 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/15/5188/11525",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 653,
+      "sha256": "b6e7ffd61573d092dce08051c05a4048a05238064d4195100f55b5892366b4f6",
+      "decoded": {
+        "DEPARE": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1001,
+                "FIDS": 1,
+                "GRUP": 1,
+                "LNAM": "0226000003E90001",
+                "OBJL": 42,
+                "PRIM": 3,
+                "RCID": 2,
+                "RVER": 1,
+                "DRVAL1": 0.0,
+                "DRVAL2": 5.0,
+                "AC": "DEPVS",
+                "LC": "CHGRD",
+                "NAME": "US5ZZ02M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        "DEPCNT": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1002,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003EA0001",
+                "OBJL": 43,
+                "PRIM": 2,
+                "RCID": 3,
+                "RVER": 1,
+                "VALDCO": 2.0,
+                "NAME": "US5ZZ02M.000"
+              },
+              "geometry": [
+                [
+                  -8,
+                  1795
+                ],
+                [
+                  1092,
+                  2601
+                ],
+                [
+                  3141,
+                  4104
+                ]
+              ]
+            }
+          ]
+        },
+        "M_COVR": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "Polygon",
+              "properties": {
+                "AGEN": 550,
+                "FIDN": 1000,
+                "FIDS": 1,
+                "GRUP": 2,
+                "LNAM": "0226000003E80001",
+                "OBJL": 302,
+                "PRIM": 3,
+                "RCID": 1,
+                "RVER": 1,
+                "CATCOV": 1,
+                "NAME": "US5ZZ02M.000"
+              },
+              "geometry": [
+                [
+                  [
+                    4104,
+                    -8
+                  ],
+                  [
+                    -8,
+                    -8
+                  ],
+                  [
+                    -8,
+                    4104
+                  ],
+                  [
+                    4104,
+                    4104
+                  ],
+                  [
+                    4104,
+                    -8
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

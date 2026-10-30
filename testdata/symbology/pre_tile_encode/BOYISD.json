@@ -1,0 +1,1415 @@
+{
+  "pins": "preTileEncode of Boyisd (layer key BOYISD): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-3",
+    "SY-4",
+    "SY-5",
+    "SY-6",
+    "SY-7",
+    "SY-8",
+    "SY-9",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "3 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 72 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 0,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 0,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 1,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 1,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 2,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 2,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 3,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 3,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 4,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 4,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 5,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 5,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 6,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 6,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 7,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 7,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 8,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 8,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            1
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          1
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            2
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          2
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            6
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          6
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "BOYSHP": 9,
+          "COLOUR": [
+            14
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "BOYSHP": 9,
+        "COLOUR": [
+          14
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 0,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 0,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 0,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 0,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 1,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 1,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 1,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 1,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 2,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 2,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 2,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 2,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 3,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 3,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 3,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 3,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 4,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 4,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 4,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 4,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 5,
+          "COLOUR": [
+            3
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 5,
+        "COLOUR": [
+          3
+        ],
+        "SY": "BOYISD12"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATLAM": 5,
+          "COLOUR": [
+            4
+          ]
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATLAM": 5,
+        "COLOUR": [
+          4
+        ],
+        "SY": "BOYISD12"
+      }
+    }
+  ]
+}

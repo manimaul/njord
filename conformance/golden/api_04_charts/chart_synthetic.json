@@ -1,0 +1,120 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/chart?name=US4ZZ01M.000",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "name": "US4ZZ01M.000",
+      "scale": 80000,
+      "file_name": "US4ZZ01M.000",
+      "updated": "20260101",
+      "issued": "20260101",
+      "zoom": 11,
+      "covr": {
+        "id": null,
+        "geometry": {
+          "coordinates": [
+            [
+              [
+                -123.2,
+                46.9
+              ],
+              [
+                -122.8,
+                46.9
+              ],
+              [
+                -122.8,
+                47.1
+              ],
+              [
+                -123.2,
+                47.1
+              ],
+              [
+                -123.2,
+                46.9
+              ]
+            ]
+          ],
+          "bbox": null,
+          "crs": null,
+          "type": "Polygon"
+        },
+        "properties": {},
+        "type": "Feature"
+      },
+      "bounds": [
+        -123.2,
+        46.9,
+        -122.8,
+        47.1
+      ],
+      "layers": [
+        "BOYLAT",
+        "DEPARE",
+        "DEPCNT",
+        "LIGHTS",
+        "M_COVR"
+      ],
+      "dsid_props": {
+        "DSID_AGEN": 550,
+        "DSID_COMT": "njord synthetic fixture - outer approach cell",
+        "DSID_DSNM": "US4ZZ01M.000",
+        "DSID_EDTN": "1",
+        "DSID_EXPP": 1,
+        "DSID_INTU": 4,
+        "DSID_ISDT": "20260101",
+        "DSID_PRED": "2.0",
+        "DSID_PROF": 1,
+        "DSID_PRSP": 1,
+        "DSID_PSDN": "",
+        "DSID_STED": 3.1,
+        "DSID_UADT": "20260101",
+        "DSID_UPDN": "0",
+        "DSPM_COMF": 10000000,
+        "DSPM_COMT": "",
+        "DSPM_COUN": 1,
+        "DSPM_CSCL": 80000,
+        "DSPM_DUNI": 1,
+        "DSPM_HDAT": 2,
+        "DSPM_HUNI": 1,
+        "DSPM_PUNI": 1,
+        "DSPM_SDAT": 12,
+        "DSPM_SOMF": 10,
+        "DSPM_VDAT": 16,
+        "DSSI_AALL": 1,
+        "DSSI_DSTR": 2,
+        "DSSI_NALL": 1,
+        "DSSI_NOCN": 3,
+        "DSSI_NOCR": 0,
+        "DSSI_NOED": 3,
+        "DSSI_NOFA": 0,
+        "DSSI_NOGR": 6,
+        "DSSI_NOIN": 3,
+        "DSSI_NOLR": 0,
+        "DSSI_NOMR": 1
+      },
+      "chart_txt": {},
+      "featureCount": 6
+    }
+  }
+}

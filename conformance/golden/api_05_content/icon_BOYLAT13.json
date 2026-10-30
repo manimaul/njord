@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/icon/BOYLAT13",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "bytes"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "image/png",
+    "headers": {},
+    "body": {
+      "size": 821,
+      "sha256": "9dd1780aa1c2b8b65555112810772d4f0726dabe935a288cd6f02dc0b362dec8"
+    }
+  }
+}

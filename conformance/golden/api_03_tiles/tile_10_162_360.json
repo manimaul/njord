@@ -1,0 +1,77 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/10/162/360",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 53,
+      "sha256": "b5cc4029af1a232ed31fb81bfa41f43da1cf5b6360b018ffcec09f49de46ea40",
+      "decoded": {
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  -8,
+                  1703
+                ],
+                [
+                  2876,
+                  1703
+                ],
+                [
+                  2876,
+                  4104
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  -8,
+                  2897
+                ],
+                [
+                  1129,
+                  2897
+                ],
+                [
+                  1129,
+                  3922
+                ],
+                [
+                  -8,
+                  3922
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

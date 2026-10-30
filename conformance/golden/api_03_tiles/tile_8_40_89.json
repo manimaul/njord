@@ -1,0 +1,105 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/tile/8/40/89",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "tile"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/protobuf",
+    "headers": {},
+    "body": {
+      "size": 74,
+      "sha256": "df0b0776e01fd282e813cbac4a0a59a6b34b0a1381ffd4476059bb343e471355",
+      "decoded": {
+        "PLY": {
+          "extent": 4096,
+          "version": 2,
+          "features": [
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  2767,
+                  -8
+                ],
+                [
+                  2767,
+                  256
+                ],
+                [
+                  1602,
+                  256
+                ],
+                [
+                  1602,
+                  -8
+                ]
+              ]
+            },
+            {
+              "type": "LineString",
+              "properties": {},
+              "geometry": [
+                [
+                  3810,
+                  1204
+                ],
+                [
+                  4053,
+                  1204
+                ],
+                [
+                  4053,
+                  837
+                ],
+                [
+                  3501,
+                  837
+                ],
+                [
+                  3501,
+                  956
+                ],
+                [
+                  3502,
+                  956
+                ],
+                [
+                  3502,
+                  955
+                ],
+                [
+                  3568,
+                  955
+                ],
+                [
+                  3568,
+                  1204
+                ],
+                [
+                  3810,
+                  1204
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

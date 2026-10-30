@@ -1,0 +1,79 @@
+{
+  "pins": "DistributedLock protocol as the Kotlin server implements it; the port keeps the file protocol (a Kotlin-provisioned lock dir is upgraded in place) and changes only what D6 lists",
+  "decisions": [
+    "D6",
+    "CC-1",
+    "CC-2"
+  ],
+  "generator": "ConcurrencyPrimitivesTest.lockSemantics",
+  "cases": [
+    {
+      "input": {
+        "question": "lock file content while held"
+      },
+      "expected": "owner uuid as text"
+    },
+    {
+      "input": {
+        "question": "lock file content while free"
+      },
+      "expected": "empty file (or missing)"
+    },
+    {
+      "input": {
+        "question": "acquire"
+      },
+      "expected": "if the file is empty: write uuid to lock.<random> and rename it over lock; acquired = file now reads own uuid"
+    },
+    {
+      "input": {
+        "question": "acquire settle re-read delay ms"
+      },
+      "expected": 0,
+      "port": {
+        "decision": "D6",
+        "expected": 1500
+      }
+    },
+    {
+      "input": {
+        "question": "clear"
+      },
+      "expected": "touch lock.<random> (empty) and rename it over lock"
+    },
+    {
+      "input": {
+        "question": "non-owner may clear"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "question": "POST /v1/enc_save clears the lock (aborts an in-flight ingest)"
+      },
+      "expected": true,
+      "port": {
+        "decision": "D6",
+        "expected": false
+      }
+    },
+    {
+      "input": {
+        "question": "DELETE /v1/enc_save clears the lock"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "question": "ingest aborts when lockAcquired turns false"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "question": "lock watch"
+      },
+      "expected": "inotify on the lock directory; 1000 ms poll fallback when inotify is unavailable"
+    }
+  ]
+}

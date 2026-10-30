@@ -16,9 +16,9 @@ import ZipWriter
  * front, holds them all alive for the run, and pre-counts features across all of them before
  * inserting a single row.
  */
-class BundleBuilder(
+internal class BundleBuilder(
     private val config: EncCronConfig,
-    private val http: EncHttp,
+    private val http: EncTransport,
 ) {
 
     /**

@@ -1,0 +1,134 @@
+{
+  "pins": "preTileEncode of Gatcon (layer key GATCON): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "9 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 0,
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 2,
+        "SY": "GATCON04",
+        "LP": "GATCON04",
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 3,
+        "SY": "GATCON04",
+        "LP": "GATCON04",
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 4,
+        "SY": "GATCON03",
+        "LP": "GATCON03",
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 5,
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATGAT": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATGAT": 6,
+        "AC": "CHBRN",
+        "LC": "CSTLN"
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "pins": "layers appear in the order their first feature was added and features keep insertion order inside a layer",
+  "decisions": [
+    "TE-8"
+  ],
+  "generator": "MvtFixtureTest",
+  "source": "a LNDARE polygon, a SOUNDG point, a second LNDARE polygon; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "bin": "two_layers.bin",
+  "bytes": 110,
+  "decoded": {
+    "layers": [
+      {
+        "name": "LNDARE",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 2,
+            "type": "POLYGON",
+            "props": {},
+            "geometry": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  100,
+                  0
+                ],
+                [
+                  100,
+                  100
+                ],
+                [
+                  0,
+                  100
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "id": 4,
+            "type": "POLYGON",
+            "props": {},
+            "geometry": [
+              [
+                [
+                  200,
+                  200
+                ],
+                [
+                  300,
+                  200
+                ],
+                [
+                  300,
+                  300
+                ],
+                [
+                  200,
+                  300
+                ],
+                [
+                  200,
+                  200
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "name": "SOUNDG",
+        "version": 2,
+        "extent": 4096,
+        "features": [
+          {
+            "id": 3,
+            "type": "POINT",
+            "props": {
+              "METERS": 3.4
+            },
+            "geometry": [
+              [
+                [
+                  50,
+                  50
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

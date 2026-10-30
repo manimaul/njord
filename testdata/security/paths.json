@@ -1,0 +1,604 @@
+{
+  "pins": "caller-supplied names as paths: resourceName() refuses empty/./.. segments; RegionArchiveHandler refuses '/' and '..'; EncSaveHandler writes File(save, filename) verbatim (D2 port: bare .zip only, else 400); ZipFileEntry.unzipToPath writes wherever the entry name points (D3 port: reject absolute, .. and backslash entries)",
+  "decisions": [
+    "D2",
+    "D3",
+    "SEC-3",
+    "SEC-4",
+    "SEC-7"
+  ],
+  "generator": "SecurityPathsFixtureTest.paths",
+  "source": "zip entries observed by extracting zips built with ZipWriter into a scratch directory",
+  "cases": [
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "fonts",
+          "Roboto Bold",
+          "0-255.pbf"
+        ]
+      },
+      "expected": "www/fonts/Roboto Bold/0-255.pbf"
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "sprites",
+          "day_simplified.json"
+        ]
+      },
+      "expected": "www/sprites/day_simplified.json"
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "sprites",
+          "day_simplified@2x.png"
+        ]
+      },
+      "expected": "www/sprites/day_simplified@2x.png"
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "..",
+          "config",
+          "application.json"
+        ]
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "sprites",
+          ".",
+          "day_simplified.json"
+        ]
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "sprites",
+          "",
+          "x.json"
+        ]
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "fonts",
+          "..",
+          "sprites",
+          "day_simplified.json"
+        ]
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": []
+      },
+      "expected": null
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "upload.html"
+        ]
+      },
+      "expected": "www/upload.html"
+    },
+    {
+      "input": {
+        "kind": "content_resource",
+        "segments": [
+          "fonts",
+          "Roboto%20Bold",
+          "0-255.pbf"
+        ]
+      },
+      "expected": "www/fonts/Roboto%20Bold/0-255.pbf"
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "REGION_04_2026-04-14T07-00-31.mbtiles"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "REGION_04_2026-04-14T07-00-31.mbtiles.sha256"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "WORLD_2026-01-01T00-00-00.mbtiles"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "../lock"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "a/b.mbtiles"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": ".."
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "."
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "..mbtiles"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "x..y.mbtiles"
+      },
+      "expected": false
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "back\\slash.mbtiles"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": "%2e%2e%2flock"
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "archive_name",
+        "name": ""
+      },
+      "expected": true
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "US5WA22M.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "US5WA22M.zip",
+        "tmp": "US5WA22M.zip.tmp"
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "enc_bundle-20260101-0001.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "enc_bundle-20260101-0001.zip",
+        "tmp": "enc_bundle-20260101-0001.zip.tmp"
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "A.ZIP"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "A.ZIP",
+        "tmp": "A.ZIP.tmp"
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "with space.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "with space.zip",
+        "tmp": "with space.zip.tmp"
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "../escape.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "../escape.zip",
+        "tmp": "../escape.zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "../../escape.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "../../escape.zip",
+        "tmp": "../../escape.zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "dir/x.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "dir/x.zip",
+        "tmp": "dir/x.zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "/abs/x.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "abs/x.zip",
+        "tmp": "abs/x.zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "x.txt"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "x.txt",
+        "tmp": "x.txt.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "x"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "x",
+        "tmp": "x.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": ""
+      },
+      "expected": {
+        "status": 200,
+        "writes": ".",
+        "tmp": ".tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "."
+      },
+      "expected": {
+        "status": 200,
+        "writes": ".",
+        "tmp": "..tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": ".."
+      },
+      "expected": {
+        "status": 200,
+        "writes": "..",
+        "tmp": "...tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "x\\y.zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "x\\y.zip",
+        "tmp": "x\\y.zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": ".zip"
+      },
+      "expected": {
+        "status": 200,
+        "writes": ".zip",
+        "tmp": ".zip.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "upload_filename",
+        "name": "x.zip.tmp"
+      },
+      "expected": {
+        "status": 200,
+        "writes": "x.zip.tmp",
+        "tmp": "x.zip.tmp.tmp"
+      },
+      "port": {
+        "decision": "D2",
+        "expected": {
+          "status": 400
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "ENC_ROOT/US5ZZ99M/US5ZZ99M.000"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "ENC_ROOT/US5ZZ99M/US5ZZ99M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "US5ZZ99M.000"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "US5ZZ99M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "__MACOSX/._x"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "__MACOSX/._x"
+        ]
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "dir/"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "dir/"
+        ]
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "../escape.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "../escape.txt"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "extracted": false,
+          "writes": []
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "a/../../escape2.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "../escape2.txt"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "extracted": false,
+          "writes": []
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "a/../inside.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "inside.txt"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "extracted": false,
+          "writes": []
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "/abs.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "abs.txt"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "extracted": false,
+          "writes": []
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "back\\slash.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "back\\slash.txt"
+        ]
+      },
+      "port": {
+        "decision": "D3",
+        "expected": {
+          "extracted": false,
+          "writes": []
+        }
+      }
+    },
+    {
+      "input": {
+        "kind": "zip_entry",
+        "name": "./dotted.txt"
+      },
+      "expected": {
+        "extracted": true,
+        "writes": [
+          "dotted.txt"
+        ]
+      }
+    }
+  ]
+}

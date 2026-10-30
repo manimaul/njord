@@ -1,0 +1,55 @@
+{
+  "pins": "LightDescription number formatting: whole when the value rounds to a whole tenth, else one decimal (half-up on the tenth)",
+  "decisions": [],
+  "generator": "SymbologyTablesFixtureTest.lightDescription",
+  "cases": [
+    {
+      "input": 0.0,
+      "expected": "0"
+    },
+    {
+      "input": 4.0,
+      "expected": "4"
+    },
+    {
+      "input": 2.5,
+      "expected": "2.5"
+    },
+    {
+      "input": 0.25000001,
+      "expected": "0.3"
+    },
+    {
+      "input": 9.96,
+      "expected": "10"
+    },
+    {
+      "input": 9.94,
+      "expected": "9.9"
+    },
+    {
+      "input": 10.05,
+      "expected": "10"
+    },
+    {
+      "input": 0.05,
+      "expected": "0"
+    },
+    {
+      "input": 0.04,
+      "expected": "0"
+    },
+    {
+      "input": 123.456,
+      "expected": "123.5"
+    },
+    {
+      "input": 7.6,
+      "expected": "7.6"
+    },
+    {
+      "input": 1000000.0,
+      "expected": "1000000"
+    }
+  ]
+}

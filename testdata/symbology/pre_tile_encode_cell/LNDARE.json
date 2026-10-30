@@ -1,0 +1,2034 @@
+{
+  "pins": "preTileEncode over every LNDARE feature of US5WA22M: props exactly as GDAL maps them in, symbology props out",
+  "decisions": [
+    "SY-10"
+  ],
+  "generator": "PreTileEncodeCellFixtureTest.everyFeatureOfTheCell",
+  "source": "fixtures/US5WA22M/US5WA22M.000 (edition 40, update 4) read with GDAL 3.13.1",
+  "cases": [
+    {
+      "input": {
+        "props": {
+          "RCID": 2857,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19438291,
+          "FIDS": 50,
+          "LNAM": "022601289AD30032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2857,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19438291,
+        "FIDS": 50,
+        "LNAM": "022601289AD30032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2858,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 8586150,
+          "FIDS": 7299,
+          "LNAM": "0226008303A61C83"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2858,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 8586150,
+        "FIDS": 7299,
+        "LNAM": "0226008303A61C83",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2859,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 253935409,
+          "FIDS": 8527,
+          "LNAM": "02260F22BF31214F"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2859,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 253935409,
+        "FIDS": 8527,
+        "LNAM": "02260F22BF31214F",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2860,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 709729347,
+          "FIDS": 8527,
+          "LNAM": "02262A4D9C43214F",
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2860,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 709729347,
+        "FIDS": 8527,
+        "LNAM": "02262A4D9C43214F",
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2861,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 858631588,
+          "FIDS": 8527,
+          "LNAM": "0226332DADA4214F",
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2861,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 858631588,
+        "FIDS": 8527,
+        "LNAM": "0226332DADA4214F",
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2862,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 226497949,
+          "FIDS": 8527,
+          "LNAM": "02260D80159D214F",
+          "CONDTN": 1,
+          "SORDAT": "20170729",
+          "SORIND": "US,US,graph,GC-11394"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2862,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 226497949,
+        "FIDS": 8527,
+        "LNAM": "02260D80159D214F",
+        "CONDTN": 1,
+        "SORDAT": "20170729",
+        "SORIND": "US,US,graph,GC-11394",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2863,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 4,
+          "AGEN": 550,
+          "FIDN": 857469026,
+          "FIDS": 8527,
+          "LNAM": "0226331BF062214F"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2863,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 4,
+        "AGEN": 550,
+        "FIDN": 857469026,
+        "FIDS": 8527,
+        "LNAM": "0226331BF062214F",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2864,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 783479626,
+          "FIDS": 8527,
+          "LNAM": "02262EB2F34A214F"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2864,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 783479626,
+        "FIDS": 8527,
+        "LNAM": "02262EB2F34A214F",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2865,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 594237069,
+          "FIDS": 8527,
+          "LNAM": "0226236B568D214F"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2865,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 594237069,
+        "FIDS": 8527,
+        "LNAM": "0226236B568D214F",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2866,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19400612,
+          "FIDS": 50,
+          "LNAM": "0226012807A40032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2866,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19400612,
+        "FIDS": 50,
+        "LNAM": "0226012807A40032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2867,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307596356,
+          "FIDS": 1,
+          "LNAM": "02264DF056440001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2867,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307596356,
+        "FIDS": 1,
+        "LNAM": "02264DF056440001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2868,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057988,
+          "FIDS": 4173,
+          "LNAM": "0226002EA944104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2868,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057988,
+        "FIDS": 4173,
+        "LNAM": "0226002EA944104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2869,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057937,
+          "FIDS": 4173,
+          "LNAM": "0226002EA911104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2869,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057937,
+        "FIDS": 4173,
+        "LNAM": "0226002EA911104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2870,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27415027,
+          "FIDS": 50,
+          "LNAM": "022601A251F30032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2870,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27415027,
+        "FIDS": 50,
+        "LNAM": "022601A251F30032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2871,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 11796373,
+          "FIDS": 60,
+          "LNAM": "022600B3FF95003C"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2871,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 11796373,
+        "FIDS": 60,
+        "LNAM": "022600B3FF95003C",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2872,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058046,
+          "FIDS": 4173,
+          "LNAM": "0226002EA97E104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2872,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058046,
+        "FIDS": 4173,
+        "LNAM": "0226002EA97E104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2873,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058109,
+          "FIDS": 4173,
+          "LNAM": "0226002EA9BD104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2873,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058109,
+        "FIDS": 4173,
+        "LNAM": "0226002EA9BD104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2874,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307605000,
+          "FIDS": 1,
+          "LNAM": "02264DF078080001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2874,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307605000,
+        "FIDS": 1,
+        "LNAM": "02264DF078080001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2875,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057982,
+          "FIDS": 4173,
+          "LNAM": "0226002EA93E104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2875,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057982,
+        "FIDS": 4173,
+        "LNAM": "0226002EA93E104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2876,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1308025950,
+          "FIDS": 1,
+          "LNAM": "02264DF6E45E0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2876,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1308025950,
+        "FIDS": 1,
+        "LNAM": "02264DF6E45E0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2877,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307609952,
+          "FIDS": 1,
+          "LNAM": "02264DF08B600001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2877,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307609952,
+        "FIDS": 1,
+        "LNAM": "02264DF08B600001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2878,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19397001,
+          "FIDS": 50,
+          "LNAM": "02260127F9890032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2878,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19397001,
+        "FIDS": 50,
+        "LNAM": "02260127F9890032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2879,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19438290,
+          "FIDS": 50,
+          "LNAM": "022601289AD20032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2879,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19438290,
+        "FIDS": 50,
+        "LNAM": "022601289AD20032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2880,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057910,
+          "FIDS": 4173,
+          "LNAM": "0226002EA8F6104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2880,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057910,
+        "FIDS": 4173,
+        "LNAM": "0226002EA8F6104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2881,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307204021,
+          "FIDS": 1,
+          "LNAM": "02264DEA59B50001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2881,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307204021,
+        "FIDS": 1,
+        "LNAM": "02264DEA59B50001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2882,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058057,
+          "FIDS": 4173,
+          "LNAM": "0226002EA989104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2882,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058057,
+        "FIDS": 4173,
+        "LNAM": "0226002EA989104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2883,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307415785,
+          "FIDS": 1,
+          "LNAM": "02264DED94E90001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2883,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307415785,
+        "FIDS": 1,
+        "LNAM": "02264DED94E90001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2884,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307201874,
+          "FIDS": 1,
+          "LNAM": "02264DEA51520001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2884,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307201874,
+        "FIDS": 1,
+        "LNAM": "02264DEA51520001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2885,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307201915,
+          "FIDS": 1,
+          "LNAM": "02264DEA517B0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2885,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307201915,
+        "FIDS": 1,
+        "LNAM": "02264DEA517B0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2886,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307586901,
+          "FIDS": 1,
+          "LNAM": "02264DF031550001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2886,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307586901,
+        "FIDS": 1,
+        "LNAM": "02264DF031550001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2887,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307610035,
+          "FIDS": 1,
+          "LNAM": "02264DF08BB30001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2887,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307610035,
+        "FIDS": 1,
+        "LNAM": "02264DF08BB30001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2888,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057962,
+          "FIDS": 4173,
+          "LNAM": "0226002EA92A104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2888,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057962,
+        "FIDS": 4173,
+        "LNAM": "0226002EA92A104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2889,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 173744934,
+          "FIDS": 1,
+          "LNAM": "02260A5B23260001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2889,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 173744934,
+        "FIDS": 1,
+        "LNAM": "02260A5B23260001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2890,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 5051165,
+          "FIDS": 4181,
+          "LNAM": "0226004D131D1055"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2890,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 5051165,
+        "FIDS": 4181,
+        "LNAM": "0226004D131D1055",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2891,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307586739,
+          "FIDS": 1,
+          "LNAM": "02264DF030B30001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2891,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307586739,
+        "FIDS": 1,
+        "LNAM": "02264DF030B30001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2892,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307185596,
+          "FIDS": 1,
+          "LNAM": "02264DEA11BC0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2892,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307185596,
+        "FIDS": 1,
+        "LNAM": "02264DEA11BC0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2893,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19438127,
+          "FIDS": 50,
+          "LNAM": "022601289A2F0032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2893,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19438127,
+        "FIDS": 50,
+        "LNAM": "022601289A2F0032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2894,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307680019,
+          "FIDS": 1,
+          "LNAM": "02264DF19D130001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2894,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307680019,
+        "FIDS": 1,
+        "LNAM": "02264DF19D130001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2895,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 11796374,
+          "FIDS": 60,
+          "LNAM": "022600B3FF96003C"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2895,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 11796374,
+        "FIDS": 60,
+        "LNAM": "022600B3FF96003C",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2896,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307604998,
+          "FIDS": 1,
+          "LNAM": "02264DF078060001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2896,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307604998,
+        "FIDS": 1,
+        "LNAM": "02264DF078060001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2897,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19401832,
+          "FIDS": 50,
+          "LNAM": "022601280C680032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2897,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19401832,
+        "FIDS": 50,
+        "LNAM": "022601280C680032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2898,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19402037,
+          "FIDS": 50,
+          "LNAM": "022601280D350032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2898,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19402037,
+        "FIDS": 50,
+        "LNAM": "022601280D350032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2899,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 11796375,
+          "FIDS": 60,
+          "LNAM": "022600B3FF97003C"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2899,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 11796375,
+        "FIDS": 60,
+        "LNAM": "022600B3FF97003C",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2900,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307201857,
+          "FIDS": 1,
+          "LNAM": "02264DEA51410001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2900,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307201857,
+        "FIDS": 1,
+        "LNAM": "02264DEA51410001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2901,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307334084,
+          "FIDS": 1,
+          "LNAM": "02264DEC55C40001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2901,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307334084,
+        "FIDS": 1,
+        "LNAM": "02264DEC55C40001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2902,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058101,
+          "FIDS": 4173,
+          "LNAM": "0226002EA9B5104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2902,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058101,
+        "FIDS": 4173,
+        "LNAM": "0226002EA9B5104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2903,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057992,
+          "FIDS": 4173,
+          "LNAM": "0226002EA948104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2903,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057992,
+        "FIDS": 4173,
+        "LNAM": "0226002EA948104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2904,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057985,
+          "FIDS": 4173,
+          "LNAM": "0226002EA941104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2904,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057985,
+        "FIDS": 4173,
+        "LNAM": "0226002EA941104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2905,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307687451,
+          "FIDS": 1,
+          "LNAM": "02264DF1BA1B0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2905,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307687451,
+        "FIDS": 1,
+        "LNAM": "02264DF1BA1B0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2906,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057931,
+          "FIDS": 4173,
+          "LNAM": "0226002EA90B104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2906,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057931,
+        "FIDS": 4173,
+        "LNAM": "0226002EA90B104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2907,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27417958,
+          "FIDS": 50,
+          "LNAM": "022601A25D660032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2907,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27417958,
+        "FIDS": 50,
+        "LNAM": "022601A25D660032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2908,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19438289,
+          "FIDS": 50,
+          "LNAM": "022601289AD10032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2908,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19438289,
+        "FIDS": 50,
+        "LNAM": "022601289AD10032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2909,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058043,
+          "FIDS": 4173,
+          "LNAM": "0226002EA97B104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2909,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058043,
+        "FIDS": 4173,
+        "LNAM": "0226002EA97B104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2910,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057998,
+          "FIDS": 4173,
+          "LNAM": "0226002EA94E104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2910,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057998,
+        "FIDS": 4173,
+        "LNAM": "0226002EA94E104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2911,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 105613,
+          "FIDS": 1,
+          "LNAM": "022600019C8D0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2911,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 105613,
+        "FIDS": 1,
+        "LNAM": "022600019C8D0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2912,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307687453,
+          "FIDS": 1,
+          "LNAM": "02264DF1BA1D0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2912,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307687453,
+        "FIDS": 1,
+        "LNAM": "02264DF1BA1D0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2913,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 27415029,
+          "FIDS": 50,
+          "LNAM": "022601A251F50032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2913,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 27415029,
+        "FIDS": 50,
+        "LNAM": "022601A251F50032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2914,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3058026,
+          "FIDS": 4173,
+          "LNAM": "0226002EA96A104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2914,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3058026,
+        "FIDS": 4173,
+        "LNAM": "0226002EA96A104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2915,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307606701,
+          "FIDS": 1,
+          "LNAM": "02264DF07EAD0001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2915,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307606701,
+        "FIDS": 1,
+        "LNAM": "02264DF07EAD0001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2916,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 590994823,
+          "FIDS": 1,
+          "LNAM": "02262339DD870001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2916,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 590994823,
+        "FIDS": 1,
+        "LNAM": "02262339DD870001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2917,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 3057906,
+          "FIDS": 4173,
+          "LNAM": "0226002EA8F2104D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2917,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 3057906,
+        "FIDS": 4173,
+        "LNAM": "0226002EA8F2104D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2918,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 2113120716,
+          "FIDS": 12345,
+          "LNAM": "02267DF3A9CC3039"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2918,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 2113120716,
+        "FIDS": 12345,
+        "LNAM": "02267DF3A9CC3039",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2919,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307415781,
+          "FIDS": 1,
+          "LNAM": "02264DED94E50001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2919,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307415781,
+        "FIDS": 1,
+        "LNAM": "02264DED94E50001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2920,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -1845291240,
+          "FIDS": 1309,
+          "LNAM": "022692031718051D"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2920,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -1845291240,
+        "FIDS": 1309,
+        "LNAM": "022692031718051D",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2921,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1307586886,
+          "FIDS": 1,
+          "LNAM": "02264DF031460001"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2921,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 1307586886,
+        "FIDS": 1,
+        "LNAM": "02264DF031460001",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2922,
+          "PRIM": 3,
+          "GRUP": 1,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 19402045,
+          "FIDS": 50,
+          "LNAM": "022601280D3D0032"
+        },
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2922,
+        "PRIM": 3,
+        "GRUP": 1,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": 19402045,
+        "FIDS": 50,
+        "LNAM": "022601280D3D0032",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "RCID": 2981,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 71,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": -55890412,
+          "FIDS": 12345,
+          "LNAM": "0226FCAB2E143039"
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "RCID": 2981,
+        "PRIM": 1,
+        "GRUP": 2,
+        "OBJL": 71,
+        "RVER": 1,
+        "AGEN": 550,
+        "FIDN": -55890412,
+        "FIDS": 12345,
+        "LNAM": "0226FCAB2E143039",
+        "SY": "LNDARE01",
+        "AC": "LANDA"
+      }
+    }
+  ]
+}

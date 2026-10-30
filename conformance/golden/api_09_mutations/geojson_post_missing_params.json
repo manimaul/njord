@@ -1,0 +1,45 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/v1/geojson",
+    "headers": {},
+    "json": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.05,
+          10.05
+        ]
+      },
+      "properties": {
+        "LNAM": "ZZCONF00000001",
+        "BOYSHP": 4,
+        "CATLAM": 1,
+        "COLOUR": [
+          "4"
+        ],
+        "OBJNAM": "Conformance Buoy",
+        "SCAMIN": 29999
+      }
+    },
+    "body_bytes": null,
+    "signed": true,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 400,
+    "content_type": "",
+    "headers": {},
+    "body": null
+  }
+}

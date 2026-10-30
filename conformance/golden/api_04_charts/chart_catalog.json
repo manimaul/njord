@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/chart_catalog",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": false,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [],
+  "capture_headers": [],
+  "shape_depth": 3,
+  "data_dependent": true,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "totalChartCount": 3,
+      "nextName": null,
+      "page": [
+        {
+          "name": "US4ZZ01M.000"
+        },
+        {
+          "name": "US5WA22M.000"
+        },
+        {
+          "name": "US5ZZ02M.000"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/v1/admin",
+    "headers": {},
+    "json": null,
+    "body_bytes": null,
+    "signed": false,
+    "basic_auth": true,
+    "raw_path": false,
+    "kind": "json"
+  },
+  "note": "",
+  "masks": [
+    "/signature/date",
+    "/signature/signature",
+    "/signature/uuid",
+    "/signature/expirationDate",
+    "/signatureEncoded"
+  ],
+  "capture_headers": [],
+  "shape_depth": 2,
+  "data_dependent": false,
+  "volatile": false,
+  "port": null,
+  "expected": {
+    "status": 200,
+    "content_type": "application/json",
+    "headers": {},
+    "body": {
+      "signature": {
+        "date": "<masked>",
+        "signature": "<masked>",
+        "uuid": "<masked>",
+        "expirationDate": "<masked>"
+      },
+      "signatureEncoded": "<masked>"
+    }
+  }
+}

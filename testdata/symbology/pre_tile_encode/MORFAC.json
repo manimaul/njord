@@ -1,0 +1,158 @@
+{
+  "pins": "preTileEncode of Morfac (layer key MORFAC): the symbology props (SY, AC, LC, AP, LP, …) added for a sweep of the attributes the rule reads",
+  "decisions": [
+    "SY-10",
+    "SY-12"
+  ],
+  "generator": "PreTileEncodeFixtureTest.everyLayerable",
+  "source": "12 cases from a recorded-read sweep over the S-57 catalogue values (shipped thresholds 3/6/9 m) plus 0 hand-written boundary cases",
+  "cases": [
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "LINESTRING",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {},
+        "geometry_type": "POLYGON",
+        "assoc": []
+      },
+      "expected": {
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 0
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 0,
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 1
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 1,
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 2
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 2,
+        "SY": "MORFAC04"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 3
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 3,
+        "SY": "PILPNT02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 4
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 4,
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 5
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 5,
+        "SY": "PILPNT02"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 6
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 6,
+        "SY": "MORFAC03"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 7
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 7,
+        "SY2": "BOYMOR11"
+      }
+    },
+    {
+      "input": {
+        "props": {
+          "CATMOR": 8
+        },
+        "geometry_type": "POINT",
+        "assoc": []
+      },
+      "expected": {
+        "CATMOR": 8,
+        "SY": "MORFAC03"
+      }
+    }
+  ]
+}

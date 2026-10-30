@@ -1,0 +1,57 @@
+{
+  "pins": "GDAL S57 driver output for BOYLAT under RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON: OgrFeature.properties (field type -> JSON mapping, METERS on SOUNDG, MINZ/MAXZ from SCAMIN/SCAMAX at the feature's centre latitude) and the WKT after makeValid(), in GDAL's feature order; the input is the feature index",
+  "decisions": [
+    "IN-1",
+    "LB-2"
+  ],
+  "generator": "S57FixtureTest.P-IN-2",
+  "source": "fixtures/synthetic/US4ZZ01M.000; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
+  "cases": [
+    {
+      "input": 0,
+      "expected": {
+        "props": {
+          "RCID": 4,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 17,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1003,
+          "FIDS": 1,
+          "LNAM": "0226000003EB0001",
+          "BOYSHP": 4,
+          "CATLAM": 1,
+          "COLOUR": [
+            "4"
+          ],
+          "OBJNAM": "Outer Buoy In Overlap"
+        },
+        "wkt": "POINT (-123 47)"
+      }
+    },
+    {
+      "input": 1,
+      "expected": {
+        "props": {
+          "RCID": 5,
+          "PRIM": 1,
+          "GRUP": 2,
+          "OBJL": 17,
+          "RVER": 1,
+          "AGEN": 550,
+          "FIDN": 1004,
+          "FIDS": 1,
+          "LNAM": "0226000003EC0001",
+          "BOYSHP": 4,
+          "CATLAM": 2,
+          "COLOUR": [
+            "3"
+          ],
+          "OBJNAM": "Outer Buoy West"
+        },
+        "wkt": "POINT (-123.15 47.05)"
+      }
+    }
+  ]
+}

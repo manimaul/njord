@@ -1,0 +1,168 @@
+NOAA ENC®
+
+NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION
+
+US5WA22M - TACOMA HARBOR
+
+INDEX:
+NOTE A
+SUPPLEMENTAL INFORMATION
+AIDS TO NAVIGATION
+CAUTION - TEMPORARY
+CAUTION - DREDGED AREAS
+CAUTION - LIMITATIONS
+CAUTION - SUBMARINE PIPELINES AND CABLES
+ANCHORING STANDARDS OF CARE
+AUTHORITIES
+WARNING - PRUDENT MARINER 
+NOAA WEATHER RADIO BROADCASTS
+POLLUTION REPORTS
+RADAR REFLECTORS
+COLREGS, 80.1395 (see note A)
+ADMINISTRATION AREA
+TIDAL INFORMATION
+ADDITIONAL INFORMATION
+REGULATED NAVIGATION AREA
+USACE HYDROGRAPHIC SURVEYS
+
+
+NOTES:
+NOTE A
+Navigation regulations are published in Chapter 2, U.S.
+Coast Pilot 7. Additions or revisions to Chapter 2 are pub-
+lished in the Notice to Mariners. Information concerning the 
+regulations may be obtained at the Office of the Commander, 
+13th Coast Guard District in Seattle, Washington or at the 
+Office of the District Engineer, Corps of Engineers in 
+Seattle, Washington.
+Refer to charted regulation section numbers.
+
+
+SUPPLEMENTAL INFORMATION
+Consult U.S. Coast Pilot 7 for important supplemental information.
+
+
+AIDS TO NAVIGATION
+Consult U.S. Coast Guard Light List for 
+supplemental information concerning aids to 
+navigation.
+
+
+CAUTION - TEMPORARY
+Temporary changes or defects in aids to 
+navigation are not indicated. See 
+Local Notice to Mariners.
+
+
+CAUTION - DREDGED AREAS
+Improved channels 
+are subject to shoaling, particularly at the edges.
+
+
+CAUTION - LIMITATIONS
+Limitations on the use of radio signals as 
+aids to marine navigation can be found in the 
+U.S. Coast Guard Light Lists and National 
+Geospatial-Intelligence Agency Publication 117. 
+Radio direction-finder bearings to commercial 
+broadcasting stations are subject to error and 
+should be used with caution.
+
+
+CAUTION - SUBMARINE PIPELINES AND CABLES 
+Additional uncharted submarine pipelines and 
+submarine cables may exist within the area of 
+this chart. Not all submarine pipelines and sub-
+marine cables are required to be buried, and 
+those that were originally buried may have 
+become exposed. Mariners should use extreme 
+caution when operating vessels in depths of 
+water comparable to their draft in areas where 
+pipelines and cables may exist, and when 
+anchoring, dragging, or trawling. 
+Covered wells may be marked by lighted or 
+unlighted buoys.
+
+
+ANCHORING STANDARDS OF CARE
+Anchoring Standards of Care have been established for this area through Harbor 
+Safety Plan. These Standards of Care supplement existing regulations with good 
+marine practices for anchoring, and are separated into different weather categories. 
+If your vessel does not have a copy of the Anchoring Standards of Care, you can 
+download one at http://pshsc.org/about/harbor safety plan or contact (206) 443-3830.
+
+
+AUTHORITIES 
+Hydrography and topography by the National Ocean Service, Coast 
+Survey, with additional data from the Corps of Engineers, and U.S 
+Coast Guard.
+
+
+WARNING - PRUDENT MARINER
+The prudent mariner will not rely solely on 
+any single aid to navigation, particularly on 
+floating aids. See U.S. Coast Guard Light List 
+and U.S. Coast Pilot for details.
+
+
+NOAA WEATHER RADIO BROADCASTS
+The NOAA Weather Radio station listed 
+below provides continuous weather broadcasts. 
+The reception range is typically 37 to 74 kilometers / 20 to 40 
+nautical miles from the antenna site, but can be 
+as much as 185 kilometers / 100 nautical miles for stations 
+at high elevations.
+
+Seattle, WA     	KHB-60	     162.550 MHz
+
+
+POLLUTION REPORTS
+Report all spills of oil and hazardous sub-
+stances to the National Response Center via 
+1-800-424-8802 (toll free), or to the nearest U.S. 
+Coast Guard facility if telephone communication 
+is impossible (33 CFR 153).
+
+
+RADAR REFLECTORS
+Radar reflectors have been placed on many 
+floating aids to navigation. Individual radar 
+reflector identification on these aids has been 
+omitted from this chart.
+
+
+COLREGS, 80.1395 (see note A)
+International Regulations for Preventing 
+Collisions at Sea, 1972. The entire area of 
+this chart falls seaward of the COLREGS 
+Demarcation Line.
+
+
+ADMINISTRATION AREA
+The entire extent of this ENC cell falls within the limits of an
+Administration Area. This area covers land, internal waters, and
+territorial sea. The territorial sea is a maritime zone which the United
+States exercises sovereignty extending to the airspace as well as to its
+bed and subsoil. For more information, please refer to the Coast Pilot.
+
+
+TIDAL INFORMATION
+For tidal information see the NOS Tide Table publication or go to http://co-ops.nos.noaa.gov
+
+
+ADDITIONAL INFORMATION
+Additional information can be obtained at www.nauticalcharts.noaa.gov
+
+
+REGULATED NAVIGATION AREA
+A Regulated Navigation Area has been established by the U.S. Coast Guard.
+Please see Chapter 2, U.S. Coast Pilot 7 or 33 CFR 165.1301 and 33 CFR
+165.1303.
+
+
+USACE HYDROGRAPHIC SURVEYS
+USACE conducts hydrographic surveys to monitor navigation conditions. These surveys are not intended to 
+detect underwater features. Uncharted features hazardous to surface navigation are not expected but may 
+exist in federal channels.
+
+END OF FILE

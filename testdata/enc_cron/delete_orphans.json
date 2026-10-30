@@ -1,0 +1,310 @@
+{
+  "pins": "deleteOrphans guard order: disabled -> no njordBaseUrl -> blank credentials -> producer filter -> deletable.size > maxOrphanDeletes abandons the whole pass -> dry-run lists only; otherwise exactly one signature fetch then one DELETE per deletable chart in order, a false result (already gone) is not an error",
+  "decisions": [
+    "EC-2"
+  ],
+  "generator": "DeleteOrphansFixtureTest",
+  "source": "hand-written decision table",
+  "cases": [
+    {
+      "input": {
+        "name": "disabled",
+        "deleteOrphans": false,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "no_base_url",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://localhost:9000/editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "no_user",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "no_password",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "only_foreign_orphans",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "CA179001.000",
+          "GB5X01SW.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "over_ceiling_deletes_none",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 1,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "at_ceiling_deletes_all",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 2,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 1,
+        "deleteCalls": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "dry_run",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": true,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    },
+    {
+      "input": {
+        "name": "happy_path",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 1,
+        "deleteCalls": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "foreign_excluded_from_count_and_calls",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 2,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000",
+          "CA179001.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 1,
+        "deleteCalls": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "already_gone_is_not_an_error",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": [
+          "US5CA93M.000"
+        ]
+      },
+      "expected": {
+        "signatureFetches": 1,
+        "deleteCalls": [
+          "US5WA17M.000",
+          "US5CA93M.000"
+        ]
+      }
+    },
+    {
+      "input": {
+        "name": "empty",
+        "deleteOrphans": true,
+        "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+        "adminUser": "cron",
+        "adminPass": "secret",
+        "maxOrphanDeletes": 25,
+        "dryRun": false,
+        "orphans": [],
+        "catalogCells": [
+          "US5WA22M",
+          "US3AK4CM"
+        ],
+        "gone": []
+      },
+      "expected": {
+        "signatureFetches": 0,
+        "deleteCalls": []
+      }
+    }
+  ]
+}

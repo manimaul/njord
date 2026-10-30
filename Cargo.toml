@@ -1,0 +1,21 @@
+# Rust port workspace (docs/RUST_PORT_PLAN.md §3.1). Crates are added phase by phase; the Kotlin
+# build under Gradle is untouched until Phase 7.
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+repository = "https://github.com/manimaul/njord"
+
+[workspace.dependencies]
+njord-model = { path = "crates/njord-model" }
+geojson = { version = "1", default-features = false }
+indexmap = { version = "2", features = ["serde"] }
+jiff = { version = "0.2", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+# preserve_order: Kotlin serialises maps and JSON objects in insertion order (LinkedHashMap), so
+# every JSON object the port reads keeps its key order when written back out.
+serde_json = { version = "1", features = ["preserve_order"] }

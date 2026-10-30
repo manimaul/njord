@@ -1,0 +1,19 @@
+[package]
+name = "njord-model"
+description = "Njord wire types: the HTTP/WebSocket API contract shared by the server and the web UI"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+# Must keep compiling for wasm32-unknown-unknown: njord-web depends on this crate and nothing else
+# from the backend (RUST_PORT_PLAN.md §3.1).
+[dependencies]
+geojson.workspace = true
+indexmap.workspace = true
+jiff.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+base64 = "0.22"

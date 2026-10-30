@@ -11,3 +11,6 @@ local.properties
 conformance/.venv/
 .pytest_cache/
 __pycache__/
+
+# Rust port (Cargo workspace)
+/target/

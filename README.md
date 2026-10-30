@@ -69,6 +69,15 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 ./gradlew :geojson:jvmTest
 ```
 
+### Rust port
+
+The Rust port ([plan](docs/RUST_PORT_PLAN.md)) is a Cargo workspace at the root (`crates/`), built alongside Gradle.
+
+```bash
+cargo test --workspace                                         # round-trips testdata/ and conformance/golden/
+cargo check -p njord-model --target wasm32-unknown-unknown     # the contract crate must build for the web UI
+```
+
 ### NOAA update job
 
 [NOAA ENC update cron](enc_cron/README.md)

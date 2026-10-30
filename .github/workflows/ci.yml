@@ -98,6 +98,27 @@ jobs:
           path: '**/build/reports/tests/**'
           retention-days: 7
 
+  rust:
+    name: Rust workspace (fmt, clippy, tests, wasm32)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      # Reads the same testdata/ and conformance/golden/ fixtures the Kotlin tests produce.
+      - run: cargo test --workspace
+      # njord-model is shared with the Leptos frontend (RUST_PORT_PLAN.md §3.1).
+      - run: cargo check -p njord-model --target wasm32-unknown-unknown
+
   conformance:
     name: HTTP conformance suite against the Kotlin server
     needs: build-and-test

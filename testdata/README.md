@@ -90,8 +90,8 @@ fixtures.table("symbology/depth_bands.json", FixtureHeader(pins = …, decisions
 | verify (default) | `./gradlew allTests` | Header, inputs and every expected value must equal the committed file. A mismatch names the case index and input, and tells you how to regenerate. |
 | regenerate | `NJORD_FIXTURES=regenerate ./gradlew allTests` | Rewrites every fixture the tests touch from the current implementation. Review `git diff testdata/` before committing: a diff is a behaviour change. |
 
-CI runs verify mode and additionally fails if regenerate mode produces a diff against the
-committed `testdata/` (checklist §4).
+There is no hosted CI. Before committing, run verify mode, then regenerate mode, and check
+that `git diff --exit-code -- testdata/` is clean (checklist §4).
 
 Inputs under `fixtures/` are regenerated with the scripts in `tools/`, which need the GDAL
 Python bindings (`brew install gdal` / `python3-gdal`); both scripts are deterministic.
@@ -99,7 +99,7 @@ Python bindings (`brew install gdal` / `python3-gdal`); both scripts are determi
 **GDAL version.** Fixtures whose values come out of the GDAL S-57 reader or GEOS geometry ops
 (`s57/*`, `symbology/pre_tile_encode_cell/*`, `geo/ogr_geometry.json`, golden tiles) record the GDAL
 release in their header `source`. They were first generated on macOS with GDAL 3.13.1; the container
-and CI build against Debian 13's GDAL, so a verify run there may fail on the header or on geometry
+builds against Debian 13's GDAL, so a verify run there may fail on the header or on geometry
 vertices and must regenerate under its own GDAL once, after which that version is the one pinned.
 
 **Known Kotlin quirks pinned as behaviour** (see TEST_COVERAGE_AUDIT.md §3): `TileSystem.mapSize`

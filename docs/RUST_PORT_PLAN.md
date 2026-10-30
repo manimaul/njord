@@ -57,7 +57,7 @@ njord/
 └── conformance/                # HTTP black-box suite (Python/pytest; see §5.5). Independent of both implementations
 ```
 
-`njord-web` must **not** depend on any backend crate other than `njord-model`. That is the mechanical guarantee of frontend/backend separation; a CI check (`cargo tree -p njord-web`) enforces it.
+`njord-web` must **not** depend on any backend crate other than `njord-model`. That is the mechanical guarantee of frontend/backend separation; a check (`cargo tree -p njord-web`, run with the other local checks) enforces it.
 
 ### 3.2 Runtime shape
 
@@ -273,12 +273,12 @@ Each phase ends when its conformance/fixture tests pass in Rust. No phase starts
 - [x] **Phase 0 complete** (2026-10-30). One follow-up remains: re-run the conformance suite against `https://openenc.com` after its next deploy (see the checklist).
 Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Write the §5 tests in Kotlin; make them emit `testdata/`.
-- Add CI (PostGIS service + `./gradlew allTests`) so the fixtures are regenerated and validated on every change.
+- Regenerate and validate the fixtures on every change (`./gradlew allTests` against the dev PostGIS, then regenerate and diff `testdata/`). No hosted CI: these run locally (checklist §4).
 - Fix or formally accept each suspected defect (D1–D9) **before** fixtures are frozen. Every fixture is a decision about which behavior the port must copy. Done 2026-10-30: D1 fixed, D2–D9 accepted in Kotlin and fixed in the port (TEST_COVERAGE_AUDIT.md §3.1).
 - Exit: `testdata/` committed; conformance suite green against the Kotlin server.
 
 ### Phase 1 — Workspace and the contract crate
-- [x] **Phase 1 complete** (2026-10-30). Root `Cargo.toml` workspace, `crates/njord-model`, and a `rust` CI job (fmt, clippy `-D warnings`, tests, `wasm32-unknown-unknown` check).
+- [x] **Phase 1 complete** (2026-10-30). Root `Cargo.toml` workspace, `crates/njord-model`, Local checks before committing: `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo check -p njord-model --target wasm32-unknown-unknown`.
 - `njord-model`: every wire type (`Chart`, `ChartCatalog`, `ChartEditions`, `FeatureRecord`, `LayerQueryResultPage`, `RegionManifestEntry`, `AdminSignature`/`AdminResponse`, `EncUpload`, `EncUrlRequest`, `WsMsg`, `Style`/`Layer`/`Paint`/`Layout`, `S57Object`, `About`, `TileJson`, `Depth`, `ThemeMode`, `Sprite`, `Color`).
 - Serde round-trip tests against `testdata/` JSON (P-IN-7, P-SY-7 types, P-API golden bodies).
 - Exit: `cargo test -p njord-model` deserialises every golden response and re-serialises it identically.

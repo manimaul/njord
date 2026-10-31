@@ -11,6 +11,7 @@ alongside the Kotlin Gradle build. When the Kotlin code is removed this file bec
 | `njord-symbology` | Style JSON generation and per-feature symbology |
 | `njord-db` | PostGIS queries and schema migrations |
 | `njord-server` | The axum HTTP server: tiles, API, ingest and region export workers |
+| `njord-enc-cron` | Nightly NOAA updater: diffs NOAA's catalog against `/v1/chart_editions`, bundles stale cells into `save/` |
 | `njord-testdata` | Locates the golden fixtures under `testdata/` for tests |
 
 ## Requirements
@@ -70,6 +71,26 @@ CHART_SERVER_OPTS='{
 
 The server listens on http://localhost:9000. For development, `cargo run -p njord-server -- ./server/src/nativeMain/resources`
 works the same way. `webStaticContent` can point at any directory with an `index.html` if only the API is needed.
+
+### NOAA update job (`njord-enc-cron`)
+
+The Rust port of [`enc_cron`](enc_cron/README.md), with the same flags and configuration: `<resources dir>/config/enc_cron.json`
+(until Phase 7, [`enc_cron/src/nativeMain/resources/config/enc_cron.json`](enc_cron/src/nativeMain/resources/config/enc_cron.json))
+with the `ENC_CRON_OPTS` JSON object merged over it, and the admin credentials for orphan deletes in
+`ENC_CRON_ADMIN_USER` / `ENC_CRON_ADMIN_PASS`. It talks to the server only through `chartTempData/save/`,
+`GET /v1/chart_editions`, `GET /v1/admin` and `DELETE /v1/chart`, so it works against either server.
+
+```bash
+cargo build --release -p njord-enc-cron
+ENC_CRON_OPTS='{"chartEditionsUrl":"http://localhost:9000/v1/chart_editions","chartTempData":"/tmp/njord_rust"}' \
+  ./target/release/njord-enc-cron ./enc_cron/src/nativeMain/resources --dry-run
+
+# Parse a catalog already on disk instead of fetching ~52 MB each time
+./target/release/njord-enc-cron ./enc_cron/src/nativeMain/resources --from-file ./ENCProdCat_19115.xml --dry-run
+```
+
+`chartTempData` must be the server's own `chartTempData`: bundles are renamed into its `save/` directory, where the
+ingest worker picks them up. See [`enc_cron/README.md`](enc_cron/README.md) for orphan deletion and its guards.
 
 ### Container
 

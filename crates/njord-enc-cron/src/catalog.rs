@@ -74,6 +74,9 @@ enum Field {
 
 const ROOT_ELEMENT: &str = "DS_Series";
 const RECORD_ELEMENT: &str = "MD_Metadata";
+/// Wraps the catalog's own metadata record (`hierarchyLevel` `series`), which describes the
+/// catalog rather than a cell and has no edition or download URL.
+const SERIES_ELEMENT: &str = "seriesMetadata";
 const DATE_ELEMENT: &str = "CI_Date";
 
 const REQUIRED_NAMESPACES: &[(&str, &str)] = &[
@@ -190,10 +193,12 @@ pub struct EncProdCatParser {
     pending_date: Option<String>,
     pending_date_type: Option<String>,
     root_seen: bool,
+    /// The open `MD_Metadata` is the series record, which is neither an entry nor counted.
+    in_series_record: bool,
     pub entries: Vec<EncCatalogEntry>,
-    /// Records seen, including any dropped as incomplete.
+    /// Cell records seen, including any dropped as incomplete. The series record is not one.
     pub records_seen: usize,
-    /// Records dropped because a required field was missing.
+    /// Cell records dropped because a required field was missing.
     pub records_skipped: usize,
 }
 
@@ -206,6 +211,12 @@ impl EncProdCatParser {
         }
         if name == RECORD_ELEMENT {
             self.record = Record::default();
+            let parent = self
+                .path
+                .len()
+                .checked_sub(2)
+                .map(|i| self.path[i].as_str());
+            self.in_series_record = parent == Some(SERIES_ELEMENT);
         }
         if name == DATE_ELEMENT {
             self.pending_date = None;
@@ -257,7 +268,11 @@ impl EncProdCatParser {
             self.pending_date_type = None;
         }
 
-        if name == RECORD_ELEMENT {
+        if name == RECORD_ELEMENT && std::mem::take(&mut self.in_series_record) {
+            // Decision D15: Kotlin counted the series record as a skipped cell, so every run
+            // warned about one incomplete record and a real one could not be told apart.
+            self.record = Record::default();
+        } else if name == RECORD_ELEMENT {
             self.records_seen += 1;
             let r = std::mem::take(&mut self.record);
             let present = |s: &Option<String>| s.as_deref().is_some_and(|s| !s.trim().is_empty());

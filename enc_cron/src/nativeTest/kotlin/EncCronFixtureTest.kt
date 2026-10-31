@@ -104,34 +104,38 @@ class EncProdCatFixtureTest {
     @Serializable
     data class Parsed(val recordsSeen: Int, val recordsSkipped: Int, val entries: List<EntryOut>)
 
+    private fun parse(path: String): Parsed {
+        val entries = mutableListOf<EncCatalogEntry>()
+        val parser = EncProdCatParser { entries.add(it) }
+        val bytes = fixtures.readBytes(path)
+        ExpatSax(parser).use { sax ->
+            // feed in small chunks so a text node split across buffers is exercised too
+            var offset = 0
+            while (offset < bytes.size) {
+                val n = minOf(4096, bytes.size - offset)
+                sax.feed(bytes.copyOfRange(offset, offset + n), n)
+                offset += n
+            }
+            sax.finish()
+        }
+        assertEquals(parseCatalogFile(fixtures.file(path)).map { it.out() }, entries.map { it.out() }, "parseCatalogFile must agree with the chunked parse")
+        return Parsed(parser.recordsSeen, parser.recordsSkipped, entries.map { it.out() })
+    }
+
     @Test
     fun `the trimmed NOAA catalog parses to the committed records`() {
         val table = fixtures.table(
             "enc_cron/parsed.json",
             FixtureHeader(
-                pins = "EncProdCatParser: cell/edition/url/scale/transferSize and the revision vs publication CI_Date per MD_Metadata record, dates normalised to YYYYMMDD; records missing cell, edition or url are counted in recordsSkipped and dropped; the decoy sourceCitation title never leaks; derived chartName/updateNumber/revisionKey",
-                decisions = listOf("EC-5"),
+                pins = "EncProdCatParser: cell/edition/url/scale/transferSize and the revision vs publication CI_Date per MD_Metadata record, dates normalised to YYYYMMDD; records missing cell, edition or url are counted in recordsSkipped and dropped; the decoy sourceCitation title never leaks; derived chartName/updateNumber/revisionKey. D15: Kotlin counts the seriesMetadata record (the catalog's own, no edition or URL) as seen and skipped; the port counts cell records only",
+                decisions = listOf("EC-5", "D15"),
                 generator = "EncProdCatFixtureTest",
                 source = "testdata/enc_cron/catalog_sample.xml (testdata/tools/trim_catalog.py over a real ENCProdCat_19115.xml)",
             ),
             listOf("enc_cron/catalog_sample.xml"),
-        ) { path ->
-            val entries = mutableListOf<EncCatalogEntry>()
-            val parser = EncProdCatParser { entries.add(it) }
-            val bytes = fixtures.readBytes(path)
-            ExpatSax(parser).use { sax ->
-                // feed in small chunks so a text node split across buffers is exercised too
-                var offset = 0
-                while (offset < bytes.size) {
-                    val n = minOf(4096, bytes.size - offset)
-                    sax.feed(bytes.copyOfRange(offset, offset + n), n)
-                    offset += n
-                }
-                sax.finish()
-            }
-            assertEquals(parseCatalogFile(fixtures.file(path)).map { it.out() }, entries.map { it.out() }, "parseCatalogFile must agree with the chunked parse")
-            Parsed(parser.recordsSeen, parser.recordsSkipped, entries.map { it.out() })
-        }
+            // The sample holds exactly one seriesMetadata record.
+            port = { path -> parse(path).let { PortDivergence("D15", it.copy(recordsSeen = it.recordsSeen - 1, recordsSkipped = it.recordsSkipped - 1)) } },
+        ) { parse(it) }
         val parsed = Json.decodeFromJsonElement(Parsed.serializer(), table.cases.single().expected)
         assertEquals(4, parsed.entries.size, "four complete real records")
         assertEquals(2, parsed.recordsSkipped, "the record without <onLine> and the seriesMetadata record")

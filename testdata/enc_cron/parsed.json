@@ -1,7 +1,8 @@
 {
-  "pins": "EncProdCatParser: cell/edition/url/scale/transferSize and the revision vs publication CI_Date per MD_Metadata record, dates normalised to YYYYMMDD; records missing cell, edition or url are counted in recordsSkipped and dropped; the decoy sourceCitation title never leaks; derived chartName/updateNumber/revisionKey",
+  "pins": "EncProdCatParser: cell/edition/url/scale/transferSize and the revision vs publication CI_Date per MD_Metadata record, dates normalised to YYYYMMDD; records missing cell, edition or url are counted in recordsSkipped and dropped; the decoy sourceCitation title never leaks; derived chartName/updateNumber/revisionKey. D15: Kotlin counts the seriesMetadata record (the catalog's own, no edition or URL) as seen and skipped; the port counts cell records only",
   "decisions": [
-    "EC-5"
+    "EC-5",
+    "D15"
   ],
   "generator": "EncProdCatFixtureTest",
   "source": "testdata/enc_cron/catalog_sample.xml (testdata/tools/trim_catalog.py over a real ENCProdCat_19115.xml)",
@@ -61,6 +62,63 @@
             "revisionKey": "0:20241220:20241220"
           }
         ]
+      },
+      "port": {
+        "decision": "D15",
+        "expected": {
+          "recordsSeen": 5,
+          "recordsSkipped": 1,
+          "entries": [
+            {
+              "cell": "US1EEZ1M",
+              "edition": "10.1",
+              "url": "https://www.charts.noaa.gov/ENCs/US1EEZ1M.zip",
+              "scale": 3000000,
+              "sizeMb": 0.20743846893310547,
+              "revisionDate": "20251209",
+              "publicationDate": "20260804",
+              "chartName": "US1EEZ1M.000",
+              "updateNumber": "1",
+              "revisionKey": "1:20251209:20260804"
+            },
+            {
+              "cell": "US3AK12M",
+              "edition": "13.1",
+              "url": "https://www.charts.noaa.gov/ENCs/US3AK12M.zip",
+              "scale": 200000,
+              "sizeMb": 0.8561716079711914,
+              "revisionDate": "20230609",
+              "publicationDate": "20260610",
+              "chartName": "US3AK12M.000",
+              "updateNumber": "1",
+              "revisionKey": "1:20230609:20260610"
+            },
+            {
+              "cell": "US509890",
+              "edition": "1.1",
+              "url": "https://www.charts.noaa.gov/ENCs/US509890.zip",
+              "scale": 35000,
+              "sizeMb": 0.5547800064086914,
+              "revisionDate": "20150722",
+              "publicationDate": "20260325",
+              "chartName": "US509890.000",
+              "updateNumber": "1",
+              "revisionKey": "1:20150722:20260325"
+            },
+            {
+              "cell": "US5A1KFV",
+              "edition": "1.0",
+              "url": "https://www.charts.noaa.gov/ENCs/US5A1KFV.zip",
+              "scale": 12000,
+              "sizeMb": 0.23301410675048828,
+              "revisionDate": "20241220",
+              "publicationDate": "20241220",
+              "chartName": "US5A1KFV.000",
+              "updateNumber": "0",
+              "revisionKey": "0:20241220:20241220"
+            }
+          ]
+        }
       }
     }
   ]

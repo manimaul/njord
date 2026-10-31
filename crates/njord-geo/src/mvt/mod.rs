@@ -30,7 +30,9 @@
 //!    lies within that grown square is kept whole; the rest is intersected with the clip square
 //!    (`-8..4104`), and an empty result is dropped.
 //! 6. Coordinates are rounded half to even (Kotlin's `round`) and delta/zig-zag encoded per the
-//!    MVT 2.1 spec; exterior rings are written clockwise on screen, holes counter-clockwise.
+//!    MVT 2.1 spec; exterior rings are written clockwise on screen, holes counter-clockwise. A
+//!    ring that rounds to a zero-area sliver of fewer than four pixels is not written (GEOS never
+//!    leaves one; `geo`'s repair can).
 
 pub mod proto;
 pub mod view;
@@ -384,7 +386,8 @@ impl Commands {
     }
 
     /// The exterior ring clockwise on screen (positive shoelace with y down) and holes
-    /// counter-clockwise, whatever the input winding.
+    /// counter-clockwise, whatever the input winding. A [degenerate](is_degenerate_ring) ring is
+    /// left out, and with a degenerate exterior the whole polygon.
     fn polygon(&mut self, polygon: &Polygon) -> Vec<u32> {
         let ring = |cs: &[Coord], reverse: bool| -> Vec<Coord> {
             let mut cs = cs.to_vec();
@@ -394,8 +397,14 @@ impl Commands {
             cs
         };
         let exterior = &polygon.exterior().0;
+        if is_degenerate_ring(exterior) {
+            return vec![];
+        }
         let mut commands = self.coords(&ring(exterior, signed_area(exterior) < 0.0), true);
         for interior in polygon.interiors() {
+            if is_degenerate_ring(&interior.0) {
+                continue;
+            }
             let cs = ring(&interior.0, signed_area(&interior.0) > 0.0);
             commands.extend(self.coords(&cs, true));
         }
@@ -478,6 +487,25 @@ impl Commands {
 /// `0.0` differ, `NaN` equals `NaN`.
 fn same_position(a: Coord, b: Coord) -> bool {
     a.x.total_cmp(&b.x).is_eq() && a.y.total_cmp(&b.y).is_eq()
+}
+
+/// A ring that rounds to fewer than four distinct pixels enclosing no area: a sub-pixel sliver
+/// such as the lobe of a bow-tie that `geo`'s [`make_valid`] keeps as a polygon of its own
+/// (P-TE-5 LAKARE `02260A82E9560782` and its BUAARE hole `02261B0F61BE214F` on 14/2616/5742).
+/// GEOS leaves no such ring in the Kotlin tiles; written, it would decode as a two-pixel spike.
+fn is_degenerate_ring(cs: &[Coord]) -> bool {
+    let mut pixels: Vec<Coord> = cs
+        .iter()
+        .map(|c| Coord {
+            x: f64::from(round_px(c.x)),
+            y: f64::from(round_px(c.y)),
+        })
+        .collect();
+    pixels.dedup();
+    let mut distinct = pixels.clone();
+    distinct.sort_by(|a, b| a.x.total_cmp(&b.x).then(a.y.total_cmp(&b.y)));
+    distinct.dedup();
+    distinct.len() < 4 && signed_area(&pixels) == 0.0
 }
 
 /// Shoelace area over the ring as given (closing vertex included), y down.

@@ -20,14 +20,28 @@ def fixtures_root() -> Path:
     return Path(__file__).resolve().parents[2] / "testdata"
 
 
+def _cell_files(cell: str, directory: Path) -> list[Path]:
+    """
+    The files of `cell` in `directory`: those named after the cell (`.000`, `.00N` updates) and,
+    when the directory is the cell's own (`fixtures/<CELL>/`), every `.TXT` sidecar, whose names
+    need not start with the cell name (US5WA22M's are `US5WA22A.TXT` … `US5WA22D.TXT`). In a
+    directory several cells share (`fixtures/synthetic/`) only the cell-named files are taken.
+    """
+    own_dir = directory.name.upper() == cell
+    return [
+        f for f in sorted(directory.iterdir())
+        if f.is_file() and not f.name.endswith(".md")
+        and (f.name.upper().startswith(cell) or (own_dir and f.suffix.upper() == ".TXT"))
+    ]
+
+
 def zip_cells(cells: dict[str, Path]) -> bytes:
     """A NOAA-style zip: `ENC_ROOT/<CELL>/<files…>` so GDAL finds the `.00N` updates and `.TXT` sidecars."""
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
         for cell, directory in cells.items():
-            for f in sorted(directory.iterdir()):
-                if f.is_file() and f.name.upper().startswith(cell) and not f.name.endswith(".md"):
-                    zf.write(f, f"ENC_ROOT/{cell}/{f.name}")
+            for f in _cell_files(cell, directory):
+                zf.write(f, f"ENC_ROOT/{cell}/{f.name}")
     return buf.getvalue()
 
 

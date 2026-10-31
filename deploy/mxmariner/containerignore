@@ -1,0 +1,10 @@
+# Ignore file for Containerfile.rust (passed with --ignorefile by deploy.sh). Whitelist only what
+# the image needs; in particular this keeps the multi-GB Cargo target/ out of the build context.
+*
+!Cargo.toml
+!Cargo.lock
+!crates
+crates/**/target
+!server/src/nativeMain/resources
+!web/build/dist/js/productionExecutable
+!deploy/mxmariner/application.json

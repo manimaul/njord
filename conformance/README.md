@@ -21,7 +21,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python 
 |---|---|---|
 | **record** | `--record` | Every spec is fetched from `--base-url` (a **Kotlin** server) and written to `golden/<group>/<case>.json`. `port_only` tests are skipped. |
 | **verify** | default | Every spec is fetched and compared with its golden. Fails on any difference, naming the JSON pointer. |
-| **diff** | `--compare-url` | Every spec is fetched from both servers and the two masked responses are compared with each other; goldens are not touched. Read-only: mutating tests are skipped, because the two servers may share a database. |
+| **diff** | `--compare-url` | Every spec is fetched from both servers and the two masked responses are compared with each other; goldens are not touched. Read-only: mutating tests are skipped, because the two servers may share a database. When a Kotlin `--base-url` is diffed against a Rust `--compare-url` (both auto-detected), a spec's `port` block is applied to the Kotlin response first, so a decided divergence (D4, D8) is not reported as a difference. |
 
 Options: `--golden-dir` (default `conformance/golden`), `--compare auto|exact|shape` (see below),
 `--admin-user/--admin-pass/--admin-key` (default `admin`/`admin`/`changeme` from
@@ -60,8 +60,13 @@ A golden holds the request, its masking list, the comparison policy and the mask
 
 `port` carries the Rust port's divergent expectation for an accepted Kotlin defect
 ([TEST_COVERAGE_AUDIT.md §3.1](../docs/TEST_COVERAGE_AUDIT.md#31-decisions-2026-10-30)), e.g.
-`{"decision": "D8", "status": 400}`; it replaces the recorded fields when `--server-impl` is (or
-auto-detects as) `rust`. Tests that can only pass on the port are marked `port_only` and skipped
+`{"decision": "D8", "status": 400, "content_type": ""}`; it replaces the recorded fields when
+`--server-impl` is (or auto-detects as) `rust`, and every field the port answers differently must
+be in it (an empty response is `"content_type": ""`, and a `text` body that is empty is `""`, not
+`null`). The blocks are defined in the test modules, so a re-record keeps them. A port body too
+large to write inline lives in `port_bodies/`, with its own header saying how it was built (D14's
+`geojson_existing_layer.json` comes from the seeded database through Kotlin's own query, not from
+the Rust server). Tests that can only pass on the port are marked `port_only` and skipped
 against a Kotlin server. Auto-detection reads `GET /v1/about/version`: the server is Kotlin unless
 the body has `"implementation": "rust"` or `rust` appears in `version`.
 
@@ -83,12 +88,48 @@ reviewed decision rather than a silent skip. Masked today:
 | unknown routes, non-integer tile params | body (`html`) | the SPA index page of the deployment |
 | `style/*` | layer-id counter | see "Kotlin behaviour pinned as observed" |
 | ingest `CompletionReport` | `ms` | wall clock |
+| every GeoJSON object (comparison only) | `null` members | Kotlin writes `"bbox": null`, `"crs": null`, `"id": null`; the port (georust `geojson`) omits them |
+
+The last row is not a mask list entry: `engine.comparable_body` drops the `null` members of every
+object whose `"type"` is a GeoJSON type (`Point` … `GeometryCollection`, `Feature`,
+`FeatureCollection`) on **both** sides before comparing, in every JSON kind; RFC 7946 gives an
+absent and a `null` member the same meaning. Nulls outside GeoJSON objects (`archive: null` in the
+region manifest, a property whose value is `null`) are compared as usual. Goldens keep the nulls
+Kotlin wrote.
 
 Response **kinds** decide how a body is reduced: `json` (parsed, masked), `style` (plus layer-id
 normalisation), `geojson`/`info` (features sorted by layer and `LNAM`, since the database returns
 them in storage order), `tile` (decoded with `mapbox_vector_tile`, layers sorted, features sorted by
-`LNAM`/props/geometry, encoder ids dropped; raw sha256 and size recorded, never asserted), `bytes`
-(size + sha256), `text`, `html` (status and content type only).
+`LNAM`/props/type/geometry, encoder ids dropped; raw sha256 and size recorded, never asserted),
+`bytes` (size + sha256), `text`, `html` (status and content type only).
+
+## Comparison rules
+
+Applied to both sides of every comparison (`engine.comparable_body`), so goldens recorded before a
+rule existed compare the same as new ones:
+
+- **Tile geometry** (`tiles.canonical_view`) is canonicalised for what carries no meaning in MVT:
+  a closed ring, and a closed `LineString`, is rotated to start at its smallest vertex
+  (lexicographic `(x, y)`; the closing vertex follows), the parts of a `MultiPoint`,
+  `MultiLineString` and `MultiPolygon` are sorted, and so are a polygon's holes (the exterior ring
+  stays first). An open line is never reversed or merged with another part.
+- **Tile vertices within 0.5 px** (`tiles.tile_differences`, `tiles.PIXEL_TOLERANCE`, decided
+  2026-10-30). Layers, `extent`/`version`, which features exist (paired by `LNAM`, else by their
+  properties), each feature's type, properties and number of parts are compared exactly. Two
+  drawings of a feature match when every vertex of each lies within 0.5 px of the other's polyline
+  (a symmetric point-to-segment Hausdorff distance), so a vertex kept or dropped by simplification
+  passes and anything visibly different fails. GEOS (Kotlin) and `geo` (Rust) simplify from
+  different ring starts; the largest such difference on the fixture cells is 0.1 px. The same
+  rule gates P-TE-5 in `crates/njord-server/tests/tiles.rs`.
+- **`?info=true`** (`kind: info`): every feature's WGS84 geometry gets the same canonicalisation
+  after its rings are **oriented** (exterior counter-clockwise, holes clockwise: `tiles.orient_rings`;
+  Kotlin writes exteriors clockwise and the port counter-clockwise as RFC 7946 asks, and either is
+  accepted, decided 2026-10-30) and its coordinates are **rounded to 7 decimals**
+  (`tiles.INFO_DECIMALS`, about 1 cm, the precision of the S-57 source, `COMF` = 10⁷). Vertices made
+  by the clip's boolean operations agree between GEOS (Kotlin) and `geo` (Rust) only to about 1e-11°.
+- **GeoJSON `null` members** are dropped (see the masking table).
+- JSON objects compare without regard to key order, and an integer equals the same float.
+
 
 ## Exact versus shape comparison
 
@@ -123,13 +164,24 @@ never as a false alarm on the exact routes.
   Always skipped in diff mode.
 - `signed` — needs an admin signature; skipped when no credentials are available.
 - `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9).
+- `port_pending(reason)` — the reverse: the route is not ported yet (RUST_PORT_PLAN.md Phase 4:
+  `GET /v1/admin` minting, `POST /v1/admin/verify`, the `/v1/ws/enc_process` WebSocket, ingest,
+  chart/geojson/cache/nuke mutations, `POST /v1/regions` and archives that need the export
+  worker), so the test is **skipped** when the `--base-url` server is (or `--server-impl` says it
+  is) the Rust port. Checked in `pytest_runtest_setup`, before fixtures, so the region-archive
+  fixture does not wait for an export worker that does not exist. Remove a marker when its route
+  lands.
 - `local_only` — `X-Forwarded-*` reflection, which a production proxy overrides (`--trust-forwarded`).
 
 ## Seeding and the P-API-8 ingest
 
 The `seeded` session fixture checks `GET /v1/chart_editions` for `US5WA22M.000`, `US4ZZ01M.000`
 and `US5ZZ02M.000` and, on a local server, ingests the missing ones through the API itself
-(`lib/seed.py`: zip `testdata/fixtures/<cell>/*` as `ENC_ROOT/<cell>/…`, `POST /v1/enc_save`,
+(`lib/seed.py`: zip `testdata/fixtures/<cell>/*` as `ENC_ROOT/<cell>/…` — the cell's `.000` and
+`.00N` files and, from a per-cell directory, every `.TXT` sidecar, whose names need not start with
+the cell name (`US5WA22A.TXT` … `US5WA22D.TXT`; before 2026-10-30 they were left out and the chart
+golden pinned `chart_txt: {}`); the synthetic cells share one directory and take only their own
+files — `POST /v1/enc_save`,
 follow `/v1/ws/enc_process` to the `CompletionReport`, `DELETE /v1/enc_save`). Data tests skip when
 the real cell is absent and cannot be seeded; tests that need the synthetic cells skip when those
 are absent (production never has them). `test_api_99_nuke.py` wipes everything last and re-seeds.
@@ -165,7 +217,9 @@ Recorded as the Kotlin server does it; none of these has a port decision in TEST
 
 The goldens record the build they came from in `golden/_recorded_build.json`; verify mode prints
 a warning when the target runs another build, because the exact routes (style, sprites) then
-legitimately differ. Against `https://openenc.com` (master `505032bc`, 2026-10-18) everything
+legitimately differ. `api_04_charts/chart.json` alone was re-recorded on 2026-10-30 from
+build `7ba2877` after the `.TXT` seed fix (only `chart_txt` changed); `_recorded_build.json` still
+names the build the rest came from. Against `https://openenc.com` (master `505032bc`, 2026-10-18) everything
 passes except the 28 style and 4 sprite goldens recorded from this branch, which carries the
 drying-height sounding style and a regenerated sprite sheet; they will pass once production runs
 the same build, or when the goldens are recorded from production's build.

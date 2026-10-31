@@ -7,7 +7,8 @@
 //! Results follow GEOS's choice of output type where the MVT encoder's behaviour depends on it:
 //! an intersection with one part comes back as the single-part type (`Point`, `LineString`,
 //! `Polygon`), several parts as the multi type, and an empty result as an empty multi type of the
-//! same dimension.
+//! same dimension. Lines are cut where GEOS cuts them, and a line that only touches the mask
+//! gives the touching points ([`intersection`]).
 //!
 //! Boolean operations run on `geo`'s `i_overlay` backend, which snaps coordinates to an integer
 //! grid scaled to the inputs' bounding box. Output vertices therefore agree with GEOS to roughly
@@ -20,6 +21,10 @@ use geo_types::{
 };
 
 use crate::tile_system::TileSystem;
+
+/// How far, relative to the extent of a boolean op's inputs, an output vertex may lie from the
+/// input vertex it was copied from (`i_overlay` grid snapping) and still count as that vertex.
+const SNAP_TOLERANCE: f64 = 1e-9;
 
 /// True when the geometry has no coordinates (`OGR_G_IsEmpty`).
 pub fn is_empty(geometry: &Geometry) -> bool {
@@ -100,15 +105,58 @@ pub fn envelope_polygon(geometry: &Geometry, expand: f64) -> Polygon {
 /// result), and picks different ring start vertices. Any other invalid geometry (non-finite
 /// coordinates, a line with a single distinct vertex) has no repair and gives `None`, as a failed
 /// `OGR_G_MakeValid` does.
+///
+/// The repair is made deterministic by [`canonical_polygons`]: `geo` traces its output rings by
+/// iterating a `HashSet` with a randomly seeded hasher, so its ring start vertices and the order
+/// of rings and polygons change from call to call (and with them what Douglas–Peucker keeps
+/// downstream; P-TE-5 LAKARE `02260A82E9560782` on 14/2616/5742).
 pub fn make_valid(geometry: &Geometry) -> Option<Geometry> {
     if geometry.is_valid() {
         return Some(geometry.clone());
     }
-    match geometry {
-        Geometry::Polygon(p) => p.make_valid().ok().map(Geometry::MultiPolygon),
-        Geometry::MultiPolygon(mp) => mp.make_valid().ok().map(Geometry::MultiPolygon),
-        _ => None,
-    }
+    let repaired = match geometry {
+        Geometry::Polygon(p) => p.make_valid().ok()?,
+        Geometry::MultiPolygon(mp) => mp.make_valid().ok()?,
+        _ => return None,
+    };
+    Some(Geometry::MultiPolygon(canonical_polygons(repaired)))
+}
+
+/// Every ring rotated to start at its smallest vertex (by x, then y), holes and polygons ordered
+/// by that vertex: [`make_valid`]'s deterministic output, and the ring starts of [`intersection`]
+/// (`i_overlay` starts rings elsewhere; this start agrees more often with GEOS's after
+/// Douglas–Peucker in P-TE-5).
+fn canonical_polygons(polygons: MultiPolygon) -> MultiPolygon {
+    let smallest = |a: &Coord, b: &Coord| a.x.total_cmp(&b.x).then(a.y.total_cmp(&b.y));
+    let rotate = |ring: &mut LineString| {
+        let cs = &mut ring.0;
+        if cs.len() < 2 || cs.first() != cs.last() {
+            return;
+        }
+        cs.pop();
+        let start = (0..cs.len())
+            .min_by(|&a, &b| smallest(&cs[a], &cs[b]))
+            .unwrap_or(0);
+        cs.rotate_left(start);
+        cs.push(cs[0]);
+    };
+    let by_start = |a: &LineString, b: &LineString| match (a.0.first(), b.0.first()) {
+        (Some(a), Some(b)) => smallest(a, b),
+        (a, b) => a.is_some().cmp(&b.is_some()),
+    };
+    let mut polygons: Vec<Polygon> = polygons
+        .0
+        .into_iter()
+        .map(|p| {
+            let (mut exterior, mut interiors) = p.into_inner();
+            rotate(&mut exterior);
+            interiors.iter_mut().for_each(rotate);
+            interiors.sort_by(by_start);
+            Polygon::new(exterior, interiors)
+        })
+        .collect();
+    polygons.sort_by(|a, b| by_start(a.exterior(), b.exterior()));
+    MultiPolygon(polygons)
 }
 
 fn single_or_multi_points(points: Vec<Point>) -> Geometry {
@@ -133,8 +181,9 @@ fn single_or_multi_polygons(mp: MultiPolygon) -> Geometry {
 }
 
 /// The part of `geometry` inside `mask` (closed: points and lines on the mask's boundary are
-/// kept), with GEOS's output types (see the module docs). Collection members are intersected one
-/// by one and empty results dropped.
+/// kept), with GEOS's output types (see the module docs). Lines are split as GEOS splits them
+/// ([`clip_lines`]); polygon rings start at their smallest vertex ([`canonical_polygons`]).
+/// Collection members are intersected one by one and empty results dropped.
 pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
     match geometry {
         Geometry::Point(p) => single_or_multi_points(
@@ -146,18 +195,22 @@ pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
         Geometry::MultiPoint(mp) => {
             single_or_multi_points(mp.iter().copied().filter(|p| mask.intersects(p)).collect())
         }
-        Geometry::Line(l) => {
-            let lines = MultiLineString(vec![LineString(vec![l.start, l.end])]);
-            single_or_multi_lines(mask.clip(&lines, false))
+        Geometry::Line(l) => clip_lines(
+            &MultiLineString(vec![LineString(vec![l.start, l.end])]),
+            mask,
+        ),
+        Geometry::LineString(ls) => clip_lines(&MultiLineString(vec![ls.clone()]), mask),
+        Geometry::MultiLineString(mls) => clip_lines(mls, mask),
+        Geometry::Polygon(p) => single_or_multi_polygons(canonical_polygons(p.intersection(mask))),
+        Geometry::MultiPolygon(mp) => {
+            single_or_multi_polygons(canonical_polygons(mp.intersection(mask)))
         }
-        Geometry::LineString(ls) => {
-            single_or_multi_lines(mask.clip(&MultiLineString(vec![ls.clone()]), false))
+        Geometry::Rect(r) => {
+            single_or_multi_polygons(canonical_polygons(r.to_polygon().intersection(mask)))
         }
-        Geometry::MultiLineString(mls) => single_or_multi_lines(mask.clip(mls, false)),
-        Geometry::Polygon(p) => single_or_multi_polygons(p.intersection(mask)),
-        Geometry::MultiPolygon(mp) => single_or_multi_polygons(mp.intersection(mask)),
-        Geometry::Rect(r) => single_or_multi_polygons(r.to_polygon().intersection(mask)),
-        Geometry::Triangle(t) => single_or_multi_polygons(t.to_polygon().intersection(mask)),
+        Geometry::Triangle(t) => {
+            single_or_multi_polygons(canonical_polygons(t.to_polygon().intersection(mask)))
+        }
         Geometry::GeometryCollection(gc) => Geometry::GeometryCollection(GeometryCollection(
             gc.iter()
                 .map(|g| intersection(g, mask))
@@ -165,6 +218,120 @@ pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
                 .collect(),
         )),
     }
+}
+
+/// Lines intersected with `mask` as GEOS's overlay returns them, from `geo`'s line clip, one
+/// input line at a time. GEOS's result lines are not merged: they run between nodes, which are
+/// the points where a line meets the mask's boundary, where it crosses itself, and its own start
+/// and end vertex. `geo` instead merges result lines at every vertex where just two of them meet,
+/// and walks a closed line from its smallest vertex (P-TE-5: coastline, contour and
+/// coverage-boundary rings come back split there). So for each input line:
+///
+/// - two pieces that meet end to start strictly inside the mask, with no other piece ending
+///   there, are joined, unless they meet at the line's own start vertex;
+/// - a piece that passes through the start vertex of a closed line is split there;
+/// - a closed piece (the whole ring inside the mask) is rotated back to the line's start.
+///
+/// A line that only touches the mask has no clipped part, but GEOS returns the touching points
+/// (P-TE-5 SLCONS `022600D606360032` on 14/2619/5744, which after simplification ends on the
+/// encoder's clip square and so is drawn as a POINT).
+fn clip_lines(lines: &MultiLineString, mask: &MultiPolygon) -> Geometry {
+    let mut pieces: Vec<LineString> = Vec::new();
+    for line in lines.iter().filter(|l| !l.0.is_empty()) {
+        pieces.extend(clip_line(line, mask));
+    }
+    if pieces.is_empty() {
+        return single_or_multi_points(touching_points(lines, mask));
+    }
+    single_or_multi_lines(MultiLineString(pieces))
+}
+
+/// [`clip_lines`] for one line.
+fn clip_line(line: &LineString, mask: &MultiPolygon) -> Vec<LineString> {
+    use geo::Contains;
+    let mut pieces: Vec<LineString> = mask
+        .clip(&MultiLineString(vec![line.clone()]), false)
+        .0
+        .into_iter()
+        .filter(|l| !l.0.is_empty())
+        .collect();
+    let start = line.0[0];
+    let extent = |r: Option<Rect>| r.map_or(0.0, |r| r.width().max(r.height()));
+    let tolerance = SNAP_TOLERANCE * extent(line.bounding_rect()).max(extent(mask.bounding_rect()));
+    let is_start = |c: &Coord| (c.x - start.x).hypot(c.y - start.y) <= tolerance;
+    let ends_at = |pieces: &[LineString], c: Coord| {
+        pieces
+            .iter()
+            .map(|p| usize::from(p.0[0] == c) + usize::from(p.0[p.0.len() - 1] == c))
+            .sum::<usize>()
+    };
+    'merge: loop {
+        for i in 0..pieces.len() {
+            let end = pieces[i].0[pieces[i].0.len() - 1];
+            if pieces[i].is_closed()
+                || is_start(&end)
+                || !mask.contains(&Point(end))
+                || ends_at(&pieces, end) != 2
+            {
+                continue;
+            }
+            if let Some(j) = (0..pieces.len()).find(|&j| j != i && pieces[j].0[0] == end) {
+                let tail = pieces.remove(j);
+                let i = if j < i { i - 1 } else { i };
+                pieces[i].0.extend(tail.0.into_iter().skip(1));
+                continue 'merge;
+            }
+        }
+        break;
+    }
+    if !line.is_closed() {
+        return pieces;
+    }
+    let mut out = Vec::with_capacity(pieces.len() + 1);
+    for mut piece in pieces {
+        let cs = &mut piece.0;
+        if piece_is_ring(cs) {
+            cs.pop();
+            let k = (0..cs.len()).find(|&k| is_start(&cs[k])).unwrap_or(0);
+            cs.rotate_left(k);
+            cs.push(cs[0]);
+            out.push(piece);
+        } else if let Some(k) = (1..cs.len().saturating_sub(1)).find(|&k| is_start(&cs[k])) {
+            let tail = cs.split_off(k);
+            cs.push(tail[0]);
+            out.push(piece);
+            out.push(LineString(tail));
+        } else {
+            out.push(piece);
+        }
+    }
+    out
+}
+
+fn piece_is_ring(cs: &[Coord]) -> bool {
+    cs.len() > 2 && cs.first() == cs.last()
+}
+
+/// The points where `lines` meet the boundary of `mask`, in input order without repeats.
+fn touching_points(lines: &MultiLineString, mask: &MultiPolygon) -> Vec<Point> {
+    use geo::line_intersection::{LineIntersection, line_intersection};
+    let edges: Vec<geo_types::Line> = mask
+        .iter()
+        .flat_map(|p| std::iter::once(p.exterior()).chain(p.interiors()))
+        .flat_map(|r| r.lines())
+        .collect();
+    let mut points: Vec<Point> = Vec::new();
+    for segment in lines.iter().flat_map(|l| l.lines()) {
+        for edge in &edges {
+            if let Some(LineIntersection::SinglePoint { intersection, .. }) =
+                line_intersection(segment, *edge)
+                && !points.iter().any(|p| p.0 == intersection)
+            {
+                points.push(Point(intersection));
+            }
+        }
+    }
+    points
 }
 
 /// `a − b`, or `None` when `b` is invalid: Kotlin's `difference` refuses an invalid mask rather

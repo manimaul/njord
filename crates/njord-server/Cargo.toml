@@ -1,0 +1,49 @@
+[package]
+name = "njord-server"
+description = "The Njord chart server: HTTP API, tile serving and tile cache"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "njord-server"
+path = "src/main.rs"
+
+[dependencies]
+axum = { version = "0.8.9", default-features = false, features = ["http1", "http2", "json", "query", "tokio", "tracing"] }
+base64 = "0.22.1"
+geo = "0.33"
+geo-types = "0.7.20"
+geojson = { workspace = true, features = ["geo-types"] }
+hmac = "0.12.1"
+jiff = { workspace = true, features = ["tz-system", "tzdb-zoneinfo"] }
+# zlib itself, for icon PNGs byte-identical to libgd + libpng (see `gd_png`); the system zlib when
+# one is found, as libpng uses, otherwise the bundled source.
+libz-sys = "1.1.31"
+libc = "0.2.169"
+mime_guess = "2.0.5"
+njord-db.workspace = true
+njord-geo.workspace = true
+njord-model.workspace = true
+njord-symbology.workspace = true
+percent-encoding = "2.3.2"
+png = "0.17"
+serde.workspace = true
+serde_json.workspace = true
+sha2 = "0.10.9"
+subtle = "2.6.1"
+tokio = { version = "1.54", features = ["macros", "rt-multi-thread", "net", "signal", "fs"] }
+tower-http = { version = "0.6.11", features = ["catch-panic", "trace"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
+wkt = "0.14.0"
+
+[build-dependencies]
+jiff = { workspace = true, features = ["tz-system", "tzdb-zoneinfo"] }
+
+[dev-dependencies]
+njord-s57.workspace = true
+njord-testdata.workspace = true
+serde_json.workspace = true
+tower = { version = "0.5.3", features = ["util"] }

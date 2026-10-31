@@ -71,6 +71,7 @@ def test_out_of_range_tile(checker, z, x, y):
     # holds (production has Natural Earth, a fixture server has none).
     checker.check(f"{G}/out_of_range_{z}_{x}_{y}", Spec(
         f"/v1/tile/{z}/{x}/{y}", kind="tile", data=True,
-        port={"decision": "D8", "status": 400},
+        # The port's 400 has an empty body and no content type.
+        port={"decision": "D8", "status": 400, "content_type": ""},
         note="D8: Kotlin 200 empty tile, port 400",
     ))

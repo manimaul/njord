@@ -1,0 +1,128 @@
+---
+# mxmariner environment (docs/RUST_PORT_PLAN.md §10), copied from k8s_deploy/ with the §10.3 edits.
+# Rendered and applied by `deploy/mxmariner/deploy.sh --execute apply cron`.
+#
+# Nightly NOAA ENC update.
+#
+# Parses https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml, asks the chart service which chart
+# revisions it already holds via GET /v1/chart_editions, and downloads only the cells that
+# actually changed - bundling them into zips that ChartIngestWorker picks up from
+# /mnt/njord/charts/save.
+#
+# This replaces an unconditional `curl OneDay_ENCs.zip`, which re-ingested every cell in the
+# bundle nightly and permanently lost anything published while the cluster was down.
+#
+# Needs no database access: the revision baseline comes from the HTTP endpoint, so there is no
+# pgbouncer sidecar here.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: njord-enc-download
+  namespace: ${NJORD_NAMESPACE}
+spec:
+  # 02:00 PT, two hours after the njord namespace's run, so the two environments do not fetch
+  # the same NOAA catalog and cells in the same minute (§10.2 item 6).
+  schedule: "0 2 * * *"
+  timeZone: "America/Los_Angeles"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      # Delete the Job (and its pod) a day after it finishes, so the last run's logs survive
+      # until the next morning but completed pods don't accumulate.
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: ghreg
+          containers:
+            - name: enc-download
+              # PHASE 3: Kotlin image and Kotlin enc_cron.kexe (§10.4). PHASE 5 flip: set
+              # NJORD_ENC_CRON_IMPL=rust in deploy.sh and replace command below with the Rust
+              # enc_cron entry point.
+              image: ${NJORD_ENC_CRON_IMAGE}
+              imagePullPolicy: Always
+              securityContext:
+                runAsUser: 0
+              command:
+                - /opt/njord/enc_cron.kexe
+                - /opt/njord/enc_cron_resources
+              # Tunables live in the njord-enc-cron-config ConfigMap below, which replaces the
+              # copy baked into the image. ENC_CRON_OPTS still overlays it if you need a one-off
+              # override on a manually created Job.
+              env:
+                # Authorizes DELETE /v1/chart for cells NOAA has withdrawn. Without both, the job
+                # still reports orphans but deletes nothing. Set deleteOrphans:false in the
+                # ConfigMap to switch the behaviour off entirely while leaving credentials in place.
+                # Created by `deploy/mxmariner/deploy.sh secrets` (njord-admin-basic), or by hand:
+                # kubectl -n ${NJORD_NAMESPACE} create secret generic njord-admin-basic \
+                #   --from-literal=admin_user="${NJORD_ADMIN_USER}" --from-literal=admin_pass="${NJORD_ADMIN_PASS}"
+                - name: ENC_CRON_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: njord-admin-basic
+                      key: admin_user
+                      optional: true
+                - name: ENC_CRON_ADMIN_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: njord-admin-basic
+                      key: admin_pass
+                      optional: true
+              resources:
+                limits:
+                  cpu: "1.0"
+                  memory: "1G"
+                requests:
+                  cpu: 250m
+                  memory: "256Mi"
+              volumeMounts:
+                # subPath so only this file is replaced, leaving the rest of enc_cron_resources
+                # as the image shipped it.
+                - name: njord-enc-cron-config-vol
+                  mountPath: /opt/njord/enc_cron_resources/config/enc_cron.json
+                  subPath: enc_cron.json
+                  readOnly: true
+                - name: njord-shared-data
+                  mountPath: /mnt/njord
+          volumes:
+            - name: njord-enc-cron-config-vol
+              configMap:
+                name: njord-enc-cron-config
+            - name: njord-shared-data
+              persistentVolumeClaim:
+                claimName: njord-shared-data
+---
+# The whole of enc_cron.json, not a patch: the mount replaces the file baked into the image, so
+# anything omitted here falls back to the data class default rather than to the image's copy.
+#
+# Raise maxCellsPerRun temporarily to seed a cold catalog faster (~7.2k cells).
+#
+# deleteOrphans is false in Phase 3: orphan deletes go through /v1/admin and DELETE /v1/chart,
+# which the Rust njord-chart-dep only implements in Phase 4 (§6). Turn it back on with that flip.
+#
+# Edits apply to the next scheduled run - a CronJob builds a fresh pod each time, so there is no
+# rollout to trigger.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: njord-enc-cron-config
+  namespace: ${NJORD_NAMESPACE}
+data:
+  enc_cron.json: |
+    {
+      "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
+      "chartEditionsUrl": "http://njord-chart-svc/v1/chart_editions",
+      "chartTempData": "/mnt/njord/charts",
+      "maxCellsPerRun": 500,
+      "bundleSizeCells": 50,
+      "maxBundleUncompressedBytes": 268435456,
+      "maxQueuedBundles": 3,
+      "scaleFilter": [],
+      "requestTimeoutSeconds": 600,
+      "maxRetries": 3,
+      "deleteOrphans": false,
+      "maxOrphanDeletes": 25
+    }

@@ -9,7 +9,7 @@ from lib import seed
 from lib.engine import Spec
 
 G = "api_99_nuke"
-pytestmark = [pytest.mark.mutating, pytest.mark.signed]
+pytestmark = [pytest.mark.mutating, pytest.mark.signed, pytest.mark.port_pending("Phase 4: DELETE /v1/nuke and re-seed")]
 
 
 def test_nuke_empties_everything_then_reseed(checker, client, signature, seeded):

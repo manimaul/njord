@@ -16,6 +16,7 @@ njord-testdata = { path = "crates/njord-testdata" }
 njord-geo = { path = "crates/njord-geo" }
 njord-s57 = { path = "crates/njord-s57" }
 njord-symbology = { path = "crates/njord-symbology" }
+njord-db = { path = "crates/njord-db" }
 geojson = { version = "1", default-features = false }
 indexmap = { version = "2", features = ["serde"] }
 jiff = { version = "0.2", default-features = false, features = ["std"] }

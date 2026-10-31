@@ -18,7 +18,8 @@
   "volatile": false,
   "port": {
     "decision": "D8",
-    "status": 400
+    "status": 400,
+    "content_type": ""
   },
   "expected": {
     "status": 200,

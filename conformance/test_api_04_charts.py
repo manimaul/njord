@@ -4,6 +4,9 @@ These are data-dependent: compared exactly when the target holds the same chart 
 recording (local servers seeded with the fixture cells), by shape otherwise (production).
 """
 
+import json
+from pathlib import Path
+
 import pytest
 
 from lib.engine import Spec
@@ -11,6 +14,7 @@ from lib.engine import Spec
 G = "api_04_charts"
 CELL = "US5WA22M.000"
 LIGHT_LNAM = "022600019FEA0001"  # a LIGHTS feature of US5WA22M
+PORT_BODIES = Path(__file__).parent / "port_bodies"
 
 
 def test_chart(checker, sample):
@@ -80,12 +84,16 @@ def test_geojson_unknown_chart_is_an_empty_collection(checker):
 
 
 def test_geojson_existing_layer(checker, sample):
-    # Pinned as observed: the Kotlin server answers 404 for every chart/layer that HAS features,
-    # while an unknown chart (zero rows) gets an empty collection. `GeoJsonDao.fetchAsync` decodes
-    # its `row_to_json` rows into `geojson.Feature`, whose `id` is `String?` while the row's `id`
-    # is a number and whose serializer rejects the row's extra `layer` key; the DAO retries exhaust
-    # and the handler sees null. Candidate defect; no port decision recorded yet.
+    # D14: the Kotlin server answers 404 for every chart/layer that HAS features, while an unknown
+    # chart (zero rows) gets an empty collection. `GeoJsonDao.fetchAsync` decodes its `row_to_json`
+    # rows into `geojson.Feature`, whose `id` is `String?` while the row's `id` is a number and
+    # whose serializer rejects the row's extra `layer` key; the DAO retries exhaust and the handler
+    # sees null. The port serves the collection; its expected body (port_bodies/) was built from the
+    # seeded database with Kotlin's own query, ids masked.
+    port_body = json.loads((PORT_BODIES / "geojson_existing_layer.json").read_text())["body"]
     checker.check(f"{G}/geojson_existing_layer", Spec(
         f"/v1/geojson?chart_name={sample['lights_chart']}&layer_name=LIGHTS", kind="geojson", data=True,
-        note="Kotlin answers 404 for a layer that has features (DAO decode failure)",
+        masks=("/features/*/id",),
+        port={"decision": "D14", "status": 200, "content_type": "application/json", "body": port_body},
+        note="Kotlin answers 404 for a layer that has features (DAO decode failure, D14)",
     ))

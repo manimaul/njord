@@ -72,14 +72,7 @@ podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
 ### Rust port
 
 The Rust port ([plan](docs/RUST_PORT_PLAN.md)) is a Cargo workspace at the root (`crates/`), built alongside Gradle.
-
-```bash
-cargo test --workspace                                         # round-trips testdata/ and conformance/golden/
-cargo check -p njord-model --target wasm32-unknown-unknown     # the contract crate must build for the web UI
-cargo clippy --workspace --all-targets -- -D warnings
-```
-
-`njord-s57` is the only crate that links GDAL, through the georust `gdal` crate pinned to a master commit (the released 0.19 does not build against GDAL 3.13). That commit has prebuilt bindings for GDAL 3.8–3.13, so Homebrew's 3.13 and Debian 13's 3.10 both build with plain `cargo build`; no bindgen or libclang.
+See [README_RUST.md](README_RUST.md) for running, testing and configuring it.
 
 ### NOAA update job
 

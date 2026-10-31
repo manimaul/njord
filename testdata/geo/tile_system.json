@@ -1,8 +1,9 @@
 {
-  "pins": "TileSystem: Web Mercator tile/pixel math with 4096px tiles, scale<->zoom at 96 dpi with the 0.92 tweak on the integer form, clip polygons incl. the 15px expansion; inputs past the Mercator limits are clamped. KNOWN DEFECT recorded as-is: mapSize(z) = 4096 shl z overflows Int from z20, so the z24 cases pin garbage (clamped pixels, infinite clip corners); the port should treat z >= 20 as a decision, not copy these values",
+  "pins": "TileSystem: Web Mercator tile/pixel math with 4096px tiles, scale<->zoom at 96 dpi with the 0.92 tweak on the integer form, clip polygons incl. the 15px expansion; inputs past the Mercator limits are clamped. KNOWN DEFECT recorded as-is (D10): mapSize(z) = 4096 shl z overflows Int from z19 (4096 shl 19 = 2^31), so the z19 and z24 cases pin garbage (clamped pixels, infinite clip corners); the port computes mapSize in 64 bits and does not copy these values",
   "decisions": [
     "TE-9",
-    "D8"
+    "D8",
+    "D10"
   ],
   "generator": "TileSystemFixtureTest",
   "source": "hand-written grid over the poles, the antimeridian, z0 and z24 plus the TileSystemTest expectations",

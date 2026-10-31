@@ -106,6 +106,6 @@ builds against Debian 13's GDAL, so a verify run there may fail on the header or
 vertices and must regenerate under its own GDAL once, after which that version is the one pinned.
 
 **Known Kotlin quirks pinned as behaviour** (see TEST_COVERAGE_AUDIT.md §3): `TileSystem.mapSize`
-overflows `Int` from z20, so `geo/tile_system.json` records nonsense for z ≥ 20; style layer ids
+overflows `Int` from z19 (D10), so `geo/tile_system.json` records nonsense for z ≥ 19; style layer ids
 depend on how many times the style was served, so `symbology/style/*` pins the first request of a
 fresh `LayerFactory`.

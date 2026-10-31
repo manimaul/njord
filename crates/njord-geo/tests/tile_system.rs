@@ -5,8 +5,7 @@ use njord_testdata::{Failures, cases, first_difference, port_expected};
 use serde_json::{Value, json};
 
 /// Kotlin computes `mapSize = 4096 shl z` in an `Int`, which overflows from z19 (`2^12 << 19 ==
-/// 2^31`, not z20 as the fixture header says), so every op that goes through it pins garbage at
-/// z ≥ 19. Decision D10 has the port compute it in 64 bits; those cases carry no `port.expected`,
+/// 2^31`), so every op that goes through it pins garbage at z ≥ 19. Decision D10 has the port compute it in 64 bits; those cases carry no `port.expected`,
 /// so they are checked for sanity instead of equality.
 const KOTLIN_OVERFLOWS_FROM_Z: u64 = 19;
 

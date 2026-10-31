@@ -135,9 +135,32 @@ def detect_impl(client: Client) -> str:
     return "rust" if "rust" in str(about.get("version", "")).lower() else "kotlin"
 
 
+_IMPL = pytest.StashKey[str]()
+
+
+def impl_under_test(pytestconfig: pytest.Config) -> str:
+    """`--server-impl`, or the `--base-url` server's detected implementation (cached per session)."""
+    if _IMPL not in pytestconfig.stash:
+        chosen = pytestconfig.getoption("--server-impl")
+        pytestconfig.stash[_IMPL] = chosen if chosen != "auto" else detect_impl(Client(pytestconfig.getoption("--base-url")))
+    return pytestconfig.stash[_IMPL]
+
+
 @pytest.fixture(scope="session")
-def server_impl(config: Config, client: Client) -> str:
-    return config.server_impl if config.server_impl != "auto" else detect_impl(client)
+def server_impl(pytestconfig: pytest.Config) -> str:
+    return impl_under_test(pytestconfig)
+
+
+def pytest_runtest_setup(item: pytest.Item) -> None:
+    """
+    `port_pending(reason)`: the route is not ported yet (RUST_PORT_PLAN.md phases), so the test is
+    skipped when the `--base-url` server is the Rust port. Checked here, before any fixture is set
+    up, so a module fixture that waits for the missing feature (the region export worker) never runs.
+    """
+    marker = item.get_closest_marker("port_pending")
+    if marker and not item.config.getoption("--record") and impl_under_test(item.config) == "rust":
+        reason = marker.args[0] if marker.args else "not ported yet"
+        pytest.skip(f"port_pending: {reason}")
 
 
 @pytest.fixture(scope="session")
@@ -201,7 +224,9 @@ def checker(config: Config, primary: Target, secondary: Target | None, server_im
             print(f"\nchart catalog matches the comparison baseline: {state['value']}", file=sys.stderr)
         return state["value"]
 
-    checker = Checker(config.mode, config.golden_dir, primary, secondary, server_impl, config.compare_policy, catalog_matches)
+    compare_impl = detect_impl(secondary.client) if secondary else None
+    checker = Checker(config.mode, config.golden_dir, primary, secondary, server_impl, config.compare_policy, catalog_matches,
+                      compare_impl)
     about = primary.client.get("/v1/about/version").json()
     checker.record_build(about)
     recorded = checker.recorded_build()

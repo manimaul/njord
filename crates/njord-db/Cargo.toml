@@ -1,0 +1,30 @@
+[package]
+name = "njord-db"
+description = "PostGIS access: schema migrations, chart/feature/tile/region queries and chart insertion"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+geo-types = "0.7"
+geojson.workspace = true
+# WKB <-> geo-types only; geometry columns are read through `st_asbinary`, so geozero's sqlx
+# integration (and its sqlx version) is not needed.
+geozero = { version = "0.15", default-features = false, features = ["with-geo", "with-wkb"] }
+indexmap.workspace = true
+njord-geo.workspace = true
+njord-model.workspace = true
+serde_json.workspace = true
+sqlx = { version = "0.9", default-features = false, features = ["json", "postgres", "runtime-tokio"] }
+tokio = { version = "1", features = ["sync", "time"] }
+tracing = "0.1"
+
+[dev-dependencies]
+# Same commit as njord-s57: the tests print query geometries as OGR WKT, the fixtures' form.
+gdal = { git = "https://github.com/georust/gdal", rev = "c0a6266b987a2c2d44aea9956c2cae1ed71445cf" }
+njord-s57.workspace = true
+njord-testdata.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "test-util"] }

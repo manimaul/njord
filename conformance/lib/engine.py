@@ -10,7 +10,8 @@ the comparison policy and the masked response as recorded against the Kotlin ser
   and always for `volatile` specs (counts, archive bytes, the SPA fallback page).
 
 Tiles are compared decoded and canonicalised (`tiles.canonical`); raw bytes' sha256 and size are
-recorded but never asserted.
+recorded but never asserted. `comparable_body` applies the comparison-only normalisations (tile
+geometry canonicalisation, `?info=true` rounding, GeoJSON `null` members) to both sides.
 """
 
 from __future__ import annotations
@@ -162,8 +163,41 @@ def expected_for(golden: dict, impl: str) -> dict:
     return expected
 
 
+def comparable_body(body: Any, kind: str) -> Any:
+    """
+    The body as it is compared, applied to both sides (goldens keep what was recorded):
+
+    - `tile`: the decoded view re-canonicalised (`tiles.canonical_view`: ring start vertex and
+      multi-geometry part order carry no meaning in MVT); `compare` then matches vertices within
+      `tiles.PIXEL_TOLERANCE` (`tiles.tile_differences`);
+    - `info`: every feature's WGS84 geometry with its rings oriented (`tiles.orient_rings`: ring
+      direction is accepted either way), rounded to `tiles.INFO_DECIMALS` and canonicalised the
+      same way, then the list re-sorted;
+    - every JSON kind: `null` members of GeoJSON objects dropped (`mask.drop_geojson_nulls`),
+      `geojson` features re-sorted afterwards.
+    """
+    if kind == "tile":
+        if isinstance(body, dict) and isinstance(body.get("decoded"), dict):
+            return {**body, "decoded": tileslib.canonical_view(body["decoded"])}
+        return body
+    if kind in ("json", "style", "geojson", "info"):
+        body = masklib.drop_geojson_nulls(body)
+    if kind == "geojson" and isinstance(body, dict) and isinstance(body.get("features"), list):
+        body = {**body, "features": _sorted_features(body["features"])}
+    if kind == "info" and isinstance(body, list):
+        body = _sorted_features(
+            [{**f, "geom": tileslib.canonical_geojson(tileslib.orient_rings(f.get("geom")), tileslib.INFO_DECIMALS)}
+             if isinstance(f, dict) else f
+             for f in body],
+            key_props="props",
+        )
+    return body
+
+
 def compare(expected: dict, actual: dict, spec_kind: str, exact: bool, shape_depth: int) -> list[str]:
     diffs: list[str] = []
+    expected = {**expected, "body": comparable_body(expected.get("body"), spec_kind)}
+    actual = {**actual, "body": comparable_body(actual.get("body"), spec_kind)}
     if expected["status"] != actual["status"]:
         diffs.append(f"status: expected {expected['status']}, got {actual['status']}")
     if _content_type(expected["content_type"]) != _content_type(actual["content_type"]):
@@ -179,7 +213,7 @@ def compare(expected: dict, actual: dict, spec_kind: str, exact: bool, shape_dep
         if not isinstance(eb, dict) or not isinstance(ab, dict):
             pass  # an error status; the status comparison above already covers it
         elif exact:
-            diffs += masklib.differences(eb.get("decoded"), ab.get("decoded"), "/decoded")
+            diffs += tileslib.tile_differences(eb.get("decoded"), ab.get("decoded"))
         elif not isinstance(ab.get("decoded"), dict):
             diffs.append("tile body does not decode")
     elif spec_kind == "bytes":
@@ -210,6 +244,7 @@ class Checker:
         impl: str,
         compare_policy: str,
         catalog_matches: Callable[[], bool],
+        compare_impl: str | None = None,
     ) -> None:
         self.mode = mode
         self.golden_dir = golden_dir
@@ -218,6 +253,7 @@ class Checker:
         self.impl = impl
         self.compare_policy = compare_policy
         self.catalog_matches = catalog_matches
+        self.compare_impl = compare_impl  # diff mode: implementation of the --compare-url server
         self.recorded: list[str] = []
 
     def golden_path(self, name: str) -> Path:
@@ -254,7 +290,12 @@ class Checker:
         if self.mode == "diff":
             assert self.secondary is not None
             other = capture(self.secondary, spec)
-            diffs = compare(actual, other, spec.kind, exact, spec.shape_depth)
+            # A decided divergence (`port`) is the port's expectation, not a difference, when a
+            # Kotlin --base-url is diffed against a Rust --compare-url.
+            expected = actual
+            if spec.port and self.impl == "kotlin" and self.compare_impl == "rust":
+                expected = expected_for({"expected": actual, "port": spec.port}, "rust")
+            diffs = compare(expected, other, spec.kind, exact, spec.shape_depth)
             self._report(name, spec, diffs, exact, f"{self.primary.client.base_url} vs {self.secondary.client.base_url}")
             return actual
         golden = self._read(name)

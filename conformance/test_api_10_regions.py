@@ -33,11 +33,13 @@ def test_manifest(checker, seeded):
     checker.check(f"{G}/regions", Spec("/v1/regions", data=True, masks=MANIFEST_MASKS, shape_depth=3))
 
 
+@pytest.mark.port_pending("Phase 4: needs a region archive rendered by the export worker")
 @pytest.mark.signed
 def test_archive_download(checker, archive):
     checker.check(f"{G}/archive_full", Spec(f"/v1/regions/{archive}", kind="bytes", signed=True, volatile=True, capture_headers=ARCHIVE_HEADERS))
 
 
+@pytest.mark.port_pending("Phase 4: needs a region archive rendered by the export worker")
 @pytest.mark.signed
 @pytest.mark.parametrize("range_header,case", [("bytes=0-99", "first_100"), ("bytes=-100", "suffix_100"), ("bytes=0-9,20-29", "multi_merged")])
 def test_archive_partial_content(checker, archive, range_header, case):
@@ -47,6 +49,7 @@ def test_archive_partial_content(checker, archive, range_header, case):
     ))
 
 
+@pytest.mark.port_pending("Phase 4: needs a region archive rendered by the export worker")
 @pytest.mark.signed
 def test_archive_range_beyond_eof_is_416(checker, archive):
     checker.check(f"{G}/archive_range_416", Spec(
@@ -69,6 +72,7 @@ def test_archive_traversal_is_400(checker, name):
     ))
 
 
+@pytest.mark.port_pending("Phase 4: POST /v1/regions and the export worker")
 @pytest.mark.mutating
 @pytest.mark.signed
 def test_post_region_rerenders(checker, client, archive):

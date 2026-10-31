@@ -66,6 +66,27 @@ def normalize_base(body: Any, base_url: str) -> Any:
     return body
 
 
+GEOJSON_TYPES = frozenset({
+    "Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon",
+    "GeometryCollection", "Feature", "FeatureCollection",
+})
+
+
+def drop_geojson_nulls(body: Any) -> Any:
+    """
+    A copy of `body` without the `null` members of GeoJSON objects (objects whose `"type"` is a
+    GeoJSON type). Kotlin's in-house `geojson` module writes `"bbox": null`, `"crs": null` and
+    `"id": null`; the Rust port (georust `geojson`) leaves absent members out, and RFC 7946 gives
+    the two the same meaning. Nulls anywhere outside a GeoJSON object are kept.
+    """
+    if isinstance(body, list):
+        return [drop_geojson_nulls(x) for x in body]
+    if isinstance(body, dict):
+        geojson = isinstance(body.get("type"), str) and body["type"] in GEOJSON_TYPES
+        return {k: drop_geojson_nulls(v) for k, v in body.items() if not (geojson and v is None)}
+    return body
+
+
 _ID_COUNTER = __import__("re").compile(r"\d+$")
 
 

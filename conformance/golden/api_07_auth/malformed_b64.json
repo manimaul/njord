@@ -20,7 +20,7 @@
     "decision": "D4",
     "status": 401,
     "content_type": "",
-    "body": null
+    "body": ""
   },
   "expected": {
     "status": 500,

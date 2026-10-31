@@ -9,7 +9,8 @@ from lib import seed, ws as wslib
 from lib.engine import Spec
 
 G = "api_08_ingest"
-pytestmark = [pytest.mark.mutating, pytest.mark.signed]
+pytestmark = [pytest.mark.mutating, pytest.mark.signed,
+              pytest.mark.port_pending("Phase 4: ingest (enc_save, ingest worker, WebSocket status)")]
 
 
 def test_upload_ingest_and_reset(checker, client, signature):

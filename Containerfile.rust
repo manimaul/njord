@@ -1,0 +1,93 @@
+# Rust Njord chart server image: ghcr.io/manimaul/njord (docs/RUST_PORT_PLAN.md §10).
+#
+# NEVER tag or push this image as ghcr.io/manimaul/njord-chart-server. That repository belongs to
+# the Kotlin environment in the `njord` namespace, which pulls it with imagePullPolicy: Always, so a
+# Rust build pushed there would be picked up by the old environment on its next pod start
+# (§10.2 item 1). deploy/mxmariner/deploy.sh refuses to build or push under that name.
+#
+# Build it through the script, which passes the matching ignore file (the repo's .containerignore
+# belongs to the Kotlin Containerfile and does not exclude the Cargo target/ directory):
+#
+#   deploy/mxmariner/deploy.sh --execute build
+#
+# or by hand:
+#
+#   ./gradlew :web:jsBrowserDistribution          # Kotlin/JS UI until the Leptos UI (Phase 6)
+#   podman build --platform linux/amd64 \
+#     --ignorefile deploy/mxmariner/containerignore \
+#     -f Containerfile.rust -t ghcr.io/manimaul/njord:<version> .
+
+ARG RUST_IMAGE=docker.io/library/rust:1.99.1-trixie
+ARG RUNTIME_IMAGE=docker.io/library/debian:13.7-slim
+
+FROM ${RUST_IMAGE} AS builder
+
+# libgdal-dev: GDAL is linked only by the njord-s57 crate. The pinned georust gdal commit ships
+# prebuilt bindings for Debian's GDAL 3.10, so no libclang / bindgen is needed. njord-server does
+# not depend on njord-s57 in Phase 3, but will once ingestion moves to Rust (Phase 4); installing
+# it now keeps this stage stable across that change.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Only the Cargo workspace. Everything else in the repository is excluded by
+# deploy/mxmariner/containerignore, so Kotlin or web changes do not invalidate this layer.
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+
+# Optional build metadata, resolved on the host by deploy.sh (git cannot see the repository from
+# inside the build). Exposed to the build as environment variables for option_env!().
+ARG GIT_HASH=unknown
+ARG GIT_BRANCH=unknown
+ARG GIT_DIRTY=unknown
+ENV NJORD_GIT_HASH=${GIT_HASH} NJORD_GIT_BRANCH=${GIT_BRANCH} NJORD_GIT_DIRTY=${GIT_DIRTY}
+
+# target/ is a cache mount, so it is not part of any layer: copy the binary out in the same step.
+# COPY keeps the host mtimes, and cargo's fingerprints are mtime based, so a source file older
+# than the cached build output would be taken as unchanged (seen in practice: a file edited
+# during a build). Touching the workspace sources rebuilds only the njord-* crates; third-party
+# dependencies stay cached.
+RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
+    --mount=type=cache,target=/build/target,sharing=locked \
+    find crates Cargo.toml Cargo.lock -type f -exec touch {} + \
+    && cargo build --release -p njord-server --locked \
+    && install -D -m 0755 target/release/njord-server /out/njord-server
+
+FROM ${RUNTIME_IMAGE}
+
+# Compare the Kotlin image (Containerfile), which also needs libpq5, libzip5, libssl3t64,
+# libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
+#   ca-certificates  TLS roots for outbound HTTPS (NOAA downloads from Phase 5, any rustls/openssl
+#                    client that uses the system store).
+#   libgdal36        Runtime GDAL 3.10 for njord-s57. Not linked by njord-server in Phase 3 (check
+#                    with `ldd /opt/njord/njord-server`); kept so the image does not change shape
+#                    when ingestion moves into this binary in Phase 4. Drop it if a separate
+#                    ingest image is built instead (§4.3, last sentence).
+#   zlib1g           libz-sys links the system zlib when the builder has it (it does), so the
+#                    binary needs libz.so.1. Already in debian slim; listed so it is not lost.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    libgdal36 \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /out/njord-server /opt/njord/njord-server
+
+# Same layout as the Kotlin image, so the njord-config ConfigMap (mounted over
+# resources/config/application.json) and webStaticContent=/opt/njord/resources/www work for both.
+# server/src/nativeMain/resources stays the source of truth until Phase 7 moves it.
+COPY server/src/nativeMain/resources /opt/njord/resources
+COPY deploy/mxmariner/application.json /opt/njord/resources/config/application.json
+# Kotlin/JS web build as static content until the Leptos UI lands (Phase 6). Merged over
+# resources/www, which already holds fonts/ and sprites/.
+COPY web/build/dist/js/productionExecutable /opt/njord/resources/www
+
+EXPOSE 9000
+
+# Same CLI shape as the Kotlin server: njord-server <resources dir>, with CHART_SERVER_OPTS JSON
+# overlaid on <resources dir>/config/application.json.
+CMD ["/opt/njord/njord-server", "/opt/njord/resources"]

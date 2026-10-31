@@ -10,13 +10,1068 @@
     "raw_path": false,
     "kind": "geojson"
   },
-  "note": "Kotlin answers 404 for a layer that has features (DAO decode failure)",
-  "masks": [],
+  "note": "Kotlin answers 404 for a layer that has features (DAO decode failure, D14)",
+  "masks": [
+    "/features/*/id"
+  ],
   "capture_headers": [],
   "shape_depth": 2,
   "data_dependent": true,
   "volatile": false,
-  "port": null,
+  "port": {
+    "decision": "D14",
+    "status": 200,
+    "content_type": "application/json",
+    "body": {
+      "features": [
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4216667,
+              47.2780556
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106474,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FEA0001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 54,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "19950805",
+            "SORIND": "US,US,graph,Chart 18453"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3929222,
+              47.2779194
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1014549562,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "02263C78CC3A3039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 55,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "1"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20120221",
+            "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3863468,
+              47.2607102
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1007970561,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "02263C1469013039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 56,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 3.3,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030701",
+            "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4032833,
+              47.2815
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1016957642,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "02263C9D8ACA3039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 57,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20110208",
+            "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.5138958,
+              47.3066353
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106506,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "02260001A00A0001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 58,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 10.0,
+            "SIGSEQ": "01.0+(09.0)",
+            "SORDAT": "20030107",
+            "SORIND": "US,US,graph,Chart 18453"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3703372,
+              47.2513194
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106450,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FD20001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 59,
+            "RVER": 1,
+            "CATLIT": [
+              "4",
+              "13"
+            ],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 7,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 6.0,
+            "SIGSEQ": "03.0+(03.0)",
+            "SORDAT": "20120110",
+            "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4145227,
+              47.2848543
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 589896121,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "0226232919B93039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 60,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030401",
+            "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4205558,
+              47.2705556
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106498,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "02260001A0020001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 61,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 4.8,
+            "LITCHR": 4,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 1.0,
+            "SIGSEQ": "00.3+(00.7)",
+            "SORDAT": "20030415",
+            "SORIND": "US,US,reprt,13thCGD,LNM 15/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3827,
+              47.2743
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1229590322,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "0226494A0F323039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 62,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20111011",
+            "SORIND": "US,US,reprt,13thCGD,LNM 41/11"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4841649,
+              47.2872331
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1717857552,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022666646D103039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 63,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20030107",
+            "SORIND": "US,US,graph,Chart 18453"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3733047,
+              47.2531872
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106457,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FD90001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 64,
+            "RVER": 1,
+            "CATLIT": [
+              "4",
+              "12"
+            ],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 4,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 1.0,
+            "SIGSEQ": "00.3+(00.7)",
+            "SORDAT": "20120110",
+            "SORIND": "US,US,reprt,13thCGD,LNM 02/12"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4038528,
+              47.271455
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": -2141779309,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022680570A933039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 65,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 1,
+            "LITCHR": 4,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 1.0,
+            "SIGSEQ": "00.3+(00.7)",
+            "SORDAT": "20150616",
+            "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3826369,
+              47.2584944
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": -188842587,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "0226F4BE7DA53039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 66,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 3.3,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030701",
+            "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4161667,
+              47.2783889
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106475,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FEB0001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 67,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20040720",
+            "SORIND": "US,US,reprt,13thCGD,LNM 29/04"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4442639,
+              47.3059103
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106490,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FFA0001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 68,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "1"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 11.5,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SECTR1": 2.0,
+            "SECTR2": 217.0,
+            "SIGGRP": "(1)",
+            "SIGPER": 5.0,
+            "SIGSEQ": "00.5+(04.5)",
+            "SORDAT": "19941116",
+            "SORIND": "US,US,reprt,L-106/95",
+            "VALNMR": 14.0
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3886189,
+              47.2768919
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106497,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "02260001A0010001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 69,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "1"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20120221",
+            "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4014847,
+              47.2718169
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 581698640,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022622AC04503039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 70,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "4"
+            ],
+            "EXCLIT": 1,
+            "LITCHR": 8,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "(01.0)+03.0",
+            "SORDAT": "20150616",
+            "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4028439,
+              47.2708269
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106488,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FF80001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 71,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "3"
+            ],
+            "EXCLIT": 1,
+            "LITCHR": 8,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "(01.0)+03.0",
+            "SORDAT": "20150616",
+            "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4127682,
+              47.2872345
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 250008821,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "02260EE6D4F53039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 72,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "4"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20030107",
+            "SORIND": "US,US,graph,Chart 18453",
+            "VALNMR": 4.0
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4143866,
+              47.2849402
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106512,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "02260001A0100001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 73,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030401",
+            "SORIND": "US,US,reprt,13thCGD,LNM 13/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4194038,
+              47.2718404
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1694913158,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "0226650652863039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 74,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 4.2,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030701",
+            "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4364426,
+              47.2616788
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 398963213,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022617C7B20D3039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 75,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "1"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 7.0,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 6.0,
+            "SIGSEQ": "00.6+(05.4)",
+            "SORDAT": "20061017",
+            "SORIND": "US,US,reprt,13thCGD,LNM 42/06",
+            "VALNMR": 7.0
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4326864,
+              47.2728033
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106472,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FE80001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 76,
+            "RVER": 2,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "19900925",
+            "SORIND": "US,US,reprt,13thCGD,LNM 39/90"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4202854,
+              47.2702867
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": -519967805,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "0226E101EBC33039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 77,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "HEIGHT": 4.8,
+            "LITCHR": 4,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 1.0,
+            "SIGSEQ": "00.3+(00.7)",
+            "SORDAT": "20030415",
+            "SORIND": "US,US,reprt,13thCGD,LNM 15/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4198797,
+              47.2944931
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 1692171621,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022664DC7D653039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 78,
+            "RVER": 2,
+            "CATLIT": [],
+            "COLOUR": [
+              "4"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 10.0,
+            "SIGSEQ": "01.0+(09.0)",
+            "SORDAT": "20110208",
+            "SORIND": "US,US,reprt,LNM 06/11"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.411285,
+              47.2848421
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106487,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FF70001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 79,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 1,
+            "SCAMIN": 29999,
+            "SORDAT": "20030701",
+            "SORIND": "US,US,reprt,13thCGD,LNM 26/03"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4024978,
+              47.2724589
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106479,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FEF0001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 80,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "4"
+            ],
+            "EXCLIT": 1,
+            "LITCHR": 4,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 1.0,
+            "SIGSEQ": "00.3+(00.7)",
+            "SORDAT": "20150616",
+            "SORIND": "US,US,reprt,13thCGD,LNM 24/15"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.4004667,
+              47.2797333
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 106452,
+            "FIDS": 1,
+            "GRUP": 2,
+            "LNAM": "022600019FD40001",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 81,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "6"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20110208",
+            "SORIND": "US,US,reprt,13thCGD,LNM 06/11"
+          }
+        },
+        {
+          "id": "<masked>",
+          "layer": "LIGHTS",
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -122.3901194,
+              47.2771389
+            ]
+          },
+          "properties": {
+            "AGEN": 550,
+            "FIDN": 874806735,
+            "FIDS": 12345,
+            "GRUP": 2,
+            "LNAM": "022634247DCF3039",
+            "MINZ": 13,
+            "OBJL": 75,
+            "PRIM": 1,
+            "RCID": 82,
+            "RVER": 1,
+            "CATLIT": [],
+            "COLOUR": [
+              "1"
+            ],
+            "EXCLIT": 4,
+            "LITCHR": 2,
+            "SCAMIN": 29999,
+            "SIGGRP": "(1)",
+            "SIGPER": 4.0,
+            "SIGSEQ": "00.4+(03.6)",
+            "SORDAT": "20120221",
+            "SORIND": "US,US,reprt,13thCGD,LNM 08/12"
+          }
+        }
+      ],
+      "type": "FeatureCollection"
+    }
+  },
   "expected": {
     "status": 404,
     "content_type": "",

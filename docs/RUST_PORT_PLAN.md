@@ -1,6 +1,6 @@
 # Rust / Leptos Port Plan
 
-_Written 2026-10-27, updated 2026-10-29 (§10: separate deployment environment). Companion to [TEST_COVERAGE_AUDIT.md](TEST_COVERAGE_AUDIT.md), whose test IDs (SY-3, TE-1, …) are referenced below._
+_Written 2026-10-27, updated 2026-10-29 (§10: separate deployment environment), 2026-10-30 (deployment deferred to Phase 7). Companion to [TEST_COVERAGE_AUDIT.md](TEST_COVERAGE_AUDIT.md), whose test IDs (SY-3, TE-1, …) are referenced below._
 
 ## 0. Why
 
@@ -167,11 +167,11 @@ P-TE-5 is the single most important fixture in the plan. It is the only thing th
 
 ### 5.4 Database contract (`db/*` → `njord-db`)
 
-In Kubernetes the Rust server gets its own database (§10), but during Phase 3 the Kotlin ingest fills that database while the Rust server reads it, and the deb package upgrades a Kotlin-provisioned database in place. So these are plain SQL-behavior tests both implementations must pass against the same PostGIS schema.
+In Kubernetes the Rust server gets its own database (§10), but the local Phase 3 diff runs the Kotlin ingest and the Rust server against one database, and the deb package upgrades a Kotlin-provisioned database in place. So these are plain SQL-behavior tests both implementations must pass against the same PostGIS schema.
 
 | ID | Test | Audit ref |
 |---|---|---|
-| P-DB-1 | `DbMigrations`: empty DB → current version; v1 DB → migrated; schema dump of fresh vs migrated identical. The Rust migration runner must read and write the same `meta_data.version` row so a database provisioned or migrated by either implementation is accepted by the other (Phase 3 in `mxmariner`, deb upgrades). | DB-1 |
+| P-DB-1 | `DbMigrations`: empty DB → current version; v1 DB → migrated; schema dump of fresh vs migrated identical. The Rust migration runner must read and write the same `meta_data.version` row so a database provisioned or migrated by either implementation is accepted by the other (the local diff runs, deb upgrades). | DB-1 |
 | P-DB-2 | Chart overwrite semantics; delete cascades; unknown name → false | DB-2, DB-3 |
 | P-DB-3 | `findAllChartFeaturesAsync4326` / `findChartFeaturesAsync4326` row shape and clipping on the fixture cell (store as `db/feature_queries.json` with WKT) | DB-4 |
 | P-DB-4 | TOPMAR association queries | DB-5 |
@@ -323,25 +323,57 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
   - **Resolved:** **D13**, decided 2026-10-30 (TEST_COVERAGE_AUDIT.md §3): Kotlin drops a MultiPoint feature from MVT tiles but still emits its layer. The `multi` fixture now carries `port.decoded`, and the port encodes the feature. `FixtureStore.binary` gained the `port` argument for this.
 
 ### Phase 3 — Read-only server, side by side
-- [ ] **Phase 3 complete**
+- [x] **Phase 3 complete** (2026-10-30). `crates/njord-db`, `crates/njord-server`; `Containerfile.rust` and `deploy/mxmariner/` prepared, not applied.
 - `njord-db` (sqlx) with the migration runner reading the same `meta_data` version. Pass P-DB-1, 3, 4, 5, 6.
 - `njord-server` read routes: `about`, `style`, `content`, `icon`, `sector_svg`, `tile_json`, `tile`, `chart`, `chart_catalog`, `chart_editions`, `feature`, `geojson` GET, `regions` GET, `regions/{archive}`, `cache` GET.
 - Tile cache: same on-disk layout under `chartTempData` so the deb package and the operational docs stay valid. In Kubernetes each environment has its own PVC; nothing is shared between namespaces.
 - Locally, run both servers against the same dev PostGIS and run the conformance suite in diff mode (`pytest conformance --base-url=http://localhost:9000 --compare-url=http://localhost:9001`), which compares masked bodies and decoded tiles (P-TE-5) between the two live servers.
-- Stand up the `mxmariner` environment (§10.4): the Rust image for `njord-chart-dep`, the existing Kotlin image for `njord-ingest-rs` and `njord-enc-download`, all pointed at the new `njord` database and PVC. Kotlin fills the database, Rust reads it (P-DB-1 makes the schema handshake safe). Run the suite against `https://openenc.com` and `https://njord.mxmariner.com`.
-- Exit: conformance suite green on read routes against both environments; `njord.mxmariner.com` serves tiles from its own data. P-TE-5 golden tiles and P-IN-5 DB state pass natively (moved here from Phase 2).
+- No deployment (decided 2026-10-30): everything is tested locally first, and the `mxmariner` environment is stood up in Phase 7. `Containerfile.rust` and `deploy/mxmariner/` were prepared in this phase and are not applied.
+- Exit: conformance suite green on read routes locally, in diff mode (Kotlin and Rust against one database) and in verify mode against the Rust server. P-TE-5 golden tiles and P-IN-5 DB state pass natively (moved here from Phase 2).
+- Done 2026-10-30:
+  - **`njord-db`:**
+    - Every fixture passes with no tolerance: P-DB-1 (fresh and migrated v1 schema), P-DB-3, 4, 5, 6, 7, D5 `overwrite.json`, and P-IN-5 for all three cells.
+    - Runtime sqlx 0.9 queries. Geometry is read as `st_asbinary` and decoded with geozero into `geo-types`, so the SQL stays Kotlin's.
+    - Retry follows D5: only acquiring a connection or `BEGIN` is retried, never a statement. An overwrite is one transaction, and a feature install commits once, refusing to report a count after an aborted transaction.
+    - Chart and feature inserts are ported too (Phase 4 wraps them), because P-TE-5 and P-IN-5 need real data.
+    - The migration runner reads and writes Kotlin's `meta_data.version` row. It takes a PostgreSQL advisory lock that does not exclude a Kotlin instance's file lock, so don't start both on an unmigrated database at once.
+  - **`njord-server` (axum):**
+    - Every read route, plus the tile encoder (`addCharts`) and the tile cache in Kotlin's on-disk layout.
+    - D8: an out-of-range tile is an empty 400.
+    - D14: `geojson` serves layers that have features.
+    - Mutating routes answer 401 without a valid signature, as Kotlin does, and 501 with one until Phase 4.
+    - `about/version` reports `0.1.0-rust` (the suite auto-detects the implementation from it) and `gdalVersion` `"none"` until Phase 4 links GDAL.
+    - Icons are byte-identical to Kotlin's libgd output through `libz-sys` zlib, a second C library beside GDAL.
+  - **P-TE-5:** all 46 golden tiles pass. 18 features differ by simplification within 0.1 px (tolerance 0.5 px), because `geo` and GEOS start rings at different vertices. Any missing or unstable feature fails.
+  - **`njord-geo` fixes found along the way:**
+    - Encoding was non-deterministic, because `geo`'s polygon repair iterates a randomly seeded `HashSet`.
+    - Closed lines are now clipped and split the way GEOS splits them.
+    - Touching points are kept.
+    - Rings that round to zero area are dropped.
+  - **Conformance suite:**
+    - **Seeding:** the seed now uploads the `.TXT` sidecars, which it had silently left out. Re-recording changed only `chart.json`.
+    - **Comparison rules:**
+      - ring starts and part order are canonicalised;
+      - tile vertices are compared within 0.5 px;
+      - `?info=true` coordinates are rounded to 7 decimals, and ring direction is accepted either way;
+      - GeoJSON `null` members are dropped on both sides, since the port does not write Kotlin's nulls.
+    - **Port blocks:** fixed, and applied in diff mode against a Rust compare server.
+    - **`port_pending`:** a new marker that skips Phase 4 tests against the Rust server.
+  - **Final local runs** (Kotlin :9000 and Rust :9001 on one database seeded through Kotlin):
+    - diff: 210 passed, 0 failed, 24 skipped;
+    - verify against Rust: 201 passed, 0 failed, 33 skipped.
+  - **Open:** five region-archive tests skip on Rust only because the suite gets signatures from `GET /v1/admin` (Phase 4). The route itself is ported.
 
 ### Phase 4 — Write path and workers (FM)
 - [ ] **Phase 4 complete**
 - Admin signatures (P-SEC-1/2, cross-compatible with Kotlin-minted signatures), `enc_save`, `enc_url`, `chart` POST/DELETE, `geojson` POST, `cache` DELETE, `nuke`, `regions` POST, WebSocket status.
 - `ChartIngestWorker` / `ChartIngest` / `NaturalEarthIngest` on `spawn_blocking`; lock + status files per P-CC-*.
 - `RegionExporter` + worker with `rusqlite`. Pass P-RE-1…5.
-- Swap `njord-ingest-rs` in `mxmariner` to the Rust image.
-- Exit: P-API-7…10, P-RE-*, P-CC-* green. The `mxmariner` environment ingests and exports regions without any Kotlin binary.
+- Exit: P-API-7…10, P-RE-*, P-CC-* green. Locally, the Rust server ingests (P-API-8, the suite's seed) and exports regions without any Kotlin binary.
 
 ### Phase 5 — `enc_cron`
 - [ ] **Phase 5 complete**
-- Port with `quick-xml`, `reqwest`, `zip`. Pass P-EC-1…5. Swap the `njord-enc-download` CronJob in `mxmariner` to the Rust image. (Until then the Kotlin `enc_cron` runs there unchanged: it only needs the PVC, `GET /v1/chart_editions` and `DELETE /v1/chart`.)
+- Port with `quick-xml`, `reqwest`, `zip`. Pass P-EC-1…5, and run it locally against the Rust server (it needs only the save directory, `GET /v1/chart_editions` and `DELETE /v1/chart`).
 
 ### Phase 6 — Leptos frontend
 - [ ] **Phase 6 complete**
@@ -349,7 +381,8 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 
 ### Phase 7 — Cutover and removal
 - [ ] **Phase 7 complete**
-- Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only. Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
+- Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only (`Containerfile.rust`, prepared in Phase 3). Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
+- Stand up the `mxmariner` environment (§10.4) from `deploy/mxmariner/`, with the Rust image for every workload (`njord-chart-dep`, `njord-ingest-rs`, `njord-enc-download`, `njord-walk-tiles`), and seed it from NOAA. Run the conformance suite in diff mode against `https://openenc.com` and `https://njord.mxmariner.com` (§10.5) until it is green apart from the expected catalog differences. This is the first deployment of any Rust code.
 - Cutover per §10.6: switch the `openenc.com` consumers to `njord.mxmariner.com`, move regatta's DB relay, turn `openenc.com` into a redirect, retire the `njord` namespace. This is the first point at which anything in `njord` changes.
 - Delete Kotlin modules once the conformance suite has run green against Rust alone for a release cycle. Keep `testdata/` and `conformance/`.
 
@@ -371,8 +404,8 @@ The current UI is ~4.5k lines of Compose-HTML across `web` and `shared_fe`: a ro
 | GDAL field mapping differences between the Kotlin interop and the `gdal` crate (e.g. string lists, booleans, Integer64, charset recoding) | P-IN-2 pins every feature in the fixture cell; run it on several real NOAA cells (one per `DSSI_NALL` charset) before trusting it. |
 | `geo` boolean ops produce slightly different vertices than GEOS for `intersection`/`difference` | Compare P-TE-5 tiles by decoded geometry with a tolerance in tile pixels, not byte equality. Tile pixel rounding absorbs most of it. If not, use `geos` for the include-mask ops only. |
 | MVT tag/value ordering differs → not byte-identical | Compare decoded tiles. Byte identity is not a contract; MapLibre doesn't care. |
-| Admin signatures minted by one implementation must verify on the other | Signatures embed `externalBaseUrl()`, so an `openenc.com` signature never verifies at `njord.mxmariner.com` anyway; cross-compatibility matters for deb in-place upgrades and for the Kotlin `enc_cron` deleting orphans through the Rust server in Phase 3/4. P-SEC-1 cross-vectors; same base64/URL-encoding choices; `jiff` RFC 3339 output must match `kotlinx.datetime`'s `Instant.toString()` (nanosecond trimming!). |
-| Two implementations writing one schema (Phase 3 in `mxmariner`: Kotlin ingest, Rust server) | Freeze `DbMigrations` during the port. Any schema change goes into both or waits. The `njord` namespace never runs Rust code, so a mistake here cannot reach `openenc.com`. |
+| Admin signatures minted by one implementation must verify on the other | Signatures embed `externalBaseUrl()`, so an `openenc.com` signature never verifies at `njord.mxmariner.com` anyway; cross-compatibility matters for deb in-place upgrades and for the local diff runs, where one implementation's signature drives the other. P-SEC-1 cross-vectors; same base64/URL-encoding choices; `jiff` RFC 3339 output must match `kotlinx.datetime`'s `Instant.toString()` (nanosecond trimming!). |
+| Two implementations writing one schema (the local diff runs: Kotlin ingest, Rust server; deb in-place upgrades) | Freeze `DbMigrations` during the port. Any schema change goes into both or waits. The `njord` namespace never runs Rust code, so a mistake here cannot reach `openenc.com`. |
 | Cluster-scoped resources leak between the two environments (image tag pulled with `Always`, the `nfs` StorageClass, the relay's host port) | §10.2: distinct image repository, distinct NFS release and StorageClass, relay on host port 6433. |
 | Both environments run on the same three 2 vCPU / 4 GiB nodes | Right-size the Rust pods from measurement (§10.2 item 5), `minReplicas: 1` until cutover, check `kubectl describe nodes` before applying; add a node rather than squeeze the old environment. |
 | Shipped mobile builds hard-code `https://openenc.com/v1/regions` and `/v1/style` | `openenc.com` must keep answering (serve, then 301) for as long as those builds are in the field (§10.6). |
@@ -487,7 +520,7 @@ export NJORD_DB_HOST=… NJORD_DB_PORT=… NJORD_DB=njord NJORD_DB_USER=njord NJ
 kubectl -n mxmariner get pods,pvc,certificate,ingress
 ```
 
-Phase 3 runs this with the **Rust** image for `njord-chart-dep` and the existing **Kotlin** `njord-chart-server` image for `njord-ingest-rs` and `njord-enc-download`. The Kotlin ingest and cron need only the PVC, the database and `GET /v1/chart_editions` / `DELETE /v1/chart`, which the Rust server provides from Phase 3/4. That is the strangler pattern, inside the new namespace: Kotlin fills `njord`, Rust reads it, P-DB-1 makes the schema handshake safe. Phases 4 and 5 swap those two workloads to the Rust image. The old namespace is never part of this.
+This runs in **Phase 7**, once Phases 3–6 have passed locally (decided 2026-10-30; the earlier plan stood the environment up in Phase 3 with a Kotlin ingest and cron beside the Rust server). Every workload runs the **Rust** image. `deploy/mxmariner/` was prepared in Phase 3 with that Kotlin split built in (`NJORD_INGEST_IMPL` / `NJORD_ENC_CRON_IMPL`, the "PHASE 4 flip" / "PHASE 5 flip" markers, `deleteOrphans: false`); flip all of them to Rust before the first apply. The old namespace is never part of this.
 
 ### 10.5 Comparing the two environments
 

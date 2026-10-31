@@ -17,3 +17,4 @@ serde_json.workspace = true
 
 [dev-dependencies]
 base64 = "0.22"
+njord-testdata.workspace = true

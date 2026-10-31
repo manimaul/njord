@@ -1,0 +1,19 @@
+[package]
+name = "njord-geo"
+description = "Web Mercator tile system, tile clip polygons, MVT encoding and tile prop filtering"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+geo = "0.33"
+geo-types = "0.7"
+indexmap.workspace = true
+njord-model.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+geojson = { workspace = true, features = ["geo-types"] }
+njord-testdata.workspace = true
+wkt = "0.14"

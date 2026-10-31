@@ -1,0 +1,15 @@
+[package]
+name = "njord-symbology"
+description = "S-57 symbology: per-object-class preTileEncode rules and MapLibre style generation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+njord-model.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+njord-testdata.workspace = true
+serde_json.workspace = true

@@ -6,15 +6,13 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 
-[features]
-default = ["bindgen"]
-# Generate the GDAL bindings at build time (needs libclang). Required for GDAL releases newer than
-# gdal-sys's prebuilt bindings (3.12, e.g. Homebrew's 3.13); build with `default-features = false`
-# against GDAL <= 3.12 (Debian 13's 3.10) to use the prebuilt ones.
-bindgen = ["gdal-sys/bindgen"]
-
 [dependencies]
-gdal-sys = "0.12"
+# georust/gdal master, pinned: the released 0.19 does not build against GDAL 3.13 (Homebrew);
+# master supports it, with prebuilt bindings for GDAL 3.8 through 3.13 (so no bindgen/libclang
+# for Homebrew 3.13 or Debian 13's 3.10). Move to the first release that includes it.
+# gdal-sys from the same commit, for the one call the safe API lacks (`ogr::is_boolean`).
+gdal = { git = "https://github.com/georust/gdal", rev = "c0a6266b987a2c2d44aea9956c2cae1ed71445cf" }
+gdal-sys = { git = "https://github.com/georust/gdal", rev = "c0a6266b987a2c2d44aea9956c2cae1ed71445cf" }
 geojson.workspace = true
 njord-geo.workspace = true
 njord-model.workspace = true

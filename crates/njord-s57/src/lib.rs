@@ -11,17 +11,11 @@
 //!
 //! # Building
 //!
-//! The crate binds GDAL through `gdal-sys` directly rather than the georust `gdal` crate: the
-//! released `gdal` 0.19 does not compile against GDAL 3.13 (`GDT_Byte` was renamed and
-//! `GDALRasterIOExtraArg` gained a field), and the raw API needed here is small. `gdal-sys` 0.12
-//! ships prebuilt bindings for GDAL ≤ 3.12 only, so the default `bindgen` feature generates them
-//! at build time from the installed headers, which needs libclang:
-//!
-//! ```text
-//! cargo test -p njord-s57                      # Homebrew GDAL 3.13 (macOS finds libclang itself;
-//!                                              # else LIBCLANG_PATH=/Library/Developer/CommandLineTools/usr/lib)
-//! cargo build -p njord-s57 --no-default-features   # GDAL <= 3.12, e.g. Debian 13's 3.10: prebuilt bindings
-//! ```
+//! GDAL is bound through the georust `gdal` crate, pinned to a master commit because the released
+//! 0.19 does not compile against GDAL 3.13 (`GDT_Byte` was renamed and `GDALRasterIOExtraArg`
+//! gained a field). That commit ships prebuilt bindings for GDAL 3.8 through 3.13, so
+//! `cargo test -p njord-s57` builds against Homebrew's 3.13 and Debian 13's 3.10 alike, without
+//! bindgen. Every GDAL call is in the private `ogr` module.
 //!
 //! # Threads
 //!
@@ -174,6 +168,6 @@ impl S57Reader for GdalCell {
     fn features(&self, layer: &str) -> Option<Vec<Feature>> {
         self.dataset
             .layer(layer)
-            .map(|l| feature::read_layer(&l, layer))
+            .map(|mut l| feature::read_layer(&mut l, layer))
     }
 }

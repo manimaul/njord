@@ -184,14 +184,35 @@ class FixtureStore(val root: File, val mode: FixtureMode) {
      *
      * Verification requires byte equality: the Kotlin implementation must be byte-stable with
      * itself. The Rust port compares the decoded view (RUST_PORT_PLAN.md §5.2, P-TE-2).
+     *
+     * @param port where the Kotlin bytes are an accepted defect, the decision ID and the decoded
+     *   view the port must produce instead, written as `port: { decision, decoded }`
      */
-    fun binary(relativePath: String, header: FixtureHeader, bytes: ByteArray, decoded: JsonElement) {
+    fun binary(
+        relativePath: String,
+        header: FixtureHeader,
+        bytes: ByteArray,
+        decoded: JsonElement,
+        port: PortDivergence<JsonElement>? = null,
+    ) {
+        if (port != null) {
+            require(port.decision in header.decisions) {
+                "fixture $relativePath: diverges under ${port.decision} but the header does not list it in decisions"
+            }
+        }
+        val portJson = port?.let {
+            buildJsonObject {
+                put(DECISION, it.decision)
+                put(DECODED, it.expected)
+            }
+        }
         val sidecarPath = sidecarOf(relativePath)
         val sidecar = buildJsonObject {
             header.toJson().forEach { (k, v) -> put(k, v) }
             put(BIN, file(relativePath).name)
             put(BYTES, bytes.size)
             put(DECODED, decoded)
+            portJson?.let { put(PORT, it) }
         }
         when (mode) {
             FixtureMode.REGENERATE -> {
@@ -211,7 +232,10 @@ class FixtureStore(val root: File, val mode: FixtureMode) {
                 if (storedSidecar[DECODED] != decoded) {
                     problems += "decoded view differs\n  committed: ${storedSidecar[DECODED]}\n  produced:  $decoded"
                 }
-                val storedHeader = JsonObject(storedSidecar.filterKeys { it != BIN && it != BYTES && it != DECODED })
+                if (storedSidecar[PORT] != portJson) {
+                    problems += "port divergence differs\n  committed: ${storedSidecar[PORT]}\n  produced:  $portJson"
+                }
+                val storedHeader = JsonObject(storedSidecar.filterKeys { it != BIN && it != BYTES && it != DECODED && it != PORT })
                 if (storedHeader != header.toJson()) {
                     problems += "header differs\n  committed: $storedHeader\n  produced:  ${header.toJson()}"
                 }

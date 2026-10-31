@@ -351,19 +351,18 @@ struct Commands {
 impl Commands {
     fn geometry(&mut self, geometry: &Geometry) -> Vec<u32> {
         match geometry {
-            Geometry::Point(p) => self.coords(&[p.0], false, false),
-            Geometry::LineString(ls) => self.coords(&ls.0, false, false),
+            Geometry::Point(p) => self.coords(&[p.0], false),
+            Geometry::LineString(ls) => self.coords(&ls.0, false),
             Geometry::Polygon(p) => self.polygon(p),
-            // Kotlin reads a MultiPoint's points with `OGR_G_GetPoints`, which sees no points on a
-            // collection, so a MultiPoint encodes to nothing and the feature is left out (P-TE-2
-            // `multi`). Clipping turns a MultiPoint with one point inside into a Point, which does
-            // encode.
-            Geometry::MultiPoint(_) => vec![],
+            // D13: Kotlin reads a MultiPoint's points with `OGR_G_GetPoints`, which sees no points
+            // on a collection, so it encodes the MultiPoint to nothing and drops the feature
+            // (P-TE-2 `multi`, Kotlin `decoded`). The port encodes it (`port.decoded`).
+            Geometry::MultiPoint(mp) => self.multi_point(mp.iter().map(|p| p.0)),
             Geometry::MultiLineString(mls) => mls
                 .iter()
                 .flat_map(|ls| {
                     let (old_x, old_y) = (self.x, self.y);
-                    let commands = self.coords(&ls.0, false, false);
+                    let commands = self.coords(&ls.0, false);
                     // A part whose points all round to one pixel is a lone MoveTo, which the spec
                     // forbids: drop it and restore the cursor.
                     if commands.len() > 3 {
@@ -395,15 +394,36 @@ impl Commands {
             cs
         };
         let exterior = &polygon.exterior().0;
-        let mut commands = self.coords(&ring(exterior, signed_area(exterior) < 0.0), true, false);
+        let mut commands = self.coords(&ring(exterior, signed_area(exterior) < 0.0), true);
         for interior in polygon.interiors() {
             let cs = ring(&interior.0, signed_area(&interior.0) > 0.0);
-            commands.extend(self.coords(&cs, true, false));
+            commands.extend(self.coords(&cs, true));
         }
         commands
     }
 
-    fn coords(&mut self, cs: &[Coord], close_path_at_end: bool, multi_point: bool) -> Vec<u32> {
+    /// One MoveTo whose count is the number of points written, each a delta from the last; a
+    /// point that rounds to the previous one's pixel is left out, as `coords` does for vertices.
+    fn multi_point(&mut self, points: impl Iterator<Item = Coord>) -> Vec<u32> {
+        let mut deltas = Vec::new();
+        for (i, c) in points.enumerate() {
+            let (x, y) = (round_px(c.x), round_px(c.y));
+            if i > 0 && x == self.x && y == self.y {
+                continue;
+            }
+            deltas.push(zig_zag_encode(x.wrapping_sub(self.x)));
+            deltas.push(zig_zag_encode(y.wrapping_sub(self.y)));
+            (self.x, self.y) = (x, y);
+        }
+        if deltas.is_empty() {
+            return deltas;
+        }
+        let mut r = vec![command_and_length(MOVE_TO, (deltas.len() / 2) as i32)];
+        r.extend(deltas);
+        r
+    }
+
+    fn coords(&mut self, cs: &[Coord], close_path_at_end: bool) -> Vec<u32> {
         if cs.is_empty() {
             return vec![];
         }
@@ -414,7 +434,7 @@ impl Commands {
 
         for (i, c) in cs.iter().enumerate() {
             if i == 0 {
-                r.push(command_and_length(MOVE_TO, if multi_point { n } else { 1 }));
+                r.push(command_and_length(MOVE_TO, 1));
             }
             let (x, y) = (round_px(c.x), round_px(c.y));
 
@@ -433,7 +453,7 @@ impl Commands {
             r.push(zig_zag_encode(y.wrapping_sub(self.y)));
             (self.x, self.y) = (x, y);
 
-            if i == 0 && cs.len() > 1 && !multi_point {
+            if i == 0 && cs.len() > 1 {
                 line_to_index = r.len();
                 line_to_length = n - 1;
                 r.push(command_and_length(LINE_TO, line_to_length));

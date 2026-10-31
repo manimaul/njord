@@ -1,7 +1,8 @@
 {
-  "pins": "a MultiPoint is one POINT feature with one MoveTo of count n; a GeometryCollection is split into one feature per member sharing the same id",
+  "pins": "a GeometryCollection is split into one feature per member sharing the same id. A MultiPoint must be one POINT feature with one MoveTo of count n: Kotlin drops it (D13, `OGR_G_GetPoints` sees no points on a MultiPoint) and leaves its layer empty; port.decoded has the feature",
   "decisions": [
-    "TE-8"
+    "TE-8",
+    "D13"
   ],
   "generator": "MvtFixtureTest",
   "source": "three soundings as a multipoint, a collection of a point and a line; GDAL 3.13.1 (CI must regenerate under its own GDAL if the version differs)",
@@ -57,5 +58,87 @@
         ]
       }
     ]
+  },
+  "port": {
+    "decision": "D13",
+    "decoded": {
+      "layers": [
+        {
+          "name": "SOUNDG",
+          "version": 2,
+          "extent": 4096,
+          "features": [
+            {
+              "id": 2,
+              "type": "POINT",
+              "props": {
+                "METERS": 1.2
+              },
+              "geometry": [
+                [
+                  [
+                    10,
+                    10
+                  ]
+                ],
+                [
+                  [
+                    20,
+                    20
+                  ]
+                ],
+                [
+                  [
+                    30,
+                    10
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "name": "MIXED",
+          "version": 2,
+          "extent": 4096,
+          "features": [
+            {
+              "id": 3,
+              "type": "POINT",
+              "props": {
+                "K": "v"
+              },
+              "geometry": [
+                [
+                  [
+                    500,
+                    500
+                  ]
+                ]
+              ]
+            },
+            {
+              "id": 3,
+              "type": "LINESTRING",
+              "props": {
+                "K": "v"
+              },
+              "geometry": [
+                [
+                  [
+                    500,
+                    500
+                  ],
+                  [
+                    600,
+                    700
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

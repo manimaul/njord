@@ -131,6 +131,28 @@ class FixtureStoreTest {
     }
 
     @Test
+    fun `binary fixtures carry a port divergence only under a listed decision`() {
+        val bytes = byteArrayOf(0x0a, 0x00)
+        val decoded = buildJsonObject { put("layers", 1) }
+        val portView = buildJsonObject { put("layers", 2) }
+        val listed = header.copy(decisions = header.decisions + "D13")
+        store(FixtureMode.REGENERATE).binary("geo/mvt/port.bin", listed, bytes, decoded, PortDivergence("D13", portView))
+        val sidecar = store(FixtureMode.VERIFY).json.parseToJsonElement(
+            File(scratch, "geo/mvt/port.json").readContents()
+        ) as kotlinx.serialization.json.JsonObject
+        assertEquals("{\"decision\":\"D13\",\"decoded\":{\"layers\":2}}", sidecar["port"].toString())
+
+        store(FixtureMode.VERIFY).binary("geo/mvt/port.bin", listed, bytes, decoded, PortDivergence("D13", portView))
+        val ex = assertFailsWith<AssertionError> {
+            store(FixtureMode.VERIFY).binary("geo/mvt/port.bin", listed, bytes, decoded)
+        }
+        assertTrue(ex.message!!.contains("port divergence differs"), ex.message)
+        assertFailsWith<IllegalArgumentException> {
+            store(FixtureMode.REGENERATE).binary("geo/mvt/port.bin", header, bytes, decoded, PortDivergence("D13", portView))
+        }.also { assertTrue(it.message!!.contains("does not list it in decisions"), it.message) }
+    }
+
+    @Test
     fun `default store finds the repo testdata directory`() {
         val root = FixtureStore.locateRoot()
         assertTrue(File(root, "README.md").exists(), "no README.md in $root")

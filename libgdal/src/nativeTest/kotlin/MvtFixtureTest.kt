@@ -1,10 +1,14 @@
 import io.madrona.njord.geojson.Position
+import io.madrona.njord.testdata.PortDivergence
 import io.madrona.njord.testdata.fixtures
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.put
 import tile.VectorTileEncoder
 import tile.decodeMvtToJson
 import kotlin.test.BeforeTest
@@ -35,11 +39,19 @@ class MvtFixtureTest {
     private fun str(s: String) = JsonPrimitive(s)
     private fun num(n: Number) = JsonPrimitive(n)
 
-    private fun case(name: String, pins: String, source: String, build: VectorTileEncoder.() -> Unit): JsonElement {
+    private fun case(
+        name: String,
+        pins: String,
+        source: String,
+        decisions: List<String> = listOf("TE-8"),
+        port: ((JsonElement) -> PortDivergence<JsonElement>)? = null,
+        build: VectorTileEncoder.() -> Unit,
+    ): JsonElement {
         val encoder = VectorTileEncoder().apply(build)
         val bytes = encoder.encode()
         val decoded = decodeMvtToJson(bytes)
-        fixtures.binary("geo/mvt/$name.bin", gdalHeader(pins, listOf("TE-8"), "MvtFixtureTest", source), bytes, decoded)
+        val header = gdalHeader(pins, decisions, "MvtFixtureTest", source)
+        fixtures.binary("geo/mvt/$name.bin", header, bytes, decoded, port?.invoke(decoded))
         return decoded
     }
 
@@ -143,8 +155,10 @@ class MvtFixtureTest {
     fun `multipoint and geometry collection`() {
         val decoded = case(
             "multi",
-            "a MultiPoint is one POINT feature with one MoveTo of count n; a GeometryCollection is split into one feature per member sharing the same id",
+            "a GeometryCollection is split into one feature per member sharing the same id. A MultiPoint must be one POINT feature with one MoveTo of count n: Kotlin drops it (D13, `OGR_G_GetPoints` sees no points on a MultiPoint) and leaves its layer empty; port.decoded has the feature",
             "three soundings as a multipoint, a collection of a point and a line",
+            decisions = listOf("TE-8", "D13"),
+            port = { decoded -> PortDivergence("D13", withSoundgMultiPoint(decoded)) },
         ) {
             addFeature("SOUNDG", props("METERS" to num(1.2)), Gdal.createMultiPointFromCoords(p(10.0, 10.0), p(20.0, 20.0), p(30.0, 10.0)))
             val collection = Gdal.createGeometryCollection()
@@ -155,6 +169,25 @@ class MvtFixtureTest {
         val mixed = decoded.features(1)
         assertEquals(2, mixed.size)
         assertEquals(mixed[0].jsonObject["id"], mixed[1].jsonObject["id"], "collection members keep one id")
+    }
+
+    /**
+     * The `multi` view the port must produce (D13): the SOUNDG layer holds the MultiPoint as one
+     * POINT feature with the first id (2), its three points as one MoveTo; MIXED is unchanged.
+     */
+    private fun withSoundgMultiPoint(decoded: JsonElement): JsonElement {
+        fun pt(x: Int, y: Int) = JsonArray(listOf(JsonArray(listOf(JsonPrimitive(x), JsonPrimitive(y)))))
+        val soundg = buildJsonObject {
+            put("id", 2)
+            put("type", "POINT")
+            put("props", buildJsonObject { put("METERS", 1.2) })
+            put("geometry", JsonArray(listOf(pt(10, 10), pt(20, 20), pt(30, 10))))
+        }
+        val layers = decoded.layers().map { layer ->
+            val l = layer.jsonObject
+            if (l["name"]!!.content() == "SOUNDG") JsonObject(l + ("features" to JsonArray(listOf(soundg)))) else l
+        }
+        return JsonObject(decoded.jsonObject + ("layers" to JsonArray(layers)))
     }
 
     @Test

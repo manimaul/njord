@@ -2,11 +2,8 @@
 //! responds with (Phase 1 exit criterion, RUST_PORT_PLAN.md §6). A new golden whose route is not
 //! mapped here fails the test, so each new response shape is a visible decision.
 
-mod common;
-
 use std::path::Path;
 
-use common::{Failures, Nulls, golden_dir, json_files, round_trip};
 use njord_model::colors::style_path;
 use njord_model::geojson::GeoJson;
 use njord_model::{
@@ -15,6 +12,7 @@ use njord_model::{
     LayerQueryResultPage, Pair, RegionManifestEntry, S57Attribute, S57ExpectedInput, S57Object,
     Style, Theme, ThemeMode, TileCacheCounts, TileJson, WsMsg,
 };
+use njord_testdata::{Failures, Nulls, golden_dir, json_files, round_trip};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -117,7 +115,7 @@ fn goldens() -> Vec<(String, Value)> {
                 .unwrap_or(Path::new(""))
                 .display()
                 .to_string();
-            out.push((label, common::load(&path)));
+            out.push((label, njord_testdata::load(&path)));
         }
     }
     out.sort_by(|a, b| a.0.cmp(&b.0));

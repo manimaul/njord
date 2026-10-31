@@ -1,14 +1,12 @@
 //! Round trips of the `testdata/` fixtures through the wire types (Phase 1 exit criterion,
 //! RUST_PORT_PLAN.md §6).
 
-mod common;
-
 use base64::Engine;
-use common::{Failures, Nulls, cases, json_files, round_trip, testdata};
 use njord_model::{
     AdminResponse, AdminSignature, ChartInsert, IconInfo, IndexMap, RegionManifestEntry, Sprite,
     Style, WsMsg,
 };
+use njord_testdata::{Failures, Nulls, cases, json_files, round_trip, testdata};
 use serde_json::Value;
 
 /// P-IN-7: every `WsMsg` subtype.
@@ -32,7 +30,7 @@ fn styles() {
     let mut checked = 0;
     for path in json_files(&testdata().join("symbology/style")) {
         let name = path.file_name().unwrap().to_string_lossy().into_owned();
-        for case in common::load(&path)["cases"].as_array().unwrap() {
+        for case in njord_testdata::load(&path)["cases"].as_array().unwrap() {
             checked += 1;
             failures.check(
                 &name,

@@ -97,8 +97,10 @@ There is **no mature pure-Rust S-57 / ISO 8211 reader** that applies `.001…` u
 
 ```
 RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,
-SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON,ADD_SOUNDG_DEPTH=ON
+SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON
 ```
+
+`ADD_SOUNDG_DEPTH` is **not** in effect. The Kotlin constant `Gdal.OGR_S57_OPTIONS_V` reads `…,RECODE_BY_DSSI=ON:ADD_SOUNDG_DEPTH=ON`: the colon makes GDAL take `ON:ADD_SOUNDG_DEPTH=ON` as the value of `RECODE_BY_DSSI` (still true), so no SOUNDG feature has ever had a `DEPTH` field. Every fixture and every production chart was read without it; `njord_s57::S57_OPTIONS` reproduces the options GDAL actually applies (found 2026-10-30, Phase 2). Turning it on would be a data change, outside the port.
 
 Changing the reader changes the data in the database and in every mobile archive. So:
 
@@ -291,11 +293,36 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
   - Not modelled, because they are server-internal and never on the wire: `ChartInfo`, `ChartFeature` (WKB byte arrays) and `LayerGeoJson`. `Theme` has no serde impl because Kotlin never serialises it.
 
 ### Phase 2 — Pure libraries
-- [ ] **Phase 2 complete**
+- [x] **Phase 2 complete** (2026-10-30). `crates/njord-geo`, `crates/njord-s57`, `crates/njord-symbology`, plus `crates/njord-testdata` (the shared fixture helpers, a dev-dependency only).
 - `njord-geo`: tile system, clip polygons, MVT encoder (`geozero`/`mvt`), prop filtering. Pass P-TE-1…4.
 - `njord-symbology`: port the 128 `Layerable`s and attribute helpers. Pass P-SY-1…9. Suggested order: `Layerable` base helpers → `Depare`, `Soundg`, `Obstrn`, `Wrecks`, `Uwtroc`, `Lights`, `Topmar` (tier-0 symbology) → buoys/beacons → everything else via P-SY-2 generated cases.
 - `njord-s57`: `gdal` crate reader behind `trait S57Reader`; shapefile reading via `shapefile` crate. Pass P-IN-1…4.
 - Exit: all §5.1–5.3 fixtures pass natively.
+- Done 2026-10-30. Every §5.1–5.3 fixture passes except P-TE-5 (golden tiles) and P-IN-5 (DB state after ingest). Those two need PostGIS and the `addCharts` / insert path, so they moved to the Phase 3 exit.
+  - **`njord-symbology`** (P-SY-1…7, 9; P-SY-8 is in `njord-model`):
+    - All 130 registered layerables, one module per Kotlin file, behind a `Layerable` trait and `LayerFactory`. The 35 Kotlin classes that `StandardLayers` never registers have no Rust module.
+    - Every P-SY-1 case and every one of the 5163 P-SY-2 cell features matches with no tolerance.
+    - All 27 P-SY-7 styles are byte-for-byte the same JSON document, layer ids included. Ids are numbered per style generation, which reproduces the fixtures.
+    - Pure Rust; builds for `wasm32`.
+  - **`njord-geo`** (P-TE-1…4):
+    - The tile system is bit-identical to Kotlin. The exceptions are the 127 z ≥ 19 cases where Kotlin's `Int` overflows (D10); they are sanity-checked instead.
+    - The MVT encoder is hand-written on a small protobuf writer, because neither `geozero` nor `mvt` reproduces Kotlin's clipping, simplification, ring orientation and minimum sizes. All 9 P-TE-2 cases decode to the fixture view, and 8 of 9 are byte-identical.
+    - Geometry ops use the pure-Rust `geo` crate. 153 of the 155 run `ogr_geometry.json` cases match. Accessor-only, WKB and `union` ops are skipped with a reason each, and 2 GEOS-specific outputs are recorded as divergences.
+  - **`njord-s57`** (P-IN-1…4, 6):
+    - 5177/5177 features, plus every chart-insert, layer-count, update-cell and Natural Earth case.
+    - Built on `gdal-sys` directly, behind `trait S57Reader`, because the released `gdal` 0.19 does not compile against GDAL 3.13. All unsafe code is in `ogr.rs`. The default `bindgen` feature generates bindings for GDAL newer than 3.12; use `--no-default-features` on Debian 13's 3.10.
+    - Shapefiles also go through GDAL. Ingest needs GDAL's `make_valid` anyway, and the fixture's field types come from GDAL.
+    - The S-57 driver options are the ones GDAL actually applies (§4.2).
+    - D7 has no `port.expected` case, so it is pinned by a unit test over an in-memory `S57Reader`.
+  - **Expected P-TE-5 differences in Phase 3**, from `geo` versus GEOS:
+    - `make_valid` keeps only polygons.
+    - Line simplification is plain Douglas–Peucker rather than topology-preserving.
+    - Boolean ops snap to a grid, about 1e-6 px at z16.
+    - Ring start vertices differ.
+    - Compare with `njord_geo::mvt::view::decode_to_json` plus ring-start normalisation (`njord-geo/tests/mvt.rs`).
+  - **Open:**
+    - P-TE-2 `multi` pins a Kotlin defect: a MultiPoint feature is dropped, but its layer is still emitted, because `OGR_G_GetPoints` sees no points on a MultiPoint. The port reproduces it until someone decides whether to file it as a D-number.
+    - The `tile_system.json` header text still says z ≥ 20 (it is z ≥ 19, see D10).
 
 ### Phase 3 — Read-only server, side by side
 - [ ] **Phase 3 complete**
@@ -304,7 +331,7 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Tile cache: same on-disk layout under `chartTempData` so the deb package and the operational docs stay valid. In Kubernetes each environment has its own PVC; nothing is shared between namespaces.
 - Locally, run both servers against the same dev PostGIS and run the conformance suite in diff mode (`pytest conformance --base-url=http://localhost:9000 --compare-url=http://localhost:9001`), which compares masked bodies and decoded tiles (P-TE-5) between the two live servers.
 - Stand up the `mxmariner` environment (§10.4): the Rust image for `njord-chart-dep`, the existing Kotlin image for `njord-ingest-rs` and `njord-enc-download`, all pointed at the new `njord` database and PVC. Kotlin fills the database, Rust reads it (P-DB-1 makes the schema handshake safe). Run the suite against `https://openenc.com` and `https://njord.mxmariner.com`.
-- Exit: conformance suite green on read routes against both environments; `njord.mxmariner.com` serves tiles from its own data.
+- Exit: conformance suite green on read routes against both environments; `njord.mxmariner.com` serves tiles from its own data. P-TE-5 golden tiles and P-IN-5 DB state pass natively (moved here from Phase 2).
 
 ### Phase 4 — Write path and workers (FM)
 - [ ] **Phase 4 complete**

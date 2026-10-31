@@ -1,9 +1,10 @@
-//! Fixture helpers shared by the round-trip tests.
+//! Golden-fixture helpers shared by every crate's tests (a dev-dependency only).
 //!
 //! Fixtures are read from the repo's `testdata/` (or `$NJORD_TESTDATA`, as the Kotlin
-//! `FixtureStore` does) and `conformance/golden/`.
-
-#![allow(dead_code)]
+//! `FixtureStore` does) and `conformance/golden/`. Conventions are in `testdata/README.md`:
+//! table fixtures are `{ pins, decisions, generator, source, cases: [{ input, expected, port? }] }`,
+//! and a case's `port.expected`, when present, is what the Rust port must produce instead of the
+//! Kotlin `expected` (decisions D2–D9).
 
 use std::path::{Path, PathBuf};
 
@@ -37,6 +38,14 @@ pub fn cases(fixture: &str) -> Vec<Value> {
         Some(Value::Array(cases)) => cases.clone(),
         _ => panic!("{}: no cases", path.display()),
     }
+}
+
+/// What the port must produce for a case: `port.expected` when the case records a port
+/// divergence, otherwise `expected`.
+pub fn port_expected(case: &Value) -> &Value {
+    case.get("port")
+        .and_then(|p| p.get("expected"))
+        .unwrap_or(&case["expected"])
 }
 
 /// Every `*.json` file directly in `dir`, sorted.

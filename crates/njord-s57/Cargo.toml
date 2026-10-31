@@ -1,0 +1,26 @@
+[package]
+name = "njord-s57"
+description = "S-57 cell and Natural Earth shapefile reading; the only crate that links GDAL"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = ["bindgen"]
+# Generate the GDAL bindings at build time (needs libclang). Required for GDAL releases newer than
+# gdal-sys's prebuilt bindings (3.12, e.g. Homebrew's 3.13); build with `default-features = false`
+# against GDAL <= 3.12 (Debian 13's 3.10) to use the prebuilt ones.
+bindgen = ["gdal-sys/bindgen"]
+
+[dependencies]
+gdal-sys = "0.12"
+geojson.workspace = true
+njord-geo.workspace = true
+njord-model.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+njord-testdata.workspace = true
+serde.workspace = true
+serde_json.workspace = true

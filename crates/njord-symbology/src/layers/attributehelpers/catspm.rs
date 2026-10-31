@@ -1,0 +1,62 @@
+//! `attributehelpers/Catspm.kt`.
+
+crate::layers::attributehelpers::list_attribute! {
+    /// <https://openenc.com/control/symbols/BCNSPP/CATSPM>
+    /// Attribute: Category of special purpose mark
+    /// Acronym: CATSPM
+    /// Code: 66
+    /// Enum
+    pub enum Catspm = "CATSPM" {
+        FIRING_DANGER_AREA_MARK = 1,
+        TARGET_MARK = 2,
+        MARKER_SHIP_MARK = 3,
+        DEGAUSSING_RANGE_MARK = 4,
+        BARGE_MARK = 5,
+        CABLE_MARK = 6,
+        SPOIL_GROUND_MARK = 7,
+        OUTFALL_MARK = 8,
+        ODAS_OCEAN_DATA_ACQUISITION_SYSTEM = 9,
+        RECORDING_MARK = 10,
+        SEAPLANE_ANCHORAGE_MARK = 11,
+        RECREATION_ZONE_MARK = 12,
+        PRIVATE_MARK = 13,
+        MOORING_MARK = 14,
+        LANBY_LARGE_AUTOMATIC_NAVIGATIONAL_BUOY = 15,
+        LEADING_MARK = 16,
+        MEASURED_DISTANCE_MARK = 17,
+        NOTICE_MARK = 18,
+        TSS_MARK_TRAFFIC_SEPARATION_SCHEME = 19,
+        ANCHORING_PROHIBITED_MARK = 20,
+        BERTHING_PROHIBITED_MARK = 21,
+        OVERTAKING_PROHIBITED_MARK = 22,
+        TWO_WAY_TRAFFIC_PROHIBITED_MARK = 23,
+        REDUCED_WAKE_MARK = 24,
+        SPEED_LIMIT_MARK = 25,
+        STOP_MARK = 26,
+        GENERAL_WARNING_MARK = 27,
+        SOUND_SHIPS_SIREN_MARK = 28,
+        RESTRICTED_VERTICAL_CLEARENCE_MARK = 29,
+        MAXIMUM_VESSELS_DRAUGHT_MARK = 30,
+        RESTRICTED_HORIZONTAL_CLEARANCE_MARK = 31,
+        STRONG_CURRENT_WARNING_MARK = 32,
+        BERTHING_PERMITTED_MARK = 33,
+        OVERHEAD_POWER_CABLE_MARK = 34,
+        CHANNEL_EDGE_GRADIENT_MARK = 35,
+        TELEPHONE_MARK = 36,
+        FERRY_CROSSING_MARK = 37,
+        PIPLINE_MARK = 39,
+        ANCHORAGE_MARK = 40,
+        CLEARING_MARK = 41,
+        CONTROL_MARK = 42,
+        DIVING_MARK = 43,
+        REFUGE_BEACON = 44,
+        FOUL_GROUND_MARK = 45,
+        YACHTING_MARK = 46,
+        HELIPORT_MARK = 47,
+        GPS_MARK = 48,
+        SEAPLANE_LANDING_MARK = 49,
+        ENTRY_PROHIBITED_MARK = 50,
+        WORK_IN_PROGRESS_MARK = 51,
+        MARK_WITH_UNKNOWN_PURPOSE = 52,
+    }
+}

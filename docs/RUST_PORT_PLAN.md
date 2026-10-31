@@ -321,7 +321,6 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
     - Ring start vertices differ.
     - Compare with `njord_geo::mvt::view::decode_to_json` plus ring-start normalisation (`njord-geo/tests/mvt.rs`).
   - **Resolved:** **D13**, decided 2026-10-30 (TEST_COVERAGE_AUDIT.md §3): Kotlin drops a MultiPoint feature from MVT tiles but still emits its layer. The `multi` fixture now carries `port.decoded`, and the port encodes the feature. `FixtureStore.binary` gained the `port` argument for this.
-  - **Open:** The `tile_system.json` header text still says z ≥ 20 (it is z ≥ 19, see D10).
 
 ### Phase 3 — Read-only server, side by side
 - [ ] **Phase 3 complete**

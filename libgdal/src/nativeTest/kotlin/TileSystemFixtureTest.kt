@@ -65,8 +65,8 @@ class TileSystemFixtureTest {
 
         zooms.forEach { z -> lats.forEach { lat -> lngs.forEach { lng -> add(TileOp("latLngToTileXy", lng = lng, lat = lat, z = z)) } } }
 
-        // the z16 tile TileSystemTest pins, its corners/centre and points just outside it. z19 is
-        // the deepest level whose envelope is finite: mapSize(z) = 4096 shl z overflows Int at z20.
+        // the z16 tile TileSystemTest pins, its corners/centre and points just outside it. The z19
+        // tiles pin D10: mapSize(z) = 4096 shl z overflows Int from z19 (4096 shl 19 = 2^31).
         val bounded = listOf(
             Triple(10485, 22975, 16), Triple(0, 0, 0), Triple(1, 1, 1), Triple(2621, 5743, 14),
             Triple(0, 0, 19), Triple(524287, 524287, 19),
@@ -110,8 +110,8 @@ class TileSystemFixtureTest {
         val table = fixtures.table(
             "geo/tile_system.json",
             FixtureHeader(
-                pins = "TileSystem: Web Mercator tile/pixel math with 4096px tiles, scale<->zoom at 96 dpi with the 0.92 tweak on the integer form, clip polygons incl. the 15px expansion; inputs past the Mercator limits are clamped. KNOWN DEFECT recorded as-is: mapSize(z) = 4096 shl z overflows Int from z20, so the z24 cases pin garbage (clamped pixels, infinite clip corners); the port should treat z >= 20 as a decision, not copy these values",
-                decisions = listOf("TE-9", "D8"),
+                pins = "TileSystem: Web Mercator tile/pixel math with 4096px tiles, scale<->zoom at 96 dpi with the 0.92 tweak on the integer form, clip polygons incl. the 15px expansion; inputs past the Mercator limits are clamped. KNOWN DEFECT recorded as-is (D10): mapSize(z) = 4096 shl z overflows Int from z19 (4096 shl 19 = 2^31), so the z19 and z24 cases pin garbage (clamped pixels, infinite clip corners); the port computes mapSize in 64 bits and does not copy these values",
+                decisions = listOf("TE-9", "D8", "D10"),
                 generator = "TileSystemFixtureTest",
                 source = "hand-written grid over the poles, the antimeridian, z0 and z24 plus the TileSystemTest expectations",
             ),

@@ -280,7 +280,7 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Exit: `testdata/` committed; conformance suite green against the Kotlin server.
 
 ### Phase 1 — Workspace and the contract crate
-- [x] **Phase 1 complete** (2026-10-30). Root `Cargo.toml` workspace, `crates/njord-model`, Local checks before committing: `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo check -p njord-model --target wasm32-unknown-unknown`.
+- [x] **Phase 1 complete** (2026-10-30). Root `Cargo.toml` workspace, `crates/njord-model`, Local checks before committing: `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`, `cargo check -p njord-model --target wasm32-unknown-unknown` (and since Phase 6 `cargo clippy -p njord-web --target wasm32-unknown-unknown -- -D warnings`).
 - `njord-model`: every wire type (`Chart`, `ChartCatalog`, `ChartEditions`, `FeatureRecord`, `LayerQueryResultPage`, `RegionManifestEntry`, `AdminSignature`/`AdminResponse`, `EncUpload`, `EncUrlRequest`, `WsMsg`, `Style`/`Layer`/`Paint`/`Layout`, `S57Object`, `About`, `TileJson`, `Depth`, `ThemeMode`, `Sprite`, `Color`).
 - Serde round-trip tests against `testdata/` JSON (P-IN-7, P-SY-7 types, P-API golden bodies).
 - Exit: `cargo test -p njord-model` deserialises every golden response and re-serialises it identically.
@@ -392,8 +392,24 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
   - **Left for Phase 7** (deployment is deferred there): `Containerfile.rust` does not build or ship `njord-enc-cron` or `enc_cron/src/nativeMain/resources` yet; add both (e.g. `/opt/njord/njord-enc-cron` and `/opt/njord/enc_cron_resources`, the path the `njord-enc-cron-config` mount expects), then flip `NJORD_ENC_CRON_IMPL=rust`, the `enc-download` command in `deploy/mxmariner/noaa_enc_daily_cron.yaml` and the guard line in `deploy.sh resolve_images`.
 
 ### Phase 6 — Leptos frontend
-- [ ] **Phase 6 complete**
+- [x] **Phase 6 complete** (2026-10-31). `crates/njord-web` replaces `web` + `shared_fe`: Leptos 0.8 CSR, built with Trunk (`trunk build --release` in `crates/njord-web` → `dist/`, served as `webStaticContent`).
 - See §7. Exit: route parity with `shared_fe/routing`, every API call typed through `njord-model`, manual QA on the map.
+- Done 2026-10-31:
+  - **Routing** (`routing.rs`): `NjordRoute`, `RouteMatcher` and `RouteRegistry` ported line for line (`regex-lite`), not `leptos_router`, so the matcher's quirks (`/chart` matching with an empty name, a trailing `#`, the unanchored `groups`) stay exactly as bookmarked URLs expect. `tests/routes.rs` passes all 54 cases and the route list of `testdata/frontend/routes.json` natively. History is driven by hand (`pushState`/`replaceState`, `popstate`) as `RouteViewModel` did.
+  - **State**: the Kotlin view-model singletons are one set of app-wide signals (`store.rs`), created once at mount. Loads start the first time a page needs them (catalog, S-57 catalogue + colours, sprites), so each page issues the `/v1` requests the Kotlin page did. `Async<T>` and its error texts (`401 - Unauthorized`, `<status> - Network status`) are kept.
+  - **Dependency rule**: `njord-web` depends on `njord-model` and no other backend crate (`cargo tree -p njord-web -e normal`). For that, `build_sector_svg` moved from `njord-symbology` to `njord_model::sector_svg` (symbology re-exports it); the UI draws missing `sector_*` images with it, as `ChartController` did.
+  - **JavaScript**: MapLibre GL 4.7.1 and Bootstrap 5.3.3 (the versions in `gradle/libs.versions.toml`) are vendored unmodified under `crates/njord-web/vendor/`, so the build needs no npm and the UI works offline. `maplibre.rs` and `bootstrap.rs` bind the calls the UI makes.
+  - **Compatibility**: `localStorage` keys and encodings are the Kotlin ones (`MapLocation`, `Depth`, `AdminResponse`, and `Theme` in kotlinx's array polymorphism), so an in-place upgrade keeps a viewer's position, theme and login. This was confirmed live: the Leptos UI picked up the depth unit and admin login the Kotlin UI had stored. Text the Kotlin UI printed through `toString()` (`Duration`, `WsMsg` data classes, enum names) is reproduced in `kotlin.rs`, with unit tests.
+  - **Decided along the way** (fixes of Kotlin UI behaviour):
+    - Navigating carries only the target's own query string. Kotlin kept the query of the page being left, so `/enc?lat=…` followed by "About" went to `/?lat=…`.
+    - Chart deletes go to `DELETE /v1/chart`. Kotlin requested `/v1//chart`, which Ktor routed and axum does not.
+    - The chart-query modal derives the theme's colours from the loaded colour table. Kotlin computed them only when the theme changed, so they could stay unset.
+    - A failed upload (non-2xx `POST /v1/enc_save`) shows the error with a reset. Kotlin failed to decode the body and stayed on the progress bar.
+    - Nav dropdown items `preventDefault`, so picking one no longer appends `#` to the URL.
+    - A pending "ENC Zoom" from the chart page fits the bounds on the map's `load` event. Fitting right after creating the map landed at the wrong zoom, because the container had not been laid out yet.
+  - **Live QA** (release build; Rust server on :9000 against `njord_rust_live`, Chromium): every route and control-panel tab; the map at z14 (soundings, light sectors from `styleimagemissing`); the feature-query modal and its accordion (chart summary, colour swatches, attributes); chart page → "ENC Zoom" (bounds and coverage highlight); layer page paging and "ENC Zoom" (point highlight); depth / theme switching (style reload, scale units); the region overlay and the admin region editor (drag, context menu, insert, exit); the catalog filter; an upload of the US5WA22M fixture through to the `CompletionReport` and Reset; not-found page and back button. No console errors.
+  - **Open:** the side-by-side capture of [FRONTEND_SCREENSHOT_CHECKLIST.md](FRONTEND_SCREENSHOT_CHECKLIST.md) against the Kotlin UI (pixels and network logs, 1440 and 390 widths) has not been done; QA above was functional, against the Rust server only.
+  - **Left for Phase 7:** `Containerfile.rust` still copies the Kotlin/JS build into `/opt/njord/resources/www`. Build the UI with Trunk in the builder stage instead (needs the `wasm32-unknown-unknown` target and `trunk`) and copy `crates/njord-web/dist`.
 
 ### Phase 7 — Cutover and removal
 - [ ] **Phase 7 complete**

@@ -33,7 +33,6 @@ def test_style_urls_reflect_forwarded_headers(client):
     assert style["sources"]["src_senc"]["url"] == "https://charts.example.org:8443/v1/tile_json"
 
 
-@pytest.mark.port_pending("Phase 4: GET /v1/admin signature minting, POST /v1/admin/verify")
 def test_signature_is_bound_to_the_forwarded_host(client, admin_auth):
     behind_proxy = client.get("/v1/admin", auth=admin_auth, headers=FORWARDED).json()
     # Verifies only when presented under the same external base URL …

@@ -22,20 +22,26 @@
 //! to the current version before the server listens, as Kotlin's `DbMigrations.run()` does. Tiles
 //! are assembled by [`tile_encoder`] and cached on disk by [`tile_cache`].
 //!
-//! # Mutating routes
+//! # Write path (Phase 4)
 //!
-//! The read-only server registers every Kotlin mutating verb (chart and GeoJSON insert, chart,
-//! cache and nuke deletes, uploads, region re-render) behind the admin signature check
-//! ([`handlers::not_implemented`]): 401 without a valid signature, as Kotlin, and 501 with one.
-//! Phase 4 replaces them. `GET /v1/admin` checks basic auth (401) and answers 501 to the admin;
-//! `/v1/admin/verify` and `/v1/ws/enc_process` are not registered yet and fall through to the
-//! web app.
+//! Every mutating verb (chart and GeoJSON insert, chart, cache and nuke deletes, uploads, region
+//! re-render, the region archive download, the status socket) is behind the admin signature check
+//! ([`handlers::Signed`]): an empty 401 without a valid signature, as Kotlin. `GET /v1/admin`
+//! mints signatures behind basic auth; `POST /v1/admin/verify` refreshes one.
+//!
+//! Uploads land in `<chartTempData>/save`; [`spawn_workers`] starts the ingest worker
+//! ([`ingest::IngestWorker`]) that claims and ingests them and the region export worker
+//! ([`regions::RegionWorker`]) that renders stale region archives, both coordinated across
+//! replicas by the lock file ([`lock`]). They are started by the binary, not by [`router`], so
+//! tests drive the routes without them.
 
 pub mod config;
 pub mod cors;
 pub mod forwarded;
 pub mod gd_png;
 pub mod handlers;
+pub mod ingest;
+pub mod lock;
 pub mod regions;
 pub mod signature;
 pub mod sprite_sheet;
@@ -46,6 +52,7 @@ pub mod tile_encoder;
 use std::sync::Arc;
 
 use axum::Router;
+use axum::extract::DefaultBodyLimit;
 use axum::middleware;
 use axum::routing::{delete, get, post};
 use njord_db::{AdvisoryLock, Db};
@@ -57,8 +64,8 @@ pub use config::ChartsConfig;
 pub use state::AppState;
 
 use handlers::{
-    about, admin, api, cache, charts, content, feature, geojson, icon, not_implemented,
-    regions as region_routes, sector_svg, style, tile, tile_json, web,
+    about, admin, api, cache, charts, content, enc_save, enc_url, feature, geojson, icon, nuke,
+    regions as region_routes, sector_svg, style, tile, tile_json, web, ws,
 };
 
 /// Connections the server keeps to PostgreSQL.
@@ -76,6 +83,26 @@ pub fn connect(config: &ChartsConfig) -> Result<Db, njord_db::Error> {
 pub async fn migrate(db: &Db) -> Result<i32, njord_db::Error> {
     let lock = AdvisoryLock::new(db.pool().clone(), AdvisoryLock::MIGRATION_KEY);
     db.migrate(&lock).await
+}
+
+/// Starts the background workers when `enableIngestion` is set (`Application.njord()`): the
+/// ingest worker, and the region export worker unless `enableRegionExport` is off. The handles
+/// are the tasks; dropping them does not stop the workers.
+pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
+    let mut handles = Vec::new();
+    if !state.config.enable_ingestion {
+        tracing::info!("ingestion disabled by config");
+        return handles;
+    }
+    handles.push(tokio::spawn(ingest::IngestWorker::new(state.clone()).run()));
+    if state.config.enable_region_export {
+        handles.push(tokio::spawn(
+            regions::RegionWorker::new(state.clone()).run(),
+        ));
+    } else {
+        tracing::info!("region export disabled by config");
+    }
+    handles
 }
 
 /// The whole HTTP API. Routes are matched as Ktor matches the Kotlin route patterns: `{x}` is one
@@ -96,32 +123,36 @@ pub fn router(state: Arc<AppState>) -> Router {
         .route(
             "/v1/chart",
             api(get(charts::chart)
-                .post(not_implemented)
-                .delete(not_implemented)),
+                .post(charts::insert)
+                .delete(charts::delete)),
         )
         .route("/v1/chart_catalog", api(get(charts::chart_catalog)))
         .route("/v1/chart_editions", api(get(charts::chart_editions)))
         .route(
             "/v1/geojson",
-            api(get(geojson::geojson).post(not_implemented)),
+            api(get(geojson::geojson).post(geojson::insert)),
         )
         .route("/v1/tile/{z}/{x}/{y}", api(get(tile::tile)))
-        .route("/v1/cache", api(get(cache::cache).delete(not_implemented)))
+        .route("/v1/cache", api(get(cache::cache).delete(cache::clear)))
         .route("/v1/feature/{by}/{arg}", api(get(feature::feature)))
         .route(
             "/v1/regions",
-            api(get(region_routes::manifest).post(not_implemented)),
+            api(get(region_routes::manifest).post(region_routes::rerender)),
         )
         .route("/v1/regions/{archive}", api(get(region_routes::archive)))
         .route(
             "/v1/enc_save",
-            api(post(not_implemented).delete(not_implemented)),
+            api(post(enc_save::upload).delete(enc_save::reset)),
         )
-        .route("/v1/enc_url", api(post(not_implemented)))
-        .route("/v1/nuke", api(delete(not_implemented)))
+        .route("/v1/enc_url", api(post(enc_url::download)))
+        .route("/v1/nuke", api(delete(nuke::nuke)))
         .route("/v1/admin", api(get(admin::admin)))
+        .route("/v1/admin/verify", api(post(admin::verify)))
+        .route("/v1/ws/enc_process", api(get(ws::enc_process)))
         .fallback(web::fallback)
         .with_state(state)
+        // Uploads are whole ENC bundles; Ktor imposed no body limit.
+        .layer(DefaultBodyLimit::disable())
         .layer(CatchPanicLayer::new())
         .layer(middleware::from_fn(cors::cors))
         .layer(

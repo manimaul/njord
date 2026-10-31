@@ -1,14 +1,63 @@
-//! `GET /v1/geojson?chart_name=&layer_name=` (`GeoJsonHandler.kt`).
+//! `GET/POST /v1/geojson?chart_name=&layer_name=` (`GeoJsonHandler.kt`).
 
 use std::sync::Arc;
 
 use axum::Json;
+use axum::extract::rejection::JsonRejection;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use njord_model::{FeatureInsert, Pair};
 
-use super::query_param;
+use super::{Signed, query_param};
 use crate::state::AppState;
+
+/// `POST`, signed: inserts the GeoJSON body into `chart_name` as `layer_name` and answers
+/// Kotlin's `Pair(rows inserted, FeatureInsert)`. 400 when a parameter is missing, the chart is
+/// unknown or the body is not GeoJSON; 500 when nothing was inserted.
+pub async fn insert(
+    _: Signed,
+    State(state): State<Arc<AppState>>,
+    Query(query): Query<Vec<(String, String)>>,
+    body: Result<Json<geojson::GeoJson>, JsonRejection>,
+) -> Response {
+    let Ok(Json(geo)) = body else {
+        return super::bad_request_text(
+            "Failed to convert request body to class io.madrona.njord.geojson.GeoJsonObject",
+        );
+    };
+    let (Some(chart_name), Some(layer_name)) = (
+        query_param(&query, "chart_name"),
+        query_param(&query, "layer_name"),
+    ) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let chart = match state.db.find_chart(chart_name).await {
+        Ok(Some(chart)) => chart,
+        Ok(None) => return StatusCode::BAD_REQUEST.into_response(),
+        Err(e) => {
+            tracing::error!("geojson insert {chart_name}: {e}");
+            return StatusCode::BAD_REQUEST.into_response();
+        }
+    };
+    let insert = FeatureInsert {
+        layer_name: layer_name.to_owned(),
+        chart,
+        geo,
+    };
+    match state.db.geojson_insert(&insert).await {
+        Ok(count) if count > 0 => Json(Pair {
+            first: count as i64,
+            second: insert,
+        })
+        .into_response(),
+        Ok(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        Err(e) => {
+            tracing::error!("geojson insert {chart_name} {layer_name}: {e}");
+            StatusCode::BAD_REQUEST.into_response()
+        }
+    }
+}
 
 /// One layer of one chart as a GeoJSON `FeatureCollection` (empty for an unknown chart or
 /// layer); an empty 404 when a parameter is missing or the database fails.

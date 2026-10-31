@@ -13,6 +13,8 @@ use serde::Serialize;
 use serde::de::DeserializeOwned;
 
 use crate::config::ChartsConfig;
+use crate::ingest::IngestStatus;
+use crate::lock::DistributedLock;
 use crate::regions::Regions;
 use crate::signature::Verifier;
 use crate::sprite_sheet::SpriteSheet;
@@ -38,6 +40,18 @@ pub struct AppState {
     pub verifier: Verifier,
     /// The `/v1/about/*` dictionaries, serialised once.
     pub about: AboutDocuments,
+    /// `<chartTempData>/lock`, shared by ingest and region export across replicas.
+    pub lock: Arc<DistributedLock>,
+    /// `<chartTempData>/status.json`, what `/v1/ws/enc_process` streams.
+    pub status: Arc<IngestStatus>,
+    /// `<chartTempData>/save`: uploaded zips waiting for the ingest worker.
+    pub save_dir: PathBuf,
+    /// `<chartTempData>/ingest`: the worker's claim directories.
+    pub ingest_dir: PathBuf,
+    /// Wakes the region export worker (`RegionExportWorker.wake()`).
+    pub region_wake: tokio::sync::Notify,
+    /// The client `POST /v1/enc_url` downloads with.
+    pub http: reqwest::Client,
 }
 
 /// `S57ObjectLibrary` and `ColorLibrary` as the about routes send them: decoded into their wire
@@ -89,7 +103,15 @@ impl AppState {
         };
         let layers = LayerFactory::new(config.symbology(), ColorLibrary::new(colors));
         let temp = &config.chart_temp_data;
+        let lock = Arc::new(DistributedLock::new(temp.join("lock")));
+        let status = Arc::new(IngestStatus::new(temp.join("status.json"), lock.clone()));
         Ok(Arc::new(AppState {
+            lock,
+            status,
+            save_dir: temp.join("save"),
+            ingest_dir: temp.join("ingest"),
+            region_wake: tokio::sync::Notify::new(),
+            http: reqwest::Client::new(),
             resources: resources.to_path_buf(),
             db,
             symbology: Arc::new(Symbology { layers, enumerated }),
@@ -103,6 +125,11 @@ impl AppState {
             about,
             config,
         }))
+    }
+
+    /// `RegionExportWorker.wake()`: a conflated signal that cuts the worker's wait short.
+    pub fn wake_region_worker(&self) {
+        self.region_wake.notify_one();
     }
 
     pub fn layers(&self) -> &LayerFactory {

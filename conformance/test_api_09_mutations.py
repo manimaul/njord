@@ -9,8 +9,7 @@ import pytest
 from lib.engine import Spec
 
 G = "api_09_mutations"
-pytestmark = [pytest.mark.mutating, pytest.mark.signed,
-              pytest.mark.port_pending("Phase 4: chart/geojson POST, chart/cache DELETE")]
+pytestmark = [pytest.mark.mutating, pytest.mark.signed]
 
 CHART = "ZZ_CONFORMANCE.000"
 CHART_INSERT = {

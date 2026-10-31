@@ -164,13 +164,10 @@ never as a false alarm on the exact routes.
   Always skipped in diff mode.
 - `signed` — needs an admin signature; skipped when no credentials are available.
 - `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9).
-- `port_pending(reason)` — the reverse: the route is not ported yet (RUST_PORT_PLAN.md Phase 4:
-  `GET /v1/admin` minting, `POST /v1/admin/verify`, the `/v1/ws/enc_process` WebSocket, ingest,
-  chart/geojson/cache/nuke mutations, `POST /v1/regions` and archives that need the export
-  worker), so the test is **skipped** when the `--base-url` server is (or `--server-impl` says it
-  is) the Rust port. Checked in `pytest_runtest_setup`, before fixtures, so the region-archive
-  fixture does not wait for an export worker that does not exist. Remove a marker when its route
-  lands.
+- `port_pending(reason)` — the reverse: a route not ported yet, **skipped** when the `--base-url`
+  server is (or `--server-impl` says it is) the Rust port. Checked in `pytest_runtest_setup`,
+  before fixtures. No test carries it since Phase 4 landed (2026-10-30); it stays for a future
+  route that the Kotlin server grows first.
 - `local_only` — `X-Forwarded-*` reflection, which a production proxy overrides (`--trust-forwarded`).
 
 ## Seeding and the P-API-8 ingest

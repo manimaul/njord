@@ -10,15 +10,19 @@ pub mod admin;
 pub mod cache;
 pub mod charts;
 pub mod content;
+pub mod enc_save;
+pub mod enc_url;
 pub mod feature;
 pub mod geojson;
 pub mod icon;
+pub mod nuke;
 pub mod regions;
 pub mod sector_svg;
 pub mod style;
 pub mod tile;
 pub mod tile_json;
 pub mod web;
+pub mod ws;
 
 use std::sync::Arc;
 
@@ -51,6 +55,27 @@ pub fn with_content_type(content_type: &'static str, body: impl IntoResponse) ->
     response
         .headers_mut()
         .insert(header::CONTENT_TYPE, HeaderValue::from_static(content_type));
+    response
+}
+
+/// Ktor's answer to a `receive<T>()` that cannot decode the body: 400 with the message as
+/// `text/plain; charset=UTF-8` (golden `api_09_mutations/chart_post_invalid`).
+pub fn bad_request_text(message: &'static str) -> Response {
+    let mut response = (StatusCode::BAD_REQUEST, message).into_response();
+    response.headers_mut().insert(
+        header::CONTENT_TYPE,
+        HeaderValue::from_static("text/plain; charset=UTF-8"),
+    );
+    response
+}
+
+/// A text response with a status, as Ktor's `respond(status, "text")` writes it.
+pub fn text(status: StatusCode, message: impl Into<String>) -> Response {
+    let mut response = (status, message.into()).into_response();
+    response.headers_mut().insert(
+        header::CONTENT_TYPE,
+        HeaderValue::from_static("text/plain; charset=UTF-8"),
+    );
     response
 }
 
@@ -96,11 +121,4 @@ impl FromRequestParts<Arc<AppState>> for Signed {
             Err(StatusCode::UNAUTHORIZED)
         }
     }
-}
-
-/// A mutating verb of the read-only server (Phase 4 implements them): 401 without a valid
-/// signature, as Kotlin answers, and an empty 501 with one, so nothing is changed and a signed
-/// client learns the operation is unavailable rather than that it succeeded.
-pub async fn not_implemented(_: Signed) -> StatusCode {
-    StatusCode::NOT_IMPLEMENTED
 }

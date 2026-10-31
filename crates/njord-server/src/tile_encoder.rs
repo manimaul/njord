@@ -87,10 +87,48 @@ pub async fn tile(
     t: TileXyz,
     debug: bool,
 ) -> Result<Vec<u8>, TileError> {
-    let charts = chart_inputs(db, t).await?;
-    let sym = symbology.clone();
-    let (mut encoder, include, _) =
-        tokio::task::spawn_blocking(move || add_charts(&sym, t, charts, false)).await??;
+    let encoder = assemble(db, symbology, t, debug, false).await?;
+    Ok(tokio::task::spawn_blocking(move || encoder.encode()).await?)
+}
+
+/// A region archive tile (`RegionExporter.renderAndWriteTiles`): the live tile for a chart
+/// region, the base map alone (`addBaseMapOnly`) for the `WORLD` region; `None` when the tile
+/// has no content beyond the `PLY` coverage outline (`hasContent`), which is what keeps an
+/// archive sparse.
+pub async fn archive_tile(
+    db: &Db,
+    symbology: Arc<Symbology>,
+    t: TileXyz,
+    base_map_only: bool,
+) -> Result<Option<Vec<u8>>, TileError> {
+    let encoder = assemble(db, symbology, t, false, base_map_only).await?;
+    Ok(tokio::task::spawn_blocking(move || {
+        encoder.has_features(&["PLY"]).then(|| encoder.encode())
+    })
+    .await?)
+}
+
+/// Charts (unless `base_map_only`), then the base map where no chart covers the tile, then the
+/// debug overlay.
+async fn assemble(
+    db: &Db,
+    symbology: Arc<Symbology>,
+    t: TileXyz,
+    debug: bool,
+    base_map_only: bool,
+) -> Result<VectorTileEncoder, TileError> {
+    let (mut encoder, include) = if base_map_only {
+        let include = MultiPolygon(vec![
+            TILE_SYSTEM.create_tile_clip_polygon(t.x, t.y, t.z, 15),
+        ]);
+        (VectorTileEncoder::new(), include)
+    } else {
+        let charts = chart_inputs(db, t).await?;
+        let sym = symbology.clone();
+        let (encoder, include, _) =
+            tokio::task::spawn_blocking(move || add_charts(&sym, t, charts, false)).await??;
+        (encoder, include)
+    };
     let base = if is_empty(&Geometry::MultiPolygon(include.clone())) {
         Vec::new()
     } else {
@@ -105,7 +143,7 @@ pub async fn tile(
             props.insert("DMSG".into(), format!("{}, {}, {}", t.z, t.x, t.y).into());
             encoder.add_debug_envelope("DEBUG", &props);
         }
-        Ok::<_, TileError>(encoder.encode())
+        Ok::<_, TileError>(encoder)
     })
     .await?
 }

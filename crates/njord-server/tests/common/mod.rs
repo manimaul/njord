@@ -10,6 +10,8 @@
 
 #![allow(dead_code)]
 
+pub mod tiles;
+
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 

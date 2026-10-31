@@ -22,10 +22,9 @@ ARG RUNTIME_IMAGE=docker.io/library/debian:13.7-slim
 
 FROM ${RUST_IMAGE} AS builder
 
-# libgdal-dev: GDAL is linked only by the njord-s57 crate. The pinned georust gdal commit ships
-# prebuilt bindings for Debian's GDAL 3.10, so no libclang / bindgen is needed. njord-server does
-# not depend on njord-s57 in Phase 3, but will once ingestion moves to Rust (Phase 4); installing
-# it now keeps this stage stable across that change.
+# libgdal-dev: GDAL is linked only by the njord-s57 crate, which njord-server links for ingest
+# (Phase 4). The pinned georust gdal commit ships prebuilt bindings for Debian's GDAL 3.10, so no
+# libclang / bindgen is needed.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdal-dev \
     pkg-config \
@@ -63,10 +62,10 @@ FROM ${RUNTIME_IMAGE}
 # libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
 #   ca-certificates  TLS roots for outbound HTTPS (NOAA downloads from Phase 5, any rustls/openssl
 #                    client that uses the system store).
-#   libgdal36        Runtime GDAL 3.10 for njord-s57. Not linked by njord-server in Phase 3 (check
-#                    with `ldd /opt/njord/njord-server`); kept so the image does not change shape
-#                    when ingestion moves into this binary in Phase 4. Drop it if a separate
-#                    ingest image is built instead (§4.3, last sentence).
+#   libgdal36        Runtime GDAL 3.10 for njord-s57, linked by njord-server since ingestion moved
+#                    into this binary (Phase 4; check with `ldd /opt/njord/njord-server`). Drop it
+#                    only if a separate ingest image is built instead (§4.3, last sentence).
+#                    SQLite (region archives) is the bundled rusqlite build, not a package.
 #   zlib1g           libz-sys links the system zlib when the builder has it (it does), so the
 #                    binary needs libz.so.1. Already in debian slim; listed so it is not lost.
 RUN apt-get update && apt-get install -y --no-install-recommends \

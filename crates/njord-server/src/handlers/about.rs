@@ -16,15 +16,11 @@ use crate::state::AppState;
 /// by `rust` in this field (or an `implementation` key, which would change the golden's key set).
 pub const VERSION: &str = concat!(env!("CARGO_PKG_VERSION"), "-rust");
 
-/// What `gdalVersion` reports while the server does not link GDAL. The read-only server never
-/// opens a dataset; GDAL arrives with ingest in Phase 4 through `njord-s57`, and this becomes the
-/// linked library's version then.
-pub const GDAL_VERSION: &str = "none";
-
 pub fn about_json() -> AboutJson {
     AboutJson {
         version: VERSION.to_owned(),
-        gdal_version: GDAL_VERSION.to_owned(),
+        // The GDAL the ingest links through `njord-s57` (`RELEASE_NAME`, e.g. `3.13.1`).
+        gdal_version: njord_s57::gdal_version(),
         git_hash: env!("NJORD_GIT_HASH").to_owned(),
         git_branch: env!("NJORD_GIT_BRANCH").to_owned(),
         build_date: env!("NJORD_BUILD_DATE").to_owned(),

@@ -1,0 +1,58 @@
+[package]
+name = "njord-web"
+description = "Njord web UI: Leptos (CSR, wasm32) over the HTTP API, built with Trunk"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+# The only backend crate this may depend on is njord-model (RUST_PORT_PLAN.md §3.1); `cargo tree
+# -p njord-web` must not list any other njord-* crate. It also builds natively, so the workspace
+# test and clippy runs cover it; only `start` needs a browser.
+[dependencies]
+geojson.workspace = true
+js-sys = "0.3"
+leptos = { version = "0.8", features = ["csr"] }
+njord-model.workspace = true
+regex-lite = "0.1"
+serde.workspace = true
+serde_json.workspace = true
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "CloseEvent",
+    "CssStyleDeclaration",
+    "Document",
+    "DomRect",
+    "Element",
+    "Event",
+    "EventTarget",
+    "File",
+    "FileList",
+    "Headers",
+    "History",
+    "HtmlCollection",
+    "HtmlDivElement",
+    "HtmlElement",
+    "HtmlFormElement",
+    "HtmlImageElement",
+    "HtmlInputElement",
+    "Location",
+    "MessageEvent",
+    "MouseEvent",
+    "Navigator",
+    "Node",
+    "ProgressEvent",
+    "Request",
+    "RequestInit",
+    "Response",
+    "Storage",
+    "WebSocket",
+    "Window",
+    "XmlHttpRequest",
+    "XmlHttpRequestUpload",
+    "XmlHttpRequestEventTarget",
+] }
+
+[dev-dependencies]
+njord-testdata.workspace = true

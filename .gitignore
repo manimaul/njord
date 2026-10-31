@@ -14,3 +14,6 @@ __pycache__/
 
 # Rust port (Cargo workspace)
 /target/
+
+# Trunk output of the web UI
+/crates/njord-web/dist/

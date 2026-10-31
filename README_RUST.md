@@ -12,6 +12,7 @@ alongside the Kotlin Gradle build. When the Kotlin code is removed this file bec
 | `njord-db` | PostGIS queries and schema migrations |
 | `njord-server` | The axum HTTP server: tiles, API, ingest and region export workers |
 | `njord-enc-cron` | Nightly NOAA updater: diffs NOAA's catalog against `/v1/chart_editions`, bundles stale cells into `save/` |
+| `njord-web` | The web UI: Leptos (client-side, `wasm32`) built with Trunk; depends on `njord-model` only |
 | `njord-testdata` | Locates the golden fixtures under `testdata/` for tests |
 
 ## Requirements
@@ -20,6 +21,8 @@ alongside the Kotlin Gradle build. When the Kotlin code is removed this file bec
 - GDAL 3.8–3.13 (`brew install gdal` on macOS, `libgdal-dev` on Debian). The georust `gdal` crate is pinned to a
   commit with prebuilt bindings, so a plain `cargo build` works; no bindgen or libclang.
 - The dev PostGIS from `chart_server_db/` (Podman)
+- For the web UI: `rustup target add wasm32-unknown-unknown` and `cargo install --locked trunk`. Trunk downloads the
+  matching `wasm-bindgen` and `wasm-opt` on first use. MapLibre GL and Bootstrap are vendored, so no npm.
 
 ## Configuration
 
@@ -57,20 +60,31 @@ cd chart_server_db && podman-compose up -d && cd ..
 psql postgresql://admin:mysecretpassword@localhost:6432/postgres -c 'CREATE DATABASE njord_rust'
 psql postgresql://admin:mysecretpassword@localhost:6432/njord_rust -c 'CREATE EXTENSION postgis'
 
-# 3. Build the web UI (the Kotlin/JS UI until the Leptos UI lands)
-./gradlew :web:jsBrowserDistribution
+# 3. Build the web UI
+(cd crates/njord-web && trunk build --release)
 
 # 4. Build and run the server
 cargo build --release -p njord-server
 CHART_SERVER_OPTS='{
   "pgConnectionInfo": "postgresql://admin:mysecretpassword@localhost:6432/njord_rust",
-  "webStaticContent": "./web/build/dist/js/productionExecutable",
+  "webStaticContent": "./crates/njord-web/dist",
   "chartTempData": "/tmp/njord_rust"
 }' ./target/release/njord-server ./server/src/nativeMain/resources
 ```
 
 The server listens on http://localhost:9000. For development, `cargo run -p njord-server -- ./server/src/nativeMain/resources`
 works the same way. `webStaticContent` can point at any directory with an `index.html` if only the API is needed.
+
+### Web UI (`njord-web`)
+
+`trunk build --release` (run in `crates/njord-web`) writes the static site to `crates/njord-web/dist/`; any server
+serves it through `webStaticContent`. For development with rebuild on save, run the server on :9000 and
+
+```bash
+cd crates/njord-web && trunk serve      # http://localhost:8080, /v1 proxied to :9000
+```
+
+The ingest status WebSocket goes straight to :9000 when the page is on :8080, as the Kotlin dev server did.
 
 ### NOAA update job (`njord-enc-cron`)
 
@@ -108,6 +122,8 @@ See [`deploy/mxmariner/README.md`](deploy/mxmariner/README.md) for pushing and d
 ```bash
 cargo test --workspace                                         # round-trips testdata/ and conformance/golden/
 cargo check -p njord-model --target wasm32-unknown-unknown     # the contract crate must build for the web UI
+cargo clippy -p njord-web --target wasm32-unknown-unknown -- -D warnings
+cargo tree -p njord-web -e normal | grep njord-                # only njord-web and njord-model
 cargo clippy --workspace --all-targets -- -D warnings
 ```
 

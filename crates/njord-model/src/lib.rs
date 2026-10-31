@@ -27,6 +27,7 @@ pub mod feature;
 pub mod instant;
 pub mod region;
 pub mod s57;
+pub mod sector_svg;
 pub mod sprite;
 pub mod style;
 pub mod ws;

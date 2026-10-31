@@ -1,0 +1,11 @@
+# `trunk build --release` (from this directory) writes the static site to dist/, which the server
+# serves as `webStaticContent`. `trunk serve` runs it on :8080 against a server on :9000.
+[build]
+target = "index.html"
+dist = "dist"
+
+[serve]
+port = 8080
+
+[[proxy]]
+backend = "http://localhost:9000/v1"

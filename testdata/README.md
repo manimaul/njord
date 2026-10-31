@@ -61,7 +61,10 @@ only pass on the port are tagged `port_only` and skipped against a Kotlin server
 **Binary fixtures** (MVT tiles, protobuf) are `<name>.bin` plus a `<name>.json` sidecar holding
 the same header, `bin` (file name), `bytes` (count) and `decoded`, a readable view of the bytes.
 Kotlin verifies the bytes exactly; the Rust port compares the decoded view, because two correct
-MVT encoders may legally order tags differently (§5.2, P-TE-2).
+MVT encoders may legally order tags differently (§5.2, P-TE-2). A binary fixture whose Kotlin bytes
+are an accepted defect also carries `"port": { "decision": "D13", "decoded": <view> }`, written
+with the `port` argument of `FixtureStore.binary`; the Rust tests compare against `port.decoded`
+and skip the byte comparison for it.
 
 **Every fixture file carries a header naming the decision it pins** (§8, "Fixtures freeze bugs
 as behavior"). JSON files carry it as the top-level `pins` / `decisions` / `generator` /

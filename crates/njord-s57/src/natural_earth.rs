@@ -46,7 +46,9 @@ impl Shapefile {
     /// Every feature of one layer in file order, with the S-57 field mapping
     /// ([`Feature::props`]); `None` when there is no such layer.
     pub fn features(&self, layer: &str) -> Option<Vec<Feature>> {
-        self.dataset.layer(layer).map(|l| read_layer(&l, layer))
+        self.dataset
+            .layer(layer)
+            .map(|mut l| read_layer(&mut l, layer))
     }
 }
 

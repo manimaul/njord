@@ -317,7 +317,17 @@ const GEOS_RING_START: &[&str] = &["clipping"];
 
 struct Fixture {
     bytes: Vec<u8>,
+    /// The view of the Kotlin `.bin`.
     decoded: Value,
+    /// `port.decoded`: the view the port must produce where Kotlin keeps an accepted defect.
+    port_decoded: Option<Value>,
+}
+
+impl Fixture {
+    /// What the Rust encoder must decode to: `port.decoded` when present, else `decoded`.
+    fn port_expected(&self) -> &Value {
+        self.port_decoded.as_ref().unwrap_or(&self.decoded)
+    }
 }
 
 fn fixture(case: &str) -> Fixture {
@@ -333,6 +343,7 @@ fn fixture(case: &str) -> Fixture {
     Fixture {
         bytes,
         decoded: sidecar["decoded"].clone(),
+        port_decoded: sidecar.get("port").map(|p| p["decoded"].clone()),
     }
 }
 
@@ -359,12 +370,13 @@ fn normalise_ring_starts(view: &mut Value) {
     }
 }
 
-/// P-TE-2: the Rust-encoded tile decodes to the sidecar's `decoded` view (the gate).
+/// P-TE-2: the Rust-encoded tile decodes to the sidecar's `decoded` view, or its
+/// `port.decoded` where one is recorded (D13 in `multi`). This is the gate.
 #[test]
 fn mvt_decoded_view() {
     let mut failures = Failures::default();
     for case in CASES {
-        let mut expected = fixture(case).decoded;
+        let mut expected = fixture(case).port_expected().clone();
         let Some(mut actual) = failures.check(
             case,
             decode_to_json(&build(case).encode()).map_err(|e| e.to_string()),
@@ -378,6 +390,28 @@ fn mvt_decoded_view() {
         }
     }
     failures.assert_none(CASES.len());
+}
+
+/// D13: a MultiPoint whose points round to the same pixel writes each pixel once, and the MoveTo
+/// count matches the points written (a count that claimed the dropped point would make the tile
+/// undecodable). No Kotlin fixture covers this; Kotlin never encoded a MultiPoint.
+#[test]
+fn multi_point_drops_repeated_pixels() {
+    let mut e = VectorTileEncoder::new();
+    e.add_feature(
+        "SOUNDG",
+        &props(json!({"METERS": 3.4})),
+        &Geometry::MultiPoint(MultiPoint::from(vec![
+            (10.0, 10.0),
+            (10.2, 9.9),
+            (20.0, 20.0),
+        ])),
+    );
+    let view = decode_to_json(&e.encode()).unwrap();
+    assert_eq!(
+        view["layers"][0]["features"][0]["geometry"],
+        json!([[[10, 10]], [[20, 20]]])
+    );
 }
 
 /// P-TE-2: the Rust decoder reads the Kotlin `.bin` into exactly the Kotlin `decoded` view, ring
@@ -397,15 +431,21 @@ fn mvt_decoder_reads_kotlin_tiles() {
 
 /// P-TE-2, informational per testdata/README.md but checked anyway: the protobuf writer uses
 /// Kotlin's field order, so wherever `geo` and GEOS produce the same vertices the bytes are
-/// identical to the Kotlin `.bin`.
+/// identical to the Kotlin `.bin`. Cases with a port divergence are left out: their Kotlin bytes
+/// are the defect.
 #[test]
 fn mvt_bytes_match_kotlin() {
     let mut failures = Failures::default();
+    let mut checked = 0;
     for case in CASES.iter().filter(|c| !GEOS_RING_START.contains(c)) {
-        let ours = build(case).encode();
-        if ours != fixture(case).bytes {
+        let f = fixture(case);
+        if f.port_decoded.is_some() {
+            continue;
+        }
+        checked += 1;
+        if build(case).encode() != f.bytes {
             failures.push(format!("{case}: bytes differ from {case}.bin"));
         }
     }
-    failures.assert_none(CASES.len() - GEOS_RING_START.len());
+    failures.assert_none(checked);
 }

@@ -79,7 +79,7 @@ cargo check -p njord-model --target wasm32-unknown-unknown     # the contract cr
 cargo clippy --workspace --all-targets -- -D warnings
 ```
 
-`njord-s57` is the only crate that links GDAL. By default it generates GDAL bindings with bindgen (needs libclang), which Homebrew's GDAL 3.13 requires. Against GDAL ≤ 3.12 (Debian 13), build it with `--no-default-features` to use the prebuilt bindings.
+`njord-s57` is the only crate that links GDAL, through the georust `gdal` crate pinned to a master commit (the released 0.19 does not build against GDAL 3.13). That commit has prebuilt bindings for GDAL 3.8–3.13, so Homebrew's 3.13 and Debian 13's 3.10 both build with plain `cargo build`; no bindgen or libclang.
 
 ### NOAA update job
 

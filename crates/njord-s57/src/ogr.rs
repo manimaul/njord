@@ -1,160 +1,134 @@
-//! The thin unsafe layer over `gdal-sys`: every GDAL call in the crate goes through here
+//! The GDAL layer: every GDAL call in the crate goes through here, on the georust `gdal` crate
 //! (Kotlin `Gdal.kt`, `GdalDataset.kt`, the reading half of `OgrLayer.kt` and the parts of
-//! `OgrGeometry.kt` ingest uses). Nothing outside this module touches a raw GDAL handle.
+//! `OgrGeometry.kt` ingest uses). Nothing outside this module touches a `gdal` type.
 
-use std::ffi::{CStr, CString, c_char};
-use std::marker::PhantomData;
 use std::path::Path;
-use std::ptr;
 use std::sync::Once;
 
-use gdal_sys::{
-    GDALDatasetH, OGREnvelope, OGRFeatureH, OGRFieldSubType, OGRFieldType, OGRGeometryH, OGRLayerH,
-    OGRwkbByteOrder,
-};
+use gdal::cpl::CslStringList;
+use gdal::vector::{FieldValue, LayerAccess};
+use gdal::{Dataset as GdalDataset, DatasetOptions, GdalOpenFlags};
+use gdal_sys::{OGRFieldSubType, OGRFieldType};
 use serde_json::Value;
 
 use crate::{Envelope, Error, S57_OPTIONS};
 
-/// `GDAL_OF_VECTOR` (a `#define`, so not in the generated bindings).
-const GDAL_OF_VECTOR: u32 = 0x04;
-
 static INIT: Once = Once::new();
 
-/// `Gdal.initialize()`: registers every driver and sets `OGR_S57_OPTIONS`, once per process.
+/// `Gdal.initialize()`: sets `OGR_S57_OPTIONS` once per process, before the first dataset is
+/// opened (the `gdal` crate registers the drivers itself).
 pub(crate) fn init() {
-    INIT.call_once(|| unsafe {
-        gdal_sys::GDALAllRegister();
-        let key = CString::new("OGR_S57_OPTIONS").unwrap();
-        let value = CString::new(S57_OPTIONS).unwrap();
-        gdal_sys::CPLSetConfigOption(key.as_ptr(), value.as_ptr());
+    INIT.call_once(|| {
+        gdal::config::set_config_option("OGR_S57_OPTIONS", S57_OPTIONS)
+            .expect("set OGR_S57_OPTIONS");
     });
 }
 
 pub(crate) fn version() -> String {
-    init();
-    let key = CString::new("RELEASE_NAME").unwrap();
-    unsafe { string(gdal_sys::GDALVersionInfo(key.as_ptr())) }.unwrap_or_default()
+    gdal::version::version_info("RELEASE_NAME")
 }
 
-unsafe fn string(p: *const c_char) -> Option<String> {
-    (!p.is_null()).then(|| unsafe { CStr::from_ptr(p) }.to_string_lossy().into_owned())
-}
-
-fn last_error() -> String {
-    unsafe { string(gdal_sys::CPLGetLastErrorMsg()) }.unwrap_or_default()
-}
-
-/// An open GDAL vector dataset. GDAL datasets are not thread-safe: the handle may move to
+/// An open GDAL vector dataset. GDAL datasets are not thread-safe: `gdal::Dataset` may move to
 /// another thread (`Send`) but never be shared between threads (`!Sync`).
-pub(crate) struct Dataset {
-    ptr: GDALDatasetH,
-    _not_sync: PhantomData<std::cell::Cell<()>>,
-}
-
-// SAFETY: a GDAL dataset may be used from any one thread at a time; `!Sync` forbids concurrent use.
-unsafe impl Send for Dataset {}
+pub(crate) struct Dataset(GdalDataset);
 
 impl Dataset {
     pub(crate) fn open(path: &Path, driver: &str) -> Result<Dataset, Error> {
         init();
-        let c_path = CString::new(path.to_string_lossy().as_bytes())
-            .map_err(|_| Error(format!("{}: path contains NUL", path.display())))?;
-        let c_driver = CString::new(driver).unwrap();
-        let drivers = [c_driver.as_ptr(), ptr::null()];
-        let ptr = unsafe {
-            gdal_sys::GDALOpenEx(
-                c_path.as_ptr(),
-                GDAL_OF_VECTOR,
-                drivers.as_ptr(),
-                ptr::null(),
-                ptr::null(),
-            )
+        let options = DatasetOptions {
+            open_flags: GdalOpenFlags::GDAL_OF_VECTOR,
+            allowed_drivers: Some(&[driver]),
+            ..DatasetOptions::default()
         };
-        if ptr.is_null() {
-            return Err(Error(format!(
-                "failed to open {} with {driver}: {}",
-                path.display(),
-                last_error()
-            )));
-        }
-        Ok(Dataset {
-            ptr,
-            _not_sync: PhantomData,
-        })
+        GdalDataset::open_ex(path, options)
+            .map(Dataset)
+            .map_err(|e| {
+                Error(format!(
+                    "failed to open {} with {driver}: {e}",
+                    path.display()
+                ))
+            })
     }
 
     pub(crate) fn layer_names(&self) -> Vec<String> {
-        let count = unsafe { gdal_sys::GDALDatasetGetLayerCount(self.ptr) };
-        (0..count)
-            .filter_map(|i| {
-                let layer = unsafe { gdal_sys::GDALDatasetGetLayer(self.ptr, i) };
-                (!layer.is_null())
-                    .then(|| unsafe { string(gdal_sys::OGR_L_GetName(layer)) })
-                    .flatten()
-            })
-            .collect()
+        self.0.layers().map(|l| l.name()).collect()
     }
 
     pub(crate) fn layer(&self, name: &str) -> Option<Layer<'_>> {
-        let c_name = CString::new(name).ok()?;
-        let ptr = unsafe { gdal_sys::GDALDatasetGetLayerByName(self.ptr, c_name.as_ptr()) };
-        (!ptr.is_null()).then_some(Layer {
-            ptr,
-            _dataset: PhantomData,
-        })
+        self.0.layer_by_name(name).ok().map(Layer)
     }
 }
 
-impl Drop for Dataset {
-    fn drop(&mut self) {
-        unsafe { gdal_sys::GDALClose(self.ptr) };
-    }
-}
+/// A layer borrowed from its [`Dataset`].
+pub(crate) struct Layer<'a>(gdal::vector::Layer<'a>);
 
-/// A layer borrowed from its [`Dataset`]; GDAL frees it with the dataset.
-pub(crate) struct Layer<'a> {
-    ptr: OGRLayerH,
-    _dataset: PhantomData<&'a Dataset>,
+/// How `OgrFeature.properties` reads one field of a layer.
+#[derive(Clone, Copy)]
+enum FieldKind {
+    /// Integers, reals, strings and their lists, through `FieldValue`.
+    Plain,
+    /// `OFTInteger` with the `OFSTBoolean` subtype: a JSON boolean.
+    Boolean,
+    /// Every other type (dates, times, binary): GDAL's string form, `OGR_F_GetFieldAsString`.
+    AsString,
 }
 
 impl Layer<'_> {
     /// `OGR_L_GetFeatureCount(force = TRUE)`.
     pub(crate) fn feature_count(&self) -> u64 {
-        unsafe { gdal_sys::OGR_L_GetFeatureCount(self.ptr, 1) }.max(0) as u64
+        self.0.feature_count()
     }
 
     /// Reads every feature from the start (`OgrLayer.mapFeature`), handing `f` each one's
-    /// fields and geometry; the feature is destroyed when `f` returns.
-    pub(crate) fn map_features<T>(&self, mut f: impl FnMut(FeatureRef<'_>) -> T) -> Vec<T> {
-        unsafe { gdal_sys::OGR_L_ResetReading(self.ptr) };
-        let mut out = Vec::new();
-        loop {
-            let ptr = unsafe { gdal_sys::OGR_L_GetNextFeature(self.ptr) };
-            if ptr.is_null() {
-                break;
-            }
-            let feature = OwnedFeature(ptr);
-            out.push(f(FeatureRef {
-                ptr: feature.0,
-                _feature: PhantomData,
-            }));
-        }
-        out
+    /// fields and geometry.
+    pub(crate) fn map_features<T>(&mut self, mut f: impl FnMut(FeatureRef<'_>) -> T) -> Vec<T> {
+        let kinds = self.field_kinds();
+        self.0.reset_feature_reading();
+        self.0
+            .features()
+            .map(|feature| {
+                f(FeatureRef {
+                    feature: &feature,
+                    kinds: &kinds,
+                })
+            })
+            .collect()
+    }
+
+    fn field_kinds(&self) -> Vec<FieldKind> {
+        let defn = self.0.defn();
+        defn.fields()
+            .enumerate()
+            .map(|(i, field)| match field.field_type() {
+                OGRFieldType::OFTInteger if is_boolean(defn, i) => FieldKind::Boolean,
+                OGRFieldType::OFTInteger
+                | OGRFieldType::OFTIntegerList
+                | OGRFieldType::OFTInteger64
+                | OGRFieldType::OFTInteger64List
+                | OGRFieldType::OFTReal
+                | OGRFieldType::OFTRealList
+                | OGRFieldType::OFTString
+                | OGRFieldType::OFTStringList => FieldKind::Plain,
+                _ => FieldKind::AsString,
+            })
+            .collect()
     }
 }
 
-struct OwnedFeature(OGRFeatureH);
-
-impl Drop for OwnedFeature {
-    fn drop(&mut self) {
-        unsafe { gdal_sys::OGR_F_Destroy(self.0) };
+/// `OGR_Fld_GetSubType(defn) == OFSTBoolean`. The `gdal` crate exposes no field subtype, so
+/// this is the one raw `gdal-sys` call in the crate.
+fn is_boolean(defn: &gdal::vector::Defn, i: usize) -> bool {
+    // SAFETY: `defn` is the live definition of a layer borrowed for this call and `i` is one of
+    // its field indices; the returned field definition is owned by `defn` and only read here.
+    unsafe {
+        let field = gdal_sys::OGR_FD_GetFieldDefn(defn.c_defn(), i as i32);
+        !field.is_null() && gdal_sys::OGR_Fld_GetSubType(field) == OGRFieldSubType::OFSTBoolean
     }
 }
 
 pub(crate) struct FeatureRef<'a> {
-    ptr: OGRFeatureH,
-    _feature: PhantomData<&'a OwnedFeature>,
+    feature: &'a gdal::vector::Feature<'a>,
+    kinds: &'a [FieldKind],
 }
 
 /// One field of a feature as `OgrFeature.properties` maps it to JSON.
@@ -166,80 +140,52 @@ pub(crate) struct Field {
 impl FeatureRef<'_> {
     /// A copy of the feature's geometry, if it has one.
     pub(crate) fn geometry(&self) -> Option<Geometry> {
-        let geom = unsafe { gdal_sys::OGR_F_GetGeometryRef(self.ptr) };
-        if geom.is_null() {
-            return None;
-        }
-        Geometry::from_owned(unsafe { gdal_sys::OGR_G_Clone(geom) })
+        self.feature.geometry().cloned().map(Geometry)
     }
 
     /// Every field that is set and not null, in field order, typed as `OgrFeature.properties`
     /// types them: strings and dates as strings, `OFSTBoolean` integers as booleans, numbers and
     /// lists as JSON numbers and arrays.
     pub(crate) fn fields(&self) -> Vec<Field> {
-        let count = unsafe { gdal_sys::OGR_F_GetFieldCount(self.ptr) };
-        (0..count).filter_map(|i| self.field(i)).collect()
+        self.feature
+            .fields()
+            .zip(self.kinds)
+            .enumerate()
+            .filter_map(|(i, ((name, value), kind))| {
+                let value = value?;
+                let value = match kind {
+                    FieldKind::Plain => plain(value),
+                    FieldKind::Boolean => match value {
+                        FieldValue::IntegerValue(v) => Value::Bool(v != 0),
+                        other => plain(other),
+                    },
+                    FieldKind::AsString => Value::String(
+                        self.feature
+                            .field_as_string(i)
+                            .ok()
+                            .flatten()
+                            .unwrap_or_default(),
+                    ),
+                };
+                Some(Field { name, value })
+            })
+            .collect()
     }
+}
 
-    fn field(&self, i: i32) -> Option<Field> {
-        let p = self.ptr;
-        unsafe {
-            if gdal_sys::OGR_F_IsFieldSetAndNotNull(p, i) != 1 {
-                return None;
-            }
-            let defn = gdal_sys::OGR_F_GetFieldDefnRef(p, i);
-            if defn.is_null() {
-                return None;
-            }
-            let name = string(gdal_sys::OGR_Fld_GetNameRef(defn))?;
-            let as_string = || {
-                Value::String(string(gdal_sys::OGR_F_GetFieldAsString(p, i)).unwrap_or_default())
-            };
-            let value = match gdal_sys::OGR_Fld_GetType(defn) {
-                OGRFieldType::OFTString => as_string(),
-                OGRFieldType::OFTStringList => {
-                    let list = gdal_sys::OGR_F_GetFieldAsStringList(p, i);
-                    let mut items = Vec::new();
-                    if !list.is_null() {
-                        let mut j = 0;
-                        while let Some(s) = string(*list.add(j)) {
-                            items.push(Value::String(s));
-                            j += 1;
-                        }
-                    }
-                    Value::Array(items)
-                }
-                OGRFieldType::OFTInteger => {
-                    let v = gdal_sys::OGR_F_GetFieldAsInteger(p, i);
-                    if gdal_sys::OGR_Fld_GetSubType(defn) == OGRFieldSubType::OFSTBoolean {
-                        Value::Bool(v != 0)
-                    } else {
-                        Value::from(v)
-                    }
-                }
-                OGRFieldType::OFTIntegerList => {
-                    let mut n = 0;
-                    let arr = gdal_sys::OGR_F_GetFieldAsIntegerList(p, i, &mut n);
-                    list(arr, n, |v| Value::from(*v))
-                }
-                OGRFieldType::OFTReal => real(gdal_sys::OGR_F_GetFieldAsDouble(p, i)),
-                OGRFieldType::OFTRealList => {
-                    let mut n = 0;
-                    let arr = gdal_sys::OGR_F_GetFieldAsDoubleList(p, i, &mut n);
-                    list(arr, n, |v| real(*v))
-                }
-                OGRFieldType::OFTInteger64 => {
-                    Value::from(gdal_sys::OGR_F_GetFieldAsInteger64(p, i))
-                }
-                OGRFieldType::OFTInteger64List => {
-                    let mut n = 0;
-                    let arr = gdal_sys::OGR_F_GetFieldAsInteger64List(p, i, &mut n);
-                    list(arr, n, |v| Value::from(*v))
-                }
-                _ => as_string(),
-            };
-            Some(Field { name, value })
-        }
+fn plain(value: FieldValue) -> Value {
+    match value {
+        FieldValue::IntegerValue(v) => Value::from(v),
+        FieldValue::IntegerListValue(v) => Value::from(v),
+        FieldValue::Integer64Value(v) => Value::from(v),
+        FieldValue::Integer64ListValue(v) => Value::from(v),
+        FieldValue::StringValue(v) => Value::String(v),
+        FieldValue::StringListValue(v) => Value::from(v),
+        FieldValue::RealValue(v) => real(v),
+        FieldValue::RealListValue(v) => Value::Array(v.into_iter().map(real).collect()),
+        // Only reached for `FieldKind::AsString` fields, which never come through here.
+        FieldValue::DateValue(d) => Value::String(d.to_string()),
+        FieldValue::DateTimeValue(d) => Value::String(d.to_string()),
     }
 }
 
@@ -248,46 +194,29 @@ fn real(v: f64) -> Value {
     serde_json::Number::from_f64(v).map_or(Value::Null, Value::Number)
 }
 
-unsafe fn list<T>(arr: *const T, n: i32, f: impl Fn(&T) -> Value) -> Value {
-    if arr.is_null() || n <= 0 {
-        return Value::Array(Vec::new());
-    }
-    Value::Array(
-        unsafe { std::slice::from_raw_parts(arr, n as usize) }
-            .iter()
-            .map(f)
-            .collect(),
-    )
-}
-
 /// An owned OGR geometry, in WGS84 for both S-57 cells and Natural Earth shapefiles. Opaque so
 /// that GDAL stays inside this crate: ingest takes [`Geometry::wkb`] to PostGIS.
-pub struct Geometry(OGRGeometryH);
+#[derive(Clone)]
+pub struct Geometry(gdal::vector::Geometry);
 
-// SAFETY: an owned OGR geometry belongs to no dataset; GEOS calls on it are reentrant.
+// SAFETY: every `Geometry` here owns its OGR geometry (a clone, a parse result or a repair
+// result) and belongs to no dataset or feature, so moving it to another thread is sound; GEOS
+// calls on distinct geometries are reentrant. `gdal::vector::Geometry` is `!Send` only because it
+// may also borrow a feature's geometry, which this type never does.
 unsafe impl Send for Geometry {}
 
 impl Geometry {
-    fn from_owned(ptr: OGRGeometryH) -> Option<Geometry> {
-        (!ptr.is_null()).then_some(Geometry(ptr))
-    }
-
     /// `OGR_G_CreateFromWkt`, without a spatial reference.
     pub fn from_wkt(wkt: &str) -> Result<Geometry, Error> {
         init();
-        let c_wkt = CString::new(wkt).map_err(|_| Error("WKT contains NUL".into()))?;
-        let mut cursor = c_wkt.as_ptr() as *mut c_char;
-        let mut geom: OGRGeometryH = ptr::null_mut();
-        let err = unsafe { gdal_sys::OGR_G_CreateFromWkt(&mut cursor, ptr::null_mut(), &mut geom) };
-        match Geometry::from_owned(geom) {
-            Some(g) if err == 0 => Ok(g),
-            _ => Err(Error(format!("invalid WKT {wkt}: {}", last_error()))),
-        }
+        gdal::vector::Geometry::from_wkt(wkt)
+            .map(Geometry)
+            .map_err(|e| Error(format!("invalid WKT {wkt}: {e}")))
     }
 
     /// `OGR_G_IsValid` (GEOS validity).
     pub fn is_valid(&self) -> bool {
-        unsafe { gdal_sys::OGR_G_IsValid(self.0) == 1 }
+        self.0.is_valid()
     }
 
     /// `OgrGeometry.makeValid()`: the geometry itself when valid, otherwise GDAL's
@@ -297,18 +226,12 @@ impl Geometry {
         if self.is_valid() {
             Some(self)
         } else {
-            Geometry::from_owned(unsafe { gdal_sys::OGR_G_MakeValid(self.0) })
+            self.0.make_valid(&CslStringList::new()).ok().map(Geometry)
         }
     }
 
     pub fn envelope(&self) -> Envelope {
-        let mut e = OGREnvelope {
-            MinX: 0.0,
-            MaxX: 0.0,
-            MinY: 0.0,
-            MaxY: 0.0,
-        };
-        unsafe { gdal_sys::OGR_G_GetEnvelope(self.0, &mut e) };
+        let e = self.0.envelope();
         Envelope {
             west: e.MinX,
             south: e.MinY,
@@ -319,49 +242,23 @@ impl Geometry {
 
     /// `OGR_G_GetZ(geom, 0)`: the first point's Z (0 for 2D).
     pub(crate) fn first_z(&self) -> f64 {
-        unsafe { gdal_sys::OGR_G_GetZ(self.0, 0) }
+        self.0.get_point(0).2
     }
 
     /// `OGR_G_ExportToWkb(wkbNDR)`: little-endian, OGC (pre-ISO) type codes for 2.5D.
     pub fn wkb(&self) -> Vec<u8> {
-        let size = unsafe { gdal_sys::OGR_G_WkbSize(self.0) }.max(0) as usize;
-        let mut buf = vec![0u8; size];
-        let err = unsafe {
-            gdal_sys::OGR_G_ExportToWkb(self.0, OGRwkbByteOrder::wkbNDR, buf.as_mut_ptr())
-        };
-        assert_eq!(err, 0, "OGR_G_ExportToWkb failed: {}", last_error());
-        buf
+        self.0.wkb().expect("OGR_G_ExportToWkb")
     }
 
     /// `OGR_G_ExportToWkt`.
     pub fn wkt(&self) -> String {
-        let mut out: *mut c_char = ptr::null_mut();
-        let err = unsafe { gdal_sys::OGR_G_ExportToWkt(self.0, &mut out) };
-        assert_eq!(err, 0, "OGR_G_ExportToWkt failed: {}", last_error());
-        let s = unsafe { string(out) }.unwrap_or_default();
-        unsafe { gdal_sys::VSIFree(out.cast()) };
-        s
+        self.0.wkt().expect("OGR_G_ExportToWkt")
     }
 
     /// `OGR_G_ExportToJson`, parsed (`OgrGeometry.geoJson()`).
     pub fn geojson(&self) -> geojson::Geometry {
-        let p = unsafe { gdal_sys::OGR_G_ExportToJson(self.0) };
-        assert!(!p.is_null(), "OGR_G_ExportToJson failed: {}", last_error());
-        let s = unsafe { string(p) }.unwrap_or_default();
-        unsafe { gdal_sys::VSIFree(p.cast()) };
+        let s = self.0.json().expect("OGR_G_ExportToJson");
         serde_json::from_str(&s).unwrap_or_else(|e| panic!("GDAL GeoJSON {s}: {e}"))
-    }
-}
-
-impl Clone for Geometry {
-    fn clone(&self) -> Geometry {
-        Geometry::from_owned(unsafe { gdal_sys::OGR_G_Clone(self.0) }).expect("OGR_G_Clone")
-    }
-}
-
-impl Drop for Geometry {
-    fn drop(&mut self) {
-        unsafe { gdal_sys::OGR_G_DestroyGeometry(self.0) };
     }
 }
 

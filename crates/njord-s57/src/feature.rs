@@ -19,7 +19,7 @@ pub struct Feature {
     pub geometry: Option<Geometry>,
 }
 
-pub(crate) fn read_layer(layer: &Layer<'_>, name: &str) -> Vec<Feature> {
+pub(crate) fn read_layer(layer: &mut Layer<'_>, name: &str) -> Vec<Feature> {
     let is_sounding = name == "SOUNDG";
     layer.map_features(|f| read(&f, is_sounding))
 }

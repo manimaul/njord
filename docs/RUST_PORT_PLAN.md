@@ -310,7 +310,7 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
     - Geometry ops use the pure-Rust `geo` crate. 153 of the 155 run `ogr_geometry.json` cases match. Accessor-only, WKB and `union` ops are skipped with a reason each, and 2 GEOS-specific outputs are recorded as divergences.
   - **`njord-s57`** (P-IN-1…4, 6):
     - 5177/5177 features, plus every chart-insert, layer-count, update-cell and Natural Earth case.
-    - Built on `gdal-sys` directly, behind `trait S57Reader`, because the released `gdal` 0.19 does not compile against GDAL 3.13. All unsafe code is in `ogr.rs`. The default `bindgen` feature generates bindings for GDAL newer than 3.12; use `--no-default-features` on Debian 13's 3.10.
+    - Built on the georust `gdal` crate, behind `trait S57Reader`. It is pinned to master commit `c0a6266`, because the released 0.19 does not compile against GDAL 3.13; move to the first release that includes it. That commit has prebuilt bindings for GDAL 3.8–3.13, so no bindgen is needed for Homebrew's 3.13 or Debian 13's 3.10. Every GDAL call is in `ogr.rs`. The only raw `gdal-sys` use is the field-subtype lookup the safe API lacks, plus a documented `Send` impl for owned geometries.
     - Shapefiles also go through GDAL. Ingest needs GDAL's `make_valid` anyway, and the fixture's field types come from GDAL.
     - The S-57 driver options are the ones GDAL actually applies (§4.2).
     - D7 has no `port.expected` case, so it is pinned by a unit test over an in-memory `S57Reader`.
@@ -320,9 +320,8 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
     - Boolean ops snap to a grid, about 1e-6 px at z16.
     - Ring start vertices differ.
     - Compare with `njord_geo::mvt::view::decode_to_json` plus ring-start normalisation (`njord-geo/tests/mvt.rs`).
-  - **Open:**
-    - P-TE-2 `multi` pins a Kotlin defect: a MultiPoint feature is dropped, but its layer is still emitted, because `OGR_G_GetPoints` sees no points on a MultiPoint. The port reproduces it until someone decides whether to file it as a D-number.
-    - The `tile_system.json` header text still says z ≥ 20 (it is z ≥ 19, see D10).
+  - **Resolved:** **D13**, decided 2026-10-30 (TEST_COVERAGE_AUDIT.md §3): Kotlin drops a MultiPoint feature from MVT tiles but still emits its layer. The `multi` fixture now carries `port.decoded`, and the port encodes the feature. `FixtureStore.binary` gained the `port` argument for this.
+  - **Open:** The `tile_system.json` header text still says z ≥ 20 (it is z ≥ 19, see D10).
 
 ### Phase 3 — Read-only server, side by side
 - [ ] **Phase 3 complete**

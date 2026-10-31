@@ -553,3 +553,10 @@ Order:
 3. Point regatta's `pgbouncer.ini` at the `mxmariner` relay.
 4. In `njord`: suspend both CronJobs, scale `njord-ingest-rs` to 0, then replace `njord-chart-dep` behind `njord-ingress` with a redirect-only backend (301 `openenc.com/*` → `njord.mxmariner.com/*`), keeping `oe-cert` so the redirect is served over TLS. This is the first change to the `njord` namespace in the whole plan.
 5. After the mobile fleet has moved (watch `openenc.com` request counts), `pg_dump` `s57server` and keep the last region archives, then delete the `njord` namespace, the `nfs-server` Helm release and its `nfs` StorageClass, and drop the `s57server` database.
+
+## 11. Follow-ups after the port
+
+Changes that came up during the port but wait until Phase 7 is complete, because they change the
+schema (frozen while Kotlin and Rust share it, §8) or behaviour the goldens pin.
+
+- [ ] **Subdivided base map polygons** ([BASE_MAP_SUBDIVIDE.md](BASE_MAP_SUBDIVIDE.md)). Base-map tiles from zoom 5 up spend 1–1.6 s in PostGIS intersecting whole Natural Earth 1:10m polygons (the ocean is one 446,794-point row). Storing them cut by `ST_Subdivide` and merging each feature's pieces back measured 5–7× faster on coastal tiles (z5, z10) and ~300× on an open-ocean z7 tile that touches a single piece.

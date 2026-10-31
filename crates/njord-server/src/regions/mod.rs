@@ -1,11 +1,18 @@
 //! Region archives on disk (`ingest/RegionExporter.kt`): the manifest `GET /v1/regions` serves
-//! (`buildManifest`, P-RE-5 `testdata/regions/manifest.json`) and the archive lookup of
-//! `GET /v1/regions/{archive}`. Rendering archives is the export worker's job (Phase 4); this
-//! only reads what a renderer left in `<chartTempData>/regions`.
+//! (`buildManifest`, P-RE-5 `testdata/regions/manifest.json`), the archive lookup of
+//! `GET /v1/regions/{archive}`, archive naming and pruning (P-RE-4 `regions/timestamps.json`).
+//! Rendering is [`export`], driven by [`worker`].
 //!
 //! Archives are named `<region>_<yyyy-MM-ddTHH-mm-ss>.mbtiles` in the server's local time, with
 //! a `<archive>.sha256` sidecar in `sha256sum` format.
 
+pub mod export;
+pub mod worker;
+
+pub use export::{ExportResult, WORLD_REGION_NAME, export_next};
+pub use worker::RegionWorker;
+
+use std::io::Read;
 use std::path::{Path, PathBuf};
 
 use geo::Area;
@@ -25,11 +32,63 @@ pub struct Regions {
 }
 
 impl Regions {
+    /// `MAX_ARCHIVES`: how many archives of a region [`prune_old_archives`](Self::prune_old_archives) keeps.
+    pub const MAX_ARCHIVES: usize = 2;
+
     pub fn new(dir: impl Into<PathBuf>, zone: TimeZone) -> Regions {
         Regions {
             dir: dir.into(),
             zone,
         }
+    }
+
+    /// `currentTimestamp`: now in [`Regions::zone`] as the filesystem-safe stem
+    /// `yyyy-MM-ddTHH-mm-ss`.
+    pub fn current_timestamp(&self) -> String {
+        jiff::Zoned::now()
+            .with_time_zone(self.zone.clone())
+            .strftime("%Y-%m-%dT%H-%M-%S")
+            .to_string()
+    }
+
+    /// `pruneOldArchives`: deletes every archive of the region beyond the newest
+    /// [`MAX_ARCHIVES`](Self::MAX_ARCHIVES), with its sidecar.
+    pub fn prune_old_archives(&self, region: &str) {
+        for old in self
+            .archives_for_region(region)
+            .into_iter()
+            .skip(Self::MAX_ARCHIVES)
+        {
+            tracing::info!("pruning old archive {}", file_name(&old));
+            if let Err(e) = std::fs::remove_file(&old) {
+                tracing::warn!("{}: {e}", old.display());
+            }
+            let sidecar = self.sidecar(&old);
+            if sidecar.exists()
+                && let Err(e) = std::fs::remove_file(&sidecar)
+            {
+                tracing::warn!("{}: {e}", sidecar.display());
+            }
+        }
+    }
+
+    /// `clear`: deletes every file in the region directory (the nuke route).
+    pub fn clear(&self) {
+        let Ok(entries) = std::fs::read_dir(&self.dir) else {
+            return;
+        };
+        for entry in entries.flatten() {
+            let path = entry.path();
+            let result = if path.is_dir() {
+                std::fs::remove_dir_all(&path)
+            } else {
+                std::fs::remove_file(&path)
+            };
+            if let Err(e) = result {
+                tracing::warn!("{}: {e}", path.display());
+            }
+        }
+        tracing::info!("region archives cleared");
     }
 
     /// `buildManifest`: one entry per configured region, in configuration order. A region with
@@ -93,17 +152,17 @@ impl Regions {
         self.parse_stem(stem)
     }
 
-    /// `parseTimestampStem`: `yyyy-MM-ddTHH-mm-ss` (the time's colons written as dashes).
+    /// `parseTimestampStem`: `yyyy-MM-ddTHH-mm-ss` (the time's colons written as dashes), read as
+    /// local time in [`Regions::zone`]. Kotlin rewrote only that dashed tail and then parsed a
+    /// `LocalDateTime`, so a stem already holding colons parses too.
     pub fn parse_stem(&self, stem: &str) -> Option<Timestamp> {
-        let (date, time) = stem.split_once('T')?;
-        let parts: Vec<&str> = time.split('-').collect();
-        let [h, m, s] = parts[..] else {
-            return None;
+        let colonized = match stem.split_once('T') {
+            Some((date, time)) if is_dashed_time(time) => {
+                format!("{date}T{}:{}:{}", &time[0..2], &time[3..5], &time[6..8])
+            }
+            _ => stem.to_owned(),
         };
-        if [h, m, s].iter().any(|p| p.len() != 2) {
-            return None;
-        }
-        let dt: DateTime = format!("{date}T{h}:{m}:{s}").parse().ok()?;
+        let dt: DateTime = colonized.parse().ok()?;
         self.zone.to_ambiguous_timestamp(dt).compatible().ok()
     }
 
@@ -117,27 +176,56 @@ impl Regions {
         {
             return Some(token.to_owned());
         }
-        let bytes = match std::fs::read(archive) {
-            Ok(bytes) => bytes,
+        self.write_checksum_sidecar(archive)
+    }
+
+    /// `writeChecksumSidecar`: the archive's sha256 (streamed, 1 MiB at a time) written to the
+    /// sidecar in `sha256sum` format, so `sha256sum -c` works from the region directory.
+    pub fn write_checksum_sidecar(&self, archive: &Path) -> Option<String> {
+        let checksum = match sha256_file(archive) {
+            Ok(checksum) => checksum,
             Err(e) => {
                 tracing::error!("failed to compute sha256 for {}: {e}", archive.display());
                 return None;
             }
         };
-        let checksum = format!("{:x}", Sha256::digest(&bytes));
         let line = format!("{checksum}  {}\n", file_name(archive));
-        if let Err(e) = std::fs::write(&sidecar, line) {
-            tracing::warn!("{}: {e}", sidecar.display());
+        if let Err(e) = std::fs::write(self.sidecar(archive), line) {
+            tracing::warn!("{}: {e}", self.sidecar(archive).display());
         }
         Some(checksum)
     }
 
-    fn sidecar(&self, archive: &Path) -> PathBuf {
+    pub fn sidecar(&self, archive: &Path) -> PathBuf {
         self.dir.join(format!("{}.sha256", file_name(archive)))
     }
 }
 
-fn file_name(p: &Path) -> String {
+/// `HH-mm-ss`: the regex `T(\d{2})-(\d{2})-(\d{2})$` Kotlin rewrites.
+fn is_dashed_time(time: &str) -> bool {
+    let b = time.as_bytes();
+    b.len() == 8
+        && b[2] == b'-'
+        && b[5] == b'-'
+        && [0, 1, 3, 4, 6, 7].iter().all(|&i| b[i].is_ascii_digit())
+}
+
+/// `sha256File`: lowercase hex of the file's contents.
+fn sha256_file(path: &Path) -> std::io::Result<String> {
+    let mut file = std::fs::File::open(path)?;
+    let mut hasher = Sha256::new();
+    let mut buffer = vec![0u8; 1 << 20];
+    loop {
+        let n = file.read(&mut buffer)?;
+        if n == 0 {
+            break;
+        }
+        hasher.update(&buffer[..n]);
+    }
+    Ok(format!("{:x}", hasher.finalize()))
+}
+
+pub(crate) fn file_name(p: &Path) -> String {
     p.file_name()
         .map(|n| n.to_string_lossy().into_owned())
         .unwrap_or_default()

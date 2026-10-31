@@ -49,26 +49,59 @@ const SKIPPED: &[(&str, &str)] = &[
          starts, and P-TE-5 (tests/tiles.rs) to 1e-7",
     ),
     (
-        "api_06_admin/admin_ok",
-        "minting signatures (GET /v1/admin) is Phase 4",
+        "api_08_ingest/completion_report",
+        "not a request: the WebSocket report of the live ingest, checked by tests/ingest.rs",
     ),
-    ("api_06_admin/verify_*", "POST /v1/admin/verify is Phase 4"),
-    ("api_08_ingest/*", "ingest (Phase 4)"),
     (
-        "api_09_mutations/*",
-        "mutating sequence: insert, read back, delete (Phase 4)",
+        "api_09_mutations/chart_post",
+        "the insert / read back / delete sequence on the shared seeded database is the live \
+         suite's; the standalone answers of the group are replayed",
+    ),
+    (
+        "api_09_mutations/chart_get_inserted",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/chart_get_with_feature",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/chart_get_deleted",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/chart_delete",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/chart_delete_again",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/geojson_post",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/feature_lnam_inserted",
+        "part of the chart_post sequence",
+    ),
+    (
+        "api_09_mutations/feature_lnam_deleted",
+        "part of the chart_post sequence",
     ),
     (
         "api_10_regions/archive_full",
-        "needs a REGION_04 archive rendered by the export worker (Phase 4); ranges are checked in \
-         tests/behaviour.rs on a stand-in archive",
+        "needs a REGION_04 archive rendered by the export worker (the live suite); tests/export.rs \
+         renders the fixture region and tests/behaviour.rs checks ranges on a stand-in archive",
     ),
     (
         "api_10_regions/archive_range_*",
-        "needs a rendered REGION_04 archive (Phase 4)",
+        "needs a rendered REGION_04 archive (the live suite)",
     ),
-    ("api_10_regions/regions_post_*", "mutating route (Phase 4)"),
-    ("api_99_nuke/*", "mutating route (Phase 4)"),
+    (
+        "api_99_nuke/*",
+        "empties the database; the live suite runs it last and re-seeds",
+    ),
 ];
 
 /// Golden groups replayed here.
@@ -80,6 +113,8 @@ const REPLAYED: &[&str] = &[
     "api_05_content",
     "api_06_admin",
     "api_07_auth",
+    "api_08_ingest",
+    "api_09_mutations",
     "api_10_regions",
     "api_11_forwarded",
     "api_12_errors",
@@ -138,7 +173,7 @@ struct Captured {
     body: Value,
 }
 
-async fn capture(golden: &Value) -> Captured {
+async fn capture(golden_name: &str, golden: &Value) -> Captured {
     let request = &golden["request"];
     let kind = request["kind"].as_str().unwrap();
     let state = state().await;
@@ -159,8 +194,32 @@ async fn capture(golden: &Value) -> Captured {
     for (k, v) in request["headers"].as_object().unwrap() {
         builder = builder.header(k.as_str(), v.as_str().unwrap());
     }
+    if request["basic_auth"].as_bool() == Some(true) {
+        let creds = format!("{}:{}", state.config.admin_user, state.config.admin_pass);
+        builder = builder.header(
+            header::AUTHORIZATION,
+            format!("Basic {}", STANDARD.encode(creds)),
+        );
+    }
+    // The JSON body: the recorded one, or for `<per-target>` the server's own signature (what
+    // `GET /v1/admin` hands the suite), tampered as the test module tampers it.
+    let body = match &request["json"] {
+        Value::Null => Body::empty(),
+        Value::String(s) if s == "<per-target>" => {
+            let mut own = state.verifier.mint_now(BASE).signature;
+            if golden_name.ends_with("verify_tampered") {
+                own.uuid = "not-the-signed-uuid".into();
+            }
+            builder = builder.header(header::CONTENT_TYPE, "application/json");
+            Body::from(serde_json::to_vec(&own).unwrap())
+        }
+        json => {
+            builder = builder.header(header::CONTENT_TYPE, "application/json");
+            Body::from(serde_json::to_vec(json).unwrap())
+        }
+    };
     let response = router(state)
-        .oneshot(builder.body(Body::empty()).unwrap())
+        .oneshot(builder.body(body).unwrap())
         .await
         .unwrap();
     let status = response.status().as_u16();
@@ -492,7 +551,7 @@ async fn replay(group: &str) {
             continue;
         }
         let golden = load(&path);
-        let actual = capture(&golden).await;
+        let actual = capture(&name, &golden).await;
         checked += 1;
         failures.check(&name, compare(&golden, &actual));
     }
@@ -518,6 +577,16 @@ async fn api_03_tiles() {
 #[tokio::test]
 async fn api_04_charts() {
     replay("api_04_charts").await;
+}
+
+#[tokio::test]
+async fn api_08_ingest() {
+    replay("api_08_ingest").await;
+}
+
+#[tokio::test]
+async fn api_09_mutations() {
+    replay("api_09_mutations").await;
 }
 
 #[tokio::test]

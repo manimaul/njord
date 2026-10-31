@@ -7,13 +7,17 @@
 //! Kotlin's `Instant.toString()` prints it and the uuid. It is rejected only when it is older
 //! than `adminExpirationSeconds` in whole seconds; a future date passes and `expirationDate` is
 //! never checked, both as in Kotlin, so signatures cross-verify between the two servers.
-//! Minting signatures (`GET /v1/admin`) is not part of the read-only server.
+//!
+//! Minting (`GET /v1/admin`, `POST /v1/admin/verify`; P-SEC-1 `testdata/admin/signature_vectors.json`)
+//! is [`Verifier::mint`]: the `AdminResponse` carries the signature and its `signatureEncoded`
+//! form, the base64 of the signature JSON URL-path-encoded as Ktor's `encodeURLPath(encodeSlash =
+//! true)` does, which is what clients send back as the `signature` query parameter.
 
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
 use hmac::{Hmac, Mac};
-use jiff::Timestamp;
-use njord_model::AdminSignature;
+use jiff::{SignedDuration, Timestamp};
+use njord_model::{AdminResponse, AdminSignature};
 use sha2::Sha256;
 use subtle::ConstantTimeEq;
 
@@ -25,6 +29,33 @@ pub struct Verifier {
 }
 
 impl Verifier {
+    /// `createSignatureResponse(baseUrl, now, uuid)`: a signature over `base_url` dated `now`
+    /// with nonce `uuid`, expiring `expiration_seconds` later (informational), and its encoded
+    /// form.
+    pub fn mint(&self, base_url: &str, now: Timestamp, uuid: &str) -> AdminResponse {
+        let date = njord_model::instant::format(now);
+        let mac = hmac(&self.admin_key, &[base_url, &date, uuid]);
+        let signature = AdminSignature {
+            date: now,
+            signature: STANDARD.encode(mac),
+            uuid: uuid.to_owned(),
+            expiration_date: now
+                .checked_add(SignedDuration::from_secs(self.expiration_seconds))
+                .unwrap_or(now),
+        };
+        let json = serde_json::to_vec(&signature).expect("AdminSignature serialises");
+        AdminResponse {
+            signature_encoded: encode_url_path(&STANDARD.encode(json)),
+            signature,
+        }
+    }
+
+    /// [`mint`](Self::mint) with the clock and a fresh nonce (`Clock.System.now()`,
+    /// `UUID.randomUUID()`).
+    pub fn mint_now(&self, base_url: &str) -> AdminResponse {
+        self.mint(base_url, Timestamp::now(), &random_uuid())
+    }
+
     /// `verifySignature(query, baseUrl)`: `query` is the `signature` query parameter as the
     /// router decoded it, which Kotlin percent-decodes once more (`decodeURLPart`) before
     /// reading it as base64 of the [`AdminSignature`] JSON.
@@ -60,6 +91,41 @@ impl Verifier {
         );
         presented.len() == expected.len() && bool::from(presented.ct_eq(&expected))
     }
+}
+
+/// Kotlin's `UUID.randomUUID()` (`util/UUID.kt`): not RFC 4122 but five groups of random
+/// alphanumerics, `8-4-4-4-8`. Reproduced so a Kotlin client parsing its shape stays happy.
+pub fn random_uuid() -> String {
+    const ALPHABET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let bytes = uuid::Uuid::new_v4().into_bytes();
+    let mut more = uuid::Uuid::new_v4().into_bytes().to_vec();
+    more.extend_from_slice(&bytes);
+    let mut out = String::with_capacity(32);
+    for (i, len) in [8usize, 4, 4, 4, 8].into_iter().enumerate() {
+        if i > 0 {
+            out.push('-');
+        }
+        for _ in 0..len {
+            let b = more.pop().expect("32 random bytes for 28 characters");
+            out.push(ALPHABET[usize::from(b) % ALPHABET.len()] as char);
+        }
+    }
+    out
+}
+
+/// Ktor's `encodeURLPath(encodeSlash = true)` over base64 text: letters, digits and the
+/// path-safe punctuation (`+` and `=` among them) stay, `/` becomes `%2F`.
+pub fn encode_url_path(s: &str) -> String {
+    const KEEP: &[u8] = b":@!$&'()*+,;=-._~";
+    let mut out = String::with_capacity(s.len() + 8);
+    for b in s.bytes() {
+        if b.is_ascii_alphanumeric() || KEEP.contains(&b) {
+            out.push(b as char);
+        } else {
+            out.push_str(&format!("%{b:02X}"));
+        }
+    }
+    out
 }
 
 /// `HmacSHA256(key)`, updated with each chunk in turn.

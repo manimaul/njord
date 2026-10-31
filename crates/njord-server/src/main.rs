@@ -1,12 +1,12 @@
 //! `njord-server <resources dir>` (`Main.kt`): configuration from
 //! `<resources dir>/config/application.json` and `CHART_SERVER_OPTS`, then the database
 //! schema migration on `pgConnectionInfo`, then the HTTP server on the configured `host` and
-//! `port` until SIGINT or SIGTERM.
+//! `port` until SIGINT or SIGTERM, with the ingest and region export workers beside it.
 
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use njord_server::{AppState, ChartsConfig, connect, migrate, router};
+use njord_server::{AppState, ChartsConfig, connect, migrate, router, spawn_workers};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -41,6 +41,7 @@ async fn serve(resources: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     let version = migrate(&db).await?;
     tracing::info!("database schema version {version}");
     let state = AppState::new(config, &resources, db)?;
+    let _workers = spawn_workers(&state);
     let listener = tokio::net::TcpListener::bind(addr).await?;
     tracing::info!("listening on {}", listener.local_addr()?);
     axum::serve(listener, router(state))

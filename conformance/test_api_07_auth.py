@@ -66,7 +66,6 @@ def test_malformed_signature(checker, signature):
     ))
 
 
-@pytest.mark.port_pending("Phase 4: WebSocket /v1/ws/enc_process")
 def test_websocket_without_signature_is_closed(client):
     with connect(client.ws_base + "/v1/ws/enc_process", open_timeout=10) as ws:
         try:
@@ -76,7 +75,6 @@ def test_websocket_without_signature_is_closed(client):
         pytest.fail(f"unsigned status socket delivered a message: {msg}")
 
 
-@pytest.mark.port_pending("Phase 4: WebSocket /v1/ws/enc_process")
 def test_websocket_with_wrong_signature_is_closed(client):
     with connect(client.ws_base + f"/v1/ws/enc_process?signature={WRONG_HMAC}", open_timeout=10) as ws:
         try:
@@ -86,7 +84,6 @@ def test_websocket_with_wrong_signature_is_closed(client):
         pytest.fail(f"wrongly signed status socket delivered a message: {msg}")
 
 
-@pytest.mark.port_pending("Phase 4: WebSocket /v1/ws/enc_process")
 @pytest.mark.signed
 def test_websocket_with_a_signature_sends_the_current_status(client, signature):
     with connect(client.ws_base + f"/v1/ws/enc_process?signature={signature}", open_timeout=10) as ws:

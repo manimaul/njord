@@ -1,11 +1,55 @@
-//! P-SEC-1 `testdata/admin/hmac_vectors.json` and P-SEC-2 `testdata/admin/verify_cases.json`
-//! against [`njord_server::signature`], with each case's `port.expected` (decision D4) when it
-//! has one.
+//! P-SEC-1 `testdata/admin/hmac_vectors.json` and `signature_vectors.json`, P-SEC-2
+//! `testdata/admin/verify_cases.json` against [`njord_server::signature`], with each case's
+//! `port.expected` (decision D4) when it has one.
 
 use njord_model::AdminSignature;
-use njord_server::signature::{Verifier, hmac};
-use njord_testdata::{Failures, cases, port_expected};
-use serde_json::Value;
+use njord_server::signature::{Verifier, encode_url_path, hmac, random_uuid};
+use njord_testdata::{Failures, cases, first_difference, port_expected};
+use serde_json::{Value, json};
+
+/// `createSignatureResponse` with a fixed clock and nonce: the signature, its informational
+/// expiry and the exact `signatureEncoded` text a Kotlin client would send back.
+#[test]
+fn signature_vectors() {
+    let mut failures = Failures::default();
+    let cases = cases("admin/signature_vectors.json");
+    for case in &cases {
+        let input = &case["input"];
+        let verifier = Verifier {
+            admin_key: input["adminKey"].as_str().unwrap().to_owned(),
+            expiration_seconds: input["expirationSeconds"].as_i64().unwrap(),
+        };
+        let now: jiff::Timestamp = input["now"].as_str().unwrap().parse().unwrap();
+        let minted = verifier.mint(
+            input["baseUrl"].as_str().unwrap(),
+            now,
+            input["uuid"].as_str().unwrap(),
+        );
+        let mut actual = serde_json::to_value(&minted.signature).unwrap();
+        actual["signatureEncoded"] = json!(minted.signature_encoded);
+        let label = format!("{} {}", input["baseUrl"], input["now"]);
+        failures.check(
+            &label,
+            first_difference(&case["expected"], &actual, "").map_or(Ok(()), Err),
+        );
+        // and the minted token verifies, under the same base URL only
+        let base = input["baseUrl"].as_str().unwrap();
+        assert!(verifier.verify(&minted.signature, base, now), "{label}");
+        assert!(!verifier.verify(&minted.signature, "https://elsewhere.test", now));
+        assert!(verifier.verify_query(&minted.signature_encoded, base, now));
+    }
+    failures.assert_none(cases.len());
+}
+
+#[test]
+fn url_path_encoding_and_uuid_shape() {
+    assert_eq!(encode_url_path("ab+/=="), "ab+%2F==");
+    let uuid = random_uuid();
+    let groups: Vec<usize> = uuid.split('-').map(str::len).collect();
+    assert_eq!(groups, [8, 4, 4, 4, 8], "{uuid}");
+    assert!(uuid.chars().all(|c| c.is_ascii_alphanumeric() || c == '-'));
+    assert_ne!(random_uuid(), uuid);
+}
 
 #[test]
 fn hmac_vectors() {

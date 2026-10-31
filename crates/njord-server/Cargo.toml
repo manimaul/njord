@@ -11,7 +11,7 @@ name = "njord-server"
 path = "src/main.rs"
 
 [dependencies]
-axum = { version = "0.8.9", default-features = false, features = ["http1", "http2", "json", "query", "tokio", "tracing"] }
+axum = { version = "0.8.9", default-features = false, features = ["http1", "http2", "json", "query", "tokio", "tracing", "ws"] }
 base64 = "0.22.1"
 geo = "0.33"
 geo-types = "0.7.20"
@@ -23,9 +23,12 @@ jiff = { workspace = true, features = ["tz-system", "tzdb-zoneinfo"] }
 libz-sys = "1.1.31"
 libc = "0.2.169"
 mime_guess = "2.0.5"
+indexmap.workspace = true
 njord-db.workspace = true
 njord-geo.workspace = true
 njord-model.workspace = true
+# GDAL, for ingest (the only C dependency besides zlib); see njord-s57.
+njord-s57.workspace = true
 njord-symbology.workspace = true
 percent-encoding = "2.3.2"
 png = "0.17"
@@ -33,17 +36,22 @@ serde.workspace = true
 serde_json.workspace = true
 sha2 = "0.10.9"
 subtle = "2.6.1"
-tokio = { version = "1.54", features = ["macros", "rt-multi-thread", "net", "signal", "fs"] }
+tokio = { version = "1.54", features = ["macros", "rt-multi-thread", "net", "signal", "fs", "time", "io-util"] }
 tower-http = { version = "0.6.11", features = ["catch-panic", "trace"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
 wkt = "0.14.0"
+rusqlite = { version = "0.39", features = ["bundled"] }
+zip = { version = "9.1.3", default-features = false, features = ["deflate"] }
+flate2 = "1.1.10"
+uuid = { version = "1.29.0", features = ["v4"] }
+futures-util = { version = "0.3.34", default-features = false, features = ["std"] }
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream"] }
 
 [build-dependencies]
 jiff = { workspace = true, features = ["tz-system", "tzdb-zoneinfo"] }
 
 [dev-dependencies]
-njord-s57.workspace = true
 njord-testdata.workspace = true
 serde_json.workspace = true
 tower = { version = "0.5.3", features = ["util"] }

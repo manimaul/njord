@@ -219,7 +219,7 @@ fn signature(state: &AppState) -> String {
 }
 
 #[tokio::test]
-async fn mutating_verbs_are_401_unsigned_and_501_signed() {
+async fn mutating_verbs_are_401_without_a_valid_signature() {
     let sig = signature(&STATE);
     for (method, path) in [
         ("POST", "/v1/chart"),
@@ -231,6 +231,7 @@ async fn mutating_verbs_are_401_unsigned_and_501_signed() {
         ("DELETE", "/v1/enc_save"),
         ("POST", "/v1/enc_url"),
         ("DELETE", "/v1/nuke"),
+        ("GET", "/v1/regions/x.mbtiles"),
     ] {
         assert_eq!(
             send(method, path, &[]).await.status(),
@@ -253,13 +254,6 @@ async fn mutating_verbs_are_401_unsigned_and_501_signed() {
                     .is_empty()
             );
         }
-        let sep = if path.contains('?') { '&' } else { '?' };
-        let signed = format!("{path}{sep}signature={sig}");
-        assert_eq!(
-            send(method, &signed, &[]).await.status(),
-            StatusCode::NOT_IMPLEMENTED,
-            "{method} {path}"
-        );
     }
     // Signed under another external base URL: refused.
     let behind_proxy = [
@@ -273,18 +267,203 @@ async fn mutating_verbs_are_401_unsigned_and_501_signed() {
     )
     .await;
     assert_eq!(r.status(), StatusCode::UNAUTHORIZED);
-    // Basic auth on /v1/admin.
+}
+
+/// `GET /v1/admin` mints a signature that `requireSignature` and `POST /v1/admin/verify` accept
+/// under the same external base URL and refuse under another; `signatureEncoded` is what clients
+/// send back, URL-encoded (`+` and `=` kept, `/` as `%2F`, as Ktor's `encodeURLPath`).
+#[tokio::test]
+async fn admin_mints_verifies_and_refreshes_signatures() {
     assert_eq!(
         send("GET", "/v1/admin", &[]).await.status(),
         StatusCode::UNAUTHORIZED
     );
-    let auth = format!("Basic {}", STANDARD.encode("admin:admin"));
+    let wrong = format!("Basic {}", STANDARD.encode("nobody:nothing"));
+    let r = send("GET", "/v1/admin", &[("authorization", &wrong)]).await;
+    assert_eq!(r.status(), StatusCode::UNAUTHORIZED);
     assert_eq!(
-        send("GET", "/v1/admin", &[("authorization", &auth)])
-            .await
-            .status(),
-        StatusCode::NOT_IMPLEMENTED
+        r.headers()[header::WWW_AUTHENTICATE],
+        "Basic realm=\"Admin\", charset=UTF-8"
     );
+    let auth = format!("Basic {}", STANDARD.encode("admin:admin"));
+    let r = send("GET", "/v1/admin", &[("authorization", &auth)]).await;
+    assert_eq!(r.status(), StatusCode::OK);
+    let body = axum::body::to_bytes(r.into_body(), usize::MAX)
+        .await
+        .unwrap();
+    let minted: njord_model::AdminResponse = serde_json::from_slice(&body).unwrap();
+    assert!(
+        !minted.signature_encoded.contains('/')
+            && !minted.signature_encoded.contains("%3D")
+            && !minted.signature_encoded.contains("%2B"),
+        "{}",
+        minted.signature_encoded
+    );
+    assert_eq!(minted.signature.uuid.len(), 32, "{}", minted.signature.uuid);
+    assert_eq!(
+        minted.signature.expiration_date,
+        minted
+            .signature
+            .date
+            .checked_add(jiff::SignedDuration::from_secs(
+                STATE.config.admin_expiration_seconds
+            ))
+            .unwrap()
+    );
+    // The encoded form passes requireSignature (404 is past the auth check).
+    let r = send(
+        "GET",
+        &format!(
+            "/v1/regions/nope.mbtiles?signature={}",
+            minted.signature_encoded
+        ),
+        &[],
+    )
+    .await;
+    assert_eq!(r.status(), StatusCode::NOT_FOUND);
+    // verify refreshes it under the same base URL, refuses it under another and when tampered.
+    let verify = |body: Vec<u8>, headers: Vec<(&'static str, &'static str)>| {
+        let mut builder = Request::builder()
+            .method("POST")
+            .uri("/v1/admin/verify")
+            .header(header::HOST, "localhost:9000")
+            .header(header::CONTENT_TYPE, "application/json");
+        for (k, v) in headers {
+            builder = builder.header(k, v);
+        }
+        router(STATE.clone()).oneshot(builder.body(Body::from(body)).unwrap())
+    };
+    let json = serde_json::to_vec(&minted.signature).unwrap();
+    let r = verify(json.clone(), vec![]).await.unwrap();
+    assert_eq!(r.status(), StatusCode::OK);
+    let refreshed: njord_model::AdminResponse = serde_json::from_slice(
+        &axum::body::to_bytes(r.into_body(), usize::MAX)
+            .await
+            .unwrap(),
+    )
+    .unwrap();
+    assert_ne!(refreshed.signature.uuid, minted.signature.uuid);
+    let r = verify(
+        json.clone(),
+        vec![
+            ("x-forwarded-proto", "https"),
+            ("x-forwarded-host", "charts.example.org"),
+        ],
+    )
+    .await
+    .unwrap();
+    assert_eq!(r.status(), StatusCode::UNAUTHORIZED);
+    let mut tampered = minted.signature.clone();
+    tampered.uuid = "not-the-signed-uuid".into();
+    let r = verify(serde_json::to_vec(&tampered).unwrap(), vec![])
+        .await
+        .unwrap();
+    assert_eq!(r.status(), StatusCode::UNAUTHORIZED);
+    let r = verify(b"{\"not\": \"a signature\"}".to_vec(), vec![])
+        .await
+        .unwrap();
+    assert_eq!(r.status(), StatusCode::BAD_REQUEST);
+}
+
+/// Routes that answer without touching the database: D2 upload names, the text answers of
+/// `POST /v1/regions`, the empty 400s, and the reset of an idle server.
+#[tokio::test]
+async fn write_routes_without_a_database() {
+    let state = common::offline_state("behaviour_write");
+    let sig = signature(&state);
+    let signed = |path: &str| {
+        let sep = if path.contains('?') { '&' } else { '?' };
+        format!("{path}{sep}signature={sig}")
+    };
+    for bad in [
+        "../evil.zip",
+        "sub/evil.zip",
+        "evil.txt",
+        "..",
+        "evil.zip%00",
+        "x.zip.tmp",
+        ".zip",
+    ] {
+        let r = send_to(
+            state.clone(),
+            "POST",
+            &signed(&format!("/v1/enc_save?filename={bad}")),
+            &[],
+        )
+        .await;
+        assert_eq!(r.status(), StatusCode::BAD_REQUEST, "{bad}");
+    }
+    let r = send_to(state.clone(), "POST", &signed("/v1/enc_save"), &[]).await;
+    assert_eq!(r.status(), StatusCode::BAD_REQUEST);
+    let r = send_to(state.clone(), "DELETE", &signed("/v1/chart"), &[]).await;
+    assert_eq!(r.status(), StatusCode::BAD_REQUEST);
+    let r = send_to(state.clone(), "POST", &signed("/v1/regions"), &[]).await;
+    assert_eq!(r.status(), StatusCode::BAD_REQUEST);
+    assert_eq!(
+        r.headers()[header::CONTENT_TYPE],
+        "text/plain; charset=UTF-8"
+    );
+    assert_eq!(
+        axum::body::to_bytes(r.into_body(), usize::MAX)
+            .await
+            .unwrap(),
+        &b"missing required query parameter: name"[..]
+    );
+    let r = send_to(state.clone(), "POST", &signed("/v1/regions?name=NOPE"), &[]).await;
+    assert_eq!(r.status(), StatusCode::NOT_FOUND);
+    assert_eq!(
+        axum::body::to_bytes(r.into_body(), usize::MAX)
+            .await
+            .unwrap(),
+        &b"no configured region named NOPE"[..]
+    );
+    // The reset: lock cleared, directories recreated, status Idle.
+    std::fs::create_dir_all(&state.save_dir).unwrap();
+    std::fs::write(state.save_dir.join("left.zip"), "x").unwrap();
+    std::fs::write(state.lock.path(), "someone-else").unwrap();
+    let r = send_to(state.clone(), "DELETE", &signed("/v1/enc_save"), &[]).await;
+    assert_eq!(r.status(), StatusCode::ACCEPTED);
+    assert!(state.lock.is_free());
+    assert!(
+        state.save_dir.is_dir() && std::fs::read_dir(&state.save_dir).unwrap().next().is_none()
+    );
+    assert!(state.ingest_dir.is_dir());
+    assert_eq!(
+        state.status.read(),
+        njord_server::ingest::IngestStatus::idle_json()
+    );
+    // An upload lands in save/ as <name> with no .tmp left, and announces Extracting(0).
+    let body = b"PK\x05\x06".to_vec();
+    let r = router(state.clone())
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri(signed("/v1/enc_save?filename=A.ZIP"))
+                .header(header::HOST, "localhost:9000")
+                .body(Body::from(body.clone()))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(r.status(), StatusCode::OK);
+    assert_eq!(
+        axum::body::to_bytes(r.into_body(), usize::MAX)
+            .await
+            .unwrap(),
+        &br#"{"zipFile":"A.ZIP"}"#[..]
+    );
+    assert_eq!(std::fs::read(state.save_dir.join("A.ZIP")).unwrap(), body);
+    let mut names: Vec<String> = std::fs::read_dir(&state.save_dir)
+        .unwrap()
+        .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+        .collect();
+    names.sort();
+    assert_eq!(names, ["A.ZIP"]);
+    let status: njord_model::WsMsg = serde_json::from_str(&state.status.read()).unwrap();
+    assert_eq!(status, njord_model::WsMsg::Extracting { progress: 0.0 });
+    // The status socket is a GET route like any other: another verb is 405.
+    let r = send_to(state.clone(), "POST", "/v1/ws/enc_process", &[]).await;
+    assert_eq!(r.status(), StatusCode::METHOD_NOT_ALLOWED);
 }
 
 #[tokio::test]

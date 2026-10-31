@@ -1,12 +1,20 @@
-//! `GET /v1/cache` (`CacheHandler.kt`).
+//! `GET/DELETE /v1/cache` (`CacheHandler.kt`).
 
 use std::sync::Arc;
 
 use axum::Json;
 use axum::extract::State;
+use axum::http::StatusCode;
 use njord_model::TileCacheCounts;
 
+use super::Signed;
 use crate::state::AppState;
+
+/// `DELETE`, signed: empties the tile cache; 204.
+pub async fn clear(_: Signed, State(state): State<Arc<AppState>>) -> StatusCode {
+    state.tile_cache.clear().await;
+    StatusCode::NO_CONTENT
+}
 
 /// The number of cached tiles per zoom level, `{"<z>": <count>}`.
 pub async fn cache(State(state): State<Arc<AppState>>) -> Json<TileCacheCounts> {

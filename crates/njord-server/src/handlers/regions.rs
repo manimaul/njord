@@ -1,18 +1,47 @@
-//! `GET /v1/regions` and `GET /v1/regions/{archive}` (`RegionHandler.kt`).
+//! `GET/POST /v1/regions` and `GET /v1/regions/{archive}` (`RegionHandler.kt`).
 
 use std::io::SeekFrom;
 use std::sync::Arc;
 
 use axum::Json;
 use axum::body::Body;
-use axum::extract::{Path, State};
+use axum::extract::{Path, Query, State};
 use axum::http::{HeaderMap, HeaderValue, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use njord_model::RegionManifestEntry;
 use tokio::io::{AsyncReadExt, AsyncSeekExt};
 
-use super::Signed;
+use super::{Signed, query_param, text};
 use crate::state::AppState;
+
+/// `POST /v1/regions?name=`, signed: forgets the named region's last export so it is stale again
+/// and wakes the export worker; 202, the archive renders asynchronously. 400 (text) without
+/// `name`, 404 (text) for a region that is not configured, 500 when the state could not be
+/// cleared.
+pub async fn rerender(
+    _: Signed,
+    State(state): State<Arc<AppState>>,
+    Query(query): Query<Vec<(String, String)>>,
+) -> Response {
+    let Some(name) = query_param(&query, "name") else {
+        return text(
+            StatusCode::BAD_REQUEST,
+            "missing required query parameter: name",
+        );
+    };
+    if !state.config.region_exports.iter().any(|r| r.name == name) {
+        return text(
+            StatusCode::NOT_FOUND,
+            format!("no configured region named {name}"),
+        );
+    }
+    if let Err(e) = state.db.clear_region_export_state(name).await {
+        tracing::error!("clear export state {name}: {e}");
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    }
+    state.wake_region_worker();
+    StatusCode::ACCEPTED.into_response()
+}
 
 /// The manifest: every configured region, rendered or not.
 pub async fn manifest(State(state): State<Arc<AppState>>) -> Response {

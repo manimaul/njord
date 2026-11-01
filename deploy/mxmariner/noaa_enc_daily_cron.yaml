@@ -1,6 +1,6 @@
 ---
 # mxmariner environment (docs/RUST_PORT_PLAN.md §10), copied from k8s_deploy/ with the §10.3 edits.
-# Rendered and applied by `deploy/mxmariner/deploy.sh --execute apply cron`.
+# Rendered and applied by `cargo xtask --execute apply cron`.
 #
 # Nightly NOAA ENC update.
 #
@@ -53,7 +53,7 @@ spec:
                 # Authorizes DELETE /v1/chart for cells NOAA has withdrawn. Without both, the job
                 # still reports orphans but deletes nothing. Set deleteOrphans:false in the
                 # ConfigMap to switch the behaviour off entirely while leaving credentials in place.
-                # Created by `deploy/mxmariner/deploy.sh secrets` (njord-admin-basic), or by hand:
+                # Created by `cargo xtask secrets` (njord-admin-basic), or by hand:
                 # kubectl -n ${NJORD_NAMESPACE} create secret generic njord-admin-basic \
                 #   --from-literal=admin_user="${NJORD_ADMIN_USER}" --from-literal=admin_pass="${NJORD_ADMIN_PASS}"
                 - name: ENC_CRON_ADMIN_USER

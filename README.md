@@ -28,6 +28,7 @@ Phase 7 and remains in the git history (`master`).
 | `njord-server` | The axum HTTP server (`njord-server`: tiles, API, ingest and region export workers) and `njord-ingest` (the workers alone) |
 | `njord-enc-cron` | Nightly NOAA updater: diffs NOAA's catalog against `/v1/chart_editions`, bundles stale cells into `save/` |
 | `njord-web` | The web UI: Leptos (client-side, `wasm32`) built with Trunk; depends on `njord-model` only |
+| `xtask` (`njord-xtask`) | `cargo xtask <task>`: container image and Kubernetes deploy of the `mxmariner` environment (dry run unless `--execute`) |
 | `njord-testdata` | Locates the golden fixtures under `testdata/` for tests |
 
 ## Requirements
@@ -115,7 +116,9 @@ configuration as `njord-server` (it ignores `enableIngestion`). The Kubernetes `
 ### Container
 
 ```bash
-deploy/mxmariner/deploy.sh --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile
+cargo xtask build              # prints the podman command (every task is a dry run by default)
+cargo xtask --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile
+cargo xtask help               # all tasks: secrets, nfs, build, push, apply, rollout, deploy, render, ...
 ```
 
 See [`deploy/mxmariner/README.md`](deploy/mxmariner/README.md) for pushing and deploying. Never tag this image as

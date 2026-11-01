@@ -3,11 +3,11 @@
 # NEVER tag or push this image as ghcr.io/manimaul/njord-chart-server. That repository belongs to
 # the Kotlin environment in the `njord` namespace, which pulls it with imagePullPolicy: Always, so a
 # Rust build pushed there would be picked up by the old environment on its next pod start
-# (§10.2 item 1). deploy/mxmariner/deploy.sh refuses to build or push under that name.
+# (§10.2 item 1). `cargo xtask` refuses to build or push under that name.
 #
-# Build it through the script, which also passes the git build metadata:
+# Build it with the xtask, which also passes the git build metadata:
 #
-#   deploy/mxmariner/deploy.sh --execute build
+#   cargo xtask --execute build
 #
 # or by hand (.containerignore keeps the multi-GB Cargo target/ directory out of the build context):
 #
@@ -41,8 +41,8 @@ WORKDIR /build
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
 
-# Optional build metadata, resolved on the host by deploy.sh (git cannot see the repository from
-# inside the build). Exposed to the build as environment variables for option_env!().
+# Optional build metadata, resolved on the host by `cargo xtask build` (git cannot see the
+# repository from inside the build). Exposed to the build as environment variables for option_env!().
 ARG GIT_HASH=unknown
 ARG GIT_BRANCH=unknown
 ARG GIT_DIRTY=unknown

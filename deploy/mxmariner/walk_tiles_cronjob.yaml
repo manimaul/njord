@@ -1,6 +1,6 @@
 ---
 # mxmariner environment (docs/RUST_PORT_PLAN.md §10), copied from k8s_deploy/ with the §10.3 edits.
-# Rendered and applied by `deploy/mxmariner/deploy.sh --execute apply cron`.
+# Rendered and applied by `cargo xtask --execute apply cron`.
 apiVersion: v1
 kind: ConfigMap
 metadata:

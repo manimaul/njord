@@ -1,7 +1,7 @@
 ---
 # One-off reclaim of `features` bloat. Not part of a normal deploy - apply it by hand:
 #
-#   deploy/mxmariner/deploy.sh --execute apply vacuum
+#   cargo xtask --execute apply vacuum
 #   kubectl logs -n ${NJORD_NAMESPACE} -f job/features-vacuum-full
 #   kubectl delete job -n ${NJORD_NAMESPACE} features-vacuum-full   # optional, see below
 #

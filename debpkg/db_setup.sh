@@ -6,7 +6,7 @@
 # database (if they don't already exist)
 # and enables the PostGIS extension.
 #
-# Must be run as root (uses sudo -u postgres internally).
+# Must be run as root (uses runuser -u postgres internally).
 #
 # Usage:
 #   sudo /usr/share/njord/db_setup.sh [/path/to/application.json]
@@ -38,7 +38,7 @@ echo "  Database : $DB_NAME"
 echo "  Role     : $DB_USER"
 
 # Create role and database (as the postgres superuser)
-sudo -u postgres psql -v ON_ERROR_STOP=1 <<SQL
+runuser -u postgres -- psql -v ON_ERROR_STOP=1 <<SQL
 DO \$\$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${DB_USER}') THEN
@@ -54,7 +54,7 @@ SELECT 'CREATE DATABASE "${DB_NAME}" OWNER "${DB_USER}"'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${DB_NAME}')\gexec
 SQL
 
-sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$DB_NAME" -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+runuser -u postgres -- psql -v ON_ERROR_STOP=1 -d "$DB_NAME" -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 
 echo "Done. Database '$DB_NAME' is ready."
 echo "Run 'sudo systemctl start njord' to start the service."

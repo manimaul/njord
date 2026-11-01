@@ -1,7 +1,7 @@
 //! S-57 `CATREA` (category of restricted area) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/RESARE/CATREA>
+    /// <https://njord.mxmariner.com/control/symbols/RESARE/CATREA>
     /// List
     pub enum Catrea = "CATREA" {
         OFFSHORE_SAFETY_ZONE = 1,

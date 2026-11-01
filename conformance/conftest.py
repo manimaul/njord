@@ -36,7 +36,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     g.addoption("--admin-user", default=None, help="basic-auth user for GET /v1/admin (default: admin locally, $NJORD_ADMIN_USER otherwise)")
     g.addoption("--admin-pass", default=None, help="basic-auth password (default: admin locally, $NJORD_ADMIN_PASS otherwise)")
     g.addoption("--admin-key", default=None, help="server adminKey, lets the suite mint signatures for expiry tests (default: changeme locally)")
-    g.addoption("--allow-mutating", action="store_true", help="run mutating tests against a non-local server (never openenc.com)")
+    g.addoption("--allow-mutating", action="store_true", help="run mutating tests against a non-local server (never njord.mxmariner.com)")
     g.addoption("--server-impl", default="auto", choices=("auto", "kotlin", "rust"), help="skip port_only tests on kotlin")
     g.addoption("--trust-forwarded", action="store_true", help="run X-Forwarded-* tests against a non-local server")
     g.addoption("--skip-seed", action="store_true", help="do not ingest the fixture cells even if missing")
@@ -66,8 +66,8 @@ class Config:
         # Diff mode compares two live servers that may share a database, so a mutation on one shows
         # up as a difference on the other: diff mode is read-only by design.
         self.allow_mutating = (local or opt("--allow-mutating")) and self.mode != "diff"
-        if "openenc.com" in client.host and opt("--allow-mutating"):
-            raise pytest.UsageError("refusing --allow-mutating against openenc.com")
+        if "njord.mxmariner.com" in client.host and opt("--allow-mutating"):
+            raise pytest.UsageError("refusing --allow-mutating against njord.mxmariner.com")
 
 
 @pytest.fixture(scope="session")
@@ -250,7 +250,7 @@ def pytest_report_header(config: pytest.Config) -> list[str]:
 def _markers(request: pytest.FixtureRequest, config: Config) -> None:
     item = request.node
     if item.get_closest_marker("mutating") and not config.allow_mutating:
-        pytest.skip("mutating test; target is not local (use --allow-mutating, never against openenc.com)")
+        pytest.skip("mutating test; target is not local (use --allow-mutating, never against njord.mxmariner.com)")
     if item.get_closest_marker("port_only"):
         if config.mode == "record":
             pytest.skip("port_only: not recorded against the Kotlin server")

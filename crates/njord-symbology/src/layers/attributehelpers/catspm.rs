@@ -1,7 +1,7 @@
 //! S-57 `CATSPM` (category of special purpose mark) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/BCNSPP/CATSPM>
+    /// <https://njord.mxmariner.com/control/symbols/BCNSPP/CATSPM>
     /// Attribute: Category of special purpose mark
     /// Acronym: CATSPM
     /// Code: 66

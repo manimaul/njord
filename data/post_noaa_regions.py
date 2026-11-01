@@ -6,7 +6,7 @@ monitor ingestion via WebSocket.
 
 Usage:
     python3 post_noaa_regions.py --user admin --password secret
-    python3 post_noaa_regions.py --server https://openenc.com --user admin --password secret
+    python3 post_noaa_regions.py --server https://njord.mxmariner.com --user admin --password secret
     python3 post_noaa_regions.py --server http://localhost:9000 --user admin --password secret --regions 02,07,14
     python3 post_noaa_regions.py --server http://localhost:9000 --user admin --password secret --all
 """
@@ -384,7 +384,7 @@ def main():
             "  Specific regions:\n"
             "    python3 post_noaa_regions.py --user admin --password secret --regions 02,07,14\n\n"
             "  All regions:\n"
-            "    python3 post_noaa_regions.py --server https://openenc.com --user admin --password secret --all\n"
+            "    python3 post_noaa_regions.py --server https://njord.mxmariner.com --user admin --password secret --all\n"
         ),
     )
     parser.add_argument("--server", default="http://localhost:9000",

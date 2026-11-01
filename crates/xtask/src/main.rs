@@ -6,7 +6,7 @@
 //! through a deploy. The `xtask` alias is in `.cargo/config.toml`, and every command runs from the
 //! repository root.
 //!
-//! Only the `mxmariner` environment is deployed from here. The openenc.com production environment
+//! Only the `mxmariner` environment is deployed from here. The njord.mxmariner.com production environment
 //! (the `njord` namespace, the `s57server` database and the `njord-chart-server` image) is
 //! deployed separately and is never touched: the environment checks refuse its names and
 //! [`guard`] rejects any rendered manifest that mentions them.
@@ -394,14 +394,14 @@ impl Xtask {
 /// A non-empty variable, or `default` when it is unset or empty. Without a default an unset or
 /// empty variable is an error, and so is the literal string "undefined", so a value that was never
 /// really set cannot end up in a manifest as `dbname=undefined`. `NJORD_DB_NAME` belongs to the
-/// openenc.com production environment; when it is set but `NJORD_DB` is not, the error says so.
+/// njord.mxmariner.com production environment; when it is set but `NJORD_DB` is not, the error says so.
 fn var(name: &str, default: Option<&str>) -> Result<String> {
     let value = match (optional(name), default) {
         (v, Some(default)) if v.is_empty() => default.to_string(),
         (v, None) if v.is_empty() => {
             if name == "NJORD_DB" && !optional("NJORD_DB_NAME").is_empty() {
                 bail!(
-                    "NJORD_DB is not set (NJORD_DB_NAME is, but that is the openenc.com production environment's variable and is never read here)"
+                    "NJORD_DB is not set (NJORD_DB_NAME is, but that is the njord.mxmariner.com production environment's variable and is never read here)"
                 );
             }
             bail!("{name} is not set");
@@ -463,7 +463,7 @@ fn namespace() -> Result<String> {
     )?;
     if namespace == "njord" {
         bail!(
-            "NJORD_NAMESPACE=njord is the openenc.com production environment; xtask never touches it"
+            "NJORD_NAMESPACE=njord is the njord.mxmariner.com production environment; xtask never touches it"
         );
     }
     Ok(namespace)
@@ -481,7 +481,7 @@ fn identifier(s: &str) -> bool {
 fn db() -> Result<String> {
     let db = token("NJORD_DB", None, "^[a-z_][a-z0-9_]*$", identifier)?;
     if db == "s57server" {
-        bail!("NJORD_DB=s57server is the openenc.com production environment's database; use njord");
+        bail!("NJORD_DB=s57server is the njord.mxmariner.com production environment's database; use njord");
     }
     Ok(db)
 }
@@ -490,8 +490,8 @@ fn host() -> Result<String> {
     let host = token("NJORD_HOST", Some(HOST), "^[a-z0-9.-]+$", |s| {
         !s.is_empty() && s.bytes().all(|b| lower_alnum(b) || b == b'.' || b == b'-')
     })?;
-    if host.ends_with("openenc.com") {
-        bail!("NJORD_HOST={host} belongs to the openenc.com production environment");
+    if host.ends_with("njord.mxmariner.com") {
+        bail!("NJORD_HOST={host} belongs to the njord.mxmariner.com production environment");
     }
     Ok(host)
 }
@@ -518,20 +518,20 @@ fn image() -> Result<String> {
         },
     )?;
     // Production (the njord namespace) pulls njord-chart-server with imagePullPolicy: Always, so
-    // pushing this image there would deploy it to openenc.com.
+    // pushing this image there would deploy it to njord.mxmariner.com.
     if repo.contains("njord-chart-server") {
         bail!(
-            "NJORD_IMAGE_REPO={repo}: this image must never go to njord-chart-server, the openenc.com production repository"
+            "NJORD_IMAGE_REPO={repo}: this image must never go to njord-chart-server, the njord.mxmariner.com production repository"
         );
     }
     Ok(format!("{repo}:{version}"))
 }
 
-/// Refuses a rendered manifest that could touch the openenc.com production environment.
+/// Refuses a rendered manifest that could touch the njord.mxmariner.com production environment.
 ///
 /// This is the last line of defence, applied to every rendered manifest. Refused: the `njord`
 /// namespace; the cluster-scoped `nfs` StorageClass, which is backed by production's disk; a
-/// `njord-chart-server` image; `openenc.com`; the `s57server` database; a DB relay on host
+/// `njord-chart-server` image; `njord.mxmariner.com`; the `s57server` database; a DB relay on host
 /// port 6432, which production's relay already binds on every node (this environment's relay
 /// uses 6433); and any unfilled placeholder.
 fn guard(label: &str, text: &str) -> Result<()> {
@@ -552,7 +552,7 @@ fn guard(label: &str, text: &str) -> Result<()> {
             // No workload may run the production njord-chart-server image.
             Some("a njord-chart-server image")
         } else {
-            ["TCP4-LISTEN:6432", "openenc.com", "s57server"]
+            ["TCP4-LISTEN:6432", "njord.mxmariner.com", "s57server"]
                 .into_iter()
                 .chain(PLACEHOLDERS.map(|(p, _)| p))
                 .find(|s| line.contains(s))

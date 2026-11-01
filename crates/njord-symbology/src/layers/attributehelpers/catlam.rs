@@ -1,7 +1,7 @@
 //! S-57 `CATLAM` (category of lateral mark) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/BOYLAT/CATLAM>
+    /// <https://njord.mxmariner.com/control/symbols/BOYLAT/CATLAM>
     /// Attribute: Category of lateral mark
     /// Acronym: CATLAM
     /// Code: 36

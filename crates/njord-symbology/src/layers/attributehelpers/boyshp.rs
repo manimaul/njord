@@ -1,7 +1,7 @@
 //! S-57 `BOYSHP` (buoy shape) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/BOYSPP/BOYSHP>
+    /// <https://njord.mxmariner.com/control/symbols/BOYSPP/BOYSHP>
     /// Enum
     pub enum Boyshp = "BOYSHP" {
         CONICAL = 1,

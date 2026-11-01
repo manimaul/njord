@@ -391,10 +391,10 @@ From a specific directory\n
 python3 upload_noaa_region_encs.py --server http://localhost:9000 --user admin --password secret --dir /path/to/zips\n
 \n
 Direct file (skip selection prompt)\n
-python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --password secret --file 02Region_ENCs.zip\n
+python3 upload_noaa_region_encs.py --server https://njord.mxmariner.com --user admin --password secret --file 02Region_ENCs.zip\n
 \n
 Upload all regions sequentially (one at a time)\n
-python3 upload_noaa_region_encs.py --server https://openenc.com --user admin --password secret --all
+python3 upload_noaa_region_encs.py --server https://njord.mxmariner.com --user admin --password secret --all
 \n
 """
     parser = argparse.ArgumentParser(

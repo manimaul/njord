@@ -1,7 +1,7 @@
 //! S-57 `WATLEV` (water level effect) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/OBSTRN/WATLEV>
+    /// <https://njord.mxmariner.com/control/symbols/OBSTRN/WATLEV>
     /// Enum
     pub enum Watlev = "WATLEV" {
         PARTLY_SUBMERGED_AT_HIGH_WATER = 1,

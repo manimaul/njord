@@ -1,7 +1,7 @@
 //! S-57 `BCNSHP` (beacon shape) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/BCNLAT/BCNSHP>
+    /// <https://njord.mxmariner.com/control/symbols/BCNLAT/BCNSHP>
     /// Enum
     pub enum Bcnshp = "BCNSHP" {
         STAKE_POLE_PERCH_POST = 1,

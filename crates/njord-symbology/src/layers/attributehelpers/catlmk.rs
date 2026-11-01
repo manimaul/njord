@@ -1,7 +1,7 @@
 //! S-57 `CATLMK` (category of landmark) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/LNDMRK/CATLMK>
+    /// <https://njord.mxmariner.com/control/symbols/LNDMRK/CATLMK>
     /// Attribute: Category of landmark
     /// Acronym: CATLMK
     /// Code: 35

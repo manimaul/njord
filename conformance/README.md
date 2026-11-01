@@ -8,11 +8,11 @@ checklist [§3.5](../docs/RUST_PORT_PHASE0_CHECKLIST.md)). Nothing here imports 
 the P-TE-5 tile list under `testdata/`.
 
 ```sh
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python >= 3.12
-.venv/bin/pytest . --base-url=http://localhost:9000 --record             # record goldens from the Kotlin server
-.venv/bin/pytest . --base-url=http://localhost:9000                      # verify a server against golden/
-.venv/bin/pytest . --base-url=http://localhost:9000 --compare-url=http://localhost:9001   # diff two live servers
-.venv/bin/pytest . --base-url=https://openenc.com                        # read-only verify of production
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt                       # Python >= 3.12
+.venv/bin/pytest . --base-url=http://localhost:9000 --record                             # record goldens from the Kotlin server
+.venv/bin/pytest . --base-url=http://localhost:9000                                      # verify a server against golden/
+.venv/bin/pytest . --base-url=http://localhost:9000 --compare-url=http://localhost:9001  # diff two live servers
+.venv/bin/pytest . --base-url=https://njord.mxmariner.com                                # read-only verify of production
 ```
 
 ## Modes
@@ -26,7 +26,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python 
 Options: `--golden-dir` (default `conformance/golden`), `--compare auto|exact|shape` (see below),
 `--admin-user/--admin-pass/--admin-key` (default `admin`/`admin`/`changeme` from
 `config/application.json` for a localhost target, `$NJORD_ADMIN_USER`/`$NJORD_ADMIN_PASS`/
-`$NJORD_ADMIN_KEY` otherwise), `--allow-mutating` (never accepted for openenc.com),
+`$NJORD_ADMIN_KEY` otherwise), `--allow-mutating` (never accepted for njord.mxmariner.com),
 `--server-impl auto|kotlin|rust`, `--trust-forwarded`, `--skip-seed`.
 
 ## Layout
@@ -148,19 +148,19 @@ the structural skeleton (object keys, list element shape, scalar types) down to 
 | every mutating route × {no, wrong signature} → 401; `admin` 401s; 405/404/CORS | `geojson?chart_name=…` (existing layer), `regions` manifest |
 | `enc_save`, `chart`, `geojson` POST, `cache` DELETE, `regions` POST responses (local only) | |
 
-So `pytest . --base-url=https://openenc.com` runs the exact routes byte-for-byte and the data
+So `pytest . --base-url=https://njord.mxmariner.com` runs the exact routes byte-for-byte and the data
 routes by shape, because production holds the whole NOAA catalog; a local server seeded with the
 three fixture cells compares everything exactly. `--compare exact|shape` overrides the automatic
 choice. `volatile` specs (counts, archive bytes, the SPA page) are always compared by shape.
 
-Diff mode (`openenc.com` vs `njord.mxmariner.com` in §10.5 of the plan) applies the same rule
+Diff mode (`njord.mxmariner.com` vs `njord.mxmariner.com` in §10.5 of the plan) applies the same rule
 between the two live catalogs, so catalog drift shows up as a per-route failure of the data routes,
 never as a false alarm on the exact routes.
 
 ## Markers
 
 - `mutating` — changes server state (ingest, chart/geojson POST, cache DELETE, regions POST, nuke).
-  Runs only when `--base-url` is localhost, or with `--allow-mutating` (refused for openenc.com).
+  Runs only when `--base-url` is localhost, or with `--allow-mutating` (refused for njord.mxmariner.com).
   Always skipped in diff mode.
 - `signed` — needs an admin signature; skipped when no credentials are available.
 - `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9).
@@ -201,7 +201,7 @@ Recorded as the Kotlin server does it; none of these has a port decision in TEST
    while an unknown chart (zero rows) gets an empty `FeatureCollection`. `GeoJsonDao.fetchAsync`
    decodes its `row_to_json` rows into `geojson.Feature`, whose `id` is `String?` while the row's
    `id` is numeric and whose serializer rejects the row's extra `layer` key; the DAO retries exhaust
-   (about two seconds of back-off) and the handler sees null. Reproduced on openenc.com too.
+   (about two seconds of back-off) and the handler sees null. Reproduced on njord.mxmariner.com too.
 3. **`GET /v1/style/{bad depth}/…` and `/{bad theme}` answer 500**, not the intended 404
    (`call.respond(NotFound, Any())` fails to serialise).
 4. **An aborted ingest leaves `status.json` at its last progress message**: `IngestStatus.writeMsg`
@@ -216,7 +216,7 @@ The goldens record the build they came from in `golden/_recorded_build.json`; ve
 a warning when the target runs another build, because the exact routes (style, sprites) then
 legitimately differ. `api_04_charts/chart.json` alone was re-recorded on 2026-10-30 from
 build `7ba2877` after the `.TXT` seed fix (only `chart_txt` changed); `_recorded_build.json` still
-names the build the rest came from. Against `https://openenc.com` (master `505032bc`, 2026-10-18) everything
+names the build the rest came from. Against `https://njord.mxmariner.com` (master `505032bc`, 2026-10-18) everything
 passes except the 28 style and 4 sprite goldens recorded from this branch, which carries the
 drying-height sounding style and a regenerated sprite sheet; they will pass once production runs
 the same build, or when the goldens are recorded from production's build.

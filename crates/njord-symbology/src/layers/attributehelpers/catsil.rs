@@ -1,7 +1,7 @@
 //! S-57 `CATSIL` (category of silo/tank) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/SILTNK/CATSIL>
+    /// <https://njord.mxmariner.com/control/symbols/SILTNK/CATSIL>
     /// Enum
     /// 1	silo in general
     /// 2	tank in general

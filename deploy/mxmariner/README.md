@@ -2,7 +2,7 @@
 
 The Rust port's deployment: a complete, separate environment at `https://njord.mxmariner.com`,
 described in [docs/RUST_PORT_PLAN.md §10](../../docs/RUST_PORT_PLAN.md). The Kotlin environment
-(namespace `njord`, `openenc.com`) is deployed from the `master` branch's `k8s_deploy/` and
+(namespace `njord`, `njord.mxmariner.com`) is deployed from the `master` branch's `k8s_deploy/` and
 `./gradlew :deploy`, which were removed here with the rest of the Kotlin code; nothing here
 modifies it, and `cargo xtask` refuses `NJORD_NAMESPACE=njord`.
 
@@ -79,9 +79,9 @@ cargo xtask --execute apply chart    # applies
 | `render <chart\|cron\|vacuum\|secrets>` | `./gradlew :showSecret` | print to stdout; secrets masked unless `--show-secrets` |
 
 Refusals: `NJORD_NAMESPACE=njord`; a Rust image repository containing `njord-chart-server`;
-`NJORD_DB=s57server`; `NJORD_DB_USER=akmadmin`; `NJORD_HOST=*openenc.com`; an NFS size under 20Gi.
+`NJORD_DB=s57server`; `NJORD_DB_USER=akmadmin`; `NJORD_HOST=*njord.mxmariner.com`; an NFS size under 20Gi.
 Every rendered manifest is also rejected if it contains `namespace: njord`, `storageClassName: nfs`,
-`TCP4-LISTEN:6432`, `openenc.com`, `s57server`, an unfilled placeholder, or a `njord-chart-server`
+`TCP4-LISTEN:6432`, `njord.mxmariner.com`, `s57server`, an unfilled placeholder, or a `njord-chart-server`
 image.
 
 ## Bootstrap (§10.4)
@@ -145,7 +145,7 @@ which means ingest has fallen behind; run `seed` again once `save/` drains.
 Compare with the old environment (§10.5):
 
 ```shell
-pytest conformance --base-url=https://openenc.com --compare-url=https://njord.mxmariner.com
+pytest conformance --base-url=https://njord.mxmariner.com --compare-url=https://njord.mxmariner.com
 ```
 
 ## Notes

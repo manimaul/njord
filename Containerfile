@@ -18,6 +18,11 @@ ARG RUNTIME_IMAGE=docker.io/library/debian:13.7-slim
 
 FROM ${RUST_IMAGE} AS builder
 
+# Buildah shares cache mounts across --platform builds, so the target/ and Trunk caches are keyed by
+# architecture: an arm64 build once left an aarch64 wasm-bindgen in the Trunk cache, and the next
+# amd64 build failed running it (exit 127, no /lib/ld-linux-aarch64.so.1).
+ARG TARGETARCH
+
 # libgdal-dev: GDAL is linked only by the njord-s57 crate, which njord-server links for ingest
 # (Phase 4). The pinned georust gdal commit ships prebuilt bindings for Debian's GDAL 3.10, so no
 # libclang / bindgen is needed.
@@ -55,8 +60,8 @@ ENV NJORD_GIT_HASH=${GIT_HASH} NJORD_GIT_BRANCH=${GIT_BRANCH} NJORD_GIT_DIRTY=${
 # dependencies stay cached.
 RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
     --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
-    --mount=type=cache,target=/build/target,sharing=locked \
-    --mount=type=cache,target=/root/.cache/trunk,sharing=locked \
+    --mount=type=cache,id=njord-target-${TARGETARCH},target=/build/target,sharing=locked \
+    --mount=type=cache,id=njord-trunk-${TARGETARCH},target=/root/.cache/trunk,sharing=locked \
     find crates Cargo.toml Cargo.lock -type f -exec touch {} + \
     && cargo build --release -p njord-server -p njord-enc-cron --locked \
     && install -D -m 0755 target/release/njord-server /out/njord-server \

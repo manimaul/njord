@@ -11,8 +11,8 @@ modifies it, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
 
 | File | What |
 |---|---|
-| `../../Containerfile.rust` | Rust image `ghcr.io/manimaul/njord:<version>` |
-| `containerignore` | Build-context whitelist for that image (keeps the Cargo `target/` out) |
+| `../../Containerfile` | Rust image `ghcr.io/manimaul/njord:<version>` |
+| `../../.containerignore` | Build-context whitelist for that image (keeps the Cargo `target/` out) |
 | `application.json` | Config baked into the image (database `njord`); the cluster mounts `njord-config` over it |
 | `chart_server.yaml` | PVC, HPA, Services, relay DaemonSet, `njord-chart-dep`, `njord-config`, Certificate, Ingress, `njord-ingest-rs` |
 | `noaa_enc_daily_cron.yaml` | `njord-enc-download` CronJob (02:00 PT) + `njord-enc-cron-config` |
@@ -67,7 +67,7 @@ deploy/mxmariner/deploy.sh --execute apply chart    # applies
 |---|---|---|
 | `secrets` | `./gradlew :secret` | `njord-pgbouncer-ini` (alias = `dbname` = `$NJORD_DB`, `host=njord-db-relay`), `njord-pgbouncer-userlist-txt`, `njord-db-upstream`, `admin-secret-json` (`pgConnectionInfo` `…/$NJORD_DB`), `njord-admin-basic` |
 | `nfs` | `create_nfs.sh` | Helm release `njord-nfs`, `storageClass.name=njord-nfs`, `persistence.size=$NJORD_NFS_SIZE` (≥ 20Gi) |
-| `build` | `./gradlew :makeImg` | `podman build -f Containerfile.rust --ignorefile deploy/mxmariner/containerignore --platform linux/amd64` |
+| `build` | `./gradlew :makeImg` | `podman build -f Containerfile --ignorefile .containerignore --platform linux/amd64` |
 | `push` | `./gradlew :pubImg` | `podman push ghcr.io/manimaul/njord:$NJORD_VERSION` (needs `podman login ghcr.io`) |
 | `apply [chart\|cron\|vacuum\|all]` | `./gradlew :k8sApply` | render + `kubectl --namespace $NJORD_NAMESPACE apply -f -` |
 | `rollout` | `./gradlew :rolloutRestart` | `rollout restart` + `rollout status` of `njord-chart-dep` |

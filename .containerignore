@@ -1,0 +1,9 @@
+# Ignore file for the root Containerfile (podman reads it from the build context). Whitelist only
+# what the image needs; in particular this keeps the multi-GB Cargo target/ out of the build context.
+*
+!Cargo.toml
+!Cargo.lock
+!crates
+crates/**/target
+crates/njord-web/dist
+!deploy/mxmariner/application.json

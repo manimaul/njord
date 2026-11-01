@@ -31,7 +31,7 @@ Dry run is the default (DRY_RUN=1). Pass --execute or export DRY_RUN=0 to act.
   secrets            njord-pgbouncer-ini, njord-pgbouncer-userlist-txt, njord-db-upstream,
                      admin-secret-json, njord-admin-basic -> kubectl apply      (./gradlew :secret)
   nfs                Helm release njord-nfs, StorageClass njord-nfs, >= 20Gi     (create_nfs.sh)
-  build              podman build -f Containerfile.rust -> $NJORD_IMAGE_REPO:$NJORD_VERSION
+  build              podman build -f Containerfile -> $NJORD_IMAGE_REPO:$NJORD_VERSION
   push               podman push the Rust image                                  (./gradlew :pubImg)
   apply [what]       chart (default) | cron | vacuum | all (= chart + cron)     (./gradlew :k8sApply)
   rollout            kubectl rollout restart deployment/njord-chart-dep          (:rolloutRestart)
@@ -410,8 +410,8 @@ cmd_build() {
   branch="$(git -C "${REPO_ROOT}" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
   dirty="$(git -C "${REPO_ROOT}" status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
   run podman build --platform "${NJORD_PLATFORM}" \
-    --ignorefile "${SCRIPT_DIR}/containerignore" \
-    -f "${REPO_ROOT}/Containerfile.rust" \
+    --ignorefile "${REPO_ROOT}/.containerignore" \
+    -f "${REPO_ROOT}/Containerfile" \
     --build-arg "GIT_HASH=${hash}" \
     --build-arg "GIT_BRANCH=${branch}" \
     --build-arg "GIT_DIRTY=${dirty}" \

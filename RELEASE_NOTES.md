@@ -7,7 +7,8 @@
   Gradle build is gone. See [README.md](README.md) and [docs/RUST_PORT_PLAN.md](docs/RUST_PORT_PLAN.md).
   The HTTP API, PostGIS schema, style JSON, `.mbtiles` archives and on-disk layout are unchanged.
   Resource files moved to `crates/njord-server/resources` and `crates/njord-enc-cron/resources`.
-  The container image is now `ghcr.io/manimaul/njord` (Containerfile.rust). The `.deb` runs
+  The container image is now `ghcr.io/manimaul/njord` (`Containerfile`, a multi-stage `rust:` build
+  whose runtime stage installs only `libgdal36`, `zlib1g` and `ca-certificates`). The `.deb` runs
   `/usr/lib/njord/njord-server` and depends only on `libgdal36` and `zlib1g`.
 - **`enableRegionExport` config flag** (default `true`) — set `false` to stop the region export
   worker without stopping ingestion or the region manifest. Regions that go stale while it is

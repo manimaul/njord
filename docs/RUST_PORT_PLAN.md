@@ -413,7 +413,8 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 
 ### Phase 7 — Cutover and removal
 - [ ] **Phase 7 complete**
-- [ ] Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only (`Containerfile.rust`, prepared in Phase 3). Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
+- [x] Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only (`Containerfile.rust`, prepared in Phase 3). Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
+  - Done 2026-10-31. `Containerfile.rust` became the root `Containerfile` and `deploy/mxmariner/containerignore` the root `.containerignore`, so a plain `podman build .` uses the right context whitelist; `deploy.sh build`, `deploy/mxmariner/README.md`, `README.md` and `RELEASE_NOTES.md` point at them. The runtime stage installs `ca-certificates`, `libgdal36` and `zlib1g` only. `k8s_deploy/` is gone (its replacement is `deploy/mxmariner/`) and `debpkg/` was rewired with the Kotlin removal below. Checked with a `linux/arm64` build on the dev Mac; the `linux/amd64` image is built when `mxmariner` is stood up.
 - [ ] Stand up the `mxmariner` environment (§10.4) from `deploy/mxmariner/`, with the Rust image for every workload (`njord-chart-dep`, `njord-ingest-rs`, `njord-enc-download`, `njord-walk-tiles`), and seed it from NOAA. Run the conformance suite in diff mode against `https://openenc.com` and `https://njord.mxmariner.com` (§10.5) until it is green apart from the expected catalog differences. This is the first deployment of any Rust code.
 - [ ] Cutover per §10.6: switch the `openenc.com` consumers to `njord.mxmariner.com`, move regatta's DB relay, turn `openenc.com` into a redirect, retire the `njord` namespace. This is the first point at which anything in `njord` changes.
 - [x] Delete Kotlin modules once the conformance suite has run green against Rust alone for a release cycle. Keep `testdata/` and `conformance/`.

@@ -2,8 +2,9 @@
 # Deploy the Rust Njord environment in the mxmariner namespace (docs/RUST_PORT_PLAN.md §10).
 #
 # Replaces the Gradle tasks secret, makeImg, pubImg, k8sApply, cycleIngestPod, rolloutRestart,
-# holdOn and deploy, and the hard-coded k8s_deploy/create_nfs.sh, for the NEW environment only.
-# The Kotlin `njord` namespace keeps using ./gradlew :deploy and k8s_deploy/, untouched.
+# holdOn and deploy, and the hard-coded k8s_deploy/create_nfs.sh (all removed with the Kotlin
+# code in Phase 7), for the NEW environment only. The Kotlin `njord` namespace is deployed from
+# the master branch's ./gradlew :deploy and k8s_deploy/, and is never touched from here.
 #
 # DRY RUN BY DEFAULT: every subcommand prints what it would do. Nothing touches the cluster, the
 # registry or the local image store unless you pass --execute (or export DRY_RUN=0).
@@ -51,9 +52,6 @@ Optional, with defaults:
   NJORD_IMAGE_REPO=ghcr.io/manimaul/njord     Rust image repository (njord-chart-server refused)
   NJORD_VERSION=<workspace version in Cargo.toml>
   NJORD_HOST=njord.mxmariner.com
-  NJORD_KOTLIN_IMAGE=ghcr.io/manimaul/njord-chart-server:<version in gradle.properties>
-  NJORD_INGEST_IMPL=kotlin                    kotlin (Phase 3) | rust (Phase 4)
-  NJORD_ENC_CRON_IMPL=kotlin                  kotlin (Phase 3-4) | rust (Phase 5)
   NJORD_PLATFORM=linux/amd64                  podman build --platform
   NJORD_NFS_SIZE=20Gi                         NFS provisioner disk, at least 20Gi
   NJORD_KUBE_CONTEXT=                         if set, --execute refuses any other current context
@@ -107,16 +105,10 @@ require_token() {
 workspace_version() {
   sed -n '/^\[workspace.package\]/,/^\[/{s/^version *= *"\(.*\)"/\1/p;}' "${REPO_ROOT}/Cargo.toml" | head -n1
 }
-kotlin_version() {
-  sed -n 's/^version=//p' "${REPO_ROOT}/gradle.properties" | head -n1
-}
 
 NJORD_IMAGE_REPO="${NJORD_IMAGE_REPO:-ghcr.io/manimaul/njord}"
 NJORD_VERSION="${NJORD_VERSION:-$(workspace_version)}"
 NJORD_HOST="${NJORD_HOST:-njord.mxmariner.com}"
-NJORD_KOTLIN_IMAGE="${NJORD_KOTLIN_IMAGE:-ghcr.io/manimaul/njord-chart-server:$(kotlin_version)}"
-NJORD_INGEST_IMPL="${NJORD_INGEST_IMPL:-kotlin}"
-NJORD_ENC_CRON_IMPL="${NJORD_ENC_CRON_IMPL:-kotlin}"
 NJORD_PLATFORM="${NJORD_PLATFORM:-linux/amd64}"
 NJORD_NFS_SIZE="${NJORD_NFS_SIZE:-20Gi}"
 NJORD_KUBE_CONTEXT="${NJORD_KUBE_CONTEXT:-}"
@@ -148,31 +140,11 @@ check_rust_image() {
   RUST_IMAGE="${NJORD_IMAGE_REPO}:${NJORD_VERSION}"
 }
 
-check_kotlin_image() {
-  require_token NJORD_KOTLIN_IMAGE '^[a-z0-9.:/_-]+:[A-Za-z0-9._-]+$'
-  [[ "${NJORD_KOTLIN_IMAGE}" == ghcr.io/manimaul/njord-chart-server:* ]] \
-    || die "NJORD_KOTLIN_IMAGE=${NJORD_KOTLIN_IMAGE} is not a Kotlin njord-chart-server image"
-}
-
-# Which image each workload runs. Phase 3: chart = Rust, ingest + cron = Kotlin (§10.4).
-NJORD_CHART_IMAGE="" NJORD_INGEST_IMAGE="" NJORD_ENC_CRON_IMAGE=""
+# Every workload (chart, ingest, enc-download) runs the one Rust image (§10.4).
+NJORD_IMAGE=""
 resolve_images() {
   check_rust_image
-  check_kotlin_image
-  NJORD_CHART_IMAGE="${RUST_IMAGE}"
-  case "${NJORD_INGEST_IMPL}" in
-    kotlin) NJORD_INGEST_IMAGE="${NJORD_KOTLIN_IMAGE}" ;;
-    # Phase 4: also change the njord-ingest command in chart_server.yaml to the Rust entry point.
-    rust) die "NJORD_INGEST_IMPL=rust is Phase 4: set the Rust ingest command in chart_server.yaml, then remove this line" ;;
-    *) die "NJORD_INGEST_IMPL must be kotlin or rust" ;;
-  esac
-  case "${NJORD_ENC_CRON_IMPL}" in
-    kotlin) NJORD_ENC_CRON_IMAGE="${NJORD_KOTLIN_IMAGE}" ;;
-    # Phase 5: also change the enc-download command in noaa_enc_daily_cron.yaml.
-    rust) die "NJORD_ENC_CRON_IMPL=rust is Phase 5: set the Rust enc_cron command in noaa_enc_daily_cron.yaml, then remove this line" ;;
-    *) die "NJORD_ENC_CRON_IMPL must be kotlin or rust" ;;
-  esac
-  [[ "${NJORD_CHART_IMAGE}" != *njord-chart-server* ]] || die "njord-chart-dep would run a Kotlin image"
+  NJORD_IMAGE="${RUST_IMAGE}"
 }
 
 # Run (or, in dry-run, print) a command.
@@ -224,7 +196,7 @@ kube_preflight() {
 substitute() {
   local file="$1" out v val
   out="$(cat "${file}")"
-  for v in NJORD_NAMESPACE NJORD_DB NJORD_HOST NJORD_CHART_IMAGE NJORD_INGEST_IMAGE NJORD_ENC_CRON_IMAGE; do
+  for v in NJORD_NAMESPACE NJORD_DB NJORD_HOST NJORD_IMAGE; do
     val="${!v}"
     out="${out//\$\{${v}\}/${val}}"
   done
@@ -240,7 +212,7 @@ guard_rendered() {
     'TCP4-LISTEN:6432'
     'openenc\.com'
     's57server'
-    '\$\{NJORD_(NAMESPACE|DB|HOST|CHART_IMAGE|INGEST_IMAGE|ENC_CRON_IMAGE)\}'
+    '\$\{NJORD_(NAMESPACE|DB|HOST|IMAGE)\}'
   )
   local re
   for re in "${bad[@]}"; do
@@ -248,9 +220,9 @@ guard_rendered() {
       die "rendered ${label} matches forbidden pattern ${re}"
     fi
   done
-  # The Rust chart Deployment must not run a njord-chart-server image.
-  if awk '/name: njord-chart-dep/{d=1} d&&/^---/{d=0} d&&/image:.*njord-chart-server/{f=1} END{exit !f}' <<<"${text}"; then
-    die "rendered ${label}: njord-chart-dep uses a njord-chart-server image"
+  # No workload may run a Kotlin njord-chart-server image.
+  if grep -Eq -- 'image:.*njord-chart-server' <<<"${text}"; then
+    die "rendered ${label} uses a njord-chart-server image"
   fi
 }
 
@@ -268,7 +240,7 @@ render_cron()   { render_file noaa_enc_daily_cron.yaml; render_file walk_tiles_c
 render_vacuum() { render_file vacuum_job.yaml; }
 
 # ---------------------------------------------------------------------------------------------
-# Secrets (replacement for buildSrc/src/main/kotlin/Secret.kt and ./gradlew :secret)
+# Secrets (replacement for the Kotlin buildSrc Secret.kt and ./gradlew :secret)
 # ---------------------------------------------------------------------------------------------
 
 json_escape() {
@@ -366,7 +338,7 @@ stringData:
   userlist.txt: |
     "$(userlist_escape "${user}")" "$(userlist_escape "${db_pass}")"
 ---
-# CHART_SERVER_OPTS for njord-chart-dep (Rust) and njord-ingest-rs (Kotlin).
+# CHART_SERVER_OPTS for njord-chart-dep and njord-ingest-rs.
 apiVersion: v1
 kind: Secret
 metadata:
@@ -383,7 +355,7 @@ stringData:
     }
 ---
 # Basic credentials for njord-enc-download's orphan deletes (k8s_create_reg_sec.sh
-# create_cron_secret). Unused while deleteOrphans is false (Phase 3).
+# create_cron_secret).
 apiVersion: v1
 kind: Secret
 metadata:
@@ -433,14 +405,6 @@ cmd_nfs() {
 
 cmd_build() {
   check_rust_image
-  local web="${REPO_ROOT}/web/build/dist/js/productionExecutable"
-  if [[ ! -f "${web}/index.html" ]]; then
-    if [[ "${DRY_RUN}" == "1" ]]; then
-      note "warning: ${web} is missing; run ./gradlew :web:jsBrowserDistribution before --execute build"
-    else
-      die "${web} is missing; run ./gradlew :web:jsBrowserDistribution first"
-    fi
-  fi
   local hash branch dirty
   hash="$(git -C "${REPO_ROOT}" rev-parse --short HEAD 2>/dev/null || echo unknown)"
   branch="$(git -C "${REPO_ROOT}" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"

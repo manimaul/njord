@@ -22,7 +22,7 @@ from lib.client import Client  # noqa: E402
 from lib.engine import Checker, Target  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-LOCAL_ADMIN = ("admin", "admin", "changeme")  # server/src/nativeMain/resources/config/application.json
+LOCAL_ADMIN = ("admin", "admin", "changeme")  # crates/njord-server/resources/config/application.json
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:

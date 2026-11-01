@@ -1,9 +1,15 @@
 # Build Debian Package
 
 ```shell
-./gradlew :server:linkReleaseExecutableArch && \
-./gradlew :web:jsBrowserProductionWebpack && \
-python3 ./build_deb.py
+cargo build --release -p njord-server && \
+(cd crates/njord-web && trunk build --release) && \
+python3 debpkg/build_deb.py
+```
+
+Raspberry Pi 64-bit (ARM64), built in a `linux/arm64` container:
+
+```shell
+bash debpkg/build_deb_arm64.sh
 ```
 
 ## Install

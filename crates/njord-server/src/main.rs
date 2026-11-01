@@ -6,7 +6,9 @@
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use njord_server::{AppState, ChartsConfig, connect, migrate, router, spawn_workers};
+use njord_server::{
+    AppState, ChartsConfig, connect, migrate, router, shutdown_signal, spawn_workers,
+};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -45,23 +47,8 @@ async fn serve(resources: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     let listener = tokio::net::TcpListener::bind(addr).await?;
     tracing::info!("listening on {}", listener.local_addr()?);
     axum::serve(listener, router(state))
-        .with_graceful_shutdown(shutdown())
+        .with_graceful_shutdown(shutdown_signal())
         .await?;
     tracing::info!("Shutting down server...");
     Ok(())
-}
-
-async fn shutdown() {
-    let interrupt = tokio::signal::ctrl_c();
-    #[cfg(unix)]
-    {
-        let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
-            .expect("SIGTERM handler");
-        tokio::select! {
-            _ = interrupt => {}
-            _ = term.recv() => {}
-        }
-    }
-    #[cfg(not(unix))]
-    let _ = interrupt.await;
 }

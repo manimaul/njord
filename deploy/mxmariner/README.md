@@ -2,13 +2,12 @@
 
 The Rust port's deployment: a complete, separate environment at `https://njord.mxmariner.com`,
 described in [docs/RUST_PORT_PLAN.md §10](../../docs/RUST_PORT_PLAN.md). The Kotlin environment
-(namespace `njord`, `openenc.com`, `k8s_deploy/`, `./gradlew :deploy`) is not modified by anything
-here, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
+(namespace `njord`, `openenc.com`) is deployed from the `master` branch's `k8s_deploy/` and
+`./gradlew :deploy`, which were removed here with the rest of the Kotlin code; nothing here
+modifies it, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
 
-> **Not applied until Phase 7** (decided 2026-10-30). Every phase is first tested locally; the
-> environment is stood up once, in Phase 7, with the Rust image for every workload. These files
-> were prepared in Phase 3 with ingest and the NOAA cron still on the Kotlin image (the "Phase 3
-> layout" below); flip both to Rust, and set `deleteOrphans` back to `true`, before the first apply.
+> **Not applied yet.** The environment is stood up once, in Phase 7 (§10.4), with the Rust image
+> for every workload.
 
 | File | What |
 |---|---|
@@ -22,28 +21,20 @@ here, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
 | `db_setup.sql` | One-time role/database/PostGIS setup |
 | `deploy.sh` | Replaces the Gradle deploy tasks and `create_nfs.sh` for this environment |
 
-The manifests hold `${NJORD_NAMESPACE}`, `${NJORD_DB}`, `${NJORD_HOST}` and per-workload image
+The manifests hold `${NJORD_NAMESPACE}`, `${NJORD_DB}`, `${NJORD_HOST}` and `${NJORD_IMAGE}`
 placeholders, so they are never applied directly: `deploy.sh render <chart|cron|vacuum>` shows the
 result and `deploy.sh --execute apply ...` applies it.
 
-## Phase 3 layout: who runs which image
+## Workloads
 
-| Workload | Image | Binary |
-|---|---|---|
-| `njord-chart-dep` | **Rust** `ghcr.io/manimaul/njord:$NJORD_VERSION` | `/opt/njord/njord-server` |
-| `njord-ingest-rs` | **Kotlin** `$NJORD_KOTLIN_IMAGE` (default `ghcr.io/manimaul/njord-chart-server:<gradle version>`) | `/opt/njord/ingest.kexe` |
-| `njord-enc-download` | **Kotlin** `$NJORD_KOTLIN_IMAGE` | `/opt/njord/enc_cron.kexe` |
+Every workload runs the Rust image `ghcr.io/manimaul/njord:$NJORD_VERSION`.
 
-Kotlin fills the `njord` database and the PVC; Rust reads them (§10.4). The Kotlin image is only
-pulled here, never pushed. It is a floating tag with `imagePullPolicy: Always`, so pin it
-(`NJORD_KOTLIN_IMAGE=ghcr.io/manimaul/njord-chart-server:<tag>`) if a Kotlin push should not
-reach this namespace on its next pod start.
-
-- **Phase 4:** set `NJORD_INGEST_IMPL=rust`, change the `njord-ingest` `command` in
-  `chart_server.yaml`, remove the guard line in `deploy.sh resolve_images`, and set
-  `deleteOrphans: true` in `noaa_enc_daily_cron.yaml` once the Rust server has `/v1/admin` and
-  `DELETE /v1/chart`.
-- **Phase 5:** the same for `NJORD_ENC_CRON_IMPL=rust` and the `enc-download` command.
+| Workload | Binary |
+|---|---|
+| `njord-chart-dep` | `/opt/njord/njord-server /opt/njord/resources` |
+| `njord-ingest-rs` | `/opt/njord/njord-ingest /opt/njord/resources` (ingest and region export workers, no HTTP) |
+| `njord-enc-download` | `/opt/njord/njord-enc-cron /opt/njord/enc_cron_resources` |
+| `njord-walk-tiles` | `python:3.12-slim` with the script ConfigMap |
 
 ## Environment
 
@@ -54,7 +45,6 @@ export NJORD_DB_HOST=… NJORD_DB_PORT=… NJORD_DB=njord NJORD_DB_USER=njord NJ
 # optional
 export NJORD_KUBE_CONTEXT=<your LKE context>   # --execute refuses any other current context
 export NJORD_VERSION=0.1.0                     # default: [workspace.package] version in Cargo.toml
-export NJORD_KOTLIN_IMAGE=ghcr.io/manimaul/njord-chart-server:1.4-SNAPSHOT
 ```
 
 `NJORD_DB` replaces the Kotlin environment's `NJORD_DB_NAME`, which is never read. The script
@@ -76,7 +66,7 @@ deploy/mxmariner/deploy.sh --execute apply chart    # applies
 | Subcommand | Replaces | Does |
 |---|---|---|
 | `secrets` | `./gradlew :secret` | `njord-pgbouncer-ini` (alias = `dbname` = `$NJORD_DB`, `host=njord-db-relay`), `njord-pgbouncer-userlist-txt`, `njord-db-upstream`, `admin-secret-json` (`pgConnectionInfo` `…/$NJORD_DB`), `njord-admin-basic` |
-| `nfs` | `k8s_deploy/create_nfs.sh` | Helm release `njord-nfs`, `storageClass.name=njord-nfs`, `persistence.size=$NJORD_NFS_SIZE` (≥ 20Gi) |
+| `nfs` | `create_nfs.sh` | Helm release `njord-nfs`, `storageClass.name=njord-nfs`, `persistence.size=$NJORD_NFS_SIZE` (≥ 20Gi) |
 | `build` | `./gradlew :makeImg` | `podman build -f Containerfile.rust --ignorefile deploy/mxmariner/containerignore --platform linux/amd64` |
 | `push` | `./gradlew :pubImg` | `podman push ghcr.io/manimaul/njord:$NJORD_VERSION` (needs `podman login ghcr.io`) |
 | `apply [chart\|cron\|vacuum\|all]` | `./gradlew :k8sApply` | render + `kubectl --namespace $NJORD_NAMESPACE apply -f -` |
@@ -88,11 +78,10 @@ deploy/mxmariner/deploy.sh --execute apply chart    # applies
 | `render <chart\|cron\|vacuum\|secrets>` | `./gradlew :showSecret` | print to stdout; secrets masked unless `SHOW_SECRETS=1` |
 
 Refusals: `NJORD_NAMESPACE=njord`; a Rust image repository containing `njord-chart-server`;
-`NJORD_DB=s57server`; `NJORD_DB_USER=akmadmin`; `NJORD_HOST=*openenc.com`; an NFS size under 20Gi;
-a `NJORD_KOTLIN_IMAGE` outside `ghcr.io/manimaul/njord-chart-server`. Every rendered manifest is
-also rejected if it contains `namespace: njord`, `storageClassName: nfs`, `TCP4-LISTEN:6432`,
-`openenc.com`, `s57server`, an unfilled placeholder, or a `njord-chart-server` image in
-`njord-chart-dep`.
+`NJORD_DB=s57server`; `NJORD_DB_USER=akmadmin`; `NJORD_HOST=*openenc.com`; an NFS size under 20Gi.
+Every rendered manifest is also rejected if it contains `namespace: njord`, `storageClassName: nfs`,
+`TCP4-LISTEN:6432`, `openenc.com`, `s57server`, an unfilled placeholder, or a `njord-chart-server`
+image.
 
 ## Bootstrap (§10.4)
 
@@ -118,7 +107,6 @@ deploy/mxmariner/deploy.sh secrets                   # review (masked)
 deploy/mxmariner/deploy.sh --execute secrets
 
 # 5. Image, then chart_server.yaml (relay on 6433, PVC on njord-nfs, Ingress for njord.mxmariner.com)
-./gradlew :web:jsBrowserDistribution                 # Kotlin/JS UI baked into the Rust image
 podman login ghcr.io                                 # once
 deploy/mxmariner/deploy.sh deploy                    # review
 deploy/mxmariner/deploy.sh --execute deploy          # build, push, apply chart, rollout
@@ -164,6 +152,5 @@ pytest conformance --base-url=https://openenc.com --compare-url=https://njord.mx
 - PostgreSQL grants `CONNECT` to `PUBLIC` on every database, so the `njord` role can connect to
   `s57server` (it owns nothing there). Revoking that changes the old database, so it is left for
   you to decide; `db_setup.sql` does not do it.
-- Rotating `ghreg`: `k8s_deploy/k8s_create_reg_sec.sh k8s_login` is hard-coded to `njord`;
-  for this namespace run the same `kubectl create secret docker-registry ghreg` with
-  `--namespace mxmariner`.
+- Rotating `ghreg`: run `kubectl create secret docker-registry ghreg --namespace mxmariner` (the
+  Kotlin `k8s_deploy/k8s_create_reg_sec.sh k8s_login` on `master` is hard-coded to `njord`).

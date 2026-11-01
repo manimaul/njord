@@ -1,5 +1,4 @@
-# Rust port workspace (docs/RUST_PORT_PLAN.md §3.1). Crates are added phase by phase; the Kotlin
-# build under Gradle is untouched until Phase 7.
+# Njord workspace (docs/RUST_PORT_PLAN.md §3.1).
 [workspace]
 resolver = "2"
 members = ["crates/*"]

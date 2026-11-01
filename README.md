@@ -1,160 +1,166 @@
-# Njord 
+# Njord
 
-![Logo](./frontend/src/jsMain/resources/images/njord.webp "Logo")
+![Logo](./crates/njord-web/assets/njord.jpg "Logo")
 
-
-## Documentation
-
-[Design documentation](docs/DESIGN.md)
-
-[NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
-
-[RELEASE_NOTES](./RELEASE_NOTES.md)
-
-## Project Overview
-
-Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them 
+Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them
 as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display specifications. Live demo: https://openenc.com
 
 ![Screenshot](./screenshot.png "Screenshot")
 
-## Build System
+## Documentation
 
-Gradle with Kotlin DSL. Use `./gradlew` at the root.
+- [Design documentation](docs/DESIGN.md) (written for the Kotlin implementation)
+- [NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
+- [Rust port plan](docs/RUST_PORT_PLAN.md)
+- [Release notes](RELEASE_NOTES.md)
 
-### Development Workflow
+Njord is a Cargo workspace (`crates/`): an axum server and a Leptos (WebAssembly) web UI that only meet at the HTTP
+API. It was ported from Kotlin/Native and Kotlin/JS ([plan](docs/RUST_PORT_PLAN.md)); the Kotlin code was removed in
+Phase 7 and remains in the git history (`master`).
 
-```bash
-# 0. Start podman (if needed)
-podman machine start 
+| Crate | Purpose |
+|---|---|
+| `njord-model` | Shared API types; builds for native and `wasm32` (the contract with the web UI) |
+| `njord-geo` | Tile system, Web Mercator math, clipping, MVT encoding |
+| `njord-s57` | S-57 and shapefile reading through GDAL (the only crate that links GDAL) |
+| `njord-symbology` | Style JSON generation and per-feature symbology |
+| `njord-db` | PostGIS queries and schema migrations |
+| `njord-server` | The axum HTTP server (`njord-server`: tiles, API, ingest and region export workers) and `njord-ingest` (the workers alone) |
+| `njord-enc-cron` | Nightly NOAA updater: diffs NOAA's catalog against `/v1/chart_editions`, bundles stale cells into `save/` |
+| `njord-web` | The web UI: Leptos (client-side, `wasm32`) built with Trunk; depends on `njord-model` only |
+| `njord-testdata` | Locates the golden fixtures under `testdata/` for tests |
 
-# 1. Start the database (PostGIS)
-cd chart_server_db && podman-compose up
+## Requirements
 
-# 2. Build frontend
-./gradlew :web:jsBrowserDistribution
+- A Rust toolchain (edition 2024)
+- GDAL 3.8–3.13 (`brew install gdal` on macOS, `libgdal-dev` on Debian). The georust `gdal` crate is pinned to a
+  commit with prebuilt bindings, so a plain `cargo build` works; no bindgen or libclang.
+- The dev PostGIS from `chart_server_db/` (Podman)
+- For the web UI: `rustup target add wasm32-unknown-unknown` and `cargo install --locked trunk`. Trunk downloads the
+  matching `wasm-bindgen` and `wasm-opt` on first use. MapLibre GL and Bootstrap are vendored, so no npm.
 
-# 3a. Run the API server (Kotlin/Native executable)
-./gradlew :server:runDebugExecutable
+## Configuration
 
-# 3b. Option - build and run production
-./gradlew :server:linkReleaseExecutableArch
-CHART_SERVER_OPTS='{ "webStaticContent": "./web/build/dist/js/productionExecutable" }' \
-./server/build/bin/arch/releaseExecutable/server.kexe ./server/src/nativeMain/resources
+`njord-server` takes the same configuration as the former Kotlin server:
 
-# 3c. Option - build and run in container
-./gradlew makeImg
-podman run --rm --network host ghcr.io/manimaul/njord-chart-server:<version>
+1. **`<resources dir>/config/application.json`**: the base configuration. The resources directory is the server's
+   first argument, [`crates/njord-server/resources`](crates/njord-server/resources), so the file is
+   [`crates/njord-server/resources/config/application.json`](crates/njord-server/resources/config/application.json).
+   The container image replaces it with [`deploy/mxmariner/application.json`](deploy/mxmariner/application.json).
+2. **`CHART_SERVER_OPTS`**: an environment variable holding a JSON object merged over `application.json`. The merge is
+   shallow, so an override replaces a whole top-level key (`regionExports` is replaced, not extended).
 
+| Key | Meaning |
+|---|---|
+| `pgConnectionInfo` | PostgreSQL URL. The server creates and migrates the schema itself; the database needs the `postgis` extension |
+| `host`, `port` | Listen address |
+| `chartTempData` | Working directory for uploads (`save/`, `ingest/`), region archives and the tile cache |
+| `webStaticContent` | Web UI build output, served for any path no route answers |
+| `adminUser`, `adminPass`, `adminKey`, `adminExpirationSeconds` | Admin login and signing key |
+| `shallowDepth`, `safetyDepth`, `deepDepth`, `debugTile` | Symbology |
+| `chartIngestWorkers`, `enableIngestion` | Ingest worker pool |
+| `useTileCache` | On-disk tile cache (default `true`; the shipped `application.json` turns it off) |
+| `enableRegionExport`, `regionExports` | Region `.mbtiles` archives to build after ingest (name, description, WKT coverage) |
 
-# 4. Frontend with hot-reload (separate terminal)
-./gradlew :web:jsBrowserDevelopmentRun --continuous
-```
+Logging uses `RUST_LOG` (default `info`), e.g. `RUST_LOG=njord_server=debug`.
 
-### Testing
-
-```bash
-# Run all tests
-./gradlew allTests
-
-# Run tests for a specific module
-./gradlew :geojson:allTests
-./gradlew :libgdal:allTests
-./gradlew :server:allTests
-
-# Run tests for a specific module and build target
-./gradlew :geojson:jsTest
-./gradlew :geojson:jsBrowserTest
-./gradlew :geojson:archTest
-./gradlew :geojson:jvmTest
-```
-
-### Rust port
-
-The Rust port ([plan](docs/RUST_PORT_PLAN.md)) is a Cargo workspace at the root (`crates/`), built alongside Gradle.
-See [README_RUST.md](README_RUST.md) for running, testing and configuring it.
-
-### NOAA update job
-
-[NOAA ENC update cron](enc_cron/README.md)
-
-### Containerization & Deployment
+## Running
 
 ```bash
-./gradlew :makeImg      # Build Podman image
-./gradlew :pubImg       # Push image to registry
-./gradlew :k8sApply     # Deploy to Kubernetes
-./gradlew :deploy       # Full pipeline (build → push → deploy)
+# 1. Start the dev PostGIS (PostgreSQL on 6432, pgbouncer on 5432; admin / mysecretpassword)
+podman machine start
+cd chart_server_db && podman-compose up -d && cd ..
+
+# 2. Create a database
+psql postgresql://admin:mysecretpassword@localhost:6432/postgres -c 'CREATE DATABASE njord_rust'
+psql postgresql://admin:mysecretpassword@localhost:6432/njord_rust -c 'CREATE EXTENSION postgis'
+
+# 3. Build the web UI
+(cd crates/njord-web && trunk build --release)
+
+# 4. Build and run the server
+cargo build --release -p njord-server
+CHART_SERVER_OPTS='{
+  "pgConnectionInfo": "postgresql://admin:mysecretpassword@localhost:6432/njord_rust",
+  "webStaticContent": "./crates/njord-web/dist",
+  "chartTempData": "/tmp/njord_rust"
+}' ./target/release/njord-server ./crates/njord-server/resources
 ```
 
-## Architecture
+The server listens on http://localhost:9000. For development, `cargo run -p njord-server -- ./crates/njord-server/resources`
+works the same way. `webStaticContent` can point at any directory with an `index.html` if only the API is needed.
 
-### Module Structure
+### Web UI (`njord-web`)
 
-| Module | Target | Purpose                                                 |
-|--------|--------|---------------------------------------------------------|
-| `server` | Kotlin/Native | HTTP server: ingestion, tile serving, API endpoints     |
-| `web` | Kotlin/JS | Compose frontend with MapLibre GL map                   |
-| `shared` | Multiplatform (JVM/JS/Native) | Shared data models, serialization                       |
-| `shared_fe` | Kotlin/JS | Frontend UI components, MapLibre bindings               |
-| `libgdal` | Kotlin/Native | C interop bindings to GDAL 3.6.2                        |
-| `libpq` | Kotlin/Native | C interop bindings to PostgreSQL client                 |
-| `libsqlite` | Kotlin/Native | C interop bindings to SQLite (region export for mobile) |
-| `libexpat` | Kotlin/Native | C interop bindings to expat (streaming XML SAX parsing)  |
-| `enc_cron` | Kotlin/Native | Nightly NOAA ENC catalog diff and download job           |
-| `geojson` | Multiplatform | GeoJSON RFC 7946 implementation                         |
+`trunk build --release` (run in `crates/njord-web`) writes the static site to `crates/njord-web/dist/`; any server
+serves it through `webStaticContent`. For development with rebuild on save, run the server on :9000 and
 
-### Data Pipeline
-
-1. **Ingestion**: User uploads a zip of S-57 `.000` files via the web UI
-2. **Processing**: `server/src/nativeMain/kotlin/ingest/ChartIngest.kt` reads files via GDAL (`libgdal`), extracts chart metadata and features, converts all geometries to WGS84 (EPSG:4326), stores as GeoJSON FeatureCollections in PostGIS
-3. **Tile serving**: On tile request, `TileEncoder` queries PostGIS for charts and features within the tile envelope, clips geometries, and encodes as protobuf MVT
-4. **Styling**: Each S-57 object class has a corresponding layer class in `server/src/nativeMain/kotlin/layers/` that defines Mapbox GL style rules. The `TileEncoder` adds symbol properties (e.g., `SY`) to feature properties so the style JSON can reference them via `["get","SY"]`.
-5. **Region export**: After ingestion completes, `RegionExportWorker` generates SQLite archive files for configured geographic regions. Mobile clients download these archives and replay the data into a local SQLite database for offline chart rendering.
-6. **NOAA updates**: The `enc_cron` job (Kubernetes CronJob, nightly) streams NOAA's ISO-19115 product catalog, diffs it against `GET /v1/chart_editions`, and downloads only the cells whose revision changed - bundling them into zips dropped in the ingest `save/` directory.
-
-### Key Files in `server`
-
-- `Main.kt` — entry point; initializes GDAL, database, HTTP server
-- `geo/TileEncoder.kt` — MVT tile assembly
-- `ingest/ChartIngest.kt` — S-57 file processing pipeline
-- `ingest/RegionExporter.kt` — region SQLite archive generation
-- `ingest/RegionExportWorker.kt` — post-ingestion region export scheduling
-- `layers/` — one file per S-57 object class (e.g., `Depare.kt`, `Soundg.kt`, `Boyspp.kt`)
-- `endpoints/` — HTTP/WebSocket route handlers
-
-### Database
-
-PostgreSQL 13 + PostGIS. For development, run via Podman Compose in `chart_server_db/`. The `features` table stores GeoJSON FeatureCollections indexed by chart coverage polygon for spatial queries.
-
-## System Requirements
-
-- **openjdk-17-jre-headless** — required for Gradle and Kotlin/Native toolchain
-- **libgdal-dev** — Geospatial Data Abstraction Library - Development files
-- **libpq-dev** - header files for libpq5 (PostgreSQL library)
-- **libexpat1-dev** - header files for libexpat1 (XML parsing, used by `enc_cron`)
-- **PostGIS 13** — run in Podman for development (see `chart_server_db/README.md`)
-
-## Important Notes
-
-- **GitHub Packages** authentication uses `GH_USER` and `GH_TOKEN` environment variables
-- The `docs/DESIGN.md` links reference an older JVM implementation; the current codebase is Kotlin/Native
-- Platform targets: macOS x64/ARM64, Linux x64/ARM64 (backend), JS (frontend / browser) 
-- Targets not used: Windows x64 (Native)
-
-## Development on MacOS
-
-Required packages
-```shell
-brew install gdal libpq gd libzip sqlite expat openssl@3 openjdk@21
+```bash
+cd crates/njord-web && trunk serve      # http://localhost:8080, /v1 proxied to :9000
 ```
 
-Useful packages 
-```shell
-brew install podman podman-compose
+The ingest status WebSocket goes straight to :9000 when the page is on :8080.
+
+### NOAA update job (`njord-enc-cron`)
+
+See [`crates/njord-enc-cron/README.md`](crates/njord-enc-cron/README.md). It talks to the server only through
+`chartTempData/save/`, `GET /v1/chart_editions`, `GET /v1/admin` and `DELETE /v1/chart`.
+
+### Ingest-only process (`njord-ingest`)
+
+`njord-ingest <resources dir>` runs the ingest and region export workers without the HTTP server, with the same
+configuration as `njord-server` (it ignores `enableIngestion`). The Kubernetes `njord-ingest-rs` pod runs it beside
+`njord-chart-dep` pods that have `enableIngestion: false`.
+
+### Container
+
+```bash
+deploy/mxmariner/deploy.sh --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile.rust
 ```
 
-You'll need to set memory to at leas 8192 to build container image(s) 
-```shell
-podman machine set --memory 8192 
+See [`deploy/mxmariner/README.md`](deploy/mxmariner/README.md) for pushing and deploying. Never tag this image as
+`ghcr.io/manimaul/njord-chart-server`; that repository belongs to the Kotlin deployment of `openenc.com`, which runs
+from the `master` branch until the cutover (docs/RUST_PORT_PLAN.md §10.6).
+
+### Debian package
+
+See [`debpkg/README.md`](debpkg/README.md).
+
+## Testing
+
+### Unit and integration tests
+
+```bash
+cargo test --workspace                                         # round-trips testdata/ and conformance/golden/
+cargo check -p njord-model --target wasm32-unknown-unknown     # the contract crate must build for the web UI
+cargo clippy -p njord-web --target wasm32-unknown-unknown -- -D warnings
+cargo tree -p njord-web -e normal | grep njord-                # only njord-web and njord-model
+cargo clippy --workspace --all-targets -- -D warnings
 ```
+
+The `njord-db` and `njord-server` tests need the dev PostGIS running. They only create and drop databases named
+`njord_rust_*`.
+
+| Variable | Effect |
+|---|---|
+| `NJORD_TEST_PG` | PostgreSQL server URL without a database name (default `postgresql://admin:mysecretpassword@localhost:6432`); the role must be allowed to create databases |
+| `NJORD_RESEED=1` | Drop and reseed the shared `njord_rust_server_test` database |
+| `NJORD_TESTDATA` | Fixture directory (default `testdata/`) |
+| `NJORD_LAYER` | Check only these symbology layer keys, e.g. `NJORD_LAYER=BOYLAT cargo test -p njord-symbology -- --nocapture` |
+| `NJORD_TILE_DUMP=1` | Write the decoded Rust tiles under the test's temp directory |
+
+### HTTP conformance suite
+
+[`conformance/`](conformance/README.md) is a black-box Python suite that runs against a live server and compares it
+with the goldens recorded from the former Kotlin server. Run the server as above, on a fresh database and with
+`"useTileCache": true` (the goldens were recorded with the cache on), then:
+
+```bash
+cd conformance
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python >= 3.12
+.venv/bin/pytest . --base-url=http://localhost:9000
+```
+
+The suite seeds the server through the upload API and waits for the region exports, so the first run takes a few
+minutes. `--compare-url` diffs two live servers (e.g. `https://openenc.com` against `https://njord.mxmariner.com`) instead of
+using the goldens.

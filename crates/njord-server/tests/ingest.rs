@@ -216,7 +216,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     assert_eq!(db.list_charts(None).await.unwrap().total_chart_count, 3);
 
     // Natural Earth: a zip holding a shapefile goes to base_features.
-    let ne = repo_root().join("libgdal/src/nativeTest/resources/ne_110_extract");
+    let ne = repo_root().join("testdata/fixtures/ne_110_extract");
     let mut entries: Vec<(String, Vec<u8>)> = ["shp", "shx", "dbf", "prj", "cpg"]
         .iter()
         .map(|ext| {

@@ -1,12 +1,12 @@
 ---
-# mxmariner environment (docs/RUST_PORT_PLAN.md §10). Copied from k8s_deploy/chart_server.yaml with
-# the §10.3 edits. Not directly appliable: ${...} placeholders are filled in by
+# mxmariner environment (docs/RUST_PORT_PLAN.md §10). Copied from k8s_deploy/chart_server.yaml (Kotlin,
+# removed in Phase 7) with the §10.3 edits. Not directly appliable: ${...} placeholders are filled in by
 #   deploy/mxmariner/deploy.sh render chart_server.yaml
 # and applied by `deploy.sh --execute apply chart`.
 #
-# Phase 3 strangler layout (§10.4): njord-chart-dep runs the Rust image (${NJORD_CHART_IMAGE}),
-# njord-ingest-rs keeps the Kotlin image (${NJORD_INGEST_IMAGE}). Both read the same njord-config
-# ConfigMap and admin-secret-json, whose keys the two servers share.
+# Every workload runs the Rust image (${NJORD_IMAGE}): njord-chart-dep runs njord-server and
+# njord-ingest-rs runs njord-ingest. Both read the same njord-config ConfigMap and
+# admin-secret-json.
 #
 # The PVC needs the njord-nfs StorageClass: run `deploy.sh --execute nfs` first.
 apiVersion: v1
@@ -176,8 +176,8 @@ spec:
       imagePullSecrets:
         - name: ghreg
       containers:
-        # Rust image (Phase 3). deploy.sh refuses the Kotlin image repository here.
-        - image: ${NJORD_CHART_IMAGE}
+        # deploy.sh refuses the Kotlin image repository here.
+        - image: ${NJORD_IMAGE}
           imagePullPolicy: Always
           name: njord-chart-svc
           command: ["/opt/njord/njord-server", "/opt/njord/resources"]
@@ -235,7 +235,7 @@ spec:
               - secret:
                   name: njord-pgbouncer-userlist-txt
 ---
-# Shared by the Rust njord-chart-dep and the Kotlin njord-ingest-rs; admin-secret-json overlays
+# Shared by njord-chart-dep and njord-ingest-rs; admin-secret-json overlays
 # adminKey/adminUser/adminPass/pgConnectionInfo on top of it through CHART_SERVER_OPTS.
 apiVersion: v1
 kind: ConfigMap
@@ -373,13 +373,11 @@ spec:
       imagePullSecrets:
         - name: ghreg
       containers:
-        # PHASE 3: Kotlin image and Kotlin binary (Kotlin fills the njord database, Rust reads it).
-        # PHASE 4 flip: set NJORD_INGEST_IMPL=rust in deploy.sh (image) and replace this command
-        # with the Rust ingest entry point.
-        - image: ${NJORD_INGEST_IMAGE}
+        # The ingest and region export workers without the HTTP server (ignores enableIngestion).
+        - image: ${NJORD_IMAGE}
           imagePullPolicy: Always
           name: njord-ingest
-          command: ["/opt/njord/ingest.kexe", "/opt/njord/resources"]
+          command: ["/opt/njord/njord-ingest", "/opt/njord/resources"]
           # §10.2 item 5 sizing for the Rust ingest. The Kotlin ingest peaked at 1242Mi with 5
           # workers; njord-config runs 3, so 2Gi should hold. Raise the limit if it OOMs.
           resources:

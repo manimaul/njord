@@ -19,7 +19,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python 
 
 | Mode | Selected by | What happens |
 |---|---|---|
-| **record** | `--record` | Every spec is fetched from `--base-url` (a **Kotlin** server) and written to `golden/<group>/<case>.json`. `port_only` tests are skipped. |
+| **record** | `--record` | Every spec is fetched from `--base-url` (a **Kotlin** server) and written to `golden/<group>/<case>.json`. `port_only` tests are skipped. The Kotlin code is gone from this branch (Phase 7), so the goldens are frozen; re-recording needs a Kotlin server built from `master`. |
 | **verify** | default | Every spec is fetched and compared with its golden. Fails on any difference, naming the JSON pointer. |
 | **diff** | `--compare-url` | Every spec is fetched from both servers and the two masked responses are compared with each other; goldens are not touched. Read-only: mutating tests are skipped, because the two servers may share a database. When a Kotlin `--base-url` is diffed against a Rust `--compare-url` (both auto-detected), a spec's `port` block is applied to the Kotlin response first, so a decided divergence (D4, D8) is not reported as a difference. |
 

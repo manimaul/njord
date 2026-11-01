@@ -24,7 +24,7 @@ use njord_testdata::{
 use serde_json::{Value, json};
 
 fn colors() -> ColorLibrary {
-    let path = njord_testdata::repo_root().join("server/src/nativeMain/resources/colors.json");
+    let path = njord_testdata::repo_root().join("crates/njord-server/resources/colors.json");
     let colors: Colors = serde_json::from_value(load(&path)).expect("colors.json");
     ColorLibrary::new(colors)
 }

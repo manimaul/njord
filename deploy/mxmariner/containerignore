@@ -5,6 +5,5 @@
 !Cargo.lock
 !crates
 crates/**/target
-!server/src/nativeMain/resources
-!web/build/dist/js/productionExecutable
+crates/njord-web/dist
 !deploy/mxmariner/application.json

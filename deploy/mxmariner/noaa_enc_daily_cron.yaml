@@ -12,8 +12,7 @@
 # This replaces an unconditional `curl OneDay_ENCs.zip`, which re-ingested every cell in the
 # bundle nightly and permanently lost anything published while the cluster was down.
 #
-# Needs no database access: the revision baseline comes from the HTTP endpoint, so there is no
-# pgbouncer sidecar here.
+# Needs no database access: the revision baseline comes from the HTTP endpoint.
 apiVersion: batch/v1
 kind: CronJob
 metadata:

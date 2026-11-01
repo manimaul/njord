@@ -481,7 +481,7 @@ The Rust stack is deployed as a complete, separate environment. Nothing in the `
 | Database cluster | Akamai managed Postgres (host/port in `njord-db-upstream`) | the same cluster |
 | Database / role | `s57server` / `akmadmin` | `njord` / a dedicated `njord` role (§10.2 item 4) |
 | Env var naming the database | `NJORD_DB_NAME` | **`NJORD_DB`** |
-| pgbouncer `[databases]` alias | `s57server`, hard-coded in `Secret.kt` and `vacuum_job.yaml` | `${NJORD_DB}`, i.e. `njord` |
+| Database connection | pgbouncer sidecar, `[databases]` alias `s57server` hard-coded in `Secret.kt` and `vacuum_job.yaml` | no pgbouncer: sqlx pools in each process and connects to `njord-db-relay:6432/${NJORD_DB}` (`pgConnectionInfo`, secret `njord-db-url` for the vacuum Job) |
 | Image | `ghcr.io/manimaul/njord-chart-server:<ver>` | `ghcr.io/manimaul/njord:<ver>`, a different repository (§10.2 item 1) |
 | Shared volume | PVC `njord-shared-data`, 9Gi RWX, StorageClass `nfs` | PVC `njord-shared-data` (namespaced, so the name is free) on a **new** StorageClass `njord-nfs` (§10.2 item 2) |
 | DB relay | DaemonSet `njord-db-relay`, `hostNetwork`, node port 6432 | DaemonSet `njord-db-relay` in `mxmariner`, `hostNetwork`, node port **6433** (§10.2 item 3) |
@@ -551,7 +551,7 @@ export NJORD_DB_HOST=… NJORD_DB_PORT=… NJORD_DB=njord NJORD_DB_USER=njord NJ
 # 0. Database and role, once, as the cluster admin             (§10.2 item 4)
 # 1. Namespace and ghreg already exist in mxmariner
 # 2. NFS: Helm release njord-nfs, StorageClass njord-nfs        (create_nfs.sh, parameterised)
-# 3. njord-pgbouncer-ini, njord-pgbouncer-userlist-txt, admin-secret-json, njord-db-upstream
+# 3. admin-secret-json, njord-db-url, njord-db-upstream
 #                                                               (replacement for ./gradlew :secret)
 # 4. njord-admin-basic for the cron's orphan deletes            (k8s_create_reg_sec.sh create_cron_secret)
 # 5. Apply chart_server.yaml: relay on 6433, PVC on njord-nfs, Ingress for njord.mxmariner.com

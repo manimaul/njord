@@ -1,11 +1,12 @@
 # Local Dev
-* url = `jdbc:postgresql://localhost:5432/s57server`
+* url = `postgresql://localhost:6432/s57server`
 * username = `admin`
 * password = `mysecretpassword`
 
 
 Rather than installing PostGIS on your development machine just use `podman-compose` to bring up the database running
-in a container with port `5432` exposed to your host network.
+in a container with port `6432` exposed to your host network. There is no pgbouncer: the server pools
+connections itself with sqlx.
 ```shell
 podman-compose up
 ```

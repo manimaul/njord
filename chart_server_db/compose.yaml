@@ -36,19 +36,6 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: s57server
 
-  pgbouncer:
-    image: ghcr.io/cloudnative-pg/pgbouncer:latest
-    networks:
-      - overlay
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
-      - ./userlist.txt:/etc/pgbouncer/userlist.txt:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
-
 
 networks:
   overlay:

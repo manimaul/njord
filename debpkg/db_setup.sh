@@ -37,7 +37,7 @@ echo "Configuring PostgreSQL for Njord..."
 echo "  Database : $DB_NAME"
 echo "  Role     : $DB_USER"
 
-# Create role and database (must connect directly to postgres, not pgbouncer)
+# Create role and database (as the postgres superuser)
 sudo -u postgres psql -v ON_ERROR_STOP=1 <<SQL
 DO \$\$
 BEGIN

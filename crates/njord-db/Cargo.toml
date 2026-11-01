@@ -16,7 +16,9 @@ indexmap.workspace = true
 njord-geo.workspace = true
 njord-model.workspace = true
 serde_json.workspace = true
-sqlx = { version = "0.9", default-features = false, features = ["json", "postgres", "runtime-tokio"] }
+# TLS for the managed database (`sslmode=require`); aws-lc-rs is the rustls provider reqwest
+# already pulls into njord-server.
+sqlx = { version = "0.9", default-features = false, features = ["json", "postgres", "runtime-tokio", "tls-rustls-aws-lc-rs"] }
 tokio = { version = "1", features = ["sync", "time"] }
 tracing = "0.1"
 

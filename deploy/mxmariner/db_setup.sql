@@ -4,7 +4,7 @@
 -- exist. Run this ONCE, by hand, as the managed cluster's admin user (akmadmin), against the
 -- same managed Postgres cluster the njord namespace uses. It does not touch s57server.
 --
---   psql "postgresql://akmadmin@<NJORD_DB_HOST>:<NJORD_DB_PORT>/postgres?sslmode=require" \
+--   psql "postgresql://akmadmin@<NJORD_DB_HOST>:<NJORD_DB_PORT>/defaultdb?sslmode=require" \
 --     -v ON_ERROR_STOP=1 -v njord_pass="$NJORD_DB_PASS" -f deploy/mxmariner/db_setup.sql
 --
 -- The password is passed as a psql variable so it is not written into this file or the shell
@@ -13,7 +13,7 @@
 
 \set ON_ERROR_STOP on
 
--- A dedicated role rather than akmadmin, so a misconfigured njord-pgbouncer-ini cannot reach
+-- A dedicated role rather than akmadmin, so a misconfigured pgConnectionInfo cannot reach
 -- s57server's data.
 CREATE ROLE njord LOGIN PASSWORD :'njord_pass';
 

@@ -10,6 +10,12 @@
   The container image is now `ghcr.io/manimaul/njord` (`Containerfile`, a multi-stage `rust:` build
   whose runtime stage installs only `libgdal36`, `zlib1g` and `ca-certificates`). The `.deb` runs
   `/usr/lib/njord/njord-server` and depends only on `libgdal36` and `zlib1g`.
+- **No pgbouncer.** The server and ingest processes pool their own PostgreSQL connections with
+  sqlx (`MAX_DB_CONNECTIONS`, 10 per process) and connect to the database directly over TLS
+  (`sslmode=require` is now supported). The Kubernetes pgbouncer sidecars and the
+  `njord-pgbouncer-ini` / `njord-pgbouncer-userlist-txt` secrets are gone, `pgConnectionInfo`
+  carries the password and points at `njord-db-relay:6432`, and the dev compose file no longer
+  starts pgbouncer on 5432.
 - **`enableRegionExport` config flag** (default `true`) — set `false` to stop the region export
   worker without stopping ingestion or the region manifest. Regions that go stale while it is
   off are rendered once it is re-enabled.

@@ -66,7 +66,7 @@ cargo xtask --execute apply chart    # applies
 
 | Task | Replaces | Does |
 |---|---|---|
-| `secrets` | `./gradlew :secret` | `njord-pgbouncer-ini` (alias = `dbname` = `$NJORD_DB`, `host=njord-db-relay`), `njord-pgbouncer-userlist-txt`, `njord-db-upstream`, `admin-secret-json` (`pgConnectionInfo` `…/$NJORD_DB`), `njord-admin-basic` |
+| `secrets` | `./gradlew :secret` | `njord-db-upstream`, `njord-db-url` and `admin-secret-json` (`pgConnectionInfo` `postgresql://$NJORD_DB_USER:…@njord-db-relay:6432/$NJORD_DB?sslmode=require`; no pgbouncer, the servers pool with sqlx), `njord-admin-basic` |
 | `nfs` | `create_nfs.sh` | Helm release `njord-nfs`, `storageClass.name=njord-nfs`, `persistence.size=$NJORD_NFS_SIZE` (≥ 20Gi) |
 | `build` | `./gradlew :makeImg` | `podman build -f Containerfile --ignorefile .containerignore --platform linux/amd64`, then checks the image architecture |
 | `push` | `./gradlew :pubImg` | `podman push ghcr.io/manimaul/njord:$NJORD_VERSION` (needs `podman login ghcr.io`) |
@@ -91,7 +91,7 @@ Run from the repo root with the environment above exported.
 ```shell
 # 0. Database and role, once, as the cluster admin (§10.2 item 4). Check free disk on the managed
 #    plan first.
-psql "postgresql://akmadmin@${NJORD_DB_HOST}:${NJORD_DB_PORT}/postgres?sslmode=require" \
+psql "postgresql://akmadmin@${NJORD_DB_HOST}:${NJORD_DB_PORT}/defaultdb?sslmode=require" \
   -v ON_ERROR_STOP=1 -v njord_pass="$NJORD_DB_PASS" -f deploy/mxmariner/db_setup.sql
 
 # 1. Namespace and ghreg already exist in mxmariner (regatta uses both). Check:

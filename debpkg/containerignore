@@ -1,0 +1,11 @@
+# Ignore file for debpkg/Containerfile.arm64 (passed with --ignorefile by build_deb_arm64.sh).
+# Whitelist only what the package build needs; keeps the multi-GB Cargo target/ out of the context.
+*
+!Cargo.toml
+!Cargo.lock
+!crates
+crates/**/target
+crates/njord-web/dist
+!data/*.py
+!debpkg
+debpkg/*.deb

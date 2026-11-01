@@ -39,15 +39,12 @@ spec:
             - name: ghreg
           containers:
             - name: enc-download
-              # PHASE 3: Kotlin image and Kotlin enc_cron.kexe (§10.4). PHASE 5 flip: set
-              # NJORD_ENC_CRON_IMPL=rust in deploy.sh and replace command below with the Rust
-              # enc_cron entry point.
-              image: ${NJORD_ENC_CRON_IMAGE}
+              image: ${NJORD_IMAGE}
               imagePullPolicy: Always
               securityContext:
                 runAsUser: 0
               command:
-                - /opt/njord/enc_cron.kexe
+                - /opt/njord/njord-enc-cron
                 - /opt/njord/enc_cron_resources
               # Tunables live in the njord-enc-cron-config ConfigMap below, which replaces the
               # copy baked into the image. ENC_CRON_OPTS still overlays it if you need a one-off
@@ -100,9 +97,6 @@ spec:
 #
 # Raise maxCellsPerRun temporarily to seed a cold catalog faster (~7.2k cells).
 #
-# deleteOrphans is false in Phase 3: orphan deletes go through /v1/admin and DELETE /v1/chart,
-# which the Rust njord-chart-dep only implements in Phase 4 (§6). Turn it back on with that flip.
-#
 # Edits apply to the next scheduled run - a CronJob builds a fresh pod each time, so there is no
 # rollout to trigger.
 apiVersion: v1
@@ -123,6 +117,6 @@ data:
       "scaleFilter": [],
       "requestTimeoutSeconds": 600,
       "maxRetries": 3,
-      "deleteOrphans": false,
+      "deleteOrphans": true,
       "maxOrphanDeletes": 25
     }

@@ -7,7 +7,7 @@ use serde_json::{Value, json};
 
 /// The attribute catalogue the Kotlin server loads (`Singletons.s57ObjectLibrary`).
 fn s57_attributes() -> IndexMap<String, S57Attribute> {
-    let path = repo_root().join("server/src/nativeMain/resources/s57attributes.json");
+    let path = repo_root().join("crates/njord-server/resources/s57attributes.json");
     serde_json::from_value(njord_testdata::load(&path)).unwrap()
 }
 

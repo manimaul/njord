@@ -1,5 +1,9 @@
 # Catalog-driven NOAA ENC updates (`enc_cron`)
 
+> **Kotlin-era document.** It describes the Kotlin/Native implementation, which was removed in
+> Phase 7 of the [Rust port](RUST_PORT_PLAN.md); its file paths refer to the `master` branch. The
+> behaviour still holds; for the Rust crates see the [README](../README.md).
+
 ## Context
 
 NOAA republishes its ENC cells continuously. Njord's nightly updater was a `curlimages/curl` pod

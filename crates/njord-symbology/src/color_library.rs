@@ -3,7 +3,7 @@
 use njord_model::{Color, ColorTuple, Colors, Theme, ThemeMode};
 
 /// Wraps the parsed `colors.json`; the caller supplies it (the server reads it from its
-/// resources, tests from `server/src/nativeMain/resources/colors.json`).
+/// resources, tests from `crates/njord-server/resources/colors.json`).
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct ColorLibrary {
     pub color_map: Colors,

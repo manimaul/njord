@@ -89,11 +89,18 @@ pub async fn migrate(db: &Db) -> Result<i32, njord_db::Error> {
 /// ingest worker, and the region export worker unless `enableRegionExport` is off. The handles
 /// are the tasks; dropping them does not stop the workers.
 pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
-    let mut handles = Vec::new();
     if !state.config.enable_ingestion {
         tracing::info!("ingestion disabled by config");
-        return handles;
+        return Vec::new();
     }
+    spawn_ingest_workers(state)
+}
+
+/// The workers alone, whatever `enableIngestion` says (`IngestApp.kt` `ingestMain`, the
+/// `njord-ingest` binary): the ingest worker, and the region export worker unless
+/// `enableRegionExport` is off.
+pub fn spawn_ingest_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
+    let mut handles = Vec::new();
     handles.push(tokio::spawn(ingest::IngestWorker::new(state.clone()).run()));
     if state.config.enable_region_export {
         handles.push(tokio::spawn(
@@ -103,6 +110,22 @@ pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> 
         tracing::info!("region export disabled by config");
     }
     handles
+}
+
+/// Resolves on SIGINT, or SIGTERM on unix.
+pub async fn shutdown_signal() {
+    let interrupt = tokio::signal::ctrl_c();
+    #[cfg(unix)]
+    {
+        let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+            .expect("SIGTERM handler");
+        tokio::select! {
+            _ = interrupt => {}
+            _ = term.recv() => {}
+        }
+    }
+    #[cfg(not(unix))]
+    let _ = interrupt.await;
 }
 
 /// The whole HTTP API. Routes are matched as Ktor matches the Kotlin route patterns: `{x}` is one

@@ -19,8 +19,8 @@ svg_dir = os.path.join(base_dir, "svg")
 svg_t_dir = os.path.join(svg_dir, "tmp")
 sprites = os.path.join(base_dir, "simplified")
 sprites2x = os.path.join(base_dir, "simplified2x")
-sprite_sheet_dir = os.path.join(base_dir, "../server/src/nativeMain/resources/www/sprites")
-colors = os.path.join(base_dir, "../server/src/nativeMain/resources/colors.json")
+sprite_sheet_dir = os.path.join(base_dir, "../crates/njord-server/resources/www/sprites")
+colors = os.path.join(base_dir, "../crates/njord-server/resources/colors.json")
 
 # https://registry.iho.int/portrayal/list.do?type=5
 

@@ -6,8 +6,8 @@ Usage:
     python3 build_deb.py [--version VERSION]
 
 Prerequisites (run from the repo root first):
-    ./gradlew :server:linkReleaseExecutableNative
-    ./gradlew :web:jsBrowserDistribution
+    cargo build --release -p njord-server
+    (cd crates/njord-web && trunk build --release)
 
 The script expects to be run from the debpkg/ directory or the repo root.
 """
@@ -36,16 +36,12 @@ def _host_architecture() -> str:
     machine = platform.machine()
     return {"x86_64": "amd64", "aarch64": "arm64"}.get(machine, machine)
 
+# Everything but GDAL and zlib is statically linked into the Rust binary (RUST_PORT_PLAN.md §4.3).
 DEPENDS = [
     "systemd",
     "ca-certificates",
     "libgdal36",
-    "libpq5",
-    "libzip5",
-    "libssl3t64",
-    "libcurl4t64",
-    "libgd3",
-    "libexpat1",
+    "zlib1g",
     "postgis",
     "postgresql-client",
 ]
@@ -55,34 +51,30 @@ REPO_ROOT = SCRIPT_DIR.parent
 
 
 def find_server_binary() -> Path:
-    candidates = [
-        REPO_ROOT / "server/build/bin/arch/releaseExecutable/server.kexe",
-    ]
-    for p in candidates:
-        if p.exists():
-            return p
-    sys.exit(
-        "ERROR: server binary not found. Run:\n"
-        "  ./gradlew :server:linkReleaseExecutableNative"
-    )
+    p = REPO_ROOT / "target/release/njord-server"
+    if not p.exists():
+        sys.exit(
+            "ERROR: server binary not found. Run:\n"
+            "  cargo build --release -p njord-server"
+        )
+    return p
 
 
 def find_web_dist() -> Path:
-    p = REPO_ROOT / "web/build/dist/js/productionExecutable"
-    if not p.is_dir():
+    p = REPO_ROOT / "crates/njord-web/dist"
+    if not (p / "index.html").is_file():
         sys.exit(
             "ERROR: web dist not found. Run:\n"
-            "  ./gradlew :web:jsBrowserDistribution"
+            "  (cd crates/njord-web && trunk build --release)"
         )
     return p
 
 
 def read_version() -> str:
-    props = REPO_ROOT / "gradle.properties"
-    for line in props.read_text().splitlines():
-        if line.startswith("version="):
-            return line.split("=", 1)[1].strip()
-    return "0.0.0"
+    """The [workspace.package] version in Cargo.toml."""
+    import tomllib
+    cargo = tomllib.loads((REPO_ROOT / "Cargo.toml").read_text())
+    return cargo["workspace"]["package"]["version"]
 
 
 def build_package(version: str, architecture: str) -> None:
@@ -102,12 +94,12 @@ def build_package(version: str, architecture: str) -> None:
 
     # ── server binary ────────────────────────────────────────────────────────
     binary = find_server_binary()
-    dest_binary = lib_njord / "server.kexe"
+    dest_binary = lib_njord / "njord-server"
     shutil.copy2(binary, dest_binary)
     dest_binary.chmod(0o755)
 
     # ── server resources (fonts, sprites, JSON data) ─────────────────────────
-    src_resources = REPO_ROOT / "server/src/nativeMain/resources"
+    src_resources = REPO_ROOT / "crates/njord-server/resources"
     for item in src_resources.iterdir():
         # if item.name == "config":
         #     continue
@@ -202,7 +194,7 @@ def main() -> None:
     parser.add_argument(
         "--version",
         default=None,
-        help="Override package version (default: read from gradle.properties)",
+        help="Override package version (default: read from Cargo.toml)",
     )
     parser.add_argument(
         "--architecture",

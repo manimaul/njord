@@ -5,14 +5,13 @@
 # Rust build pushed there would be picked up by the old environment on its next pod start
 # (§10.2 item 1). deploy/mxmariner/deploy.sh refuses to build or push under that name.
 #
-# Build it through the script, which passes the matching ignore file (the repo's .containerignore
-# belongs to the Kotlin Containerfile and does not exclude the Cargo target/ directory):
+# Build it through the script, which passes the matching ignore file (it keeps the multi-GB Cargo
+# target/ directory out of the build context):
 #
 #   deploy/mxmariner/deploy.sh --execute build
 #
 # or by hand:
 #
-#   ./gradlew :web:jsBrowserDistribution          # Kotlin/JS UI until the Leptos UI (Phase 6)
 #   podman build --platform linux/amd64 \
 #     --ignorefile deploy/mxmariner/containerignore \
 #     -f Containerfile.rust -t ghcr.io/manimaul/njord:<version> .
@@ -30,10 +29,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+# The web UI (crates/njord-web) is built with Trunk for wasm32. Its own layer, so it is compiled
+# once and reused until the version changes. Trunk downloads the wasm-bindgen CLI matching
+# Cargo.lock and wasm-opt on first use (cached under /root/.cache/trunk below).
+ARG TRUNK_VERSION=0.22.1
+RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
+    rustup target add wasm32-unknown-unknown \
+    && cargo install --locked "trunk@${TRUNK_VERSION}"
+
 WORKDIR /build
 
 # Only the Cargo workspace. Everything else in the repository is excluded by
-# deploy/mxmariner/containerignore, so Kotlin or web changes do not invalidate this layer.
+# deploy/mxmariner/containerignore, so doc or deploy changes do not invalidate this layer.
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
 
@@ -44,7 +51,7 @@ ARG GIT_BRANCH=unknown
 ARG GIT_DIRTY=unknown
 ENV NJORD_GIT_HASH=${GIT_HASH} NJORD_GIT_BRANCH=${GIT_BRANCH} NJORD_GIT_DIRTY=${GIT_DIRTY}
 
-# target/ is a cache mount, so it is not part of any layer: copy the binary out in the same step.
+# target/ is a cache mount, so it is not part of any layer: copy the binaries out in the same step.
 # COPY keeps the host mtimes, and cargo's fingerprints are mtime based, so a source file older
 # than the cached build output would be taken as unchanged (seen in practice: a file edited
 # during a build). Touching the workspace sources rebuilds only the njord-* crates; third-party
@@ -52,13 +59,17 @@ ENV NJORD_GIT_HASH=${GIT_HASH} NJORD_GIT_BRANCH=${GIT_BRANCH} NJORD_GIT_DIRTY=${
 RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
     --mount=type=cache,target=/usr/local/cargo/git,sharing=locked \
     --mount=type=cache,target=/build/target,sharing=locked \
+    --mount=type=cache,target=/root/.cache/trunk,sharing=locked \
     find crates Cargo.toml Cargo.lock -type f -exec touch {} + \
-    && cargo build --release -p njord-server --locked \
-    && install -D -m 0755 target/release/njord-server /out/njord-server
+    && cargo build --release -p njord-server -p njord-enc-cron --locked \
+    && install -D -m 0755 target/release/njord-server /out/njord-server \
+    && install -D -m 0755 target/release/njord-ingest /out/njord-ingest \
+    && install -D -m 0755 target/release/njord-enc-cron /out/njord-enc-cron \
+    && (cd crates/njord-web && trunk build --release --locked --dist /out/www)
 
 FROM ${RUNTIME_IMAGE}
 
-# Compare the Kotlin image (Containerfile), which also needs libpq5, libzip5, libssl3t64,
+# Compare the Kotlin image (the root Containerfile, removed in Phase 7), which also needed libpq5, libzip5, libssl3t64,
 # libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
 #   ca-certificates  TLS roots for outbound HTTPS (NOAA downloads from Phase 5, any rustls/openssl
 #                    client that uses the system store).
@@ -74,19 +85,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /out/njord-server /opt/njord/njord-server
+COPY --from=builder /out/njord-server /out/njord-ingest /out/njord-enc-cron /opt/njord/
 
 # Same layout as the Kotlin image, so the njord-config ConfigMap (mounted over
-# resources/config/application.json) and webStaticContent=/opt/njord/resources/www work for both.
-# server/src/nativeMain/resources stays the source of truth until Phase 7 moves it.
-COPY server/src/nativeMain/resources /opt/njord/resources
+# resources/config/application.json) and webStaticContent=/opt/njord/resources/www keep working.
+COPY crates/njord-server/resources /opt/njord/resources
 COPY deploy/mxmariner/application.json /opt/njord/resources/config/application.json
-# Kotlin/JS web build as static content until the Leptos UI lands (Phase 6). Merged over
-# resources/www, which already holds fonts/ and sprites/.
-COPY web/build/dist/js/productionExecutable /opt/njord/resources/www
+# The Leptos UI, merged over resources/www, which already holds fonts/ and sprites/.
+COPY --from=builder /out/www /opt/njord/resources/www
+# njord-enc-cron's resources dir; the njord-enc-cron-config ConfigMap is mounted over
+# config/enc_cron.json.
+COPY crates/njord-enc-cron/resources /opt/njord/enc_cron_resources
 
 EXPOSE 9000
 
 # Same CLI shape as the Kotlin server: njord-server <resources dir>, with CHART_SERVER_OPTS JSON
-# overlaid on <resources dir>/config/application.json.
+# overlaid on <resources dir>/config/application.json. njord-ingest takes the same arguments
+# (workers only, no HTTP); njord-enc-cron takes /opt/njord/enc_cron_resources.
 CMD ["/opt/njord/njord-server", "/opt/njord/resources"]

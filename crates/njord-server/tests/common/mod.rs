@@ -43,7 +43,7 @@ pub fn url(database: &str) -> String {
 }
 
 pub fn resources() -> PathBuf {
-    repo_root().join("server/src/nativeMain/resources")
+    repo_root().join("crates/njord-server/resources")
 }
 
 static SEEDED: OnceCell<()> = OnceCell::const_new();
@@ -163,7 +163,7 @@ async fn populate() {
     }
     ingest_shapefile(
         &db,
-        &repo_root().join("libgdal/src/nativeTest/resources/ne_110_extract/ne_110m_coastline.shp"),
+        &repo_root().join("testdata/fixtures/ne_110_extract/ne_110m_coastline.shp"),
     )
     .await;
     db.pool().close().await;

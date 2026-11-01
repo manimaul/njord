@@ -16,7 +16,7 @@ from lib.engine import Spec
 G = "api_02_style"
 DEPTHS = ("meters", "feet", "fathoms")
 THEMES = ("day", "dusk", "night")
-CUSTOM = (None, "sweden", "shom")  # server/src/nativeMain/resources/colors.json `custom` keys
+CUSTOM = (None, "sweden", "shom")  # crates/njord-server/resources/colors.json `custom` keys
 FIXTURE_BASE = "https://njord.test"  # baseUrl the P-SY-7 fixtures are generated with
 STYLE_FIXTURES = Path(__file__).resolve().parents[1] / "testdata" / "symbology" / "style"
 

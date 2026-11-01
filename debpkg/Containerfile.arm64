@@ -1,61 +1,57 @@
 # syntax=docker/dockerfile:1
-# Builds a Raspberry Pi 64-bit (ARM64) Debian package via Kotlin/Native cross-compilation.
-# Runs entirely on x86_64 — no QEMU required.
+# Builds a Raspberry Pi 64-bit (ARM64) Debian package. Build it for --platform linux/arm64: the
+# Rust toolchain then compiles natively inside the container (native on an Apple Silicon or ARM
+# host, QEMU emulation on x86_64), so there is no cross-linker or ARM64 sysroot to set up.
 #
-# Prerequisites on the host:
-#   (none — podman handles multi-arch natively)
-#
-# Build & ne_110_extract the .deb:
+# Build & extract the .deb:
 #   cd <repo-root>
 #   bash debpkg/build_deb_arm64.sh
 #
 # Or manually:
-#   podman build \
+#   podman build --platform linux/arm64 \
+#       --ignorefile debpkg/containerignore \
 #       --output type=local,dest=./debpkg/ \
 #       --target artifact \
 #       -f debpkg/Containerfile.arm64 .
 
-FROM debian:13.7-slim AS builder
+ARG RUST_IMAGE=docker.io/library/rust:1.99.1-trixie
 
-# Enable ARM64 multiarch so we can install ARM64 libraries for cross-linking.
-# openjdk/git/python3 are x86_64 (needed to run Gradle/Kotlin/Native on the host).
-# The *:arm64 lib packages provide ARM64 headers + libs that the cross-linker uses.
-RUN dpkg --add-architecture arm64 && \
-    apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    git \
+FROM ${RUST_IMAGE} AS builder
+
+# libgdal-dev: njord-s57 links GDAL (prebuilt bindings for Debian's GDAL 3.10, no bindgen).
+# python3 + dpkg-deb (in the base image) run build_deb.py.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal-dev \
+    pkg-config \
     python3 \
-    openjdk-21-jdk-headless \
-    libgdal-dev:arm64 \
-    libpq-dev:arm64 \
-    libssl-dev:arm64 \
-    libzip-dev:arm64 \
-    libcurl4-openssl-dev:arm64 \
-    libgd-dev:arm64 \
-    gcc-aarch64-linux-gnu \
-    && rm -rf /var/lib/apt/lists/* && \
-    # libcrypto.a and libcurl.a are compiled with -moutline-atomics and reference
-    # __aarch64_ldadd*/swp* symbols that K/N's bundled lld cannot find.
-    # Remove them so K/N prefers the shared .so files (which have these symbols
-    # resolved internally) over the static archives.
-    rm -f /usr/lib/aarch64-linux-gnu/libssl.a \
-          /usr/lib/aarch64-linux-gnu/libcrypto.a \
-          /usr/lib/aarch64-linux-gnu/libcurl.a
+    && rm -rf /var/lib/apt/lists/*
 
-ENV KONAN_DATA_DIR=/root/.konan
+ARG TRUNK_VERSION=0.22.1
+RUN --mount=type=cache,target=/usr/local/cargo/registry,id=cargo-registry-arm64,sharing=locked \
+    rustup target add wasm32-unknown-unknown \
+    && cargo install --locked "trunk@${TRUNK_VERSION}"
+
 WORKDIR /build
-COPY . .
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY data ./data
+COPY debpkg ./debpkg
 
-# web/build/dist/ is pre-built on the host and copied in via COPY . .
-# -PbuildForArm64=true forces linuxArm64("arch") target in all build.gradle.kts
-# files even though the host JVM reports x86_64, enabling Kotlin/Native
-# cross-compilation from x86_64 → linuxArm64.
-RUN --mount=type=cache,target=/root/.konan,id=konan-arm64 \
-    --mount=type=cache,target=/root/.gradle,id=gradle-arm64 \
-    ./gradlew :server:linkReleaseExecutableArch -PbuildForArm64=true --no-daemon && \
-    test -f server/build/bin/arch/releaseExecutable/server.kexe || \
-        { echo "ERROR: linkReleaseExecutableArch did not produce server.kexe"; exit 1; } && \
-    python3 debpkg/build_deb.py --architecture arm64
+# target/ is a cache mount, so the binary and the UI are copied out of it before build_deb.py
+# runs. See Containerfile.rust for why the sources are touched first.
+RUN --mount=type=cache,target=/usr/local/cargo/registry,id=cargo-registry-arm64,sharing=locked \
+    --mount=type=cache,target=/usr/local/cargo/git,id=cargo-git-arm64,sharing=locked \
+    --mount=type=cache,target=/build/target,id=cargo-target-arm64,sharing=locked \
+    --mount=type=cache,target=/root/.cache/trunk,id=trunk-arm64,sharing=locked \
+    find crates Cargo.toml Cargo.lock -type f -exec touch {} + \
+    && cargo build --release -p njord-server --locked \
+    && install -D -m 0755 target/release/njord-server /out/njord-server \
+    && (cd crates/njord-web && trunk build --release --locked --dist /out/www)
+
+# build_deb.py looks for the build outputs at their usual repository paths.
+RUN install -D -m 0755 /out/njord-server target/release/njord-server \
+    && mkdir -p crates/njord-web && cp -r /out/www crates/njord-web/dist \
+    && python3 debpkg/build_deb.py --architecture arm64
 
 # Export stage: copies only the .deb so --output extracts just the package.
 FROM scratch AS artifact

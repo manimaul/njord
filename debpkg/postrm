@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+case "$1" in
+    remove)
+        rm -f /usr/lib/njord/config/application.json
+        [ -d /run/systemd/system ] && systemctl daemon-reload || true
+        ;;
+    purge)
+        # The database (pgConnectionInfo) is left alone; drop it with dropdb if it is no longer wanted.
+        rm -f /etc/njord/njord.env
+        rm -rf /var/lib/njord
+        if id -u njord > /dev/null 2>&1; then
+            deluser --system njord > /dev/null 2>&1 || true
+        fi
+        ;;
+esac

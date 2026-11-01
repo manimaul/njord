@@ -18,8 +18,6 @@ import shutil
 import subprocess
 import sys
 import textwrap
-import secrets
-import string
 from pathlib import Path
 
 
@@ -37,13 +35,17 @@ def _host_architecture() -> str:
     return {"x86_64": "amd64", "aarch64": "arm64"}.get(machine, machine)
 
 # Everything but GDAL and zlib is statically linked into the Rust binary (RUST_PORT_PLAN.md §4.3).
+# postgresql-postgis pulls in the PostgreSQL server and the PostGIS extension (the postgis package
+# alone only Recommends them); python3 runs db_setup.sh, adduser runs in preinst.
 DEPENDS = [
     "systemd",
+    "adduser",
     "ca-certificates",
     "libgdal36",
     "zlib1g",
-    "postgis",
+    "postgresql-postgis",
     "postgresql-client",
+    "python3",
 ]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -87,7 +89,7 @@ def build_package(version: str, architecture: str) -> None:
     lib_njord    = pkg_root / "usr/lib/njord"
     share_njord  = pkg_root / "usr/share/njord"
     etc_njord    = pkg_root / "etc/njord"
-    systemd_dir  = pkg_root / "lib/systemd/system"
+    systemd_dir  = pkg_root / "usr/lib/systemd/system"
 
     for d in (debian_dir, lib_njord, share_njord, etc_njord, systemd_dir):
         d.mkdir(parents=True, exist_ok=True)
@@ -118,8 +120,11 @@ def build_package(version: str, architecture: str) -> None:
     config["useTileCache"] = True
     config["chartIngestWorkers"] = 2
     config["pgConnectionInfo"] = "postgresql://admin:admin@localhost:5432/s57server"
-    chars = string.ascii_letters + string.digits
-    config["adminKey"] = ''.join(secrets.choice(chars) for _ in range(32))
+    # systemd StateDirectory=njord; /tmp is private to the service and wiped on every restart.
+    config["chartTempData"] = "/var/lib/njord"
+    # The real key is generated per install by postinst into /etc/njord/njord.env (CHART_SERVER_OPTS),
+    # which overrides this placeholder.
+    config["adminKey"] = "set-in-/etc/njord/njord.env"
     app_json_dst.write_text(json.dumps(config, indent=4) + "\n")
 
     shutil.move(app_json_dst, etc_njord / "application.json")
@@ -167,8 +172,8 @@ def build_package(version: str, architecture: str) -> None:
     # ── DEBIAN/conffiles ──────────────────────────────────────────────────────
     (debian_dir / "conffiles").write_text("/etc/njord/application.json\n")
 
-    # ── DEBIAN/preinst, postinst, prerm ──────────────────────────────────────
-    for script in ("preinst", "postinst", "prerm"):
+    # ── DEBIAN/preinst, postinst, prerm, postrm ──────────────────────────────────────
+    for script in ("preinst", "postinst", "prerm", "postrm"):
         dest = debian_dir / script
         shutil.copy2(SCRIPT_DIR / script, dest)
         dest.chmod(0o755)
@@ -186,7 +191,7 @@ def build_package(version: str, architecture: str) -> None:
     shutil.rmtree(pkg_root)
 
     print(f"\nPackage built: {output_deb}")
-    print(f"Install with:  sudo dpkg -i {output_deb.name}")
+    print(f"Install with:  sudo apt install ./{output_deb.name}")
 
 
 def main() -> None:

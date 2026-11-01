@@ -4,7 +4,7 @@ The Rust port's deployment: a complete, separate environment at `https://njord.m
 described in [docs/RUST_PORT_PLAN.md §10](../../docs/RUST_PORT_PLAN.md). The Kotlin environment
 (namespace `njord`, `openenc.com`) is deployed from the `master` branch's `k8s_deploy/` and
 `./gradlew :deploy`, which were removed here with the rest of the Kotlin code; nothing here
-modifies it, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
+modifies it, and `cargo xtask` refuses `NJORD_NAMESPACE=njord`.
 
 > **Not applied yet.** The environment is stood up once, in Phase 7 (§10.4), with the Rust image
 > for every workload.
@@ -19,11 +19,12 @@ modifies it, and `deploy.sh` refuses `NJORD_NAMESPACE=njord`.
 | `walk_tiles_cronjob.yaml` | `njord-walk-tiles` CronJob (03:00 PT) + script ConfigMap |
 | `vacuum_job.yaml` | One-off `VACUUM FULL features`, by hand only |
 | `db_setup.sql` | One-time role/database/PostGIS setup |
-| `deploy.sh` | Replaces the Gradle deploy tasks and `create_nfs.sh` for this environment |
 
 The manifests hold `${NJORD_NAMESPACE}`, `${NJORD_DB}`, `${NJORD_HOST}` and `${NJORD_IMAGE}`
-placeholders, so they are never applied directly: `deploy.sh render <chart|cron|vacuum>` shows the
-result and `deploy.sh --execute apply ...` applies it.
+placeholders, so they are never applied directly: `cargo xtask render <chart|cron|vacuum>` shows
+the result and `cargo xtask --execute apply ...` applies it. The tasks live in
+[`crates/xtask`](../../crates/xtask/src/main.rs) (the `xtask` alias is in `.cargo/config.toml`) and
+replace the Gradle deploy tasks and `create_nfs.sh` for this environment.
 
 ## Workloads
 
@@ -47,27 +48,27 @@ export NJORD_KUBE_CONTEXT=<your LKE context>   # --execute refuses any other cur
 export NJORD_VERSION=0.1.0                     # default: [workspace.package] version in Cargo.toml
 ```
 
-`NJORD_DB` replaces the Kotlin environment's `NJORD_DB_NAME`, which is never read. The script
+`NJORD_DB` replaces the Kotlin environment's `NJORD_DB_NAME`, which is never read. A task
 aborts on any unset or empty variable it needs, and on the literal string `undefined`. Admin
 signatures are per host (`externalBaseUrl()` is part of the HMAC), so `NJORD_ADMIN_KEY` may be the
 same as or different from the `njord` namespace's.
 
-## deploy.sh
+## cargo xtask
 
-Dry run is the default: each subcommand prints the commands (and the rendered manifests, secrets
+Dry run is the default: each task prints the commands (and the rendered manifests, secrets
 masked) it would run. Add `--execute` to act.
 
 ```shell
-deploy/mxmariner/deploy.sh help
-deploy/mxmariner/deploy.sh apply chart              # prints only
-deploy/mxmariner/deploy.sh --execute apply chart    # applies
+cargo xtask help
+cargo xtask apply chart              # prints only
+cargo xtask --execute apply chart    # applies
 ```
 
-| Subcommand | Replaces | Does |
+| Task | Replaces | Does |
 |---|---|---|
 | `secrets` | `./gradlew :secret` | `njord-pgbouncer-ini` (alias = `dbname` = `$NJORD_DB`, `host=njord-db-relay`), `njord-pgbouncer-userlist-txt`, `njord-db-upstream`, `admin-secret-json` (`pgConnectionInfo` `…/$NJORD_DB`), `njord-admin-basic` |
 | `nfs` | `create_nfs.sh` | Helm release `njord-nfs`, `storageClass.name=njord-nfs`, `persistence.size=$NJORD_NFS_SIZE` (≥ 20Gi) |
-| `build` | `./gradlew :makeImg` | `podman build -f Containerfile --ignorefile .containerignore --platform linux/amd64` |
+| `build` | `./gradlew :makeImg` | `podman build -f Containerfile --ignorefile .containerignore --platform linux/amd64`, then checks the image architecture |
 | `push` | `./gradlew :pubImg` | `podman push ghcr.io/manimaul/njord:$NJORD_VERSION` (needs `podman login ghcr.io`) |
 | `apply [chart\|cron\|vacuum\|all]` | `./gradlew :k8sApply` | render + `kubectl --namespace $NJORD_NAMESPACE apply -f -` |
 | `rollout` | `./gradlew :rolloutRestart` | `rollout restart` + `rollout status` of `njord-chart-dep` |
@@ -75,7 +76,7 @@ deploy/mxmariner/deploy.sh --execute apply chart    # applies
 | `seed` | — | one-off Job from `cronjob/njord-enc-download` |
 | `verify` | — | `kubectl get pods,pvc,certificate,ingress`, `curl /v1/about/version` |
 | `deploy` | `./gradlew :deploy` | `build`, `push`, `apply chart`, `sleep 5`, `rollout` |
-| `render <chart\|cron\|vacuum\|secrets>` | `./gradlew :showSecret` | print to stdout; secrets masked unless `SHOW_SECRETS=1` |
+| `render <chart\|cron\|vacuum\|secrets>` | `./gradlew :showSecret` | print to stdout; secrets masked unless `--show-secrets` |
 
 Refusals: `NJORD_NAMESPACE=njord`; a Rust image repository containing `njord-chart-server`;
 `NJORD_DB=s57server`; `NJORD_DB_USER=akmadmin`; `NJORD_HOST=*openenc.com`; an NFS size under 20Gi.
@@ -98,26 +99,26 @@ kubectl get namespace "$NJORD_NAMESPACE"
 kubectl -n "$NJORD_NAMESPACE" get secret ghreg
 
 # 2. NFS: Helm release njord-nfs, StorageClass njord-nfs
-deploy/mxmariner/deploy.sh nfs                       # review
-deploy/mxmariner/deploy.sh --execute nfs
-kubectl get storageclass njord-nfs                   # provisioner cluster.local/njord-nfs-nfs-server-provisioner
+cargo xtask nfs                      # review
+cargo xtask --execute nfs
+kubectl get storageclass njord-nfs   # provisioner cluster.local/njord-nfs-nfs-server-provisioner
 
 # 3 + 4. Pooler/relay/admin secrets and njord-admin-basic
-deploy/mxmariner/deploy.sh secrets                   # review (masked)
-deploy/mxmariner/deploy.sh --execute secrets
+cargo xtask secrets                  # review (masked)
+cargo xtask --execute secrets
 
 # 5. Image, then chart_server.yaml (relay on 6433, PVC on njord-nfs, Ingress for njord.mxmariner.com)
-podman login ghcr.io                                 # once
-deploy/mxmariner/deploy.sh deploy                    # review
-deploy/mxmariner/deploy.sh --execute deploy          # build, push, apply chart, rollout
+podman login ghcr.io                 # once
+cargo xtask deploy                   # review
+cargo xtask --execute deploy         # build, push, apply chart, rollout
 
 # 6. Certificate READY, then the version endpoint
 kubectl -n "$NJORD_NAMESPACE" wait --for=condition=Ready certificate/njord-cert --timeout=10m
-deploy/mxmariner/deploy.sh --execute verify
+cargo xtask --execute verify
 
 # 7. CronJobs, then one njord-enc-download Job by hand to start seeding
-deploy/mxmariner/deploy.sh --execute apply cron
-deploy/mxmariner/deploy.sh --execute seed
+cargo xtask --execute apply cron
+cargo xtask --execute seed
 ```
 
 ## Verify

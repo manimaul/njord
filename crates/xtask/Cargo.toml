@@ -1,0 +1,13 @@
+[package]
+name = "njord-xtask"
+description = "Container image and deploy tasks for the mxmariner environment: `cargo xtask <task>`"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+anyhow = "1.0.104"
+clap = { version = "4.6.7", features = ["derive"] }
+xshell = "0.2.7"

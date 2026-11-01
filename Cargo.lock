@@ -2174,7 +2174,7 @@ dependencies = [
 
 [[package]]
 name = "njord-db"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "gdal",
  "geo-types",
@@ -2194,7 +2194,7 @@ dependencies = [
 
 [[package]]
 name = "njord-enc-cron"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "base64 0.22.1",
  "futures-util",
@@ -2213,7 +2213,7 @@ dependencies = [
 
 [[package]]
 name = "njord-geo"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "geo",
  "geo-types",
@@ -2227,7 +2227,7 @@ dependencies = [
 
 [[package]]
 name = "njord-model"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "base64 0.22.1",
  "geojson",
@@ -2240,7 +2240,7 @@ dependencies = [
 
 [[package]]
 name = "njord-s57"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "gdal",
  "gdal-sys",
@@ -2254,7 +2254,7 @@ dependencies = [
 
 [[package]]
 name = "njord-server"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "axum",
  "base64 0.22.1",
@@ -2295,7 +2295,7 @@ dependencies = [
 
 [[package]]
 name = "njord-symbology"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "njord-model",
  "njord-testdata",
@@ -2304,7 +2304,7 @@ dependencies = [
 
 [[package]]
 name = "njord-testdata"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -2312,7 +2312,7 @@ dependencies = [
 
 [[package]]
 name = "njord-web"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "geojson",
  "js-sys",
@@ -2329,7 +2329,7 @@ dependencies = [
 
 [[package]]
 name = "njord-xtask"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -3532,6 +3532,7 @@ dependencies = [
  "log",
  "memchr",
  "percent-encoding",
+ "rustls",
  "serde",
  "serde_json",
  "sha2 0.10.9",
@@ -3541,6 +3542,7 @@ dependencies = [
  "tokio-stream",
  "tracing",
  "url",
+ "webpki-roots",
 ]
 
 [[package]]
@@ -4384,6 +4386,15 @@ name = "webpki-root-certs"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e49d0e65abc00c142e8f9428da991da9f1a250c39be97459901eb12b9b49f62a"
+dependencies = [
+ "rustls-pki-types",
+]
+
+[[package]]
+name = "webpki-roots"
+version = "1.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f5f280bbb2b287bc8e7de7e3852945a0ff50d1bbcb5ed42b6c7a568c546df171"
 dependencies = [
  "rustls-pki-types",
 ]

@@ -68,7 +68,7 @@ Logging uses `RUST_LOG` (default `info`), e.g. `RUST_LOG=njord_server=debug`.
 ## Running
 
 ```bash
-# 1. Start the dev PostGIS (PostgreSQL on 6432, pgbouncer on 5432; admin / mysecretpassword)
+# 1. Start the dev PostGIS (PostgreSQL on 6432; admin / mysecretpassword)
 podman machine start
 cd chart_server_db && podman-compose up -d && cd ..
 

@@ -8,7 +8,8 @@
 # The Job deletes itself (and its pod) 24h after it finishes via ttlSecondsAfterFinished, so
 # grab the logs before then. Delete it by hand sooner if you want to re-apply it.
 #
-# mxmariner copy (docs/RUST_PORT_PLAN.md §10.3): the pgbouncer [databases] alias is ${NJORD_DB}.
+# mxmariner copy (docs/RUST_PORT_PLAN.md §10.3): the database URL comes from the njord-db-url
+# secret (cargo xtask secrets), which is pgConnectionInfo.
 #
 # Why this exists: migration 3 (see server/.../db/DbMigrations.kt) rewrites every row of
 # `features` to swap chart_id for chart_name, leaving roughly a table's worth of dead tuples
@@ -52,37 +53,22 @@ spec:
             - |
               set -eu
 
-              # Connect straight to the database rather than through a pgbouncer sidecar: the
-              # pools are pool_mode=transaction with default_pool_size=10 and are shared with
-              # live traffic, and this statement would pin one server connection for its whole
-              # run. Host/port/db/user come from the same secret the sidecars mount, so there is
-              # one place to change them.
-              #
-              # That host/port now resolves to the njord-db-relay Service, not the database
-              # directly, so this job reaches Postgres over IPv6 like everything else. The
-              # relay is a dumb TCP forwarder rather than a pooler, so the "no pgbouncer"
-              # reasoning above still holds - nothing here pins a pooled server connection.
-              eval "$(sed -n 's/^${NJORD_DB} *= *//p' /etc/pgbouncer/pgbouncer.ini)"
-              PGPASSWORD=$(awk '/^"'"$user"'"/ {gsub(/"/, "", $2); print $2}' /etc/pgbouncer/userlist.txt)
-              export PGPASSWORD
+              # NJORD_DB_URL is the servers' pgConnectionInfo: the njord-db-relay Service, so
+              # this job reaches Postgres over IPv6 like everything else, with
+              # sslmode=require. The relay is a TCP forwarder, not a pooler, so this
+              # connection is the job's own and takes nothing from the servers' sqlx pools.
 
               # Separate -c flags on purpose: psql keeps one session across them, so
               # statement_timeout sticks, while folding them into a single string would make it
               # a multi-statement simple query - an implicit transaction, which VACUUM refuses
               # to run inside.
-              exec psql "postgresql://$user@$host:$port/$dbname?sslmode=require" \
+              exec psql "$NJORD_DB_URL" \
                 -v ON_ERROR_STOP=1 \
                 -c "SET statement_timeout = 0" \
                 -c "VACUUM (FULL, VERBOSE, ANALYZE) features;"
-          volumeMounts:
-            - name: pgbouncer-config
-              mountPath: /etc/pgbouncer
-              readOnly: true
-      volumes:
-        - name: pgbouncer-config
-          projected:
-            sources:
-              - secret:
-                  name: njord-pgbouncer-ini
-              - secret:
-                  name: njord-pgbouncer-userlist-txt
+          env:
+            - name: NJORD_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: njord-db-url
+                  key: url

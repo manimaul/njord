@@ -58,8 +58,8 @@ Optional, with defaults:
 
 #[derive(Subcommand)]
 enum Task {
-    /// Apply njord-pgbouncer-ini, njord-pgbouncer-userlist-txt, njord-db-upstream,
-    /// admin-secret-json and njord-admin-basic (./gradlew :secret).
+    /// Apply njord-db-upstream, njord-db-url, admin-secret-json and njord-admin-basic
+    /// (./gradlew :secret).
     Secrets,
     /// Install the Helm release njord-nfs with the StorageClass njord-nfs (create_nfs.sh).
     Nfs,
@@ -215,7 +215,7 @@ impl Xtask {
         self.kube_preflight(&secrets.namespace)?;
         self.kubectl_apply(
             &secrets.namespace,
-            "secrets (njord-pgbouncer-ini, njord-pgbouncer-userlist-txt, njord-db-upstream, admin-secret-json, njord-admin-basic)",
+            "secrets (njord-db-upstream, njord-db-url, admin-secret-json, njord-admin-basic)",
             &secrets.yaml(false)?,
             &secrets.yaml(true)?,
         )
@@ -413,7 +413,7 @@ fn optional(name: &str) -> String {
     std::env::var(name).unwrap_or_default()
 }
 
-/// A variable that is substituted into YAML or pgbouncer.ini unquoted, so it must be a plain token.
+/// A variable that is substituted into YAML or a connection URL unquoted, so it must be a plain token.
 fn token(
     name: &str,
     default: Option<&str>,
@@ -435,6 +435,18 @@ fn shaped(s: &str, first: fn(u8) -> bool, rest: fn(u8) -> bool) -> bool {
 
 fn lower_alnum(b: u8) -> bool {
     b.is_ascii_lowercase() || b.is_ascii_digit()
+}
+
+/// `s` with every byte outside RFC 3986 unreserved percent-encoded, for the password in a URL.
+fn percent_encode(s: &str) -> String {
+    s.bytes()
+        .map(|b| match b {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'.' | b'_' | b'~' => {
+                char::from(b).to_string()
+            }
+            _ => format!("%{b:02X}"),
+        })
+        .collect()
 }
 
 fn namespace() -> Result<String> {
@@ -657,7 +669,7 @@ impl Secrets {
             }
         };
         let (db_pass, admin_key, admin_pass) = (
-            masked(&self.db_pass),
+            masked(&percent_encode(&self.db_pass)),
             masked(&self.admin_key),
             masked(&self.admin_pass),
         );
@@ -670,41 +682,16 @@ impl Secrets {
             admin_user,
             ..
         } = self;
-        // pgbouncer userlist.txt quotes with "..." and escapes " by doubling it.
-        let userlist = |s: &str| s.replace('"', "\"\"");
         let json = |s: &str| s.replace('\\', "\\\\").replace('"', "\\\"");
-        let (userlist_user, userlist_pass) = (userlist(user), userlist(&db_pass));
         let (json_key, json_user, json_pass) =
             (json(&admin_key), json(admin_user), json(&admin_pass));
+        // The pods connect to this namespace's njord-db-relay Service (port 6432 -> host port
+        // 6433), not the database directly - see the DaemonSet in chart_server.yaml. sqlx pools
+        // in each process (MAX_DB_CONNECTIONS), so there is no pgbouncer sidecar. The path is
+        // NJORD_DB in both secrets, so they cannot disagree (§10.3).
+        let url = format!("postgresql://{user}:{db_pass}@njord-db-relay:6432/{db}?sslmode=require");
         let text = format!(
             r#"---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: njord-pgbouncer-ini
-  namespace: {ns}
-type: Opaque
-stringData:
-  pgbouncer.ini: |
-    [databases]
-    # Alias, dbname and the pgConnectionInfo path in admin-secret-json are all NJORD_DB, so they
-    # cannot disagree (§10.3). Points at this namespace's njord-db-relay Service (port 6432 ->
-    # host port 6433), not the database directly - see the DaemonSet in chart_server.yaml.
-    {db} = host=njord-db-relay port=6432 dbname={db} user={user}
-
-    [pgbouncer]
-    # Pod loopback only. The njord server shares this pod network namespace and connects over
-    # localhost, so this costs nothing, and it keeps auth_type=trust from being reachable at
-    # <podIP>:5432 by anything else in the cluster.
-    listen_addr = 127.0.0.1
-    listen_port = 5432
-    auth_type = trust
-    auth_file = /etc/pgbouncer/userlist.txt
-    pool_mode = transaction
-    max_client_conn = 100
-    default_pool_size = 10
-    server_reset_query =
----
 # Not a secret: the database endpoint for the njord-db-relay DaemonSet, from the same
 # NJORD_DB_HOST/NJORD_DB_PORT. Changing it does not restart the DaemonSet - cycle the relay pods.
 apiVersion: v1
@@ -716,15 +703,16 @@ data:
   DB_HOST: "{db_host}"
   DB_PORT: "{db_port}"
 ---
+# The same URL as pgConnectionInfo, for psql in features-vacuum-full.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: njord-pgbouncer-userlist-txt
+  name: njord-db-url
   namespace: {ns}
 type: Opaque
 stringData:
-  userlist.txt: |
-    "{userlist_user}" "{userlist_pass}"
+  url: |-
+    {url}
 ---
 # CHART_SERVER_OPTS for njord-chart-dep and njord-ingest-rs.
 apiVersion: v1
@@ -739,7 +727,7 @@ stringData:
     "adminKey": "{json_key}",
     "adminUser": "{json_user}",
     "adminPass": "{json_pass}",
-    "pgConnectionInfo": "postgresql://{user}@localhost:5432/{db}"
+    "pgConnectionInfo": "{url}"
     }}
 ---
 # Basic credentials for njord-enc-download's orphan deletes (k8s_create_reg_sec.sh
@@ -824,10 +812,13 @@ mod tests {
             admin_pass: "secret".into(),
         };
         let real = secrets.yaml(false).unwrap();
-        assert!(real.contains(r#""njord" "p""w""#));
+        let url = "postgresql://njord:p%22w@njord-db-relay:6432/njord?sslmode=require";
+        assert!(real.contains(&format!(r#""pgConnectionInfo": "{url}""#)));
+        assert!(real.contains(&format!("  url: |-\n    {url}\n")));
         assert!(real.contains(r#""adminKey": "k\\","#));
         let masked = secrets.yaml(true).unwrap();
-        assert!(!masked.contains("secret\n") && !masked.contains("p\"\"w"));
+        assert!(!masked.contains("secret\n") && !masked.contains("p%22w"));
+        assert!(masked.contains("postgresql://njord:<redacted>@njord-db-relay"));
         assert!(masked.contains(r#""adminPass": "<redacted>""#));
     }
 

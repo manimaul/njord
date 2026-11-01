@@ -1,7 +1,7 @@
 //! S-57 `CATBRG` (category of bridge) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/BRIDGE/CATBRG>
+    /// <https://njord.mxmariner.com/control/symbols/BRIDGE/CATBRG>
     /// List
     pub enum Catbrg = "CATBRG" {
         FIXED_BRIDGE = 1,

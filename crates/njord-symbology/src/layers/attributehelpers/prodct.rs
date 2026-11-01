@@ -1,7 +1,7 @@
 //! S-57 `PRODCT` (product) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/PIPARE/PRODCT>
+    /// <https://njord.mxmariner.com/control/symbols/PIPARE/PRODCT>
     /// List
     pub enum Prodct = "PRODCT" {
         OIL = 1,

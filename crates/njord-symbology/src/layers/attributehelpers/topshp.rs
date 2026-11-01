@@ -1,7 +1,7 @@
 //! S-57 `TOPSHP` (topmark/daymark shape) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/DAYMAR/TOPSHP>
+    /// <https://njord.mxmariner.com/control/symbols/DAYMAR/TOPSHP>
     /// Attribute: Topmark/daymark shape
     /// Acronym: TOPSHP
     /// Code: 171

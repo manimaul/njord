@@ -3,7 +3,7 @@
 //! Also builds `==` / `!=` style filters on it ([`Catmor::filter_eq`], [`Catmor::filter_not_eq`]).
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/MORFAC/CATMOR>
+    /// <https://njord.mxmariner.com/control/symbols/MORFAC/CATMOR>
     /// Enum
     pub enum Catmor = "CATMOR" {
         DOLPHIN = 1,

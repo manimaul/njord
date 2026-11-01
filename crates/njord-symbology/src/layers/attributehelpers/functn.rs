@@ -1,7 +1,7 @@
 //! S-57 `FUNCTN` (function) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/LNDMRK/FUNCTN>
+    /// <https://njord.mxmariner.com/control/symbols/LNDMRK/FUNCTN>
     /// Attribute: Function
     /// Acronym: FUNCTN
     /// Code: 94

@@ -19,7 +19,7 @@ None of this is urgent; the Kotlin server works. The port is worth doing because
 1. Re-implement the Njord backend in Rust and the web UI in Leptos, as **two separately built and deployed artifacts** that only meet at the HTTP API.
 2. Replace the hand-written C interop modules (`libgdal`, `libpq`, `libzip`, `libsqlite`, `libexpat`, in-house `geojson`, in-house MVT encoder) with maintained crates wherever a pure-Rust crate exists.
 3. Preserve every externally observable contract: the HTTP/WebSocket API, the PostGIS schema, the MapLibre style JSON, the mobile `.mbtiles` archive, the `enc_cron` ↔ server protocol, and the on-disk layout (`save/`, `ingest/`, `regions/`, tile cache, lock and status files) that Kubernetes and the deb package rely on.
-4. Deploy the Rust stack as a **separate environment**: the `mxmariner` Kubernetes namespace, `https://njord.mxmariner.com`, and its own `njord` database on the existing managed Postgres cluster. The `njord` namespace / `openenc.com` deployment is not modified, scaled or re-pointed until it is deliberately retired (§10). Old and new run side by side as two complete stacks and are compared through the HTTP conformance suite; nothing is shared at runtime.
+4. Deploy the Rust stack as a **separate environment**: the `mxmariner` Kubernetes namespace, `https://njord.mxmariner.com`, and its own `njord` database on the existing managed Postgres cluster. The `njord` namespace / `njord.mxmariner.com` deployment is not modified, scaled or re-pointed until it is deliberately retired (§10). Old and new run side by side as two complete stacks and are compared through the HTTP conformance suite; nothing is shared at runtime.
 
 **Non-goals:** changing the S-52-ish symbology, the schema, or the mobile format during the port. Touching the `njord` namespace before §10.6 is also out of scope: the Kotlin deploy tooling keeps deploying Kotlin there. Any of those should be a separate change after the Rust server is at parity, when the conformance suite described below can catch regressions.
 
@@ -206,11 +206,11 @@ Three modes, selected on the `pytest` command line:
 |---|---|---|
 | **record** | `pytest conformance --base-url=$URL --record` | Against the Kotlin server; rewrites `golden/`. |
 | **verify** (default) | `pytest conformance --base-url=$URL` | Against either server; fails on any difference from `golden/`. |
-| **diff** | `pytest conformance --base-url=$A --compare-url=$B` | Two live servers (local Kotlin vs local Rust, or §10.5 `openenc.com` vs `njord.mxmariner.com`); fetches both, masks both, asserts equal. No golden files involved, so catalog drift between environments shows up as a per-route failure rather than a stale fixture. |
+| **diff** | `pytest conformance --base-url=$A --compare-url=$B` | Two live servers (local Kotlin vs local Rust, or §10.5 `njord.mxmariner.com` vs `njord.mxmariner.com`); fetches both, masks both, asserts equal. No golden files involved, so catalog drift between environments shows up as a per-route failure rather than a stale fixture. |
 
 Comparison rules: JSON bodies are compared after masking with keys sorted; tiles are compared **decoded**, after the canonical sort, because two correct MVT encoders may legally order fields and layers differently. The raw-byte sha256 is recorded and reported, but byte equality is informational, not a gate (the byte-exact MVT contract lives in P-TE-2 / P-TE-5 unit fixtures). The suite reuses `testdata/` only to read the expected tile list for P-API-3 and the style JSON for P-API-2; it never imports Kotlin or Rust code.
 
-Run against Kotlin first to record, then against Rust to verify, then both live in diff mode. In production the two base URLs are `https://openenc.com` and `https://njord.mxmariner.com` (§10.5); both environments ingest the same NOAA catalog, so once the new database has caught up the bodies and decoded tiles should match apart from the masked volatile fields and the host name.
+Run against Kotlin first to record, then against Rust to verify, then both live in diff mode. In production the two base URLs are `https://njord.mxmariner.com` and `https://njord.mxmariner.com` (§10.5); both environments ingest the same NOAA catalog, so once the new database has caught up the bodies and decoded tiles should match apart from the masked volatile fields and the host name.
 
 | ID | Routes | What it pins | Audit ref |
 |---|---|---|---|
@@ -272,7 +272,7 @@ The lock file, status file and worker loops are the inter-process protocol betwe
 Each phase ends when its conformance/fixture tests pass in Rust. No phase starts porting code whose fixtures don't exist yet.
 
 ### Phase 0 — Characterization (Kotlin repo)
-- [x] **Phase 0 complete** (2026-10-30). One follow-up remains: re-run the conformance suite against `https://openenc.com` after its next deploy (see the checklist).
+- [x] **Phase 0 complete** (2026-10-30). One follow-up remains: re-run the conformance suite against `https://njord.mxmariner.com` after its next deploy (see the checklist).
 Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - Write the §5 tests in Kotlin; make them emit `testdata/`.
 - Regenerate and validate the fixtures on every change (`./gradlew allTests` against the dev PostGIS, then regenerate and diff `testdata/`). No hosted CI: these run locally (checklist §4).
@@ -415,10 +415,10 @@ Tracked in [RUST_PORT_PHASE0_CHECKLIST.md](RUST_PORT_PHASE0_CHECKLIST.md).
 - [ ] **Phase 7 complete**
 - [x] Containerfile → multi-stage `rust:` builder, runtime with `libgdal` only (`Containerfile.rust`, prepared in Phase 3). Update `k8s_deploy`, `debpkg`, `RELEASE_NOTES.md`.
   - Done 2026-10-31. `Containerfile.rust` became the root `Containerfile` and `deploy/mxmariner/containerignore` the root `.containerignore`, so a plain `podman build .` uses the right context whitelist; `deploy.sh build`, `deploy/mxmariner/README.md`, `README.md` and `RELEASE_NOTES.md` point at them. The runtime stage installs `ca-certificates`, `libgdal36` and `zlib1g` only. `k8s_deploy/` is gone (its replacement is `deploy/mxmariner/`) and `debpkg/` was rewired with the Kotlin removal below. Checked with a `linux/arm64` build on the dev Mac; the `linux/amd64` image is built when `mxmariner` is stood up.
-- [ ] Stand up the `mxmariner` environment (§10.4) from `deploy/mxmariner/`, with the Rust image for every workload (`njord-chart-dep`, `njord-ingest-rs`, `njord-enc-download`, `njord-walk-tiles`), and seed it from NOAA. Run the conformance suite in diff mode against `https://openenc.com` and `https://njord.mxmariner.com` (§10.5) until it is green apart from the expected catalog differences. This is the first deployment of any Rust code.
-- [ ] Cutover per §10.6: switch the `openenc.com` consumers to `njord.mxmariner.com`, move regatta's DB relay, turn `openenc.com` into a redirect, retire the `njord` namespace. This is the first point at which anything in `njord` changes.
+- [x] Stand up the `mxmariner` environment (§10.4) from `deploy/mxmariner/`, with the Rust image for every workload (`njord-chart-dep`, `njord-ingest-rs`, `njord-enc-download`, `njord-walk-tiles`), and seed it from NOAA. Run the conformance suite in diff mode against `https://njord.mxmariner.com` and `https://njord.mxmariner.com` (§10.5) until it is green apart from the expected catalog differences. This is the first deployment of any Rust code.
+- [ ] Cutover per §10.6: switch the `njord.mxmariner.com` consumers to `njord.mxmariner.com`, move regatta's DB relay, turn `njord.mxmariner.com` into a redirect, retire the `njord` namespace. This is the first point at which anything in `njord` changes.
 - [x] Delete Kotlin modules once the conformance suite has run green against Rust alone for a release cycle. Keep `testdata/` and `conformance/`.
-- Kotlin removal done 2026-10-31, **ahead of the release-cycle condition** (decided 2026-10-31): the Rust stack is not deployed yet. On this branch only; `master` keeps the Kotlin code and remains the source of the `openenc.com` (`njord` namespace) deployment, and of any Kotlin hot-fix, until the cutover.
+- Kotlin removal done 2026-10-31, **ahead of the release-cycle condition** (decided 2026-10-31): the Rust stack is not deployed yet. On this branch only; `master` keeps the Kotlin code and remains the source of the `njord.mxmariner.com` (`njord` namespace) deployment, and of any Kotlin hot-fix, until the cutover.
   - **Deleted:** every Gradle module (`server`, `shared`, `shared_fe`, `web`, `libgdal`, `libpq`, `libzip`, `libsqlite`, `libexpat`, `geojson`, `enc_cron`, `test_fixtures`), `buildSrc`, the Gradle wrapper and build files, `kotlin-js-store`, `.java-version`, the Kotlin `Containerfile` / `.containerignore` / `container/` and `k8s_deploy/`. Also `testdata/tools/check_routes_fixture.py` and `test_results.py`, which only served the Kotlin tests.
   - **Moved:** `server/src/nativeMain/resources` → `crates/njord-server/resources`, `enc_cron/src/nativeMain/resources` → `crates/njord-enc-cron/resources`. Tests that read `libgdal/src/nativeTest/resources/ne_110_extract` use the identical copy in `testdata/fixtures/`. `README_RUST.md` became `README.md` (`CLAUDE.md` links to it); `enc_cron/README.md` became `crates/njord-enc-cron/README.md`.
   - **Fixtures are frozen.** With the generators gone there is no regenerate mode; `testdata/README.md` says how a deliberate behaviour change edits them. `cargo test --workspace` and clippy green against the dev PostGIS after the move.
@@ -444,11 +444,11 @@ The current UI is ~4.5k lines of Compose-HTML across `web` and `shared_fe`: a ro
 | GDAL field mapping differences between the Kotlin interop and the `gdal` crate (e.g. string lists, booleans, Integer64, charset recoding) | P-IN-2 pins every feature in the fixture cell; run it on several real NOAA cells (one per `DSSI_NALL` charset) before trusting it. |
 | `geo` boolean ops produce slightly different vertices than GEOS for `intersection`/`difference` | Compare P-TE-5 tiles by decoded geometry with a tolerance in tile pixels, not byte equality. Tile pixel rounding absorbs most of it. If not, use `geos` for the include-mask ops only. |
 | MVT tag/value ordering differs → not byte-identical | Compare decoded tiles. Byte identity is not a contract; MapLibre doesn't care. |
-| Admin signatures minted by one implementation must verify on the other | Signatures embed `externalBaseUrl()`, so an `openenc.com` signature never verifies at `njord.mxmariner.com` anyway; cross-compatibility matters for deb in-place upgrades and for the local diff runs, where one implementation's signature drives the other. P-SEC-1 cross-vectors; same base64/URL-encoding choices; `jiff` RFC 3339 output must match `kotlinx.datetime`'s `Instant.toString()` (nanosecond trimming!). |
-| Two implementations writing one schema (the local diff runs: Kotlin ingest, Rust server; deb in-place upgrades) | Freeze `DbMigrations` during the port. Any schema change goes into both or waits. The `njord` namespace never runs Rust code, so a mistake here cannot reach `openenc.com`. |
+| Admin signatures minted by one implementation must verify on the other | Signatures embed `externalBaseUrl()`, so an `njord.mxmariner.com` signature never verifies at `njord.mxmariner.com` anyway; cross-compatibility matters for deb in-place upgrades and for the local diff runs, where one implementation's signature drives the other. P-SEC-1 cross-vectors; same base64/URL-encoding choices; `jiff` RFC 3339 output must match `kotlinx.datetime`'s `Instant.toString()` (nanosecond trimming!). |
+| Two implementations writing one schema (the local diff runs: Kotlin ingest, Rust server; deb in-place upgrades) | Freeze `DbMigrations` during the port. Any schema change goes into both or waits. The `njord` namespace never runs Rust code, so a mistake here cannot reach `njord.mxmariner.com`. |
 | Cluster-scoped resources leak between the two environments (image tag pulled with `Always`, the `nfs` StorageClass, the relay's host port) | §10.2: distinct image repository, distinct NFS release and StorageClass, relay on host port 6433. |
 | Both environments run on the same three 2 vCPU / 4 GiB nodes | Right-size the Rust pods from measurement (§10.2 item 5), `minReplicas: 1` until cutover, check `kubectl describe nodes` before applying; add a node rather than squeeze the old environment. |
-| Shipped mobile builds hard-code `https://openenc.com/v1/regions` and `/v1/style` | `openenc.com` must keep answering (serve, then 301) for as long as those builds are in the field (§10.6). |
+| Shipped mobile builds hard-code `https://njord.mxmariner.com/v1/regions` and `/v1/style` | `njord.mxmariner.com` must keep answering (serve, then 301) for as long as those builds are in the field (§10.6). |
 | Fixtures freeze bugs as behavior | Resolved 2026-10-30 (TEST_COVERAGE_AUDIT.md §3.1): D1 fixed in Kotlin; D2–D9 accepted in Kotlin and fixed in the port. Every fixture names the decisions it depends on in its header; a case where Kotlin and the port legitimately differ carries `port.expected`, and conformance cases that only pass on the port are tagged `port_only` and skipped against a Kotlin server. |
 | Kotlin's `Dispatchers.IO` + GDAL vs tokio | All GDAL work in `spawn_blocking`; GDAL datasets are `!Send` in the `gdal` crate, so open/iterate/close within one blocking task per chart. |
 | Floating point formatting (`format()` in `LightDescription`, bearings, clearances, `Double.toString`) | Golden fixtures in P-SY-4/5; use `ryu`-based formatting deliberately matched to Kotlin's output. |
@@ -475,7 +475,7 @@ The Rust stack is deployed as a complete, separate environment. Nothing in the `
 | | Today (Kotlin, untouched) | New (Rust) |
 |---|---|---|
 | Namespace | `njord` | `mxmariner` (exists; already hosts `mxmariner-web-dep` and `regatta-deployment`) |
-| Host | `openenc.com`, `www.openenc.com` | `njord.mxmariner.com`, no `www`. Already resolves to the ingress load balancer `172.232.176.134`, same as `regatta.mxmariner.com`. |
+| Host | `njord.mxmariner.com`, `www.njord.mxmariner.com` | `njord.mxmariner.com`, no `www`. Already resolves to the ingress load balancer `172.232.176.134`, same as `regatta.mxmariner.com`. |
 | Certificate → TLS secret | `oe-cert` → `njord-cert` | `njord-cert` → `njord-cert`, issuer `letsencrypt-prod` (ClusterIssuer, shared by every namespace, fine) |
 | Ingress | `njord-ingress`, class `haproxy` | `njord-ingress`, class `haproxy`. Routing is by host, so no overlap with `mxmariner.com`, `www.mxmariner.com`, `regatta.mxmariner.com`. |
 | Database cluster | Akamai managed Postgres (host/port in `njord-db-upstream`) | the same cluster |
@@ -514,7 +514,7 @@ Namespaced kinds (Deployment, ReplicaSet, DaemonSet, Service, PVC, ConfigMap, Se
 
 6. **Nightly jobs share upstreams and timing.** `njord-enc-download` (00:00 PT) and `njord-walk-tiles` (01:00 PT) in both namespaces would fetch the same ~100 MB NOAA catalog and up to `maxCellsPerRun` cells in the same minute. Schedule the new ones at 02:00 / 03:00 PT. They write only to their own PVC and call only their own `njord-chart-svc`: `http://njord-chart-svc/v1/chart_editions` resolves inside the namespace, so that value in `njord-enc-cron-config` and in the walk-tiles args stays as it is.
 
-7. **Ingress and certificates.** haproxy (`haproxy-controller` namespace) and cert-manager are cluster-wide and already serve five namespaces by host name. `njord.mxmariner.com` already points at the load balancer, so HTTP-01 succeeds as soon as the Ingress exists. The `openenc.com` rules are not touched.
+7. **Ingress and certificates.** haproxy (`haproxy-controller` namespace) and cert-manager are cluster-wide and already serve five namespaces by host name. `njord.mxmariner.com` already points at the load balancer, so HTTP-01 succeeds as soon as the Ingress exists. The `njord.mxmariner.com` rules are not touched.
 
 8. **`ghreg` pull secret** already exists in `mxmariner` (regatta uses it). Nothing to create; `k8s_create_reg_sec.sh k8s_login` needs a namespace parameter if the token is ever rotated for both.
 
@@ -534,12 +534,12 @@ Everything that names the old environment is hard-coded. The Rust repo's `k8s_de
 | `chart_server.yaml` PVC | `storageClassName: nfs` | `njord-nfs` |
 | `create_nfs.sh` | release `nfs-server`, `storageClass.name=nfs`, 10Gi | release `njord-nfs`, `storageClass.name=njord-nfs`, ≥ 20Gi |
 | `chart_server.yaml` DaemonSet + Service | `TCP4-LISTEN:6432`, `targetPort: 6432`, probe `:1920` | `TCP4-LISTEN:6433`, `targetPort: 6433`, probe `:1921` |
-| `chart_server.yaml` Certificate / Ingress | `oe-cert`, `openenc.com`, `www.openenc.com` | `njord-cert`, `njord.mxmariner.com` |
+| `chart_server.yaml` Certificate / Ingress | `oe-cert`, `njord.mxmariner.com`, `www.njord.mxmariner.com` | `njord-cert`, `njord.mxmariner.com` |
 | `chart_server.yaml` `njord-config` | `pgConnectionInfo: …/s57server`, Kotlin-sized resources | `…/njord`, resources per §10.2 item 5 |
 | `vacuum_job.yaml` | `sed -n 's/^s57server *= *//p'` | `s/^njord *= *//p` |
 | `noaa_enc_daily_cron.yaml`, `walk_tiles_cronjob.yaml` | `0 0 * * *`, `0 1 * * *` | `0 2 * * *`, `0 3 * * *` |
 | `container/application.json`, `server/.../application.json`, `chart_server_db/*`, Kotlin test fixtures | `s57server` | Leave the Kotlin dev/test name alone. The Rust dev compose, `application.json` and tests use `njord` from day one. |
-| `k8s_deploy/k8s_deployments.md`, `docs/DESIGN.md`, `README.md` | `njord` namespace, `openenc.com`, `NJORD_DB_NAME` | Rewrite for the new environment, with a "legacy `njord` namespace" section kept until §10.6 completes. |
+| `k8s_deploy/k8s_deployments.md`, `docs/DESIGN.md`, `README.md` | `njord` namespace, `njord.mxmariner.com`, `NJORD_DB_NAME` | Rewrite for the new environment, with a "legacy `njord` namespace" section kept until §10.6 completes. |
 
 ### 10.4 Bootstrap order
 
@@ -564,16 +564,16 @@ This runs in **Phase 7**, once Phases 3–6 have passed locally (decided 2026-10
 
 ### 10.5 Comparing the two environments
 
-The conformance suite (§5.5) runs in diff mode against the two production hosts: `pytest conformance --base-url=https://openenc.com --compare-url=https://njord.mxmariner.com`. Expected differences, all handled by the masking list or by skipping the route in diff mode: `about/version`, host names in `tile_json` and style URLs, `regions` manifests (`createdAt`, archive names), and cells one environment has ingested and the other has not yet. Admin signatures are per host by design (`externalBaseUrl()` is part of the HMAC input), so each environment is driven through its own `/v1/admin`.
+The conformance suite (§5.5) runs in diff mode against the two production hosts: `pytest conformance --base-url=https://njord.mxmariner.com --compare-url=https://njord.mxmariner.com`. Expected differences, all handled by the masking list or by skipping the route in diff mode: `about/version`, host names in `tile_json` and style URLs, `regions` manifests (`createdAt`, archive names), and cells one environment has ingested and the other has not yet. Admin signatures are per host by design (`externalBaseUrl()` is part of the HMAC input), so each environment is driven through its own `/v1/admin`.
 
-### 10.6 Cutover and retirement of `openenc.com`
+### 10.6 Cutover and retirement of `njord.mxmariner.com`
 
-Consumers outside this repo that hard-code `https://openenc.com`, all in the `mxmariner` repository:
+Consumers outside this repo that hard-code `https://njord.mxmariner.com`, all in the `mxmariner` repository:
 
 | Consumer | Where | Impact |
 |---|---|---|
 | mxmariner.com `/chart` page | `frontend/webApp/.../ChartPage.kt` `OPENENC_BASE_URL` | Redeploy `mxmariner-web-dep` |
-| MX Mariner mobile styles and regions | `frontend/map/.../StyleAssembler.kt` `ONLINE_STYLE_BASE`, `frontend/data/.../RegionsRepository.kt` `REGIONS_API_URL` | **Shipped app versions keep calling `openenc.com/v1/regions` and `/v1/style`.** `openenc.com` must keep answering, by serving and later by 301, for as long as those builds are in the field. |
+| MX Mariner mobile styles and regions | `frontend/map/.../StyleAssembler.kt` `ONLINE_STYLE_BASE`, `frontend/data/.../RegionsRepository.kt` `REGIONS_API_URL` | **Shipped app versions keep calling `njord.mxmariner.com/v1/regions` and `/v1/style`.** `njord.mxmariner.com` must keep answering, by serving and later by 301, for as long as those builds are in the field. |
 | Android asset refresh tasks | `frontend/androidApp/build.gradle.kts` (`refreshStyles`, `refreshWorldBasemap`, S-57 dictionaries) | Build-time only |
 | Regatta chart view | `regatta/web/.../ChartController.js.kt` | Redeploy regatta |
 | Regatta DB relay | `regatta-pgbouncer-ini` → `njord-db-relay.njord.svc.cluster.local` | Must move to the `mxmariner` relay **before** the `njord` namespace goes away |
@@ -582,8 +582,8 @@ Order:
 1. Rust environment at parity: Phase 4/5 exits green, conformance diff clean, region archives published.
 2. Switch the consumers above to `https://njord.mxmariner.com`; ship the mobile release.
 3. Point regatta's `pgbouncer.ini` at the `mxmariner` relay.
-4. In `njord`: suspend both CronJobs, scale `njord-ingest-rs` to 0, then replace `njord-chart-dep` behind `njord-ingress` with a redirect-only backend (301 `openenc.com/*` → `njord.mxmariner.com/*`), keeping `oe-cert` so the redirect is served over TLS. This is the first change to the `njord` namespace in the whole plan.
-5. After the mobile fleet has moved (watch `openenc.com` request counts), `pg_dump` `s57server` and keep the last region archives, then delete the `njord` namespace, the `nfs-server` Helm release and its `nfs` StorageClass, and drop the `s57server` database.
+4. In `njord`: suspend both CronJobs, scale `njord-ingest-rs` to 0, then replace `njord-chart-dep` behind `njord-ingress` with a redirect-only backend (301 `njord.mxmariner.com/*` → `njord.mxmariner.com/*`), keeping `oe-cert` so the redirect is served over TLS. This is the first change to the `njord` namespace in the whole plan.
+5. After the mobile fleet has moved (watch `njord.mxmariner.com` request counts), `pg_dump` `s57server` and keep the last region archives, then delete the `njord` namespace, the `nfs-server` Helm release and its `nfs` StorageClass, and drop the `s57server` database.
 
 ## 11. Follow-ups after the port
 

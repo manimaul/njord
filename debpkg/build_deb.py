@@ -22,7 +22,7 @@ from pathlib import Path
 
 
 PACKAGE_NAME = "njord"
-MAINTAINER = "Njord Maintainers <noreply@openenc.com>"
+MAINTAINER = "Njord Maintainers <info@mxmariner.com>"
 DESCRIPTION = "Njord Marine ENC Chart Server (S-57 → MVT tiles)"
 
 def _host_architecture() -> str:

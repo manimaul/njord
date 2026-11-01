@@ -1,7 +1,7 @@
 //! S-57 `CATGAT` (category of gate) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/GATCON/CATGAT>
+    /// <https://njord.mxmariner.com/control/symbols/GATCON/CATGAT>
     /// Enum
     pub enum Catgat = "CATGAT" {
         FLOOD_BARRAGE_GATE = 2,

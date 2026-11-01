@@ -1,4 +1,4 @@
-//! <https://openenc.com/control/symbols/DISMAR>
+//! <https://njord.mxmariner.com/control/symbols/DISMAR>
 //!
 //! Geometry Primitives: Point
 //!

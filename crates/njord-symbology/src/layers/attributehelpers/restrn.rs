@@ -1,7 +1,7 @@
 //! S-57 `RESTRN` (restriction) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
-    /// <https://openenc.com/control/symbols/RESARE/RESTRN>
+    /// <https://njord.mxmariner.com/control/symbols/RESARE/RESTRN>
     /// List
     pub enum Restrn = "RESTRN" {
         ANCHORING_PROHIBITED = 1,

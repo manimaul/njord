@@ -1,7 +1,7 @@
 //! S-57 `TRAFIC` (traffic flow) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/DWRTPT/TRAFIC>
+    /// <https://njord.mxmariner.com/control/symbols/DWRTPT/TRAFIC>
     /// Attribute: Traffic flow
     /// Acronym: TRAFIC
     /// Code: 172

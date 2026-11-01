@@ -3,7 +3,7 @@
 ![Logo](./crates/njord-web/assets/njord.jpg "Logo")
 
 Njord is a Marine Electronic Navigational Chart (ENC) server that ingests S-57 hydrographic chart files and serves them
-as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display specifications. Live demo: https://openenc.com
+as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display specifications. Live demo: https://njord.mxmariner.com
 
 ![Screenshot](./screenshot.png "Screenshot")
 
@@ -165,5 +165,5 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python 
 ```
 
 The suite seeds the server through the upload API and waits for the region exports, so the first run takes a few
-minutes. `--compare-url` diffs two live servers (e.g. `https://openenc.com` against `https://njord.mxmariner.com`) instead of
+minutes. `--compare-url` diffs two live servers (e.g. `https://njord.mxmariner.com` against `https://njord.mxmariner.com`) instead of
 using the goldens.

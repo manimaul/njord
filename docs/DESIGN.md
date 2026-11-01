@@ -6,7 +6,7 @@
 
 Njord is a Marine Electronic Navigational Chart (ENC) server. It ingests S-57 hydrographic chart files and serves them as MVT (Mapbox Vector Tiles) for display in a browser via MapLibre GL. It does **not** strictly follow IHO S-52 display specifications; styling is custom per S-57 object class.
 
-Live demo: https://openenc.com
+Live demo: https://njord.mxmariner.com
 
 ---
 
@@ -325,7 +325,7 @@ The server runs as a Deployment in the `njord` namespace with a pgbouncer sideca
 
 **Storage**: NFS PVC (`/mnt/njord`) shared across replicas for chart upload/temp data
 
-**Ingress**: HAProxy with cert-manager TLS termination for `openenc.com`
+**Ingress**: HAProxy with cert-manager TLS termination for `njord.mxmariner.com`
 
 **Secrets**:
 - `admin-secret-json` — `CHART_SERVER_OPTS` JSON with credentials

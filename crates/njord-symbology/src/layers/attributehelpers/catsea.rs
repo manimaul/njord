@@ -1,7 +1,7 @@
 //! S-57 `CATSEA` (category of sea area) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/SEAARE/CATSEA>
+    /// <https://njord.mxmariner.com/control/symbols/SEAARE/CATSEA>
     /// Enum
     pub enum Catsea = "CATSEA" {
         GAT = 2,

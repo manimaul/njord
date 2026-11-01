@@ -63,7 +63,7 @@ fetch via `transformRequest`, never as a query param:
 
 ```
 GET /v1/tile/10/164/356.mvt HTTP/1.1
-Host: openenc.com
+Host: njord.mxmariner.com
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOi...<signature>
 ```
 

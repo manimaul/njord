@@ -1,7 +1,7 @@
 //! S-57 `CATWRK` (category of wreck) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
-    /// <https://openenc.com/control/symbols/WRECKS/CATWRK>
+    /// <https://njord.mxmariner.com/control/symbols/WRECKS/CATWRK>
     /// Enum
     pub enum Catwrk = "CATWRK" {
         NON_DANGEROUS_WRECK = 1,

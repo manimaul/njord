@@ -1,11 +1,11 @@
-//! `ControlPanel.js.kt` and its tabs: `ChartCatalog`, `ChartInstaller`, `Symbols`, `Sprites`,
-//! `Colors`.
+//! The control panel (`/control/<tab>`) and its tabs: the chart catalog, the chart installer,
+//! and the S-57 symbol, sprite and colour references.
 
 use leptos::html;
 use leptos::prelude::*;
 use njord_model::{ChartCatalog, S57Object, WsMsg};
 
-use crate::kotlin::ws_msg_to_string;
+use crate::display::ws_msg_to_string;
 use crate::state::Async;
 use crate::store::{CatalogState, InstallState, store};
 use crate::ui::components::{
@@ -205,7 +205,7 @@ fn ChartCatalogTab() -> impl IntoView {
             )
         })
     };
-    // Kotlin rendered the confirmation modal only once the catalog had loaded.
+    // The confirmation modal is rendered only once the catalog has loaded.
     view! {
         <Show when=move || s.catalog.with(|c| c.catalog.value().is_some())>
             <div>

@@ -1,4 +1,5 @@
-//! Inland ENC object LKBSPT: registered (InlandLayers), but draws nothing yet (`Lkbspt.kt`).
+//! Inland ENC object LKBSPT: registered in
+//! [`inland_layers`](crate::layer_factory::inland_layers), but draws nothing yet.
 
 use crate::layers::prelude::*;
 

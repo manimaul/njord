@@ -1,4 +1,4 @@
-//! Natural Earth base layer: rivers and lake centerlines (`base/RiversLakeCenterlines.kt`): `Canals` on the `rivers_lake_centerlines` source layer.
+//! Natural Earth base layer: rivers and lake centerlines: `Canals` on the `rivers_lake_centerlines` source layer.
 
 use crate::layers::canals::Canals;
 use crate::layers::prelude::*;

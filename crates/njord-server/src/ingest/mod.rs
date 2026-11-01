@@ -1,4 +1,4 @@
-//! The write path's background work (RUST_PORT_PLAN.md Phase 4): claiming uploaded zips
+//! The write path's background work: claiming uploaded zips
 //! ([`worker`]), reading S-57 cells and Natural Earth shapefiles into PostGIS ([`chart`],
 //! [`natural_earth`]), and the status file the WebSocket route streams ([`status`]).
 

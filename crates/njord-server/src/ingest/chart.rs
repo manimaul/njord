@@ -1,17 +1,18 @@
-//! S-57 cell ingest (`ingest/ChartIngest.kt`): unzip the claimed upload, read every `.000` with
-//! GDAL (`njord-s57`), install each cell as a chart row plus one feature transaction, report
-//! progress through the status file, clear the tile cache, release the lock and wake the region
-//! export worker.
+//! S-57 cell ingest: unzip the claimed upload and install every `.000` cell in it.
 //!
-//! Decisions applied here: D3 (an unsafe zip entry aborts the extraction and the upload is
-//! reported as a fatal `Error`), D5 (a chart's features are one transaction, never retried, and
-//! counted only once committed; an overwrite is one transaction in `njord-db`), D6 (an ingest
-//! stops, rolling its chart back, when the lock stops naming this instance), D7 (in
-//! `njord-s57`'s `chart_insert`).
+//! Each cell is read with GDAL (`njord-s57`) and installed as a chart row plus one feature
+//! transaction; progress goes through the status file. Afterwards the tile cache is cleared, the
+//! lock released and the region export worker woken.
+//!
+//! - An unsafe zip entry aborts the extraction, and the upload is reported as a fatal `Error`.
+//! - A chart's features are one transaction, never retried, and counted only once committed; an
+//!   overwrite of an existing chart is one transaction in `njord-db`.
+//! - An ingest stops, rolling its chart back, when the lock stops naming this instance (the
+//!   operator's abort, `DELETE /v1/enc_save`).
 //!
 //! GDAL datasets are `Send` but not `Sync`, so a cell is read on the blocking pool one layer at a
 //! time and handed back; the inserts in between are async. Up to `chartIngestWorkers` cells are
-//! installed at once, as in Kotlin.
+//! installed at once.
 
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -24,8 +25,10 @@ use super::Report;
 use super::zip::{self, ZipError};
 use crate::state::AppState;
 
-/// `ChartIngest.ingest`: the whole ingest of `<claim_dir>/<zip_file>`, claimed by the worker
-/// while it held the lock. Does nothing when this instance does not hold the lock.
+/// Ingests `<claim_dir>/<zip_file>`, which the worker claimed while it held the lock.
+///
+/// Does nothing when this instance does not hold the lock. The outcome, a completion report or a
+/// fatal error, is written to the status file; failures are not returned.
 pub async fn ingest(state: &AppState, claim_dir: &Path, zip_file: &str) {
     if !state.lock.acquired() {
         tracing::info!("ingest noop {zip_file} - lock not acquired");
@@ -53,7 +56,7 @@ pub async fn ingest(state: &AppState, claim_dir: &Path, zip_file: &str) {
     state.wake_region_worker();
 }
 
-/// `tileDao.invalidateCache()` and the claimed work directory.
+/// Clears the tile cache and removes the claimed work directory.
 async fn cleanup(state: &AppState, claim_dir: &Path) {
     tracing::info!("cleaning up resources");
     state.tile_cache.clear().await;
@@ -126,8 +129,9 @@ async fn ingest_internal(
     Ok(report)
 }
 
-/// `step1UnzipFiles`: `Extracting` progress per entry; the files written. A zip that cannot be
-/// read, or holds an unsafe entry (D3), is the error reported for the upload.
+/// Extracts the upload with `Extracting` progress per entry and returns the files written.
+///
+/// A zip that cannot be read, or holds an unsafe entry, is the error reported for the upload.
 pub(super) async fn unzip(
     state: &AppState,
     claim_dir: &Path,
@@ -166,8 +170,8 @@ pub(super) async fn unzip(
     Ok(files)
 }
 
-/// One cell: `chartInsertInfo`, the chart row (overwrite), then every inserted layer's features
-/// in one transaction. Failures are recorded on the report under the `.000` file name.
+/// Installs one cell: its chart row (overwriting a chart of the same name), then every layer's
+/// features in one transaction. Failures are recorded on the report under the `.000` file name.
 async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mutex<Report>) {
     tracing::info!("inserting chart {name}");
     let (cell, insert) = tokio::task::spawn_blocking(move || {
@@ -255,7 +259,7 @@ async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mut
 }
 
 /// The rows of one layer: `(props, wkb)` of every feature with a geometry, repaired with GDAL's
-/// `makeValid` (a feature whose geometry cannot be repaired is skipped, as in Kotlin).
+/// `makeValid` (a feature whose geometry cannot be repaired is skipped).
 fn read_layer(cell: &GdalCell, layer: &str) -> Vec<(JsonObject, Vec<u8>)> {
     cell.features(layer)
         .unwrap_or_default()

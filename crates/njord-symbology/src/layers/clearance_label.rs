@@ -1,4 +1,4 @@
-//! Vertical and horizontal clearance labels (`ClearanceLabel.kt`) — CHBLK on a CHWHT halo, per
+//! Vertical and horizontal clearance labels — CHBLK on a CHWHT halo, per
 //! the S-52 presentation library's `TE('clr %4.1lf','VERCLR',3,1,2,'15110',1,1,CHBLK,11)`.
 //!
 //! Split out of the object-class layerables (as `LndareLabel` is from `Lndare`) so the labels

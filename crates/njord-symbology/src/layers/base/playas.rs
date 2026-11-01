@@ -1,4 +1,4 @@
-//! Natural Earth base layer: playas (dry lake beds) (`base/Playas.kt`).
+//! Natural Earth base layer: playas (dry lake beds).
 
 use crate::layers::prelude::*;
 

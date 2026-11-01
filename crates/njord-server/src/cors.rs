@@ -1,11 +1,10 @@
-//! CORS, as Ktor's `CORS` plugin applies it with the server's configuration (`ChartServerApp.kt`:
-//! `anyHost()`, `allowHeader(ContentType)`, `allowMethod(Post, Delete, Put)` on top of the default
-//! `GET, POST, HEAD`).
+//! CORS: any origin, the `Content-Type` request header, and `GET`, `HEAD`, `POST`, `PUT` and
+//! `DELETE`.
 //!
 //! Hand-written rather than `tower_http::cors`, which writes header names lower-case
 //! (`content-type`), joins lists without a space and never refuses a request, while the
-//! conformance goldens pin Ktor's exact header values and Ktor answers a disallowed cross-origin
-//! request with an empty 403.
+//! conformance goldens pin the exact header values and an empty 403 for a disallowed
+//! cross-origin request.
 
 use axum::body::Body;
 use axum::extract::Request;
@@ -33,7 +32,7 @@ const REQUEST_HEADERS: [&str; 4] = [
     "accept-language",
     "content-language",
 ];
-/// Ktor's default `maxAgeInSeconds`, one day.
+/// The preflight `Access-Control-Max-Age`, one day.
 const MAX_AGE: &str = "86400";
 
 /// The middleware. For a request with a single, well-formed `Origin` that is not the server's
@@ -115,8 +114,8 @@ fn is_cross_origin(headers: &HeaderMap, uri: &axum::http::Uri) -> bool {
     normalize(&format!("{}://{}:{}", own.scheme, own.host, own.port)) != normalize(origin)
 }
 
-/// Ktor's `isValidOrigin`: `null`, or `scheme://host[:port]` with no percent sign, a scheme of
-/// letters, digits, `+`, `-` and `.` starting with a letter, and a numeric port.
+/// Whether `origin` is well formed: `null`, or `scheme://host[:port]` with no percent sign, a
+/// scheme of letters, digits, `+`, `-` and `.` starting with a letter, and a numeric port.
 fn is_valid_origin(origin: &str) -> bool {
     if origin == "null" {
         return true;

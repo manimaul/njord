@@ -1,4 +1,4 @@
-//! `attributehelpers/Catpra.kt`.
+//! S-57 `CATPRA` (category of production area) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/PRDARE/CATPRA>

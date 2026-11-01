@@ -1,6 +1,8 @@
-//! `<chartTempData>/status.json` (`ingest/IngestStatus.kt`; P-CC-2): the current ingest state as
-//! one JSON [`WsMsg`], written atomically (temp file and rename) so a WebSocket poller or another
-//! replica never reads a torn file. [`IngestStatus::write`] only writes while this instance holds
+//! The ingest status file, `<chartTempData>/status.json`: the current ingest state as one JSON
+//! [`WsMsg`].
+//!
+//! It is written atomically (temp file and rename) so a WebSocket poller or another replica never
+//! reads a torn file. [`IngestStatus::write`] only writes while this instance holds
 //! the lock, so a replica whose ingest was aborted cannot overwrite the operator's `Idle`.
 
 use std::path::{Path, PathBuf};
@@ -32,28 +34,26 @@ impl IngestStatus {
         std::fs::read_to_string(&self.path).unwrap_or_default()
     }
 
-    /// `WsMsg.Idle` as the file and the socket carry it.
+    /// [`WsMsg::Idle`] as the file and the socket carry it.
     pub fn idle_json() -> String {
         serde_json::to_string(&WsMsg::Idle).expect("WsMsg serialises")
     }
 
-    /// `initIfNeeded`: a server starting on a volume without a status file writes `Idle`. (Kotlin
-    /// went through the lock-conditional write and so never wrote it; the socket answered `Idle`
-    /// for the missing file anyway, so the visible behaviour is the same.)
+    /// Writes `Idle` when there is no status file yet, as on a fresh data volume.
     pub fn init_if_needed(&self) {
         if !self.path.is_file() {
             self.write_ignore_lock(&WsMsg::Idle);
         }
     }
 
-    /// `writeMsg`: writes only while this instance holds the lock.
+    /// Writes `msg` only while this instance holds the lock.
     pub fn write(&self, msg: &WsMsg) {
         if self.lock.acquired() {
             self.write_ignore_lock(msg);
         }
     }
 
-    /// `writeMsgIgnoreLock`: writes unconditionally (the upload and reset routes).
+    /// Writes `msg` whether or not this instance holds the lock (the upload and reset routes).
     pub fn write_ignore_lock(&self, msg: &WsMsg) {
         let json = serde_json::to_string(msg).expect("WsMsg serialises");
         let dir = self.path.parent().unwrap_or(Path::new("."));

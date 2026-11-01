@@ -3,8 +3,8 @@
 //! The database is `njord_rust_server_test` on the dev PostGIS (`chart_server_db/`,
 //! `podman-compose up`); `NJORD_TEST_PG` overrides the server URL without a database name
 //! (default `postgresql://admin:mysecretpassword@localhost:6432`, as `njord-db`'s tests). It
-//! holds the three fixture cells and the Natural Earth 110m coastline extract, ingested as
-//! Kotlin's `TestCharts.ensureSeeded` does (GDAL read, `makeValid`, one transaction per cell),
+//! holds the three fixture cells and the Natural Earth 110m coastline extract, ingested the way
+//! the goldens were seeded (GDAL read, `makeValid`, one transaction per cell),
 //! and is created and seeded once, under a PostgreSQL advisory lock so the test binaries running
 //! in parallel do not race. `NJORD_RESEED=1` drops and reseeds it. No other database is touched.
 

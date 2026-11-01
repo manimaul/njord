@@ -1,18 +1,26 @@
-//! `EncCronConfig.kt`: `<resources>/config/enc_cron.json`, then the `ENC_CRON_OPTS` JSON object
-//! merged over it, then the admin credentials from `ENC_CRON_ADMIN_USER` / `ENC_CRON_ADMIN_PASS`.
+//! The cron job's configuration.
+//!
+//! It is read from `<resources>/config/enc_cron.json`, then the `ENC_CRON_OPTS` JSON object is
+//! merged over it, then the admin credentials come from `ENC_CRON_ADMIN_USER` /
+//! `ENC_CRON_ADMIN_PASS`; see [`EncCronConfig::load`].
 
 use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
+/// The environment variable holding a JSON object merged over `enc_cron.json`.
 pub const OVERRIDES_ENV: &str = "ENC_CRON_OPTS";
+/// The environment variable holding the admin user name.
 pub const ADMIN_USER_ENV: &str = "ENC_CRON_ADMIN_USER";
+/// The environment variable holding the admin password.
 pub const ADMIN_PASS_ENV: &str = "ENC_CRON_ADMIN_PASS";
 
-/// Field names are the JSON keys. Fields without a default are required, as in Kotlin, and
-/// unknown keys are ignored. Defaulted fields are left out when serialised at their default
-/// (kotlinx `encodeDefaults = false`), which is the form P-EC-4 records.
+/// The cron job's settings.
+///
+/// Field names are the camel-case JSON keys. Fields without a default are required, and unknown
+/// keys are ignored. Defaulted fields are left out when serialised at their default, which is
+/// the form the `testdata/enc_cron/` fixtures record.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EncCronConfig {
@@ -91,6 +99,11 @@ impl EncCronConfig {
     /// Loads `<resourcesDir>/config/enc_cron.json` if present, overlays `overrides` as a shallow
     /// JSON object merge (ignored when blank), then the credentials when non-blank. A missing
     /// file is an empty object, so the required fields then fail the load.
+    ///
+    /// # Errors
+    ///
+    /// The file cannot be read, the file or the overrides are not a JSON object, or the merged
+    /// object is missing a required field or has one of the wrong type.
     pub fn load(sources: &Sources) -> Result<Self, String> {
         let mut merged = match sources
             .resources_dir
@@ -118,6 +131,10 @@ impl EncCronConfig {
     }
 
     /// [`load`](Self::load) with the overrides and credentials read from the environment.
+    ///
+    /// # Errors
+    ///
+    /// As [`load`](Self::load).
     pub fn from_env(resources_dir: Option<&Path>) -> Result<Self, String> {
         let overrides = std::env::var(OVERRIDES_ENV).ok();
         let user = std::env::var(ADMIN_USER_ENV).ok();

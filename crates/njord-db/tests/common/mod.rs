@@ -3,8 +3,8 @@
 //! `NJORD_TEST_PG` overrides the server URL, without a database name (default
 //! `postgresql://admin:mysecretpassword@localhost:6432`); the role must be allowed to create
 //! databases. Every database the tests touch is named `njord_rust_test*` and is dropped and
-//! recreated (from a PostGIS template) by the test that owns it, so the Kotlin databases
-//! (`s57server`, `njord_test`, `njord_conformance`) are never touched. Tests that run in
+//! recreated (from a PostGIS template) by the test that owns it, so other databases on the same
+//! server (`s57server`, `njord_test`, `njord_conformance`) are never touched. Tests that run in
 //! parallel each own their database; the seeded ingest database is shared within its test
 //! binary and seeded once.
 
@@ -153,9 +153,8 @@ pub fn ogr_wkt(geometry: &Geometry) -> String {
         .unwrap()
 }
 
-/// What Kotlin's test ingest (`TestIngest.ingestCharts` → `ChartIngest`) does for one cell:
-/// `chartInsertInfo()`, insert with overwrite, then every feature of the inserted layers with
-/// a geometry, repaired with `makeValid`, in one transaction.
+/// Ingests one cell as the ingest worker does: the chart insert with overwrite, then every
+/// feature of the inserted layers with a geometry, made valid, in one transaction.
 pub async fn ingest_cell(db: &Db, path: &Path) -> InstalledChart {
     let cell = GdalCell::open(path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
     let insert = cell.chart_insert().unwrap();
@@ -179,7 +178,7 @@ pub const WA: &str = "US5WA22M.000";
 pub const OUTER: &str = "US4ZZ01M.000";
 pub const INNER: &str = "US5ZZ02M.000";
 
-/// The three fixture cells, as Kotlin's `TestCharts.ensureSeeded` ingests them.
+/// The three fixture cells the seeded database is ingested from.
 pub const CELLS: [&str; 3] = [
     "fixtures/US5WA22M/US5WA22M.000",
     "fixtures/synthetic/US4ZZ01M.000",

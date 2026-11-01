@@ -1,4 +1,4 @@
-//! Natural Earth base layer: antarctic ice shelf polygons (`base/AntarcticIceShelves.kt`).
+//! Natural Earth base layer: antarctic ice shelf polygons.
 
 use crate::layers::prelude::*;
 

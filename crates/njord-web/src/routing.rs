@@ -25,7 +25,7 @@ impl NjordRoute {
         NjordRoute::NotFound,
     ];
 
-    /// The Kotlin enum constant name.
+    /// The route's name (`ControlPanel`), as the route fixtures record it.
     pub const fn name(self) -> &'static str {
         match self {
             NjordRoute::About => "About",
@@ -63,9 +63,9 @@ impl NjordRoute {
 /// A path pattern compiled to a regex: `:name` matches one segment, `:*name` the rest of the
 /// path (possibly empty). A trailing `/` or `#` on the path is tolerated.
 pub struct RouteMatcher {
-    /// The pattern anchored at both ends: Kotlin's `Regex.matches`.
+    /// The pattern anchored at both ends, for [`RouteMatcher::matches`].
     full: Regex,
-    /// The same pattern unanchored: Kotlin's `Regex.find`, which `groups` uses.
+    /// The same pattern unanchored, for [`RouteMatcher::groups`] (first match).
     find: Regex,
     keywords: Vec<String>,
 }

@@ -1,4 +1,4 @@
-//! Natural Earth base layer: glaciated areas (`base/GlaciatedAreas.kt`).
+//! Natural Earth base layer: glaciated areas.
 
 use crate::layers::prelude::*;
 

@@ -1,10 +1,12 @@
-//! How the Kotlin/JS UI printed values it showed as text: enum constant names, `Duration` and
-//! data-class `toString()`. Numbers need nothing here: Kotlin/JS prints a `Double` the way
-//! JavaScript does (`14.0` as `14`), which Rust's `Display` matches for every value the UI shows.
+//! Text forms of values the UI shows: depth unit and theme names, durations and ingest status
+//! messages.
+//!
+//! Numbers need nothing here: they print the way JavaScript prints them (`14.0` as `14`), which
+//! Rust's `Display` matches for every value the UI shows.
 
 use njord_model::{Depth, InsertItem, ThemeMode, WsMsg};
 
-/// The Kotlin constant name of a [`Depth`] (`FEET`), which the nav bar shows.
+/// The upper-case name of a [`Depth`] unit as the nav bar shows it: `FATHOMS`, `METERS`, `FEET`.
 pub const fn depth_name(depth: Depth) -> &'static str {
     match depth {
         Depth::Fathoms => "FATHOMS",
@@ -13,7 +15,7 @@ pub const fn depth_name(depth: Depth) -> &'static str {
     }
 }
 
-/// The Kotlin constant name of a [`ThemeMode`] (`Day`).
+/// The name of a [`ThemeMode`] as the nav bar shows it: `Day`, `Dusk`, `Night`.
 pub const fn mode_name(mode: ThemeMode) -> &'static str {
     match mode {
         ThemeMode::Day => "Day",
@@ -22,8 +24,11 @@ pub const fn mode_name(mode: ThemeMode) -> &'static str {
     }
 }
 
-/// `kotlin.time.Duration.toString()` for whole seconds: `6d 23h 59m 58s`, `1h 0m 5s`, `0s`,
-/// negative values as `-(1h 30m)`.
+/// A duration of whole seconds as `6d 23h 59m 58s`.
+///
+/// Leading and trailing zero units are left out but inner ones are kept (`1h`, `1h 0m 5s`,
+/// `1d 1h`); zero is `0s`. A negative duration is prefixed with `-`, in parentheses when it has
+/// more than one unit (`-5s`, `-(1h 30m)`).
 pub fn duration_to_string(seconds: i64) -> String {
     if seconds == 0 {
         return "0s".to_owned();
@@ -66,8 +71,13 @@ fn insert_item(item: &InsertItem) -> String {
     )
 }
 
-/// The data-class `toString()` of a [`WsMsg`], which the chart installer prints for a finished or
+/// A [`WsMsg`] as `Name(field=value, …)`, which the chart installer prints for a finished or
 /// failed ingest.
+///
+/// Fields use their camel-case JSON names and lists print as `[a, b]`, e.g.
+/// `Error(isFatal=true, message=bad zip)` or
+/// `CompletionReport(totalFeatureCount=5163, totalChartCount=1, items=[InsertItem(chartName=US5WA22M, featureCount=5158)], failedCharts=[], ms=812)`.
+/// [`WsMsg::Idle`] is plain `Idle`.
 pub fn ws_msg_to_string(msg: &WsMsg) -> String {
     match msg {
         WsMsg::Error { is_fatal, message } => {

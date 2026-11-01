@@ -59,7 +59,7 @@ impl Layerable for Curent {
     }
 }
 
-/// `Float.toString()`: the shortest `Float` decimal, printed as Kotlin prints a `Double`.
+/// The shortest `f32` decimal, printed by [`double_to_string`] (`1.0`, not `1`).
 fn float_to_string(x: f32) -> String {
     double_to_string(format!("{x}").parse().unwrap())
 }

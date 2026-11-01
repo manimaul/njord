@@ -1,5 +1,5 @@
-//! The GDAL read contract (RUST_PORT_PLAN.md §5.3) against the fixtures `S57FixtureTest` and
-//! `NaturalEarthFixtureTest` wrote: P-IN-1…4 and P-IN-6.
+//! The GDAL read contract against the golden fixtures under `testdata/s57/`: the `charts` row,
+//! every feature, layer counts, update application and Natural Earth shapefiles.
 
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
@@ -21,7 +21,8 @@ fn compare(expected: &Value, actual: &Value) -> Result<(), String> {
     first_difference(expected, actual, "").map_or(Ok(()), Err)
 }
 
-/// `FeatureOut`: props plus the WKT after `makeValid()`, `wkt` left out when there is none.
+/// A feature as the fixtures record it: props plus the WKT after [`Geometry::make_valid`], `wkt`
+/// left out when there is none.
 fn feature_out(f: Feature) -> Value {
     let mut out = json!({ "props": f.props });
     if let Some(wkt) = f.geometry.and_then(|g| g.make_valid()).map(|g| g.wkt()) {
@@ -38,9 +39,9 @@ fn inserted_features(cell: &GdalCell, layer: &str) -> Vec<Value> {
         .collect()
 }
 
-/// P-IN-1: `chartInsertInfo()` for every fixture cell.
+/// [`S57Reader::chart_insert`] for every fixture cell.
 #[test]
-fn p_in_1_chart_insert() {
+fn chart_insert_matches_fixture() {
     let mut failures = Failures::default();
     let cases = cases("s57/chart_insert.json");
     for case in &cases {
@@ -59,9 +60,9 @@ fn p_in_1_chart_insert() {
     failures.assert_none(cases.len());
 }
 
-/// P-IN-2: every inserted feature of every layer, props and WKT after `make_valid`, per cell.
+/// Every inserted feature of every layer, props and WKT after `make_valid`, per cell.
 #[test]
-fn p_in_2_features() {
+fn features_match_fixture() {
     let mut failures = Failures::default();
     let mut checked = 0;
     for (cell, dir) in [
@@ -109,9 +110,9 @@ fn p_in_2_features() {
     failures.assert_none(checked);
 }
 
-/// P-IN-3: layer order, per-layer counts and `featureCount(exLayers)`.
+/// Layer order, per-layer counts and [`S57Reader::total_feature_count`].
 #[test]
-fn p_in_3_layer_counts() {
+fn layer_counts() {
     let mut failures = Failures::default();
     let cases = cases("s57/layer_counts.json");
     for case in &cases {
@@ -202,9 +203,9 @@ fn change(key: &(String, String), before: &[Value], after: &[Value]) -> Value {
     json!({ "layer": key.0, "lnam": key.1, "before": before, "after": after })
 }
 
-/// P-IN-4: the lone `.000` (copied to a temp dir) against the cell with `.001`–`.004` applied.
+/// The lone `.000` (copied to a temp dir) against the cell with `.001`–`.004` applied.
 #[test]
-fn p_in_4_update_cell() {
+fn update_cell() {
     let tmp = TempDir::new("update_cell");
     let base_path = tmp.0.join("US5WA22M.000");
     std::fs::copy(
@@ -258,9 +259,9 @@ fn p_in_4_update_cell() {
     failures.assert_none(dsid.len() + changed.len());
 }
 
-/// P-IN-6 (shapefile half): layers, feature count and the first three features of the NE extract.
+/// Layers, feature count and the first three features of the NE extract.
 #[test]
-fn p_in_6_natural_earth() {
+fn natural_earth_shapefile() {
     let mut failures = Failures::default();
     let cases = cases("s57/natural_earth.json");
     for case in &cases {
@@ -285,9 +286,9 @@ fn p_in_6_natural_earth() {
     failures.assert_none(cases.len());
 }
 
-/// P-IN-6 (name half): `normalizeLayerName` and `scaleFromFilename`.
+/// [`normalize_layer_name`] and [`scale_from_filename`].
 #[test]
-fn p_in_6_natural_earth_names() {
+fn natural_earth_names() {
     let mut failures = Failures::default();
     let cases = cases("s57/natural_earth_names.json");
     for case in &cases {
@@ -337,12 +338,12 @@ impl S57Reader for FakeCell {
     }
 }
 
-/// D7: a missing `DSID_DSNM` names the chart after its file, and several `CATCOV=1` coverages
+/// A missing `DSID_DSNM` names the chart after its file, and several `CATCOV=1` coverages
 /// (a `MultiPolygon` among them) become one `MultiPolygon` of all their polygons. Also the
 /// ISO 8859-1 `.TXT` decoding (`DSSI_NALL = 1`) and that `CATCOV=2` is not coverage.
 #[test]
-fn chart_insert_d7_and_charset() {
-    let tmp = TempDir::new("d7");
+fn chart_insert_unnamed_cell_and_charset() {
+    let tmp = TempDir::new("chart_insert");
     std::fs::write(tmp.0.join("US5ZZ09A.txt"), b"NOAA ENC\xae").unwrap();
     std::fs::write(tmp.0.join("notes.md"), b"ignored").unwrap();
     let cell = FakeCell {

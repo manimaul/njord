@@ -1,4 +1,4 @@
-//! `attributehelpers/Bcnshp.kt`.
+//! S-57 `BCNSHP` (beacon shape) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/BCNLAT/BCNSHP>

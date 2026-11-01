@@ -1,16 +1,20 @@
-//! Light sector icons (`shared/…/SvgLightSector.kt`): the arc a sector light is drawn with,
-//! rendered on demand from the `SI` prop that `njord-symbology`'s `lights` writes. The server's
+//! Light sector icons: the arc a sector light is drawn with.
+//!
+//! The icon is rendered on demand from the `SI` prop that `njord-symbology`'s `lights` writes. The server's
 //! `GET /v1/sector_svg` and the web UI's `styleimagemissing` handler both draw with this, which is
 //! why it lives in the contract crate.
 
 use std::f64::consts::PI;
 
-/// The icon centre, as Kotlin's `Double.toString()` prints `100.0`.
+/// The icon centre, printed as `100.0` like the golden fixture (`testdata/symbology/svg_sector.json`).
 const CENTER: &str = "100.0";
 
-/// A 200×200 SVG: the arc between the two bearings (or a full circle when they coincide) in
-/// `fill_color`, with dashed sector legs in `line_color`. The S-57 bearings are from seaward
-/// towards the light, so both are reversed (+180°). Kotlin's default `radius` is 80.
+/// Renders a 200×200 SVG of the light sector between bearings `sectr1` and `sectr2`.
+///
+/// The arc (or a full circle when the bearings coincide) is drawn in `fill_color`, with dashed
+/// sector legs in `line_color`. The S-57 bearings are from seaward towards the light, so both are
+/// reversed (+180°). `radius` is the arc radius in the 200-unit view box (80 unless the caller
+/// picks a smaller one).
 pub fn build_sector_svg(
     sectr1: f64,
     sectr2: f64,
@@ -67,10 +71,10 @@ pub fn build_sector_svg(
     )
 }
 
-/// One decimal, from the rounded tenths: Kotlin's `"${it / 10}.${abs(it % 10)}"`, which drops
-/// the sign of a value in (-1, 0) (`-0.5` prints `0.5`); the icon never draws there.
+/// One decimal, from the tenths rounded half to even, as the golden fixture prints coordinates.
+///
+/// The sign of a value in (-1, 0) is dropped (`-0.5` prints `0.5`); the icon never draws there.
 fn fmt(x: f64) -> String {
-    // kotlin.math.round rounds half to even.
     let tenths = (x * 10.0).round_ties_even() as i64;
     format!("{}.{}", tenths / 10, (tenths % 10).abs())
 }

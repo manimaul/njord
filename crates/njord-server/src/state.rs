@@ -1,4 +1,4 @@
-//! Process-wide state shared by every handler (Kotlin's `Singletons`), built once at startup.
+//! Process-wide state shared by every handler, built once at startup.
 
 use std::collections::HashSet;
 use std::fmt;
@@ -28,9 +28,8 @@ pub struct AppState {
     pub resources: PathBuf,
     /// The chart database (`pgConnectionInfo`).
     pub db: Db,
-    /// Style layers, `preTileEncode` rules and the colour library (`Singletons.layerFactory`,
-    /// `Singletons.colorLibrary`), plus the enumerated S-57 attributes the tile prop filter
-    /// reads; shared with the tile encoder's blocking tasks.
+    /// Style layers, `pre_tile_encode` rules and the colour library, plus the enumerated S-57
+    /// attributes the tile prop filter reads; shared with the tile encoder's blocking tasks.
     pub symbology: Arc<Symbology>,
     pub sprites: SpriteSheet,
     /// `<chartTempData>/tiles`.
@@ -48,14 +47,16 @@ pub struct AppState {
     pub save_dir: PathBuf,
     /// `<chartTempData>/ingest`: the worker's claim directories.
     pub ingest_dir: PathBuf,
-    /// Wakes the region export worker (`RegionExportWorker.wake()`).
+    /// Wakes the region export worker ([`AppState::wake_region_worker`]).
     pub region_wake: tokio::sync::Notify,
     /// The client `POST /v1/enc_url` downloads with.
     pub http: reqwest::Client,
 }
 
-/// `S57ObjectLibrary` and `ColorLibrary` as the about routes send them: decoded into their wire
-/// types and re-encoded, as Kotlin does, so the bodies are Ktor's encoding of the resource files.
+/// The S-57 dictionaries and colour library as the about routes send them.
+///
+/// Each resource file is decoded into its `njord_model` wire type and re-encoded, so the bodies
+/// are the wire types' serialisation that the conformance goldens record, not the raw files.
 pub struct AboutDocuments {
     pub s57objects: Bytes,
     pub s57attributes: Bytes,
@@ -64,6 +65,7 @@ pub struct AboutDocuments {
     pub colors_custom: Bytes,
 }
 
+/// A resource file the server needs is missing or unreadable.
 #[derive(Debug)]
 pub struct StateError(String);
 
@@ -76,10 +78,16 @@ impl fmt::Display for StateError {
 impl std::error::Error for StateError {}
 
 impl AppState {
-    /// Reads the resource files the handlers need. Kotlin loads them lazily and fails the first
-    /// request that needs a missing one; the port refuses to start instead.
+    /// Reads the resource files the handlers need and builds the shared state.
     ///
-    /// `db` is not contacted here; [`crate::migrate`] runs the schema migration before serving.
+    /// A missing resource file stops the server at startup rather than failing the first
+    /// request that needs it. `db` is not contacted here; [`crate::migrate`] runs the schema
+    /// migration before serving.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`StateError`] when `colors.json`, `s57attributes.json`, `s57objectclasses.json`
+    /// or `s57expectedinput.json` cannot be read or decoded.
     pub fn new(config: ChartsConfig, resources: &Path, db: Db) -> Result<Arc<Self>, StateError> {
         let colors: Colors = read(resources, "colors.json")?;
         let attributes: IndexMap<String, S57Attribute> = read(resources, "s57attributes.json")?;
@@ -127,7 +135,7 @@ impl AppState {
         }))
     }
 
-    /// `RegionExportWorker.wake()`: a conflated signal that cuts the worker's wait short.
+    /// Wakes the region export worker: a conflated signal that cuts the worker's wait short.
     pub fn wake_region_worker(&self) {
         self.region_wake.notify_one();
     }

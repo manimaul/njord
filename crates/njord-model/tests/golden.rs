@@ -1,6 +1,8 @@
 //! Round trips of every JSON body in `conformance/golden/` through the wire type its route
-//! responds with (Phase 1 exit criterion, RUST_PORT_PLAN.md §6). A new golden whose route is not
-//! mapped here fails the test, so each new response shape is a visible decision.
+//! responds with.
+//!
+//! A new golden whose route is not mapped here fails the test, so each new response shape is a
+//! visible decision.
 
 use std::path::Path;
 
@@ -72,7 +74,7 @@ fn response_type(method: &str, path: &str) -> Option<(&'static str, Check)> {
             "RegionManifestEntry list",
             check::<Vec<RegionManifestEntry>>,
         ),
-        // The final message of the P-API-8 ingest, collected from `/v1/ws/enc_process`.
+        // The final message of the conformance ingest, collected from `/v1/ws/enc_process`.
         ("-", "<computed:api_08_ingest/completion_report>") => ("WsMsg", check::<WsMsg>),
         _ => return None,
     })

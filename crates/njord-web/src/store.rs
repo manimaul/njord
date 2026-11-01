@@ -1,7 +1,8 @@
-//! The view models of the Kotlin UI (`viewmodel/*`) as one set of app-wide Leptos signals. They
-//! are created once by [`Store::init`], before the app mounts, and live as long as the page, as
-//! the Kotlin singletons did. Network loads start the first time a page needs them, so each page
-//! issues the same `/v1` requests the Kotlin page did.
+//! The app-wide state: one set of Leptos signals shared by every page.
+//!
+//! They are created once by [`Store::init`], before the app mounts, and live as long as the
+//! page. Network loads start the first time a page needs them, so a page issues its `/v1`
+//! requests only when it is shown.
 
 use std::cell::{Cell, RefCell};
 use std::sync::LazyLock;
@@ -249,8 +250,8 @@ impl Store {
         });
     }
 
-    /// Navigates to `path`, which may carry its own query string. (Kotlin kept the query string
-    /// of the page being left, so `/enc?lat=…` followed by "About" landed on `/?lat=…`.)
+    /// Navigates to `path`, which may carry its own query string. The query string of the page
+    /// being left is not kept.
     pub fn push_route(self, path: &str) {
         let (path, query) = match path.split_once('?') {
             Some((p, q)) => (p, Some(q.to_owned())),
@@ -708,7 +709,7 @@ impl Store {
             let body = request.response_text().ok().flatten().unwrap_or_default();
             let result = match serde_json::from_str::<EncUpload>(&body) {
                 Ok(upload) if (200..300).contains(&status) => Async::Complete(upload),
-                // Kotlin failed to decode the error body and stayed on the progress bar.
+                // A failed upload, or an answer that is not an `EncUpload`, fails with the status.
                 _ => Async::Fail {
                     value: None,
                     message: format!("{status} - Network status"),

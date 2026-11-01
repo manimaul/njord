@@ -1,5 +1,7 @@
-//! PNG output byte-identical to Kotlin's `gdImagePngPtr` (libgd 2.3 over libpng 1.6 and zlib) for
-//! a true-colour image with saved alpha, the only kind the server writes (`/v1/icon/{name}`).
+//! A PNG encoder whose output is byte-identical to libgd's `gdImagePngPtr`.
+//!
+//! It reproduces libgd 2.3 over libpng 1.6 and zlib for a true-colour image with saved alpha, the
+//! only kind the server writes (`/v1/icon/{name}`).
 //!
 //! The conformance goldens pin icons by sha256, so the encoder reproduces each libpng choice:
 //! - chunks `IHDR` (8-bit RGBA, no interlace), `pHYs` (gd's default 96 dpi = 3780 px/m), `IDAT`
@@ -24,7 +26,8 @@ const PIXELS_PER_METRE: u32 = 3780;
 /// Encodes `rgba` (`width * height * 4` bytes, row-major) as gd does.
 ///
 /// # Panics
-/// When `rgba` is not `width * height * 4` bytes or zlib fails, which only a bug can cause.
+///
+/// Panics when `rgba` is not `width * height * 4` bytes or zlib fails, which only a bug can cause.
 pub fn encode_rgba(width: u32, height: u32, rgba: &[u8]) -> Vec<u8> {
     let row_bytes = width as usize * 4;
     assert_eq!(rgba.len(), row_bytes * height as usize, "rgba size");

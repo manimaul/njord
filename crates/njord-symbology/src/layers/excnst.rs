@@ -1,4 +1,5 @@
-//! Inland ENC object EXCNST: registered (InlandLayers), but draws nothing yet (`Excnst.kt`).
+//! Inland ENC object EXCNST: registered in
+//! [`inland_layers`](crate::layer_factory::inland_layers), but draws nothing yet.
 
 use crate::layers::prelude::*;
 

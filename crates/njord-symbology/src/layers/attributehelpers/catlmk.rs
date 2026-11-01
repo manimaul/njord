@@ -1,4 +1,4 @@
-//! `attributehelpers/Catlmk.kt`.
+//! S-57 `CATLMK` (category of landmark) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/LNDMRK/CATLMK>

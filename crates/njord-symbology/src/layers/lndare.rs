@@ -8,7 +8,7 @@
 
 use crate::layers::prelude::*;
 
-/// Kotlin's `open class Lndare` with its `open val areaColor`; `Buisgl`, `Slcons` and the
+/// Land areas, with a configurable area colour; `Buisgl`, `Slcons` and the
 /// Natural Earth `Land` / `MinorIslands` delegate to it.
 #[derive(Clone, Copy, Debug)]
 pub struct Lndare {

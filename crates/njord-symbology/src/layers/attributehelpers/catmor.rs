@@ -1,4 +1,6 @@
-//! `attributehelpers/Catmor.kt`.
+//! S-57 `CATMOR` (category of mooring/warping facility) values, a single-valued attribute.
+//!
+//! Also builds `==` / `!=` style filters on it ([`Catmor::filter_eq`], [`Catmor::filter_not_eq`]).
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/MORFAC/CATMOR>

@@ -8,7 +8,7 @@
 
 use crate::layers::prelude::*;
 
-/// Kotlin's `open class Boylat`; `Boyspp` reuses [`boyshp`].
+/// Lateral buoys; `Boyspp` reuses [`boyshp`].
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Boylat;
 

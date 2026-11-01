@@ -1,7 +1,7 @@
-//! The light description text string — `Fl(2) R 6s7.6m5M` — per S-52 PresLib 4.0 Part I §10.6.3
-//! "Light Description Text Strings" (the textual replacement for the old `LITDSN01` C function),
-//! in `docs/reference_material/s52_s57_spec/TSMAD26_DIPWG5-8.1C_S-52_PresLib_v3.4_to_v4.0_Redlines.pdf`
-//! (`LightDescription.kt`).
+//! The light description text string, e.g. `Fl(2) R 6s7.6m5M`.
+//!
+//! Built per S-52 PresLib 4.0 Part I §10.6.3 "Light Description Text Strings" (the textual
+//! replacement for the old `LITDSN01` C function), in `docs/reference_material/s52_s57_spec/TSMAD26_DIPWG5-8.1C_S-52_PresLib_v3.4_to_v4.0_Redlines.pdf`.
 //!
 //! Attributes are output in the spec's draw order: CATLIT, LITCHR, SIGGRP, COLOUR, SIGPER, HEIGHT,
 //! VALNMR, STATUS.
@@ -13,7 +13,7 @@
 
 use njord_model::JsonObject;
 
-use crate::kotlin::{double_to_string, round};
+use crate::number::{double_to_string, round};
 use crate::props::{double_value, int_value, int_values, string_value};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -86,9 +86,11 @@ fn is_default_group(group: &str) -> bool {
     group.replace("()", "").replace("(1)", "").trim().is_empty()
 }
 
+/// Formats a numeric attribute (period, height, range) to at most one decimal place.
+///
 /// "The default presentation for each numeric value ... is no decimals. If the value of the
 /// attribute has non-zero decimal part then the value is displayed to one decimal place."
-/// Rounds to the tenth ties-to-even, as `kotlin.math.round` does.
+/// Rounds to the tenth ties-to-even ([`round`]), as the fixtures record.
 pub fn format(value: f64) -> String {
     let tenths = round(value * 10.0) / 10.0;
     if tenths == tenths.floor() {

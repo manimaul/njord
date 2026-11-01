@@ -1,4 +1,4 @@
-//! `GET /v1/style/{depth}/{theme}[?c=]` (`StyleHandler.kt`).
+//! `GET /v1/style/{depth}/{theme}[?c=]`: the MapLibre style.
 
 use std::sync::Arc;
 
@@ -11,13 +11,17 @@ use super::{from_name, query_param, with_content_type};
 use crate::forwarded::ExternalBaseUrl;
 use crate::state::AppState;
 
-/// Kotlin's body for an unknown depth or theme: the handler means `404`, but
-/// `call.respond(NotFound, Any())` cannot serialise `Any` and Ktor answers 500 with this text.
-/// Kept as observed until a port decision says otherwise (conformance README, candidate defect 3).
+/// The body of the 500 answered for an unknown depth or theme.
+///
+/// A 404 is what is meant, but existing deployments answer a 500 with this serializer error
+/// text and the conformance goldens record it, so it is kept until the API contract changes
+/// (conformance README, candidate defect 3).
 const UNKNOWN_STYLE_BODY: &str = "Serializer for class 'Any' is not found.\nPlease ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.\n";
 
-/// The MapLibre style (`application/json`) for a depth (`meters`, `feet`, `fathoms`) and theme
-/// (`day`, `dusk`, `night`), both case-insensitive. `c` names a custom colour set from
+/// The MapLibre style (`application/json`) for a depth and theme.
+///
+/// The depth is `meters`, `feet` or `fathoms` and the theme `day`, `dusk` or `night`, both
+/// case-insensitive. `c` names a custom colour set from
 /// `colors.json`; an unknown one falls back to the plain theme. URLs inside are under the
 /// external base URL, and the sprite sheet is `<theme>_simplified`.
 pub async fn style(

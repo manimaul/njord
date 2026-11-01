@@ -1,4 +1,4 @@
-//! `attributehelpers/Catpip.kt`.
+//! S-57 `CATPIP` (category of pipeline/pipe) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/PIPARE/CATPIP>

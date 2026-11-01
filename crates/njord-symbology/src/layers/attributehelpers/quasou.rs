@@ -1,4 +1,4 @@
-//! `attributehelpers/Quasou.kt`.
+//! S-57 `QUASOU` (quality of sounding measurement) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/OBSTRN/QUASOU>

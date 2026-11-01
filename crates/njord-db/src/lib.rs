@@ -1,18 +1,29 @@
-//! PostGIS access for the Njord port (RUST_PORT_PLAN.md §4.1, §5.4), ported from the Kotlin
-//! `server/.../db/*`: the schema migration runner (`DbMigrations.kt`), the retry wrapper
-//! (`Dao.kt`, with decision D5), and the queries of `ChartDao`, `FeatureDao`, `GeoJsonDao`,
-//! `BaseFeatureDao`, `RegionDao` and `NukeDao`, including the writes ingest needs.
+//! PostGIS access for Njord: schema migrations and every query the server and ingest run.
+//!
+//! [`Db`] is the entry point: a connection pool whose methods are grouped by table.
+//! - [`migrations`]: [`Db::migrate`] provisions or upgrades the schema to [`CURRENT_VERSION`].
+//! - [`charts`]: chart rows, the catalog and editions, and the tile path's feature queries
+//!   ([`Db::find_chart_features_4326`]).
+//! - [`features`]: the feature routes and the ingest feature insert ([`Db::install_chart`],
+//!   [`FeatureInstall`]).
+//! - [`base_features`]: the Natural Earth base map.
+//! - [`geojson`]: the GeoJSON routes.
+//! - [`regions`]: what the region exporter reads, and its export state.
+//! - [`retry`]: the [`RetryPolicy`] for acquiring a connection.
 //!
 //! Every query is a sqlx runtime query against the schema of [`migrations`], so the crate builds
-//! without a database. Results use the `njord-model` wire types where the Kotlin DAO returned
-//! one; geometries are decoded to `geo-types` (see [`geometry`]).
+//! without a database. Results use the `njord-model` wire types where a route serves them;
+//! geometries are decoded to `geo-types` (see [`geometry`]).
 //!
-//! Fixtures: P-DB-1 [`migrations`], P-DB-3 / P-DB-4 / P-DB-5 [`charts`] and [`features`],
-//! P-DB-6 [`regions`], P-DB-7 [`retry`], D5 overwrite [`Db::insert_chart`], P-IN-5
-//! [`Db::install_chart`]. The tests (`tests/`) run against a dev PostGIS, see `tests/common`.
+//! # Errors
 //!
-//! The Kotlin `TileDao` holds no query of its own (it is the tile encoder plus the disk cache),
-//! so it is not here.
+//! Every method returns [`Error`]. Only acquiring a connection is retried, under the
+//! [`RetryPolicy`], and failing that is [`Error::Connection`]; a failing statement is
+//! [`Error::Sql`] and is never retried. A chart insert or overwrite, a chart delete and a
+//! [`FeatureInstall`] each run in one transaction, so a failure leaves none of them half-written.
+//!
+//! The tests (`tests/`) run against a dev PostGIS, see `tests/common`. The tile disk cache and
+//! encoder are not here: they live in the server and hold no query of their own.
 
 pub mod base_features;
 pub mod charts;
@@ -38,6 +49,7 @@ pub use retry::RetryPolicy;
 /// Re-exported so dependants use the same sqlx (and pool type) as this crate.
 pub use sqlx;
 
+/// A result with this crate's [`Error`].
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 /// A handle on the chart database: a connection pool plus the [`RetryPolicy`] applied when a
@@ -49,9 +61,15 @@ pub struct Db {
 }
 
 impl Db {
-    /// A pool for `url` (`postgresql://user:password@host:port/db`, the Kotlin
-    /// `pgConnectionInfo`) that connects on first use, so a database that is down at startup is
-    /// covered by the [`RetryPolicy`] rather than failing here.
+    /// A pool for `url` that connects on first use.
+    ///
+    /// `url` is `postgresql://user:password@host:port/db`, the server's `pgConnectionInfo`.
+    /// Connecting lazily means a database that is down at startup is covered by the
+    /// [`RetryPolicy`] rather than failing here.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Sql`] when `url` cannot be parsed.
     pub fn connect_lazy(url: &str, max_connections: u32) -> Result<Db> {
         let pool = PgPoolOptions::new()
             .max_connections(max_connections)
@@ -59,6 +77,7 @@ impl Db {
         Ok(Db::new(pool))
     }
 
+    /// A handle on `pool` with the default [`RetryPolicy`].
     pub fn new(pool: PgPool) -> Db {
         Db {
             pool,
@@ -66,10 +85,12 @@ impl Db {
         }
     }
 
+    /// The same handle with another [`RetryPolicy`].
     pub fn with_retry(self, retry: RetryPolicy) -> Db {
         Db { retry, ..self }
     }
 
+    /// The underlying pool.
     pub fn pool(&self) -> &PgPool {
         &self.pool
     }
@@ -79,15 +100,21 @@ impl Db {
         retry::acquire(self.retry, || self.pool.acquire()).await
     }
 
-    /// A transaction on a pooled connection, begun under the [`RetryPolicy`]. Dropping it
-    /// without [`commit`](sqlx::Transaction::commit) rolls it back.
+    /// A transaction on a pooled connection, begun under the [`RetryPolicy`].
+    ///
+    /// Dropping it without [`commit`](sqlx::Transaction::commit) rolls it back.
     pub(crate) async fn begin(&self) -> Result<sqlx::Transaction<'static, Postgres>> {
         retry::acquire(self.retry, || self.pool.begin()).await
     }
 
-    /// `NukeDao.truncateAllAsync`: empties `features`, `charts` and `base_features` (identities
-    /// restarted) and keeps `meta_data`, so the schema version survives. `region_export_state` is
-    /// kept too, as in Kotlin.
+    /// Empties `features`, `charts` and `base_features`, restarting their identities.
+    ///
+    /// `meta_data` is kept, so the schema version survives, and so is `region_export_state`.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when the
+    /// `TRUNCATE` fails.
     pub async fn truncate_all(&self) -> Result<()> {
         let mut conn = self.conn().await?;
         sqlx::query("TRUNCATE TABLE features, charts, base_features RESTART IDENTITY CASCADE;")

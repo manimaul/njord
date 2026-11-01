@@ -36,7 +36,7 @@ impl Layerable for Depare {
 
     /// The colour band by DRVAL1 against the configured thresholds (`<=` at each), DEPIT for a
     /// drying area (DRVAL1 < 0 and DRVAL2 <= 0), CHBLK when either bound is missing. Compared in
-    /// `f32`, as Kotlin does.
+    /// `f32`, as the thresholds are held ([`SymbologyConfig`](crate::SymbologyConfig)).
     fn pre_tile_encode(&self, feature: &mut ChartFeature, cx: &Context) {
         let config = &cx.config;
         let mut ac = Color::CHBLK;

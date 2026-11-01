@@ -1,4 +1,4 @@
-//! `attributehelpers/Watlev.kt`.
+//! S-57 `WATLEV` (water level effect) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/OBSTRN/WATLEV>

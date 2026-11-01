@@ -1,4 +1,4 @@
-//! Debug tile overlay (`Debug.kt`), registered only with `SymbologyConfig::debug_tile`.
+//! Debug tile overlay, registered only with `SymbologyConfig::debug_tile`.
 
 use crate::layers::prelude::*;
 

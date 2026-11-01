@@ -1,5 +1,7 @@
-//! `Main.kt`: one cron run. Parse NOAA's product catalog, ask Njord which chart revisions it
-//! already holds, delete withdrawn charts, and fetch only the cells whose revision moved.
+//! One cron run.
+//!
+//! Parse NOAA's product catalog, ask Njord which chart revisions it already holds, delete
+//! withdrawn charts, and fetch only the cells whose revision moved.
 
 use std::path::{Path, PathBuf};
 
@@ -23,6 +25,12 @@ pub struct CommandLine {
 }
 
 impl CommandLine {
+    /// Parses the arguments after the program name.
+    ///
+    /// # Errors
+    ///
+    /// An unknown `--` option, `--from-file` without a path, or a catalog file that does not
+    /// exist.
     pub fn parse(args: impl IntoIterator<Item = String>) -> Result<Self, String> {
         let mut out = CommandLine::default();
         let mut args = args.into_iter();
@@ -37,7 +45,7 @@ impl CommandLine {
                 }
                 "--dry-run" => out.dry_run = true,
                 _ if arg.starts_with("--") => return Err(format!("unknown option: {arg}")),
-                // A resources dir that does not exist is ignored, as in Kotlin.
+                // A resources dir that does not exist is ignored (the defaults then apply).
                 _ => out.resources_dir = Some(PathBuf::from(&arg)).filter(|p| p.exists()),
             }
         }
@@ -45,6 +53,13 @@ impl CommandLine {
     }
 }
 
+/// Runs one update: fetch the editions and the catalog, delete orphans, then download and
+/// publish the stale cells (or, with `--dry-run`, only log what would be fetched).
+///
+/// # Errors
+///
+/// The editions listing or the catalog cannot be fetched or parsed, an orphan delete fails, or
+/// the work and `save/` directories cannot be written.
 pub async fn run(config: &EncCronConfig, options: &CommandLine) -> Result<(), Error> {
     match &options.catalog_file {
         Some(file) => log::info(format!("catalog={}", file.display())),
@@ -129,19 +144,23 @@ pub async fn run(config: &EncCronConfig, options: &CommandLine) -> Result<(), Er
     publish_bundles(capped, config, &http).await
 }
 
-/// Kotlin's `(x * 10).toInt() / 10.0` printed as a `Double`: truncated to tenths, always with a
-/// fractional part.
+/// `x` truncated (toward zero) to tenths, always printed with one fractional digit: `12.37` is
+/// `12.3`, `12` is `12.0`.
 fn tenths(x: f64) -> String {
     let t = (x * 10.0) as i64;
     format!("{}.{}", t / 10, (t % 10).abs())
 }
 
-/// Removes charts NOAA has withdrawn, so cancelled cells stop being served (P-EC-5).
+/// Removes charts NOAA has withdrawn, so cancelled cells stop being served.
 ///
 /// Every guard that refuses does so before a signature is fetched: disabled, no API base URL, no
 /// credentials, then [`deletable_orphans`] limits the blast radius to producers this catalog
 /// covers, and `maxOrphanDeletes` abandons the pass entirely if the count looks less like
 /// withdrawals and more like a truncated download. The caller has already logged the full list.
+///
+/// # Errors
+///
+/// The admin signature cannot be fetched, or a delete request fails.
 pub async fn delete_orphans<T: EncTransport>(
     orphans: &[String],
     catalog: &[EncCatalogEntry],
@@ -264,7 +283,7 @@ mod tests {
     use super::tenths;
 
     #[test]
-    fn tenths_prints_like_a_kotlin_double() {
+    fn tenths_truncates_and_keeps_one_digit() {
         assert_eq!(tenths(0.0), "0.0");
         assert_eq!(tenths(12.0), "12.0");
         assert_eq!(tenths(12.37), "12.3");

@@ -1,4 +1,4 @@
-//! S-52 text group 21, "names for position reporting" (`NameLabel.kt`) - `TE('by %s','OBJNAM',...)`
+//! S-52 text group 21, "names for position reporting" - `TE('by %s','OBJNAM',...)`
 //! on buoys, `TE('bn %s','OBJNAM',...)` on beacons and daymarks, `LtV`, `Prod` and `Plt` on light
 //! vessels, offshore platforms and pilot boarding places, and a plain `TX(OBJNAM,...)` /
 //! `TX(INFORM,...)` on bridges and distance marks.

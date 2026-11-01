@@ -1,9 +1,15 @@
-//! The `cargo xtask` tasks: the container image and the Kubernetes deploy of the Rust environment in
-//! the `mxmariner` namespace (docs/RUST_PORT_PLAN.md §10, deploy/mxmariner/README.md).
+//! The `cargo xtask` tasks: the container image and the Kubernetes deploy of the `mxmariner`
+//! environment.
 //!
-//! The `xtask` alias is in `.cargo/config.toml`, and every command runs from the repository root.
-//! Only the NEW environment is deployed from here. The Kotlin `njord` namespace is deployed from the
-//! master branch's `./gradlew :deploy` and `k8s_deploy/`, and is never touched.
+//! Run `cargo xtask help` for the tasks (`secrets`, `nfs`, `build`, `push`, `apply`, `rollout`,
+//! `deploy`, `render`, ...) and the environment they read; `deploy/mxmariner/README.md` walks
+//! through a deploy. The `xtask` alias is in `.cargo/config.toml`, and every command runs from the
+//! repository root.
+//!
+//! Only the `mxmariner` environment is deployed from here. The openenc.com production environment
+//! (the `njord` namespace, the `s57server` database and the `njord-chart-server` image) is
+//! deployed separately and is never touched: the environment checks refuse its names and
+//! [`guard`] rejects any rendered manifest that mentions them.
 //!
 //! DRY RUN BY DEFAULT: every task prints what it would do. Nothing touches the cluster, the registry
 //! or the local image store unless `--execute` is passed.
@@ -49,7 +55,7 @@ Required environment (the task aborts if any it needs is unset, empty or the lit
   NJORD_ADMIN_KEY NJORD_ADMIN_USER NJORD_ADMIN_PASS                          (secrets)
 
 Optional, with defaults:
-  NJORD_IMAGE_REPO=ghcr.io/manimaul/njord     Rust image repository (njord-chart-server refused)
+  NJORD_IMAGE_REPO=ghcr.io/manimaul/njord     image repository (njord-chart-server refused)
   NJORD_VERSION=<workspace version in Cargo.toml>
   NJORD_HOST=njord.mxmariner.com
   NJORD_PLATFORM=linux/amd64                  podman build --platform
@@ -58,31 +64,30 @@ Optional, with defaults:
 
 #[derive(Subcommand)]
 enum Task {
-    /// Apply njord-db-upstream, njord-db-url, admin-secret-json and njord-admin-basic
-    /// (./gradlew :secret).
+    /// Apply njord-db-upstream, njord-db-url, admin-secret-json and njord-admin-basic.
     Secrets,
     /// Install the Helm release njord-nfs with the StorageClass njord-nfs (create_nfs.sh).
     Nfs,
-    /// Build the container image $NJORD_IMAGE_REPO:$NJORD_VERSION from Containerfile (./gradlew :makeImg).
+    /// Build the container image $NJORD_IMAGE_REPO:$NJORD_VERSION from Containerfile.
     Build,
-    /// Push the image; needs `podman login ghcr.io` (./gradlew :pubImg).
+    /// Push the image; needs `podman login ghcr.io`.
     Push,
-    /// Render manifests and `kubectl apply` them (./gradlew :k8sApply).
+    /// Render manifests and `kubectl apply` them.
     Apply {
         #[arg(value_enum, default_value_t = Apply::Chart)]
         what: Apply,
     },
-    /// Restart deployment/njord-chart-dep and wait for the rollout (./gradlew :rolloutRestart).
+    /// Restart deployment/njord-chart-dep and wait for the rollout.
     Rollout,
-    /// Delete the njord-ingest-rs pod so it pulls the image again (./gradlew :cycleIngestPod).
+    /// Delete the njord-ingest-rs pod so it pulls the image again.
     CycleIngest,
     /// Create a one-off Job from cronjob/njord-enc-download.
     Seed,
     /// `kubectl get pods,pvc,certificate,ingress` and `curl /v1/about/version`.
     Verify,
-    /// build, push, apply chart, wait 5s, rollout (./gradlew :deploy).
+    /// build, push, apply chart, wait 5s, rollout.
     Deploy,
-    /// Print a rendered manifest to stdout. Never touches anything (./gradlew :showSecret).
+    /// Print a rendered manifest to stdout. Never touches anything.
     Render {
         #[arg(value_enum)]
         what: Render,
@@ -229,7 +234,7 @@ impl Xtask {
             .and_then(|n| n.parse().ok())
             .with_context(|| format!("NJORD_NFS_SIZE must be <n>Gi, got {size}"))?;
         if gib < 20 {
-            bail!("NJORD_NFS_SIZE must be at least 20Gi (§10.2 item 2)");
+            bail!("NJORD_NFS_SIZE must be at least 20Gi");
         }
         self.kube_preflight(&namespace)?;
         let sh = &self.sh;
@@ -387,16 +392,16 @@ impl Xtask {
 // ------------------------------------------------------------------------------------------------
 
 /// A non-empty variable, or `default` when it is unset or empty. Without a default an unset or
-/// empty variable is an error, and so is the literal string "undefined": Secret.kt fell back to it,
-/// so a shell exporting NJORD_DB_NAME but not NJORD_DB would have written dbname=undefined without
-/// complaint (§10.3).
+/// empty variable is an error, and so is the literal string "undefined", so a value that was never
+/// really set cannot end up in a manifest as `dbname=undefined`. `NJORD_DB_NAME` belongs to the
+/// openenc.com production environment; when it is set but `NJORD_DB` is not, the error says so.
 fn var(name: &str, default: Option<&str>) -> Result<String> {
     let value = match (optional(name), default) {
         (v, Some(default)) if v.is_empty() => default.to_string(),
         (v, None) if v.is_empty() => {
             if name == "NJORD_DB" && !optional("NJORD_DB_NAME").is_empty() {
                 bail!(
-                    "NJORD_DB is not set (NJORD_DB_NAME is, but that is the Kotlin environment's variable and is never read here)"
+                    "NJORD_DB is not set (NJORD_DB_NAME is, but that is the openenc.com production environment's variable and is never read here)"
                 );
             }
             bail!("{name} is not set");
@@ -457,7 +462,9 @@ fn namespace() -> Result<String> {
         |s| shaped(s, lower_alnum, |b| lower_alnum(b) || b == b'-') && !s.ends_with('-'),
     )?;
     if namespace == "njord" {
-        bail!("NJORD_NAMESPACE=njord is the Kotlin environment; xtask never touches it (§10)");
+        bail!(
+            "NJORD_NAMESPACE=njord is the openenc.com production environment; xtask never touches it"
+        );
     }
     Ok(namespace)
 }
@@ -474,7 +481,7 @@ fn identifier(s: &str) -> bool {
 fn db() -> Result<String> {
     let db = token("NJORD_DB", None, "^[a-z_][a-z0-9_]*$", identifier)?;
     if db == "s57server" {
-        bail!("NJORD_DB=s57server is the Kotlin environment's database (§10.1); use njord");
+        bail!("NJORD_DB=s57server is the openenc.com production environment's database; use njord");
     }
     Ok(db)
 }
@@ -484,13 +491,13 @@ fn host() -> Result<String> {
         !s.is_empty() && s.bytes().all(|b| lower_alnum(b) || b == b'.' || b == b'-')
     })?;
     if host.ends_with("openenc.com") {
-        bail!("NJORD_HOST={host} belongs to the njord namespace");
+        bail!("NJORD_HOST={host} belongs to the openenc.com production environment");
     }
     Ok(host)
 }
 
-/// The Rust image `$NJORD_IMAGE_REPO:$NJORD_VERSION`. Every workload (chart, ingest, enc-download)
-/// runs it (§10.4).
+/// The image `$NJORD_IMAGE_REPO:$NJORD_VERSION`. Every workload (chart, ingest, enc-download)
+/// runs it.
 fn image() -> Result<String> {
     let repo = token(
         "NJORD_IMAGE_REPO",
@@ -510,16 +517,23 @@ fn image() -> Result<String> {
             )
         },
     )?;
-    // §10.2 item 1: the njord namespace pulls njord-chart-server with imagePullPolicy: Always.
+    // Production (the njord namespace) pulls njord-chart-server with imagePullPolicy: Always, so
+    // pushing this image there would deploy it to openenc.com.
     if repo.contains("njord-chart-server") {
         bail!(
-            "NJORD_IMAGE_REPO={repo}: the Rust image must never go to njord-chart-server (§10.2 item 1)"
+            "NJORD_IMAGE_REPO={repo}: this image must never go to njord-chart-server, the openenc.com production repository"
         );
     }
     Ok(format!("{repo}:{version}"))
 }
 
-/// The last line of defence against the overlaps in §10.2, applied to every rendered manifest.
+/// Refuses a rendered manifest that could touch the openenc.com production environment.
+///
+/// This is the last line of defence, applied to every rendered manifest. Refused: the `njord`
+/// namespace; the cluster-scoped `nfs` StorageClass, which is backed by production's disk; a
+/// `njord-chart-server` image; `openenc.com`; the `s57server` database; a DB relay on host
+/// port 6432, which production's relay already binds on every node (this environment's relay
+/// uses 6433); and any unfilled placeholder.
 fn guard(label: &str, text: &str) -> Result<()> {
     let key_is = |line: &str, key: &str, value: &str| {
         line.trim_start()
@@ -535,7 +549,7 @@ fn guard(label: &str, text: &str) -> Result<()> {
             .find("image:")
             .is_some_and(|i| line[i..].contains("njord-chart-server"))
         {
-            // No workload may run a Kotlin njord-chart-server image.
+            // No workload may run the production njord-chart-server image.
             Some("a njord-chart-server image")
         } else {
             ["TCP4-LISTEN:6432", "openenc.com", "s57server"]
@@ -610,7 +624,7 @@ impl Manifests {
 }
 
 // ------------------------------------------------------------------------------------------------
-// Secrets (replacement for the Kotlin buildSrc Secret.kt and ./gradlew :secret)
+// Secrets
 // ------------------------------------------------------------------------------------------------
 
 struct Secrets {
@@ -653,7 +667,7 @@ impl Secrets {
         };
         if secrets.db_user == "akmadmin" {
             bail!(
-                "NJORD_DB_USER=akmadmin: use the dedicated njord role so this environment cannot touch s57server (§10.2 item 4)"
+                "NJORD_DB_USER=akmadmin: use the dedicated njord role so this environment cannot touch s57server"
             );
         }
         Ok(secrets)
@@ -688,7 +702,7 @@ impl Secrets {
         // The pods connect to this namespace's njord-db-relay Service (port 6432 -> host port
         // 6433), not the database directly - see the DaemonSet in chart_server.yaml. sqlx pools
         // in each process (MAX_DB_CONNECTIONS), so there is no pgbouncer sidecar. The path is
-        // NJORD_DB in both secrets, so they cannot disagree (§10.3).
+        // NJORD_DB in both secrets, so they cannot disagree.
         let url = format!("postgresql://{user}:{db_pass}@njord-db-relay:6432/{db}?sslmode=require");
         let text = format!(
             r#"---
@@ -777,7 +791,7 @@ mod tests {
     }
 
     #[test]
-    fn guard_refuses_the_kotlin_environment() {
+    fn guard_refuses_the_production_environment() {
         for bad in [
             "  namespace: njord",
             "storageClassName:   nfs ",

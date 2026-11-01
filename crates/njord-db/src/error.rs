@@ -2,12 +2,14 @@
 
 use std::fmt;
 
+/// A database operation failed.
 #[derive(Debug)]
 pub enum Error {
-    /// No connection could be acquired before the [`RetryPolicy`](crate::RetryPolicy) ran out
-    /// (Kotlin's `sqlOpAsync` returning `null` for want of a connection); the last attempt's error.
+    /// No connection could be acquired before the [`RetryPolicy`](crate::RetryPolicy) ran out;
+    /// holds the last attempt's error.
     Connection(sqlx::Error),
-    /// A statement failed. Never retried (decision D5).
+    /// A statement failed. Never retried: a statement may have had effects, so re-running it
+    /// could apply them twice.
     Sql(sqlx::Error),
     /// A geometry column held bytes that are not WKB, or a geometry could not be encoded.
     Geometry(String),

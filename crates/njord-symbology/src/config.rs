@@ -1,13 +1,16 @@
-//! The `ChartsConfig` settings the symbology reads. The server fills this from its configuration.
+//! The settings the symbology reads. The server fills this from its `ChartsConfig`.
 
-/// Depth thresholds in metres (`shallowDepth` / `safetyDepth` / `deepDepth`) and the debug tile
-/// switch. Kotlin holds the thresholds as `Float`, and the rules compare in `f32`.
+/// Depth thresholds in metres and the debug tile switch.
+///
+/// The thresholds come from the `shallowDepth` / `safetyDepth` / `deepDepth` configuration keys.
+/// They are held as `f32` and the rules compare in `f32`, which decides the colour band of a depth
+/// right at a threshold the way the goldens record.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct SymbologyConfig {
     pub shallow_depth: f32,
     pub safety_depth: f32,
     pub deep_depth: f32,
-    /// Registers the `Debug` layerable (`ChartsConfig.debugTile`).
+    /// Registers the `Debug` layerable (the `debugTile` configuration key).
     pub debug_tile: bool,
 }
 

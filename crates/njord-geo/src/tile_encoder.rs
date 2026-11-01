@@ -1,7 +1,8 @@
-//! The pure decisions inside the Kotlin `server/.../geo/TileEncoder.kt`: feature property
-//! filtering (P-TE-3, `geo/filtered_props.json`) and the Natural Earth scale per zoom (P-TE-4,
-//! `geo/base_map_scale.json`). The database-backed tile assembly (`addCharts`, P-TE-5) is
-//! Phase 3.
+//! The pure decisions of tile assembly: feature property filtering and the Natural Earth scale per
+//! zoom.
+//!
+//! [`filter_props`] is pinned by `testdata/geo/filtered_props.json` and [`find_base_map_scale`] by
+//! `testdata/geo/base_map_scale.json`. The database-backed tile assembly lives in the server.
 
 use njord_model::JsonObject;
 use serde_json::Value;
@@ -9,6 +10,7 @@ use serde_json::Value;
 /// A feature property held a JSON object, which S-57 props never do.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct UnexpectedObject {
+    /// The property that held the object.
     pub key: String,
 }
 
@@ -24,7 +26,9 @@ impl std::fmt::Display for UnexpectedObject {
 
 impl std::error::Error for UnexpectedObject {}
 
-/// `filteredProps`: drops the properties that carry no information for the style, in place.
+/// Drops, in place, the properties that carry no information for the style.
+///
+/// The dropped values are:
 ///
 /// - blank strings (empty or all whitespace);
 /// - empty arrays;
@@ -33,7 +37,11 @@ impl std::error::Error for UnexpectedObject {}
 ///   `0.0`, and `0` on float, integer or unknown attributes (`VALSOU = 0`), are data and kept.
 ///
 /// `is_enumerated` answers whether an attribute acronym has S-57 attribute type `E` (from
-/// `s57attributes.json`). A JSON object value is an error and leaves `props` unchanged.
+/// `s57attributes.json`).
+///
+/// # Errors
+///
+/// Returns [`UnexpectedObject`] if any value is a JSON object; `props` is then left unchanged.
 pub fn filter_props(
     props: &mut JsonObject,
     is_enumerated: impl Fn(&str) -> bool,
@@ -55,8 +63,9 @@ fn keep(key: &str, value: &Value, is_enumerated: &impl Fn(&str) -> bool) -> bool
     }
 }
 
-/// `findBaseMapScale`: the Natural Earth scale denominator whose `base_features` rows a tile at
-/// zoom `z` draws: 1:110m below z3, 1:50m below z5, 1:10m from z5 up.
+/// The Natural Earth scale denominator whose `base_features` rows a tile at zoom `z` draws.
+///
+/// That is 1:110m below z3, 1:50m below z5 and 1:10m from z5 up.
 pub fn find_base_map_scale(z: u32) -> i32 {
     if z < 3 {
         110_000_000

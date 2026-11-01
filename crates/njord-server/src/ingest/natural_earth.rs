@@ -1,5 +1,6 @@
-//! Natural Earth base map ingest (`ingest/NaturalEarthIngest.kt`): a zip of shapefiles, each
-//! replacing the `base_features` rows of its file name and scale. Progress, abort and clean-up
+//! Natural Earth base map ingest: a zip of shapefiles, installed as `base_features` rows.
+//!
+//! Each shapefile replaces the rows of its file name and scale. Progress, abort and clean-up
 //! follow [`super::chart`].
 
 use std::path::{Path, PathBuf};
@@ -11,7 +12,10 @@ use super::Report;
 use super::chart::{file_name, unzip};
 use crate::state::AppState;
 
-/// `NaturalEarthIngest.ingest`.
+/// Ingests the Natural Earth zip `<claim_dir>/<zip_file>`, which the worker claimed while it held
+/// the lock.
+///
+/// Does nothing when this instance does not hold the lock; the outcome goes to the status file.
 pub async fn ingest(state: &AppState, claim_dir: &Path, zip_file: &str) {
     if !state.lock.acquired() {
         tracing::info!("NE ingest noop {zip_file} - lock not acquired");
@@ -102,7 +106,7 @@ async fn ingest_internal(
     Ok(report)
 }
 
-/// `processShapefile`: delete the file's previous rows, then insert every layer's repaired
+/// Deletes the shapefile's previous rows, then inserts every layer's repaired
 /// features under its normalised layer name.
 async fn process_shapefile(state: &AppState, shp: Shapefile, name: &str, report: &mut Report) {
     let scale = scale_from_filename(name);

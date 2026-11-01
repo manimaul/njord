@@ -1,11 +1,11 @@
-//! Web Mercator tile math with 4096 px tiles, ported from `libgdal/.../TileSystem.kt`.
-//! Pinned by P-TE-1 (`geo/tile_system.json`).
+//! Web Mercator tile math with 4096 px tiles.
 //!
-//! Every formula keeps the Kotlin operation order so results are bit-identical. The one
-//! intentional difference is decision D10: Kotlin computes `mapSize` as `4096 shl z` in a 32-bit
-//! `Int`, which overflows from z19 (`4096 << 19 == 2^31`) and turns every pixel coordinate and
-//! clip polygon at z ≥ 19 into garbage. The port computes it in 64 bits, so the whole D8 range
-//! `0 ≤ z ≤ 24` is meaningful.
+//! Every formula keeps a fixed floating-point operation order, so results are bit-identical to
+//! the golden fixture `testdata/geo/tile_system.json`. The map size ([`TileSystem::map_size`]) is
+//! computed in 64 bits, so every zoom `0 ≤ z ≤ 24` the server serves is meaningful. The fixture was
+//! recorded with a 32-bit map size, which overflows from z19 (`4096 << 19 == 2^31`) and makes its
+//! pixel coordinates and clip polygons at z ≥ 19 garbage; the tests check those cases for sanity
+//! rather than equality.
 
 use std::f64::consts::PI;
 
@@ -28,11 +28,14 @@ const SCREEN_TILE_SIZE: f64 = 256.0;
 /// chart becomes visible slightly before its compilation scale.
 pub const TWEAK_ZOOM_TO_SCALE_BY: f64 = 0.92;
 
-/// `min(max(num, min_value), max_value)`, as Kotlin's `clip`.
+/// Clamps `num` to `min_value..=max_value`: `min(max(num, min_value), max_value)`.
 pub fn clip(num: f64, min_value: f64, max_value: f64) -> f64 {
     num.max(min_value).min(max_value)
 }
 
+/// A Web Mercator tile pyramid with square tiles of [`tile_size`](Self::tile_size) pixels.
+///
+/// Njord always uses [`TILE_SYSTEM`], whose tiles are 4096 px (the MVT extent).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct TileSystem {
     /// Pixels along one side of a tile.
@@ -45,19 +48,21 @@ impl Default for TileSystem {
     }
 }
 
-/// The 4096 px tile system every Njord tile uses (Kotlin's top-level `tileSystem`).
+/// The 4096 px tile system every Njord tile uses.
 pub const TILE_SYSTEM: TileSystem = TileSystem::new(4096);
 
 impl TileSystem {
+    /// A tile system whose tiles are `tile_size` pixels square.
     pub const fn new(tile_size: i64) -> Self {
         TileSystem { tile_size }
     }
 
+    /// Pixels along one side of a tile.
     pub const fn tile_size(&self) -> i64 {
         self.tile_size
     }
 
-    /// Map width and height in pixels at zoom `z`: `tile_size << z`, in 64 bits (decision D10).
+    /// Map width and height in pixels at zoom `z`: `tile_size << z`, in 64 bits.
     pub const fn map_size(&self, z: u32) -> i64 {
         self.tile_size << z
     }
@@ -78,8 +83,10 @@ impl TileSystem {
             / (SCREEN_TILE_SIZE * 2f64.powf(zoom) * SCREEN_PIXEL_SIZE_METERS)
     }
 
-    /// `scale_to_zoom × tweak_by`, rounded half to even (Kotlin's `round`) and saturated to `i32`.
-    /// Callers that have no reason to differ pass [`TWEAK_ZOOM_TO_SCALE_BY`].
+    /// The whole zoom at which a chart of scale `1:scale_denominator` becomes visible.
+    ///
+    /// This is [`scale_to_zoom`](Self::scale_to_zoom) `× tweak_by`, rounded half to even and
+    /// saturated to `i32`. Callers that have no reason to differ pass [`TWEAK_ZOOM_TO_SCALE_BY`].
     pub fn scale_to_zoom_int(
         &self,
         scale_denominator: f64,
@@ -139,9 +146,10 @@ impl TileSystem {
         }
     }
 
-    /// The WGS-84 polygon covering tile `x`/`y`/`z`, grown by `expand_pixels` on every side and
-    /// clamped to the map. The ring runs top-left, top-right, bottom-right, bottom-left and back
-    /// (clockwise in WGS-84), as Kotlin builds it.
+    /// The WGS-84 polygon covering tile `x`/`y`/`z`, grown by `expand_pixels` on every side.
+    ///
+    /// Corners past the map are clamped onto it. The ring runs top-left, top-right, bottom-right,
+    /// bottom-left and back (clockwise in WGS-84).
     pub fn create_tile_clip_polygon(&self, x: i64, y: i64, z: u32, expand_pixels: i32) -> Polygon {
         let size = self.tile_size as f64;
         let expand = f64::from(expand_pixels);

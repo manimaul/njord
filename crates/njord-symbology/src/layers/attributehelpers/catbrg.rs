@@ -1,4 +1,4 @@
-//! `attributehelpers/Catbrg.kt`.
+//! S-57 `CATBRG` (category of bridge) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/BRIDGE/CATBRG>

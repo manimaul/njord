@@ -1,4 +1,4 @@
-//! `GET /v1/about/{path...}` (`AboutHandler.kt`): build identity and the resource dictionaries.
+//! `GET /v1/about/{path...}`: build identity and the resource dictionaries.
 
 use std::sync::Arc;
 
@@ -12,10 +12,13 @@ use njord_model::AboutJson;
 use super::with_content_type;
 use crate::state::AppState;
 
-/// The crate version with `-rust` appended. The conformance suite tells the implementations apart
+/// The crate version with `-rust` appended.
+///
+/// The conformance suite tells the implementations apart
 /// by `rust` in this field (or an `implementation` key, which would change the golden's key set).
 pub const VERSION: &str = concat!(env!("CARGO_PKG_VERSION"), "-rust");
 
+/// The `version` document: the crate version, git hash and branch, build date and GDAL release.
 pub fn about_json() -> AboutJson {
     AboutJson {
         version: VERSION.to_owned(),
@@ -27,7 +30,7 @@ pub fn about_json() -> AboutJson {
     }
 }
 
-/// `/v1/about` itself, with no sub-path: Ktor's tailcard matches it and the handler answers 404.
+/// `/v1/about` itself, with no sub-path: an empty 404.
 pub async fn root() -> StatusCode {
     StatusCode::NOT_FOUND
 }

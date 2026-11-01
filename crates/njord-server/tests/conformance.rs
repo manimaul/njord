@@ -1,4 +1,4 @@
-//! The conformance goldens (`conformance/golden/`, RUST_PORT_PLAN.md §5.5) that need no database,
+//! The conformance goldens (`conformance/golden/`) that need no database,
 //! replayed in-process against [`njord_server::router`] and compared as `conformance/lib/engine.py`
 //! verify mode compares them: status; content type ignoring case and whitespace; captured
 //! headers; and the body reduced by the golden's kind — `json` and `style` parsed, layer ids
@@ -8,8 +8,8 @@
 //! `--server-impl rust`. JSON bodies are compared as `mask.differences` compares them: object key
 //! order ignored, an integer equal to a float (key order and number types are pinned per wire
 //! type by `njord-model`'s golden round trips), after `engine.comparable_body` drops the `null`
-//! members of GeoJSON objects on both sides (Kotlin writes `"bbox": null`, `"crs": null`,
-//! `"id": null`; the port leaves them out). A `tile` body is compared only when both sides decode
+//! members of GeoJSON objects on both sides (the goldens record `"bbox": null`, `"crs": null`,
+//! `"id": null`; the server leaves them out). A `tile` body is compared only when both sides decode
 //! (as in `engine.compare`); this replay does not decode MVT, so it checks a tile route's status
 //! and content type only.
 //!
@@ -39,14 +39,14 @@ const BASE: &str = "http://localhost:9000";
 const SKIPPED: &[(&str, &str)] = &[
     (
         "api_03_tiles/tile_*",
-        "tile bodies are compared decoded by P-TE-5 (tests/tiles.rs) and by the live pytest run, \
-         whose mapbox_vector_tile decoding is not reproduced here",
+        "tile bodies are compared decoded by the golden tile test (tests/tiles.rs) and the live \
+         pytest run, whose mapbox_vector_tile decoding is not reproduced here",
     ),
     (
         "api_03_tiles/tile_info_14_2619_5744",
         "WGS-84 vertices from boolean operations differ from GEOS in the 11th decimal (geo's grid \
          snapping); the live suite compares them rounded to 7 decimals with canonical ring \
-         starts, and P-TE-5 (tests/tiles.rs) to 1e-7",
+         starts, and the golden tile test (tests/tiles.rs) to 1e-7",
     ),
     (
         "api_08_ingest/completion_report",

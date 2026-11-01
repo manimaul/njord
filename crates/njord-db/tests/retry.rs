@@ -1,8 +1,9 @@
-//! P-DB-7: the retry policy against `db/retry.json`, under paused tokio time so the backoff is
-//! exact. The block is never re-run (decision D5), so each case runs the connection attempts
-//! through `njord_db::retry::acquire` and then the block once; the cases' `port.expected` is
-//! that policy. The `cancel` cases are a block failing on its first run (cancellation of a Rust
-//! future is its drop, which cannot be retried either).
+//! The retry policy against `db/retry.json`, under paused tokio time so the backoff is exact.
+//!
+//! The block is never re-run, so each case runs the connection attempts through
+//! `njord_db::retry::acquire` and then the block once; the cases' `port.expected` records that
+//! policy. The `cancel` cases are a block failing on its first run (cancellation of a future is
+//! its drop, which cannot be retried either).
 
 use njord_db::RetryPolicy;
 use njord_db::retry::acquire;
@@ -63,7 +64,7 @@ async fn run(input: &RetryInput) -> Value {
 }
 
 #[tokio::test(start_paused = true)]
-async fn p_db_7_retry() {
+async fn retry_policy_cases() {
     let cases = cases("db/retry.json");
     let mut failures = Failures::default();
     for (i, case) in cases.iter().enumerate() {

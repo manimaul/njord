@@ -1,13 +1,12 @@
-//! The Mapbox Vector Tile 2.1 protobuf messages (`vector_tile.proto`, Kotlin `tile/Tile.kt`),
-//! written and read by hand.
+//! The Mapbox Vector Tile 2.1 protobuf messages (`vector_tile.proto`), written and read by hand.
 //!
-//! The writer emits fields in the order `kotlinx.serialization.protobuf` does — declaration order
-//! of `Tile.kt`, which puts `Layer.version` (field 15) first — and omits fields equal to their
-//! Kotlin default (`version == 1`, empty lists, `id == 0`, `type == UNKNOWN`). For the same input
-//! the bytes are therefore identical to the Kotlin encoder's, which the P-TE-2 test checks. The
-//! reader accepts any field order and both packed and unpacked repeated fields.
+//! The writer emits fields in a fixed order that puts `Layer.version` (field 15) first, and omits
+//! fields equal to their default (`version == 1`, empty lists, `id == 0`, `type == UNKNOWN`). That
+//! is the byte layout of the golden tiles in `testdata/geo/mvt/`, so for the same input the bytes
+//! are identical to them, which the `mvt` tests check. The reader accepts any field order and both
+//! packed and unpacked repeated fields.
 
-/// `Tile.GeomType`.
+/// `Tile.GeomType`: the geometry type of a [`Feature`].
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum GeomType {
     Unknown = 0,
@@ -49,6 +48,7 @@ pub struct Value {
     pub bool_value: Option<bool>,
 }
 
+/// `Tile.Feature`: one feature's id, property tags and geometry command stream.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Feature {
     pub id: u64,
@@ -57,6 +57,7 @@ pub struct Feature {
     pub geometry: Vec<u32>,
 }
 
+/// `Tile.Layer`: a named layer's features with their shared key and value tables.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Layer {
     pub version: u32,
@@ -67,6 +68,7 @@ pub struct Layer {
     pub extent: u32,
 }
 
+/// `Tile`: the whole vector tile.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Tile {
     pub layers: Vec<Layer>,
@@ -175,6 +177,7 @@ fn encode_layer(layer: &Layer) -> Vec<u8> {
 }
 
 impl Tile {
+    /// The tile as protobuf bytes, in the field order described in the module docs.
     pub fn encode(&self) -> Vec<u8> {
         let mut w = Writer::default();
         for layer in &self.layers {
@@ -183,6 +186,11 @@ impl Tile {
         w.0
     }
 
+    /// Reads a tile from protobuf bytes; unknown fields are skipped.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`DecodeError`] if the bytes are not a well-formed vector tile.
     pub fn decode(bytes: &[u8]) -> Result<Tile, DecodeError> {
         let mut tile = Tile::default();
         for field in Reader(bytes) {

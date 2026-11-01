@@ -1,14 +1,16 @@
-//! P-SEC-1 `testdata/admin/hmac_vectors.json` and `signature_vectors.json`, P-SEC-2
-//! `testdata/admin/verify_cases.json` against [`njord_server::signature`], with each case's
-//! `port.expected` (decision D4) when it has one.
+//! Admin signatures against the fixtures.
+//!
+//! `testdata/admin/hmac_vectors.json`, `signature_vectors.json` and `verify_cases.json` are
+//! checked against [`njord_server::signature`], with each case's `port.expected` when it has
+//! one.
 
 use njord_model::AdminSignature;
 use njord_server::signature::{Verifier, encode_url_path, hmac, random_uuid};
 use njord_testdata::{Failures, cases, first_difference, port_expected};
 use serde_json::{Value, json};
 
-/// `createSignatureResponse` with a fixed clock and nonce: the signature, its informational
-/// expiry and the exact `signatureEncoded` text a Kotlin client would send back.
+/// [`Verifier::mint`] with a fixed clock and nonce: the signature, its informational expiry and
+/// the exact `signatureEncoded` text a client sends back.
 #[test]
 fn signature_vectors() {
     let mut failures = Failures::default();

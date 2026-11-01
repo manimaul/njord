@@ -1,5 +1,5 @@
-//! One module per Kotlin `Layerable` file in `server/…/layers/`, named after it (`Boylat.kt` is
-//! `boylat`), plus `base/` (Natural Earth), `attributehelpers/` and the light description.
+//! The layerables: one module per S-57 object class, named after its acronym (`BOYLAT` is
+//! [`boylat`]), plus [`base`] (Natural Earth), [`attributehelpers`] and the light description.
 //!
 
 pub mod attributehelpers;

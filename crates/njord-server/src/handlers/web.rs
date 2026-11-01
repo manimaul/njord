@@ -1,6 +1,7 @@
-//! The web app (`ChartServerApp.kt`'s `StatusPages.unhandled`): every request no route matches,
-//! whatever its method, is answered from `webStaticContent`, so deep links into the single-page
-//! app resolve. There is no 404 for an unknown path.
+//! The web app: every request no route matches is answered from `webStaticContent`.
+//!
+//! This holds whatever the method, and an unknown path gets `index.html`, so deep links into the
+//! single-page app resolve. There is no 404 for an unknown path.
 
 use std::sync::Arc;
 
@@ -11,9 +12,11 @@ use axum::response::{IntoResponse, Response};
 use super::with_content_type;
 use crate::state::AppState;
 
-/// The file in `webStaticContent` named by the text after the request URI's last `/` (query
-/// string included, nothing decoded, so only top-level files are reachable), with a content type
-/// from its extension (`application/octet-stream` when unknown); otherwise `index.html` as
+/// Answers a request no route matched with a file of the web app, or `index.html`.
+///
+/// The file is the one in `webStaticContent` named by the text after the request URI's last `/`
+/// (query string included, nothing decoded, so only top-level files are reachable), with a content
+/// type from its extension (`application/octet-stream` when unknown); otherwise `index.html` as
 /// `text/html; charset=UTF-8` with status 200, an empty body when there is no `index.html`.
 pub async fn fallback(State(state): State<Arc<AppState>>, uri: Uri) -> Response {
     let target = uri.path_and_query().map(|p| p.as_str()).unwrap_or("/");

@@ -1,5 +1,7 @@
-//! The readable JSON view of an encoded tile that the P-TE-2 sidecars (`geo/mvt/<case>.json`
-//! `decoded`) and the P-TE-5 golden tiles store, ported from Kotlin `tile/TileJsonView.kt`:
+//! The readable JSON view of an encoded tile.
+//!
+//! The golden fixtures store tiles in this form: the `decoded` field of the `geo/mvt/<case>.json`
+//! sidecars and the golden tiles under `testdata/geo/tiles/`.
 //!
 //! ```text
 //! { "layers": [ { "name", "version", "extent",
@@ -16,10 +18,21 @@ use super::proto::{self, DecodeError, Tile};
 use super::{CLOSE_PATH, LINE_TO, MOVE_TO};
 
 /// Decodes `bytes` and returns the view.
+///
+/// # Errors
+///
+/// Returns [`DecodeError`] if the bytes are not a well-formed vector tile or a feature's tags or
+/// geometry do not decode.
 pub fn decode_to_json(bytes: &[u8]) -> Result<Value, DecodeError> {
     Tile::decode(bytes).and_then(|t| tile_view(&t))
 }
 
+/// The view of a decoded tile.
+///
+/// # Errors
+///
+/// Returns [`DecodeError`] if a feature's tags point outside its layer's key or value table, or
+/// its geometry does not decode.
 pub fn tile_view(tile: &Tile) -> Result<Value, DecodeError> {
     let layers = tile
         .layers
@@ -59,13 +72,13 @@ fn layer_view(layer: &proto::Layer) -> Result<Value, DecodeError> {
     }))
 }
 
-/// The first field set, in Kotlin's `when` order; a non-finite double or float has no JSON form
+/// The first field set, in field declaration order; a non-finite double or float has no JSON form
 /// and reads as `null`.
 fn value_view(value: &proto::Value) -> Value {
     if let Some(s) = &value.string_value {
         Value::from(s.clone())
     } else if let Some(f) = value.float_value {
-        // Through the shortest f32 text, so 0.1f reads 0.1 as Kotlin prints it, not 0.100000001…
+        // Through the shortest f32 text, so 0.1f reads 0.1, not 0.100000001…
         f.to_string()
             .parse::<f64>()
             .ok()
@@ -87,6 +100,10 @@ fn value_view(value: &proto::Value) -> Value {
 }
 
 /// The command stream as paths of absolute tile pixels.
+///
+/// # Errors
+///
+/// Returns [`DecodeError`] if the stream is truncated or holds an unknown command.
 pub fn decode_geometry(commands: &[u32]) -> Result<Value, DecodeError> {
     let zig_zag_decode = |n: u32| ((n >> 1) as i32) ^ -((n & 1) as i32);
     let (mut x, mut y) = (0i32, 0i32);

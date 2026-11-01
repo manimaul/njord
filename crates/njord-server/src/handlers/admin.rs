@@ -1,5 +1,5 @@
-//! `GET /v1/admin` (`AdminHandler.kt`), behind HTTP basic auth (`adminUser` / `adminPass`), and
-//! `POST /v1/admin/verify` (`AdminVerifyHandler.kt`).
+//! `GET /v1/admin`, behind HTTP basic auth (`adminUser` / `adminPass`), and
+//! `POST /v1/admin/verify`: minting and refreshing admin signatures.
 
 use std::sync::Arc;
 
@@ -15,9 +15,12 @@ use njord_model::AdminSignature;
 use crate::forwarded::ExternalBaseUrl;
 use crate::state::AppState;
 
-/// Missing or wrong credentials: 401 with Ktor's `WWW-Authenticate: Basic realm="Admin",
-/// charset=UTF-8`. Right credentials: a fresh `AdminResponse` for the request's external base
-/// URL, the token every mutating call then carries as `?signature=`.
+/// `GET /v1/admin`: mints an admin signature for valid basic-auth credentials.
+///
+/// Missing or wrong credentials: 401 with `WWW-Authenticate: Basic realm="Admin", charset=UTF-8`,
+/// the exact challenge the conformance goldens record. Right credentials: a fresh `AdminResponse`
+/// for the request's external base URL, the token every mutating call then carries as
+/// `?signature=`.
 pub async fn admin(
     State(state): State<Arc<AppState>>,
     ExternalBaseUrl(base_url): ExternalBaseUrl,
@@ -45,9 +48,11 @@ pub async fn admin(
     response
 }
 
-/// `POST /v1/admin/verify`: the body is an `AdminSignature`; when it verifies under the request's
-/// external base URL a fresh `AdminResponse` is minted (the UI's session refresh), otherwise an
-/// empty 401. A body that is not an `AdminSignature` is Ktor's 400.
+/// `POST /v1/admin/verify`: refreshes a valid admin signature (the UI's session refresh).
+///
+/// The body is an `AdminSignature`; when it verifies under the request's external base URL a
+/// fresh `AdminResponse` is minted, otherwise an empty 401. A body that is not an
+/// `AdminSignature` is a 400 with a text message ([`super::bad_request_text`]).
 pub async fn verify(
     State(state): State<Arc<AppState>>,
     ExternalBaseUrl(base_url): ExternalBaseUrl,

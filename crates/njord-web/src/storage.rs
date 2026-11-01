@@ -1,6 +1,8 @@
-//! `localStoreGet` / `localStoreSet`: values in `localStorage` under the Kotlin class name
-//! (`MapLocation`, `Theme`, `Depth`, `AdminResponse`), in the Kotlin encoding, so an upgrade in
-//! place keeps a viewer's map position, theme and login. An empty string means "unset".
+//! Settings kept in the browser's `localStorage`.
+//!
+//! Values are JSON under the keys `MapLocation`, `Theme`, `Depth` and `AdminResponse`, in the
+//! format earlier versions of the UI wrote, so an upgrade in place keeps a viewer's map position,
+//! theme and login. An empty string means "unset".
 
 use njord_model::{CustomTheme, Theme, ThemeMode};
 use serde::Serialize;
@@ -25,10 +27,12 @@ fn set_raw(key: &str, value: &str) {
     }
 }
 
+/// The JSON value stored under `key`, or `None` if it is unset or does not decode.
 pub fn get<T: DeserializeOwned>(key: &str) -> Option<T> {
     serde_json::from_str(&get_raw(key)?).ok()
 }
 
+/// Stores `value` as JSON under `key`; `None` stores the empty string (unset).
 pub fn set<T: Serialize>(key: &str, value: Option<&T>) {
     let text = value
         .and_then(|v| serde_json::to_string(v).ok())
@@ -36,11 +40,12 @@ pub fn set<T: Serialize>(key: &str, value: Option<&T>) {
     set_raw(key, &text);
 }
 
-// The UI's Json uses `useArrayPolymorphism`, so the sealed `Theme` is stored as
-// `[serialName, value]`.
+// `Theme` is stored as a `[tag, value]` pair, the tag naming the variant with one of these
+// fully qualified names.
 const THEME_MODE: &str = "io.madrona.njord.model.ThemeMode";
 const CUSTOM_THEME: &str = "io.madrona.njord.model.CustomTheme";
 
+/// The stored [`Theme`], or `None` if it is unset or not recognised.
 pub fn get_theme() -> Option<Theme> {
     let value: Value = serde_json::from_str(&get_raw("Theme")?).ok()?;
     let [tag, body] = value.as_array()?.as_slice() else {
@@ -57,6 +62,7 @@ pub fn get_theme() -> Option<Theme> {
     }
 }
 
+/// Stores `theme` as its `[tag, value]` pair.
 pub fn set_theme(theme: &Theme) {
     let value = match theme {
         Theme::Mode(m) => json!([THEME_MODE, m]),

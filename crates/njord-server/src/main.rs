@@ -1,7 +1,20 @@
-//! `njord-server <resources dir>` (`Main.kt`): configuration from
-//! `<resources dir>/config/application.json` and `CHART_SERVER_OPTS`, then the database
-//! schema migration on `pgConnectionInfo`, then the HTTP server on the configured `host` and
-//! `port` until SIGINT or SIGTERM, with the ingest and region export workers beside it.
+//! The Njord chart server binary: the HTTP API with the ingest and region export workers.
+//!
+//! # Usage
+//!
+//! ```text
+//! njord-server <resources dir>
+//! ```
+//!
+//! The server reads its configuration ([`njord_server::ChartsConfig`]) from
+//! `<resources dir>/config/application.json`, with the JSON object in `CHART_SERVER_OPTS`
+//! shallowly merged over it, migrates the database schema on `pgConnectionInfo`, and serves
+//! [`njord_server::router`] on the configured `host` and `port` until SIGINT or SIGTERM. When
+//! `enableIngestion` is set, the ingest worker runs beside it, and the region export worker too
+//! unless `enableRegionExport` is off. Logging follows `RUST_LOG` (default `info`).
+//!
+//! The process exits with a failure status when the resources directory is missing, the
+//! configuration cannot be read, or the database cannot be migrated.
 
 use std::path::PathBuf;
 use std::process::ExitCode;

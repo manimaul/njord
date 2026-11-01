@@ -1,9 +1,11 @@
-//! The MapLibre map behind `/enc` (`viewmodel/ChartController.js.kt`): the chart style, feature
-//! queries, light-sector icons, the region overlay and, for an admin, the region editor (drag,
-//! box-delete, insert and copy-as-WKT of coverage vertices).
+//! The MapLibre map behind `/enc`.
+//!
+//! It shows the chart style and answers feature queries, draws light-sector icons and the region
+//! overlay and, for an admin, runs the region editor (drag, box-delete, insert and copy-as-WKT of
+//! coverage vertices).
 //!
 //! One map at a time, held in a thread-local; [`with`] lends it out. Map event handlers use
-//! [`try_with`], because MapLibre fires some events (`moveend`) synchronously inside calls made
+//! `try_with`, because MapLibre fires some events (`moveend`) synchronously inside calls made
 //! through [`with`].
 
 use std::cell::RefCell;
@@ -208,7 +210,7 @@ fn highlight_point() -> Layer {
 }
 
 /// A `queryRenderedFeatures` result. A feature that does not decode is listed as an `Error`
-/// layer carrying the message, as Kotlin did.
+/// layer carrying the message in its `ERROR` property.
 fn decode_features(raw: &JsValue) -> Vec<MapFeature> {
     let text = js_sys::JSON::stringify(raw)
         .ok()

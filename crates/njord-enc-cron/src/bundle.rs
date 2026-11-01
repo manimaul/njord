@@ -1,5 +1,5 @@
-//! `BundleBuilder.kt`: assembles downloaded NOAA cells into bundle zips and publishes them into
-//! the ingest worker's `save/` directory (P-EC-3).
+//! Assembles downloaded NOAA cells into bundle zips and publishes them into the ingest worker's
+//! `save/` directory.
 //!
 //! Bundling is required rather than an optimisation: the ingest worker claims exactly one zip per
 //! lock cycle and polls every 5 s, so shipping cells individually would mean one full lock /
@@ -24,6 +24,7 @@ pub struct BundleBuilder<'a, T> {
 }
 
 impl<'a, T: EncTransport> BundleBuilder<'a, T> {
+    /// A builder working in `config`'s work directory and fetching through `http`.
     pub fn new(config: &'a EncCronConfig, http: &'a T) -> Self {
         Self { config, http }
     }
@@ -33,6 +34,11 @@ impl<'a, T: EncTransport> BundleBuilder<'a, T> {
     ///
     /// Cells that fail to download or extract are logged and skipped - a single 404 must not lose
     /// the rest of the batch. Nothing is recorded locally, so a skipped cell is retried next run.
+    /// A bundle that cannot be moved into `save/` is logged and also yields `None`.
+    ///
+    /// # Errors
+    ///
+    /// The work directories cannot be created, or the staged files cannot be listed or zipped.
     pub async fn build_and_publish(
         &self,
         cells: &[&EncCatalogEntry],
@@ -111,9 +117,9 @@ fn remove(path: &Path) {
 /// other entries are dropped: `ENC_ROOT/CATALOG.031` is per cell and would collide across the
 /// bundle, and `README.TXT` / `USERAGREEMENT.TXT` are boilerplate.
 ///
-/// Decision D3: every entry name is checked before anything is written, and an entry that would
-/// land outside the staging root (`..`, absolute, a backslash) fails the whole cell. Kotlin
-/// extracted it wherever it pointed and kept the cell.
+/// Every entry name is checked before anything is written, and an entry that would land outside
+/// the staging root (`..`, absolute, a backslash) fails the whole cell, so a malicious or corrupt
+/// zip cannot write elsewhere on the shared volume.
 fn extract_cell(cell_zip: &Path, cell: &str, staging: &Path) -> Result<(), Error> {
     let prefix = format!("ENC_ROOT/{cell}/");
     let mut zip = ZipArchive::new(BufReader::new(File::open(cell_zip)?))?;

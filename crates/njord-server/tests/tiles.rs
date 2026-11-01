@@ -1,16 +1,17 @@
-//! P-TE-5, the golden tiles (`testdata/geo/tiles/<z>_<x>_<y>.json`, Kotlin `GoldenTilesTest`):
-//! every tile encoded by [`njord_server::tile_encoder`] over the seeded test database (the three
-//! fixture cells and the 110m coastline), decoded with `njord_geo::mvt::view` and canonicalised as
-//! `TileCanonical.kt` does (layers by name; features by LNAM, props, geometry; feature ids
-//! dropped; props with sorted keys), plus the choices that carry no meaning in MVT: where a
+//! The golden tiles, `testdata/geo/tiles/<z>_<x>_<y>.json`, against the tile encoder.
+//!
+//! Every tile is encoded by [`njord_server::tile_encoder`] over the seeded test database (the
+//! three fixture cells and the 110m coastline), decoded with `njord_geo::mvt::view` and
+//! canonicalised as the goldens are (layers by name; features by LNAM, props, geometry; feature
+//! ids dropped; props with sorted keys), plus the choices that carry no meaning in MVT: where a
 //! closed ring or line starts, and the order of the parts of a multi-geometry.
 //!
 //! Every feature must then be identical, or differ in one of the listed [`Divergence`]s, each a
 //! known `geo`-versus-GEOS/JTS behaviour inside `njord-geo`; each is printed with the tile and
 //! feature (`cargo test -p njord-server --test tiles -- --nocapture`), and anything else fails.
-//! Props, feature presence and layer sets are never relaxed. Each tile is encoded [`ENCODES`]
-//! times and must come out the same every time. TE-7 `_info.json` the same way in WGS-84, with
-//! coordinates to [`INFO_TOLERANCE`] and ring orientation normalised.
+//! Props, feature presence and layer sets are never relaxed. Each tile is encoded [`ENCODES`] times
+//! and must come out the same every time. The `_info.json` goldens are checked the same way in
+//! WGS-84, with coordinates to [`INFO_TOLERANCE`] and ring orientation normalised.
 //!
 //! `NJORD_TILE_DUMP=1` writes the canonical Rust views under the test's temp directory.
 
@@ -46,7 +47,8 @@ fn tile_of(path: &std::path::Path) -> Option<(TileXyz, bool)> {
 /// How many times each tile is encoded; any feature that differs between encodes fails.
 const ENCODES: usize = 3;
 
-/// `canonicalInfo`.
+/// An `info` body in canonical form: props and geometry with sorted keys, entries sorted by
+/// layer, `LNAM`, props and geometry.
 fn canonical_info(info: &Value) -> Value {
     let mut items: Vec<Value> = info
         .as_array()

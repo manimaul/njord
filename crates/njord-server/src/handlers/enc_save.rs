@@ -1,4 +1,5 @@
-//! `POST /v1/enc_save?filename=` and `DELETE /v1/enc_save` (`EncSaveHandler.kt`), signed.
+//! `POST /v1/enc_save?filename=` and `DELETE /v1/enc_save`, signed: uploading a zip for ingest,
+//! and the operator's reset.
 
 use std::path::Path;
 use std::sync::Arc;
@@ -13,10 +14,11 @@ use njord_model::{EncUpload, WsMsg};
 use super::{Signed, query_param};
 use crate::state::AppState;
 
-/// Decision D2 (`testdata/security/paths.json`, `upload_filename`): the file name a zip may be
-/// saved under. A bare name only: not empty, no `/`, `\` or NUL, not `.` or `..`, ending in
-/// `.zip` in any case, and not ending in `.zip.tmp`'s inner form (`x.zip.tmp` is refused because
-/// it does not end in `.zip`). Kotlin wrote `File(chartDir, filename)` verbatim.
+/// Whether `name` is a file name an upload may be saved under.
+///
+/// A bare name only: not empty, no `/`, `\` or NUL, not `.` or `..`, ending in `.zip` in any
+/// case, and not ending in `.zip.tmp`'s inner form (`x.zip.tmp` is refused because it does not
+/// end in `.zip`). The cases are pinned by `testdata/security/paths.json` (`upload_filename`).
 pub fn valid_upload_name(name: &str) -> bool {
     !name.is_empty()
         && !name.contains(['/', '\\', '\0'])
@@ -26,12 +28,14 @@ pub fn valid_upload_name(name: &str) -> bool {
         && name.to_ascii_lowercase().ends_with(".zip")
 }
 
-/// Stores the body as `<save>/<filename>`: written to `<filename>.tmp` and renamed, so the
-/// ingest worker never claims a partial upload. Answers `{"zipFile": filename}`.
+/// `POST /v1/enc_save?filename=`: stores the body as `<save>/<filename>` for the ingest worker.
 ///
-/// D6: the upload does not clear the lock, so an ingest in flight continues and this zip waits
-/// its turn; `Extracting(0)` is announced only when nothing is running. A missing `filename` is
-/// 400, as is a name D2 refuses.
+/// The body is written to `<filename>.tmp` and renamed, so the ingest worker never claims a
+/// partial upload. Answers `{"zipFile": filename}`.
+///
+/// The upload does not clear the lock, so an ingest in flight continues and this zip waits its
+/// turn; `Extracting(0)` is announced only when nothing is running. A missing `filename` is
+/// 400, as is a name [`valid_upload_name`] refuses.
 pub async fn upload(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -69,9 +73,11 @@ pub async fn upload(
     }
 }
 
-/// The operator's reset: clears the lock (aborting any ingest in flight, whoever holds it),
-/// empties `save/` and `ingest/`, writes `Idle`, answers 202. 200 when the lock could not be
-/// cleared, as Kotlin.
+/// `DELETE /v1/enc_save`: the operator's reset.
+///
+/// Clears the lock (aborting any ingest in flight, whoever holds it), empties `save/` and
+/// `ingest/`, writes `Idle`, answers 202. 200 when the lock could not be cleared, with nothing
+/// else changed (the status the existing clients expect).
 pub async fn reset(_: Signed, State(state): State<Arc<AppState>>) -> StatusCode {
     if !state.lock.try_clear() {
         return StatusCode::OK;

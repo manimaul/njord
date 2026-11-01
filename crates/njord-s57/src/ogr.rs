@@ -1,6 +1,6 @@
-//! The GDAL layer: every GDAL call in the crate goes through here, on the georust `gdal` crate
-//! (Kotlin `Gdal.kt`, `GdalDataset.kt`, the reading half of `OgrLayer.kt` and the parts of
-//! `OgrGeometry.kt` ingest uses). Nothing outside this module touches a `gdal` type.
+//! The GDAL layer: every GDAL call in the crate goes through here, on the georust `gdal` crate.
+//!
+//! Nothing outside this module touches a `gdal` type.
 
 use std::path::Path;
 use std::sync::Once;
@@ -15,7 +15,7 @@ use crate::{Envelope, Error, S57_OPTIONS};
 
 static INIT: Once = Once::new();
 
-/// `Gdal.initialize()`: sets `OGR_S57_OPTIONS` once per process, before the first dataset is
+/// Sets `OGR_S57_OPTIONS` once per process, before the first dataset is
 /// opened (the `gdal` crate registers the drivers itself).
 pub(crate) fn init() {
     INIT.call_once(|| {
@@ -62,7 +62,7 @@ impl Dataset {
 /// A layer borrowed from its [`Dataset`].
 pub(crate) struct Layer<'a>(gdal::vector::Layer<'a>);
 
-/// How `OgrFeature.properties` reads one field of a layer.
+/// How [`FeatureRef::fields`] reads one field of a layer.
 #[derive(Clone, Copy)]
 enum FieldKind {
     /// Integers, reals, strings and their lists, through `FieldValue`.
@@ -79,8 +79,7 @@ impl Layer<'_> {
         self.0.feature_count()
     }
 
-    /// Reads every feature from the start (`OgrLayer.mapFeature`), handing `f` each one's
-    /// fields and geometry.
+    /// Reads every feature from the start, handing `f` each one's fields and geometry.
     pub(crate) fn map_features<T>(&mut self, mut f: impl FnMut(FeatureRef<'_>) -> T) -> Vec<T> {
         let kinds = self.field_kinds();
         self.0.reset_feature_reading();
@@ -131,7 +130,7 @@ pub(crate) struct FeatureRef<'a> {
     kinds: &'a [FieldKind],
 }
 
-/// One field of a feature as `OgrFeature.properties` maps it to JSON.
+/// One field of a feature, mapped to JSON.
 pub(crate) struct Field {
     pub(crate) name: String,
     pub(crate) value: Value,
@@ -143,9 +142,8 @@ impl FeatureRef<'_> {
         self.feature.geometry().cloned().map(Geometry)
     }
 
-    /// Every field that is set and not null, in field order, typed as `OgrFeature.properties`
-    /// types them: strings and dates as strings, `OFSTBoolean` integers as booleans, numbers and
-    /// lists as JSON numbers and arrays.
+    /// Every field that is set and not null, in field order: strings and dates as strings,
+    /// `OFSTBoolean` integers as booleans, numbers and lists as JSON numbers and arrays.
     pub(crate) fn fields(&self) -> Vec<Field> {
         self.feature
             .fields()
@@ -194,8 +192,9 @@ fn real(v: f64) -> Value {
     serde_json::Number::from_f64(v).map_or(Value::Null, Value::Number)
 }
 
-/// An owned OGR geometry, in WGS84 for both S-57 cells and Natural Earth shapefiles. Opaque so
-/// that GDAL stays inside this crate: ingest takes [`Geometry::wkb`] to PostGIS.
+/// An owned OGR geometry, in WGS84 for both S-57 cells and Natural Earth shapefiles.
+///
+/// It is opaque so that GDAL stays inside this crate: ingest takes [`Geometry::wkb`] to PostGIS.
 #[derive(Clone)]
 pub struct Geometry(gdal::vector::Geometry);
 
@@ -206,7 +205,11 @@ pub struct Geometry(gdal::vector::Geometry);
 unsafe impl Send for Geometry {}
 
 impl Geometry {
-    /// `OGR_G_CreateFromWkt`, without a spatial reference.
+    /// Parses WKT with `OGR_G_CreateFromWkt`, without a spatial reference.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`Error`] if GDAL cannot parse `wkt`.
     pub fn from_wkt(wkt: &str) -> Result<Geometry, Error> {
         init();
         gdal::vector::Geometry::from_wkt(wkt)
@@ -214,14 +217,14 @@ impl Geometry {
             .map_err(|e| Error(format!("invalid WKT {wkt}: {e}")))
     }
 
-    /// `OGR_G_IsValid` (GEOS validity).
+    /// Whether the geometry is valid (`OGR_G_IsValid`, GEOS validity).
     pub fn is_valid(&self) -> bool {
         self.0.is_valid()
     }
 
-    /// `OgrGeometry.makeValid()`: the geometry itself when valid, otherwise GDAL's
-    /// `OGR_G_MakeValid` repair, or `None` when GDAL cannot repair it (ingest then skips the
-    /// feature).
+    /// The geometry itself when valid, otherwise GDAL's `OGR_G_MakeValid` repair.
+    ///
+    /// Returns `None` when GDAL cannot repair it; ingest then skips the feature.
     pub fn make_valid(self) -> Option<Geometry> {
         if self.is_valid() {
             Some(self)
@@ -230,6 +233,7 @@ impl Geometry {
         }
     }
 
+    /// The bounding box (`OGR_G_GetEnvelope`).
     pub fn envelope(&self) -> Envelope {
         let e = self.0.envelope();
         Envelope {
@@ -245,17 +249,30 @@ impl Geometry {
         self.0.get_point(0).2
     }
 
-    /// `OGR_G_ExportToWkb(wkbNDR)`: little-endian, OGC (pre-ISO) type codes for 2.5D.
+    /// The geometry as WKB (`OGR_G_ExportToWkb(wkbNDR)`): little-endian, with OGC (pre-ISO) type
+    /// codes for 2.5D.
+    ///
+    /// # Panics
+    ///
+    /// Panics if GDAL fails to export the geometry.
     pub fn wkb(&self) -> Vec<u8> {
         self.0.wkb().expect("OGR_G_ExportToWkb")
     }
 
-    /// `OGR_G_ExportToWkt`.
+    /// The geometry as WKT (`OGR_G_ExportToWkt`).
+    ///
+    /// # Panics
+    ///
+    /// Panics if GDAL fails to export the geometry.
     pub fn wkt(&self) -> String {
         self.0.wkt().expect("OGR_G_ExportToWkt")
     }
 
-    /// `OGR_G_ExportToJson`, parsed (`OgrGeometry.geoJson()`).
+    /// The geometry as GeoJSON (`OGR_G_ExportToJson`, parsed).
+    ///
+    /// # Panics
+    ///
+    /// Panics if GDAL fails to export the geometry or its GeoJSON does not parse.
     pub fn geojson(&self) -> geojson::Geometry {
         let s = self.0.json().expect("OGR_G_ExportToJson");
         serde_json::from_str(&s).unwrap_or_else(|e| panic!("GDAL GeoJSON {s}: {e}"))

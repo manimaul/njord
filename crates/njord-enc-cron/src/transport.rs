@@ -1,5 +1,5 @@
-//! All outbound HTTP for the cron job (`EncHttp.kt`): the NOAA catalog, Njord's edition listing,
-//! the admin signature, chart deletes and cell zips.
+//! All outbound HTTP for the cron job: the NOAA catalog, Njord's edition listing, the admin
+//! signature, chart deletes and cell zips.
 
 use std::path::Path;
 use std::time::Duration;
@@ -15,6 +15,7 @@ use crate::catalog::{self, EncCatalogEntry};
 use crate::config::EncCronConfig;
 use crate::log;
 
+/// Any failure of a run; the message is logged as is.
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 
 /// The calls [`BundleBuilder`](crate::bundle::BundleBuilder) and
@@ -47,6 +48,11 @@ pub struct EncHttp<'a> {
 }
 
 impl<'a> EncHttp<'a> {
+    /// A client with `config`'s request timeout.
+    ///
+    /// # Errors
+    ///
+    /// The HTTP client cannot be built.
     pub fn new(config: &'a EncCronConfig) -> Result<Self, Error> {
         let client = reqwest::Client::builder()
             .timeout(Duration::from_secs(config.request_timeout_seconds))
@@ -59,6 +65,10 @@ impl<'a> EncHttp<'a> {
     ///
     /// Failure here must propagate: with no baseline every cell looks stale, and silently falling
     /// back to "download everything" would hammer NOAA and flood the ingest queue.
+    ///
+    /// # Errors
+    ///
+    /// Every attempt fails: no answer, a non-2xx status, or a body that does not decode.
     pub async fn fetch_chart_editions(&self) -> Result<IndexMap<String, String>, Error> {
         self.with_retry("chart editions", || async {
             let response = self
@@ -74,6 +84,10 @@ impl<'a> EncHttp<'a> {
 
     /// Streams the product catalog through the parser without materialising the document. A
     /// truncated body cannot be resumed, so the retry wraps the whole fetch-and-parse.
+    ///
+    /// # Errors
+    ///
+    /// The fetch or the parse fails on every attempt.
     pub async fn fetch_catalog(&self) -> Result<Vec<EncCatalogEntry>, Error> {
         let parser = self
             .with_retry("product catalog", || async {
@@ -131,7 +145,7 @@ impl<'a> EncHttp<'a> {
 
 impl EncTransport for EncHttp<'_> {
     /// Writes through a sibling `.tmp` file, so a crashed or truncated transfer never leaves a
-    /// plausible looking zip behind. A non-2xx answer is an error, never a saved body (D9).
+    /// plausible looking zip behind. A non-2xx answer is an error, never a saved body.
     async fn download(&self, url: &str, dest: &Path) -> Result<u64, Error> {
         self.with_retry(&format!("download {url}"), || async {
             let mut tmp_name = dest.file_name().unwrap_or_default().to_os_string();

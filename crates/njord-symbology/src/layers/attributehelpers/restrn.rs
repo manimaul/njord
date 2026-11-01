@@ -1,4 +1,4 @@
-//! `attributehelpers/Restrn.kt`.
+//! S-57 `RESTRN` (restriction) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/RESARE/RESTRN>

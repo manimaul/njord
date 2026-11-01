@@ -1,9 +1,9 @@
-//! `POST /v1/enc_url` (`EncUrlHandler.kt`), signed: downloads a zip from a URL into `save/` in
+//! `POST /v1/enc_url`, signed: downloads a zip from a URL into `save/` in
 //! the background and answers 202 with the name it will have.
 //!
-//! Decision D9: a non-2xx response is never saved (`error_for_status`), and the completed temp
-//! file must start with the zip magic before it is renamed to `<name>.zip`; otherwise it is
-//! deleted and the failure logged. Kotlin saved any body, 404 pages included.
+//! A non-2xx response is never saved (`error_for_status`), and the completed temp file must
+//! start with the zip magic before it is renamed to `<name>.zip`; otherwise it is deleted and the
+//! failure logged, so an error page never reaches the ingest worker.
 
 use std::sync::Arc;
 
@@ -19,8 +19,8 @@ use tokio::io::AsyncWriteExt;
 use super::Signed;
 use crate::state::AppState;
 
-/// `url.substringAfterLast('/').substringBefore('?')` when it ends in `.zip`, else
-/// `chart_<epoch millis>.zip`.
+/// The name a download is saved under: the URL's last path segment, without a query string,
+/// when it ends in `.zip`, else `chart_<epoch millis>.zip`.
 pub fn file_name_for(url: &str) -> String {
     let name = url.rsplit('/').next().unwrap_or("");
     let name = name.split('?').next().unwrap_or("");
@@ -31,6 +31,11 @@ pub fn file_name_for(url: &str) -> String {
     }
 }
 
+/// Starts downloading the zip at the body's `url` and answers 202 with the name it will be
+/// saved under.
+///
+/// A body that is not an `EncUrlRequest` is a 400 with a text message
+/// ([`super::bad_request_text`]).
 pub async fn download(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -52,7 +57,8 @@ pub async fn download(
     (StatusCode::ACCEPTED, Json(EncUpload { zip_file })).into_response()
 }
 
-/// `PK\x03\x04` (an entry) or `PK\x05\x06` (an empty archive).
+/// Whether `head` starts with a zip magic: `PK\x03\x04` (an entry) or `PK\x05\x06` (an empty
+/// archive).
 fn looks_like_zip(head: &[u8]) -> bool {
     head.starts_with(b"PK\x03\x04") || head.starts_with(b"PK\x05\x06")
 }

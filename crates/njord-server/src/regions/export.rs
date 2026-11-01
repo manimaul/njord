@@ -1,6 +1,7 @@
-//! Rendering region archives (`ingest/RegionExporter.kt` `exportNext`, `exportRegion`,
-//! `writeMbtilesArchive`; P-RE-1…3 `testdata/regions/schema.sql`, `metadata.json`,
-//! `archive.json`).
+//! Rendering region archives.
+//!
+//! The archive layout is pinned by `testdata/regions/schema.sql`, `metadata.json` and
+//! `archive.json`.
 //!
 //! An archive is an MBTiles file (SQLite, written with `rusqlite`) holding the region's tiles
 //! gzip-compressed in TMS row order, plus the `charts` / `chart_tiles` catalog the mobile client
@@ -26,7 +27,7 @@ use geo_types::Rect;
 use jiff::Timestamp;
 use njord_db::RegionChart;
 use njord_geo::TILE_SYSTEM;
-use njord_symbology::kotlin::double_to_string;
+use njord_symbology::number::double_to_string;
 use rusqlite::{Connection, params};
 use serde_json::Value;
 
@@ -49,19 +50,30 @@ const RENDER_CONCURRENCY: usize = 4;
 /// Bumped when the `charts`/`chart_tiles` shape changes.
 const CATALOG_SCHEMA_VERSION: i32 = 1;
 
+/// What one [`export_next`] call did.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExportResult {
+    /// A stale region was taken under the lock and rendered (or its render failed and was
+    /// logged).
     Rendered,
+    /// No configured region is stale.
     NothingToDo,
+    /// A region is stale but another instance holds the lock.
     LockBusy,
 }
 
+/// Why a region archive could not be written.
 #[derive(Debug)]
 pub enum ExportError {
+    /// A PostGIS query failed.
     Db(njord_db::Error),
+    /// Writing the SQLite archive failed.
     Sqlite(rusqlite::Error),
+    /// A file operation failed.
     Io(std::io::Error),
+    /// A tile could not be rendered.
     Tile(tile_encoder::TileError),
+    /// Anything else, such as a failed blocking task.
     Other(String),
 }
 
@@ -122,7 +134,9 @@ pub fn xyz_to_tms_row(z: u32, y: i64) -> i64 {
     ((1i64 << z) - 1) - y
 }
 
-/// `exportNext`: renders the first configured region that is stale, under the lock.
+/// Renders the first configured region that is stale, under the lock.
+///
+/// A failed render is logged, not returned; the lock is released either way.
 pub async fn export_next(state: &AppState) -> ExportResult {
     let regions = &state.config.region_exports;
     if regions.is_empty() {
@@ -150,7 +164,7 @@ pub async fn export_next(state: &AppState) -> ExportResult {
     ExportResult::Rendered
 }
 
-/// `needsRebuild`: fail-open, a database error means rebuild.
+/// Whether `region` needs a new archive; fail-open, a database error means rebuild.
 async fn needs_rebuild(state: &AppState, region: &RegionExportConfig) -> bool {
     state
         .db
@@ -159,8 +173,15 @@ async fn needs_rebuild(state: &AppState, region: &RegionExportConfig) -> bool {
         .unwrap_or(true)
 }
 
-/// `exportRegion`: one archive, written to `<name>.tmp` and renamed into place, then the
-/// checksum sidecar, the export watermark and the prune of older archives.
+/// Writes one archive of `region`, if it is stale and has charts.
+///
+/// The archive is written to `<name>.tmp` and renamed into place, then the checksum sidecar,
+/// the export watermark and the prune of older archives follow. The caller holds the lock.
+///
+/// # Errors
+///
+/// Returns [`ExportError`] when a query, a tile render or the SQLite write fails; the temporary
+/// file is removed and no archive is installed.
 pub async fn export_region(
     state: &AppState,
     region: &RegionExportConfig,
@@ -338,7 +359,7 @@ async fn write_mbtiles(
     Ok(())
 }
 
-/// `writeCharts`: the server's `charts` rows with PostGIS and JSONB flattened to text.
+/// Writes the server's `charts` rows with PostGIS and JSONB flattened to text.
 fn write_charts(conn: &Connection, charts: &[RegionChart]) -> Result<(), ExportError> {
     if charts.is_empty() {
         return Ok(());
@@ -374,7 +395,7 @@ fn write_charts(conn: &Connection, charts: &[RegionChart]) -> Result<(), ExportE
     Ok(())
 }
 
-/// `writeChartTileEdges`.
+/// Writes the `chart_tiles` edges of `chart_name`, one row per tile in `coords`.
 fn write_chart_tile_edges(
     conn: &Connection,
     chart_name: &str,
@@ -398,7 +419,7 @@ fn write_chart_tile_edges(
     Ok(())
 }
 
-/// `worldTileCoordinates`: the full quad tree to [`WORLD_MAX_ZOOM`].
+/// The tiles of the `WORLD` region: the full quad tree from z0 to z6.
 pub fn world_tile_coordinates() -> BTreeSet<TileCoord> {
     let mut coords = BTreeSet::new();
     for z in 0..=WORLD_MAX_ZOOM {
@@ -412,7 +433,7 @@ pub fn world_tile_coordinates() -> BTreeSet<TileCoord> {
     coords
 }
 
-/// `compileTileCoordinates`: for every feature of every chart, the tiles its envelope touches at
+/// The render candidates: for every feature of every chart, the tiles its envelope touches at
 /// each zoom of `max(MINZ, 0) ..= min(MAXZ, chart.zoom)`; each chart's own set is written as
 /// `chart_tiles` edges as it is compiled, and the union is the render candidate set.
 async fn compile_tile_coordinates(
@@ -472,7 +493,7 @@ fn tiles_covering(bbox: &Rect, min_z: u32, max_z: u32, out: &mut BTreeSet<TileCo
     }
 }
 
-/// `writeMetadata`'s rows, in insertion order (`regions/metadata.json`).
+/// The MBTiles `metadata` rows, in insertion order (`testdata/regions/metadata.json`).
 fn metadata_rows(
     region: &RegionExportConfig,
     min_z: u32,
@@ -536,7 +557,7 @@ fn metadata_rows(
     rows.into_iter().map(|(k, v)| (k.to_owned(), v)).collect()
 }
 
-/// `gzipCompress`: RFC 1952 gzip at zlib's default level.
+/// RFC 1952 gzip at zlib's default level.
 fn gzip(data: &[u8]) -> Result<Vec<u8>, ExportError> {
     let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
     encoder.write_all(data)?;

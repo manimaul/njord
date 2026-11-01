@@ -1,9 +1,9 @@
-//! Sounding depth parts (`libgdal/src/nativeMain/kotlin/Soundings.kt`).
+//! Sounding depths split into the metre, foot and fathom parts the depth labels show.
 
 use njord_model::JsonObject;
 use serde_json::Value;
 
-use crate::kotlin::sign;
+use crate::number::sign;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct DisplayDepths {
@@ -15,6 +15,8 @@ pub struct DisplayDepths {
     pub fathoms_feet: i32,
 }
 
+/// Splits a sounding in metres into its display parts.
+///
 /// Every part is computed on the magnitude and then given the sounding's sign, so a drying height
 /// (negative, S-57 convention) carries the same digits as the equivalent depth with every part
 /// negative. S-52 SNDFRM04 draws those digits positive with the SOUNDSA1 underline; the style
@@ -46,7 +48,8 @@ pub fn display_depths(meters: f64) -> DisplayDepths {
     }
 }
 
-/// `addSoundingConversions`: `METERS`, `METERS_W`, `METERS_T`, `FEET`, `FATHOMS`, `FATHOMS_FT`.
+/// Writes the sounding's display parts to `props`: `METERS`, `METERS_W`, `METERS_T`, `FEET`,
+/// `FATHOMS`, `FATHOMS_FT` (see [`display_depths`]).
 pub fn add_sounding_conversions(props: &mut JsonObject, meters: f64) {
     let d = display_depths(meters);
     props.insert("METERS".into(), Value::from(meters));

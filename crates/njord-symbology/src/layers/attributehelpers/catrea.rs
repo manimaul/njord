@@ -1,4 +1,4 @@
-//! `attributehelpers/Catrea.kt`.
+//! S-57 `CATREA` (category of restricted area) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/RESARE/CATREA>

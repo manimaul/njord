@@ -1,4 +1,4 @@
-//! Natural Earth base layer: reefs (line geometry) (`base/Reefs.kt`).
+//! Natural Earth base layer: reefs (line geometry).
 
 use crate::layers::prelude::*;
 

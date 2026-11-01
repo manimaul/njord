@@ -1,4 +1,4 @@
-//! `attributehelpers/Trafic.kt`.
+//! S-57 `TRAFIC` (traffic flow) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/DWRTPT/TRAFIC>

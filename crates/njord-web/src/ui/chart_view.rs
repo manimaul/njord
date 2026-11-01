@@ -1,4 +1,4 @@
-//! `ChartView.js.kt` and `ChartQuery.js.kt`: the map page and the feature query modal.
+//! The map page (`/enc`) and its feature query modal.
 
 use leptos::html;
 use leptos::prelude::*;
@@ -9,7 +9,7 @@ use wasm_bindgen::JsCast;
 
 use crate::api;
 use crate::controller;
-use crate::kotlin::mode_name;
+use crate::display::mode_name;
 use crate::state::Async;
 use crate::store::{MapFeature, store};
 use crate::ui::components::{

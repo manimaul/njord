@@ -1,4 +1,6 @@
-//! P-EC-1…5: the `testdata/enc_cron/` tables recorded by `EncCronFixtureTest.kt`.
+//! The `testdata/enc_cron/` golden tables: catalog parsing (`parsed.json`), cell selection
+//! (`selection.json`), bundle layout (`bundle_layout.json`), configuration loading
+//! (`config.json`) and the orphan delete guards (`delete_orphans.json`).
 
 use std::cell::{Cell, RefCell};
 use std::collections::{HashMap, HashSet};
@@ -30,7 +32,7 @@ fn compare(label: &str, expected: &Value, actual: &Value, failures: &mut Failure
     }
 }
 
-/// `EntryOut`: an entry with its derived keys, as P-EC-1 records it.
+/// An entry with its derived keys, as `parsed.json` records it.
 fn entry_out(e: &EncCatalogEntry) -> Value {
     let mut v = serde_json::to_value(e).unwrap();
     let map = v.as_object_mut().unwrap();
@@ -49,7 +51,7 @@ fn parsed_out(p: &EncProdCatParser) -> Value {
 }
 
 /// A reader that hands out at most `n` bytes per read, so text nodes split across buffers are
-/// exercised as in the Kotlin test's 4096-byte feed.
+/// exercised.
 struct Trickle<R>(R, usize);
 
 impl<R: Read> Read for Trickle<R> {
@@ -60,7 +62,7 @@ impl<R: Read> Read for Trickle<R> {
 }
 
 #[test]
-fn p_ec_1_catalog_parses_to_the_committed_records() {
+fn catalog_parses_to_the_committed_records() {
     let mut failures = Failures::default();
     let all = cases("enc_cron/parsed.json");
     for case in &all {
@@ -96,7 +98,7 @@ fn p_ec_1_catalog_parses_to_the_committed_records() {
 }
 
 #[test]
-fn p_ec_1_a_truncated_or_foreign_document_fails() {
+fn a_truncated_or_foreign_document_fails() {
     let bytes = std::fs::read(testdata().join("enc_cron/catalog_sample.xml")).unwrap();
     let truncated = &bytes[..bytes.len() / 2];
     let err = catalog::parse_reader(truncated).expect_err("a truncated catalog must fail");
@@ -150,13 +152,13 @@ impl EntryIn {
     }
 }
 
-/// `EntryIn(cell).entry()` with the Kotlin defaults.
+/// A catalog entry for `cell` with the fixtures' default fields.
 fn entry(cell: &str) -> EncCatalogEntry {
     let defaults = json!({ "cell": cell, "edition": "1.0", "scale": 15000, "sizeMb": 0.1, "revision": "20240101", "publication": "20240102" });
     serde_json::from_value::<EntryIn>(defaults).unwrap().entry()
 }
 
-/// `encCronConfig()` of the Kotlin tests: the shipped defaults.
+/// The configuration the fixtures were recorded with: the shipped defaults.
 fn config(chart_temp_data: &Path) -> EncCronConfig {
     serde_json::from_value(json!({
         "catalogUrl": "https://charts.noaa.gov/ENCs/ENCProdCat_19115.xml",
@@ -193,7 +195,7 @@ fn cells(entries: &[&EncCatalogEntry]) -> Value {
 }
 
 #[test]
-fn p_ec_2_selection_logic_matches_the_committed_table() {
+fn selection_logic_matches_the_committed_table() {
     let mut failures = Failures::default();
     let all = cases("enc_cron/selection.json");
     for (i, case) in all.iter().enumerate() {
@@ -228,7 +230,8 @@ fn p_ec_2_selection_logic_matches_the_committed_table() {
     failures.assert_none(all.len());
 }
 
-/// The network as `BundleBuilder` and `delete_orphans` see it, as in the Kotlin `FakeTransport`.
+/// The network as `BundleBuilder` and `delete_orphans` see it: cell zips served from disk,
+/// failures on demand, and every delete recorded.
 #[derive(Default)]
 struct FakeTransport {
     sources: HashMap<String, PathBuf>,
@@ -397,7 +400,7 @@ fn bundle_case(c: &BundleCase, root: &Path) -> Value {
 }
 
 #[test]
-fn p_ec_3_bundle_layout_matches_the_committed_fixture() {
+fn bundle_layout_matches_the_committed_fixture() {
     let root = Path::new(env!("CARGO_TARGET_TMPDIR")).join("bundle_layout");
     let mut failures = Failures::default();
     let all = cases("enc_cron/bundle_layout.json");
@@ -410,7 +413,7 @@ fn p_ec_3_bundle_layout_matches_the_committed_fixture() {
             &mut failures,
         );
     }
-    // Nothing escaped the case directories (the Kotlin zip-slip landed in the work dir; D3).
+    // Nothing escaped the case directories (a zip-slip entry would land in the work dir).
     assert!(!root.join("evil.txt").exists());
     let _ = std::fs::remove_dir_all(&root);
     failures.assert_none(all.len());
@@ -428,7 +431,7 @@ struct ConfigCase {
 }
 
 #[test]
-fn p_ec_4_config_loading_matches_the_committed_table() {
+fn config_loading_matches_the_committed_table() {
     let root = Path::new(env!("CARGO_TARGET_TMPDIR")).join("enc_cron_config");
     let mut failures = Failures::default();
     let all = cases("enc_cron/config.json");
@@ -485,7 +488,7 @@ struct DeleteCase {
 }
 
 #[test]
-fn p_ec_5_delete_orphans_guard_ordering_matches_the_decision_table() {
+fn delete_orphans_guard_ordering_matches_the_decision_table() {
     let mut failures = Failures::default();
     let all = cases("enc_cron/delete_orphans.json");
     for case in &all {

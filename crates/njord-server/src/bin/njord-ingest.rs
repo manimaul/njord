@@ -1,6 +1,17 @@
-//! `njord-ingest <resources dir>` (`IngestApp.kt`): the ingest and region export workers without
-//! the HTTP server, for the `njord-ingest-rs` pod. Same configuration as `njord-server`, except
-//! that `enableIngestion` is not consulted; `enableRegionExport` still is.
+//! The Njord ingest binary: the ingest and region export workers without the HTTP server.
+//!
+//! # Usage
+//!
+//! ```text
+//! njord-ingest <resources dir>
+//! ```
+//!
+//! It takes the same configuration as `njord-server` (`<resources dir>/config/application.json`
+//! with `CHART_SERVER_OPTS` merged over it, see [`njord_server::ChartsConfig`]), migrates the
+//! database schema, and runs the workers ([`njord_server::spawn_ingest_workers`]) until SIGINT or
+//! SIGTERM. `enableIngestion` is not consulted; `enableRegionExport` still is. It runs as the
+//! `njord-ingest-rs` pod beside server pods that have `enableIngestion: false`. Logging follows
+//! `RUST_LOG` (default `info`).
 
 use std::path::PathBuf;
 use std::process::ExitCode;

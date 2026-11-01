@@ -1,4 +1,4 @@
-//! `attributehelpers/Cattrk.kt`.
+//! S-57 `CATTRK` (category of recommended track) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/RECTRC/CATTRK>

@@ -1,6 +1,8 @@
-//! Kotlin behaviour the goldens do not pin: Ktor's CORS refusals and same-origin pass-through,
-//! the verb semantics of every route, D8, region archive ranges, the Phase 3 answers of the
-//! mutating verbs and the configuration merge.
+//! API behaviour the conformance goldens do not pin.
+//!
+//! CORS refusals and same-origin pass-through, the verb semantics of every route, the tile
+//! coordinate bounds, region archive ranges, the answers of the mutating verbs and the
+//! configuration merge.
 
 mod common;
 
@@ -45,7 +47,7 @@ async fn send_to(
 const ORIGIN: (&str, &str) = ("origin", "http://example.test");
 
 #[tokio::test]
-async fn cors_refuses_what_ktor_refuses() {
+async fn cors_refuses_disallowed_cross_origin_requests() {
     let r = send("PATCH", "/v1/tile_json", &[ORIGIN]).await;
     assert_eq!(r.status(), StatusCode::FORBIDDEN);
     let r = send(
@@ -238,7 +240,7 @@ async fn mutating_verbs_are_401_without_a_valid_signature() {
             StatusCode::UNAUTHORIZED,
             "{method} {path}"
         );
-        // D4: malformed signatures are 401 with an empty body, never a 500.
+        // Malformed signatures are 401 with an empty body, never a 500.
         for bad in ["bogus", "eyJ4IjoxfQ%3D%3D"] {
             let sep = if path.contains('?') { '&' } else { '?' };
             let r = send(method, &format!("{path}{sep}signature={bad}"), &[]).await;
@@ -269,9 +271,9 @@ async fn mutating_verbs_are_401_without_a_valid_signature() {
     assert_eq!(r.status(), StatusCode::UNAUTHORIZED);
 }
 
-/// `GET /v1/admin` mints a signature that `requireSignature` and `POST /v1/admin/verify` accept
+/// `GET /v1/admin` mints a signature that the signed routes and `POST /v1/admin/verify` accept
 /// under the same external base URL and refuse under another; `signatureEncoded` is what clients
-/// send back, URL-encoded (`+` and `=` kept, `/` as `%2F`, as Ktor's `encodeURLPath`).
+/// send back, URL-path-encoded (`+` and `=` kept, `/` as `%2F`).
 #[tokio::test]
 async fn admin_mints_verifies_and_refreshes_signatures() {
     assert_eq!(
@@ -365,7 +367,7 @@ async fn admin_mints_verifies_and_refreshes_signatures() {
     assert_eq!(r.status(), StatusCode::BAD_REQUEST);
 }
 
-/// Routes that answer without touching the database: D2 upload names, the text answers of
+/// Routes that answer without touching the database: upload names, the text answers of
 /// `POST /v1/regions`, the empty 400s, and the reset of an idle server.
 #[tokio::test]
 async fn write_routes_without_a_database() {

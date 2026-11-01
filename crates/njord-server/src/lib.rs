@@ -1,39 +1,46 @@
-//! The Njord chart server (RUST_PORT_PLAN.md §3.2, Phase 3), ported from the Kotlin `server`
-//! module (`Main.kt`, `ChartServerApp.kt`, `endpoints/`). axum on tokio; the binary in `main.rs`
-//! only loads the configuration and serves [`router`].
+//! The Njord chart server: an axum HTTP server that serves S-57 charts as Mapbox Vector Tiles.
 //!
-//! The library holds everything else so tests drive the router in-process
-//! (`tower::ServiceExt::oneshot`) and replay the conformance goldens without a socket.
+//! The `njord-server` binary loads a [`ChartsConfig`], [`connect`]s to PostGIS, [`migrate`]s
+//! the schema, builds the [`AppState`] and serves [`router`] until [`shutdown_signal`], with the
+//! background workers from [`spawn_workers`] beside it. The `njord-ingest` binary runs only the
+//! workers ([`spawn_ingest_workers`]). Everything lives in this library so that tests drive the
+//! router in-process (`tower::ServiceExt::oneshot`) and replay the conformance goldens without a
+//! socket.
 //!
 //! # Request handling, outermost first
 //!
-//! 1. Tracing of every request (Kotlin's `CallLogging`).
+//! 1. Tracing of every request.
 //! 2. CORS ([`cors`]): preflights are answered here, before routing.
-//! 3. A panic in a handler becomes a 500, as an uncaught Kotlin exception does.
-//! 4. The routes ([`handlers`]), each with Kotlin's verb semantics ([`handlers::api`]), then the
-//!    web app for any path no route matches ([`handlers::web`]).
+//! 3. A panic in a handler becomes a 500.
+//! 4. The routes ([`handlers`]), each answering an empty 405 for the verbs it does not implement
+//!    ([`handlers::api`]), then the web app for any path no route matches ([`handlers::web`]).
 //!
 //! The external base URL that style and TileJSON URLs are built from comes from the forwarded
 //! headers ([`forwarded`]).
 //!
-//! # Database
+//! # Tiles
 //!
 //! [`AppState::db`] is a lazy `njord_db` pool on `pgConnectionInfo`; [`migrate`] brings the schema
-//! to the current version before the server listens, as Kotlin's `DbMigrations.run()` does. Tiles
-//! are assembled by [`tile_encoder`] and cached on disk by [`tile_cache`].
+//! to the current version before the server listens. `GET /v1/tile/{z}/{x}/{y}`
+//! ([`handlers::tile`]) assembles a tile from the chart and base map features with
+//! [`tile_encoder`] and keeps it in the on-disk [`tile_cache`] when `useTileCache` is on. Styles,
+//! sprites and icons come from the resources directory ([`state`], [`sprite_sheet`],
+//! [`gd_png`]).
 //!
-//! # Write path (Phase 4)
+//! # Write path
 //!
 //! Every mutating verb (chart and GeoJSON insert, chart, cache and nuke deletes, uploads, region
 //! re-render, the region archive download, the status socket) is behind the admin signature check
-//! ([`handlers::Signed`]): an empty 401 without a valid signature, as Kotlin. `GET /v1/admin`
+//! ([`handlers::Signed`], [`signature`]): an empty 401 without a valid signature. `GET /v1/admin`
 //! mints signatures behind basic auth; `POST /v1/admin/verify` refreshes one.
+//!
+//! # Ingest and region export
 //!
 //! Uploads land in `<chartTempData>/save`; [`spawn_workers`] starts the ingest worker
 //! ([`ingest::IngestWorker`]) that claims and ingests them and the region export worker
-//! ([`regions::RegionWorker`]) that renders stale region archives, both coordinated across
-//! replicas by the lock file ([`lock`]). They are started by the binary, not by [`router`], so
-//! tests drive the routes without them.
+//! ([`regions::RegionWorker`]) that renders stale region `.mbtiles` archives, both coordinated
+//! across replicas by the lock file ([`lock`]). They are started by the binaries, not by
+//! [`router`], so tests drive the routes without them.
 
 pub mod config;
 pub mod cors;
@@ -71,23 +78,33 @@ use handlers::{
 /// Connections the server keeps to PostgreSQL.
 pub const MAX_DB_CONNECTIONS: u32 = 10;
 
-/// The pool for `config.pgConnectionInfo`. Nothing connects until the first query.
+/// Builds the connection pool for `config.pgConnectionInfo`; nothing connects until the first
+/// query.
+///
+/// # Errors
+///
+/// Returns an error when the connection URL cannot be parsed.
 pub fn connect(config: &ChartsConfig) -> Result<Db, njord_db::Error> {
     Db::connect_lazy(&config.pg_connection_info, MAX_DB_CONNECTIONS)
 }
 
-/// Runs the schema migrations under the PostgreSQL advisory lock, so concurrently starting
-/// servers migrate once; the schema version reached. (Kotlin serialises on a lock file under
-/// `chartTempData` instead, which a Rust server does not see: do not start a Kotlin and a Rust
-/// server on an unmigrated database at the same moment.)
+/// Runs the schema migrations and returns the schema version reached.
+///
+/// The migrations run under a PostgreSQL advisory lock, so servers starting concurrently on one
+/// database migrate it once.
+///
+/// # Errors
+///
+/// Returns an error when the database cannot be reached or a migration fails.
 pub async fn migrate(db: &Db) -> Result<i32, njord_db::Error> {
     let lock = AdvisoryLock::new(db.pool().clone(), AdvisoryLock::MIGRATION_KEY);
     db.migrate(&lock).await
 }
 
-/// Starts the background workers when `enableIngestion` is set (`Application.njord()`): the
-/// ingest worker, and the region export worker unless `enableRegionExport` is off. The handles
-/// are the tasks; dropping them does not stop the workers.
+/// Starts the background workers when `enableIngestion` is set.
+///
+/// These are the ingest worker, and the region export worker unless `enableRegionExport` is off.
+/// The handles are the tasks; dropping them does not stop the workers.
 pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
     if !state.config.enable_ingestion {
         tracing::info!("ingestion disabled by config");
@@ -96,9 +113,9 @@ pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> 
     spawn_ingest_workers(state)
 }
 
-/// The workers alone, whatever `enableIngestion` says (`IngestApp.kt` `ingestMain`, the
-/// `njord-ingest` binary): the ingest worker, and the region export worker unless
-/// `enableRegionExport` is off.
+/// Starts the background workers whatever `enableIngestion` says, for the `njord-ingest` binary.
+///
+/// These are the ingest worker, and the region export worker unless `enableRegionExport` is off.
 pub fn spawn_ingest_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
     let mut handles = Vec::new();
     handles.push(tokio::spawn(ingest::IngestWorker::new(state.clone()).run()));
@@ -113,6 +130,10 @@ pub fn spawn_ingest_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandl
 }
 
 /// Resolves on SIGINT, or SIGTERM on unix.
+///
+/// # Panics
+///
+/// Panics when the SIGTERM handler cannot be installed.
 pub async fn shutdown_signal() {
     let interrupt = tokio::signal::ctrl_c();
     #[cfg(unix)]
@@ -128,8 +149,10 @@ pub async fn shutdown_signal() {
     let _ = interrupt.await;
 }
 
-/// The whole HTTP API. Routes are matched as Ktor matches the Kotlin route patterns: `{x}` is one
-/// path segment, `{x...}` the rest (`/v1/about` and `/v1/content` included), no trailing slash.
+/// Builds the whole HTTP API.
+///
+/// `{x}` matches one path segment and `{*x}` the rest; `/v1/about` and `/v1/content` are routed
+/// on their own so the bare prefix answers too. A trailing slash matches no route.
 pub fn router(state: Arc<AppState>) -> Router {
     Router::new()
         .route("/v1/about", api(get(about::root)))
@@ -174,7 +197,7 @@ pub fn router(state: Arc<AppState>) -> Router {
         .route("/v1/ws/enc_process", api(get(ws::enc_process)))
         .fallback(web::fallback)
         .with_state(state)
-        // Uploads are whole ENC bundles; Ktor imposed no body limit.
+        // Uploads are whole ENC bundles, so the body size is not limited.
         .layer(DefaultBodyLimit::disable())
         .layer(CatchPanicLayer::new())
         .layer(middleware::from_fn(cors::cors))

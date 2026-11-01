@@ -1,7 +1,9 @@
-//! P-SEC-3 `testdata/security/paths.json`: caller-supplied names as paths. The `content_resource`
+//! `testdata/security/paths.json`: caller-supplied names as paths.
+//!
+//! The `content_resource`
 //! and `archive_name` cases are checked by the content and region routes (tests/conformance.rs,
-//! tests/behaviour.rs); here the upload file names (decision D2) and zip entry names (decision
-//! D3), each with its `port.expected`.
+//! tests/behaviour.rs); here the upload file names and zip entry names, each with its
+//! `port.expected`.
 
 use njord_server::handlers::enc_save::valid_upload_name;
 use njord_server::ingest::zip::{entry_target, extract};
@@ -53,7 +55,7 @@ fn zip_with(entries: &[(&str, &[u8])]) -> Vec<u8> {
 }
 
 /// Every entry's target, and a whole-zip extraction with the entry in it: an unsafe name aborts
-/// the extraction with nothing written (D3).
+/// the extraction with nothing written.
 #[test]
 fn zip_entries() {
     let root = std::path::Path::new(env!("CARGO_TARGET_TMPDIR")).join("njord-server-tests/zip");

@@ -1,4 +1,4 @@
-//! `GET /v1/tile_json` (`TileJsonHandler.kt`).
+//! `GET /v1/tile_json`: the TileJSON document for the chart tiles.
 
 use axum::Json;
 use njord_model::TileJson;

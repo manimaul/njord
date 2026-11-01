@@ -8,7 +8,7 @@
 
 use crate::layers::prelude::*;
 
-/// Kotlin's `open class Bcnlat`; `Bcnsaw` and `Bcnspp` reuse [`bcnshp`].
+/// Lateral beacons; `Bcnsaw` and `Bcnspp` reuse [`bcnshp`].
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Bcnlat;
 

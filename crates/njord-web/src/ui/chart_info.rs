@@ -1,4 +1,4 @@
-//! `ChartInfoPage.js.kt`: `/chart/<name>`.
+//! The chart page, `/chart/<name>`: one installed chart's details.
 
 use leptos::prelude::*;
 use leptos::task::spawn_local;

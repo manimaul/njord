@@ -1,11 +1,13 @@
-//! Style assembly (`StyleHandler.styleString`).
+//! Assembly of the full MapLibre style document.
 
 use njord_model::{Depth, IndexMap, Source, SourceType, Style, Theme};
 
 use crate::LayerFactory;
 
-/// The MapLibre style for `GET /v1/style/{depth}/{theme}[?c=]`. `base_url` is the external
-/// base URL (no trailing slash) and `name` the sprite sheet, `<mode>_simplified`.
+/// The MapLibre style served at `GET /v1/style/{depth}/{theme}[?c=]`.
+///
+/// `base_url` is the external base URL (no trailing slash) and `name` the sprite sheet,
+/// `<mode>_simplified`.
 pub fn style(
     factory: &LayerFactory,
     base_url: &str,
@@ -33,7 +35,11 @@ pub fn style(
     }
 }
 
-/// [`style`] serialised as the server writes it (`explicitNulls = false`).
+/// [`style`] serialised as the server writes it, with unset fields omitted rather than `null`.
+///
+/// # Panics
+///
+/// Never in practice: a [`Style`] always serialises.
 pub fn style_string(
     factory: &LayerFactory,
     base_url: &str,

@@ -1,17 +1,19 @@
-//! Single icons cut from the `@2x` sprite sheets (`util/SpriteSheet.kt`), for `/v1/icon/{name}`.
+//! Single icons cut from the `@2x` sprite sheets, for `/v1/icon/{name}`.
 //!
-//! Kotlin decodes each sheet with libgd, copies the icon's rectangle into a new true-colour image
-//! and writes it with `gdImagePngPtr`. libgd keeps 7-bit alpha, so a sheet's alpha byte `a` comes
-//! back as `255 - (2g + g / 64)` with `g = 127 - a / 2`; the sheet is decoded once per theme with
-//! that already applied, and [`crate::gd_png`] writes the icon as libgd does.
+//! The conformance goldens pin each icon's bytes as libgd produces them: the sheet decoded with
+//! libgd, the icon's rectangle copied into a new true-colour image and written with
+//! `gdImagePngPtr`. libgd keeps 7-bit alpha, so a sheet's alpha byte `a` comes back as
+//! `255 - (2g + g / 64)` with `g = 127 - a / 2`; the sheet is decoded once per theme with that
+//! already applied, and [`crate::gd_png`] writes the icon as libgd does.
 
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 use njord_model::{IconInfo, IndexMap, Sprite, ThemeMode};
 
-/// One theme's sheet: the index and the decoded RGBA pixels, each loaded on first use. A sheet
-/// whose index or image cannot be read serves no icons (Kotlin logs and uses an empty map).
+/// One theme's sheet: the index and the decoded RGBA pixels, each loaded on first use.
+///
+/// A sheet whose index or image cannot be read is logged and serves no icons.
 struct Sheet {
     base: PathBuf,
     index: OnceLock<IndexMap<Sprite, IconInfo>>,
@@ -24,6 +26,7 @@ struct Image {
     rgba: Vec<u8>,
 }
 
+/// The light, dusk and dark sprite sheets, from which `/v1/icon/{name}` cuts its icons.
 pub struct SpriteSheet {
     sheets: Vec<(ThemeMode, Sheet)>,
 }
@@ -50,8 +53,10 @@ impl SpriteSheet {
         SpriteSheet { sheets }
     }
 
-    /// `spriteImage`: the icon as a PNG, or `None` when the sheet lacks the sprite. Decodes the
-    /// sheet on first use (a few hundred milliseconds), so call it off the async runtime.
+    /// The icon as a PNG, or `None` when the sheet lacks the sprite.
+    ///
+    /// Decodes the sheet on first use (a few hundred milliseconds), so call it off the async
+    /// runtime.
     pub fn sprite_image(&self, theme: ThemeMode, sprite: Sprite) -> Option<Vec<u8>> {
         let sheet = &self.sheets.iter().find(|(t, _)| *t == theme)?.1;
         let info = sheet

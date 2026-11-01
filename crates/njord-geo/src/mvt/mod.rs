@@ -1,19 +1,20 @@
-//! MVT encoding, ported from Kotlin `libgdal/.../tile/VectorTileEncoder.kt` (itself a port of
-//! `java-vector-tile`). Pinned by P-TE-2 (`geo/mvt/<case>.bin` + `.json`).
+//! Mapbox Vector Tile 2.1 encoding with [`VectorTileEncoder`].
+//!
+//! The golden fixtures `testdata/geo/mvt/<case>.bin` (with a `.json` sidecar) pin the encoder's
+//! output.
 //!
 //! # Why a hand-written encoder
 //!
-//! The plan suggested `geozero`'s MVT writer or the `mvt` crate. Neither reproduces what P-TE-2
-//! pins: both generate their own command streams, so they do not drop consecutive duplicate
-//! vertices or degenerate multi-line parts the way the Kotlin encoder does, do not force the
-//! Kotlin ring orientation, and know nothing of the 1 px / 1 px² minimum sizes, the 0.1 px
-//! simplification, the 8 px clip buffer, the id autoincrement that starts at 2, or the JSON value
-//! mapping. Wrapping either would still leave all of that to write here, plus a second geometry
-//! model. So the command generation is a line-for-line port of the Kotlin, geometry processing
-//! uses `geo` (simplify, clip, validity), and the protobuf is written by hand in [`proto`]
-//! (≈150 lines, no code generation), in the same field order as `kotlinx.serialization`, which
-//! makes the output byte-identical to Kotlin's wherever the geometry library agrees with GEOS.
-//! [`view`] decodes tiles back into the fixtures' JSON view, which the Kotlin side has too.
+//! `geozero`'s MVT writer and the `mvt` crate both generate their own command streams, so neither
+//! reproduces what the golden tiles pin: they do not drop consecutive duplicate vertices or
+//! degenerate multi-line parts, do not force the ring orientation below, and know nothing of the
+//! 1 px / 1 px² minimum sizes, the 0.1 px simplification, the 8 px clip buffer, the id
+//! autoincrement that starts at 2, or the JSON value mapping. Wrapping either would still leave all
+//! of that to write here, plus a second geometry model. So the command generation is written here,
+//! geometry processing uses `geo` (simplify, clip, validity), and the protobuf is written by hand
+//! in [`proto`] (≈150 lines, no code generation) in a fixed field order. That makes the output
+//! byte-identical to the golden tiles wherever `geo` agrees with GEOS, which produced them.
+//! [`view`] decodes tiles back into the fixtures' JSON view.
 //!
 //! # Pipeline per feature
 //!
@@ -21,15 +22,15 @@
 //!    consuming an id.
 //! 2. Polygons under 1 px² and lines under 1 px are dropped (their id is consumed).
 //! 3. A `GeometryCollection` is split into one feature per member, all sharing one id.
-//! 4. Lines and polygons are simplified with Douglas–Peucker at 0.1 px. Kotlin uses GEOS
+//! 4. Lines and polygons are simplified with Douglas–Peucker at 0.1 px. The golden tiles used GEOS
 //!    `simplifyPreserveTopology` for lines and `simplify` for polygons; `geo` has no
 //!    topology-preserving variant, so both use `geo`'s Ramer–Douglas–Peucker. They differ only
 //!    when simplification would make a line cross itself.
-//! 5. Points are kept only strictly inside the tile plus the clip buffer plus 1 px (Kotlin tests
-//!    containment in the clip square's envelope grown by one pixel). Anything else whose envelope
+//! 5. Points are kept only strictly inside the tile plus the clip buffer plus 1 px (containment is
+//!    tested in the clip square's envelope grown by one pixel). Anything else whose envelope
 //!    lies within that grown square is kept whole; the rest is intersected with the clip square
 //!    (`-8..4104`), and an empty result is dropped.
-//! 6. Coordinates are rounded half to even (Kotlin's `round`) and delta/zig-zag encoded per the
+//! 6. Coordinates are rounded half to even and delta/zig-zag encoded per the
 //!    MVT 2.1 spec; exterior rings are written clockwise on screen, holes counter-clockwise. A
 //!    ring that rounds to a zero-area sliver of fewer than four pixels is not written (GEOS never
 //!    leaves one; `geo`'s repair can).
@@ -58,8 +59,7 @@ const MOVE_TO: u32 = 1;
 const LINE_TO: u32 = 2;
 const CLOSE_PATH: u32 = 7;
 
-/// The square `-buffer..size + buffer` (`createTileEnvelope`), ring starting at the bottom-left
-/// in tile pixels.
+/// The square `-buffer..size + buffer` in tile pixels, its ring starting at the bottom-left.
 pub fn create_tile_envelope(buffer: i32, size: u32) -> Polygon {
     let (lo, hi) = (f64::from(-buffer), f64::from(size as i32 + buffer));
     Polygon::new(
@@ -78,8 +78,7 @@ struct Feature {
 struct Layer {
     features: Vec<Feature>,
     keys: IndexMap<String, u32>,
-    /// Keyed by the value's JSON text, which tells `"1"` from `1` and `1` from `1.0` as Kotlin's
-    /// `JsonElement` equality does.
+    /// Keyed by the value's JSON text, which tells `"1"` from `1` and `1` from `1.0`.
     values: IndexMap<String, (u32, Value)>,
 }
 
@@ -98,8 +97,10 @@ impl Layer {
     }
 }
 
-/// Accumulates features per layer and encodes them as one tile. Geometry must already be in tile
-/// pixels (see [`geometry::to_tile_pixels`]).
+/// Accumulates features per layer and encodes them as one tile.
+///
+/// Geometry must already be in tile pixels (see [`geometry::to_tile_pixels`]). The module docs
+/// describe what happens to each feature.
 pub struct VectorTileEncoder {
     layers: IndexMap<String, Layer>,
     autoincrement: u64,
@@ -113,6 +114,7 @@ impl Default for VectorTileEncoder {
 }
 
 impl VectorTileEncoder {
+    /// An encoder with no layers.
     pub fn new() -> Self {
         VectorTileEncoder {
             layers: IndexMap::new(),
@@ -132,9 +134,12 @@ impl VectorTileEncoder {
         }
     }
 
-    /// Adds one feature. Feature ids are an autoincrement starting at 2 (Kotlin's `++autoincrement`
-    /// from 1), consumed even when the geometry is later dropped as too small or outside the
-    /// tile; MapLibre falls back to this id where `promoteId: LNAM` finds no `LNAM`.
+    /// Adds one feature to `layer_name`, with `attributes` as its properties.
+    ///
+    /// Feature ids are an autoincrement starting at 2, consumed even when the geometry is later
+    /// dropped as too small or outside the tile; MapLibre falls back to this id where
+    /// `promoteId: LNAM` finds no `LNAM`. Geometry that [`make_valid`] cannot repair is dropped
+    /// without consuming an id.
     pub fn add_feature(&mut self, layer_name: &str, attributes: &JsonObject, geometry: &Geometry) {
         let Some(valid) = make_valid(geometry) else {
             return;
@@ -280,8 +285,9 @@ fn normalize(geometry: Geometry) -> Geometry {
     }
 }
 
-/// The clip square's envelope grown by one pixel: `-9..4105`. Kotlin grows it because GDAL has no
-/// `covers`, only `contains`, and geometry on the clip square's outline must not be lost.
+/// The clip square's envelope grown by one pixel: `-9..4105`. It is grown because the containment
+/// test is strict (`contains`, not `covers`), and geometry on the clip square's outline must not
+/// be lost.
 fn clip_envelope_bounds() -> (f64, f64) {
     (
         f64::from(-CLIP_BUFFER - 1),
@@ -309,10 +315,10 @@ fn tile_type(geometry: &Geometry) -> GeomType {
     }
 }
 
-/// `jsonPrimitiveTileValue`: strings stay strings, booleans are `bool_value`, integers that fit
-/// an `i32` are `int_value`, other `i64`s `sint_value`, every other number `double_value`. A
-/// `null` is the string `"null"` (Kotlin reads its content), and arrays and objects are their
-/// compact JSON text.
+/// The tile value of a JSON property: strings stay strings, booleans are `bool_value`, integers
+/// that fit an `i32` are `int_value`, other `i64`s `sint_value`, every other number
+/// `double_value`. A `null` is the string `"null"`, and arrays and objects are their compact JSON
+/// text.
 fn tile_value(value: &Value) -> proto::Value {
     let mut v = proto::Value::default();
     match value {
@@ -337,7 +343,7 @@ fn zig_zag_encode(n: i32) -> u32 {
     ((n << 1) ^ (n >> 31)) as u32
 }
 
-/// Kotlin's `round(d).toInt()`: half to even, saturating.
+/// A pixel coordinate rounded half to even and saturated to `i32`.
 fn round_px(d: f64) -> i32 {
     d.round_ties_even() as i32
 }
@@ -356,9 +362,9 @@ impl Commands {
             Geometry::Point(p) => self.coords(&[p.0], false),
             Geometry::LineString(ls) => self.coords(&ls.0, false),
             Geometry::Polygon(p) => self.polygon(p),
-            // D13: Kotlin reads a MultiPoint's points with `OGR_G_GetPoints`, which sees no points
-            // on a collection, so it encodes the MultiPoint to nothing and drops the feature
-            // (P-TE-2 `multi`, Kotlin `decoded`). The port encodes it (`port.decoded`).
+            // One MoveTo with a point per distinct pixel. The golden `multi` tile has no such
+            // feature (its encoder saw no points in a collection and dropped it); the sidecar's
+            // `port.decoded` records this encoding.
             Geometry::MultiPoint(mp) => self.multi_point(mp.iter().map(|p| p.0)),
             Geometry::MultiLineString(mls) => mls
                 .iter()
@@ -483,16 +489,17 @@ impl Commands {
     }
 }
 
-/// Kotlin's data-class `Position` equality, which compares doubles with `compareTo`: `-0.0` and
-/// `0.0` differ, `NaN` equals `NaN`.
+/// Exact coordinate equality by total order: `-0.0` and `0.0` differ, `NaN` equals `NaN`. This is
+/// the ring-closing test the golden tiles were encoded with.
 fn same_position(a: Coord, b: Coord) -> bool {
     a.x.total_cmp(&b.x).is_eq() && a.y.total_cmp(&b.y).is_eq()
 }
 
 /// A ring that rounds to fewer than four distinct pixels enclosing no area: a sub-pixel sliver
 /// such as the lobe of a bow-tie that `geo`'s [`make_valid`] keeps as a polygon of its own
-/// (P-TE-5 LAKARE `02260A82E9560782` and its BUAARE hole `02261B0F61BE214F` on 14/2616/5742).
-/// GEOS leaves no such ring in the Kotlin tiles; written, it would decode as a two-pixel spike.
+/// (LAKARE `02260A82E9560782` and its BUAARE hole `02261B0F61BE214F` in the golden tile
+/// 14/2616/5742). GEOS leaves no such ring in the golden tiles; written, it would decode as a
+/// two-pixel spike.
 fn is_degenerate_ring(cs: &[Coord]) -> bool {
     let mut pixels: Vec<Coord> = cs
         .iter()

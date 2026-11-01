@@ -1,14 +1,16 @@
-//! Typed reads of S-57 feature props (`S57Symbols.kt`), with Kotlin's lenient parsing: a value is
-//! read through its JSON primitive text, so the string `"3"` reads as the integer 3 while the real
-//! `3.0` does not, and GDAL's list attributes arrive as arrays of strings (`"COLOUR": ["1", "3"]`).
+//! Typed reads of S-57 feature props, with lenient parsing.
 //!
-//! Where Kotlin would throw (`jsonPrimitive` of an array, `jsonArray` of a primitive) these answer
-//! `None`; no fixture reaches those cases.
+//! A value is read through its JSON primitive text, so the string `"3"` reads as the integer 3
+//! while the real `3.0` does not, and GDAL's list attributes arrive as arrays of strings
+//! (`"COLOUR": ["1", "3"]`).
+//!
+//! A list where a scalar is expected, or a scalar where a list is expected, answers `None`; no
+//! fixture reaches those cases.
 
 use njord_model::JsonObject;
 use serde_json::Value;
 
-/// `JsonPrimitive.contentOrNull`: the text of a string, number or boolean; `None` for `null`.
+/// The text of a string, number or boolean; `None` for `null`, arrays and objects.
 fn content(v: &Value) -> Option<String> {
     match v {
         Value::String(s) => Some(s.clone()),
@@ -18,7 +20,7 @@ fn content(v: &Value) -> Option<String> {
     }
 }
 
-/// `JsonPrimitive.content`, which is `"null"` for `null`.
+/// Like [`content`], but `null` reads as the text `"null"`.
 fn content_or_null_text(v: &Value) -> Option<String> {
     match v {
         Value::Null => Some("null".to_owned()),
@@ -27,13 +29,15 @@ fn content_or_null_text(v: &Value) -> Option<String> {
     }
 }
 
-/// Kotlin's `String.toIntOrNull()`.
+/// Parses a decimal `i32`, `None` when the text is not one.
 fn to_int(s: &str) -> Option<i32> {
     s.parse().ok()
 }
 
-/// Kotlin's `String.toDoubleOrNull()` / `toFloatOrNull()` for the decimal forms S-57 values take.
-/// The text is parsed straight to the target width, as Kotlin does.
+/// Parses the decimal forms S-57 values take, `None` for anything else (including `inf`).
+///
+/// The text is parsed straight to the target width, so an `f32` read is not an `f64` read
+/// narrowed afterwards.
 fn to_number<T: std::str::FromStr>(s: &str) -> Option<T> {
     if s.eq_ignore_ascii_case("inf") || s.eq_ignore_ascii_case("infinity") {
         return None;

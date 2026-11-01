@@ -1,4 +1,5 @@
-//! Inland ENC object HRBBSN: registered (InlandLayers), but draws nothing yet (`Hrbbsn.kt`).
+//! Inland ENC object HRBBSN: registered in
+//! [`inland_layers`](crate::layer_factory::inland_layers), but draws nothing yet.
 
 use crate::layers::prelude::*;
 

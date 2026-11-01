@@ -5,16 +5,13 @@
 # Rust build pushed there would be picked up by the old environment on its next pod start
 # (§10.2 item 1). deploy/mxmariner/deploy.sh refuses to build or push under that name.
 #
-# Build it through the script, which passes the matching ignore file (it keeps the multi-GB Cargo
-# target/ directory out of the build context):
+# Build it through the script, which also passes the git build metadata:
 #
 #   deploy/mxmariner/deploy.sh --execute build
 #
-# or by hand:
+# or by hand (.containerignore keeps the multi-GB Cargo target/ directory out of the build context):
 #
-#   podman build --platform linux/amd64 \
-#     --ignorefile deploy/mxmariner/containerignore \
-#     -f Containerfile.rust -t ghcr.io/manimaul/njord:<version> .
+#   podman build --platform linux/amd64 -t ghcr.io/manimaul/njord:<version> .
 
 ARG RUST_IMAGE=docker.io/library/rust:1.99.1-trixie
 ARG RUNTIME_IMAGE=docker.io/library/debian:13.7-slim
@@ -39,8 +36,8 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
 
 WORKDIR /build
 
-# Only the Cargo workspace. Everything else in the repository is excluded by
-# deploy/mxmariner/containerignore, so doc or deploy changes do not invalidate this layer.
+# Only the Cargo workspace. Everything else in the repository is excluded by .containerignore,
+# so doc or deploy changes do not invalidate this layer.
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
 
@@ -69,8 +66,8 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
 
 FROM ${RUNTIME_IMAGE}
 
-# Compare the Kotlin image (the root Containerfile, removed in Phase 7), which also needed libpq5, libzip5, libssl3t64,
-# libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
+# Compare the Kotlin image (the Containerfile on master, replaced in Phase 7), which also needed
+# libpq5, libzip5, libssl3t64, libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
 #   ca-certificates  TLS roots for outbound HTTPS (NOAA downloads from Phase 5, any rustls/openssl
 #                    client that uses the system store).
 #   libgdal36        Runtime GDAL 3.10 for njord-s57, linked by njord-server since ingestion moved

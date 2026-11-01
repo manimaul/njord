@@ -38,7 +38,7 @@ COPY data ./data
 COPY debpkg ./debpkg
 
 # target/ is a cache mount, so the binary and the UI are copied out of it before build_deb.py
-# runs. See Containerfile.rust for why the sources are touched first.
+# runs. See the root Containerfile for why the sources are touched first.
 RUN --mount=type=cache,target=/usr/local/cargo/registry,id=cargo-registry-arm64,sharing=locked \
     --mount=type=cache,target=/usr/local/cargo/git,id=cargo-git-arm64,sharing=locked \
     --mount=type=cache,target=/build/target,id=cargo-target-arm64,sharing=locked \

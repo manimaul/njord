@@ -115,7 +115,7 @@ configuration as `njord-server` (it ignores `enableIngestion`). The Kubernetes `
 ### Container
 
 ```bash
-deploy/mxmariner/deploy.sh --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile.rust
+deploy/mxmariner/deploy.sh --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile
 ```
 
 See [`deploy/mxmariner/README.md`](deploy/mxmariner/README.md) for pushing and deploying. Never tag this image as

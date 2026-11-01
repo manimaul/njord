@@ -1,4 +1,5 @@
-//! `GET/POST /v1/regions` and `GET /v1/regions/{archive}` (`RegionHandler.kt`).
+//! Region archives: `GET/POST /v1/regions` (the manifest, and re-rendering a region) and
+//! `GET /v1/regions/{archive}` (the archive download).
 
 use std::io::SeekFrom;
 use std::sync::Arc;
@@ -58,7 +59,7 @@ pub async fn manifest(State(state): State<Arc<AppState>>) -> Response {
 ///
 /// - No valid signature: empty 401. A (decoded) name containing `/` or `..`: empty 400. No such
 ///   file: empty 404.
-/// - `Range: bytes=…` (Ktor's parser: `a-b`, `a-`, `-n`, several ranges merged into the one
+/// - `Range: bytes=…` ([`parse_range`]: `a-b`, `a-`, `-n`, several ranges merged into the one
 ///   range covering them all): 206 with `Content-Range: bytes a-b/size`. A range that cannot be
 ///   parsed or lies past the end: 416 with `Content-Range: bytes */size` and no body.
 pub async fn archive(
@@ -124,8 +125,11 @@ async fn read_range(path: &std::path::Path, start: u64, len: u64) -> std::io::Re
     Ok(bytes)
 }
 
-/// Ktor's `parseRangesSpecifier(spec)?.mergeToSingle(size)`: the inclusive byte range, or `None`
-/// when the header does not parse or the merged range is empty.
+/// The inclusive byte range a `Range` header value asks for, or `None` when it does not parse
+/// or the merged range is empty.
+///
+/// Several ranges are merged into the one range covering them all, so a download client always
+/// gets a single-part 206; the cases are pinned by the conformance goldens.
 pub fn parse_range(spec: &str, size: u64) -> Option<(u64, u64)> {
     let (unit, ranges) = spec.split_once('=')?;
     if !unit.trim().eq_ignore_ascii_case("bytes") {

@@ -1,5 +1,6 @@
-//! P-CC-1 and P-CC-2 (`testdata/concurrency/lock_semantics.json`, decision D6): the lock file
-//! protocol and the status file, as behavioural tests, since a race cannot be golden-filed.
+//! The lock file protocol and the status file (`testdata/concurrency/lock_semantics.json`).
+//!
+//! These are behavioural tests, since a race cannot be golden-filed.
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -75,7 +76,7 @@ async fn a_non_owner_may_clear_the_lock() {
     assert!(!owner.try_acquire().await);
 }
 
-/// D6: instances racing on one file settle on exactly one holder, and the settle re-read makes
+/// Instances racing on one file settle on exactly one holder, and the settle re-read makes
 /// every loser report failure.
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
 async fn contention_settles_on_exactly_one_holder() {

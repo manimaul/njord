@@ -1,15 +1,17 @@
-//! Schema provisioning and migration, ported from `DbMigrations.kt` (`DbMigrator`). Pinned by
-//! P-DB-1 (`db/schema.json`): a fresh database and a migrated version-1 database end with the
-//! same schema, and that schema is the fixture.
+//! Schema provisioning and migration.
 //!
-//! The handshake with the Kotlin server is the `meta_data` row `key = 'version'` (text value):
-//! read as 0 when the table or row is missing, stamped after each migration and by
-//! [`Db::migrate`] provisioning. A database provisioned or migrated by either implementation is
-//! therefore accepted by the other, as long as both know the same [`CURRENT_VERSION`].
+//! [`Db::migrate`] provisions an empty database at [`CURRENT_VERSION`] or migrates an older one
+//! forward. A fresh database and a migrated version-1 database end with the same schema, which
+//! the fixture `db/schema.json` records.
 //!
-//! Kotlin holds its file-based `DistributedLock` while migrating. The port takes any
-//! [`MigrationLock`]; [`AdvisoryLock`] (a session advisory lock) serialises Rust instances but
-//! does not exclude a Kotlin instance migrating the same database at the same moment.
+//! The schema version record is the `meta_data` row `key = 'version'` (text value): read as 0
+//! when the table or row is missing, and stamped after each migration and by provisioning. Other
+//! deployments of the same database read this row too, so a database provisioned or migrated
+//! here is accepted by any of them that knows the same [`CURRENT_VERSION`].
+//!
+//! Migration runs under a [`MigrationLock`]. [`AdvisoryLock`] (a session advisory lock)
+//! serialises the instances that use it; a migrator that takes a different lock is not excluded
+//! from migrating the same database at the same moment.
 
 use std::future::Future;
 use std::time::Duration;
@@ -30,11 +32,20 @@ pub const CURRENT_VERSION: i32 = 3;
 /// Mutual exclusion between instances migrating one database.
 pub trait MigrationLock {
     /// Takes the lock if it is free; `false` when another instance holds it.
+    ///
+    /// # Errors
+    ///
+    /// Fails when the lock's backing store cannot be reached.
     fn try_acquire(&self) -> impl Future<Output = Result<bool>> + Send;
+    /// Releases the lock if held.
     fn release(&self) -> impl Future<Output = ()> + Send;
 }
 
 /// A PostgreSQL session advisory lock held on a dedicated pooled connection.
+///
+/// [`try_acquire`](MigrationLock::try_acquire) fails with [`Error::Connection`] when no
+/// connection can be had and [`Error::Sql`] when `pg_try_advisory_lock` fails. A connection
+/// whose unlock fails is detached from the pool rather than returned holding the lock.
 pub struct AdvisoryLock {
     pool: PgPool,
     key: i64,
@@ -42,9 +53,10 @@ pub struct AdvisoryLock {
 }
 
 impl AdvisoryLock {
-    /// The key the port's migration runner uses (ASCII `njordmig`).
+    /// The key the server's migration runner locks with (ASCII `njordmig`).
     pub const MIGRATION_KEY: i64 = 0x6e6a_6f72_646d_6967;
 
+    /// A lock on advisory `key`, taken through `pool`.
     pub fn new(pool: PgPool, key: i64) -> AdvisoryLock {
         AdvisoryLock {
             pool,
@@ -102,7 +114,7 @@ enum Action {
     MigrateFeaturesToChartName,
 }
 
-/// Version 1 databases predate these columns, tables and indices (see `DbMigrations.kt`).
+/// Version 1 databases predate these columns, tables and indices.
 const MIGRATION_2: &str = r#"
 ALTER TABLE charts ADD COLUMN IF NOT EXISTS ingested_at TIMESTAMPTZ NOT NULL DEFAULT now();
 
@@ -138,8 +150,10 @@ const MIGRATIONS: [Migration; 2] = [
     },
 ];
 
-/// `initializeSchema`: the schema at [`CURRENT_VERSION`], for an empty database. Unlike
-/// Kotlin's four separate statements this is one implicit transaction, stamp included.
+/// The schema at [`CURRENT_VERSION`], for an empty database.
+///
+/// Run with the version stamp as one implicit transaction, so provisioning applies entirely or
+/// not at all.
 const INITIAL_SCHEMA: &str = r#"
 CREATE TABLE IF NOT EXISTS meta_data
 (
@@ -224,8 +238,15 @@ fn stamp_sql(version: i32) -> String {
 }
 
 impl Db {
-    /// The recorded schema version: 0 when `meta_data` or its version row is missing or the
-    /// value is not an integer. A database that cannot be reached is an error, never 0.
+    /// The recorded schema version.
+    ///
+    /// The version is 0 when `meta_data` or its version row is missing or the value is not an
+    /// integer.
+    ///
+    /// # Errors
+    ///
+    /// A database that cannot be reached is [`Error::Connection`], never 0; a failing query is
+    /// [`Error::Sql`].
     pub async fn db_version(&self) -> Result<i32> {
         let mut conn = self.conn().await?;
         let exists: bool =
@@ -243,14 +264,20 @@ impl Db {
         Ok(value.and_then(|v| v.parse().ok()).unwrap_or(0))
     }
 
-    /// `DbMigrator.run`: brings the database to [`CURRENT_VERSION`] and returns the version it
-    /// ends at. An empty database (version 0) is provisioned with the current schema; an older one
-    /// gets each later migration in order. Holding `lock` while working; when another instance
-    /// holds it, waits (polling every 500 ms) for that instance's stamp. The version is re-read
+    /// Brings the database to [`CURRENT_VERSION`] and returns the version it ends at.
+    ///
+    /// An empty database (version 0) is provisioned with the current schema; an older one gets
+    /// each later migration in order. `lock` is held while working; when another instance holds
+    /// it, this waits (polling every 500 ms) for that instance's stamp. The version is re-read
     /// once the lock is held, so a waiter that wins the lock after the work is done does nothing.
     ///
     /// Returns a version below [`CURRENT_VERSION`] only when a migration's backfill did not
-    /// finish (Kotlin's "retrying on next startup"); a failing statement is an error.
+    /// finish; the next startup retries it.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Migration`] when provisioning or a migration statement fails, and the errors of
+    /// [`db_version`](Db::db_version) and [`MigrationLock::try_acquire`].
     pub async fn migrate(&self, lock: &impl MigrationLock) -> Result<i32> {
         loop {
             let version = self.db_version().await?;

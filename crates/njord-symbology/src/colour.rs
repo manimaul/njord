@@ -1,4 +1,4 @@
-//! The S-57 `COLOUR` attribute (`geo/symbols/Colour.kt`). A list attribute; the first colour is
+//! The S-57 `COLOUR` attribute. A list attribute; the first colour is
 //! the one most rules read.
 
 crate::layers::attributehelpers::list_attribute! {
@@ -21,7 +21,7 @@ crate::layers::attributehelpers::list_attribute! {
 }
 
 impl Colour {
-    /// `feature.colors().firstOrNull()`.
+    /// The first known colour of the feature's `COLOUR` list, the one most rules read.
     pub fn first(props: &njord_model::JsonObject) -> Option<Colour> {
         Colour::of(props).into_iter().next()
     }

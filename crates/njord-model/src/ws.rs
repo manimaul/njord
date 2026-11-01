@@ -2,8 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 
-/// Kotlin's `sealed class WsMsg`, tagged by its default polymorphic discriminator: a `"type"`
-/// member holding the fully qualified class name.
+/// An ingest status message on `/v1/ws/enc_process`.
+///
+/// Each message is tagged by a `"type"` member holding a fixed qualified name
+/// (`io.madrona.njord.model.ws.WsMsg.<Variant>`), which existing clients match on.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all_fields = "camelCase")]
 pub enum WsMsg {

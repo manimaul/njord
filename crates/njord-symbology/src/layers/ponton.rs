@@ -1,4 +1,4 @@
-//! Acronym: PONTON (the Kotlin class has no header comment).
+//! Acronym: PONTON (pontoon).
 
 use crate::layers::prelude::*;
 

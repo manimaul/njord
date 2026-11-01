@@ -1,4 +1,4 @@
-//! `GET /v1/icon/{name}[?theme=]` (`IconHandler.kt`): one sprite as a PNG.
+//! `GET /v1/icon/{name}[?theme=]`: one sprite as a PNG.
 
 use std::sync::Arc;
 
@@ -10,9 +10,11 @@ use njord_model::{Sprite, ThemeMode};
 use super::{from_name, query_param, with_content_type};
 use crate::state::AppState;
 
-/// The sprite named by `name` without its extension (`BOYLAT13.png` and `BOYLAT13` are the same
+/// One sprite as `image/png`.
+///
+/// The sprite is named by `name` without its extension (`BOYLAT13.png` and `BOYLAT13` are the same
 /// icon), case-insensitive, cut from the theme's `@2x` sheet (`theme` `day`, `dusk`, `night`,
-/// default and fallback `day`). `image/png`; an empty 404 for an unknown sprite.
+/// default and fallback `day`). An empty 404 for an unknown sprite.
 pub async fn icon(
     State(state): State<Arc<AppState>>,
     Path(name): Path<String>,
@@ -34,7 +36,7 @@ pub async fn icon(
     }
 }
 
-/// `stripExt`: everything before the last `.`, unless the name starts with it.
+/// The name without its extension: everything before the last `.`, unless the name starts with it.
 fn strip_ext(name: &str) -> &str {
     match name.rfind('.') {
         Some(i) if i > 0 => &name[..i],

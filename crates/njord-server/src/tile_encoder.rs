@@ -1,15 +1,17 @@
-//! Tile assembly (`geo/TileEncoder.kt` `addCharts`, `renderBaseMap`, `encode`, `infoJson`; P-TE-5
-//! `testdata/geo/tiles/`), over `njord-geo` geometry and MVT encoding, `njord-symbology` rules
-//! and `njord-db` queries.
+//! Tile assembly: chart and base map features from `njord-db`, styled by `njord-symbology` and
+//! clipped and MVT-encoded by `njord-geo`.
+//!
+//! [`tile`] serves `/v1/tile/{z}/{x}/{y}`, [`info`] its `?info=true` variant and
+//! [`archive_tile`] the region archives; the golden tiles are in `testdata/geo/tiles/`.
 //!
 //! For tile `z`/`x`/`y`, with `include` starting as the tile grown by 15 pixels:
 //! 1. The charts whose coverage intersects the (unexpanded) tile, smallest scale first, and the
 //!    features of those with `0 ≤ zoom ≤ z`, clipped by the database to the box of `include`.
 //! 2. Per chart: if it is eligible and `include` is not yet empty, each feature gets the
-//!    symbology props (`preTileEncode`), the prop filter and `NAME` = the chart, and its geometry
+//!    symbology props (`pre_tile_encode`), the prop filter and `NAME` = the chart, and its geometry
 //!    intersected with `include` (LIGHTS are not intersected, so a light keeps its full sector
 //!    geometry); a valid non-empty result is encoded. Then `include` loses the chart's coverage,
-//!    so a smaller-scale chart drawn later never paints over a larger-scale one (TE-1). Every
+//!    so a smaller-scale chart drawn later never paints over a larger-scale one. Every
 //!    intersecting chart, eligible or not, contributes its coverage boundary to layer `PLY`.
 //! 3. Where `include` is still not empty, the Natural Earth base features of the zoom's scale
 //!    inside it (not in `info` mode).
@@ -17,9 +19,9 @@
 //! `info` mode returns the chart features instead, as WGS-84 GeoJSON before the pixel transform.
 //! Geometry runs on the blocking pool; the database queries in between are async.
 //!
-//! Differences from Kotlin come from `geo` standing in for GEOS (RUST_PORT_PLAN.md Phase 2
-//! notes): boolean operations snap to a grid (about 1e-9 of the extent), rings may start at
-//! another vertex, and repair keeps only polygons.
+//! Geometry runs on `geo`, not GEOS, so tiles differ from the golden fixtures in known ways:
+//! boolean operations snap to a grid (about 1e-9 of the extent), rings may start at another
+//! vertex, and repair keeps only polygons. The golden tile tests tolerate exactly these.
 
 use std::collections::HashSet;
 use std::fmt;
@@ -34,13 +36,14 @@ use njord_model::{ChartFeatureInfo, IndexMap, JsonObject};
 use njord_symbology::{ChartFeature, LayerFactory};
 use serde_json::Value;
 
-/// What the encoder reads besides the database.
+/// What the encoder reads besides the database: the style rules and the prop filter's input.
 pub struct Symbology {
     pub layers: LayerFactory,
     /// S-57 attribute acronyms of type `E` (enumerated), for the prop filter.
     pub enumerated: HashSet<String>,
 }
 
+/// A tile address: zoom `z`, column `x` and row `y`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct TileXyz {
     pub z: u32,
@@ -48,11 +51,14 @@ pub struct TileXyz {
     pub y: i64,
 }
 
+/// Why a tile could not be assembled.
 #[derive(Debug)]
 pub enum TileError {
+    /// A database query failed.
     Db(njord_db::Error),
-    /// A feature prop held a JSON object (Kotlin throws from `filteredProps`).
+    /// A feature prop held a JSON object, which the prop filter cannot encode.
     Props(njord_geo::UnexpectedObject),
+    /// A blocking geometry task panicked or was cancelled.
     Join(tokio::task::JoinError),
 }
 
@@ -80,7 +86,12 @@ impl From<tokio::task::JoinError> for TileError {
     }
 }
 
-/// The encoded tile (`addCharts(false)`, base map, optional debug overlay, `encode()`).
+/// Encodes tile `t`: the charts, the base map where no chart covers it and, when `debug` is set,
+/// a debug overlay naming the tile.
+///
+/// # Errors
+///
+/// Returns [`TileError`] when a query fails, a prop cannot be encoded or a blocking task fails.
 pub async fn tile(
     db: &Db,
     symbology: Arc<Symbology>,
@@ -91,10 +102,15 @@ pub async fn tile(
     Ok(tokio::task::spawn_blocking(move || encoder.encode()).await?)
 }
 
-/// A region archive tile (`RegionExporter.renderAndWriteTiles`): the live tile for a chart
-/// region, the base map alone (`addBaseMapOnly`) for the `WORLD` region; `None` when the tile
-/// has no content beyond the `PLY` coverage outline (`hasContent`), which is what keeps an
+/// Encodes tile `t` for a region archive, or `None` when it would be empty.
+///
+/// A chart region gets the live tile and the `WORLD` region (`base_map_only`) the base map alone.
+/// A tile with no content beyond the `PLY` coverage outline is `None`, which is what keeps an
 /// archive sparse.
+///
+/// # Errors
+///
+/// As [`tile`].
 pub async fn archive_tile(
     db: &Db,
     symbology: Arc<Symbology>,
@@ -148,7 +164,12 @@ async fn assemble(
     .await?
 }
 
-/// `?info=true`: the chart features the tile would draw, in WGS-84, without base map or `PLY`.
+/// Lists the chart features tile `t` would draw, in WGS-84, without base map or `PLY`
+/// (`?info=true`).
+///
+/// # Errors
+///
+/// As [`tile`].
 pub async fn info(
     db: &Db,
     symbology: Arc<Symbology>,
@@ -180,7 +201,7 @@ async fn chart_inputs(db: &Db, t: TileXyz) -> Result<ChartInputs, TileError> {
     Ok(ChartInputs { charts, features })
 }
 
-/// `chart.zoom in 0..z`.
+/// Whether `chart` is drawn at zoom `z`: `0 ≤ chart.zoom ≤ z`.
 fn eligible(chart: &ChartInfo, z: u32) -> bool {
     chart.zoom >= 0 && chart.zoom as i64 <= z as i64
 }
@@ -257,7 +278,7 @@ fn render_base_map(
     Ok(())
 }
 
-/// `layerFactory.preTileEncode(feature).props.filtered()`.
+/// The feature's props after the symbology's `pre_tile_encode` rules and the prop filter.
 fn symbolized(symbology: &Symbology, feature: &DbFeature) -> Result<JsonObject, TileError> {
     let mut f = ChartFeature {
         layer: feature.layer.clone(),

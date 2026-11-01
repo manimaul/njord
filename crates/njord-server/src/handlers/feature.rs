@@ -1,5 +1,5 @@
-//! `GET /v1/feature/{by}/{arg}` (`FeatureHandler.kt`): `layer/{layer}?start_id=` and
-//! `lnam/{lnam}`.
+//! `GET /v1/feature/{by}/{arg}`: feature lookup by layer (`layer/{layer}?start_id=`) or by
+//! `LNAM` (`lnam/{lnam}`).
 
 use std::sync::Arc;
 
@@ -11,6 +11,8 @@ use axum::response::{IntoResponse, Response};
 use super::query_param;
 use crate::state::AppState;
 
+/// Looks a feature up by layer or by `LNAM`, as `by` says.
+///
 /// - `layer/{layer}`: the next page of the layer's feature positions after id `start_id`
 ///   (default and fallback 0); an unknown layer is an empty page.
 /// - `lnam/{lnam}`: the feature with that `LNAM`.

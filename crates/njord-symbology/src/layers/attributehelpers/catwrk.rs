@@ -1,4 +1,4 @@
-//! `attributehelpers/Catwrk.kt`.
+//! S-57 `CATWRK` (category of wreck) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/WRECKS/CATWRK>

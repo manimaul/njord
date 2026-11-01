@@ -1,4 +1,4 @@
-//! `attributehelpers/Catsil.kt`.
+//! S-57 `CATSIL` (category of silo/tank) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/SILTNK/CATSIL>

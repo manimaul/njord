@@ -1,15 +1,17 @@
-//! `ingest/ChartIngestWorker.kt` (P-CC-3 `testdata/concurrency/cadence.json`): every
-//! [`IngestWorker::POLL`] the worker looks in `<chartTempData>/save` for a `.zip`; when there is
-//! one it takes the lock, empties `<chartTempData>/ingest`, renames one zip into
-//! `ingest/<uuid>/` (an atomic claim against other replicas) and ingests it, as charts
-//! ([`super::chart`]) or as Natural Earth shapefiles ([`super::natural_earth`]) when the zip
-//! holds a `.shp`. One zip per lock cycle; the lock is released by the ingest.
+//! The ingest worker: claims uploaded zips from `save/` one at a time and ingests them.
 //!
-//! Decision D6: an upload no longer aborts an ingest in flight (`POST /v1/enc_save` only stores
-//! the zip), so a second zip waits here for the first to finish. After an ingest the worker
-//! re-checks `save/` at once rather than after the poll delay, and announces `Extracting(0)`
-//! before taking the lock, so a client that connects between two queued ingests sees work
-//! queued rather than the previous completion report.
+//! Every [`IngestWorker::POLL`] (`testdata/concurrency/cadence.json`) the worker looks in
+//! `<chartTempData>/save` for a `.zip`; when there is one it takes the lock, empties
+//! `<chartTempData>/ingest`, renames one zip into `ingest/<uuid>/` (an atomic claim against other
+//! replicas) and ingests it, as charts ([`super::chart`]) or as Natural Earth shapefiles
+//! ([`super::natural_earth`]) when the zip holds a `.shp`. One zip per lock cycle; the lock is
+//! released by the ingest.
+//!
+//! An upload does not abort an ingest in flight (`POST /v1/enc_save` only stores the zip), so a
+//! second zip waits here for the first to finish. After an ingest the worker re-checks `save/` at
+//! once rather than after the poll delay, and announces `Extracting(0)` before taking the lock,
+//! so a client that connects between two queued ingests sees work queued rather than the
+//! previous completion report.
 
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -19,12 +21,13 @@ use njord_model::WsMsg;
 
 use crate::state::AppState;
 
+/// The background task that claims and ingests uploads; see the [module docs](self).
 pub struct IngestWorker {
     state: Arc<AppState>,
 }
 
 impl IngestWorker {
-    /// `POLL_DELAY_MS`: how often `save/` is checked.
+    /// How often `save/` is checked.
     pub const POLL: Duration = Duration::from_secs(5);
 
     pub fn new(state: Arc<AppState>) -> IngestWorker {
@@ -62,7 +65,8 @@ impl IngestWorker {
         zips
     }
 
-    /// `tryClaimAndIngest`: whether an ingest ran (so the caller looks again at once).
+    /// Claims and ingests one waiting zip; returns whether an ingest ran, so the caller looks
+    /// again at once.
     pub async fn try_claim_and_ingest(&self) -> bool {
         let state = &self.state;
         let zips = Self::pending_zips(state);

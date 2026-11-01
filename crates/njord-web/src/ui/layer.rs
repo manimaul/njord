@@ -1,4 +1,4 @@
-//! `LayerPage.js.kt`: `/layer/<OBJL>`, where a layer's features are, five per page.
+//! The layer page, `/layer/<OBJL>`: where a layer's features are, five per page.
 
 use leptos::prelude::*;
 use leptos::task::spawn_local;

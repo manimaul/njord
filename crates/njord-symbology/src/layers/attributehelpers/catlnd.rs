@@ -1,4 +1,4 @@
-//! `attributehelpers/Catlnd.kt`.
+//! S-57 `CATLND` (category of land region) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/LNDRGN/CATLND>

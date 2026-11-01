@@ -1,13 +1,16 @@
-//! S-57 cell and Natural Earth shapefile reading (RUST_PORT_PLAN.md §4.2), ported from the
-//! Kotlin `libgdal` module (`OgrS57Dataset.kt`, `OgrLayer.kt`, `OgrFeature.kt`,
-//! `GdalDataset.kt`, `Gdal.kt`, `OgrShapefileDataset.kt`) and the reading half of the server's
-//! `ChartIngest.kt` and `NaturalEarthIngest.kt`. Database insertion stays in the server.
+//! S-57 cell and Natural Earth shapefile reading through GDAL.
+//!
+//! The entry points are [`GdalCell::open`] for an S-57 cell, read through the [`S57Reader`] trait
+//! ([`S57Reader::chart_insert`] for the `charts` row, [`S57Reader::features`] for each layer), and
+//! [`Shapefile::open`] for a Natural Earth shapefile, with [`normalize_layer_name`] and
+//! [`scale_from_filename`] to place it. Read features are [`Feature`]s whose [`Geometry`] ingest
+//! repairs and inserts; database insertion stays in the server.
 //!
 //! This is the only crate that links GDAL. Everything downstream (the `features.props` JSONB,
 //! `LNAM`/`LNAM_REFS`, `METERS` on soundings, `MINZ`/`MAXZ`, the `DSID_*`/`DSPM_*` metadata) is
 //! shaped by GDAL's S57 driver under [`S57_OPTIONS`], so the reading contract is the trait
-//! [`S57Reader`], implemented over GDAL by [`GdalCell`] and pinned by the P-IN-1…4 fixtures; a
-//! future pure-Rust reader would be measured against the same files.
+//! [`S57Reader`], implemented over GDAL by [`GdalCell`] and pinned by the golden fixtures under
+//! `testdata/`; a future pure-Rust reader would be measured against the same files.
 //!
 //! # Building
 //!
@@ -39,16 +42,12 @@ pub use ogr::Geometry;
 
 /// `OGR_S57_OPTIONS`, set process-wide before the first dataset is opened.
 ///
-/// This is the option set GDAL actually applies under the Kotlin string
-/// `…,RECODE_BY_DSSI=ON:ADD_SOUNDG_DEPTH=ON`: the `:` typo makes GDAL read
-/// `ON:ADD_SOUNDG_DEPTH=ON` as the (true) `RECODE_BY_DSSI` value, so `ADD_SOUNDG_DEPTH` was never
-/// on, and every chart in production and every fixture was read without it. Spelled with a comma
-/// (as RUST_PORT_PLAN.md §4.2 has it) GDAL adds a `DEPTH` field to each `SOUNDG` feature, which
-/// P-IN-2 and P-IN-4 reject; `METERS` already carries the depth.
+/// `ADD_SOUNDG_DEPTH` is deliberately off: every chart in production and every golden fixture was
+/// read without it. With it on, GDAL adds a `DEPTH` field to each `SOUNDG` feature, which the
+/// fixtures do not have; `METERS` already carries the depth.
 pub const S57_OPTIONS: &str = "RETURN_PRIMITIVES=OFF,RETURN_LINKAGES=OFF,LNAM_REFS=ON,UPDATES=APPLY,SPLIT_MULTIPOINT=ON,RECODE_BY_DSSI=ON";
 
-/// The layers ingest never inserts (`ChartIngest.exLayers`): the DSID metadata record and the
-/// spatial primitive layers.
+/// The layers ingest never inserts: the DSID metadata record and the spatial primitive layers.
 pub const EXCLUDED_LAYERS: [&str; 5] = ["DSID", "IsolatedNode", "ConnectedNode", "Edge", "Face"];
 
 /// GDAL's `RELEASE_NAME`, e.g. `3.13.1`; fixture headers record the version that wrote them.
@@ -56,8 +55,9 @@ pub fn gdal_version() -> String {
     ogr::version()
 }
 
-/// A failure to open a dataset, or why a cell cannot become a chart (`InsertError.msg`, which
-/// ingest reports per chart).
+/// A failure to open a dataset, or why a cell cannot become a chart.
+///
+/// Ingest reports the message per chart.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Error(pub String);
 
@@ -72,16 +72,20 @@ impl std::error::Error for Error {}
 /// A bounding box in degrees (`OGREnvelope`).
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Envelope {
+    /// Minimum longitude.
     pub west: f64,
+    /// Minimum latitude.
     pub south: f64,
+    /// Maximum longitude.
     pub east: f64,
+    /// Maximum latitude.
     pub north: f64,
 }
 
-/// One opened S-57 cell (a `.000` with any `.001…` updates beside it already applied): what
-/// ingest needs from it.
+/// What ingest reads from one opened S-57 cell.
 ///
-/// Phase 3/4 ingest calls [`chart_insert`](S57Reader::chart_insert) for the `charts` row,
+/// The cell is a `.000` with any `.001…` updates beside it already applied. Ingest calls
+/// [`chart_insert`](S57Reader::chart_insert) for the `charts` row,
 /// [`total_feature_count`](S57Reader::total_feature_count) for the progress report, then
 /// [`features`](S57Reader::features) for each of [`inserted_layers`](S57Reader::inserted_layers),
 /// inserting `geometry.make_valid()?.wkb()` with `props`.
@@ -89,7 +93,7 @@ pub trait S57Reader {
     /// The `.000` file this cell was opened from.
     fn path(&self) -> &Path;
 
-    /// Every layer in the reader's order (`OgrS57Dataset.layerNames()`), including
+    /// Every layer in the reader's order, including
     /// [`EXCLUDED_LAYERS`].
     fn layer_names(&self) -> Vec<String>;
 
@@ -97,6 +101,7 @@ pub trait S57Reader {
     fn feature_count(&self, layer: &str) -> Option<u64>;
 
     /// Every feature of one layer, in reader order; `None` when the cell has no such layer.
+    ///
     /// Geometries are as read: ingest repairs them with [`Geometry::make_valid`].
     fn features(&self, layer: &str) -> Option<Vec<Feature>>;
 
@@ -108,8 +113,7 @@ pub trait S57Reader {
             .collect()
     }
 
-    /// `featureCount(exLayers)`: the features of every inserted layer, which ingest reports as
-    /// `totalFeatures`.
+    /// The features of every inserted layer, which ingest reports as `totalFeatures`.
     fn total_feature_count(&self) -> u64 {
         self.inserted_layers()
             .iter()
@@ -117,21 +121,24 @@ pub trait S57Reader {
             .sum()
     }
 
-    /// `OgrS57Dataset.chartInsertInfo()` (P-IN-1), with D7 fixed:
+    /// The `charts` row for this cell.
     ///
-    /// - `name` is `DSID_DSNM`, or the file name when that is missing or empty (Kotlin used
-    ///   `""`, so unnamed cells overwrote each other).
+    /// - `name` is `DSID_DSNM`, or the file name when that is missing or empty, so unnamed cells
+    ///   do not overwrite each other.
     /// - `scale` is `DSPM_CSCL`; `zoom` is its zoom at the centre latitude of the coverage.
     /// - `updated`/`issued` are `DSID_UADT`/`DSID_ISDT` after updates (`""` when missing).
     /// - `covr` is the geometry of the one `CATCOV=1` `M_COVR` feature, or a `MultiPolygon` of
-    ///   every polygon of all of them when there are several (Kotlin dropped `MultiPolygon`
-    ///   members).
+    ///   every polygon of all of them, `MultiPolygon` members included, when there are several.
     /// - `dsid_props` is every prop of the first `DSID` feature.
     /// - `chart_txt` maps each sibling `*.TXT` (any case) to its text in the DSSI charset
     ///   (`DSSI_NALL`, else `DSSI_AALL`: 0 ASCII, 1 ISO 8859-1, otherwise UTF-8; invalid UTF-8
     ///   is replaced), sorted by file name.
     ///
-    /// The error is the reason ingest reports for the failed chart.
+    /// # Errors
+    ///
+    /// Returns an [`Error`] with the reason ingest reports for the failed chart: the cell has no
+    /// `DSID` or `M_COVR` layer, no `DSID` feature or no `DSPM_CSCL`, or its `*.TXT` files cannot
+    /// be read.
     fn chart_insert(&self) -> Result<ChartInsert, Error> {
         chart::chart_insert(self)
     }
@@ -145,6 +152,10 @@ pub struct GdalCell {
 
 impl GdalCell {
     /// Opens a `.000` cell; GDAL applies the `.001…` update files found beside it.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`Error`] if GDAL's S57 driver cannot open the file.
     pub fn open(path: impl AsRef<Path>) -> Result<GdalCell, Error> {
         let path = path.as_ref().to_path_buf();
         let dataset = ogr::Dataset::open(&path, "S57")?;

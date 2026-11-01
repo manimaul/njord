@@ -1,5 +1,7 @@
-//! `RegionDao.kt`: what the region exporter reads, and the export flags (P-DB-6) the export
-//! worker and the chart delete route rely on. Region coverages are WKT, as configured.
+//! What the region exporter reads, and the export state the export worker and the chart delete
+//! route rely on.
+//!
+//! Region coverages are WKT, as configured.
 //!
 //! Rows for the exporter keep geometry as WKB and JSON as text: they are copied into the
 //! region's SQLite archive unchanged.
@@ -42,7 +44,13 @@ pub struct RegionFeature {
 }
 
 impl Db {
-    /// `findChartsInRegion`: the charts whose coverage intersects `coverage_wkt`, by name.
+    /// The charts whose coverage intersects `coverage_wkt`, by name.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails (including WKT
+    /// PostGIS cannot parse).
     pub async fn find_charts_in_region(&self, coverage_wkt: &str) -> Result<Vec<RegionChart>> {
         let mut conn = self.conn().await?;
         let rows = sqlx::query(
@@ -73,7 +81,12 @@ impl Db {
             .collect()
     }
 
-    /// `findFeaturesForChart`: every feature of one chart, in id order.
+    /// Every feature of one chart, in id order.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn find_features_for_chart(&self, chart_name: &str) -> Result<Vec<RegionFeature>> {
         let mut conn = self.conn().await?;
         let rows = sqlx::query(
@@ -100,8 +113,14 @@ impl Db {
             .collect()
     }
 
-    /// `latestChartUpdateInRegion`: the greatest `updated` (`DSID_UADT`) among the charts
-    /// intersecting the region; `None` when there are none (Kotlin read SQL NULL as `""`).
+    /// The greatest `updated` (`DSID_UADT`) among the charts intersecting the region.
+    ///
+    /// `None` when no chart intersects it.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn latest_chart_update_in_region(
         &self,
         coverage_wkt: &str,
@@ -115,9 +134,16 @@ impl Db {
         .await?)
     }
 
-    /// `regionNeedsRebuild`: whether a chart intersecting the region was written
-    /// (`ingested_at`) after the region's last recorded export, or ever when it has none. A
-    /// deleted chart is not noticed; see [`regions_containing_chart`](Db::regions_containing_chart).
+    /// Whether a chart intersecting the region was written since the region's last export.
+    ///
+    /// A chart counts when its `ingested_at` is after the last recorded export, or always when
+    /// the region has none. A deleted chart is not noticed; see
+    /// [`regions_containing_chart`](Db::regions_containing_chart).
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn region_needs_rebuild(
         &self,
         coverage_wkt: &str,
@@ -140,9 +166,16 @@ impl Db {
         .await?)
     }
 
-    /// `regionsContainingChart`: the names of the `(name, coverage_wkt)` regions whose coverage
-    /// the chart intersects (a shared boundary counts), in input order; empty for an unknown
-    /// chart. Ask before deleting a chart, then clear those regions' export state.
+    /// The names of the `(name, coverage_wkt)` regions whose coverage the chart intersects.
+    ///
+    /// A shared boundary counts. Names are in input order; empty for an unknown chart. Ask
+    /// before deleting a chart, then [clear](Db::clear_region_export_state) those regions'
+    /// export state.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn regions_containing_chart(
         &self,
         chart_name: &str,
@@ -168,8 +201,12 @@ impl Db {
         Ok(containing)
     }
 
-    /// `clearRegionExportState`: forgets the region's last export so it reads stale again;
-    /// whether it had one.
+    /// Forgets the region's last export so it reads stale again; whether it had one.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn clear_region_export_state(&self, region_name: &str) -> Result<bool> {
         let mut conn = self.conn().await?;
         let deleted = sqlx::query("DELETE FROM region_export_state WHERE region_name = $1;")
@@ -180,7 +217,12 @@ impl Db {
         Ok(deleted > 0)
     }
 
-    /// `markRegionExported`: records an export of the region at `now()`.
+    /// Records an export of the region at `now()`.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn mark_region_exported(&self, region_name: &str) -> Result<()> {
         let mut conn = self.conn().await?;
         sqlx::query(

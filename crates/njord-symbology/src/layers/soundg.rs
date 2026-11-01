@@ -21,7 +21,7 @@
 //! shallow colour applies (a negative value is always under the safety depth) and the layers that
 //! draw the whole number carry the SOUNDSA1 underline, fitted to the digits with icon-text-fit.
 //!
-//! Kotlin's `Obstrn` extends `Soundg`, so the text layers here are `pub` for `obstrn`.
+//! The text layers here are `pub` because [`obstrn`](crate::layers::obstrn) reuses them.
 
 use crate::layers::prelude::*;
 

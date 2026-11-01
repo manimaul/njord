@@ -1,7 +1,8 @@
-//! Region archives on disk (`ingest/RegionExporter.kt`): the manifest `GET /v1/regions` serves
-//! (`buildManifest`, P-RE-5 `testdata/regions/manifest.json`), the archive lookup of
-//! `GET /v1/regions/{archive}`, archive naming and pruning (P-RE-4 `regions/timestamps.json`).
-//! Rendering is [`export`], driven by [`worker`].
+//! Region `.mbtiles` archives on disk: naming, pruning, checksums and the manifest.
+//!
+//! [`Regions`] answers the manifest `GET /v1/regions` serves (`testdata/regions/manifest.json`)
+//! and the archive lookup of `GET /v1/regions/{archive}`, and names and prunes archives
+//! (`testdata/regions/timestamps.json`). Rendering is [`export`], driven by [`worker`].
 //!
 //! Archives are named `<region>_<yyyy-MM-ddTHH-mm-ss>.mbtiles` in the server's local time, with
 //! a `<archive>.sha256` sidecar in `sha256sum` format.
@@ -25,6 +26,7 @@ use sha2::{Digest, Sha256};
 
 use crate::config::RegionExportConfig;
 
+/// The region archive directory, `<chartTempData>/regions`.
 pub struct Regions {
     pub dir: PathBuf,
     /// The zone archive timestamps are written in (the server's local zone).
@@ -32,7 +34,7 @@ pub struct Regions {
 }
 
 impl Regions {
-    /// `MAX_ARCHIVES`: how many archives of a region [`prune_old_archives`](Self::prune_old_archives) keeps.
+    /// How many archives of a region [`prune_old_archives`](Self::prune_old_archives) keeps.
     pub const MAX_ARCHIVES: usize = 2;
 
     pub fn new(dir: impl Into<PathBuf>, zone: TimeZone) -> Regions {
@@ -42,7 +44,7 @@ impl Regions {
         }
     }
 
-    /// `currentTimestamp`: now in [`Regions::zone`] as the filesystem-safe stem
+    /// Now in [`Regions::zone`] as the filesystem-safe stem
     /// `yyyy-MM-ddTHH-mm-ss`.
     pub fn current_timestamp(&self) -> String {
         jiff::Zoned::now()
@@ -51,7 +53,7 @@ impl Regions {
             .to_string()
     }
 
-    /// `pruneOldArchives`: deletes every archive of the region beyond the newest
+    /// Deletes every archive of the region beyond the newest
     /// [`MAX_ARCHIVES`](Self::MAX_ARCHIVES), with its sidecar.
     pub fn prune_old_archives(&self, region: &str) {
         for old in self
@@ -72,7 +74,7 @@ impl Regions {
         }
     }
 
-    /// `clear`: deletes every file in the region directory (the nuke route).
+    /// Deletes every file in the region directory (the nuke route).
     pub fn clear(&self) {
         let Ok(entries) = std::fs::read_dir(&self.dir) else {
             return;
@@ -91,8 +93,10 @@ impl Regions {
         tracing::info!("region archives cleared");
     }
 
-    /// `buildManifest`: one entry per configured region, in configuration order. A region with
-    /// no archive yet has `archive`, `archiveSize`, `archiveSha256` and `createdAt` null.
+    /// The manifest: one entry per configured region, in configuration order.
+    ///
+    /// A region with no archive yet has `archive`, `archiveSize`, `archiveSha256` and `createdAt`
+    /// null.
     pub fn manifest(&self, regions: &[RegionExportConfig]) -> Vec<RegionManifestEntry> {
         regions
             .iter()
@@ -122,9 +126,10 @@ impl Regions {
             .collect()
     }
 
-    /// `archivesForRegion`: the files whose name starts with the region name (a plain prefix,
-    /// as in Kotlin) and ends in `.mbtiles`, newest timestamp first; an unparsable stem sorts
-    /// last.
+    /// The region's archives, newest timestamp first; an unparsable stem sorts last.
+    ///
+    /// An archive is a file whose name starts with the region name and ends in `.mbtiles`. The
+    /// match is a plain prefix, so region `US` also lists the archives of a region `US_EAST`.
     pub fn archives_for_region(&self, region: &str) -> Vec<PathBuf> {
         let Ok(entries) = std::fs::read_dir(&self.dir) else {
             return Vec::new();
@@ -142,7 +147,7 @@ impl Regions {
         archives.into_iter().map(|(_, p)| p).collect()
     }
 
-    /// `parseArchiveTimestamp`: the stem between `<region>_` and `.mbtiles`, read as local time
+    /// The archive's timestamp: the stem between `<region>_` and `.mbtiles`, read as local time
     /// in [`Regions::zone`].
     pub fn archive_timestamp(&self, region: &str, file_name: &str) -> Option<Timestamp> {
         let stem = file_name
@@ -152,9 +157,11 @@ impl Regions {
         self.parse_stem(stem)
     }
 
-    /// `parseTimestampStem`: `yyyy-MM-ddTHH-mm-ss` (the time's colons written as dashes), read as
-    /// local time in [`Regions::zone`]. Kotlin rewrote only that dashed tail and then parsed a
-    /// `LocalDateTime`, so a stem already holding colons parses too.
+    /// Parses `yyyy-MM-ddTHH-mm-ss` (the time's colons written as dashes) as local time in
+    /// [`Regions::zone`].
+    ///
+    /// Only a dashed `HH-mm-ss` tail is rewritten to colons before the civil date-time is
+    /// parsed, so a stem already holding colons parses too.
     pub fn parse_stem(&self, stem: &str) -> Option<Timestamp> {
         let colonized = match stem.split_once('T') {
             Some((date, time)) if is_dashed_time(time) => {
@@ -166,7 +173,7 @@ impl Regions {
         self.zone.to_ambiguous_timestamp(dt).compatible().ok()
     }
 
-    /// `checksumForArchive`: the sidecar's first token when it is 64 characters (not checked
+    /// The archive's sha256: the sidecar's first token when it is 64 characters (not checked
     /// against the file), otherwise the file's sha256, written back to the sidecar.
     pub fn checksum(&self, archive: &Path) -> Option<String> {
         let sidecar = self.sidecar(archive);
@@ -179,7 +186,7 @@ impl Regions {
         self.write_checksum_sidecar(archive)
     }
 
-    /// `writeChecksumSidecar`: the archive's sha256 (streamed, 1 MiB at a time) written to the
+    /// Writes the archive's sha256 (streamed, 1 MiB at a time) written to the
     /// sidecar in `sha256sum` format, so `sha256sum -c` works from the region directory.
     pub fn write_checksum_sidecar(&self, archive: &Path) -> Option<String> {
         let checksum = match sha256_file(archive) {
@@ -196,12 +203,13 @@ impl Regions {
         Some(checksum)
     }
 
+    /// The checksum sidecar of `archive`, `<archive>.sha256`.
     pub fn sidecar(&self, archive: &Path) -> PathBuf {
         self.dir.join(format!("{}.sha256", file_name(archive)))
     }
 }
 
-/// `HH-mm-ss`: the regex `T(\d{2})-(\d{2})-(\d{2})$` Kotlin rewrites.
+/// Whether `time` is a dashed `HH-mm-ss`, the tail [`Regions::parse_stem`] rewrites.
 fn is_dashed_time(time: &str) -> bool {
     let b = time.as_bytes();
     b.len() == 8
@@ -210,7 +218,7 @@ fn is_dashed_time(time: &str) -> bool {
         && [0, 1, 3, 4, 6, 7].iter().all(|&i| b[i].is_ascii_digit())
 }
 
-/// `sha256File`: lowercase hex of the file's contents.
+/// Lowercase hex of the file's contents.
 fn sha256_file(path: &Path) -> std::io::Result<String> {
     let mut file = std::fs::File::open(path)?;
     let mut hasher = Sha256::new();
@@ -231,9 +239,11 @@ pub(crate) fn file_name(p: &Path) -> String {
         .unwrap_or_default()
 }
 
-/// `wktToLabelPoint`, `centroidOfLargestPart`: the centroid of the largest polygon of a
-/// multipolygon (the first on a tie), else of the geometry, computed as GEOS does
-/// ([`geos_centroid`]) so the manifest's `labelPoint` matches Kotlin's to the last bit.
+/// The manifest's `labelPoint`: the centroid of the largest polygon of a multipolygon (the first
+/// on a tie), else of the geometry.
+///
+/// Polygon centroids are computed as GEOS does ([`geos_centroid`]) so `labelPoint` matches the
+/// manifest golden to the last bit.
 fn label_point(coverage: &Geometry) -> Option<Point> {
     match coverage {
         Geometry::Polygon(p) => geos_centroid(std::slice::from_ref(p)),
@@ -280,7 +290,7 @@ fn geos_centroid(polygons: &[Polygon]) -> Option<Point> {
     (area2 != 0.0).then(|| Point::new(cx / 3.0 / area2, cy / 3.0 / area2))
 }
 
-/// `Orientation::isCCW` by signed area.
+/// Whether `ring` is counter-clockwise, by signed area (GEOS `Orientation::isCCW`).
 fn is_ccw(ring: &[Coord]) -> bool {
     let sum: f64 = ring
         .windows(2)
@@ -294,7 +304,7 @@ fn wkt_geometry(text: &str) -> Option<Geometry> {
     Geometry::try_from(parsed).ok()
 }
 
-/// `wktToGeojson`: the coverage as GeoJSON, or a `Feature` with a null geometry when the WKT
+/// The coverage as GeoJSON, or a `Feature` with a null geometry when the WKT
 /// does not parse.
 fn coverage_geo(coverage: Option<&Geometry>) -> geojson::GeoJson {
     match coverage {

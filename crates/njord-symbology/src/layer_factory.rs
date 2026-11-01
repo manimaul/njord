@@ -1,4 +1,4 @@
-//! The registry of layerables in draw order (`LayerFactory.kt` and `layers/set/*`).
+//! The registry of layerables in draw order.
 
 use njord_model::{Depth, Layer, Theme};
 
@@ -8,9 +8,11 @@ use crate::layers::name_label::NameLabel;
 use crate::layers::*;
 use crate::{ChartFeature, ColorLibrary, SymbologyConfig};
 
-/// A layerable under its key. The key is Kotlin's `customKey`, or the class name upper-cased
-/// (`ObstrnArea` is `OBSTRNAREA`); `preTileEncode` is dispatched by matching it to the feature's
-/// layer, and helper-made layer ids start with it.
+/// A layerable under its key.
+///
+/// The key is usually the type name upper-cased (`ObstrnArea` is `OBSTRNAREA`), or a custom key
+/// such as the lower-case inland twins; [`LayerFactory::pre_tile_encode`] dispatches by matching
+/// it to the feature's layer, and helper-made layer ids start with it.
 pub struct Entry {
     pub key: String,
     pub layerable: Box<dyn Layerable>,
@@ -36,7 +38,7 @@ impl Entry {
     }
 }
 
-/// `BaseLayers`: the Natural Earth layers under the charts.
+/// The Natural Earth layers under the charts.
 pub fn base_layers() -> Vec<Entry> {
     vec![
         Entry::new("BACKGROUND", background::Background),
@@ -60,8 +62,10 @@ pub fn base_layers() -> Vec<Entry> {
     ]
 }
 
-/// `StandardLayers`. Kotlin's list also names, commented out, the classes it does not draw yet
-/// (`Tsfeb`, `Watfal`, `Rdosta`, `Mcovr`, …, and `Magvar`); those have no module here.
+/// The S-57 object classes drawn on every chart.
+///
+/// Some classes are not drawn yet (`TSFEB`, `WATFAL`, `RDOSTA`, `M_COVR`, …, and `MAGVAR`); those
+/// have no module.
 pub fn standard_layers() -> Vec<Entry> {
     let mut e = vec![
         // land / base layers
@@ -193,7 +197,7 @@ pub fn standard_layers() -> Vec<Entry> {
         Entry::new("SOUNDG", soundg::Soundg),
     ];
     // clearance text is S-52 display-base, so it goes above the symbology of the objects it
-    // annotates - see ClearanceLabel
+    // annotates - see clearance_label
     for class in ["BRIDGE", "CBLOHD", "PIPOHD", "CONVYR", "CRANES", "GATCON"] {
         let label = ClearanceLabel::new(class);
         e.push(Entry::new(label.key(), label));
@@ -207,14 +211,14 @@ pub fn standard_layers() -> Vec<Entry> {
         Entry::new("PRDARE", prdare::Prdare),
     ]);
     // S-52 text group 21, names for position reporting - after every mark symbol and the
-    // light descriptions so the names win placement - see NameLabel
+    // light descriptions so the names win placement - see name_label
     for label in NameLabel::all() {
         e.push(Entry::new(label.key(), label));
     }
     e
 }
 
-/// `InlandLayers`: Inland ENC classes, and the inland twins of three standard classes under
+/// Inland ENC classes, and the inland twins of three standard classes under
 /// lower-case keys.
 pub fn inland_layers() -> Vec<Entry> {
     vec![
@@ -228,7 +232,7 @@ pub fn inland_layers() -> Vec<Entry> {
     ]
 }
 
-/// `ExtraLayers`.
+/// Layers outside S-57: the `PLY` coverage outline.
 pub fn extra_layers() -> Vec<Entry> {
     vec![Entry::new("PLY", ply::Ply)]
 }
@@ -242,8 +246,9 @@ pub struct LayerFactory {
 impl LayerFactory {
     /// Base, standard, inland and extra layers, then `Debug` when `config.debug_tile`.
     ///
-    /// Kotlin builds a map with `associateBy { it.key }`, which would keep the first position
-    /// and the last value of a duplicated key; no key is duplicated, which `new` asserts.
+    /// # Panics
+    ///
+    /// When two entries share a key; dispatch by key needs each to be unique.
     pub fn new(config: SymbologyConfig, colors: ColorLibrary) -> Self {
         let mut entries = base_layers();
         entries.extend(standard_layers());

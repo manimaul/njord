@@ -1,4 +1,4 @@
-//! Acronym: COALNE (the Kotlin class has no header comment).
+//! Acronym: COALNE (coastline).
 
 use crate::layers::prelude::*;
 

@@ -1,13 +1,13 @@
 //! Queries over ingested fixture cells, on one database (`njord_rust_test`) seeded once per run
 //! with US5WA22M and the two synthetic cells through [`common::ingest_cell`]:
 //!
-//! - P-IN-5 `s57/US5WA22M/db_state.json`, `s57/synthetic/db_state.json`: the `charts` row and
-//!   per-layer aggregates ingest leaves behind (`insertFeatureSync`: MINZ/MAXZ defaults,
+//! - `s57/US5WA22M/db_state.json`, `s57/synthetic/db_state.json`: the `charts` row and
+//!   per-layer aggregates ingest leaves behind (the feature insert's MINZ/MAXZ defaults,
 //!   `lnam_refs`, 2D forcing).
-//! - P-DB-3 `db/feature_queries.json`: both tile feature queries, rows compared as
+//! - `db/feature_queries.json`: both tile feature queries, rows compared as
 //!   (chart, layer, props, assoc, OGR WKT), sorted on both sides. The WKT is printed by GDAL from
 //!   the decoded geometry, so vertices are compared at OGR's 15 significant digits.
-//! - P-DB-4 `db/lnam_refs.json`: the GIN lookup for every LNAM the real cell references.
+//! - `db/lnam_refs.json`: the GIN lookup for every LNAM the real cell references.
 
 mod common;
 
@@ -38,7 +38,7 @@ async fn seeded() -> Db {
     common::db(SEEDED)
 }
 
-/// `ChartIngestTest.dbState`.
+/// The chart row and per-layer feature aggregates, in the shape of `db_state.json`.
 async fn db_state(db: &Db, name: &str) -> Value {
     let row = sqlx::query(
         "SELECT name, scale, file_name, updated, issued, zoom, st_astext(covr), dsid_props::text, chart_txt::text
@@ -92,7 +92,7 @@ async fn db_state(db: &Db, name: &str) -> Value {
 }
 
 #[tokio::test]
-async fn p_in_5_db_state() {
+async fn ingest_leaves_the_fixture_db_state() {
     let db = seeded().await;
     let mut failures = Failures::default();
     let mut checked = 0;
@@ -129,7 +129,7 @@ fn row(chart: &str, feature: &ChartFeature) -> Value {
     })
 }
 
-/// `FeatureQueriesTest.rowOrder`: chart, layer, LNAM (JSON form), props (compact JSON), WKT.
+/// Sorts rows by chart, layer, LNAM (JSON form), props (compact JSON), WKT.
 fn sort_rows(rows: &mut [Value]) {
     rows.sort_by_cached_key(|r| {
         let lnam = r["props"]
@@ -147,7 +147,7 @@ fn sort_rows(rows: &mut [Value]) {
 }
 
 #[tokio::test]
-async fn p_db_3_feature_queries() {
+async fn feature_queries() {
     let db = seeded().await;
     let cases = cases("db/feature_queries.json");
     let mut failures = Failures::default();
@@ -233,7 +233,7 @@ async fn empty_chart_list_and_zoom_range() {
 }
 
 #[tokio::test]
-async fn p_db_4_lnam_refs() {
+async fn lnam_refs() {
     let db = seeded().await;
     let referenced: Vec<String> = sqlx::query_scalar(
         "SELECT DISTINCT unnest(lnam_refs)::text FROM features WHERE chart_name = $1 ORDER BY 1;",
@@ -286,7 +286,7 @@ async fn chart_and_feature_routes_on_the_real_cell() {
     assert_eq!(
         (light.zoom_min, light.zoom_max),
         (32, 13),
-        "Kotlin's swapped zooms"
+        "zooms swapped on the wire, as the golden records"
     );
     assert!(db.find_feature("nope").await.unwrap().is_none());
 

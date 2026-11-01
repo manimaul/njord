@@ -24,7 +24,7 @@ impl Layerable for Wrecks {
                 | Catwrk::WRECK_SHOWING_ANY_PORTION_OF_HULL_OR_SUPERSTRUCTURE,
             ) => feature.point_symbol(Sprite::WRECKS01),
             Some(Catwrk::DISTRIBUTED_REMAINS_OF_WRECK | Catwrk::NON_DANGEROUS_WRECK) | None => {
-                // Named as in Kotlin, though true means *deeper* than the safety depth.
+                // Despite the name, true means *deeper* than the safety depth.
                 let under_safety =
                     float_value(&feature.props, "VALSOU").map(|v| v > cx.config.safety_depth);
                 if (Watlev::of(&feature.props) == Some(Watlev::ALWAYS_UNDER_WATER_SUBMERGED)

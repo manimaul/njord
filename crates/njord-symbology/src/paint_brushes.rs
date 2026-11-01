@@ -1,9 +1,9 @@
-//! The small style-value types the layer helpers take (`PaintBrushes.kt`).
+//! The small style-value types the layer helpers take.
 
 use njord_model::Sprite;
 use serde_json::{Value, json};
 
-use crate::kotlin::float_json;
+use crate::number::float_json;
 
 /// An icon: a fixed sprite, or the sprite named by a feature prop (`SY`, `SY2`, …).
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -64,9 +64,9 @@ impl IconRot {
 /// An icon or text offset.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Offset {
-    /// `Offset.Coord(x, y)`; positive is right and down.
+    /// A fixed `(x, y)` offset; positive is right and down.
     Coord(f32, f32),
-    /// `Offset.EvalEq`: `eq` when the prop `key` equals `value`, else `neq`.
+    /// `eq` when the prop `key` equals `value`, else `neq`.
     EvalEq {
         key: String,
         value: String,

@@ -1,4 +1,4 @@
-//! `attributehelpers/Catsea.kt`.
+//! S-57 `CATSEA` (category of sea area) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/SEAARE/CATSEA>

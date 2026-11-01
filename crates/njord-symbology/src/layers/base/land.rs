@@ -1,4 +1,4 @@
-//! Natural Earth base layer: land polygons (`base/Land.kt`): `Lndare` on the `land` source layer.
+//! Natural Earth base layer: land polygons: `Lndare` on the `land` source layer.
 
 use crate::layers::lndare::Lndare;
 use crate::layers::prelude::*;

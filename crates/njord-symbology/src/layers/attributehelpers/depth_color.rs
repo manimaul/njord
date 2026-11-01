@@ -1,4 +1,4 @@
-//! `attributehelpers/DepthColor.kt`: the depth-area colour bands.
+//! The depth-area colour bands and their S-52 colour tokens.
 
 use njord_model::Color;
 

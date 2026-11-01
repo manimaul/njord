@@ -1,5 +1,7 @@
-//! The MapLibre GL calls the UI makes (`js/MapLibre.kt`). MapLibre is loaded from `vendor/` as
-//! the global `maplibregl`; option objects and GeoJSON are passed as JSON built with serde.
+//! The MapLibre GL calls the UI makes.
+//!
+//! MapLibre is loaded from `vendor/` as the global `maplibregl`; option objects and GeoJSON are
+//! passed as JSON built with serde.
 
 use serde::Serialize;
 use wasm_bindgen::prelude::*;

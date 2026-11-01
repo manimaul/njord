@@ -1,17 +1,17 @@
-//! The ingest tally (`ChartIngest.kt` `Report`): what the status file announces while charts are
-//! installed and the `CompletionReport` sent at the end.
+//! The ingest tally: what the status file announces while charts are installed and the
+//! `CompletionReport` sent at the end.
 //!
-//! Decision D5 (b): a chart's features are counted only after its transaction committed, so a
-//! chart that failed is listed once in `failedCharts` with no features and never inflates the
-//! totals. Kotlin counted every attempt of its retry loop. Rows inserted but not yet committed
-//! are `pending`: they move the progress message so an operator sees a large chart advance, and
-//! become counted ([`Report::commit_pending`]) or vanish ([`Report::drop_pending`]) with the
-//! transaction.
+//! A chart's features are counted only after its transaction committed, so a chart that failed is
+//! listed once in `failedCharts` with no features and never inflates the totals. Rows inserted but
+//! not yet committed are `pending`: they move the progress message so an operator sees a large
+//! chart advance, and become counted ([`Report::commit_pending`]) or vanish
+//! ([`Report::drop_pending`]) with the transaction.
 
 use indexmap::IndexMap;
 use njord_model::{InsertItem, WsMsg};
 use std::time::Instant;
 
+/// The running tally of one ingest.
 pub struct Report {
     total_feature_count: i64,
     total_chart_count: i32,
@@ -48,7 +48,7 @@ impl Report {
         self.aborted
     }
 
-    /// `progressMessage`.
+    /// The `Info` progress message: features installed (pending ones included) and charts done.
     pub fn progress(&self) -> WsMsg {
         WsMsg::Info {
             feature: self.feature_install_count + self.pending.values().sum::<i64>(),
@@ -58,7 +58,7 @@ impl Report {
         }
     }
 
-    /// `completionMessage`: `Idle` after an abort, else the report.
+    /// The final status message: `Idle` after an abort, else the `CompletionReport`.
     pub fn completion(&self) -> WsMsg {
         if self.aborted {
             return WsMsg::Idle;
@@ -83,13 +83,14 @@ impl Report {
         }
     }
 
-    /// `appendChartFeatureCount`.
+    /// Counts `count` installed features for `chart_name`.
     pub fn append_features(&mut self, chart_name: &str, count: i64) {
         self.feature_install_count += count;
         *self.items.entry(chart_name.to_owned()).or_insert(0) += count;
     }
 
-    /// `failChart`: a second failure of the same chart appends to its message.
+    /// Records a failure of chart `name`; a second failure of the same chart appends to its
+    /// message.
     pub fn fail_chart(&mut self, name: &str, msg: &str) {
         match self.failed.get_mut(name) {
             Some(existing) => {
@@ -107,7 +108,7 @@ impl Report {
         *self.pending.entry(chart_name.to_owned()).or_insert(0) += count;
     }
 
-    /// The chart's transaction committed `count` rows: they are counted now (D5).
+    /// The chart's transaction committed `count` rows: they are counted now.
     pub fn commit_pending(&mut self, chart_name: &str, count: i64) {
         self.pending.shift_remove(chart_name);
         self.append_features(chart_name, count);
@@ -118,7 +119,7 @@ impl Report {
         self.pending.shift_remove(chart_name);
     }
 
-    /// `completedChart`.
+    /// Counts one more chart as done.
     pub fn completed_chart(&mut self) {
         self.chart_install_count += 1;
     }

@@ -1,4 +1,4 @@
-//! `DELETE /v1/nuke` (`NukeHandler.kt`), signed: truncates charts, features and base features,
+//! `DELETE /v1/nuke`, signed: truncates charts, features and base features,
 //! clears the tile cache and deletes every region archive. 204, or 500 when the truncate fails.
 
 use std::sync::Arc;

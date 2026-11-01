@@ -6,9 +6,10 @@
 //!
 //! Code: 86
 //!
-//! Two layerables read the OBSTRN source layer (`Obstrn.kt`): [`ObstrnArea`] draws the area fill
+//! Two layerables read the OBSTRN source layer: [`ObstrnArea`] draws the area fill
 //! and outline with the land layers, [`Obstrn`] the symbol and depth text with the other
-//! obstructions. Kotlin's `Obstrn` extends `Soundg` for its depth text.
+//! obstructions. [`Obstrn`] reuses
+//! the [`soundg`] text layers for its depth text.
 
 use crate::layers::prelude::*;
 use crate::layers::soundg;
@@ -154,7 +155,7 @@ impl Layerable for Obstrn {
 
 /// The attributes an obstruction's symbology reads (`ObstrnState`).
 pub struct ObstrnState {
-    /// VALSOU, read as a Kotlin `Float`.
+    /// VALSOU, read as an `f32`.
     pub meters: Option<f32>,
     pub category: Option<Catobs>,
     pub water_level_effect: Option<Watlev>,

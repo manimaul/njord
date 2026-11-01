@@ -1,5 +1,5 @@
-//! `testdata/frontend/routes.json` (Phase 0 §3.10): the route list, `RouteMatcher` and
-//! `RouteRegistry` behaviour of the Kotlin UI, which the Leptos UI must keep so URLs stay stable.
+//! `testdata/frontend/routes.json`: the route list and the `RouteMatcher` and `RouteRegistry`
+//! behaviour recorded in the golden fixture, which the UI must keep so URLs stay stable.
 
 use njord_testdata::{cases, load, testdata};
 use njord_web::routing::{NjordRoute, QueryParams, RouteMatcher, RouteRegistry};
@@ -41,7 +41,7 @@ fn matcher_and_registry_cases() {
             if let Some(args) = routing.args.clone() {
                 out.insert("args".into(), pairs(args));
             }
-            // Kotlin wrote `params` only when there was a query string (explicitNulls = false).
+            // The fixture has `params` only when there was a query string.
             if let Some(values) = routing.params.as_ref().and_then(QueryParams::values) {
                 out.insert("params".into(), pairs(values));
             }

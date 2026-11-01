@@ -1,27 +1,27 @@
-//! The ingest/export lock shared between replicas through the data volume (`util/DistributedLock.kt`;
-//! P-CC-1 `testdata/concurrency/lock_semantics.json`, decision D6).
+//! The ingest/export lock shared between replicas through the data volume.
 //!
-//! The file protocol is Kotlin's, so a lock directory left by a Kotlin install is upgraded in
-//! place: `<chartTempData>/lock` holds the owner's uuid as text while held and is empty (or
-//! missing) while free. Acquiring writes the uuid to `lock.<random>` beside it and renames that
-//! over the lock; clearing renames an empty file over it. Anyone may clear: clearing is the
-//! operator's abort (`DELETE /v1/enc_save`), and there is no liveness information on shared
-//! storage that would make ownership meaningful.
+//! The semantics are pinned by `testdata/concurrency/lock_semantics.json`, and the file protocol is
+//! the one existing data volumes already use: `<chartTempData>/lock` holds the owner's uuid as text
+//! while held and is empty (or missing) while free. Acquiring writes the uuid to `lock.<random>`
+//! beside it and renames that over the lock; clearing renames an empty file over it. Anyone may
+//! clear: clearing is the operator's abort (`DELETE /v1/enc_save`), and there is no liveness
+//! information on shared storage that would make ownership meaningful.
 //!
-//! D6 closes Kotlin's check-then-rename window: after the rename the acquirer waits
+//! There is no check-then-rename window: after the rename the acquirer waits
 //! [`DistributedLock::SETTLE`] and re-reads, and holds the lock only if the file still names it.
 //! Two instances that both saw an empty file and both renamed therefore both re-read the same
 //! winner, and the loser reports failure instead of running.
 //!
-//! Where Kotlin cached `lockAcquired` behind an inotify watch (with a 1 s poll when inotify is
-//! unavailable), [`DistributedLock::acquired`] reads the file: it is a few bytes, it is asked a
-//! few times per layer at most, and a read is never staler than a watch.
+//! [`DistributedLock::acquired`] reads the file each time rather than caching it behind a file
+//! watch: it is a few bytes, it is asked a few times per layer at most, and a read is never
+//! staler than a watch.
 
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 use crate::signature::random_uuid;
 
+/// The lock file at `<chartTempData>/lock`, as seen by one instance.
 pub struct DistributedLock {
     path: PathBuf,
     uuid: String,
@@ -29,8 +29,10 @@ pub struct DistributedLock {
 }
 
 impl DistributedLock {
-    /// D6: how long an acquirer waits before re-reading the lock; longer than Kotlin's 1 s
-    /// fallback poll, so a Kotlin instance watching the same directory has seen the change.
+    /// How long an acquirer waits before re-reading the lock.
+    ///
+    /// It is longer than one second, so an instance that polls the lock directory once a second
+    /// (the fallback when a file watch is unavailable) has seen the change.
     pub const SETTLE: Duration = Duration::from_millis(1500);
 
     /// A lock on `path` (`<chartTempData>/lock`) with a fresh instance uuid.
@@ -61,7 +63,7 @@ impl DistributedLock {
         std::fs::read_to_string(&self.path).unwrap_or_default()
     }
 
-    /// Whether the lock currently names this instance (`lockAcquired`).
+    /// Whether the lock currently names this instance.
     pub fn acquired(&self) -> bool {
         self.holder() == self.uuid
     }
@@ -71,8 +73,8 @@ impl DistributedLock {
         self.holder().is_empty()
     }
 
-    /// `tryAcquireLock`: claims the lock if the file is empty or missing, settles, and answers
-    /// whether this instance holds it afterwards.
+    /// Claims the lock if the file is empty or missing, settles, and answers whether this
+    /// instance holds it afterwards.
     pub async fn try_acquire(&self) -> bool {
         if self.is_free() {
             if let Err(e) = self.rename_over(self.uuid.as_bytes()) {
@@ -85,8 +87,9 @@ impl DistributedLock {
         acquired
     }
 
-    /// `tryClearLock`: frees the lock whoever holds it (the evicted uuid is logged); `false`
-    /// only when the file could not be written.
+    /// Frees the lock whoever holds it, logging the evicted uuid.
+    ///
+    /// Returns `false` only when the file could not be written.
     pub fn try_clear(&self) -> bool {
         let holder = self.holder();
         if !holder.is_empty() && holder != self.uuid {

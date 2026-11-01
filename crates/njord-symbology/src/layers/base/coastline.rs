@@ -1,4 +1,4 @@
-//! Natural Earth base layer: coastline (`base/Coastline.kt`).
+//! Natural Earth base layer: coastline.
 
 use crate::layers::prelude::*;
 

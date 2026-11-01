@@ -7,7 +7,7 @@
 //! Code: 71
 //!
 //! The land area names, split out of `Lndare` so they are registered with the low-priority
-//! labels, late in the draw order (`LndareLabel.kt`).
+//! labels, late in the draw order.
 
 use crate::layers::prelude::*;
 

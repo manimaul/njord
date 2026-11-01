@@ -1,7 +1,7 @@
-//! MapLibre filter expressions shared by the layerables (`model/Filters.kt`).
+//! MapLibre filter expressions shared by the layerables.
 //!
-//! Kotlin's `gt`/`lt` names are swapped relative to their operators (`gt` is `"<"`); the names
-//! are kept so call sites read the same on both sides.
+//! The [`GT`]/[`LT`] names are swapped relative to their operators ([`GT`] is `"<"`); read them as
+//! "the threshold is greater than the prop". Mind this when writing a comparison filter.
 
 use njord_model::{Color, Theme};
 use serde_json::{Value, json};
@@ -38,13 +38,13 @@ pub fn eq_type_point() -> Value {
     json!([EQ, "$type", "Point"])
 }
 
-/// `areaFillColor`: a `case` on the `AC` prop over the theme's colours (restricted to `options`
+/// A `case` on the `AC` prop over the theme's colours (restricted to `options`
 /// when given), defaulting to transparent.
 pub fn area_fill_color(colors: &ColorLibrary, options: Option<&[Color]>, theme: &Theme) -> Value {
     case_on(colors, "AC", options, theme)
 }
 
-/// `lineColor`: as [`area_fill_color`], on the `LC` prop.
+/// As [`area_fill_color`], on the `LC` prop.
 pub fn line_color(colors: &ColorLibrary, options: Option<&[Color]>, theme: &Theme) -> Value {
     case_on(colors, "LC", options, theme)
 }

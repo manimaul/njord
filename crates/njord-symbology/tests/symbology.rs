@@ -1,7 +1,7 @@
-//! The symbology fixtures (RUST_PORT_PLAN.md §5.1, P-SY-1 … P-SY-9; P-SY-8 sprites is in
-//! `njord-model`'s `tests/testdata.rs`), each case checked and every failure reported together.
+//! The symbology golden fixtures under `testdata/symbology/`, each case checked and every failure
+//! reported together. (The sprite fixtures are checked in `njord-model`'s `tests/testdata.rs`.)
 //!
-//! To check only some layers in P-SY-1 and P-SY-2, set `NJORD_LAYER` to their keys
+//! To check only some layers in [`pre_tile_encode`] and [`pre_tile_encode_cell`], set `NJORD_LAYER` to their keys
 //! (comma-separated):
 //!
 //! ```text
@@ -29,7 +29,7 @@ fn colors() -> ColorLibrary {
     ColorLibrary::new(colors)
 }
 
-/// The factory the Kotlin generators use: shipped thresholds (3 / 6 / 9 m) and `colors.json`.
+/// The factory the goldens were recorded with: shipped thresholds (3 / 6 / 9 m) and `colors.json`.
 fn factory() -> LayerFactory {
     LayerFactory::new(SymbologyConfig::default(), colors())
 }
@@ -42,7 +42,7 @@ fn selected(key: &str) -> bool {
     }
 }
 
-/// A `SymbologyInput` (`{props, geometry_type, assoc}`) as the feature of `layer`.
+/// A fixture input (`{props, geometry_type, assoc}`) as the feature of `layer`.
 fn feature(layer: &str, input: &Value) -> ChartFeature {
     ChartFeature {
         layer: layer.to_owned(),
@@ -58,12 +58,12 @@ fn feature(layer: &str, input: &Value) -> ChartFeature {
     }
 }
 
-/// [`first_difference`] of a case's props against what the port must produce.
+/// [`first_difference`] of a case's props against the expected output.
 fn props_difference(case: &Value, props: njord_model::JsonObject) -> Result<(), String> {
     diff(port_expected(case), &Value::Object(props))
 }
 
-/// Runs one `preTileEncode` case and compares the props, key order included.
+/// Runs one [`Layerable::pre_tile_encode`] case and compares the props, key order included.
 fn check_encode(
     layerable: &dyn Layerable,
     cx: &Context,
@@ -75,10 +75,10 @@ fn check_encode(
     props_difference(case, f.props)
 }
 
-/// P-SY-1: every `symbology/pre_tile_encode/<KEY>.json` (non-uppercase keys under
-/// `custom_key/`). Kotlin only writes a file for a layerable whose output ever differs from its
-/// input, so a ported layerable without one must leave a minimal feature of every geometry type
-/// unchanged.
+/// Every `symbology/pre_tile_encode/<KEY>.json` (non-uppercase keys under `custom_key/`).
+///
+/// The goldens only hold a file for a layerable whose output ever differs from its input, so a
+/// layerable without one must leave a minimal feature of every geometry type unchanged.
 #[test]
 fn pre_tile_encode() {
     let factory = factory();
@@ -123,12 +123,13 @@ fn pre_tile_encode() {
             );
         }
     }
-    println!("P-SY-1: {checked} cases checked");
+    println!("pre_tile_encode: {checked} cases checked");
     failures.assert_none(checked);
 }
 
-/// P-SY-2: every real feature of US5WA22M, through the factory's dispatch by layer, as the
-/// generator does (no TOPMAR association). A layer with no registered layerable passes through
+/// Every real feature of US5WA22M, through the factory's dispatch by layer.
+///
+/// The goldens were recorded without TOPMAR associations, so none are passed. A layer with no registered layerable passes through
 /// unchanged.
 #[test]
 fn pre_tile_encode_cell() {
@@ -149,14 +150,14 @@ fn pre_tile_encode_cell() {
             failures.check(format!("{layer}[{i}]"), props_difference(case, f.props));
         }
     }
-    println!("P-SY-2: {checked} cases checked");
+    println!("pre_tile_encode_cell: {checked} cases checked");
     if checked == 0 && std::env::var_os("NJORD_LAYER").is_some() {
         return; // the selected layers have no features in the cell
     }
     failures.assert_none(checked);
 }
 
-/// P-SY-3: DEPARE colour bands with thresholds 2 / 5 / 20 m.
+/// DEPARE colour bands with thresholds 2 / 5 / 20 m.
 #[test]
 fn depth_bands() {
     let config = SymbologyConfig {
@@ -178,7 +179,7 @@ fn depth_bands() {
     failures.assert_none(cases.len());
 }
 
-/// P-SY-4: `addSoundingConversions` for 0.0…31.0 m, drying heights and edge values.
+/// [`add_sounding_conversions`] for 0.0…31.0 m, drying heights and edge values.
 #[test]
 fn display_depths() {
     let mut failures = Failures::default();
@@ -194,7 +195,7 @@ fn display_depths() {
     failures.assert_none(cases.len());
 }
 
-/// P-SY-5: `LightDescription.from` (`null` without LITCHR) and its number format.
+/// [`LightDescription::from`] (`None` without LITCHR) and its number format.
 #[test]
 fn light_description() {
     let mut failures = Failures::default();
@@ -261,7 +262,7 @@ fn decode_helper(helper: &str, props: &njord_model::JsonObject) -> Option<Value>
     })
 }
 
-/// P-SY-6: every attribute helper over 0 … max+1, plus `Sbdare.natsur`.
+/// Every attribute helper over 0 … max+1, plus [`sbdare::natsur`].
 #[test]
 fn attribute_helpers() {
     let mut failures = Failures::default();
@@ -294,13 +295,11 @@ fn attribute_helpers() {
     failures.assert_none(helpers.len() + natsur.len());
 }
 
-/// P-SY-7: the full style per depth × theme mode × colour library, compared as one document
+/// The full style per depth × theme mode × colour library, compared as one document
 /// (keys in order, every layer and expression).
 ///
-/// Layer ids: Kotlin numbers them with a per-layerable counter that is never reset, and the
-/// fixtures pin the first request of a fresh `LayerFactory`. The port numbers per style
-/// generation, which reproduces the fixture ids exactly, so ids are compared as is (no
-/// `normalize_style`-style masking).
+/// Layer ids are numbered per style generation, from 1 for each layerable, which is what the
+/// goldens record, so ids are compared as is (no masking).
 #[test]
 fn styles() {
     let factory = factory();
@@ -342,7 +341,7 @@ fn styles() {
     failures.assert_none(checked);
 }
 
-/// P-SY-9: `buildSectorSvg` over a grid of bearings, colours and radii.
+/// [`build_sector_svg`] over a grid of bearings, colours and radii.
 #[test]
 fn svg_sector() {
     let mut failures = Failures::default();

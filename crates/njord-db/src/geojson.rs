@@ -1,4 +1,4 @@
-//! `GeoJsonDao.kt`: `GET /v1/geojson?chart_name=&layer_name=` and `POST /v1/geojson`.
+//! The GeoJSON routes: `GET /v1/geojson?chart_name=&layer_name=` and `POST /v1/geojson`.
 
 use geojson::{Feature, FeatureCollection, GeoJson};
 use njord_model::{FeatureInsert, JsonObject};
@@ -9,13 +9,17 @@ use crate::features::{lnam_refs, max_z, min_z};
 use crate::{Db, Result};
 
 impl Db {
-    /// `fetchAsync`: the features of one layer of one chart as GeoJSON, in id order. Each
-    /// feature is PostgreSQL's `row_to_json` of `(id, layer, type, geometry, properties)`, so it
-    /// carries a numeric `id` and a foreign member `layer`.
+    /// The features of one layer of one chart as GeoJSON, in id order.
     ///
-    /// Kotlin fails to decode these rows (its `Feature` rejects the `layer` member) and the
-    /// route answers 404 for any layer with features; here they decode and the port serves them
-    /// (D14, golden `api_04_charts/geojson_existing_layer`).
+    /// Each feature is PostgreSQL's `row_to_json` of `(id, layer, type, geometry, properties)`,
+    /// so it carries a numeric `id` and a foreign member `layer`
+    /// (golden `api_04_charts/geojson_existing_layer`).
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails,
+    /// and [`Error::Json`](crate::Error::Json) when a row is not a GeoJSON feature.
     pub async fn geojson_layer(&self, chart_name: &str, layer: &str) -> Result<FeatureCollection> {
         let mut conn = self.conn().await?;
         let rows: Vec<Value> = sqlx::query_scalar(
@@ -46,11 +50,18 @@ impl Db {
         })
     }
 
-    /// `featureInsertAsync`: inserts `insert.geo` into `insert.chart` as `insert.layer_name` and
-    /// returns the rows written. A bare geometry gets `{}` props and zooms 0–32; a feature its
-    /// props with `MINZ`/`MAXZ`/`LNAM_REFS` mapped as ingest maps them, and is skipped when it has
-    /// no geometry (`C_AGGR`, `C_ASSO`); a collection inserts each feature. Geometries are made 2D
-    /// and valid. Each insert stands alone, as in Kotlin: one that fails is logged and counts 0.
+    /// Inserts `insert.geo` into `insert.chart` as `insert.layer_name` and returns the rows
+    /// written.
+    ///
+    /// A bare geometry gets `{}` props and zooms 0–32; a feature its props with
+    /// `MINZ`/`MAXZ`/`LNAM_REFS` mapped as ingest maps them, and is skipped when it has no
+    /// geometry (`C_AGGR`, `C_ASSO`); a collection inserts each feature. Geometries are made 2D
+    /// and valid. Each insert stands alone: one that fails is logged and counts 0.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired.
+    /// Failed inserts are not errors.
     pub async fn geojson_insert(&self, insert: &FeatureInsert) -> Result<u64> {
         let mut conn = self.conn().await?;
         let chart = insert.chart.name.as_str();

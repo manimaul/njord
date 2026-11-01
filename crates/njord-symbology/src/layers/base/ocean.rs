@@ -1,4 +1,4 @@
-//! Natural Earth base layer: ocean polygon fill (`base/Ocean.kt`).
+//! Natural Earth base layer: ocean polygon fill.
 
 use crate::layers::prelude::*;
 

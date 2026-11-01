@@ -1,5 +1,6 @@
-//! The on-disk tile cache (`db/TileCache.kt`): `<chartTempData>/tiles/{z}/{x}/{y}.mvt`, the
-//! layout the deb package and the operations docs describe, shared with a Kotlin install.
+//! The on-disk tile cache, `<chartTempData>/tiles/{z}/{x}/{y}.mvt`.
+//!
+//! The layout is the one the deb package and the operations docs describe.
 //!
 //! Best effort: every I/O error is logged and treated as a miss, never as a failed request. A
 //! tile is written to `{y}.mvt.<random>.tmp` and renamed into place, so a reader on a shared NFS

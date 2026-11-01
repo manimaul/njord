@@ -1,5 +1,5 @@
-//! The pure selection logic of `Main.kt`: which cells to fetch, which charts are orphans, which
-//! orphans may be deleted, and how the fetch is split into bundles (P-EC-2).
+//! The pure selection logic of a run: which cells to fetch, which charts are orphans, which
+//! orphans may be deleted, and how the fetch is split into bundles.
 
 use std::collections::HashSet;
 

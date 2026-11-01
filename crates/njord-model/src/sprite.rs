@@ -1,4 +1,4 @@
-//! Sprite names and sprite sheet entries (`Sprite` in `Colors.kt`, `IconInfo.kt`).
+//! Sprite names and sprite sheet entries.
 
 use serde::{Deserialize, Serialize};
 
@@ -27,8 +27,10 @@ pub struct IconInfo {
 }
 
 string_enum! {
-    /// Every sprite the symbology references, in the Kotlin declaration order. Variant names are
-    /// the S-52 symbol names verbatim so they grep across both implementations.
+    /// Every sprite the symbology references, in the order of `testdata/symbology/sprites.json`.
+    ///
+    /// Variant names are the S-52 symbol names verbatim, so they match the sprite sheets and the
+    /// S-52 presentation library.
     #[allow(non_camel_case_types, clippy::upper_case_acronyms)]
     pub enum Sprite {
         ACHARE02 = "ACHARE02",

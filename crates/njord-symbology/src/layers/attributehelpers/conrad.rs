@@ -1,4 +1,4 @@
-//! `attributehelpers/Conrad.kt`.
+//! S-57 `CONRAD` (conspicuous, radar) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/CONVYR/CONRAD>

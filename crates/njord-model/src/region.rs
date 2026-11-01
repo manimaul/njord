@@ -13,7 +13,7 @@ pub struct RegionManifestEntry {
     /// WKT of the region polygon.
     pub coverage: String,
     pub coverage_geo: GeoJson,
-    /// Always a `Point` (Kotlin types it as one).
+    /// Always a `Point`.
     #[serde(default)]
     pub label_point: Option<Geometry>,
     pub archive: Option<String>,

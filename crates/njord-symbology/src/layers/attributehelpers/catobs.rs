@@ -1,4 +1,4 @@
-//! `attributehelpers/Catobs.kt`.
+//! S-57 `CATOBS` (category of obstruction) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/OBSTRN/CATOBS>

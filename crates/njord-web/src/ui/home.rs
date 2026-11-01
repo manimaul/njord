@@ -1,10 +1,10 @@
-//! `Home.js.kt`: the about page.
+//! The about page (`/`).
 
 use leptos::prelude::*;
 use leptos::task::spawn_local;
 
 use crate::api;
-use crate::kotlin::duration_to_string;
+use crate::display::duration_to_string;
 use crate::state::Async;
 use crate::store::store;
 use crate::ui::components::render_async;

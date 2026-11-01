@@ -1,10 +1,11 @@
-//! P-RE-1, P-RE-2, P-RE-3 (`testdata/regions/schema.sql`, `metadata.json`, `archive.json`): the
-//! region exporter on the seeded database, rendering `REGION_TEST` (the fixture cells) and
-//! `WORLD` as Kotlin's `RegionExportTest` did, then the archive's DDL, metadata rows, tile
-//! coordinate set, chart rows, edge counts, checksum sidecar and the export watermark.
+//! The region exporter against `testdata/regions/schema.sql`, `metadata.json` and `archive.json`.
+//!
+//! It runs on the seeded database, rendering `REGION_TEST` (the fixture cells) and `WORLD`, then
+//! checks the archive's DDL, metadata rows, tile coordinate set, chart rows, edge counts,
+//! checksum sidecar and the export watermark.
 //!
 //! The archive tiles are gunzipped and decoded and must equal the live tile for the same
-//! coordinates, and the committed P-TE-5 golden where one exists, under the same tolerance as
+//! coordinates, and the committed golden tile where one exists, under the same tolerance as
 //! tests/tiles.rs.
 
 mod common;
@@ -151,7 +152,7 @@ async fn p_re_1_2_3_exported_archives() {
     let conn = Connection::open(archive).unwrap();
     let mut failures = Failures::default();
 
-    // P-RE-1 schema
+    // Schema (`schema.sql`)
     let ddl: Vec<String> = rows(
         &conn,
         "SELECT sql FROM sqlite_master WHERE sql IS NOT NULL ORDER BY type, name",
@@ -174,7 +175,7 @@ async fn p_re_1_2_3_exported_archives() {
             .ok_or_else(|| format!("DDL differs:\n{ddl}\n--- fixture:\n{body}")),
     );
 
-    // P-RE-2 metadata of both archives
+    // Metadata of both archives (`metadata.json`)
     let meta = metadata(&conn);
     assert_eq!(
         meta.iter()
@@ -194,7 +195,7 @@ async fn p_re_1_2_3_exported_archives() {
         );
     }
 
-    // P-RE-3 catalog tables
+    // Catalog tables (`archive.json`)
     assert!(
         rows(&conn, "PRAGMA foreign_key_check", 1).is_empty(),
         "no dangling chart_tiles edge"
@@ -310,7 +311,7 @@ async fn p_re_1_2_3_exported_archives() {
     failures.assert_none(1);
 }
 
-/// `exportNext` without configured regions does nothing; a lock held elsewhere yields LockBusy.
+/// `export_next` without configured regions does nothing; a lock held elsewhere yields LockBusy.
 #[tokio::test]
 async fn export_next_without_regions_and_with_a_busy_lock() {
     let db = common::seeded_db().await;

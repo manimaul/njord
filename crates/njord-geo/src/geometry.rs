@@ -1,8 +1,8 @@
-//! The `OgrGeometry` operations the tile path uses (`libgdal/.../OgrGeometry.kt`,
-//! `MvtDataset.kt` `transformToTilePixels`), re-expressed over `geo-types` with the pure-Rust
-//! `geo` crate instead of GDAL/GEOS (RUST_PORT_PLAN.md §4.1). Checked against LB-1
-//! (`geo/ogr_geometry.json`) on a best-effort basis: the test lists every op where `geo` and GEOS
-//! legitimately differ.
+//! The geometry operations the tile path uses, over `geo-types` with the pure-Rust `geo` crate.
+//!
+//! They have the semantics of the GDAL/GEOS operations the golden tiles were produced with, and are
+//! checked against the golden fixture `testdata/geo/ogr_geometry.json` on a best-effort basis: the
+//! test lists every op where `geo` and GEOS legitimately differ.
 //!
 //! Results follow GEOS's choice of output type where the MVT encoder's behaviour depends on it:
 //! an intersection with one part comes back as the single-part type (`Point`, `LineString`,
@@ -80,9 +80,10 @@ pub fn envelope(geometry: &Geometry) -> Option<Rect> {
     geometry.bounding_rect()
 }
 
-/// The envelope as a polygon grown by `expand` on every side (`envelopeGeometry(expand)`). The
-/// ring runs min/min, max/min, max/max, min/max, as Kotlin builds it; an empty geometry gives the
-/// all-zero envelope GDAL reports.
+/// The envelope as a polygon grown by `expand` on every side.
+///
+/// The ring runs min/min, max/min, max/max, min/max; an empty geometry gives the all-zero envelope
+/// GDAL reports.
 pub fn envelope_polygon(geometry: &Geometry, expand: f64) -> Polygon {
     let (min, max) = envelope(geometry)
         .map(|r| (r.min(), r.max()))
@@ -99,17 +100,20 @@ pub fn envelope_polygon(geometry: &Geometry, expand: f64) -> Polygon {
     )
 }
 
-/// `OgrGeometry.makeValid()`: a valid geometry is returned unchanged; an invalid polygon or
-/// multipolygon is repaired with `geo`'s odd-even triangulation repair, whose result is always a
-/// `MultiPolygon`. GEOS's `MakeValid` instead keeps collapsed parts as lines (a `GeometryCollection`
-/// result), and picks different ring start vertices. Any other invalid geometry (non-finite
+/// The geometry made valid, or `None` when it has no repair.
+///
+/// A valid geometry is returned unchanged; an invalid polygon or multipolygon is repaired with
+/// `geo`'s odd-even triangulation repair, whose result is always a `MultiPolygon`. GEOS's
+/// `MakeValid` instead keeps collapsed parts as lines (a `GeometryCollection` result), and picks
+/// different ring start vertices. Any other invalid geometry (non-finite
 /// coordinates, a line with a single distinct vertex) has no repair and gives `None`, as a failed
 /// `OGR_G_MakeValid` does.
 ///
-/// The repair is made deterministic by [`canonical_polygons`]: `geo` traces its output rings by
-/// iterating a `HashSet` with a randomly seeded hasher, so its ring start vertices and the order
-/// of rings and polygons change from call to call (and with them what Douglas–Peucker keeps
-/// downstream; P-TE-5 LAKARE `02260A82E9560782` on 14/2616/5742).
+/// The repair is made deterministic: every ring is rotated to start at its smallest vertex and
+/// rings and polygons are sorted by that vertex. `geo` traces its output rings by iterating a
+/// `HashSet` with a randomly seeded hasher, so its ring start vertices and the order of rings and
+/// polygons change from call to call (and with them what Douglas–Peucker keeps downstream, e.g.
+/// LAKARE `02260A82E9560782` in the golden tile 14/2616/5742).
 pub fn make_valid(geometry: &Geometry) -> Option<Geometry> {
     if geometry.is_valid() {
         return Some(geometry.clone());
@@ -123,9 +127,11 @@ pub fn make_valid(geometry: &Geometry) -> Option<Geometry> {
 }
 
 /// Every ring rotated to start at its smallest vertex (by x, then y), holes and polygons ordered
-/// by that vertex: [`make_valid`]'s deterministic output, and the ring starts of [`intersection`]
+/// by that vertex.
+///
+/// This is [`make_valid`]'s deterministic output, and the ring starts of [`intersection`]
 /// (`i_overlay` starts rings elsewhere; this start agrees more often with GEOS's after
-/// Douglas–Peucker in P-TE-5).
+/// Douglas–Peucker in the golden tiles).
 fn canonical_polygons(polygons: MultiPolygon) -> MultiPolygon {
     let smallest = |a: &Coord, b: &Coord| a.x.total_cmp(&b.x).then(a.y.total_cmp(&b.y));
     let rotate = |ring: &mut LineString| {
@@ -180,10 +186,11 @@ fn single_or_multi_polygons(mp: MultiPolygon) -> Geometry {
     }
 }
 
-/// The part of `geometry` inside `mask` (closed: points and lines on the mask's boundary are
-/// kept), with GEOS's output types (see the module docs). Lines are split as GEOS splits them
-/// ([`clip_lines`]); polygon rings start at their smallest vertex ([`canonical_polygons`]).
-/// Collection members are intersected one by one and empty results dropped.
+/// The part of `geometry` inside `mask`, with GEOS's output types (see the module docs).
+///
+/// The mask is closed: points and lines on its boundary are kept. Lines are split as GEOS splits
+/// them, and polygon rings start at their smallest vertex, holes and polygons ordered by that
+/// vertex. Collection members are intersected one by one and empty results dropped.
 pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
     match geometry {
         Geometry::Point(p) => single_or_multi_points(
@@ -220,12 +227,13 @@ pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
     }
 }
 
-/// Lines intersected with `mask` as GEOS's overlay returns them, from `geo`'s line clip, one
-/// input line at a time. GEOS's result lines are not merged: they run between nodes, which are
-/// the points where a line meets the mask's boundary, where it crosses itself, and its own start
-/// and end vertex. `geo` instead merges result lines at every vertex where just two of them meet,
-/// and walks a closed line from its smallest vertex (P-TE-5: coastline, contour and
-/// coverage-boundary rings come back split there). So for each input line:
+/// Lines intersected with `mask` as GEOS's overlay returns them, one input line at a time.
+///
+/// The pieces come from `geo`'s line clip. GEOS's result lines are not merged: they run between
+/// nodes, which are the points where a line meets the mask's boundary, where it crosses itself,
+/// and its own start and end vertex. `geo` instead merges result lines at every vertex where just
+/// two of them meet, and walks a closed line from its smallest vertex (in the golden tiles,
+/// coastline, contour and coverage-boundary rings come back split there). So for each input line:
 ///
 /// - two pieces that meet end to start strictly inside the mask, with no other piece ending
 ///   there, are joined, unless they meet at the line's own start vertex;
@@ -233,8 +241,8 @@ pub fn intersection(geometry: &Geometry, mask: &MultiPolygon) -> Geometry {
 /// - a closed piece (the whole ring inside the mask) is rotated back to the line's start.
 ///
 /// A line that only touches the mask has no clipped part, but GEOS returns the touching points
-/// (P-TE-5 SLCONS `022600D606360032` on 14/2619/5744, which after simplification ends on the
-/// encoder's clip square and so is drawn as a POINT).
+/// (SLCONS `022600D606360032` in the golden tile 14/2619/5744, which after simplification ends on
+/// the encoder's clip square and so is drawn as a POINT).
 fn clip_lines(lines: &MultiLineString, mask: &MultiPolygon) -> Geometry {
     let mut pieces: Vec<LineString> = Vec::new();
     for line in lines.iter().filter(|l| !l.0.is_empty()) {
@@ -334,16 +342,19 @@ fn touching_points(lines: &MultiLineString, mask: &MultiPolygon) -> Vec<Point> {
     points
 }
 
-/// `a − b`, or `None` when `b` is invalid: Kotlin's `difference` refuses an invalid mask rather
-/// than guess, and the chart-priority masking then keeps its previous include area.
+/// `a − b`, or `None` when `b` is invalid.
+///
+/// An invalid mask is refused rather than guessed at, and the chart-priority masking then keeps
+/// its previous include area.
 pub fn difference(a: &MultiPolygon, b: &MultiPolygon) -> Option<MultiPolygon> {
     b.is_valid().then(|| a.difference(b))
 }
 
-/// The topological boundary (`OGR_G_Boundary`): polygon rings as a `LineString` (one ring) or a
-/// `MultiLineString`, line endpoints as a `MultiPoint` under the mod-2 rule, an empty collection
-/// for points. GEOS does not define the boundary of a `GeometryCollection`, and neither does this
-/// (`None`).
+/// The topological boundary (`OGR_G_Boundary`), or `None` for a `GeometryCollection`.
+///
+/// Polygon rings come back as a `LineString` (one ring) or a `MultiLineString`, line endpoints as
+/// a `MultiPoint` under the mod-2 rule, and points as an empty collection. GEOS does not define
+/// the boundary of a `GeometryCollection`, and neither does this.
 pub fn boundary(geometry: &Geometry) -> Option<Geometry> {
     let rings = |polygons: &mut dyn Iterator<Item = &Polygon>| -> Vec<LineString> {
         polygons
@@ -400,9 +411,11 @@ pub fn centroid(geometry: &Geometry) -> Option<Point> {
     geometry.centroid()
 }
 
-/// `centroidOfLargestPart`: for a `MultiPolygon`, the centroid of its largest part by area (the
-/// first one on a tie), so a region label lands on the mainland rather than between islands; for
-/// anything else the plain [`centroid`].
+/// The centroid of a `MultiPolygon`'s largest part by area, or the plain [`centroid`] of anything
+/// else.
+///
+/// On a tie the first largest part wins. A region label thus lands on the mainland rather than
+/// between islands.
 pub fn centroid_of_largest_part(geometry: &Geometry) -> Option<Point> {
     if let Geometry::MultiPolygon(mp) = geometry {
         let mut largest: Option<&Polygon> = None;
@@ -418,9 +431,8 @@ pub fn centroid_of_largest_part(geometry: &Geometry) -> Option<Point> {
     centroid(geometry)
 }
 
-/// `transformToTilePixels`: every WGS-84 coordinate replaced by its whole-pixel position relative
-/// to the top-left corner of tile `x`/`y`/`z`
-/// ([`TileSystem::lat_lng_to_tile_bounded_xy`]).
+/// The geometry with every WGS-84 coordinate replaced by its whole-pixel position relative to the
+/// top-left corner of tile `x`/`y`/`z` ([`TileSystem::lat_lng_to_tile_bounded_xy`]).
 pub fn to_tile_pixels(
     geometry: &Geometry,
     x: i64,

@@ -1,4 +1,4 @@
-//! The pages (`shared_fe/…/ui`), one module per Kotlin file group, and the [`App`] router.
+//! The pages, the shared widgets they are built from, and the [`App`] router.
 
 mod chart_info;
 mod chart_view;
@@ -13,7 +13,9 @@ use leptos::prelude::*;
 use crate::routing::NjordRoute;
 use crate::store::store;
 
-/// `Router.kt`: the nav bar over the current route's page. Pages are rebuilt when the route or
+/// The nav bar over the current route's page.
+///
+/// Pages are rebuilt when the route or
 /// its path arguments change, not when only the query string does (the map rewrites its own
 /// `?lat=…&lng=…&z=…` as it moves).
 #[component]

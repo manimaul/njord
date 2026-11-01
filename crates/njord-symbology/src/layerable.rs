@@ -1,15 +1,15 @@
-//! The `Layerable` contract and its layer helpers (`Layerable.kt`).
+//! The `Layerable` contract and its layer helpers.
 //!
-//! A Kotlin `Layerable` is one object per S-57 object class that (a) adds symbology props to a
-//! feature before it is encoded into a tile (`preTileEncode`) and (b) contributes the MapLibre
-//! layers that draw those props (`layers`). Here the trait carries the behaviour, while the key
-//! and source layer it is registered under live in the [`LayerFactory`](crate::LayerFactory)
-//! entry, so one type can be registered twice (`Lokbsn` as `LOKBSN` and `lokbsn`) and a Kotlin
-//! subclass that only changes its source layer (`Land : Lndare`) is a registration, not a type.
+//! A [`Layerable`] is one rule per S-57 object class that (a) adds symbology props to a feature
+//! before it is encoded into a tile ([`Layerable::pre_tile_encode`]) and (b) contributes the
+//! MapLibre layers that draw those props ([`Layerable::layers`]). The trait carries the
+//! behaviour, while the key and source layer it is registered under live in the
+//! [`LayerFactory`](crate::LayerFactory) entry, so one type can be registered twice (`Lokbsn` as
+//! `LOKBSN` and `lokbsn`) and a variant that only changes its source layer (the Natural Earth
+//! `land` layer drawn by `Lndare`) is a registration, not a type.
 //!
-//! Kotlin's helpers take named arguments with defaults; here the required arguments are
-//! positional and the defaulted ones are a `…Opts` struct with a [`Default`] matching Kotlin's,
-//! so `pointLayerFromSymbol(anchor = Anchor.CENTER)` reads
+//! The [`LayerBuilder`] helpers take their required arguments positionally and the optional ones
+//! as a `…Opts` struct with a [`Default`], so a centred point symbol reads
 //! `b.point_layer_from_symbol(PointSymbolOpts { anchor: Anchor::Center, ..Default::default() })`.
 
 use njord_model::style::{
@@ -18,7 +18,7 @@ use njord_model::style::{
 use njord_model::{Color, Depth, Layer, Layout, Paint, Source, Sprite, Theme};
 use serde_json::{Value, json};
 
-use crate::kotlin::float_json;
+use crate::number::float_json;
 use crate::paint_brushes::{IconRot, Label, LineStyle, Offset, Symbol};
 use crate::{ChartFeature, ColorLibrary, SymbologyConfig, filters};
 
@@ -35,9 +35,9 @@ impl Context {
     }
 }
 
+/// The symbology rule for one S-57 object class: its feature props and its style layers.
 pub trait Layerable: Send + Sync {
-    /// Kotlin's `open val sourceLayer`: the vector tile layer the style layers read, when it is
-    /// not the registration key.
+    /// The vector tile layer the style layers read, when it is not the registration key.
     fn source_layer(&self) -> Option<&str> {
         None
     }
@@ -49,13 +49,12 @@ pub trait Layerable: Send + Sync {
     fn pre_tile_encode(&self, _feature: &mut ChartFeature, _cx: &Context) {}
 }
 
-/// Builds the layers of one layerable for one style request: Kotlin's `LayerableOptions` plus the
-/// layerable's key, source layer and `nextId` counter.
+/// Builds the layers of one layerable for one style request.
 ///
-/// Kotlin numbers helper-made ids with a per-instance counter that is never reset, so a server
-/// serves `DEPARE_fill_1` on the first request and `DEPARE_fill_3` on the next. A builder lives
-/// for one style generation, so ids always number from 1, as the first Kotlin request does (the
-/// P-SY-7 fixtures pin exactly that).
+/// It carries the request's depth unit and theme plus the layerable's key, source layer and id
+/// counter. Helper-made layer ids are numbered by that counter (`DEPARE_fill_1`,
+/// `DEPARE_fill_2`, …). A builder lives for one style generation, so ids always number from 1;
+/// the style goldens in `testdata/` pin exactly those ids.
 pub struct LayerBuilder<'a> {
     pub cx: &'a Context,
     pub key: &'a str,
@@ -87,33 +86,33 @@ impl<'a> LayerBuilder<'a> {
         &self.cx.config
     }
 
-    /// `++nextId`.
+    /// Advances the layer id counter and answers the new value (the first call answers 1).
     pub fn next_id(&mut self) -> u32 {
         self.next_id += 1;
         self.next_id
     }
 
-    /// `colorFrom(color, options.theme)`.
+    /// The colour for this request's theme ([`ColorLibrary::color_from`]).
     pub fn color(&self, color: Color) -> String {
         self.cx.colors.color_from(color, self.theme).to_owned()
     }
 
-    /// `colorFrom(color, options.theme).json`.
+    /// [`color`](Self::color) as a JSON string.
     pub fn color_json(&self, color: Color) -> Value {
         Value::String(self.color(color))
     }
 
-    /// `Filters.areaFillColor(options, theme)`.
+    /// A fill colour picked by the feature's `AC` prop ([`filters::area_fill_color`]).
     pub fn area_fill_color(&self, options: &[Color]) -> Value {
         filters::area_fill_color(&self.cx.colors, Some(options), self.theme)
     }
 
-    /// `Filters.lineColor(options, theme)`.
+    /// A line colour picked by the feature's `LC` prop ([`filters::line_color`]).
     pub fn line_color(&self, options: &[Color]) -> Value {
         filters::line_color(&self.cx.colors, Some(options), self.theme)
     }
 
-    /// A `Layer(id, type, sourceLayer = sourceLayer)` on the chart source, everything else unset.
+    /// A layer of `kind` on the chart source and this layerable's source layer, everything else unset.
     pub fn layer(&self, id: impl Into<String>, kind: LayerType) -> Layer {
         Layer {
             id: id.into(),
@@ -128,8 +127,8 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `"{key}_{infix}{++nextId}"`, e.g. `DEPARE_fill_1` (infix `fill_`) or `ACHARE_area_point3`
-    /// (infix `area_point`, no separator in Kotlin).
+    /// `"{key}_{infix}{next_id}"`, e.g. `DEPARE_fill_1` (infix `fill_`) or `ACHARE_area_point3`
+    /// (infix `area_point`: some infixes have no trailing separator, as the style goldens record).
     fn helper_id(&mut self, infix: &str) -> String {
         let n = self.next_id();
         format!("{}_{infix}{n}", self.key)
@@ -145,6 +144,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
+    /// A point symbol on point features (`<key>_point_<n>`).
     pub fn point_layer_from_symbol(&mut self, o: PointSymbolOpts) -> Layer {
         let id = self.helper_id("point_");
         Layer {
@@ -166,6 +166,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
+    /// A text label on point features (`<key>_label_<n>`).
     pub fn point_layer_with_label(&mut self, label: &Label, o: PointLabelOpts) -> Layer {
         let id = self.helper_id("label_");
         Layer {
@@ -185,7 +186,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `lineLayerWithColor(theme, color, …)`.
+    /// A line in one fixed colour (`<key>_line_<n>`).
     pub fn line_layer_with_color(&mut self, color: Color, o: LineColorOpts) -> Layer {
         let id = self.helper_id("line_");
         Layer {
@@ -204,7 +205,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `lineLayerWithColor(options: Set<Color>, theme, …)`: the colour comes from the `LC` prop.
+    /// A line whose colour comes from the `LC` prop, one of `options` (`<key>_line_<n>`).
     pub fn line_layer_with_colors(&mut self, options: &[Color], o: LineColorsOpts) -> Layer {
         let id = self.helper_id("line_");
         Layer {
@@ -227,6 +228,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
+    /// A text label along line features (`<key>_label_<n>`).
     pub fn line_layer_with_label(&mut self, label: &Label, o: LineLabelOpts) -> Layer {
         let id = self.helper_id("label_");
         Layer {
@@ -244,7 +246,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `lineLayerWithPattern(symbol, includePolygonLines, symbolPlacement, …)`.
+    /// A symbol repeated along lines, and optionally polygon outlines (`<key>_line_symbol_<n>`).
     pub fn line_layer_with_pattern(&mut self, o: LinePatternOpts) -> Layer {
         let id = self.helper_id("line_symbol_");
         Layer {
@@ -266,7 +268,8 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `lineLayerWithPattern(symbol, iconRotate, iconSize, spacing, allowOverlap)`.
+    /// A map-aligned symbol repeated along lines and polygon outlines at a given size and spacing
+    /// (`<key>_line_symbol_<n>`).
     pub fn line_layer_with_spaced_pattern(
         &mut self,
         allow_overlap: bool,
@@ -289,7 +292,8 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `lineLayerWithText(textKey, theme)`. Kotlin's id has no separator: `RECTRC_line_label2`.
+    /// The `text_key` prop as text along line features. The id has no separator before the
+    /// number: `RECTRC_line_label2`.
     pub fn line_layer_with_text(&mut self, text_key: &str) -> Layer {
         let id = self.helper_id("line_label");
         Layer {
@@ -307,7 +311,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithFillColor(options: Set<Color>, theme)`: the colour comes from the `AC` prop.
+    /// A polygon fill whose colour comes from the `AC` prop, one of `options` (`<key>_fill_<n>`).
     pub fn area_layer_with_fill_colors(&mut self, options: &[Color]) -> Layer {
         let id = self.helper_id("fill_");
         Layer {
@@ -320,7 +324,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithFillColor(color, theme, opacity)`.
+    /// A polygon fill in one fixed colour, optionally translucent (`<key>_fill_<n>`).
     pub fn area_layer_with_fill_color(&mut self, color: Color, opacity: Option<f32>) -> Layer {
         let id = self.helper_id("fill_");
         Layer {
@@ -334,7 +338,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithFillPattern(symbol)`: the sprite, or the `AP` prop.
+    /// A polygon fill pattern: the sprite, or the `AP` prop (`<key>_fill_pattern_<n>`).
     pub fn area_layer_with_fill_pattern(&mut self, symbol: Option<Sprite>) -> Layer {
         let id = self.helper_id("fill_pattern_");
         Layer {
@@ -347,7 +351,7 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithSingleSymbol`. Kotlin's id has no separator: `CBLARE_area_symbol2`.
+    /// One symbol per polygon. The id has no separator before the number: `CBLARE_area_symbol2`.
     pub fn area_layer_with_single_symbol(&mut self, o: AreaSingleSymbolOpts) -> Layer {
         let id = self.helper_id("area_symbol");
         Layer {
@@ -364,9 +368,10 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithPointSymbol`: a polygon's point symbol, unless the feature set `EA`
-    /// ([`ChartFeature::exclude_area_point_symbol`]). Kotlin's id has no separator:
-    /// `OBSTRN_area_point2`.
+    /// A polygon's point symbol, unless the feature set `EA`
+    /// ([`ChartFeature::exclude_area_point_symbol`]).
+    ///
+    /// The id has no separator before the number: `OBSTRN_area_point2`.
     pub fn area_layer_with_point_symbol(&mut self, o: AreaPointSymbolOpts) -> Layer {
         let id = self.helper_id("area_point");
         Layer {
@@ -390,8 +395,9 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `textLayer`: S-52 `TX`/`TE` text, unfiltered by geometry type unless `filter` is given,
-    /// and point placed, so a point, line or area each get one upright label.
+    /// S-52 `TX`/`TE` text, point placed, so a point, line or area each get one upright label.
+    ///
+    /// It is unfiltered by geometry type unless `filter` is given.
     pub fn text_layer(&mut self, text_field: Value, o: TextLayerOpts) -> Layer {
         let id = self.helper_id("text_");
         Layer {
@@ -411,7 +417,8 @@ impl<'a> LayerBuilder<'a> {
         }
     }
 
-    /// `areaLayerWithText`. Kotlin's id has no separator: `LNDRGN_area_label3`.
+    /// A text label on points and polygons. The id has no separator before the number:
+    /// `LNDRGN_area_label3`.
     pub fn area_layer_with_text(&mut self, label: &Label, o: AreaTextOpts) -> Layer {
         let id = self.helper_id("area_label");
         Layer {
@@ -431,7 +438,7 @@ impl<'a> LayerBuilder<'a> {
     }
 }
 
-/// `symbol?.name?.json ?: listOf("get", prop).json`.
+/// The sprite's name, or a `["get", prop]` expression when there is none.
 fn sprite_or_prop(symbol: Option<Sprite>, prop: &str) -> Value {
     match symbol {
         Some(s) => json!(s.as_str()),
@@ -439,12 +446,12 @@ fn sprite_or_prop(symbol: Option<Sprite>, prop: &str) -> Value {
     }
 }
 
-/// `List<Float>.map { it.json }.json`.
+/// The values as a JSON array of short-form numbers ([`float_json`]).
 fn float_list(values: Vec<f32>) -> Value {
     Value::Array(values.into_iter().map(float_json).collect())
 }
 
-/// The defaulted arguments of `pointLayerFromSymbol`.
+/// The optional arguments of [`LayerBuilder::point_layer_from_symbol`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct PointSymbolOpts {
     pub symbol: Symbol,
@@ -471,7 +478,7 @@ impl Default for PointSymbolOpts {
     }
 }
 
-/// The defaulted arguments of `pointLayerWithLabel`.
+/// The optional arguments of [`LayerBuilder::point_layer_with_label`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct PointLabelOpts {
     pub label_color: Color,
@@ -493,7 +500,7 @@ impl Default for PointLabelOpts {
     }
 }
 
-/// The defaulted arguments of `lineLayerWithColor(theme, color, …)`.
+/// The optional arguments of [`LayerBuilder::line_layer_with_color`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct LineColorOpts {
     pub style: LineStyle,
@@ -514,7 +521,7 @@ impl Default for LineColorOpts {
     }
 }
 
-/// The defaulted arguments of `lineLayerWithColor(options: Set<Color>, theme, …)`.
+/// The optional arguments of [`LayerBuilder::line_layer_with_colors`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct LineColorsOpts {
     pub style: LineStyle,
@@ -532,7 +539,7 @@ impl Default for LineColorsOpts {
     }
 }
 
-/// The defaulted arguments of `lineLayerWithLabel`.
+/// The optional arguments of [`LayerBuilder::line_layer_with_label`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct LineLabelOpts {
     pub label_color: Color,
@@ -548,7 +555,7 @@ impl Default for LineLabelOpts {
     }
 }
 
-/// The defaulted arguments of `lineLayerWithPattern(symbol, includePolygonLines, …)`.
+/// The optional arguments of [`LayerBuilder::line_layer_with_pattern`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct LinePatternOpts {
     /// Default: the `LP` prop.
@@ -571,7 +578,7 @@ impl Default for LinePatternOpts {
     }
 }
 
-/// The defaulted arguments of `lineLayerWithPattern(symbol, iconRotate, iconSize, spacing, allowOverlap)`.
+/// The optional arguments of [`LayerBuilder::line_layer_with_spaced_pattern`].
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct SpacedLinePatternOpts {
     /// Default: the `LP` prop.
@@ -581,7 +588,7 @@ pub struct SpacedLinePatternOpts {
     pub spacing: Option<f32>,
 }
 
-/// The defaulted arguments of `areaLayerWithSingleSymbol`.
+/// The optional arguments of [`LayerBuilder::area_layer_with_single_symbol`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct AreaSingleSymbolOpts {
     /// Default: the `SY` prop.
@@ -602,7 +609,7 @@ impl Default for AreaSingleSymbolOpts {
     }
 }
 
-/// The defaulted arguments of `areaLayerWithPointSymbol`.
+/// The optional arguments of [`LayerBuilder::area_layer_with_point_symbol`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct AreaPointSymbolOpts {
     /// Default: the `SY` prop.
@@ -627,7 +634,7 @@ impl Default for AreaPointSymbolOpts {
     }
 }
 
-/// The defaulted arguments of `textLayer`.
+/// The optional arguments of [`LayerBuilder::text_layer`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct TextLayerOpts {
     pub text_anchor: Anchor,
@@ -647,7 +654,7 @@ impl Default for TextLayerOpts {
     }
 }
 
-/// The defaulted arguments of `areaLayerWithText`.
+/// The optional arguments of [`LayerBuilder::area_layer_with_text`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct AreaTextOpts {
     pub text_color: Color,

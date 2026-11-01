@@ -1,8 +1,9 @@
-//! P-DB-1 / DB-1: the schema contract. An empty database is provisioned at the current version
-//! and matches `db/schema.json`; a version-1 database (surrogate `charts.id`,
+//! The schema contract.
+//!
+//! An empty database is provisioned at the current version and matches `db/schema.json`; a version-1 database (surrogate `charts.id`,
 //! `features.chart_id`, no `ingested_at`, no `region_export_state`, `lnam_refs` never written)
 //! migrates in order with its data kept and ends with the same schema; re-running and racing
-//! runners are no-ops. Mirrors the Kotlin `DbMigrationsTest`.
+//! runners are no-ops.
 
 mod common;
 
@@ -20,7 +21,7 @@ const TABLES: [&str; 5] = [
     "region_export_state",
 ];
 
-/// `DbMigrationsTest.schemaOf`: columns (udt, nullability, default), `pg_indexes` definitions and
+/// The columns (udt, nullability, default), `pg_indexes` definitions and
 /// constraints of one table, each sorted.
 async fn schema_of(db: &Db, table: &str) -> Value {
     let pool = db.pool();
@@ -83,7 +84,7 @@ async fn check_schema(db: &Db, label: &str, failures: &mut Failures) -> usize {
 }
 
 #[tokio::test]
-async fn p_db_1_empty_database_is_provisioned_at_the_current_version() {
+async fn empty_database_is_provisioned_at_the_current_version() {
     let db = fresh_db("mig_empty").await;
     assert_eq!(
         db.db_version().await.unwrap(),
@@ -92,15 +93,12 @@ async fn p_db_1_empty_database_is_provisioned_at_the_current_version() {
     );
     migrate(&db).await;
     assert_eq!(db.db_version().await.unwrap(), CURRENT_VERSION);
-    assert_eq!(
-        CURRENT_VERSION, 3,
-        "bump with Kotlin's DbMigrator and db/schema.json"
-    );
+    assert_eq!(CURRENT_VERSION, 3, "bump together with db/schema.json");
     let value: String = sqlx::query_scalar("SELECT value FROM meta_data WHERE key = 'version';")
         .fetch_one(db.pool())
         .await
         .unwrap();
-    assert_eq!(value, "3", "the handshake row Kotlin reads");
+    assert_eq!(value, "3", "the schema version row other deployments read");
 
     let mut failures = Failures::default();
     let checked = check_schema(&db, "fresh", &mut failures).await;
@@ -115,7 +113,7 @@ async fn p_db_1_empty_database_is_provisioned_at_the_current_version() {
 }
 
 #[tokio::test]
-async fn p_db_1_version_1_database_migrates_with_its_data() {
+async fn version_1_database_migrates_with_its_data() {
     let db = fresh_db("mig_v1").await;
     exec(&db, VERSION_1_SCHEMA).await;
     exec(&db, VERSION_1_DATA).await;
@@ -184,7 +182,7 @@ async fn concurrent_runners_provision_once() {
     drop_database(db).await;
 }
 
-/// `DbMigrationsTest.VERSION_1_SCHEMA`.
+/// The version-1 schema.
 const VERSION_1_SCHEMA: &str = r#"
 CREATE TABLE meta_data (key VARCHAR PRIMARY KEY, value VARCHAR NOT NULL);
 INSERT INTO meta_data (key, value) VALUES ('version', '1');
@@ -235,7 +233,7 @@ CREATE INDEX base_features_gist ON base_features USING GIST (geom);
 CREATE INDEX base_features_scale_idx ON base_features (scale);
 "#;
 
-/// `DbMigrationsTest.VERSION_1_DATA`.
+/// Rows in the version-1 schema, to be kept by the migrations.
 const VERSION_1_DATA: &str = r#"
 INSERT INTO charts (name, scale, file_name, updated, issued, zoom, covr, dsid_props, chart_txt) VALUES
  ('A.000', 10000, 'A.000', '20240101', '20240101', 14, ST_GeomFromText('POLYGON((-1 -1, -1 1, 1 1, 1 -1, -1 -1))', 4326), '{"DSID_UPDN":"1"}', '{}'),

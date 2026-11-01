@@ -1,5 +1,5 @@
-//! Shared widgets (`ui/LoadingSpinner`, `ErrorDisplay`, `Link`, `Modal`, `Accordion`,
-//! `Dropdown`, `Progress`), with the Bootstrap markup of the Kotlin UI.
+//! Shared widgets (`LoadingSpinner`, `ErrorDisplay`, `Link`, `Modal`, `Accordion`, `Dropdown`,
+//! `Progress`), rendered as Bootstrap markup.
 
 use std::cell::{Cell, RefCell};
 

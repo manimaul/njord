@@ -1,4 +1,4 @@
-//! S-52 colour lookup per theme (`ColorLibrary.kt`).
+//! S-52 colour lookup per theme.
 
 use njord_model::{Color, ColorTuple, Colors, Theme, ThemeMode};
 
@@ -14,10 +14,10 @@ impl ColorLibrary {
         ColorLibrary { color_map }
     }
 
-    /// `colorFrom`: a custom theme's override, else the theme mode's colour.
+    /// The hex colour for `theme`: a custom theme's override, else the theme mode's colour.
     ///
     /// # Panics
-    /// When the library lacks the colour, as Kotlin throws.
+    /// When the library has no entry for `color` in the theme's mode.
     pub fn color_from(&self, color: Color, theme: &Theme) -> &str {
         let custom = match theme {
             Theme::Custom(c) => self
@@ -37,7 +37,9 @@ impl ColorLibrary {
         self.color_map.library.get(&mode)?.get(&color)
     }
 
-    /// `colors(theme)`: a built-in mode lists its library entries in `colors.json` order; a
+    /// Every colour of `theme`.
+    ///
+    /// A built-in mode lists its library entries in `colors.json` order; a
     /// custom theme lists every [`Color`] in declaration order.
     pub fn colors(&self, theme: &Theme) -> Vec<ColorTuple> {
         match theme {

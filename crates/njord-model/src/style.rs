@@ -1,8 +1,8 @@
-//! The MapLibre style served by `GET /v1/style/{depth}/{theme}` (`Style.kt`).
+//! The MapLibre style served by `GET /v1/style/{depth}/{theme}`.
 //!
-//! The Kotlin `StyleHandler` encodes with `encodeDefaults = true, explicitNulls = false`, so here
-//! every `Option` is omitted when `None` while defaulted fields are always written. Fixtures:
-//! `testdata/symbology/style/` (P-SY-7) and `conformance/golden/api_02_style/` (P-API-2).
+//! Unlike the rest of the API, the style omits every `Option` that is `None`; defaulted fields
+//! are still always written. The golden fixtures are `testdata/symbology/style/` and
+//! `conformance/golden/api_02_style/`.
 
 use geojson::GeoJson;
 use serde::{Deserialize, Serialize};
@@ -30,9 +30,10 @@ pub struct Layer {
     pub paint: Option<Paint>,
     #[serde(rename = "type")]
     pub kind: LayerType,
-    /// [`Source::SENC`] for every chart layer; `None` only for the background layer. Kotlin
-    /// defaults a missing `source` to `src_senc` when decoding; here a missing member stays `None`
-    /// so a style round-trips unchanged.
+    /// [`Source::SENC`] for every chart layer; `None` only for the background layer.
+    ///
+    /// A missing member stays `None` rather than defaulting to [`Source::SENC`], so a style
+    /// round-trips unchanged.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub source: Option<String>,
     #[serde(

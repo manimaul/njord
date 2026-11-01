@@ -1,4 +1,4 @@
-//! `GET /v1/sector_svg/{theme}/{sectr1}/{sectr2}/{color}` (`SvgLightSectorHandler.kt`).
+//! `GET /v1/sector_svg/{theme}/{sectr1}/{sectr2}/{color}`: a light sector as SVG.
 
 use std::sync::Arc;
 
@@ -10,12 +10,15 @@ use njord_model::{Color, Theme, ThemeMode};
 use super::{from_name, with_content_type};
 use crate::state::AppState;
 
-/// The light-sector arc between bearings `sectr1` and `sectr2` in the S-52 colour `color`, for a
-/// theme (unknown falls back to `day`). `image/svg+xml`. A non-numeric bearing or an unknown
-/// colour is a 400 with a `text/plain` message that names only the bearings, as Kotlin's does.
+/// The light-sector arc between bearings `sectr1` and `sectr2` as `image/svg+xml`.
 ///
-/// Bearings are parsed with Rust's `f64` grammar, which differs from Kotlin's `toDoubleOrNull`
-/// only on spellings no client sends (`inf`, a `d`/`f` suffix, hexadecimal).
+/// The arc is drawn in the S-52 colour `color` for a theme (unknown falls back to `day`). A
+/// non-numeric bearing or an unknown
+/// colour is a 400 with a `text/plain` message that names only the bearings, the text the
+/// conformance goldens record.
+///
+/// Bearings are parsed with Rust's `f64` grammar, so spellings such as `inf` are accepted and a
+/// `d`/`f` suffix or hexadecimal is refused; no client sends any of them.
 pub async fn sector_svg(
     State(state): State<Arc<AppState>>,
     Path((theme, sectr1, sectr2, color)): Path<(String, String, String, String)>,

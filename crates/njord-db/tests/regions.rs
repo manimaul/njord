@@ -1,5 +1,6 @@
-//! P-DB-6 / DB-11: the region export flags, ported from the Kotlin `RegionDaoTest` (no fixture
-//! file). `region_needs_rebuild` compares `charts.ingested_at` with
+//! The region export state (no fixture file).
+//!
+//! `region_needs_rebuild` compares `charts.ingested_at` with
 //! `region_export_state.exported_at`; `mark_region_exported` / `clear_region_export_state` move
 //! that watermark; `regions_containing_chart` is asked before a chart is deleted.
 
@@ -145,7 +146,7 @@ async fn charts_in_region_and_latest_update_see_only_intersecting_charts() {
             .await
             .unwrap(),
         None,
-        "MAX over nothing (Kotlin read it as \"\")"
+        "MAX over no rows is None"
     );
     drop_database(db).await;
 }

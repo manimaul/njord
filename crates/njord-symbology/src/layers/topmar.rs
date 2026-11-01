@@ -29,7 +29,7 @@ pub enum TopmarPlatform {
 }
 
 impl TopmarPlatform {
-    /// The Kotlin constant name, written to `_PTFM`.
+    /// The upper-case name written to the `_PTFM` prop.
     pub fn name(self) -> &'static str {
         match self {
             TopmarPlatform::Floating => "FLOATING",

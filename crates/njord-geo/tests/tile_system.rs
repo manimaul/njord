@@ -1,13 +1,15 @@
-//! P-TE-1 `geo/tile_system.json`: the Web Mercator arithmetic, against the Kotlin `TileSystem`.
+//! The Web Mercator arithmetic of [`njord_geo::TileSystem`] against the golden fixture
+//! `geo/tile_system.json`.
 
 use njord_geo::{TILE_SYSTEM, TWEAK_ZOOM_TO_SCALE_BY};
 use njord_testdata::{Failures, cases, first_difference, port_expected};
 use serde_json::{Value, json};
 
-/// Kotlin computes `mapSize = 4096 shl z` in an `Int`, which overflows from z19 (`2^12 << 19 ==
-/// 2^31`), so every op that goes through it pins garbage at z ≥ 19. Decision D10 has the port compute it in 64 bits; those cases carry no `port.expected`,
-/// so they are checked for sanity instead of equality.
-const KOTLIN_OVERFLOWS_FROM_Z: u64 = 19;
+/// The fixture was recorded with `mapSize = 4096 << z` in a 32-bit `Int`, which overflows from z19
+/// (`2^12 << 19 == 2^31`), so every op that goes through it pins garbage at z ≥ 19. The crate
+/// computes it in 64 bits; those cases carry no `port.expected`, so they are checked for sanity
+/// instead of equality.
+const GOLDEN_OVERFLOWS_FROM_Z: u64 = 19;
 
 fn f(input: &Value, key: &str) -> f64 {
     input[key].as_f64().unwrap()
@@ -103,7 +105,7 @@ fn compare(input: &Value, expected: &Value, actual: &Value) -> Result<(), String
     }
 }
 
-/// The D10 cases: what the 64-bit port must produce instead of Kotlin's overflow.
+/// The overflowed cases: what the 64-bit map size must produce instead of the fixture's garbage.
 fn check_sane(input: &Value, actual: &Value) -> Result<(), String> {
     let z = z(input);
     let tiles = (1u64 << z) as f64;
@@ -132,7 +134,7 @@ fn check_sane(input: &Value, actual: &Value) -> Result<(), String> {
     }
 }
 
-/// P-TE-1: every case, at the fixture's precision.
+/// Every case, at the fixture's precision.
 #[test]
 fn tile_system() {
     let mut failures = Failures::default();
@@ -141,11 +143,11 @@ fn tile_system() {
     for case in &cases {
         let input = &case["input"];
         let actual = compute(input);
-        let kotlin_overflowed = input["op"] != "scaleToZoom"
+        let golden_overflowed = input["op"] != "scaleToZoom"
             && input["op"] != "zoomToScale"
             && input["op"] != "scaleToZoomInt"
-            && input["z"].as_u64().unwrap() >= KOTLIN_OVERFLOWS_FROM_Z;
-        let result = if kotlin_overflowed {
+            && input["z"].as_u64().unwrap() >= GOLDEN_OVERFLOWS_FROM_Z;
+        let result = if golden_overflowed {
             overflowed += 1;
             check_sane(input, &actual)
         } else {
@@ -153,12 +155,15 @@ fn tile_system() {
         };
         failures.check(input, result);
     }
-    assert_eq!(overflowed, 127, "D10 cases: everything at z19 and z24");
+    assert_eq!(
+        overflowed, 127,
+        "overflowed cases: everything at z19 and z24"
+    );
     failures.assert_none(cases.len());
 }
 
-/// P-TE-1: the `latLngToTileBoundedXy` inputs were taken from the Kotlin clip polygon's envelope
-/// at full precision (west/north, east/north, east/south, west/south, then the centre), so they
+/// The `latLngToTileBoundedXy` inputs were taken from the recorded clip polygon's envelope at full
+/// precision (west/north, east/north, east/south, west/south, then the centre), so they
 /// pin the unrounded clip polygon corners exactly, which the 15-digit WKT cannot.
 #[test]
 fn clip_polygon_corners_are_exact() {
@@ -173,7 +178,7 @@ fn clip_polygon_corners_are_exact() {
     for group in bounded.chunks(9) {
         let first = group[0];
         let (x, y, z) = (i(first, "x"), i(first, "y"), z(first));
-        if u64::from(z) >= KOTLIN_OVERFLOWS_FROM_Z {
+        if u64::from(z) >= GOLDEN_OVERFLOWS_FROM_Z {
             continue;
         }
         checked += 1;

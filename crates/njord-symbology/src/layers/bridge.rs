@@ -1,4 +1,4 @@
-//! Acronym: BRIDGE (the Kotlin class has no header comment).
+//! Acronym: BRIDGE (bridge).
 
 use crate::layers::clearance_label::opening_bridge;
 use crate::layers::prelude::*;

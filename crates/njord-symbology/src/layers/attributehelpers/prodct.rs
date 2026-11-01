@@ -1,4 +1,4 @@
-//! `attributehelpers/Prodct.kt`.
+//! S-57 `PRODCT` (product) values, a list attribute.
 
 crate::layers::attributehelpers::list_attribute! {
     /// <https://openenc.com/control/symbols/PIPARE/PRODCT>

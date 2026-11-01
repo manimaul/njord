@@ -1,8 +1,10 @@
-//! `ingest/RegionExportWorker.kt` (P-CC-3 `testdata/concurrency/cadence.json`): renders stale
-//! regions one at a time, forever. While zips wait in `save/` or this instance holds the lock it
-//! polls every [`RegionWorker::POLL`]; after a render it loops at once (more regions may be
-//! stale); when nothing is stale it idles [`RegionWorker::IDLE`]. [`AppState::wake_region_worker`]
-//! cuts either wait short (after an ingest, a chart delete or `POST /v1/regions`).
+//! The region export worker: renders stale regions one at a time, forever.
+//!
+//! The cadence is pinned by `testdata/concurrency/cadence.json`. While zips wait in `save/` or this
+//! instance holds the lock it polls every [`RegionWorker::POLL`]; after a render it loops at once
+//! (more regions may be stale); when nothing is stale it idles [`RegionWorker::IDLE`].
+//! [`AppState::wake_region_worker`] cuts either wait short (after an ingest, a chart delete or
+//! `POST /v1/regions`).
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -11,20 +13,22 @@ use super::export::{ExportResult, export_next};
 use crate::ingest::IngestWorker;
 use crate::state::AppState;
 
+/// The background task that keeps region archives current; see the [module docs](self).
 pub struct RegionWorker {
     state: Arc<AppState>,
 }
 
 impl RegionWorker {
-    /// `POLL_DELAY_MS`.
+    /// The wait while an ingest is queued or running, or the lock is busy.
     pub const POLL: Duration = Duration::from_secs(5);
-    /// `IDLE_DELAY_MS`.
+    /// The wait when no region is stale.
     pub const IDLE: Duration = Duration::from_secs(15 * 60);
 
     pub fn new(state: Arc<AppState>) -> RegionWorker {
         RegionWorker { state }
     }
 
+    /// Runs forever.
     pub async fn run(self) {
         loop {
             tracing::debug!("region export worker run");

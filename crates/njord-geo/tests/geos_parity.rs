@@ -1,7 +1,8 @@
 //! The tile-path behaviours where `njord-geo` follows GEOS rather than `geo`, each pinned on a
-//! small input; the full evidence is P-TE-5 (`njord-server/tests/tiles.rs`). The LAKARE input is
-//! the pixel-space geometry the Rust tile path hands the encoder for P-TE-5 LAKARE
-//! `02260A82E9560782` on 14/2616/5742 (`fixtures/lakare_02260A82E9560782_14_2616_5742.wkt`).
+//! small input; the full evidence is the golden tile comparison in `njord-server/tests/tiles.rs`.
+//! The LAKARE input is the pixel-space geometry the tile path hands the encoder for LAKARE
+//! `02260A82E9560782` in the golden tile 14/2616/5742
+//! (`fixtures/lakare_02260A82E9560782_14_2616_5742.wkt`).
 
 use geo_types::{Geometry, LineString, MultiLineString, MultiPolygon, Point, Polygon};
 use njord_geo::VectorTileEncoder;
@@ -52,14 +53,14 @@ fn repaired_polygon_encodes_deterministically() {
     }
 }
 
-/// The Kotlin tile has one ring; the lobe, which rounds to two pixels, is not written.
+/// The golden tile has one ring; the lobe, which rounds to two pixels, is not written.
 #[test]
 fn degenerate_ring_is_dropped() {
     let view = decode_to_json(&encode(&lakare())).unwrap();
     let feature = &view["layers"][0]["features"][0];
     let rings = feature["geometry"].as_array().unwrap();
     assert_eq!(rings.len(), 1, "{feature}");
-    let kotlin = json!([
+    let golden = json!([
         [2927, 2497],
         [2934, 2498],
         [2954, 2502],
@@ -78,10 +79,10 @@ fn degenerate_ring_is_dropped() {
     ]);
     let mut ring: Vec<Value> = rings[0].as_array().unwrap().clone();
     ring.pop();
-    let start = ring.iter().position(|v| *v == kotlin[0]).unwrap();
+    let start = ring.iter().position(|v| *v == golden[0]).unwrap();
     ring.rotate_left(start);
     ring.push(ring[0].clone());
-    assert_eq!(Value::from(ring), kotlin);
+    assert_eq!(Value::from(ring), golden);
 }
 
 fn line(coords: &[(f64, f64)]) -> Geometry {
@@ -89,7 +90,7 @@ fn line(coords: &[(f64, f64)]) -> Geometry {
 }
 
 /// A closed line cut by the mask runs between the mask boundary and its own start vertex
-/// (P-TE-5 PLY on 14/2619/5741, coastline on 1/0/0), not from `geo`'s smallest vertex.
+/// (golden tiles: PLY on 14/2619/5741, coastline on 1/0/0), not from `geo`'s smallest vertex.
 #[test]
 fn closed_line_is_split_at_its_start_vertex_only() {
     let mask = square(0.0, 10.0);
@@ -145,8 +146,8 @@ fn lines_are_not_merged_across_parts() {
     assert_eq!(intersection(&lines, &square(0.0, 10.0)), lines);
 }
 
-/// A line that only touches the mask is the touching point (P-TE-5 SLCONS `022600D606360032`
-/// on 14/2619/5744 is drawn as a POINT).
+/// A line that only touches the mask is the touching point (SLCONS `022600D606360032` in the
+/// golden tile 14/2619/5744 is drawn as a POINT).
 #[test]
 fn line_touching_the_mask_is_a_point() {
     let touching = line(&[(12.0, 3.0), (10.0, 5.0), (12.0, 7.0)]);

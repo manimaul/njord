@@ -7,7 +7,7 @@ license.workspace = true
 repository.workspace = true
 
 # Must keep compiling for wasm32-unknown-unknown: njord-web depends on this crate and nothing else
-# from the backend (RUST_PORT_PLAN.md §3.1).
+# from the backend.
 [dependencies]
 geojson.workspace = true
 indexmap.workspace = true

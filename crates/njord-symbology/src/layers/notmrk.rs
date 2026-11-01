@@ -1,4 +1,5 @@
-//! Inland ENC object NOTMRK: registered (InlandLayers), but draws nothing yet (`Notmrk.kt`).
+//! Inland ENC object NOTMRK: registered in
+//! [`inland_layers`](crate::layer_factory::inland_layers), but draws nothing yet.
 
 use crate::layers::prelude::*;
 

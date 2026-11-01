@@ -1,6 +1,10 @@
-//! `ChartDao.kt`: chart rows, the catalog and editions (P-DB-5), the tile path's feature queries
-//! (P-DB-3, `db/feature_queries.json`) with the TOPMAR association (P-DB-4), and chart insert /
-//! delete (P-DB-2, decision D5).
+//! Chart rows: lookup, the catalog and editions, the tile path's feature queries, and insert and
+//! delete.
+//!
+//! The tile feature queries ([`Db::find_chart_features_4326`],
+//! [`Db::find_all_chart_features_4326`]) also attach each TOPMAR's platform layers, see
+//! [`ChartFeature::associated_layer_names`]. Fixtures: `db/feature_queries.json`,
+//! `db/lnam_refs.json`, `db/catalog_paging.json` and `db/overwrite.json`.
 
 use std::collections::HashMap;
 
@@ -14,36 +18,44 @@ use sqlx::postgres::{PgConnection, PgRow};
 use crate::geometry::{from_wkb, to_wkb};
 use crate::{Db, Result};
 
-/// `ChartDao.PAGE_SIZE`: charts per catalog page.
+/// Charts per catalog page.
 pub const PAGE_SIZE: usize = 100;
 
-/// A feature as the tile path reads it (Kotlin `ChartFeature`): the geometry is already clipped
-/// by the query, and `None` when PostGIS returned no geometry or bytes that are not WKB (Kotlin's
-/// `OgrGeometry.fromWkb4326` returning null).
+/// A feature as the tile path reads it.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ChartFeature {
+    /// The S-57 object class, e.g. `BOYLAT`.
     pub layer: String,
+    /// The S-57 attributes and symbology props.
     pub props: JsonObject,
+    /// The geometry, already clipped by the query; `None` when PostGIS returned no geometry or
+    /// bytes that are not WKB.
     pub geometry: Option<Geometry>,
     /// For a TOPMAR: the distinct layers, sorted, of the features whose `lnam_refs` hold its
     /// `LNAM` (its platform). Empty for every other layer.
     pub associated_layer_names: Vec<String>,
 }
 
-/// A chart whose coverage intersects a tile (Kotlin `ChartInfo`), for `addCharts`.
+/// A chart whose coverage intersects a tile, from [`Db::find_chart_info`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct ChartInfo {
+    /// The chart name (`DSID_DSNM`).
     pub name: String,
+    /// The compilation scale denominator.
     pub scale: i32,
+    /// The zoom level the chart is drawn from.
     pub zoom: i32,
+    /// The chart coverage polygon.
     pub covr: Geometry,
 }
 
 const CHART_COLUMNS: &str = "name, scale, file_name, updated, issued, zoom, \
     st_asgeojson(covr), st_asbinary(covr), dsid_props, chart_txt";
 
-/// A row of [`CHART_COLUMNS`]. `covr` is PostGIS GeoJSON (9 decimal places, as Kotlin serves
-/// it); `bounds` is the envelope of the exact coverage, `[west, south, east, north]`.
+/// A row of [`CHART_COLUMNS`].
+///
+/// `covr` is PostGIS GeoJSON with 9 decimal places, the precision the API serves and the goldens
+/// record; `bounds` is the envelope of the exact coverage, `[west, south, east, north]`.
 fn chart_from_row(row: &PgRow, layers: Vec<String>, feature_count: i32) -> Result<Chart> {
     let covr_json: String = row.try_get(6)?;
     let geometry: geojson::Geometry = serde_json::from_str(&covr_json)?;
@@ -83,8 +95,8 @@ fn chart_feature(row: &PgRow) -> Result<ChartFeature> {
     })
 }
 
-/// Kotlin's `(props["LNAM"] as? JsonPrimitive)?.content`: a string's text, any other scalar's
-/// JSON form, nothing for an array or object.
+/// The `LNAM` prop as text: a string's text, any other scalar's JSON form, nothing for an array
+/// or object.
 pub(crate) fn lnam(props: &JsonObject) -> Option<String> {
     match props.get("LNAM")? {
         Value::String(s) => Some(s.clone()),
@@ -93,7 +105,7 @@ pub(crate) fn lnam(props: &JsonObject) -> Option<String> {
     }
 }
 
-/// `topmarAssocByLnam`: for the TOPMARs among `features`, LNAM → the distinct (sorted) layers
+/// For the TOPMARs among `features`, LNAM → the distinct (sorted) layers
 /// of the features referencing it through `lnam_refs`, in one GIN scan. Empty, without a query,
 /// when there is no TOPMAR.
 async fn topmar_assoc<'a>(
@@ -128,7 +140,7 @@ async fn topmar_assoc<'a>(
     Ok(by_lnam)
 }
 
-/// `withAssoc`: a TOPMAR's platform layers from [`topmar_assoc`]; other layers are untouched.
+/// Sets a TOPMAR's platform layers from [`topmar_assoc`]; other layers are untouched.
 fn with_assoc(feature: &mut ChartFeature, by_lnam: &HashMap<String, Vec<String>>) {
     if feature.layer == "TOPMAR"
         && let Some(layers) = lnam(&feature.props).and_then(|l| by_lnam.get(&l))
@@ -137,7 +149,7 @@ fn with_assoc(feature: &mut ChartFeature, by_lnam: &HashMap<String, Vec<String>>
     }
 }
 
-/// `ChartDao.delete`: the chart's features, then the chart; whether a chart row was deleted.
+/// Deletes the chart's features, then the chart; whether a chart row was deleted.
 async fn delete_chart(conn: &mut PgConnection, name: &str) -> Result<bool> {
     sqlx::query("DELETE FROM features WHERE chart_name = $1;")
         .bind(name)
@@ -152,8 +164,16 @@ async fn delete_chart(conn: &mut PgConnection, name: &str) -> Result<bool> {
 }
 
 impl Db {
-    /// `findAsync` (`GET /v1/chart?name=`): the chart with its layers (sorted; Kotlin's `SELECT
-    /// DISTINCT` left the order to the plan) and feature count; `None` for an unknown name.
+    /// The chart named `name` (`GET /v1/chart?name=`), or `None` for an unknown name.
+    ///
+    /// The chart carries its layers, sorted, and its feature count.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails,
+    /// and [`Error::Geometry`](crate::Error::Geometry) or [`Error::Json`](crate::Error::Json) when a
+    /// row does not decode.
     pub async fn find_chart(&self, name: &str) -> Result<Option<Chart>> {
         let mut conn = self.conn().await?;
         let layers: Vec<String> = sqlx::query_scalar(
@@ -172,8 +192,16 @@ impl Db {
         row.map(|r| chart_from_row(&r, layers, count)).transpose()
     }
 
-    /// `findInfoAsync`: the charts whose coverage intersects `envelope` (the tile envelope),
-    /// smallest scale first (ties by name; Kotlin left them to the plan).
+    /// The charts whose coverage intersects `envelope` (the tile envelope).
+    ///
+    /// Smallest scale first, ties by name.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails,
+    /// and [`Error::Geometry`](crate::Error::Geometry) or [`Error::Json`](crate::Error::Json) when a
+    /// row does not decode.
     pub async fn find_chart_info(&self, envelope: &Geometry) -> Result<Vec<ChartInfo>> {
         let mut conn = self.conn().await?;
         let rows = sqlx::query(
@@ -198,9 +226,18 @@ impl Db {
             .collect()
     }
 
-    /// `findChartFeaturesAsync4326`: the features of one chart intersecting `include` with
-    /// `z_min <= zoom <= z_max`, clipped to the box of `include` when it is a single ring
-    /// (`ST_ClipByBox2D`) and intersected with it otherwise. Rows in id order.
+    /// The features of one chart intersecting `include` and drawn at `zoom`.
+    ///
+    /// A feature is drawn at `zoom` when `z_min <= zoom <= z_max`. Geometries are clipped to the
+    /// box of `include` when it is a single ring (`ST_ClipByBox2D`) and intersected with it
+    /// otherwise. Rows in id order.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails,
+    /// and [`Error::Geometry`](crate::Error::Geometry) or [`Error::Json`](crate::Error::Json) when
+    /// `include` cannot be encoded or a row does not decode.
     pub async fn find_chart_features_4326(
         &self,
         include: &Geometry,
@@ -233,10 +270,17 @@ impl Db {
         Ok(features)
     }
 
-    /// `findAllChartFeaturesAsync4326` (`addCharts`): every feature of `chart_names`
-    /// intersecting `tile` with `z_min <= zoom <= z_max`, clipped to the box of `tile`, grouped
-    /// by chart name in name order, rows in id order (Kotlin ordered by name only). An empty
-    /// `chart_names` is an empty map without a query.
+    /// Every feature of `chart_names` intersecting `tile` and drawn at `zoom`, by chart.
+    ///
+    /// Geometries are clipped to the box of `tile`. Charts are in name order and rows in id
+    /// order. An empty `chart_names` is an empty map without a query.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails,
+    /// and [`Error::Geometry`](crate::Error::Geometry) or [`Error::Json`](crate::Error::Json) when
+    /// `tile` cannot be encoded or a row does not decode.
     pub async fn find_all_chart_features_4326(
         &self,
         tile: &Geometry,
@@ -275,9 +319,16 @@ impl Db {
         Ok(result)
     }
 
-    /// `listAsync` (`GET /v1/chart_catalog`): one page of names `>= next_page_name` (from the
-    /// start when `None`), at most [`PAGE_SIZE`]; the next name after the page, if any, is the
-    /// cursor of the following page. `total_chart_count` counts the whole table.
+    /// One page of the chart catalog (`GET /v1/chart_catalog`).
+    ///
+    /// The page holds at most [`PAGE_SIZE`] names `>= next_page_name` (from the start when
+    /// `None`); the next name after the page, if any, is the cursor of the following page.
+    /// `total_chart_count` counts the whole table.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn list_charts(&self, next_page_name: Option<&str>) -> Result<ChartCatalog> {
         let mut conn = self.conn().await?;
         let total: i64 = sqlx::query_scalar("SELECT COUNT(name) FROM charts;")
@@ -297,9 +348,15 @@ impl Db {
         })
     }
 
-    /// `editionsAsync` (`GET /v1/chart_editions`): `"<DSID_UPDN>:<updated>:<issued>"` per chart,
-    /// in name order (Kotlin: table order). A chart with any of the parts missing or blank is
-    /// left out. `DSID_UPDN` is read with `->>`, so a number reads like a string.
+    /// The edition key `"<DSID_UPDN>:<updated>:<issued>"` of every chart (`GET /v1/chart_editions`).
+    ///
+    /// Charts are in name order. A chart with any of the parts missing or blank is left out.
+    /// `DSID_UPDN` is read with `->>`, so a number reads like a string.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn chart_editions(&self) -> Result<ChartEditions> {
         let mut conn = self.conn().await?;
         let rows = sqlx::query(
@@ -325,12 +382,18 @@ impl Db {
         Ok(ChartEditions { editions })
     }
 
-    /// `insertAsync`: writes the chart row and returns it (no layers, zero features). With
-    /// `overwrite`, the chart of the same name and its features are deleted first.
+    /// Writes the chart row and returns it, with no layers and zero features.
     ///
-    /// Decision D5: delete and insert are one transaction, so a failing insert (e.g. a `covr`
-    /// without geometry, which violates `NOT NULL`) leaves the previous chart and its features in
-    /// place. Kotlin deleted outside the insert's transaction and lost them.
+    /// With `overwrite`, the chart of the same name and its features are deleted first. Delete
+    /// and insert are one transaction, so a failing insert (e.g. a `covr` without geometry, which
+    /// violates `NOT NULL`) leaves the previous chart and its features in place.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails (including a duplicate name
+    /// without `overwrite`), and [`Error::Json`](crate::Error::Json) or
+    /// [`Error::Geometry`](crate::Error::Geometry) when the row does not encode or decode.
     pub async fn insert_chart(&self, insert: &ChartInsert, overwrite: bool) -> Result<Chart> {
         let mut tx = self.begin().await?;
         if overwrite {
@@ -363,8 +426,14 @@ impl Db {
         Ok(chart)
     }
 
-    /// `deleteByNameAsync`: deletes the chart named `name` (`DSID_DSNM`) and its features, in one
-    /// transaction; `false` when no chart had that name.
+    /// Deletes the chart named `name` (`DSID_DSNM`) and its features, in one transaction.
+    ///
+    /// Returns `false` when no chart had that name.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn delete_chart(&self, name: &str) -> Result<bool> {
         let mut tx = self.begin().await?;
         let deleted = delete_chart(&mut tx, name).await?;
@@ -372,7 +441,12 @@ impl Db {
         Ok(deleted)
     }
 
-    /// `FeatureDao.featureCount`: the features stored for a chart.
+    /// The number of features stored for a chart.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
     pub async fn feature_count(&self, chart_name: &str) -> Result<i32> {
         let mut conn = self.conn().await?;
         feature_count(&mut conn, chart_name).await

@@ -1,5 +1,5 @@
-//! `OgrFeature.properties`: GDAL fields → JSON props, plus the two derived props ingest relies
-//! on (P-IN-2): `METERS` on soundings and `MINZ`/`MAXZ` next to `SCAMIN`/`SCAMAX`.
+//! GDAL fields to JSON props, plus the two derived props ingest relies on: `METERS` on soundings
+//! and `MINZ`/`MAXZ` next to `SCAMIN`/`SCAMAX`.
 
 use njord_model::JsonObject;
 use serde_json::Value;
@@ -16,6 +16,7 @@ pub struct Feature {
     /// - `MINZ` just before `SCAMIN` and `MAXZ` just before `SCAMAX`: the scale's zoom at the
     ///   centre latitude of the feature's envelope (0 without a geometry).
     pub props: JsonObject,
+    /// The geometry as GDAL read it, unrepaired; `None` for a feature without one.
     pub geometry: Option<Geometry>,
 }
 
@@ -54,8 +55,8 @@ fn read(f: &FeatureRef<'_>, is_sounding: bool) -> Feature {
     Feature { props, geometry }
 }
 
-/// Kotlin `JsonPrimitive.intOrNull`: the primitive's content parsed as an `Int`, so `12`, `"12"`
-/// and `"+12"` give 12 while `12.0`, `true` and out-of-range values give `None`.
+/// A JSON primitive's content parsed as an `i32`, so `12`, `"12"` and `"+12"` give 12 while
+/// `12.0`, `true` and out-of-range values give `None`.
 pub(crate) fn int_value(v: &Value) -> Option<i32> {
     match v {
         Value::Number(n) if !n.is_f64() => n.as_i64().and_then(|i| i32::try_from(i).ok()),

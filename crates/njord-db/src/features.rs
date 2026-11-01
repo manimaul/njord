@@ -1,10 +1,10 @@
-//! `FeatureDao.kt`: the feature routes' queries (`/v1/feature/layer`, `/v1/feature/lnam`), the
-//! TOPMAR association lookup (P-DB-4, `db/lnam_refs.json`), and the feature insert ingest uses
-//! (`insertFeatureSync`, pinned after ingest by P-IN-5 `s57/*/db_state.json`).
+//! Feature rows: the feature routes' queries, the TOPMAR association lookup and the feature
+//! insert ingest uses.
 //!
 //! Ingest installs a chart as [`Db::insert_chart`] (overwrite) followed by one
-//! [`FeatureInstall`] transaction for its features (decision D5: not retried, counted only once
-//! committed); [`Db::install_chart`] does both for a chart whose features are already read.
+//! [`FeatureInstall`] transaction for its features, which is not retried and whose features are
+//! counted only once committed; [`Db::install_chart`] does both for a chart whose features are
+//! already read. Fixtures: `db/lnam_refs.json` and, after ingest, `s57/*/db_state.json`.
 
 use njord_model::{
     Chart, ChartInsert, FeatureRecord, JsonObject, LayerQueryResult, LayerQueryResultPage,
@@ -16,8 +16,7 @@ use sqlx::{Row, Transaction};
 use crate::charts::lnam;
 use crate::{Db, Error, Result};
 
-/// `MINZ` when it reads as an `Int` (Kotlin `jsonPrimitive.intOrNull`: an integer number, or a
-/// string holding one), else 0.
+/// The `MINZ` prop when it reads as an `i32` (an integer number, or a string holding one), else 0.
 pub fn min_z(props: &JsonObject) -> i32 {
     int_prop(props, "MINZ").unwrap_or(0)
 }
@@ -35,10 +34,12 @@ fn int_prop(props: &JsonObject, key: &str) -> Option<i32> {
     }
 }
 
-/// `lnamRefs()`: the `LNAM_REFS` array mirrored into `features.lnam_refs`, which the GIN index
-/// behind the TOPMAR association covers. Strings as their text, other scalars as their JSON
-/// form (`null` included, as Kotlin's `JsonPrimitive.content`), nested arrays and objects
-/// dropped. Empty (stored as `{}`, not NULL) when `LNAM_REFS` is missing or not an array.
+/// The `LNAM_REFS` array as mirrored into `features.lnam_refs`.
+///
+/// The GIN index behind the TOPMAR association covers that column. Strings are kept as their
+/// text and other scalars as their JSON form (`null` becomes `"null"`); nested arrays and
+/// objects are dropped. Empty (stored as `{}`, not NULL) when `LNAM_REFS` is missing or not an
+/// array.
 pub fn lnam_refs(props: &JsonObject) -> Vec<String> {
     match props.get("LNAM_REFS") {
         Some(Value::Array(items)) => items
@@ -53,7 +54,7 @@ pub fn lnam_refs(props: &JsonObject) -> Vec<String> {
     }
 }
 
-/// `insertFeatureSync`: one feature of `chart_name`, geometry forced 2D in EPSG:4326,
+/// Inserts one feature of `chart_name`, geometry forced 2D in EPSG:4326,
 /// `z_min`/`z_max` from [`min_z`]/[`max_z`], `lnam_refs` from [`lnam_refs`]. The rows written.
 async fn insert_feature(
     conn: &mut PgConnection,
@@ -78,9 +79,10 @@ async fn insert_feature(
     .rows_affected())
 }
 
-/// The feature insert of one chart, in one transaction (decision D5 (b)). Dropping it without
-/// [`commit`](FeatureInstall::commit) rolls every insert back, which is how an aborted ingest
-/// leaves nothing behind.
+/// The feature insert of one chart, in one transaction.
+///
+/// Dropping it without [`commit`](FeatureInstall::commit) rolls every insert back, which is how
+/// an aborted ingest leaves nothing behind. Start one with [`Db::begin_feature_install`].
 pub struct FeatureInstall {
     tx: Transaction<'static, Postgres>,
     chart_name: String,
@@ -89,6 +91,7 @@ pub struct FeatureInstall {
 }
 
 impl FeatureInstall {
+    /// The chart the features belong to.
     pub fn chart_name(&self) -> &str {
         &self.chart_name
     }
@@ -98,9 +101,15 @@ impl FeatureInstall {
         self.inserted
     }
 
-    /// Inserts one feature: `wkb` is the repaired geometry (`geometry.make_valid()?.wkb()`),
-    /// `props` its GDAL-mapped properties. A failure is final: PostgreSQL aborts the
-    /// transaction, and [`commit`](Self::commit) then rolls back and fails.
+    /// Inserts one feature and returns the rows written.
+    ///
+    /// `wkb` is the repaired (made valid) geometry and `props` its GDAL-mapped properties. A
+    /// failure is final: PostgreSQL aborts the transaction, and [`commit`](Self::commit) then
+    /// rolls back and fails.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Sql`] when the insert fails, e.g. for bytes that are not WKB.
     pub async fn insert(&mut self, layer: &str, props: &JsonObject, wkb: &[u8]) -> Result<u64> {
         let inserted = insert_feature(&mut self.tx, layer, &self.chart_name, wkb, props).await;
         let n = inserted.inspect_err(|_| self.failed = true)?;
@@ -108,9 +117,13 @@ impl FeatureInstall {
         Ok(n)
     }
 
-    /// Commits and returns the number of features installed: the count ingest reports. After a
-    /// failed [`insert`](Self::insert) nothing is committed and this is [`Error::Aborted`]
-    /// (PostgreSQL answers `COMMIT` of an aborted transaction with a rollback, not an error).
+    /// Commits and returns the number of features installed: the count ingest reports.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Aborted`] after a failed [`insert`](Self::insert), when nothing is committed
+    /// (PostgreSQL answers `COMMIT` of an aborted transaction with a rollback, not an error), and
+    /// [`Error::Sql`] when the commit or rollback itself fails.
     pub async fn commit(self) -> Result<u64> {
         if self.failed {
             self.tx.rollback().await?;
@@ -120,6 +133,11 @@ impl FeatureInstall {
         Ok(self.inserted)
     }
 
+    /// Rolls every insert back.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Sql`] when the rollback fails.
     pub async fn rollback(self) -> Result<()> {
         Ok(self.tx.rollback().await?)
     }
@@ -128,13 +146,20 @@ impl FeatureInstall {
 /// A chart written by [`Db::install_chart`].
 #[derive(Clone, Debug, PartialEq)]
 pub struct InstalledChart {
+    /// The chart row as written.
     pub chart: Chart,
+    /// The features committed.
     pub feature_count: u64,
 }
 
 impl Db {
     /// Starts the feature install of `chart_name`, a chart row already written by
     /// [`insert_chart`](Db::insert_chart).
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when `BEGIN`
+    /// fails.
     pub async fn begin_feature_install(&self, chart_name: &str) -> Result<FeatureInstall> {
         Ok(FeatureInstall {
             tx: self.begin().await?,
@@ -144,9 +169,17 @@ impl Db {
         })
     }
 
-    /// `ChartIngest` for one read cell: [`insert_chart`](Db::insert_chart) with overwrite, then
-    /// every `(layer, props, wkb)` in one [`FeatureInstall`]. Features without a geometry are
-    /// the caller's to skip (Kotlin inserts only `geometry?.makeValid()?.wkb`).
+    /// Installs one read cell: its chart row, then its features.
+    ///
+    /// That is [`insert_chart`](Db::insert_chart) with overwrite, then every
+    /// `(layer, props, wkb)` in one [`FeatureInstall`]. Features without a geometry are the
+    /// caller's to skip; only made-valid geometries are passed in.
+    ///
+    /// # Errors
+    ///
+    /// Any error of [`insert_chart`](Db::insert_chart), [`FeatureInstall::insert`] or
+    /// [`FeatureInstall::commit`]. A failure after the chart row was written leaves the chart
+    /// without features.
     pub async fn install_chart<'a>(
         &self,
         insert: &ChartInsert,
@@ -164,7 +197,12 @@ impl Db {
         })
     }
 
-    /// `insertFeature`: one feature on its own (autocommitted).
+    /// Inserts one feature on its own (autocommitted) and returns the rows written.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when the
+    /// insert fails.
     pub async fn insert_feature(
         &self,
         layer: &str,
@@ -176,11 +214,17 @@ impl Db {
         insert_feature(&mut conn, layer, chart_name, wkb, props).await
     }
 
-    /// `findLayerPositionsPage` (`GET /v1/feature/layer/{layer}?start_id=`): the next 5 features
-    /// of `layer` with `id > start_id`, in id order, at their centroid, with their chart's zoom.
-    /// `last_id` is the largest id served (0 for an empty page). A TOPMAR gets `_PTFM`
-    /// (`FLOATING` when anything references it, else `RIGID`) and `_ASOC` (the referencing
-    /// layers) appended to its props, as `TopmarData.addTo` does.
+    /// The next 5 features of `layer` after `start_id` (`GET /v1/feature/layer/{layer}`).
+    ///
+    /// Features with `id > start_id` are served in id order, at their centroid, with their
+    /// chart's zoom. `last_id` is the largest id served (0 for an empty page). A TOPMAR gets
+    /// `_PTFM` (`FLOATING` when anything references it, else `RIGID`) and `_ASOC` (the
+    /// referencing layers) appended to its props, as the TOPMAR symbology does.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when a
+    /// statement fails, and [`Error::Json`] when a row's props are not a JSON object.
     pub async fn find_layer_positions_page(
         &self,
         layer: &str,
@@ -235,18 +279,31 @@ impl Db {
         Ok(LayerQueryResultPage { last_id, items })
     }
 
-    /// `findAssociatedLayerNames`: the distinct layers (sorted) of the features whose
-    /// `lnam_refs` contain `lnam`, through the GIN index (`@>`, not `= ANY`).
+    /// The distinct layers (sorted) of the features whose `lnam_refs` contain `lnam`.
+    ///
+    /// The query goes through the GIN index (`@>`, not `= ANY`).
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when the query
+    /// fails.
     pub async fn find_associated_layer_names(&self, lnam: &str) -> Result<Vec<String>> {
         let mut conn = self.conn().await?;
         associated_layer_names(&mut conn, lnam).await
     }
 
-    /// `findFeature` (`GET /v1/feature/lnam/{lnam}`): the feature with `props.LNAM = lnam`, the
-    /// lowest id when several charts carry it (Kotlin took whichever came first).
+    /// The feature with `props.LNAM = lnam` (`GET /v1/feature/lnam/{lnam}`).
     ///
-    /// Pinned Kotlin quirk: `zoom_max` holds `z_min` and `zoom_min` holds `z_max` (the golden
-    /// `api_04_charts/feature_lnam` serves `"zoomMin": 32, "zoomMax": 13`).
+    /// When several charts carry the LNAM, the lowest id wins.
+    ///
+    /// The zooms are swapped on the wire: `zoom_max` holds `z_min` and `zoom_min` holds `z_max`,
+    /// as the golden `api_04_charts/feature_lnam` records (`"zoomMin": 32, "zoomMax": 13`) and
+    /// existing clients read them.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when the query
+    /// fails, and [`Error::Json`] when the row does not decode.
     pub async fn find_feature(&self, lnam: &str) -> Result<Option<FeatureRecord>> {
         let mut conn = self.conn().await?;
         let row = sqlx::query(

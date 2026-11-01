@@ -1,4 +1,4 @@
-//! The style's background, NODTA (`Background.kt`).
+//! The style's background, NODTA.
 
 use crate::layers::prelude::*;
 

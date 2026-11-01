@@ -1,4 +1,5 @@
-//! The `PLY` source layer (`Ply.kt`, ExtraLayers): a CURSR outline at zooms 0–9.
+//! The `PLY` source layer ([`extra_layers`](crate::layer_factory::extra_layers)): a CURSR outline
+//! at zooms 0–9.
 
 use crate::layers::prelude::*;
 

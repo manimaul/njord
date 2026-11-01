@@ -1,4 +1,4 @@
-//! Natural Earth base layer: lakes (`base/Lakes.kt`): `Lakare` on the `lakes` source layer.
+//! Natural Earth base layer: lakes: `Lakare` on the `lakes` source layer.
 
 use crate::layers::lakare::Lakare;
 use crate::layers::prelude::*;

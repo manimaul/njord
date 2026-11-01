@@ -1,4 +1,5 @@
-//! `GET/POST /v1/geojson?chart_name=&layer_name=` (`GeoJsonHandler.kt`).
+//! `GET/POST /v1/geojson?chart_name=&layer_name=`: one chart layer as GeoJSON, and inserting
+//! one.
 
 use std::sync::Arc;
 
@@ -12,9 +13,10 @@ use njord_model::{FeatureInsert, Pair};
 use super::{Signed, query_param};
 use crate::state::AppState;
 
-/// `POST`, signed: inserts the GeoJSON body into `chart_name` as `layer_name` and answers
-/// Kotlin's `Pair(rows inserted, FeatureInsert)`. 400 when a parameter is missing, the chart is
-/// unknown or the body is not GeoJSON; 500 when nothing was inserted.
+/// `POST`, signed: inserts the GeoJSON body into `chart_name` as `layer_name`.
+///
+/// Answers a [`Pair`] of the rows inserted and the `FeatureInsert`. 400 when a parameter is
+/// missing, the chart is unknown or the body is not GeoJSON; 500 when nothing was inserted.
 pub async fn insert(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -59,13 +61,12 @@ pub async fn insert(
     }
 }
 
-/// One layer of one chart as a GeoJSON `FeatureCollection` (empty for an unknown chart or
+/// `GET`: one layer of one chart as a GeoJSON `FeatureCollection` (empty for an unknown chart or
 /// layer); an empty 404 when a parameter is missing or the database fails.
 ///
-/// D14: Kotlin cannot decode the rows of a layer that has features and answers 404 for it. The
-/// port serves them: each feature is `row_to_json` of `(id, layer, type, geometry, properties)`,
-/// as Kotlin's query builds it, so it carries the numeric row `id` and a `layer` member (golden
-/// `api_04_charts/geojson_existing_layer`, `port`).
+/// Each feature is `row_to_json` of `(id, layer, type, geometry, properties)`, so it carries the
+/// numeric row `id` and a `layer` member (golden `api_04_charts/geojson_existing_layer`, its
+/// `port` expectation).
 pub async fn geojson(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,

@@ -1,6 +1,8 @@
-//! Decoded-tile canonicalisation and comparison shared by the P-TE-5 golden tile test
-//! (tests/tiles.rs) and the region archive test (tests/export.rs): `TileCanonical.kt` plus the
-//! choices that carry no meaning in MVT, and the one known [`Divergence`] of `geo` from GEOS.
+//! Decoded-tile canonicalisation and comparison shared by the golden tile test (tests/tiles.rs)
+//! and the region archive test (tests/export.rs).
+//!
+//! Tiles are canonicalised as the goldens are, plus the choices that carry no meaning in MVT,
+//! and compared allowing the one known [`Divergence`] of `geo` from GEOS.
 
 #![allow(dead_code)]
 
@@ -93,7 +95,9 @@ pub fn canonical_geometry(kind: &Value, geometry: &Value) -> Value {
     }
 }
 
-/// `canonicalTile`, with [`canonical_geometry`].
+/// A decoded tile in canonical form: layers sorted by name, features sorted by `LNAM`, props and
+/// geometry, feature ids dropped, props with sorted keys and geometry through
+/// [`canonical_geometry`].
 pub fn canonical_tile(view: &Value) -> Value {
     let mut layers: Vec<Value> = view["layers"]
         .as_array()
@@ -124,8 +128,8 @@ pub fn canonical_tile(view: &Value) -> Value {
     json!({ "layers": layers })
 }
 
-/// A known way a Rust tile feature differs from the Kotlin one, from `geo` standing in for
-/// GEOS/JTS inside `njord-geo` (see the module docs of `njord_server::tile_encoder`).
+/// A known way a tile feature differs from its golden, from `geo` standing in for GEOS/JTS
+/// inside `njord-geo` (see the module docs of `njord_server::tile_encoder`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Divergence {
     /// The same parts, a few vertices apart, all within [`PIXEL_TOLERANCE`] of the other side.

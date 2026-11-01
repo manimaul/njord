@@ -1,4 +1,4 @@
-//! Natural Earth base layer: bathymetry depth area polygons (`base/Bathymetry.kt`).
+//! Natural Earth base layer: bathymetry depth area polygons.
 
 use crate::layers::prelude::*;
 

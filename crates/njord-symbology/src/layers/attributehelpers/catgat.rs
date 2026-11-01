@@ -1,4 +1,4 @@
-//! `attributehelpers/Catgat.kt`.
+//! S-57 `CATGAT` (category of gate) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/GATCON/CATGAT>

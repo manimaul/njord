@@ -1,4 +1,4 @@
-//! `attributehelpers/Convis.kt`.
+//! S-57 `CONVIS` (conspicuous, visually) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/SILTNK/CONVIS>

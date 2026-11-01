@@ -1,10 +1,10 @@
-//! `/v1/ws/enc_process` (`WebSocketHandler.kt`): the ingest status as a stream of `WsMsg` JSON
-//! texts. On connect the current status file is sent (`Idle` when it is missing or empty), then
-//! every change, polled every 500 ms (P-CC-3).
+//! `/v1/ws/enc_process`: the ingest status as a stream of `WsMsg` JSON texts.
+//!
+//! On connect the current status file is sent (`Idle` when it is missing or empty), then every
+//! change, polled every [`POLL`] (`testdata/concurrency/cadence.json`).
 //!
 //! The signature is checked first, but an unsigned client is still upgraded and then closed
-//! without a message, as Kotlin's `requireSignature` inside the socket handler behaves, so a
-//! client sees a clean close rather than a failed handshake.
+//! without a message, so a client sees a clean close rather than a failed handshake.
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -21,6 +21,7 @@ use crate::state::AppState;
 /// How often the status file is re-read.
 pub const POLL: Duration = Duration::from_millis(500);
 
+/// Upgrades to the status socket; see the [module docs](self).
 pub async fn enc_process(
     ws: WebSocketUpgrade,
     State(state): State<Arc<AppState>>,

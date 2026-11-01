@@ -1,13 +1,13 @@
-//! `EncProdCatParser.kt`: streams NOAA's `ENCProdCat_19115.xml` and emits one [`EncCatalogEntry`]
-//! per `MD_Metadata` record.
+//! Streams NOAA's `ENCProdCat_19115.xml` and emits one [`EncCatalogEntry`] per `MD_Metadata`
+//! record.
 //!
 //! Everything here is path scoped rather than leaf-name matched, because the document reuses leaf
 //! names across unrelated subtrees. In particular `<title><gco:CharacterString>` appears both under
 //! `identificationInfo` (the cell name) and under `dataQualityInfo/.../sourceCitation` (always the
 //! literal `"0"`). Matching on the leaf alone yields 7000+ cells all named `0`.
 //!
-//! Namespace prefixes are matched literally, as the Kotlin expat binding did; the root element's
-//! bindings are asserted so a change upstream fails loudly instead of yielding zero records.
+//! Element names are matched literally, prefix included (`gco:Date`), not resolved to
+//! namespaces; the root element's bindings are asserted so a change upstream fails loudly instead of yielding zero records.
 
 use quick_xml::events::{BytesStart, Event};
 use quick_xml::{Reader, XmlVersion};
@@ -269,8 +269,8 @@ impl EncProdCatParser {
         }
 
         if name == RECORD_ELEMENT && std::mem::take(&mut self.in_series_record) {
-            // Decision D15: Kotlin counted the series record as a skipped cell, so every run
-            // warned about one incomplete record and a real one could not be told apart.
+            // The series record describes the catalog, not a cell: drop it without counting it,
+            // so the incomplete-record warning only ever reports real cells.
             self.record = Record::default();
         } else if name == RECORD_ELEMENT {
             self.records_seen += 1;
@@ -394,11 +394,15 @@ fn validate_root(name: &str, attrs: &[(String, String)]) -> Result<(), String> {
 }
 
 fn configure<R>(reader: &mut Reader<R>) {
-    // Text is trimmed per field after concatenation, as Kotlin did; keep every text event.
+    // Text is trimmed per field after concatenation, so keep every text event untrimmed.
     reader.config_mut().check_end_names = true;
 }
 
 /// Parses a catalog from any buffered reader (a file for `--from-file`, or a byte slice).
+///
+/// # Errors
+///
+/// The XML is malformed, or the root element does not bind the expected namespaces.
 pub fn parse_reader<R: std::io::BufRead>(source: R) -> Result<EncProdCatParser, String> {
     let mut reader = Reader::from_reader(source);
     configure(&mut reader);
@@ -416,6 +420,10 @@ pub fn parse_reader<R: std::io::BufRead>(source: R) -> Result<EncProdCatParser, 
 }
 
 /// [`parse_reader`] over an async source: the HTTP body, without materialising the document.
+///
+/// # Errors
+///
+/// As [`parse_reader`], plus read errors of `source`.
 pub async fn parse_async<R: tokio::io::AsyncBufRead + Unpin>(
     source: R,
 ) -> Result<EncProdCatParser, String> {
@@ -436,6 +444,10 @@ pub async fn parse_async<R: tokio::io::AsyncBufRead + Unpin>(
 }
 
 /// Parses a catalog already on disk (`--from-file`).
+///
+/// # Errors
+///
+/// The file cannot be opened, or as [`parse_reader`].
 pub fn parse_catalog_file(path: &std::path::Path) -> Result<EncProdCatParser, String> {
     let file = std::fs::File::open(path).map_err(|e| format!("{}: {e}", path.display()))?;
     parse_reader(std::io::BufReader::with_capacity(256 * 1024, file))

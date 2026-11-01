@@ -1,5 +1,5 @@
-//! `GET/POST/DELETE /v1/chart` (`ChartHandler.kt`), `GET /v1/chart_catalog[?name=]`
-//! (`ChartCatalogHandler.kt`) and `GET /v1/chart_editions` (`ChartEditionsHandler.kt`).
+//! Charts: `GET/POST/DELETE /v1/chart`, `GET /v1/chart_catalog[?name=]` and
+//! `GET /v1/chart_editions`.
 
 use std::sync::Arc;
 
@@ -14,9 +14,11 @@ use super::{Signed, query_param};
 use crate::regions::WORLD_REGION_NAME;
 use crate::state::AppState;
 
-/// `POST /v1/chart`, signed: inserts the chart row, replacing one of the same name and its
-/// features (one transaction, D5), and answers the row; 400 when the insert fails or the body is
-/// not a `ChartInsert` (Ktor's text).
+/// `POST /v1/chart`, signed: inserts a chart row and answers it.
+///
+/// A chart of the same name is replaced with its features, in one transaction. 400 when the
+/// insert fails or the body is not a `ChartInsert` (with a text message,
+/// [`super::bad_request_text`]).
 pub async fn insert(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -36,11 +38,13 @@ pub async fn insert(
     }
 }
 
-/// `DELETE /v1/chart?name=`, signed: deletes the chart (its `DSID_DSNM`, the key `enc_cron`
-/// diffs) and its features, then everything that would keep serving it: the tile cache, and the
-/// export state of every non-`WORLD` region whose coverage it intersects (resolved before the
-/// delete, while the coverage still exists), waking the export worker. 202 when a chart was
-/// deleted, 204 when none had that name, 400 without `name`.
+/// `DELETE /v1/chart?name=`, signed: deletes a chart and everything that would keep serving it.
+///
+/// The chart is named by its `DSID_DSNM`, the key `enc_cron` diffs. Its features go with it,
+/// then the tile cache and the export state of every non-`WORLD` region whose coverage it
+/// intersects (resolved before the delete, while the coverage still exists), and the export
+/// worker is woken. 202 when a chart was deleted, 204 when none had that name, 400 without
+/// `name`.
 pub async fn delete(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -84,8 +88,10 @@ pub async fn delete(
     }
 }
 
-/// The chart named `name` with its layers and feature count; an empty 404 when `name` is
-/// missing or unknown, or the database fails (Kotlin's DAO answers null on error).
+/// `GET /v1/chart?name=`: the chart named `name` with its layers and feature count.
+///
+/// An empty 404 when `name` is missing or unknown, or the database fails: a query error is
+/// answered like a missing chart.
 pub async fn chart(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,
@@ -103,8 +109,8 @@ pub async fn chart(
     }
 }
 
-/// One page of chart names from `name` (the previous page's `nextName`) on; an empty 500 when
-/// the database fails.
+/// `GET /v1/chart_catalog[?name=]`: one page of chart names from `name` (the previous page's
+/// `nextName`) on; an empty 500 when the database fails.
 pub async fn chart_catalog(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,
@@ -118,8 +124,8 @@ pub async fn chart_catalog(
     }
 }
 
-/// Every chart's `"<DSID_UPDN>:<updated>:<issued>"`, unpaginated (the `enc_cron` diff); an empty
-/// 500 when the database fails.
+/// `GET /v1/chart_editions`: every chart's `"<DSID_UPDN>:<updated>:<issued>"`, unpaginated (the
+/// `enc_cron` diff); an empty 500 when the database fails.
 pub async fn chart_editions(State(state): State<Arc<AppState>>) -> Response {
     match state.db.chart_editions().await {
         Ok(editions) => Json(editions).into_response(),

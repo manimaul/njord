@@ -1,5 +1,4 @@
-//! `GET /v1/content/{content...}` (`StaticResourceContentHandler.kt`): fonts and sprite sheets
-//! from `<resources>/www/`.
+//! `GET /v1/content/{content...}`: fonts and sprite sheets from `<resources>/www/`.
 
 use std::path::{Path as FsPath, PathBuf};
 use std::sync::Arc;
@@ -11,15 +10,16 @@ use axum::response::{IntoResponse, Response};
 use super::with_content_type;
 use crate::state::AppState;
 
-/// `/v1/content` itself: Ktor's tailcard matches it with no segments, and the handler answers 404.
+/// `/v1/content` itself, with no segments: an empty 404.
 pub async fn root() -> StatusCode {
     StatusCode::NOT_FOUND
 }
 
-/// The file under `www/` named by the (percent-decoded) path, with a content type from its
-/// extension ([`mime_type`]). An empty 404 for an unknown extension, a missing file, a path with
-/// an empty, `.` or `..` segment ([`resource_name`]), or one that resolves outside the resources
-/// directory through a symbolic link.
+/// The file under `www/` named by the (percent-decoded) path.
+///
+/// Its content type comes from its extension ([`mime_type`]). An empty 404 for an unknown
+/// extension, a missing file, a path with an empty, `.` or `..` segment ([`resource_name`]), or one
+/// that resolves outside the resources directory through a symbolic link.
 pub async fn content(State(state): State<Arc<AppState>>, Path(content): Path<String>) -> Response {
     let segments: Vec<&str> = content.split('/').collect();
     let Some(content_type) = segments.last().and_then(|s| mime_type(s)) else {
@@ -37,7 +37,7 @@ pub async fn content(State(state): State<Arc<AppState>>, Path(content): Path<Str
     }
 }
 
-/// `resourceName`: `www/<segments joined by '/'>`, or `None` when any segment is empty, `.` or
+/// The resource path `www/<segments joined by '/'>`, or `None` when any segment is empty, `.` or
 /// `..`. The real path is also confined to the resources directory ([`resource_bytes`]), but
 /// `www/../config/application.json` is inside it, so dot segments are refused here. Segments are
 /// never re-encoded: the font stack `Roboto Bold` is a directory with a space in its name.
@@ -49,8 +49,8 @@ pub fn resource_name(segments: &[&str]) -> Option<String> {
     ok.then(|| format!("www/{}", segments.join("/")))
 }
 
-/// `String.mimeType()`: by the lower-cased text after the last `.` (which must be neither the
-/// first nor the last character).
+/// The content type of a resource file name, by the lower-cased text after the last `.` (which must
+/// be neither the first nor the last character).
 pub fn mime_type(name: &str) -> Option<&'static str> {
     let dot = name.rfind('.').filter(|&i| i >= 1 && i < name.len() - 1)?;
     Some(match name[dot + 1..].to_ascii_lowercase().as_str() {
@@ -65,7 +65,7 @@ pub fn mime_type(name: &str) -> Option<&'static str> {
     })
 }
 
-/// `resourceBytes`: the file's bytes when its canonical path is a regular file inside the
+/// The file's bytes when its canonical path is a regular file inside the
 /// canonical resources directory.
 pub async fn resource_bytes(resources: &FsPath, name: &str) -> Option<Vec<u8>> {
     let root = tokio::fs::canonicalize(resources).await.ok()?;

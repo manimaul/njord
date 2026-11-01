@@ -1,4 +1,4 @@
-//! `attributehelpers/Catcam.kt`.
+//! S-57 `CATCAM` (category of cardinal mark) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/BCNCAR/CATCAM>

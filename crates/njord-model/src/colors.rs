@@ -1,4 +1,4 @@
-//! S-52 colour tokens, themes and depth units (`Colors.kt`, `Depth.kt`).
+//! S-52 colour tokens, themes and depth units.
 
 use serde::{Deserialize, Serialize};
 
@@ -40,7 +40,7 @@ pub struct CustomTheme {
     pub name: String,
 }
 
-/// Kotlin's `sealed interface Theme`: either a built-in mode or a custom theme.
+/// The colour theme of a style: either a built-in mode or a custom theme.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Theme {
     Mode(ThemeMode),
@@ -48,7 +48,7 @@ pub enum Theme {
 }
 
 impl Theme {
-    /// `Theme.colorName()`: the custom theme name, or `"Default"`.
+    /// The custom theme name, or `"Default"` for a built-in mode.
     pub fn color_name(&self) -> &str {
         match self {
             Theme::Mode(_) => "Default",
@@ -56,7 +56,7 @@ impl Theme {
         }
     }
 
-    /// `Theme.mode()`.
+    /// The colour table the theme is based on.
     pub fn mode(&self) -> ThemeMode {
         match self {
             Theme::Mode(m) => *m,
@@ -77,7 +77,7 @@ impl From<CustomTheme> for Theme {
     }
 }
 
-/// `stylePath(theme, depth)`: the server-relative style URL, e.g. `/v1/style/meters/day` or
+/// The server-relative style URL for a theme and depth unit, e.g. `/v1/style/meters/day` or
 /// `/v1/style/feet/dusk?c=sweden`.
 pub fn style_path(theme: &Theme, depth: Depth) -> String {
     match theme {
@@ -104,7 +104,7 @@ pub struct ColorTuple {
 }
 
 string_enum! {
-    /// S-52 colour tokens, in the Kotlin declaration order.
+    /// S-52 colour tokens, in the order `colors.json` lists them.
     #[allow(clippy::upper_case_acronyms)]
     pub enum Color {
         NODTA = "NODTA",

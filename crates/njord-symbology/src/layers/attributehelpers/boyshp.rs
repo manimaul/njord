@@ -1,4 +1,4 @@
-//! `attributehelpers/Boyshp.kt`.
+//! S-57 `BOYSHP` (buoy shape) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/BOYSPP/BOYSHP>

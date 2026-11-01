@@ -1,8 +1,9 @@
-//! The ingest path end to end (audit IN-1, IN-3; P-API-8's `completion_report` golden), through
-//! the production worker on its own database: a NOAA-style zip dropped in `save/` is claimed,
-//! unzipped, read by GDAL and installed; the status file ends on the `CompletionReport`; the lock
-//! is released, the claim directory removed and the tile cache cleared. Also the Natural Earth
-//! branch, a hostile zip (D3) and a lock held elsewhere (D6).
+//! The ingest path end to end, through the production worker on its own database.
+//!
+//! The `api_08_ingest/completion_report` golden pins the report: a NOAA-style zip dropped in
+//! `save/` is claimed, unzipped, read by GDAL and installed; the status file ends on the
+//! `CompletionReport`; the lock is released, the claim directory removed and the tile cache
+//! cleared. Also the Natural Earth branch, a hostile zip and a lock held elsewhere.
 
 mod common;
 
@@ -123,7 +124,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     let worker = IngestWorker::new(state.clone());
     assert!(!worker.try_claim_and_ingest().await, "nothing to claim");
 
-    // IN-1: the fixture cell with its updates and TXT sidecars.
+    // The fixture cell with its updates and TXT sidecars.
     drop_zip(
         &state,
         "US5WA22M.zip",
@@ -136,7 +137,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     actual["ms"] = json!("<masked>");
     assert_eq!(
         golden["expected"]["body"], actual,
-        "the P-API-8 completion report"
+        "the api_08_ingest completion report"
     );
     assert!(state.lock.is_free(), "the lock is released after ingest");
     assert!(
@@ -154,7 +155,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     assert_eq!(chart.feature_count, 5158);
     assert_eq!(chart.chart_txt.len(), 4);
 
-    // IN-3: re-ingesting leaves one chart row and one set of features.
+    // Re-ingesting leaves one chart row and one set of features.
     drop_zip(
         &state,
         "again.zip",
@@ -247,7 +248,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     assert_eq!(base, items[0].feature_count);
     assert!(base > 0);
 
-    // D3: an unsafe entry aborts the whole extraction; nothing changes, the upload is an Error.
+    // An unsafe entry aborts the whole extraction; nothing changes, the upload is an Error.
     let hostile = zip_of(&[
         (
             "ENC_ROOT/US4ZZ01M/US4ZZ01M.000".to_owned(),
@@ -266,7 +267,7 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     assert!(state.lock.is_free() && dir_is_empty(&state.ingest_dir));
     assert_eq!(db.list_charts(None).await.unwrap().total_chart_count, 3);
 
-    // D6: a lock held by another instance is never taken; the zip stays queued.
+    // A lock held by another instance is never taken; the zip stays queued.
     std::fs::write(state.lock.path(), "another-replica").unwrap();
     drop_zip(&state, "queued.zip", &zip_of(&entries));
     assert!(!worker.try_claim_and_ingest().await);

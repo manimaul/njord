@@ -1,4 +1,4 @@
-//! `GET /v1/tile/{z}/{x}/{y}[?info=true]` (`TileHandler.kt`, `db/TileDao.kt`).
+//! `GET /v1/tile/{z}/{x}/{y}[?info=true]`: the vector tiles.
 
 use std::sync::Arc;
 
@@ -11,20 +11,20 @@ use super::{query_param, web, with_content_type};
 use crate::state::AppState;
 use crate::tile_encoder::{self, TileXyz};
 
-/// Decision D8: the highest zoom served.
+/// The highest zoom served.
 pub const MAX_ZOOM: i32 = 24;
 
 /// The vector tile (`application/protobuf`), or with `info=true` (case-insensitive) its chart
 /// features as JSON.
 ///
-/// - Coordinates that are not all integers fall through to the web app, as in Kotlin (no handler
-///   answers, so Ktor's `unhandled` page does).
-/// - Decision D8: `0 ≤ z ≤ 24` and `0 ≤ x, y < 2^z` are checked first; anything else is an
-///   empty 400, with nothing encoded or cached. (Kotlin encodes and caches any integer triple.)
+/// - Coordinates that are not all integers fall through to the web app ([`web::fallback`]), as
+///   for a path no route matches.
+/// - `0 ≤ z ≤` [`MAX_ZOOM`] and `0 ≤ x, y < 2^z` are checked first; anything else is an empty
+///   400, with nothing encoded or cached.
 /// - With `useTileCache` on and `debugTile` off, a tile is served from and stored in the tile
 ///   cache; `info` never touches it.
-/// - A database failure is an empty 500 and nothing is cached. (Kotlin silently encodes the
-///   tile without the failed query's features.)
+/// - A database failure is an empty 500 and nothing is cached, rather than a tile missing the
+///   failed query's features.
 pub async fn tile(
     State(state): State<Arc<AppState>>,
     Path((z, x, y)): Path<(String, String, String)>,

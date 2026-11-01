@@ -1,5 +1,6 @@
-//! The two Bootstrap components the UI drives from code (`js/Bootstrap.kt`). Bootstrap's bundle
-//! is loaded from `vendor/` as the global `bootstrap`.
+//! The two Bootstrap components the UI drives from code.
+//!
+//! Bootstrap's bundle is loaded from `vendor/` as the global `bootstrap`.
 
 use wasm_bindgen::prelude::*;
 

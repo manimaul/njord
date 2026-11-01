@@ -1,6 +1,7 @@
-//! Build identity for `GET /v1/about/version` (Kotlin's Gradle-generated `VersionInfo`): the git
-//! hash and branch of the working tree and the build time. `NJORD_GIT_HASH`, `NJORD_GIT_BRANCH`
-//! and `NJORD_BUILD_DATE` override them, for builds outside a git checkout (container images).
+//! Build identity for `GET /v1/about/version`: the git hash and branch and the build time.
+//!
+//! The hash and branch come from the working tree. `NJORD_GIT_HASH`, `NJORD_GIT_BRANCH` and
+//! `NJORD_BUILD_DATE` override them, for builds outside a git checkout (container images).
 
 use std::process::Command;
 
@@ -28,7 +29,7 @@ fn main() {
         .ok()
         .or_else(|| git(&["rev-parse", "--abbrev-ref", "HEAD"]))
         .unwrap_or_else(|| "unknown".to_owned());
-    // Kotlin's format, local time: `2026-10-30-12:18:14`.
+    // The format existing clients expect, in local time: `2026-10-30-12:18:14`.
     let date = std::env::var("NJORD_BUILD_DATE")
         .unwrap_or_else(|_| jiff::Zoned::now().strftime("%Y-%m-%d-%H:%M:%S").to_string());
     println!("cargo:rustc-env=NJORD_GIT_HASH={hash}");

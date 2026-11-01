@@ -1,8 +1,9 @@
-//! S-57 attribute decoders (`layers/attributehelpers/*`): an enumerated attribute's ID to a named
-//! value. Variant names are the Kotlin constants verbatim, so they grep across both
-//! implementations and match the names the P-SY-6 fixture records.
+//! S-57 attribute decoders: an enumerated attribute's ID to a named value.
 //!
-//! Kotlin's `feature.watlev()` is `Watlev::of(&feature.props)`: a single-valued attribute answers
+//! Variant names are upper-case constants (`FISHING_STAKE`); [`name`](Watlev::name) answers them
+//! verbatim, and they are the names the attribute-helper fixture in `testdata/` records.
+//!
+//! `Watlev::of(&feature.props)` reads a feature's attribute: a single-valued attribute answers
 //! `Option<Self>` (`None` when absent or unknown), a list attribute answers the known values in
 //! order, dropping unknown IDs.
 
@@ -18,7 +19,7 @@ macro_rules! attribute_enum {
             /// The S-57 attribute acronym this decodes.
             pub const ATTRIBUTE: &'static str = $attribute;
 
-            /// Every value, in the Kotlin declaration order.
+            /// Every value, in declaration order.
             pub const ALL: &'static [$name] = &[$($name::$variant),+];
 
             /// The value for an S-57 expected-input ID.
@@ -34,7 +35,7 @@ macro_rules! attribute_enum {
                 match self { $($name::$variant => $id),+ }
             }
 
-            /// The Kotlin constant name.
+            /// The constant name, as the variant is spelled.
             pub fn name(self) -> &'static str {
                 match self { $($name::$variant => stringify!($variant)),+ }
             }

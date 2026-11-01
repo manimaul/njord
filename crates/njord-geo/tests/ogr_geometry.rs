@@ -1,5 +1,5 @@
-//! LB-1 `geo/ogr_geometry.json` (best effort, RUST_PORT_PLAN.md §4.1): the `OgrGeometry`
-//! operations over GDAL/GEOS, re-run on `njord_geo::geometry` over the `geo` crate.
+//! The golden fixture `geo/ogr_geometry.json` (best effort): geometry operations recorded over
+//! GDAL/GEOS, re-run on [`njord_geo::geometry`] over the `geo` crate.
 //!
 //! Geometry results are compared as shapes, not WKT text: GDAL's WKT has 15 significant digits
 //! and GEOS picks ring orientation, ring start vertex and part order freely, so both sides are
@@ -29,7 +29,7 @@ const BOOLEAN_OP_TOLERANCE: f64 = 1e-10;
 const SKIPPED_OPS: &[(&str, &str)] = &[
     (
         "numGeometries",
-        "OGR handle accessor; geo-types exposes the structure directly and the port needs none of GDAL's counting conventions (0 for a LineString, rings for a Polygon)",
+        "OGR handle accessor; geo-types exposes the structure directly and the tile path needs none of GDAL's counting conventions (0 for a LineString, rings for a Polygon)",
     ),
     (
         "numCoordinates",
@@ -46,7 +46,7 @@ const SKIPPED_OPS: &[(&str, &str)] = &[
     ("interiorRing0", "OGR handle accessor; Polygon::interiors()"),
     (
         "coordinateSequence",
-        "OGR handle accessor; the MVT encoder's dependence on it (a MultiPoint has no points) is pinned by P-TE-2 `multi` instead",
+        "OGR handle accessor; the MVT encoder's dependence on it (a MultiPoint has no points) is pinned by the `geo/mvt` `multi` case instead",
     ),
     (
         "wkbHex",
@@ -150,7 +150,7 @@ fn compute(op: &str, a: &Geometry, b: Option<&Geometry>, n: Option<f64>) -> Out 
         "intersection" if polygonal(b.unwrap()) => {
             Out::Shape(Some(geometry::intersection(a, &mask())))
         }
-        // GEOS intersection is symmetric; the port only clips by a polygonal mask.
+        // GEOS intersection is symmetric; njord-geo only clips by a polygonal mask.
         "intersection" if polygonal(a) => {
             let a_mask = match a {
                 Geometry::Polygon(p) => MultiPolygon(vec![p.clone()]),
@@ -335,7 +335,7 @@ fn ogr_geometry() {
     failures.assert_none(checked);
 }
 
-/// The anchors the tile path relies on (Kotlin `OgrGeometryFixtureTest`).
+/// The anchors the tile path relies on.
 #[test]
 fn tile_path_anchors() {
     let square = parse("POLYGON ((0 0,10 0,10 10,0 10,0 0))");

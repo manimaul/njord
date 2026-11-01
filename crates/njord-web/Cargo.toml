@@ -6,7 +6,7 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 
-# The only backend crate this may depend on is njord-model (RUST_PORT_PLAN.md §3.1); `cargo tree
+# The only backend crate this may depend on is njord-model (the HTTP API types); `cargo tree
 # -p njord-web` must not list any other njord-* crate. It also builds natively, so the workspace
 # test and clippy runs cover it; only `start` needs a browser.
 [dependencies]

@@ -1,4 +1,4 @@
-//! `attributehelpers/Catfif.kt`.
+//! S-57 `CATFIF` (category of fishing facility) values, a single-valued attribute.
 
 crate::layers::attributehelpers::single_attribute! {
     /// <https://openenc.com/control/symbols/FSHFAC/CATFIF>

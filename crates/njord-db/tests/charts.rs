@@ -1,8 +1,8 @@
-//! P-DB-2 / D5 / P-DB-4 / P-DB-5 on charts and features, each test on its own database:
-//! overwrite and delete semantics (`db/overwrite.json`, honouring its `port.expected`), the TOPMAR
-//! association on a synthetic chart, the editions key (`db/editions.json`) and catalog paging
-//! (`db/catalog_paging.json`). Mirrors the Kotlin `ChartDaoTest`, plus the GeoJSON, base-feature
-//! and truncate DAOs.
+//! Chart and feature queries, each test on its own database.
+//!
+//! Covers overwrite and delete semantics (`db/overwrite.json`, honouring its `port.expected`), the
+//! TOPMAR association on a synthetic chart, the editions key (`db/editions.json`), catalog paging
+//! (`db/catalog_paging.json`), and the GeoJSON, base-feature and truncate queries.
 
 mod common;
 
@@ -17,7 +17,7 @@ use serde_json::{Value, json};
 
 const SQUARE: &str = r#"{"type":"Polygon","coordinates":[[[-1,-1],[-1,1],[1,1],[1,-1],[-1,-1]]]}"#;
 
-/// `ChartDaoTest.insert`.
+/// A chart insert with fixed dates and zoom.
 fn chart(name: &str, scale: i32, geometry_json: Option<&str>) -> ChartInsert {
     ChartInsert {
         name: name.into(),
@@ -44,7 +44,7 @@ fn wkb(wkt: &str) -> Vec<u8> {
     njord_db::geometry::to_wkb(&wkt_geometry(wkt)).unwrap()
 }
 
-/// `ChartDaoTest.addFeature`.
+/// Inserts one feature with `LNAM` and, when given, `LNAM_REFS`.
 async fn add_feature(db: &Db, chart: &str, layer: &str, lnam: &str, refs: &[&str], wkt: &str) {
     let mut p = props(json!({ "LNAM": lnam }));
     if !refs.is_empty() {
@@ -67,7 +67,7 @@ async fn count_charts(db: &Db, name: &str) -> i64 {
 }
 
 #[tokio::test]
-async fn p_db_2_overwrite_replaces_the_chart_and_deletes_its_features() {
+async fn overwrite_replaces_the_chart_and_deletes_its_features() {
     let db = migrated_db("charts_overwrite").await;
     db.insert_chart(&chart("a.000", 10000, Some(SQUARE)), false)
         .await
@@ -100,7 +100,7 @@ async fn p_db_2_overwrite_replaces_the_chart_and_deletes_its_features() {
 }
 
 #[tokio::test]
-async fn p_db_2_delete_cascades_and_reports_whether_a_chart_existed() {
+async fn delete_cascades_and_reports_whether_a_chart_existed() {
     let db = migrated_db("charts_delete").await;
     db.insert_chart(&chart("b.000", 10000, Some(SQUARE)), false)
         .await
@@ -117,10 +117,10 @@ async fn p_db_2_delete_cascades_and_reports_whether_a_chart_existed() {
     drop_database(db).await;
 }
 
-/// D5 (c): a failing overwrite (NULL coverage violates `covr NOT NULL`) keeps the previous
-/// chart and its features.
+/// A failing overwrite (NULL coverage violates `covr NOT NULL`) keeps the previous chart and its
+/// features.
 #[tokio::test]
-async fn d5_failing_overwrite_keeps_the_previous_chart() {
+async fn failing_overwrite_keeps_the_previous_chart() {
     let db = migrated_db("charts_d5").await;
     db.insert_chart(&chart("c.000", 10000, Some(SQUARE)), false)
         .await
@@ -142,7 +142,7 @@ async fn d5_failing_overwrite_keeps_the_previous_chart() {
     for case in &cases {
         assert!(
             case.get("port").is_some(),
-            "D5 case carries the port outcome"
+            "overwrite case records the expected outcome under port"
         );
         if let Some(d) = first_difference(port_expected(case), &actual, "") {
             failures.push(format!("{}: {d}", case["input"]));
@@ -152,9 +152,9 @@ async fn d5_failing_overwrite_keeps_the_previous_chart() {
     drop_database(db).await;
 }
 
-/// D5 (b): a feature install that is not committed leaves nothing behind.
+/// A feature install that is not committed leaves nothing behind.
 #[tokio::test]
-async fn d5_uncommitted_feature_install_rolls_back() {
+async fn uncommitted_feature_install_rolls_back() {
     let db = migrated_db("charts_install").await;
     db.insert_chart(&chart("d.000", 10000, Some(SQUARE)), true)
         .await
@@ -203,11 +203,11 @@ async fn d5_uncommitted_feature_install_rolls_back() {
     drop_database(db).await;
 }
 
-/// P-DB-4: three topmarks, two referenced through `LNAM_REFS` by a buoy and a beacon (and a
+/// Three topmarks, two referenced through `LNAM_REFS` by a buoy and a beacon (and a
 /// light). Both lookups agree, other layers are untouched, and the layer page adds
 /// `_PTFM`/`_ASOC`.
 #[tokio::test]
-async fn p_db_4_topmar_association() {
+async fn topmar_association() {
     let db = migrated_db("charts_topmar").await;
     let name = "topmar.000";
     db.insert_chart(&chart(name, 10000, Some(SQUARE)), true)
@@ -282,7 +282,7 @@ async fn p_db_4_topmar_association() {
 }
 
 #[tokio::test]
-async fn p_db_5_editions() {
+async fn editions_key() {
     let db = migrated_db("charts_editions").await;
     let cases = cases("db/editions.json");
     let mut failures = Failures::default();
@@ -307,7 +307,7 @@ async fn p_db_5_editions() {
 }
 
 #[tokio::test]
-async fn p_db_5_catalog_paging() {
+async fn catalog_paging() {
     let db = migrated_db("charts_paging").await;
     let cases = cases("db/catalog_paging.json");
     let total = cases[0]["input"]["chartsBefore"].as_i64().unwrap();
@@ -350,7 +350,7 @@ async fn p_db_5_catalog_paging() {
     drop_database(db).await;
 }
 
-/// DB-6: the `insertFeatureSync` prop mapping.
+/// The feature insert's prop mapping.
 #[test]
 fn insert_mapping_of_minz_maxz_and_lnam_refs() {
     let p = |v: Value| props(v);
@@ -394,7 +394,7 @@ fn insert_mapping_of_minz_maxz_and_lnam_refs() {
     );
 }
 
-/// DB-9: `POST /v1/geojson` then `GET /v1/geojson` for each GeoJSON kind.
+/// `POST /v1/geojson` then `GET /v1/geojson` for each GeoJSON kind.
 #[tokio::test]
 async fn geojson_insert_and_fetch() {
     let db = migrated_db("charts_geojson").await;
@@ -464,7 +464,7 @@ async fn geojson_insert_and_fetch() {
     drop_database(db).await;
 }
 
-/// DB-10 and DB-12: base features by name and scale, and truncation keeping the schema version.
+/// Base features by name and scale, and truncation keeping the schema version.
 #[tokio::test]
 async fn base_features_and_truncate() {
     let db = migrated_db("charts_base").await;

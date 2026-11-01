@@ -1,5 +1,4 @@
-//! Round trips of the `testdata/` fixtures through the wire types (Phase 1 exit criterion,
-//! RUST_PORT_PLAN.md §6).
+//! Round trips of the `testdata/` fixtures through the wire types.
 
 use base64::Engine;
 use njord_model::{
@@ -9,7 +8,7 @@ use njord_model::{
 use njord_testdata::{Failures, Nulls, cases, json_files, round_trip, testdata};
 use serde_json::Value;
 
-/// P-IN-7: every `WsMsg` subtype.
+/// Every [`WsMsg`] variant.
 #[test]
 fn ws_messages() {
     let mut failures = Failures::default();
@@ -23,7 +22,7 @@ fn ws_messages() {
     failures.assert_none(cases.len());
 }
 
-/// P-SY-7: the full style JSON for every depth × theme × custom theme.
+/// The full style JSON for every depth × theme × custom theme.
 #[test]
 fn styles() {
     let mut failures = Failures::default();
@@ -42,7 +41,7 @@ fn styles() {
     failures.assert_none(checked);
 }
 
-/// P-SY-8: the sprite sheet index per theme, and the `Sprite` enum in declaration order.
+/// The sprite sheet index per theme, and the `Sprite` enum in declaration order.
 #[test]
 fn sprites() {
     let mut failures = Failures::default();
@@ -58,7 +57,7 @@ fn sprites() {
             let actual: Vec<&str> = Sprite::ALL.iter().map(|s| s.as_str()).collect();
             if expected != actual {
                 failures.push(format!(
-                    "Sprite::ALL differs from the Kotlin enum:\n{expected:?}\n{actual:?}"
+                    "Sprite::ALL differs from the fixture's order:\n{expected:?}\n{actual:?}"
                 ));
             }
         } else {
@@ -71,9 +70,8 @@ fn sprites() {
     failures.assert_none(cases.len());
 }
 
-/// P-SEC-1: `AdminSignature` must serialise byte-identically to Kotlin, because
-/// `signatureEncoded` is the base64 of that JSON and the port must accept Kotlin-minted
-/// signatures (and vice versa) during cutover.
+/// [`AdminSignature`] must serialise byte-identically to the signature vectors, because
+/// `signatureEncoded` is the base64 of that JSON and signatures minted earlier must still verify.
 #[test]
 fn admin_signature_vectors() {
     let mut failures = Failures::default();
@@ -98,7 +96,7 @@ fn admin_signature_vectors() {
         let theirs = percent_decode(encoded);
         if ours != theirs {
             failures.push(format!(
-                "{label}: base64 of {json} is {ours}, Kotlin encoded {theirs}"
+                "{label}: base64 of {json} is {ours}, the vector has {theirs}"
             ));
         }
         let response = serde_json::json!({ "signature": expected, "signatureEncoded": encoded });
@@ -110,7 +108,7 @@ fn admin_signature_vectors() {
     failures.assert_none(cases.len());
 }
 
-/// P-RE-5: manifest entries. The fixture was written with `explicitNulls = false`.
+/// Region manifest entries. The fixture omits `null` members.
 #[test]
 fn region_manifest() {
     let mut failures = Failures::default();
@@ -132,7 +130,7 @@ fn region_manifest() {
     failures.assert_none(cases.len());
 }
 
-/// P-IN-1: the chart row ingest builds from a cell (`ChartInsert`).
+/// The chart row ingest builds from a cell ([`ChartInsert`]).
 #[test]
 fn chart_insert() {
     let mut failures = Failures::default();
@@ -146,7 +144,7 @@ fn chart_insert() {
     failures.assert_none(cases.len());
 }
 
-/// Kotlin `encodeURLPath(encodeSlash = true)` only percent-encodes; undo it.
+/// Undoes the URL-path percent-encoding of `signatureEncoded` (slashes included).
 fn percent_decode(s: &str) -> String {
     let bytes = s.as_bytes();
     let mut out = Vec::with_capacity(bytes.len());

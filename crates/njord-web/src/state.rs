@@ -1,6 +1,6 @@
-//! `Async<T>` (`viewmodel/utils/Async.kt`): the load state every page renders from.
+//! [`Async`]: the load state every page renders from.
 
-/// Kotlin's `defaultErrorMessage`.
+/// The message shown when a failure has no more specific one.
 pub const DEFAULT_ERROR: &str = "An unknown error occurred :(";
 
 #[derive(Clone, Debug, Default, PartialEq)]

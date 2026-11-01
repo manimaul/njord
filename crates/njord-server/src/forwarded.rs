@@ -1,10 +1,10 @@
-//! The request's external origin (`ext/KtorExt.kt` `externalBaseUrl()`, over Ktor's
-//! `XForwardedHeaders` and `ForwardedHeaders` plugins): the scheme, host and port a client used to
-//! reach the server, through any reverse proxy. Style, TileJSON and admin-signature URLs are built
-//! from it, so it must agree with Kotlin header for header.
+//! The request's external origin: the scheme, host and port a client used to reach the server.
 //!
-//! Client-sent forwarded headers are trusted, as in Kotlin: in production the ingress overwrites
-//! them.
+//! The origin is read through any reverse proxy from the `X-Forwarded-*` and `Forwarded` headers.
+//! Style, TileJSON and admin-signature URLs are built from it, so the precedence of the headers
+//! is part of the API contract that the conformance goldens pin header for header.
+//!
+//! Client-sent forwarded headers are trusted: in production the ingress overwrites them.
 
 use std::convert::Infallible;
 
@@ -21,17 +21,19 @@ pub struct Origin {
 }
 
 impl Origin {
-    /// The local connection point, then the `X-Forwarded-*` headers, then RFC 7239 `Forwarded`
-    /// (Ktor runs the plugins in installation order, so `Forwarded` wins when both are present).
+    /// The origin of a request with `headers` and `uri`.
+    ///
+    /// The local connection point is applied first, then the `X-Forwarded-*` headers, then
+    /// RFC 7239 `Forwarded`, so `Forwarded` wins when both are present.
     ///
     /// - Local: scheme `http`; host and port from `Host` (or the URI authority). Without a port
-    ///   the scheme's default is used; Ktor would fall back to the local socket's port, which no
-    ///   deployment relies on (the ingress always sends `X-Forwarded-Proto`).
+    ///   the scheme's default is used rather than the local socket's port, which no deployment
+    ///   relies on (the ingress always sends `X-Forwarded-Proto`).
     /// - `X-Forwarded-Proto` / `X-Forwarded-Protocol` sets the scheme and resets the port to that
     ///   scheme's default; `X-Forwarded-SSL` / `Front-End-Https` `on` (or `true`) means `https`.
     ///   `X-Forwarded-Host` / `X-Forwarded-Server` sets the host (and the port when it carries
     ///   one); `X-Forwarded-Port` sets the port. Comma-separated lists use the first value (the
-    ///   proxy nearest the client), Ktor's default `useFirstProxy`.
+    ///   proxy nearest the client).
     /// - `Forwarded`: the first element's `proto` (scheme and default port) and `host` (host,
     ///   and its port or the scheme's default).
     pub fn of(headers: &HeaderMap, uri: &Uri) -> Origin {
@@ -41,7 +43,7 @@ impl Origin {
         origin
     }
 
-    /// `externalBaseUrl()`: `scheme://host[:port]`, the port left out when it is the scheme's
+    /// The external base URL, `scheme://host[:port]`, the port left out when it is the scheme's
     /// default (only `http`/80 and `https`/443 are elided).
     pub fn base_url(&self) -> String {
         let default = matches!(

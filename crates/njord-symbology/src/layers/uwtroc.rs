@@ -7,8 +7,7 @@
 //! Code: 152
 //!
 //! S-52 chooses the symbol by WATLEV (always under water: UWTROC04; covers and uncovers, awash
-//! or flooding: UWTROC03); everything else gets the isolated danger symbol. The Kotlin file
-//! carries a longer summary of the S-52 rules as a comment.
+//! or flooding: UWTROC03); everything else gets the isolated danger symbol.
 
 use crate::layers::prelude::*;
 

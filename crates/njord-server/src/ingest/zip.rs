@@ -1,12 +1,13 @@
-//! Extracting an uploaded zip (`libzip` `ZipFileEntry.unzipToPath`, with decision D3; P-SEC-3
-//! `testdata/security/paths.json` zip entry cases).
+//! Extracting an uploaded zip, refusing unsafe entry names.
+//!
+//! The zip entry cases of `testdata/security/paths.json` pin the refusals.
 //!
 //! Every entry name is checked before anything is written: an absolute name, a `..` component, a
 //! backslash or a NUL (`zip::ZipFile::enclosed_name()` answers `None`, and `\` is refused on
-//! top because Kotlin's `File` treated it as a name character while Windows would not) aborts
+//! top because it is a name character on unix but a separator on Windows) aborts
 //! the whole extraction with [`ZipError::Unsafe`], so a hostile or corrupt zip never yields a
 //! half-extracted cell. A leading `./` is dropped. Entries the caller's `skip` predicate accepts
-//! (ingest skips `__MACOSX/`, as Kotlin's ingest loop did) are not written.
+//! (ingest skips `__MACOSX/`) are not written.
 
 use std::fmt;
 use std::fs::File;
@@ -14,11 +15,14 @@ use std::path::{Path, PathBuf};
 
 use zip::ZipArchive;
 
+/// Why a zip could not be read or extracted.
 #[derive(Debug)]
 pub enum ZipError {
+    /// Reading the zip or writing an entry failed.
     Io(std::io::Error),
+    /// The zip is malformed.
     Zip(zip::result::ZipError),
-    /// An entry whose name would write outside the target directory (D3).
+    /// An entry whose name would write outside the target directory.
     Unsafe(String),
 }
 
@@ -46,8 +50,7 @@ impl From<zip::result::ZipError> for ZipError {
     }
 }
 
-/// Where an entry may be written under `dir`, or `None` when it must not be written at all
-/// (the D3 refusals).
+/// Where an entry may be written under `dir`, or `None` when it must not be written at all.
 pub fn entry_target(dir: &Path, name: &str) -> Option<PathBuf> {
     if name.contains('\\') || name.contains('\0') {
         return None;
@@ -55,7 +58,7 @@ pub fn entry_target(dir: &Path, name: &str) -> Option<PathBuf> {
     Some(dir.join(zip_safe_relative(name)?))
 }
 
-/// `ChartIngest.step1UnzipFiles`'s filter: macOS resource forks are not chart data.
+/// The ingest's skip filter: macOS resource forks are not chart data.
 pub fn skip_macosx(name: &str) -> bool {
     name.starts_with("__MACOSX")
 }
@@ -76,6 +79,10 @@ fn zip_safe_relative(name: &str) -> Option<PathBuf> {
 }
 
 /// The names of every entry (directories included).
+///
+/// # Errors
+///
+/// Returns [`ZipError`] when the zip cannot be opened or read.
 pub fn entry_names(zip: &Path) -> Result<Vec<String>, ZipError> {
     let archive = ZipArchive::new(File::open(zip)?)?;
     archive
@@ -86,7 +93,13 @@ pub fn entry_names(zip: &Path) -> Result<Vec<String>, ZipError> {
 
 /// Extracts `zip` into `dir`, leaving out the entries `skip` accepts, calling
 /// `progress(done, total)` after each entry, and returns the files written (directories left
-/// out), in archive order. Nothing is written when any entry name is unsafe, skipped or not.
+/// out), in archive order.
+///
+/// # Errors
+///
+/// Returns [`ZipError::Unsafe`], with nothing written, when any entry name is unsafe, skipped
+/// or not; [`ZipError::Io`] or [`ZipError::Zip`] when the zip cannot be read or an entry
+/// written.
 pub fn extract(
     zip: &Path,
     dir: &Path,

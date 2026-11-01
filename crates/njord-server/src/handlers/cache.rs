@@ -1,4 +1,4 @@
-//! `GET/DELETE /v1/cache` (`CacheHandler.kt`).
+//! `GET/DELETE /v1/cache`: the on-disk tile cache's counts, and clearing it.
 
 use std::sync::Arc;
 

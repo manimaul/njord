@@ -1,6 +1,5 @@
-//! P-TE-2 `geo/mvt/<case>.bin` + `.json`: the Rust encoder fed the inputs of the Kotlin
-//! generator (`libgdal/src/nativeTest/kotlin/MvtFixtureTest.kt`), whose geometries are already
-//! in tile pixels.
+//! The golden fixtures `geo/mvt/<case>.bin` + `.json`: [`VectorTileEncoder`] fed the inputs the
+//! fixtures were generated from, whose geometries are already in tile pixels.
 
 use geo_types::{
     Geometry, GeometryCollection, LineString, MultiLineString, MultiPoint, MultiPolygon, Point,
@@ -317,14 +316,15 @@ const GEOS_RING_START: &[&str] = &["clipping"];
 
 struct Fixture {
     bytes: Vec<u8>,
-    /// The view of the Kotlin `.bin`.
+    /// The view of the golden `.bin`.
     decoded: Value,
-    /// `port.decoded`: the view the port must produce where Kotlin keeps an accepted defect.
+    /// `port.decoded`: the view the encoder must produce where the golden `.bin` records an
+    /// accepted defect.
     port_decoded: Option<Value>,
 }
 
 impl Fixture {
-    /// What the Rust encoder must decode to: `port.decoded` when present, else `decoded`.
+    /// What the encoder's tile must decode to: `port.decoded` when present, else `decoded`.
     fn port_expected(&self) -> &Value {
         self.port_decoded.as_ref().unwrap_or(&self.decoded)
     }
@@ -370,8 +370,8 @@ fn normalise_ring_starts(view: &mut Value) {
     }
 }
 
-/// P-TE-2: the Rust-encoded tile decodes to the sidecar's `decoded` view, or its
-/// `port.decoded` where one is recorded (D13 in `multi`). This is the gate.
+/// The encoded tile decodes to the sidecar's `decoded` view, or its `port.decoded` where one is
+/// recorded (the MultiPoint in `multi`). This is the gate.
 #[test]
 fn mvt_decoded_view() {
     let mut failures = Failures::default();
@@ -392,9 +392,9 @@ fn mvt_decoded_view() {
     failures.assert_none(CASES.len());
 }
 
-/// D13: a MultiPoint whose points round to the same pixel writes each pixel once, and the MoveTo
-/// count matches the points written (a count that claimed the dropped point would make the tile
-/// undecodable). No Kotlin fixture covers this; Kotlin never encoded a MultiPoint.
+/// A MultiPoint whose points round to the same pixel writes each pixel once, and the MoveTo count
+/// matches the points written (a count that claimed the dropped point would make the tile
+/// undecodable). No golden fixture covers this: none holds an encoded MultiPoint.
 #[test]
 fn multi_point_drops_repeated_pixels() {
     let mut e = VectorTileEncoder::new();
@@ -414,10 +414,11 @@ fn multi_point_drops_repeated_pixels() {
     );
 }
 
-/// P-TE-2: the Rust decoder reads the Kotlin `.bin` into exactly the Kotlin `decoded` view, ring
-/// starts included. This is the decoder the P-TE-5 golden tiles are compared with.
+/// The decoder reads the golden `.bin` into exactly the recorded `decoded` view, ring starts
+/// included. This is the decoder the golden tiles in `njord-server/tests/tiles.rs` are compared
+/// with.
 #[test]
-fn mvt_decoder_reads_kotlin_tiles() {
+fn mvt_decoder_reads_golden_tiles() {
     let mut failures = Failures::default();
     for case in CASES {
         let f = fixture(case);
@@ -429,12 +430,12 @@ fn mvt_decoder_reads_kotlin_tiles() {
     failures.assert_none(CASES.len());
 }
 
-/// P-TE-2, informational per testdata/README.md but checked anyway: the protobuf writer uses
-/// Kotlin's field order, so wherever `geo` and GEOS produce the same vertices the bytes are
-/// identical to the Kotlin `.bin`. Cases with a port divergence are left out: their Kotlin bytes
+/// Informational per testdata/README.md but checked anyway: the protobuf writer uses the golden
+/// tiles' field order, so wherever `geo` and GEOS produce the same vertices the bytes are
+/// identical to the golden `.bin`. Cases with a `port.decoded` are left out: their golden bytes
 /// are the defect.
 #[test]
-fn mvt_bytes_match_kotlin() {
+fn mvt_bytes_match_golden() {
     let mut failures = Failures::default();
     let mut checked = 0;
     for case in CASES.iter().filter(|c| !GEOS_RING_START.contains(c)) {

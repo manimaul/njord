@@ -8,7 +8,7 @@
 
 use crate::layers::prelude::*;
 
-/// Kotlin's `open class Canals` with its `open val fillColor`; `Rivers` and the Natural Earth
+/// Canals, with a configurable fill colour; `Rivers` and the Natural Earth
 /// `RiversLakeCenterlines` delegate to it.
 #[derive(Clone, Copy, Debug)]
 pub struct Canals {

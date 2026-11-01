@@ -1,10 +1,10 @@
-//! `NavBar.js.kt`: pages, depth / theme / custom colour / region pickers, login.
+//! The nav bar: page links, the depth / theme / custom colour / region pickers, and login.
 
 use leptos::prelude::*;
 use njord_model::{Depth, ThemeMode};
 
 use crate::bootstrap;
-use crate::kotlin::{depth_name, mode_name};
+use crate::display::{depth_name, mode_name};
 use crate::routing::nav_bar_routes;
 use crate::state::Async;
 use crate::store::{REGISTRY, store};

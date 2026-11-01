@@ -48,8 +48,9 @@ pub struct FeatureInsert {
     pub geo: GeoJson,
 }
 
-/// Kotlin's `Pair`, which the server responds with directly: `POST /v1/geojson` returns
-/// `Pair<Int, FeatureInsert>` (rows inserted, the insert).
+/// A `{"first": …, "second": …}` pair.
+///
+/// `POST /v1/geojson` responds with `Pair<i32, FeatureInsert>`: the rows inserted, and the insert.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Pair<A, B> {
     pub first: A,

@@ -1,6 +1,8 @@
-//! P-RE-4 `testdata/regions/timestamps.json` (archive stems, names, ordering and pruning) and
-//! P-RE-5 `testdata/regions/manifest.json` (`buildManifest` over a region directory), with the
-//! archive stems read in `America/Los_Angeles` as the fixtures were generated.
+//! Region archive naming and the manifest against the fixtures.
+//!
+//! `testdata/regions/timestamps.json` pins archive stems, names, ordering and pruning, and
+//! `testdata/regions/manifest.json` the manifest built over a region directory, with the archive
+//! stems read in `America/Los_Angeles` as the fixtures were generated.
 
 use njord_server::config::RegionExportConfig;
 use njord_server::regions::Regions;
@@ -12,9 +14,10 @@ const OLDER: &str = "MANIFEST_TEST_2026-01-02T03-04-05.mbtiles";
 /// The archive contents `RegionExportTest` writes.
 const ARCHIVE: &[u8] = b"newest archive bytes";
 
-/// Stems are server-local time without an offset, so they resolve in the configured zone,
-/// DST transitions included; `archivesForRegion` matches on a plain name prefix (so `WA` sees
-/// `WA_SOUND_*` too, whose stems fail to parse and sort last) and pruning keeps the two newest.
+/// Stems are server-local time without an offset, so they resolve in the configured zone, DST
+/// transitions included; `Regions::archives_for_region` matches on a plain name prefix (so `WA`
+/// sees `WA_SOUND_*` too, whose stems fail to parse and sort last) and pruning keeps the two
+/// newest.
 #[test]
 fn timestamps() {
     let zone = jiff::tz::TimeZone::get("America/Los_Angeles").unwrap();

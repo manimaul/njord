@@ -1,5 +1,6 @@
-//! `OgrS57Dataset.chartInsertInfo()` (P-IN-1, P-IN-4): the `charts` row for a cell, from any
-//! [`S57Reader`]. The rules are documented on [`S57Reader::chart_insert`].
+//! The `charts` row for a cell, from any [`S57Reader`].
+//!
+//! The rules are documented on [`S57Reader::chart_insert`].
 
 use std::path::Path;
 
@@ -93,7 +94,7 @@ pub(crate) fn chart_insert<R: S57Reader + ?Sized>(cell: &R) -> Result<ChartInser
     })
 }
 
-/// Kotlin `JsonPrimitive.contentOrNull`: a string's content, or a number or boolean as text.
+/// A string prop's content, or a number or boolean prop as text.
 fn string_value(props: &JsonObject, key: &str) -> Option<String> {
     match props.get(key)? {
         Value::String(s) => Some(s.clone()),
@@ -147,7 +148,7 @@ fn read_chart_txt(cell: &Path, charset: Charset) -> Result<IndexMap<String, Stri
                 std::fs::read(&path).map_err(|e| Error(format!("{}: {e}", path.display())))?;
             let text = match charset {
                 Charset::Latin1 => bytes.iter().map(|&b| char::from(b)).collect(),
-                // Kotlin decodes US-ASCII as UTF-8 too.
+                // US-ASCII is decoded as UTF-8, so non-ASCII bytes are kept where valid.
                 Charset::Ascii | Charset::Utf8 => String::from_utf8_lossy(&bytes).into_owned(),
             };
             Ok((name, text))

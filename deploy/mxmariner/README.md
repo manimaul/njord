@@ -137,8 +137,10 @@ kubectl -n njord get pods                               # old environment: uncha
 Before step 6, `dig +short njord.mxmariner.com` should return the ingress load balancer
 (`172.232.176.134`, §10.1), or the HTTP-01 challenge cannot succeed.
 
-Seeding: raise `maxCellsPerRun` in `noaa_enc_daily_cron.yaml` (the full catalog is ~7.2k cells),
-`apply cron`, then `seed` again. The ingest pod picks the bundles up from `/mnt/njord/charts/save`.
+Seeding: `noaa_enc_daily_cron.yaml` sets `maxCellsPerRun` to 10000, above the full catalog (~7.2k
+cells), so one `seed` fetches everything. The ingest pod picks the bundles up from
+`/mnt/njord/charts/save`. The job stops early if `maxQueuedBundles` (50) bundles are waiting there,
+which means ingest has fallen behind; run `seed` again once `save/` drains.
 
 Compare with the old environment (§10.5):
 

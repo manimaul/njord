@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # The web UI (crates/njord-web) is built with Trunk for wasm32. Its own layer, so it is compiled
 # once and reused until the version changes. Trunk downloads the wasm-bindgen CLI matching
-# Cargo.lock and wasm-opt on first use (cached under /root/.cache/trunk below).
+# Cargo.lock, wasm-opt and the Tailwind CSS CLI on first use (cached under /root/.cache/trunk below).
 ARG TRUNK_VERSION=0.22.1
 RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
     rustup target add wasm32-unknown-unknown \

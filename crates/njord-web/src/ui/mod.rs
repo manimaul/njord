@@ -31,7 +31,7 @@ pub fn App() -> impl IntoView {
         })
     });
     view! {
-        <div class="App Column">
+        <div class="flex min-h-screen flex-col">
             <nav::NavBar/>
             {move || {
                 let (route, args, path) = page.get();
@@ -77,7 +77,7 @@ pub fn App() -> impl IntoView {
 
 #[component]
 fn RouteContent(children: Children) -> impl IntoView {
-    view! { <div class="m-2">{children()}</div> }
+    view! { <div class="m-2 min-w-0">{children()}</div> }
 }
 
 #[component]

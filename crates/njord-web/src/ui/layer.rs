@@ -61,7 +61,7 @@ pub fn LayerPage(name: String) -> impl IntoView {
                 let more_button = move || {
                     let next_page = next_page.clone();
                     more.then(|| view! {
-                        <button class="btn btn-outline-success btn-sm" on:click=move |_| next_page()>
+                        <button class="nj-btn nj-btn-sm nj-btn-outline-success" on:click=move |_| next_page()>
                             "Load more"
                         </button>
                     })
@@ -89,7 +89,7 @@ pub fn LayerPage(name: String) -> impl IntoView {
                                     item.chart_name, item.lat, item.lng, item.zoom, item.geom_type
                                 )}
                                 <button
-                                    class="btn btn-outline-secondary btn-sm"
+                                    class="nj-btn nj-btn-sm nj-btn-outline-secondary"
                                     on:click=move |_| {
                                         s.set_location(location, true);
                                         s.push_page(NjordRoute::Enc);

@@ -1,9 +1,11 @@
 //! The nav bar: page links, the depth / theme / custom colour / region pickers, and login.
+//!
+//! Links sit in a row from `lg` up; below that a hamburger button opens them as a vertical menu
+//! (`.nj-navbar-collapse` in `assets/app.css`). Choosing a page closes the menu.
 
 use leptos::prelude::*;
 use njord_model::{Depth, ThemeMode};
 
-use crate::bootstrap;
 use crate::display::{depth_name, mode_name};
 use crate::routing::nav_bar_routes;
 use crate::state::Async;
@@ -14,6 +16,7 @@ use crate::ui::components::NavDropdown;
 pub fn NavBar() -> impl IntoView {
     let s = store();
     s.load_nav();
+    let menu_open = RwSignal::new(false);
     let current_route = Memo::new(move |_| s.route.with(|r| r.current.route));
     let routes = nav_bar_routes(&REGISTRY)
         .into_iter()
@@ -21,12 +24,14 @@ pub fn NavBar() -> impl IntoView {
             let route = routing.route;
             let path = routing.path_and_params();
             view! {
-                <li class="nav-item">
+                <li>
                     <button
-                        class=move || {
-                            if current_route.get() == route { "nav-link active" } else { "nav-link" }
+                        class="nj-nav-link"
+                        aria-current=move || (current_route.get() == route).then_some("page")
+                        on:click=move |_| {
+                            s.push_route(&path);
+                            menu_open.set(false);
                         }
-                        on:click=move |_| s.push_route(&path)
                     >
                         {route.title()}
                     </button>
@@ -49,20 +54,41 @@ pub fn NavBar() -> impl IntoView {
         .collect();
 
     view! {
-        <nav
-            class="navbar navbar-expand-lg bg-body-tertiary sticky-top border-body border-bottom"
-            data-bs-theme="dark"
-        >
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">"Njord"</a>
-                <button
-                    class="navbar-toggler"
-                    on:click=|_| bootstrap::toggle_collapse("#navbarNavDropdown")
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbarNavDropdown" class="collapse navbar-collapse">
-                    <ul class="navbar-nav">
+        <nav class="nj-navbar">
+            <div class="nj-navbar-inner">
+                <a class="nj-navbar-brand" href="#">"Njord"</a>
+                <div class="nj-navbar-end">
+                    {move || match s.admin.with(|a| a.signature.clone()) {
+                        Async::Complete(_) => {
+                            view! {
+                                <button class="nj-btn nj-btn-sm nj-btn-danger" on:click=move |_| s.logout()>
+                                    "Logout"
+                                </button>
+                            }
+                                .into_any()
+                        }
+                        Async::Loading(_) => ().into_any(),
+                        Async::Fail { .. } | Async::Uninitialized => {
+                            view! {
+                                <button class="nj-btn nj-btn-sm nj-btn-info" on:click=move |_| s.login()>
+                                    "Login"
+                                </button>
+                            }
+                                .into_any()
+                        }
+                    }}
+                    <button
+                        class="nj-navbar-toggler lg:hidden"
+                        aria-controls="navbarNavDropdown"
+                        aria-expanded=move || menu_open.get().to_string()
+                        aria-label="Toggle navigation"
+                        on:click=move |_| menu_open.update(|o| *o = !*o)
+                    >
+                        <HamburgerIcon/>
+                    </button>
+                </div>
+                <div class="nj-navbar-collapse" data-open=move || menu_open.get().to_string()>
+                    <ul id="navbarNavDropdown" class="m-0 flex list-none flex-col p-0 lg:flex-row">
                         {routes}
                         <NavDropdown
                             title=depth_title
@@ -116,25 +142,15 @@ pub fn NavBar() -> impl IntoView {
                     </ul>
                 </div>
             </div>
-            {move || match s.admin.with(|a| a.signature.clone()) {
-                Async::Complete(_) => {
-                    view! {
-                        <button class="btn btn-danger btn-sm mx-2" on:click=move |_| s.logout()>
-                            "Logout"
-                        </button>
-                    }
-                        .into_any()
-                }
-                Async::Loading(_) => ().into_any(),
-                Async::Fail { .. } | Async::Uninitialized => {
-                    view! {
-                        <button class="btn btn-info btn-sm mx-2" on:click=move |_| s.login()>
-                            "Login"
-                        </button>
-                    }
-                        .into_any()
-                }
-            }}
         </nav>
+    }
+}
+
+#[component]
+fn HamburgerIcon() -> impl IntoView {
+    view! {
+        <svg viewBox="0 0 30 30" width="30" height="30" aria-hidden="true">
+            <path d="M4 7h22M4 15h22M4 23h22" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
     }
 }

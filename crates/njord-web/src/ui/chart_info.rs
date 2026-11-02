@@ -42,8 +42,8 @@ pub fn ChartInfoPage(name: String) -> impl IntoView {
                 .map(|(k, v)| view! { <tr><td>{k.clone()}</td><td>{v.to_string()}</td></tr> })
                 .collect_view();
             view! {
-                <div class="container Content">
-                    <table class="table table-striped table-bordered table-hover">
+                <div class="nj-container p-7">
+                    <table class="nj-table nj-table-striped">
                         <thead><tr><th>"Name"</th><th>"Value"</th></tr></thead>
                         <tbody>
                             <tr>
@@ -51,7 +51,7 @@ pub fn ChartInfoPage(name: String) -> impl IntoView {
                                 <td>
                                     {format!("{} ", chart.name)}
                                     <button
-                                        class="btn btn-outline-secondary btn-sm"
+                                        class="nj-btn nj-btn-sm nj-btn-outline-secondary"
                                         on:click=move |_| {
                                             s.set_bounds(bounds.clone(), Some(covr.clone()));
                                             s.push_page(NjordRoute::Enc);

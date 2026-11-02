@@ -60,9 +60,9 @@ pub fn ControlPanel(tab: String, path: String) -> impl IntoView {
                 None => format!("/control/{}", t.key),
             };
             view! {
-                <li class="nav-item">
+                <li>
                     <button
-                        class=if active { "nav-link active" } else { "nav-link" }
+                        class="nj-tab"
                         aria-current=active.then_some("page")
                         on:click=move |_| s.push_route(&target)
                     >
@@ -80,12 +80,12 @@ pub fn ControlPanel(tab: String, path: String) -> impl IntoView {
             "sprites" => view! { <Sprites/> }.into_any(),
             _ => view! { <Colors/> }.into_any(),
         };
-        view! { <div class="mt-3">{page}</div> }
+        view! { <div class="mt-4">{page}</div> }
     });
     view! {
-        <div class="container Content">
+        <div class="nj-container p-7">
             <h1>"Control Panel"</h1>
-            <ul class="nav nav-tabs">{buttons}</ul>
+            <ul class="nj-tabs">{buttons}</ul>
             {content}
         </div>
     }
@@ -114,7 +114,7 @@ fn chart_table(catalog: &ChartCatalog, state: &CatalogState) -> AnyView {
         .collect_view();
     let more = if state.catalog.is_complete() && (catalog.page.len() as i32) < total {
         view! {
-            <button class="btn btn-primary" on:click=move |_| s.load_more_charts()>"Load More..."</button>
+            <button class="nj-btn nj-btn-primary" on:click=move |_| s.load_more_charts()>"Load More..."</button>
         }
         .into_any()
     } else if state.catalog.is_loading() {
@@ -123,7 +123,7 @@ fn chart_table(catalog: &ChartCatalog, state: &CatalogState) -> AnyView {
         ().into_any()
     };
     view! {
-        <table class="table table-striped table-bordered table-hover">
+        <table class="nj-table nj-table-striped">
             <thead><tr><th>"Chart Name"</th></tr></thead>
             <tbody>{rows}</tbody>
         </table>
@@ -146,7 +146,7 @@ fn ChartCatalogTab() -> impl IntoView {
                 <Progress title=format!("Deleting charts {progress}%") progress=progress/>
                 {(progress == 100).then(|| view! {
                     <button
-                        class="btn btn-sm btn-outline-secondary mt-3"
+                        class="nj-btn nj-btn-sm nj-btn-outline-secondary mt-4"
                         on:click=move |_| s.reload_catalog()
                     >
                         "Reload"
@@ -157,33 +157,37 @@ fn ChartCatalogTab() -> impl IntoView {
             None => {
                 let filter = state.filter.clone();
                 let filter_box = (total > 0).then(|| {
-                    let clear_class = if filter.is_some() {
-                        "btn btn-outline-success"
-                    } else {
-                        "btn btn-outline-success disabled"
-                    };
+                    let has_filter = filter.is_some();
                     view! {
-                        <div class="input-group my-3">
+                        <div class="nj-input-group my-4">
                             <input
                                 type="text"
                                 placeholder="Type to filter name..."
-                                class="form-control"
+                                class="nj-input"
                                 prop:value=filter.clone().unwrap_or_default()
                                 on:input=move |ev| s.filter_charts(&event_target_value(&ev))
                             />
-                            <button class=clear_class on:click=move |_| s.filter_charts("")>"Clear"</button>
+                            <button
+                                class="nj-btn nj-btn-outline-success"
+                                disabled=!has_filter
+                                on:click=move |_| s.filter_charts("")
+                            >
+                                "Clear"
+                            </button>
                         </div>
                     }
                 });
-                let delete_class = if logged_in && !state.filtered.is_empty() {
-                    "btn btn-sm btn-danger mb-3 me-3"
-                } else {
-                    "btn btn-sm btn-danger disabled mb-3 me-3"
-                };
+                let can_delete = logged_in && !state.filtered.is_empty();
                 view! {
                     {filter_box}
-                    <button class=delete_class on:click=|_| modal_show()>"Delete these"</button>
-                    <button class="btn btn-sm btn-outline-secondary mb-3" on:click=move |_| s.reload_catalog()>
+                    <button
+                        class="nj-btn nj-btn-sm nj-btn-danger mb-4 me-4"
+                        disabled=!can_delete
+                        on:click=|_| modal_show()
+                    >
+                        "Delete these"
+                    </button>
+                    <button class="nj-btn nj-btn-sm nj-btn-outline-secondary mb-4" on:click=move |_| s.reload_catalog()>
                         "Reload"
                     </button>
                     {(total > 0).then(|| chart_table(&catalog, &state))}
@@ -213,7 +217,7 @@ fn ChartCatalogTab() -> impl IntoView {
                 <Modal title="Are you sure?">
                     <h6>{confirm}</h6>
                     <button
-                        class="btn btn-danger btn-sm me-2"
+                        class="nj-btn nj-btn-sm nj-btn-danger me-2"
                         on:click=move |_| {
                             modal_hide();
                             s.delete_filtered_charts();
@@ -221,7 +225,7 @@ fn ChartCatalogTab() -> impl IntoView {
                     >
                         "Confirm"
                     </button>
-                    <button class="btn btn-success btn-sm" on:click=|_| modal_hide()>"Cancel"</button>
+                    <button class="nj-btn nj-btn-sm nj-btn-success" on:click=|_| modal_hide()>"Cancel"</button>
                 </Modal>
             </div>
         </Show>
@@ -292,7 +296,7 @@ fn install_progress(state: &InstallState) -> AnyView {
         <Modal title="Are you sure?">
             <h6>"This will halt the current chart installation leaving it partially completed!"</h6>
             <button
-                class="btn btn-danger btn-sm me-2"
+                class="nj-btn nj-btn-sm nj-btn-danger me-2"
                 on:click=move |_| {
                     s.reset_install();
                     modal_hide();
@@ -300,11 +304,11 @@ fn install_progress(state: &InstallState) -> AnyView {
             >
                 "Confirm"
             </button>
-            <button class="btn btn-success btn-sm" on:click=|_| modal_hide()>"Cancel"</button>
+            <button class="nj-btn nj-btn-sm nj-btn-success" on:click=|_| modal_hide()>"Cancel"</button>
         </Modal>
         <br/>
         <button
-            class="btn btn-danger"
+            class="nj-btn nj-btn-danger"
             on:click=move |_| if working { modal_show() } else { s.reset_install() }
         >
             {if working { "Abort" } else { "Reset" }}
@@ -320,21 +324,22 @@ fn ChartInstallForm() -> impl IntoView {
     let input = NodeRef::<html::Input>::new();
     view! {
         <form>
-            <div class="mb-3">
-                <label class="form-label" for="encZip">"ENC Chart(s) Zip File"</label>
+            <div class="mb-4">
+                <label class="mb-2" for="encZip">"ENC Chart(s) Zip File"</label>
                 <input
                     node_ref=input
                     type="file"
                     id="encZip"
                     accept="application/zip"
-                    class="form-control"
+                    class="nj-input"
                     name="enczip"
                     on:change=move |_| chosen.set(true)
                 />
             </div>
             <button
                 type="submit"
-                class=move || if chosen.get() { "btn btn-primary" } else { "btn btn-primary disabled" }
+                class="nj-btn nj-btn-primary"
+                disabled=move || !chosen.get()
                 on:click=move |ev| {
                     ev.prevent_default();
                     if let Some(file) = input.get().and_then(|i| i.files()).and_then(|f| f.item(0)) {
@@ -354,9 +359,9 @@ fn ChartInstallForm() -> impl IntoView {
 fn Symbols() -> impl IntoView {
     store().ensure_objects();
     view! {
-        <div class="row">
-            <div class="col"><SymbolObjects/></div>
-            <div class="col"><SymbolAttributes/></div>
+        <div class="grid gap-4 md:grid-cols-2">
+            <div class="min-w-0"><SymbolObjects/></div>
+            <div class="min-w-0"><SymbolAttributes/></div>
         </div>
     }
 }
@@ -386,20 +391,19 @@ fn SymbolObjects() -> impl IntoView {
                 let options = objects.keys().cloned().collect();
                 let acronym = obj.acronym.clone();
                 view! {
-                    <DropdownButton
-                        selected=obj.acronym.clone()
-                        options=options
-                        on_select=Callback::new(move |key: String| s.push_route(&format!("/control/symbols/{key}")))
-                    />
-                    <br/>
-                    <button
-                        class="btn btn-primary"
-                        on:click=move |_| s.push_route(&format!("/layer/{acronym}"))
-                    >
-                        "Locate on chart"
-                    </button>
-                    <br/>
-                    <br/>
+                    <div class="mb-6 flex flex-col items-start gap-3">
+                        <DropdownButton
+                            selected=obj.acronym.clone()
+                            options=options
+                            on_select=Callback::new(move |key: String| s.push_route(&format!("/control/symbols/{key}")))
+                        />
+                        <button
+                            class="nj-btn nj-btn-primary"
+                            on:click=move |_| s.push_route(&format!("/layer/{acronym}"))
+                        >
+                            "Locate on chart"
+                        </button>
+                    </div>
                     <p><b>"Geometry Primitives: "</b>{obj.primitives.join(", ")}</p>
                     <p><b>"Object: "</b>{obj.object_class.clone()}</p>
                     <p><b>"Acronym: "</b>{obj.acronym.clone()}</p>
@@ -499,7 +503,7 @@ fn SymbolAttributes() -> impl IntoView {
                         .map(|i| view! { <tr><td>{i.id.to_string()}</td><td>{i.meaning}</td></tr> })
                         .collect_view();
                     view! {
-                        <table class="table">
+                        <table class="nj-table">
                             <thead><tr><th>"ID"</th><th>"Meaning"</th></tr></thead>
                             <tbody>{rows}</tbody>
                         </table>
@@ -536,7 +540,7 @@ fn Sprites() -> impl IntoView {
     s.ensure_sprites();
     view! {
         <h2>"Sprites"</h2>
-        <div class="row">
+        <div class="flex flex-wrap gap-4">
             {move || {
                 let state = s.sprites.get();
                 let url = state.sheet_url.clone();
@@ -547,13 +551,13 @@ fn Sprites() -> impl IntoView {
                             let mut style = format!("width: {}px; height: {}px;", info.width, info.height);
                             if let Some(url) = &url {
                                 style.push_str(&format!(
-                                    " background: url({url}); background-position: -{}px -{}px; display: inline-block; border-width: 4px;",
+                                    " background: url({url}); background-position: -{}px -{}px; display: inline-block;",
                                     info.x, info.y
                                 ));
                             }
                             view! {
-                                <div class="col mb-3">
-                                    <div class="col-sm">{sprite.as_str()}<br/><div style=style></div></div>
+                                <div class="mb-4">
+                                    {sprite.as_str()}<br/><div style=style></div>
                                 </div>
                             }
                         })
@@ -571,7 +575,7 @@ fn Colors() -> impl IntoView {
     s.ensure_objects();
     view! {
         <h2>"Colors"</h2>
-        <div class="row">
+        <div class="flex flex-wrap gap-4">
             {move || {
                 let mode = s.chart.with(|c| c.theme.mode());
                 let colors = s.objects.with(|o| o.colors.clone());
@@ -583,7 +587,7 @@ fn Colors() -> impl IntoView {
                                 .map(|(color, hex)| {
                                     let style = format!("height: 25px; width: 25px; background: {hex};");
                                     view! {
-                                        <div class="col mb-3">
+                                        <div class="mb-4">
                                             {format!("{} {hex}", color.as_str())}
                                             <div style=style></div>
                                         </div>

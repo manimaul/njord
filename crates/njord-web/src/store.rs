@@ -359,10 +359,14 @@ impl Store {
             storage::set("MapLocation", Some(&loc));
         });
 
-        // The sprite sheet follows the theme mode, once the sprites page has been opened.
+        // The page's colours (`data-theme` on <html>, see assets/app.css) and the sprite sheet,
+        // once the sprites page has been opened, follow the theme mode.
         let mode = Memo::new(move |_| self.chart.with(|c| c.theme.mode()));
         Effect::new(move || {
             let mode = mode.get();
+            if let Some(root) = document().document_element() {
+                let _ = root.set_attribute("data-theme", mode.path_name());
+            }
             if SPRITES_STARTED.with(Cell::get) {
                 self.select_sprite_sheet(mode);
             }

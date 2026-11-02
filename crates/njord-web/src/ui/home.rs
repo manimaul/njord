@@ -22,19 +22,19 @@ pub fn Home() -> impl IntoView {
     reload();
     let year = js_sys::Date::new_0().get_full_year();
     view! {
-        <div class="Column Fill">
-            <div class="Container Fill">
-                <header class="Header">
-                    <img src="/njord.jpg" class="img-fluid w-25"/>
+        <div class="flex flex-1 flex-col">
+            <div class="flex-1">
+                <header class="flex flex-col items-center justify-center p-7 text-xl">
+                    <img src="/njord.jpg" class="h-auto w-1/2 max-w-full md:w-1/4"/>
                 </header>
-                <div class="Center">
+                <div class="flex justify-center">
                     {move || {
                         render_async(
                             about.get(),
                             reload,
                             |info| {
                                 view! {
-                                    <table class="w-50 table table-striped table-bordered table-hover">
+                                    <table class="nj-table nj-table-striped w-full max-w-2xl">
                                         <thead>
                                             <tr>
                                                 <th colspan="2">
@@ -49,7 +49,7 @@ pub fn Home() -> impl IntoView {
                                                 <td>"Git Commit"</td>
                                                 <td>
                                                     <a
-                                                        class="link-secondary link-underline-opacity-75"
+                                                        class="text-muted"
                                                         href=format!("https://github.com/manimaul/njord/commit/{}", info.git_hash)
                                                     >
                                                         {info.git_hash.clone()}
@@ -88,11 +88,11 @@ pub fn Home() -> impl IntoView {
                                                 <td>"Source"</td>
                                                 <td>
                                                     <a href="https://github.com/manimaul/njord">
-                                                        <img src="/github.svg" style="width: 25px; height: 25px;"/>
+                                                        <img src="/github.svg" class="h-[25px] w-[25px]"/>
                                                     </a>
                                                     " "
                                                     <a
-                                                        class="link-secondary link-underline-opacity-75"
+                                                        class="text-muted"
                                                         href="https://github.com/manimaul/njord"
                                                     >
                                                         " https://github.com/manimaul/njord"

@@ -2,8 +2,8 @@
 //!
 //! Requests and responses are typed through `njord-model` and nothing else from the backend;
 //! [`api`] makes every `/v1` call. App-wide state lives in [`store`], and the map page is driven
-//! by [`controller`]. MapLibre GL and Bootstrap stay as JavaScript, vendored under `vendor/` and
-//! bound in [`maplibre`] and [`bootstrap`].
+//! by [`controller`]. MapLibre GL stays as JavaScript, vendored under `vendor/` and bound in
+//! [`maplibre`]. Styling is Tailwind CSS, compiled by Trunk from `assets/app.css`.
 //!
 //! [`start`] mounts the app; `trunk build --release` in this crate's directory writes the site to
 //! `dist/`, which the server serves through its `webStaticContent` setting.
@@ -11,7 +11,6 @@
 //! [`routing`] and [`display`] are pure and tested natively; everything else needs a browser.
 
 pub mod api;
-pub mod bootstrap;
 pub mod controller;
 pub mod display;
 pub mod maplibre;

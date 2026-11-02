@@ -1,20 +1,20 @@
 //! Shared widgets (`LoadingSpinner`, `ErrorDisplay`, `Link`, `Modal`, `Accordion`, `Dropdown`,
-//! `Progress`), rendered as Bootstrap markup.
+//! `Progress`). How they look is the `nj-*` classes in `assets/app.css`; what they do is here,
+//! as component state and the native `<dialog>` element.
 
 use std::cell::{Cell, RefCell};
 
+use leptos::ev;
 use leptos::html;
 use leptos::prelude::*;
 use wasm_bindgen::JsCast;
-use wasm_bindgen::prelude::*;
 
-use crate::bootstrap;
 use crate::state::Async;
 use crate::store::store;
 
 thread_local! {
     static NEXT_ID: Cell<u32> = const { Cell::new(0) };
-    static MODAL: RefCell<ModalState> = RefCell::new(ModalState::default());
+    static MODAL: RefCell<Option<web_sys::HtmlDialogElement>> = const { RefCell::new(None) };
 }
 
 /// `"<prefix>-<n>"`, unique for the page.
@@ -38,7 +38,7 @@ pub fn ErrorDisplay(#[prop(into)] message: String, on_ok: Callback<()>) -> impl 
     view! {
         <h1>"Something went wrong"</h1>
         <p><b>{message}</b></p>
-        <button class="btn btn-danger" on:click=move |_| on_ok.run(())>"OK"</button>
+        <button class="nj-btn nj-btn-danger" on:click=move |_| on_ok.run(())>"OK"</button>
     }
 }
 
@@ -82,60 +82,42 @@ pub fn Progress(#[prop(into)] title: String, progress: i32) -> impl IntoView {
     view! {
         <h6>{title.clone()}</h6>
         <div
-            class="progress"
+            class="nj-progress"
             role="progressbar"
             aria-label=title
             aria-valuenow=progress.to_string()
             aria-valuemin="0"
             aria-valuemax="100"
         >
-            <div style=format!("width: {progress}%;") class=format!("progress-bar w-{progress}")></div>
+            <div class="nj-progress-bar" style=format!("width: {progress}%;")></div>
         </div>
     }
 }
 
-// --- Modal: one Bootstrap modal on screen at a time, shown and hidden from code ---
-
-#[derive(Default)]
-struct ModalState {
-    shown: bool,
-    modal: Option<bootstrap::Modal>,
-}
-
-fn modal_created(element: &web_sys::Element) {
-    for (event, shown) in [("hidden.bs.modal", false), ("shown.bs.modal", true)] {
-        let listener = Closure::<dyn FnMut()>::new(move || {
-            MODAL.with(|m| m.borrow_mut().shown = shown);
-        });
-        let _ = element.add_event_listener_with_callback(event, listener.as_ref().unchecked_ref());
-        listener.forget();
-    }
-    let modal = bootstrap::Modal::get_or_create_instance(element);
-    MODAL.with(|m| m.borrow_mut().modal = Some(modal));
-}
+// --- Modal: one <dialog> on screen at a time, shown and hidden from code ---
 
 pub fn modal_show() {
     MODAL.with(|m| {
-        let m = m.borrow();
-        if !m.shown
-            && let Some(modal) = &m.modal
+        if let Some(dialog) = m.borrow().as_ref()
+            && !dialog.open()
         {
-            modal.show();
+            let _ = dialog.show_modal();
         }
     });
 }
 
 pub fn modal_hide() {
     MODAL.with(|m| {
-        let m = m.borrow();
-        if m.shown
-            && let Some(modal) = &m.modal
+        if let Some(dialog) = m.borrow().as_ref()
+            && dialog.open()
         {
-            modal.hide();
+            dialog.close();
         }
     });
 }
 
+/// A modal dialog. `on_close` runs however it is dismissed: the close button, Esc or a click on the
+/// backdrop. Closing it from code ([`modal_hide`]) runs it too.
 #[component]
 pub fn Modal(
     #[prop(into)] title: String,
@@ -145,42 +127,54 @@ pub fn Modal(
     let id = next_id("modal");
     let title_id = format!("{id}-title");
     let labelled_by = title_id.clone();
-    let node = NodeRef::<html::Div>::new();
+    let node = NodeRef::<html::Dialog>::new();
     Effect::new(move || {
         if let Some(el) = node.get() {
-            modal_created(&el);
+            let dialog: web_sys::HtmlDialogElement = el.unchecked_into();
+            MODAL.with(|m| *m.borrow_mut() = Some(dialog));
         }
     });
-    on_cleanup(|| MODAL.with(|m| *m.borrow_mut() = ModalState::default()));
+    on_cleanup(|| MODAL.with(|m| *m.borrow_mut() = None));
     view! {
-        <div
+        <dialog
             node_ref=node
             id=id
-            class="modal fade"
-            tabindex="-1"
+            class="nj-modal"
             aria-labelledby=labelled_by
-            aria-hidden="true"
+            on:close=move |_| {
+                if let Some(f) = on_close {
+                    f.run(())
+                }
+            }
+            // a click on the dialog itself is a click on the backdrop, outside the panel
+            on:click=move |ev| {
+                let on_backdrop = ev
+                    .target()
+                    .and_then(|t| t.dyn_into::<web_sys::Node>().ok())
+                    .zip(node.get_untracked())
+                    .is_some_and(|(target, dialog)| {
+                        target.is_same_node(Some(dialog.unchecked_ref::<web_sys::Node>()))
+                    });
+                if on_backdrop {
+                    modal_hide();
+                }
+            }
         >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id=title_id>{title}</h1>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                            on:click=move |_| {
-                                if let Some(f) = on_close {
-                                    f.run(())
-                                }
-                            }
-                        ></button>
-                    </div>
-                    <div class="modal-body">{children()}</div>
+            <div class="nj-modal-panel">
+                <div class="nj-modal-header">
+                    <h1 class="nj-modal-title" id=title_id>{title}</h1>
+                    <button
+                        type="button"
+                        class="nj-modal-close"
+                        aria-label="Close"
+                        on:click=|_| modal_hide()
+                    >
+                        "×"
+                    </button>
                 </div>
+                <div class="nj-modal-body">{children()}</div>
             </div>
-        </div>
+        </dialog>
     }
 }
 
@@ -191,37 +185,77 @@ pub struct AccordionItem {
     pub body: AnyView,
 }
 
+/// A list of collapsible sections, at most one open at a time.
 #[component]
 pub fn Accordion(items: Vec<AccordionItem>) -> impl IntoView {
     let id = next_id("accordion");
-    let parent = format!("#{id}");
+    let open = RwSignal::new(None::<usize>);
     let items = items
         .into_iter()
         .enumerate()
         .map(|(i, item)| {
             let item_id = format!("item{i}{id}");
-            let selector = format!("#{item_id}");
+            let controls = item_id.clone();
+            let expanded = move || open.get() == Some(i);
             view! {
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
+                <div class="nj-accordion-item">
+                    <h2 class="nj-accordion-header">
                         <button
-                            class="accordion-button collapsed"
-                            on:click=move |_| bootstrap::toggle_collapse(&selector)
+                            class="nj-accordion-button"
+                            aria-expanded=move || expanded().to_string()
+                            aria-controls=controls
+                            on:click=move |_| open.update(|o| *o = if *o == Some(i) { None } else { Some(i) })
                         >
                             {item.title}
                         </button>
                     </h2>
-                    <div id=item_id class="accordion-collapse collapse" data-bs-parent=parent.clone()>
-                        <div class="accordion-body">{item.body}</div>
+                    <div id=item_id hidden=move || !expanded()>
+                        <div class="nj-accordion-body">{item.body}</div>
                     </div>
                 </div>
             }
         })
         .collect_view();
-    view! { <div id=id class="accordion">{items}</div> }
+    view! { <div id=id class="nj-accordion">{items}</div> }
 }
 
 // --- Dropdowns ---
+
+/// Closes a dropdown (`expanded`) on a press outside `root` or on Escape, for as long as the
+/// calling component lives.
+fn close_dropdown_outside<E>(root: NodeRef<E>, expanded: RwSignal<bool>)
+where
+    E: html::ElementType + 'static,
+    E::Output: JsCast + Clone + 'static,
+{
+    let press = window_event_listener(ev::pointerdown, move |ev| {
+        if !expanded.get_untracked() {
+            return;
+        }
+        let inside = ev
+            .target()
+            .and_then(|t| t.dyn_into::<web_sys::Node>().ok())
+            .zip(root.get_untracked())
+            .is_some_and(|(target, root)| {
+                root.unchecked_ref::<web_sys::Node>().contains(Some(&target))
+            });
+        if !inside {
+            expanded.set(false);
+        }
+    });
+    let key = window_event_listener(ev::keydown, move |ev| {
+        if expanded.get_untracked() && ev.key() == "Escape" {
+            // only the menu closes, not a modal it may be in
+            ev.prevent_default();
+            ev.stop_propagation();
+            expanded.set(false);
+        }
+    });
+    on_cleanup(move || {
+        press.remove();
+        key.remove();
+    });
+}
 
 /// A button dropdown with a filter box (the symbols page's object picker).
 #[component]
@@ -230,51 +264,55 @@ pub fn DropdownButton(
     options: Vec<String>,
     on_select: Callback<String>,
 ) -> impl IntoView {
+    let root = NodeRef::<html::Div>::new();
     let expanded = RwSignal::new(false);
     let filter = RwSignal::new(String::new());
-    let show = move || if expanded.get() { "show" } else { "hide" };
+    close_dropdown_outside(root, expanded);
     view! {
-        <div class="dropdown">
+        <div class="nj-dropdown inline-block" node_ref=root>
             <button
-                class="btn btn-success dropdown-toggle"
+                class="nj-btn nj-btn-success nj-dropdown-toggle"
                 aria-expanded=move || expanded.get().to_string()
-                data-bs-toggle="dropdown"
                 on:click=move |_| expanded.update(|e| *e = !*e)
             >
                 {selected}
             </button>
-            <div class=move || format!("dropdown-menu {}", show())>
-                <input
-                    type="text"
-                    class="mx-3 my-2 form-control w-auto"
-                    placeholder="Type to filter..."
-                    prop:value=move || filter.get()
-                    on:input=move |ev| filter.set(event_target_value(&ev).trim().to_owned())
-                />
-                {move || {
-                    let needle = filter.get().to_lowercase();
-                    options
-                        .iter()
-                        .filter(|o| o.to_lowercase().contains(&needle))
-                        .cloned()
-                        .map(|option| {
-                            let label = option.clone();
-                            view! {
-                                <a
-                                    class="dropdown-item"
-                                    href="#"
-                                    on:click=move |ev| {
-                                        ev.prevent_default();
-                                        on_select.run(option.clone());
-                                        expanded.set(false);
-                                    }
-                                >
-                                    {label}
-                                </a>
-                            }
-                        })
-                        .collect_view()
-                }}
+            <div class="nj-dropdown-menu" hidden=move || !expanded.get()>
+                <div class="nj-dropdown-filter">
+                    <input
+                        type="text"
+                        class="nj-input"
+                        placeholder="Type to filter..."
+                        prop:value=move || filter.get()
+                        on:input=move |ev| filter.set(event_target_value(&ev).trim().to_owned())
+                    />
+                </div>
+                <div class="nj-dropdown-items">
+                    {move || {
+                        let needle = filter.get().to_lowercase();
+                        options
+                            .iter()
+                            .filter(|o| o.to_lowercase().contains(&needle))
+                            .cloned()
+                            .map(|option| {
+                                let label = option.clone();
+                                view! {
+                                    <a
+                                        class="nj-dropdown-item"
+                                        href="#"
+                                        on:click=move |ev| {
+                                            ev.prevent_default();
+                                            on_select.run(option.clone());
+                                            expanded.set(false);
+                                        }
+                                    >
+                                        {label}
+                                    </a>
+                                }
+                            })
+                            .collect_view()
+                    }}
+                </div>
             </div>
         </div>
     }
@@ -290,21 +328,22 @@ pub fn NavDropdown<T>(
 where
     T: Clone + Send + Sync + 'static,
 {
+    let root = NodeRef::<html::Li>::new();
     let expanded = RwSignal::new(false);
-    let show = move || if expanded.get() { "show" } else { "hide" };
+    close_dropdown_outside(root, expanded);
+    let menu_id = next_id("nav-menu");
+    let controls = menu_id.clone();
     let items = options
         .into_iter()
-        .enumerate()
-        .map(|(i, (label, value))| {
+        .map(|(label, value)| {
             view! {
                 <a
                     href="#"
-                    data-rr-ui-dropdown-item=""
-                    class="dropdown-item"
-                    tabindex=i.to_string()
+                    class="nj-dropdown-item"
                     on:click=move |ev| {
                         ev.prevent_default();
                         on_select.run(value.clone());
+                        expanded.set(false);
                     }
                 >
                     {label}
@@ -313,27 +352,18 @@ where
         })
         .collect_view();
     view! {
-        <div
-            class=move || format!("nav-item dropdown {}", show())
-            on:click=move |_| expanded.update(|e| *e = !*e)
-        >
-            <a
-                href="#"
-                class="dropdown-toggle nav-link"
-                tabindex="0"
+        <li class="nj-dropdown" node_ref=root>
+            <button
+                class="nj-nav-link nj-dropdown-toggle"
                 aria-expanded=move || expanded.get().to_string()
-                role="button"
-                on:click=|ev| ev.prevent_default()
+                aria-controls=controls
+                on:click=move |_| expanded.update(|e| *e = !*e)
             >
                 {title}
-            </a>
-            <div
-                class=move || format!("dropdown-menu {}", show())
-                aria-labelledby="basic-nav-dropdown"
-                data-bs-popper="static"
-            >
-                {items}
+            </button>
+            <div id=menu_id class="nj-dropdown-menu nj-nav-menu" hidden=move || !expanded.get()>
+                <div class="nj-dropdown-items">{items}</div>
             </div>
-        </div>
+        </li>
     }
 }

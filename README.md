@@ -38,7 +38,7 @@ Phase 7 and remains in the git history (`master`).
   commit with prebuilt bindings, so a plain `cargo build` works; no bindgen or libclang.
 - The dev PostGIS from `chart_server_db/` (Podman)
 - For the web UI: `rustup target add wasm32-unknown-unknown` and `cargo install --locked trunk`. Trunk downloads the
-  matching `wasm-bindgen` and `wasm-opt` on first use. MapLibre GL and Bootstrap are vendored, so no npm.
+  matching `wasm-bindgen`, `wasm-opt` and the Tailwind CSS CLI on first use. MapLibre GL is vendored, so no npm.
 
 ## Configuration
 

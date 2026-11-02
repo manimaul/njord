@@ -1,63 +1,617 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/*
+ * Tailwind entry point for the web UI (index.html: <link data-trunk rel="tailwind-css">).
+ *
+ * Layers: theme < base (Preflight + the element defaults below) < components (.nj-*) < utilities.
+ * How things look is defined here as .nj-* classes; the Rust views use Tailwind utilities only for
+ * one-off layout, always as literal strings (Tailwind scans the sources as text, so a class name
+ * built with format!() is never emitted).
+ *
+ * The UI has one light theme. The Day / Dusk / Night pickers in the nav bar change the chart style,
+ * not this page.
+ */
+@import "tailwindcss" source(none);
+@source "../src/**/*.rs";
+
+@theme {
+    /* Bootstrap's breakpoints, which this UI was laid out for: the nav bar expands at lg */
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-2xl: initial;
+    --breakpoint-xxl: 1400px;
+
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* a storm-sea navy, from the logo */
+    --color-sea-100: color-mix(in oklab, #1b3a57 10%, white);
+    --color-sea-200: color-mix(in oklab, #1b3a57 22%, white);
+    --color-sea-500: color-mix(in oklab, #1b3a57 70%, white);
+    --color-sea-700: color-mix(in oklab, #1b3a57 88%, white);
+    --color-sea-900: #1b3a57;
+
+    /* stacking: dropdown menus under the sticky nav bar; <dialog> sits in the top layer above both */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+/* semantic names, so the markup says what a colour is for */
+@theme inline {
+    --color-fg: var(--nj-fg);
+    --color-muted: var(--nj-muted);
+    --color-line: var(--nj-border-subtle);
+    --color-danger: var(--color-red-600);
 }
 
-.App {
-  background-color: white;
-  color: black;
-  min-height: 100vh;
+:root {
+    color-scheme: light;
+    --nj-bg: white;
+    --nj-surface: #f8fafc;                       /* nav bar (slate-50) */
+    --nj-raised: white;                          /* modal panel, dropdown menus */
+    --nj-subtle: var(--color-slate-100);         /* hover fills, disabled inputs */
+    --nj-fg: var(--color-slate-900);
+    --nj-muted: var(--color-slate-600);
+    --nj-border: var(--color-slate-300);
+    --nj-border-subtle: var(--color-slate-200);
+    --nj-border-overlay: rgb(0 0 0 / .175);
+    --nj-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
+    --nj-link: #1d5a8a;                          /* 6:1 on white */
+    --nj-link-hover: var(--color-sea-900);
+    --nj-accent: var(--color-sea-900);
+    --nj-accent-hover: var(--color-sea-700);
+    --nj-on-accent: white;
+    --nj-focus-ring: color-mix(in oklab, var(--color-sea-500) 35%, transparent);
+    --nj-stripe: rgb(0 0 0 / .05);
+    --nj-hover: rgb(0 0 0 / .075);
 }
 
-.Column {
-  height: 100%;
-  display: flex;
-  flex-flow: column wrap;
+/*
+ * Element defaults. Preflight strips heading sizes, paragraph and list spacing and bullets, and the
+ * pages use raw h1-h6, p, ul/ol, b and links, so give those Bootstrap 5.3's Reboot values back.
+ */
+@layer base {
+    body {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--nj-fg);
+        background-color: var(--nj-bg);
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0;
+        margin-bottom: .5rem;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+    /* grow with the viewport, capped from xl up */
+    h1 { font-size: min(calc(1.375rem + 1.5vw), 2.5rem); }
+    h2 { font-size: min(calc(1.325rem + .9vw), 2rem); }
+    h3 { font-size: min(calc(1.3rem + .6vw), 1.75rem); }
+    h4 { font-size: min(calc(1.275rem + .3vw), 1.5rem); }
+    h5 { font-size: 1.25rem; }
+    h6 { font-size: 1rem; }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    ul, ol {
+        padding-left: 2rem;
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+    ul { list-style: disc; }
+    ol { list-style: decimal; }
+    :is(ul, ol) :is(ul, ol) { margin-bottom: 0; }
+
+    b, strong { font-weight: bolder; }
+
+    a {
+        color: var(--nj-link);
+        text-decoration: underline;
+    }
+    a:hover { color: var(--nj-link-hover); }
+
+    label { display: inline-block; }
+
+    /* browsers center <th>; header cells follow their row's alignment, as under Reboot */
+    th {
+        text-align: inherit;
+        text-align: -webkit-match-parent;
+    }
+
+    button:not(:disabled), [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+
+    /* Preflight makes img and svg block-level; the spinner, badges and swatches sit inline.
+       Preflight's img { height: auto } also overrides height="" attributes: size images with classes
+       or an inline style. */
+    img, svg {
+        display: inline;
+        vertical-align: middle;
+    }
+
+    /* the page behind an open modal does not scroll */
+    html:has(dialog[open]) {
+        overflow: hidden;
+    }
 }
 
-.Wrap {
-  /* grow shrink basis*/
-  flex: initial initial fit-content;
-}
+@layer components {
+    /* ---------- buttons ---------- */
+    .nj-btn {
+        display: inline-block;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid transparent;
+        border-radius: .375rem;
+        background-color: transparent;
+        color: inherit;
+        user-select: none;
+        transition: color .15s, background-color .15s, border-color .15s, box-shadow .15s;
+    }
+    .nj-btn-sm {
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        border-radius: .25rem;
+    }
+    .nj-btn:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 .25rem var(--nj-focus-ring);
+    }
+    .nj-btn:disabled {
+        opacity: .65;
+        pointer-events: none;
+    }
+    .nj-btn-primary { background-color: var(--nj-accent); border-color: var(--nj-accent); color: var(--nj-on-accent); }
+    .nj-btn-primary:hover { background-color: var(--nj-accent-hover); border-color: var(--nj-accent-hover); }
+    .nj-btn-danger { background-color: var(--color-red-600); border-color: var(--color-red-600); color: white; }
+    .nj-btn-danger:hover { background-color: var(--color-red-700); border-color: var(--color-red-700); }
+    .nj-btn-success { background-color: var(--color-green-700); border-color: var(--color-green-700); color: white; }
+    .nj-btn-success:hover { background-color: var(--color-green-800); border-color: var(--color-green-800); }
+    .nj-btn-info { background-color: var(--color-sky-700); border-color: var(--color-sky-700); color: white; }
+    .nj-btn-info:hover { background-color: var(--color-sky-800); border-color: var(--color-sky-800); }
+    .nj-btn-outline-secondary { border-color: var(--nj-muted); color: var(--nj-muted); }
+    .nj-btn-outline-secondary:hover { background-color: var(--color-slate-600); color: white; }
+    .nj-btn-outline-success { border-color: var(--color-green-700); color: var(--color-green-700); }
+    .nj-btn-outline-success:hover { background-color: var(--color-green-700); color: white; }
 
-.Fill {
-  /* grow shrink basis*/
-  flex: 1 1 fit-content;
-}
+    /* ---------- form controls ---------- */
+    .nj-input {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;            /* never below 16px: iOS Safari zooms into smaller inputs */
+        line-height: 1.5;
+        color: var(--nj-fg);
+        background-color: var(--nj-raised);
+        border: 1px solid var(--nj-border);
+        border-radius: .375rem;
+        transition: border-color .15s, box-shadow .15s;
+    }
+    .nj-input:focus {
+        border-color: var(--color-sea-500);
+        outline: 0;
+        box-shadow: 0 0 0 .25rem var(--nj-focus-ring);
+    }
+    .nj-input::placeholder {
+        color: var(--nj-muted);
+        opacity: 1;
+    }
+    .nj-input:disabled {
+        background-color: var(--nj-subtle);
+    }
+    .nj-input[type="file"] {
+        padding: 0;
+        overflow: hidden;
+    }
+    .nj-input::file-selector-button {
+        margin: 0 .75rem 0 0;
+        padding: .375rem .75rem;
+        color: var(--nj-fg);
+        background-color: var(--nj-subtle);
+        border: 0;
+        border-right: 1px solid var(--nj-border);
+        cursor: pointer;
+    }
+    .nj-input::file-selector-button:hover {
+        background-color: var(--nj-border-subtle);
+    }
 
-.Footer {
-  padding-bottom: 16px;
-  padding-top: 16px;
-}
+    /* a text field and a button sharing their borders */
+    .nj-input-group {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+    }
+    .nj-input-group > .nj-input {
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+    }
+    .nj-input-group > .nj-input:focus {
+        position: relative;
+        z-index: 5;
+    }
+    .nj-input-group > :not(:first-child) {
+        margin-left: -1px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .nj-input-group > :not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 
-.Center {
-  horiz-align: center;
-  justify-content: center;
-  display: flex;
-}
+    /* ---------- progress bar ---------- */
+    .nj-progress {
+        display: flex;
+        height: 1rem;
+        overflow: hidden;
+        font-size: .75rem;
+        background-color: var(--nj-border-subtle);
+        border-radius: .375rem;
+    }
+    .nj-progress-bar {
+        background-color: var(--nj-accent);
+        transition: width .6s ease;
+    }
 
-.Header {
-  padding: 28px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  font-size: x-large;
-}
+    /* ---------- dropdowns: the toggle, the menu and its items ---------- */
+    .nj-dropdown {
+        position: relative;
+    }
+    .nj-dropdown-toggle::after {
+        display: inline-block;
+        margin-left: .255em;
+        vertical-align: .255em;
+        content: "";
+        border-top: .3em solid;
+        border-right: .3em solid transparent;
+        border-left: .3em solid transparent;
+    }
+    .nj-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: var(--z-dropdown);
+        display: flex;
+        flex-direction: column;
+        min-width: 10rem;
+        max-width: calc(100vw - 2rem);
+        max-height: 60vh;
+        margin-top: .125rem;
+        padding: .5rem 0;
+        text-align: left;
+        color: var(--nj-fg);
+        background-color: var(--nj-raised);
+        border: 1px solid var(--nj-border-overlay);
+        border-radius: .375rem;
+        box-shadow: var(--nj-shadow);
+    }
+    .nj-dropdown-filter {
+        flex: none;
+        padding: 0 1rem .5rem;
+    }
+    .nj-dropdown-items {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+    .nj-dropdown-item {
+        display: block;
+        width: 100%;
+        padding: .25rem 1rem;
+        font-weight: 400;
+        color: var(--nj-fg);
+        text-align: inherit;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: transparent;
+        border: 0;
+    }
+    .nj-dropdown-item:hover, .nj-dropdown-item:focus-visible {
+        color: var(--nj-fg);
+        background-color: var(--nj-subtle);
+        outline: 0;
+    }
 
-.Warning {
-    padding: 16px;
-}
+    /* ---------- modal: a full-viewport scrolling <dialog> around a centred panel ---------- */
+    .nj-modal {
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        overflow-y: auto;
+        background: transparent;
+        border: 0;
+        color: inherit;
+    }
+    .nj-modal::backdrop {
+        background-color: rgb(0 0 0 / .5);
+    }
+    .nj-modal-panel {
+        position: relative;
+        margin: .5rem;
+        background-color: var(--nj-raised);
+        border: 1px solid var(--nj-border-overlay);
+        border-radius: .5rem;
+        box-shadow: var(--nj-shadow);
+        @variant sm {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+    }
+    .nj-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem;
+        padding: 1rem;
+        border-bottom: 1px solid var(--nj-border-subtle);
+    }
+    .nj-modal-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+    .nj-modal-close {
+        padding: .25rem .5rem;
+        font-size: 1.5rem;
+        line-height: 1;
+        opacity: .5;
+        background: transparent;
+        border: 0;
+    }
+    .nj-modal-close:hover { opacity: .75; }
+    .nj-modal-body {
+        padding: 1rem;
+    }
 
-.Content {
-  padding: 28px;
+    /* ---------- accordion (the chart query) ---------- */
+    .nj-accordion {
+        border: 1px solid var(--nj-border-subtle);
+        border-radius: .375rem;
+        overflow: hidden;
+    }
+    .nj-accordion-item + .nj-accordion-item {
+        border-top: 1px solid var(--nj-border-subtle);
+    }
+    .nj-accordion-header {
+        margin: 0;
+        font-size: 1rem;
+    }
+    .nj-accordion-button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        text-align: left;
+        color: var(--nj-fg);
+        background-color: var(--nj-raised);
+        border: 0;
+        transition: background-color .15s;
+    }
+    .nj-accordion-button::after {
+        flex-shrink: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-left: auto;
+        content: "";
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230f172a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-size: 1.25rem;
+        transition: transform .2s ease-in-out;
+    }
+    .nj-accordion-button[aria-expanded="true"] {
+        color: var(--nj-accent);
+        background-color: var(--color-sea-100);
+    }
+    .nj-accordion-button[aria-expanded="true"]::after {
+        transform: rotate(-180deg);
+    }
+    .nj-accordion-button:focus-visible {
+        outline: 0;
+        box-shadow: inset 0 0 0 .25rem var(--nj-focus-ring);
+    }
+    .nj-accordion-body {
+        padding: 1rem 1.25rem;
+    }
+
+    /* ---------- nav bar: light, sticky; links in a row at >= lg, a hamburger and a vertical menu below ---------- */
+    .nj-navbar {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+        background-color: var(--nj-surface);
+        border-bottom: 1px solid var(--nj-border-subtle);
+    }
+    .nj-navbar-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: .5rem .75rem;
+    }
+    .nj-navbar-brand {
+        padding: .3125rem 0;
+        margin-right: 1rem;
+        font-size: 1.25rem;
+        color: var(--nj-accent);
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .nj-navbar-brand:hover { color: var(--nj-accent-hover); }
+    .nj-navbar-toggler {
+        padding: .25rem .75rem;
+        line-height: 1;
+        color: var(--nj-muted);
+        background: transparent;
+        border: 1px solid var(--nj-border);
+        border-radius: .375rem;
+    }
+    .nj-navbar-toggler:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 .25rem var(--nj-focus-ring);
+    }
+    /* the login button and, below lg, the hamburger: top right at every width */
+    .nj-navbar-end {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        margin-left: auto;
+        @variant lg {
+            order: 1;
+        }
+    }
+    /* Below lg the link list collapses to zero height and animates open (.35s ease): grid-template-rows
+       0fr -> 1fr reaches the content's natural height without measuring it. visibility, switched after
+       the close transition, keeps the hidden links out of the tab order. */
+    .nj-navbar-collapse {
+        display: grid;
+        flex-basis: 100%;
+        grid-template-rows: 0fr;
+        visibility: hidden;
+        transition: grid-template-rows .35s ease, visibility 0s linear .35s;
+        @variant lg {
+            display: flex;
+            flex-basis: auto;
+            flex-grow: 1;
+            visibility: visible;
+            transition: none;
+        }
+    }
+    .nj-navbar-collapse[data-open="true"] {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        transition: grid-template-rows .35s ease, visibility 0s linear 0s;
+        @variant lg {
+            transition: none;
+        }
+    }
+    .nj-navbar-collapse > ul {
+        min-height: 0;
+        overflow: hidden;
+        @variant lg {
+            overflow: visible;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .nj-navbar-collapse, .nj-navbar-collapse[data-open="true"] {
+            transition: none;
+        }
+    }
+    .nj-nav-link {
+        display: block;
+        width: 100%;
+        padding: .5rem;
+        text-align: left;
+        color: var(--nj-muted);
+        text-decoration: none;
+        background: transparent;
+        border: 0;
+        white-space: nowrap;
+    }
+    .nj-nav-link:hover { color: var(--nj-fg); }
+    .nj-nav-link[aria-current="page"] { color: var(--nj-accent); font-weight: 600; }
+    /* a nav bar dropdown's menu drops below its toggle at lg; in the collapsed menu it opens in place */
+    .nj-nav-menu {
+        position: static;
+        margin: 0 0 .5rem 1rem;
+        box-shadow: none;
+        @variant lg {
+            position: absolute;
+            margin: .125rem 0 0;
+            box-shadow: var(--nj-shadow);
+        }
+    }
+
+    /* ---------- tabs (the control panel) ---------- */
+    .nj-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        border-bottom: 1px solid var(--nj-border);
+    }
+    .nj-tab {
+        display: block;
+        margin-bottom: -1px;
+        padding: .5rem 1rem;
+        color: var(--nj-link);
+        background: transparent;
+        border: 1px solid transparent;
+        border-top-left-radius: .375rem;
+        border-top-right-radius: .375rem;
+        transition: color .15s, border-color .15s;
+    }
+    .nj-tab:hover {
+        color: var(--nj-link-hover);
+        border-color: var(--nj-border-subtle) var(--nj-border-subtle) var(--nj-border);
+    }
+    .nj-tab[aria-current="page"] {
+        color: var(--nj-fg);
+        background-color: var(--nj-bg);
+        border-color: var(--nj-border) var(--nj-border) var(--nj-bg);
+    }
+
+    /* ---------- tables ---------- */
+    .nj-table {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-collapse: collapse;
+        vertical-align: top;
+    }
+    .nj-table > :not(caption) > tr > * {
+        padding: .5rem;
+        border: 1px solid var(--nj-border);
+        box-shadow: inset 0 0 0 9999px var(--nj-cell-state, var(--nj-cell-stripe, transparent));
+    }
+    .nj-table > thead > tr > * {
+        vertical-align: bottom;
+        text-align: left;
+    }
+    .nj-table-striped > tbody > tr:nth-of-type(odd) > * {
+        --nj-cell-stripe: var(--nj-stripe);
+    }
+    /* plain :hover, not the hover: variant, so a tapped row highlights on touch screens too */
+    .nj-table-striped > tbody > tr:hover > * {
+        --nj-cell-state: var(--nj-hover);
+    }
+
+    /* ---------- page containers ---------- */
+    .nj-container {
+        width: 100%;
+        padding-right: .75rem;
+        padding-left: .75rem;
+        margin-right: auto;
+        margin-left: auto;
+        @variant sm { max-width: 540px; }
+        @variant md { max-width: 720px; }
+        @variant lg { max-width: 960px; }
+        @variant xl { max-width: 1140px; }
+        @variant xxl { max-width: 1320px; }
+    }
 }

@@ -40,8 +40,8 @@ pub fn ChartView() -> impl IntoView {
     });
 
     view! {
-        <div class="Wrap Warning bg-danger text-white">"EXPERIMENTAL! - NOT FOR NAVIGATION"</div>
-        <div class="Fill" node_ref=container></div>
+        <div class="shrink-0 bg-danger p-4 text-white">"EXPERIMENTAL! - NOT FOR NAVIGATION"</div>
+        <div class="min-h-0 flex-1" node_ref=container></div>
         <Modal title="Chart Query" on_close=Callback::new(move |_| s.clear_query())>
             {move || chart_query(query.get())}
         </Modal>

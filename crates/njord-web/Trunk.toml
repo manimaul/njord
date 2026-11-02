@@ -9,3 +9,8 @@ port = 8080
 
 [[proxy]]
 backend = "http://localhost:9000/v1"
+
+# Trunk runs the Tailwind CSS standalone CLI over assets/app.css (`rel="tailwind-css"` in
+# index.html) and downloads it on first use, next to wasm-bindgen and wasm-opt in its cache.
+[tools]
+tailwindcss = "4.3.3"

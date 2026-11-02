@@ -88,7 +88,7 @@ pub fn Home() -> impl IntoView {
                                                 <td>"Source"</td>
                                                 <td>
                                                     <a href="https://github.com/manimaul/njord">
-                                                        <img src="/github.svg" class="h-[25px] w-[25px]"/>
+                                                        <span class="nj-github-mark" aria-hidden="true"></span>
                                                     </a>
                                                     " "
                                                     <a

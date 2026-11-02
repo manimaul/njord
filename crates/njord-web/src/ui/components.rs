@@ -26,7 +26,8 @@ pub fn next_id(prefix: &str) -> String {
     format!("{prefix}-{n}")
 }
 
-const SPINNER: &str = r#"<svg width="50" height="50"><defs><linearGradient id="grad"><stop offset="0%" stop-color="black"></stop><stop offset="100%" stop-color="black" stop-opacity="0"></stop></linearGradient></defs><circle cx="25" cy="25" r="20" fill="none" stroke="url(#grad)" stroke-width="5" stroke-dasharray="100.53096491487338" stroke-linecap="round"><animateTransform attributeName="transform" attributeType="XML" type="rotate" repeatCount="indefinite" from="0, 25, 25" to="360, 25, 25" dur="2s"></animateTransform></circle></svg>"#;
+// drawn in the text colour, so it shows in every theme
+const SPINNER: &str = r#"<svg width="50" height="50"><defs><linearGradient id="grad"><stop offset="0%" stop-color="currentColor"></stop><stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop></linearGradient></defs><circle cx="25" cy="25" r="20" fill="none" stroke="url(#grad)" stroke-width="5" stroke-dasharray="100.53096491487338" stroke-linecap="round"><animateTransform attributeName="transform" attributeType="XML" type="rotate" repeatCount="indefinite" from="0, 25, 25" to="360, 25, 25" dur="2s"></animateTransform></circle></svg>"#;
 
 #[component]
 pub fn LoadingSpinner() -> impl IntoView {

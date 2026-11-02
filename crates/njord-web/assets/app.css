@@ -6,8 +6,13 @@
  * one-off layout, always as literal strings (Tailwind scans the sources as text, so a class name
  * built with format!() is never emitted).
  *
- * The UI has one light theme. The Day / Dusk / Night pickers in the nav bar change the chart style,
- * not this page.
+ * Themes. The page follows the chart: the Theme picker in the nav bar sets data-theme="day|dusk|night"
+ * on <html> (store.rs; index.html presets it from localStorage before the first paint) and the
+ * --nj-* role tokens below take their values from the S-52 colour table of that mode
+ * (crates/njord-server/resources/colors.json, served as /v1/about/colors). A value followed by a
+ * comment holding just a token name, as `--nj-bg` is by DEPDW below, must equal that token in that
+ * mode's table: tests/theme_colors.rs checks it. Values described in words are derived, where the table
+ * has nothing readable for the role (night's own UI colours are 1.3-2:1 on black).
  */
 @import "tailwindcss" source(none);
 @source "../src/**/*.rs";
@@ -24,13 +29,6 @@
     --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-    /* a storm-sea navy, from the logo */
-    --color-sea-100: color-mix(in oklab, #1b3a57 10%, white);
-    --color-sea-200: color-mix(in oklab, #1b3a57 22%, white);
-    --color-sea-500: color-mix(in oklab, #1b3a57 70%, white);
-    --color-sea-700: color-mix(in oklab, #1b3a57 88%, white);
-    --color-sea-900: #1b3a57;
-
     /* stacking: dropdown menus under the sticky nav bar; <dialog> sits in the top layer above both */
     --z-dropdown: 1000;
     --z-sticky: 1020;
@@ -41,29 +39,95 @@
     --color-fg: var(--nj-fg);
     --color-muted: var(--nj-muted);
     --color-line: var(--nj-border-subtle);
-    --color-danger: var(--color-red-600);
+}
+
+/*
+ * Role tokens. Surfaces step through the depth shades (deep water is the page, shallower water the
+ * layers over it), text is the chart's black / white, lines its greys, and the accents are S-52's
+ * user-interface colours. Each mode is checked for contrast: body text >= 5:1 and secondary text
+ * and controls >= 3.5:1 against the layer they sit on.
+ */
+
+/* Day: a white page under a deep-water nav bar */
+:root {
+    color-scheme: light;
+    --nj-bg: #FFFFFF;                       /* S-52 has no white; the page is paper */
+    --nj-surface: #C9EDFF;                  /* DEPDW */
+    --nj-raised: #FFFFFF;                   /* modal panel, menus, inputs */
+    --nj-subtle: #C9EDFF;                   /* DEPDW */
+    --nj-fg: #000000;                       /* CHBLK */
+    --nj-muted: #4C5B63;                    /* CHGRD */
+    --nj-border: #768C97;                   /* CHGRF */
+    --nj-border-subtle: #93AEBB;            /* NODTA */
+    --nj-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
+    --nj-backdrop: rgb(0 0 0 / .5);
+    --nj-shade: black;                      /* hover moves a button's colour 20% this way */
+    --nj-accent: #2E7BFF;                   /* UINFB */
+    --nj-accent-text: #2056B2;              /* UINFB deepened 30%: links and the active page, 5.6:1 on the nav bar */
+    --nj-danger: #D63F24;                   /* PLRTE */
+    --nj-success: #2F8E20;                  /* RADLO */
+    --nj-info: #008F84;                     /* MARCY */
+    --nj-on-btn: #FFFFFF;
+    --nj-btn-fill: 100%;
+    --nj-stripe: rgb(0 0 0 / .05);
+    --nj-hover: rgb(0 0 0 / .075);
+}
+
+/* Dusk: black water, slate text */
+:root[data-theme="dusk"] {
+    color-scheme: dark;
+    --nj-bg: #000000;                       /* DEPDW */
+    --nj-surface: #0F1B21;                  /* DEPMD */
+    --nj-raised: #1D3246;                   /* DEPMS */
+    --nj-subtle: #1E4165;                   /* DEPVS */
+    --nj-fg: #8CA6B3;                       /* CHWHT */
+    --nj-muted: #6B7F89;                    /* CHGRD */
+    --nj-border: #4C5B63;                   /* CHGRF */
+    --nj-border-subtle: rgb(76 91 99 / .6); /* CHGRF at 60% */
+    --nj-shadow: 0 .5rem 1rem rgb(0 0 0 / .6);
+    --nj-backdrop: rgb(0 0 0 / .7);
+    --nj-shade: white;
+    --nj-accent: #1D55B4;                   /* UINFB */
+    --nj-accent-text: #0077F3;              /* MARBL */
+    --nj-danger: #9B3549;                   /* UINFR */
+    --nj-success: #2F8E20;                  /* CHGRN */
+    --nj-info: #00857A;                     /* MARCY */
+    --nj-on-btn: #FFFFFF;
+    --nj-btn-fill: 100%;
+    --nj-stripe: rgb(140 166 179 / .07);
+    --nj-hover: rgb(140 166 179 / .14);
+}
+
+/* Night: as dark as the night chart, with text lifted to stay readable. Night's own UI colours
+   (CHWHT #364147, UINFB #051B44, UINFR #390E16) are 1.3-2:1 on black, so text takes the next step
+   up the grey scale and buttons take the dusk colours as a 30% fill behind a full-colour edge. */
+:root[data-theme="night"] {
+    color-scheme: dark;
+    --nj-bg: #000000;                       /* DEPDW */
+    --nj-surface: #03070A;                  /* DEPMD */
+    --nj-raised: #050E16;                   /* DEPMS */
+    --nj-subtle: #071727;                   /* DEPVS */
+    --nj-fg: #6B7F89;                       /* dusk's CHGRD: 5:1 on black */
+    --nj-muted: #58686F;                    /* the same, 18% toward black: 3.6:1 */
+    --nj-border: #364147;                   /* CHWHT */
+    --nj-border-subtle: #252D31;            /* CHGRD */
+    --nj-shadow: none;
+    --nj-backdrop: rgb(0 0 0 / .8);
+    --nj-shade: white;
+    --nj-accent: #1D55B4;                   /* dusk's UINFB */
+    --nj-accent-text: #3E6DB4;              /* dusk's UINFB, 30% toward dusk's CHWHT: 4:1 on black */
+    --nj-danger: #9B3549;                   /* dusk's UINFR */
+    --nj-success: #2F8E20;                  /* dusk's CHGRN */
+    --nj-info: #00857A;                     /* dusk's MARCY */
+    --nj-on-btn: #8CA6B3;                   /* dusk's CHWHT */
+    --nj-btn-fill: 30%;
+    --nj-stripe: rgb(107 127 137 / .08);
+    --nj-hover: rgb(107 127 137 / .16);
 }
 
 :root {
-    color-scheme: light;
-    --nj-bg: white;
-    --nj-surface: #f8fafc;                       /* nav bar (slate-50) */
-    --nj-raised: white;                          /* modal panel, dropdown menus */
-    --nj-subtle: var(--color-slate-100);         /* hover fills, disabled inputs */
-    --nj-fg: var(--color-slate-900);
-    --nj-muted: var(--color-slate-600);
-    --nj-border: var(--color-slate-300);
-    --nj-border-subtle: var(--color-slate-200);
-    --nj-border-overlay: rgb(0 0 0 / .175);
-    --nj-shadow: 0 .5rem 1rem rgb(0 0 0 / .15);
-    --nj-link: #1d5a8a;                          /* 6:1 on white */
-    --nj-link-hover: var(--color-sea-900);
-    --nj-accent: var(--color-sea-900);
-    --nj-accent-hover: var(--color-sea-700);
-    --nj-on-accent: white;
-    --nj-focus-ring: color-mix(in oklab, var(--color-sea-500) 35%, transparent);
-    --nj-stripe: rgb(0 0 0 / .05);
-    --nj-hover: rgb(0 0 0 / .075);
+    --nj-accent-hover: color-mix(in srgb, var(--nj-accent) 80%, var(--nj-shade));
+    --nj-focus-ring: color-mix(in srgb, var(--nj-accent) 40%, transparent);
 }
 
 /*
@@ -114,10 +178,10 @@
     b, strong { font-weight: bolder; }
 
     a {
-        color: var(--nj-link);
+        color: var(--nj-accent-text);
         text-decoration: underline;
     }
-    a:hover { color: var(--nj-link-hover); }
+    a:hover { color: var(--nj-fg); }
 
     label { display: inline-block; }
 
@@ -175,18 +239,28 @@
         opacity: .65;
         pointer-events: none;
     }
-    .nj-btn-primary { background-color: var(--nj-accent); border-color: var(--nj-accent); color: var(--nj-on-accent); }
-    .nj-btn-primary:hover { background-color: var(--nj-accent-hover); border-color: var(--nj-accent-hover); }
-    .nj-btn-danger { background-color: var(--color-red-600); border-color: var(--color-red-600); color: white; }
-    .nj-btn-danger:hover { background-color: var(--color-red-700); border-color: var(--color-red-700); }
-    .nj-btn-success { background-color: var(--color-green-700); border-color: var(--color-green-700); color: white; }
-    .nj-btn-success:hover { background-color: var(--color-green-800); border-color: var(--color-green-800); }
-    .nj-btn-info { background-color: var(--color-sky-700); border-color: var(--color-sky-700); color: white; }
-    .nj-btn-info:hover { background-color: var(--color-sky-800); border-color: var(--color-sky-800); }
+    /* Solid buttons: a role colour as the fill (--nj-btn-fill of it over the page; night fills
+       only 30%) and the edge, lightened or darkened 20% on hover. */
+    .nj-btn-primary { --btn-base: var(--nj-accent); }
+    .nj-btn-danger { --btn-base: var(--nj-danger); }
+    .nj-btn-success { --btn-base: var(--nj-success); }
+    .nj-btn-info { --btn-base: var(--nj-info); }
+    :is(.nj-btn-primary, .nj-btn-danger, .nj-btn-success, .nj-btn-info) {
+        --btn: var(--btn-base);
+        background-color: color-mix(in srgb, var(--btn) var(--nj-btn-fill), transparent);
+        border-color: var(--btn);
+        color: var(--nj-on-btn);
+    }
+    :is(.nj-btn-primary, .nj-btn-danger, .nj-btn-success, .nj-btn-info):hover {
+        --btn: color-mix(in srgb, var(--btn-base) 80%, var(--nj-shade));
+    }
     .nj-btn-outline-secondary { border-color: var(--nj-muted); color: var(--nj-muted); }
-    .nj-btn-outline-secondary:hover { background-color: var(--color-slate-600); color: white; }
-    .nj-btn-outline-success { border-color: var(--color-green-700); color: var(--color-green-700); }
-    .nj-btn-outline-success:hover { background-color: var(--color-green-700); color: white; }
+    .nj-btn-outline-secondary:hover { background-color: var(--nj-muted); color: var(--nj-bg); }
+    .nj-btn-outline-success {
+        border-color: var(--nj-success);
+        color: color-mix(in srgb, var(--nj-success) 80%, var(--nj-fg));
+    }
+    .nj-btn-outline-success:hover { background-color: var(--nj-success); color: var(--nj-on-btn); }
 
     /* ---------- form controls ---------- */
     .nj-input {
@@ -202,7 +276,7 @@
         transition: border-color .15s, box-shadow .15s;
     }
     .nj-input:focus {
-        border-color: var(--color-sea-500);
+        border-color: var(--nj-accent);
         outline: 0;
         box-shadow: 0 0 0 .25rem var(--nj-focus-ring);
     }
@@ -227,7 +301,7 @@
         cursor: pointer;
     }
     .nj-input::file-selector-button:hover {
-        background-color: var(--nj-border-subtle);
+        background-color: var(--nj-surface);
     }
 
     /* a text field and a button sharing their borders */
@@ -261,12 +335,30 @@
         height: 1rem;
         overflow: hidden;
         font-size: .75rem;
-        background-color: var(--nj-border-subtle);
+        background-color: var(--nj-subtle);
+        border: 1px solid var(--nj-border-subtle);
         border-radius: .375rem;
     }
     .nj-progress-bar {
         background-color: var(--nj-accent);
         transition: width .6s ease;
+    }
+
+    /* the GitHub mark on the about page, in the link's colour (the SVG itself is black) */
+    .nj-github-mark {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+        background-color: currentColor;
+        mask: url("/github.svg") no-repeat center / contain;
+    }
+
+    /* ---------- the "not for navigation" banner over the map ---------- */
+    .nj-warning {
+        color: var(--nj-on-btn);
+        background-color: color-mix(in srgb, var(--nj-danger) var(--nj-btn-fill), transparent);
+        border-bottom: 1px solid var(--nj-danger);
     }
 
     /* ---------- dropdowns: the toggle, the menu and its items ---------- */
@@ -297,7 +389,7 @@
         text-align: left;
         color: var(--nj-fg);
         background-color: var(--nj-raised);
-        border: 1px solid var(--nj-border-overlay);
+        border: 1px solid var(--nj-border);
         border-radius: .375rem;
         box-shadow: var(--nj-shadow);
     }
@@ -347,13 +439,14 @@
         color: inherit;
     }
     .nj-modal::backdrop {
-        background-color: rgb(0 0 0 / .5);
+        background-color: var(--nj-backdrop, rgb(0 0 0 / .5));
     }
     .nj-modal-panel {
         position: relative;
         margin: .5rem;
+        color: var(--nj-fg);
         background-color: var(--nj-raised);
-        border: 1px solid var(--nj-border-overlay);
+        border: 1px solid var(--nj-border);
         border-radius: .5rem;
         box-shadow: var(--nj-shadow);
         @variant sm {
@@ -379,11 +472,12 @@
         padding: .25rem .5rem;
         font-size: 1.5rem;
         line-height: 1;
-        opacity: .5;
+        opacity: .6;
+        color: inherit;
         background: transparent;
         border: 0;
     }
-    .nj-modal-close:hover { opacity: .75; }
+    .nj-modal-close:hover { opacity: .9; }
     .nj-modal-body {
         padding: 1rem;
     }
@@ -413,20 +507,20 @@
         border: 0;
         transition: background-color .15s;
     }
+    /* the chevron is a mask, so it takes the button's text colour in every theme */
     .nj-accordion-button::after {
         flex-shrink: 0;
         width: 1.25rem;
         height: 1.25rem;
         margin-left: auto;
         content: "";
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230f172a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-size: 1.25rem;
+        background-color: currentColor;
+        mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") no-repeat center / 1.25rem;
         transition: transform .2s ease-in-out;
     }
     .nj-accordion-button[aria-expanded="true"] {
-        color: var(--nj-accent);
-        background-color: var(--color-sea-100);
+        color: var(--nj-accent-text);
+        background-color: var(--nj-subtle);
     }
     .nj-accordion-button[aria-expanded="true"]::after {
         transform: rotate(-180deg);
@@ -439,7 +533,7 @@
         padding: 1rem 1.25rem;
     }
 
-    /* ---------- nav bar: light, sticky; links in a row at >= lg, a hamburger and a vertical menu below ---------- */
+    /* ---------- nav bar: sticky; links in a row at >= lg, a hamburger and a vertical menu below ---------- */
     .nj-navbar {
         position: sticky;
         top: 0;
@@ -458,11 +552,11 @@
         padding: .3125rem 0;
         margin-right: 1rem;
         font-size: 1.25rem;
-        color: var(--nj-accent);
+        color: var(--nj-accent-text);
         text-decoration: none;
         white-space: nowrap;
     }
-    .nj-navbar-brand:hover { color: var(--nj-accent-hover); }
+    .nj-navbar-brand:hover { color: var(--nj-fg); }
     .nj-navbar-toggler {
         padding: .25rem .75rem;
         line-height: 1;
@@ -534,7 +628,7 @@
         white-space: nowrap;
     }
     .nj-nav-link:hover { color: var(--nj-fg); }
-    .nj-nav-link[aria-current="page"] { color: var(--nj-accent); font-weight: 600; }
+    .nj-nav-link[aria-current="page"] { color: var(--nj-accent-text); font-weight: 600; }
     /* a nav bar dropdown's menu drops below its toggle at lg; in the collapsed menu it opens in place */
     .nj-nav-menu {
         position: static;
@@ -560,7 +654,7 @@
         display: block;
         margin-bottom: -1px;
         padding: .5rem 1rem;
-        color: var(--nj-link);
+        color: var(--nj-accent-text);
         background: transparent;
         border: 1px solid transparent;
         border-top-left-radius: .375rem;
@@ -568,7 +662,7 @@
         transition: color .15s, border-color .15s;
     }
     .nj-tab:hover {
-        color: var(--nj-link-hover);
+        color: var(--nj-fg);
         border-color: var(--nj-border-subtle) var(--nj-border-subtle) var(--nj-border);
     }
     .nj-tab[aria-current="page"] {

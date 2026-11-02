@@ -6,6 +6,15 @@
     <meta name="author" content="William Kamp - https://github.com/manimaul">
     <title>Njord</title>
     <link data-trunk rel="tailwind-css" href="assets/app.css">
+    <script>
+        // The stored theme (storage.rs "Theme": ["…ThemeMode", "DUSK"] or ["…CustomTheme", {mode}])
+        // colours the page before the first paint; the app sets data-theme again once it runs.
+        try {
+            var theme = JSON.parse(localStorage.getItem("Theme"))[1];
+            var mode = typeof theme === "string" ? theme : theme.mode;
+            if (mode === "DUSK" || mode === "NIGHT") document.documentElement.dataset.theme = mode.toLowerCase();
+        } catch (e) {}
+    </script>
     <link data-trunk rel="css" href="vendor/maplibre-gl.css">
     <script data-trunk src="vendor/maplibre-gl.js"></script>
     <link data-trunk rel="copy-file" href="assets/njord.jpg">

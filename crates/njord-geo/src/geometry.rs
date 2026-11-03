@@ -14,10 +14,15 @@
 //! grid scaled to the inputs' bounding box. Output vertices therefore agree with GEOS to roughly
 //! `extent × 1e-9`, far below a tile pixel, but not bit for bit.
 
-use geo::{Area, BooleanOps, BoundingRect, Centroid, Intersects, MakeValid, MapCoords, Validation};
+use geo::coordinate_position::CoordPos;
+use geo::dimensions::Dimensions;
+use geo::{
+    Area, BooleanOps, BoundingRect, Centroid, HasDimensions, Intersects, MakeValid, MapCoords,
+    PreparedGeometry, Relate, RemoveRepeatedPoints, Validation,
+};
 use geo_types::{
-    Coord, Geometry, GeometryCollection, LineString, MultiLineString, MultiPoint, MultiPolygon,
-    Point, Polygon, Rect,
+    Coord, Geometry, GeometryCollection, Line, LineString, MultiLineString, MultiPoint,
+    MultiPolygon, Point, Polygon, Rect,
 };
 
 use crate::tile_system::TileSystem;
@@ -100,6 +105,115 @@ pub fn envelope_polygon(geometry: &Geometry, expand: f64) -> Polygon {
     )
 }
 
+/// `geo`'s `Validation::is_valid`, with the same answer for every geometry, but fast on large
+/// polygons.
+///
+/// `geo` 0.33 finds a ring's self-intersections by testing every pair of its segments, which is
+/// quadratic in the ring's size: on a tile whose features have rings of tens of thousands of
+/// vertices this check took most of the encoding time. Here only segments whose bounding boxes
+/// overlap are tested (a sort-and-sweep along x), with `geo`'s own predicate, so the result is the
+/// same. Every other check is `geo`'s. `geo`'s unreleased `main` replaces the pairwise test with a
+/// sweep of its own (and also tightens what counts as valid); once that ships, this function can
+/// go back to `geometry.is_valid()`.
+pub fn is_valid(geometry: &Geometry) -> bool {
+    match geometry {
+        Geometry::Polygon(p) => polygon_is_valid(p),
+        Geometry::MultiPolygon(mp) => multi_polygon_is_valid(mp),
+        Geometry::GeometryCollection(gc) => gc.iter().all(is_valid),
+        other => other.is_valid(),
+    }
+}
+
+/// `Validation::is_valid` for a polygon (`geo` 0.33 `algorithm/validation/polygon.rs`).
+fn polygon_is_valid(polygon: &Polygon) -> bool {
+    if polygon.is_empty() {
+        return true;
+    }
+    let rings = std::iter::once(polygon.exterior()).chain(polygon.interiors());
+    for ring in rings.filter(|ring| !ring.0.is_empty()) {
+        if ring.remove_repeated_points().0.len() < 4
+            || ring_has_self_intersection(ring)
+            || ring.0.iter().any(|c| !(c.x.is_finite() && c.y.is_finite()))
+        {
+            return false;
+        }
+    }
+    if polygon.interiors().iter().all(|ring| ring.0.is_empty()) {
+        return true;
+    }
+    let exterior = Polygon::new(polygon.exterior().clone(), vec![]);
+    let exterior = PreparedGeometry::from(&exterior);
+    let interiors = polygon.interiors();
+    for (i, interior) in interiors.iter().enumerate() {
+        if interior.0.is_empty() {
+            continue;
+        }
+        let interior = Polygon::new(interior.clone(), vec![]);
+        let interior = PreparedGeometry::from(&interior);
+        let matrix = exterior.relate(&interior);
+        if !matrix.is_contains()
+            || matrix.get(CoordPos::OnBoundary, CoordPos::OnBoundary) == Dimensions::OneDimensional
+        {
+            return false;
+        }
+        for other in interiors[i + 1..].iter().filter(|ring| !ring.0.is_empty()) {
+            let matrix = interior.relate(&Polygon::new(other.clone(), vec![]));
+            if matrix.get(CoordPos::Inside, CoordPos::Inside) == Dimensions::TwoDimensional
+                || matrix.get(CoordPos::OnBoundary, CoordPos::OnBoundary)
+                    == Dimensions::OneDimensional
+            {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+/// `Validation::is_valid` for a multipolygon (`geo` 0.33 `algorithm/validation/multi_polygon.rs`):
+/// every part valid, no two parts overlapping or touching along a line.
+fn multi_polygon_is_valid(multi_polygon: &MultiPolygon) -> bool {
+    let parts = &multi_polygon.0;
+    parts.iter().enumerate().all(|(i, polygon)| {
+        polygon_is_valid(polygon)
+            && parts[i + 1..].iter().all(|other| {
+                let matrix = polygon.relate(other);
+                matrix.get(CoordPos::Inside, CoordPos::Inside) != Dimensions::TwoDimensional
+                    && matrix.get(CoordPos::OnBoundary, CoordPos::OnBoundary)
+                        != Dimensions::OneDimensional
+            })
+    })
+}
+
+/// `geo` 0.33's `linestring_has_self_intersection`: two distinct segments intersect, other than a
+/// segment's end meeting the next one's start. Segments are sorted by their smallest x and each is
+/// tested only against those that start before it ends, which skips no intersecting pair, since
+/// intersecting segments have overlapping bounding boxes.
+fn ring_has_self_intersection(ring: &LineString) -> bool {
+    let lines: Vec<Line> = ring.lines().collect();
+    let min_x = |l: &Line| l.start.x.min(l.end.x);
+    let mut order: Vec<usize> = (0..lines.len()).collect();
+    order.sort_by(|&a, &b| min_x(&lines[a]).total_cmp(&min_x(&lines[b])));
+    for (k, &i) in order.iter().enumerate() {
+        let a = lines[i];
+        let a_max_x = a.start.x.max(a.end.x);
+        let (a_min_y, a_max_y) = (a.start.y.min(a.end.y), a.start.y.max(a.end.y));
+        for &j in &order[k + 1..] {
+            let b = lines[j];
+            if min_x(&b) > a_max_x {
+                break;
+            }
+            if b.start.y.max(b.end.y) < a_min_y || b.start.y.min(b.end.y) > a_max_y {
+                continue;
+            }
+            // `geo` tests both orders of the pair; the condition is the same either way.
+            if a.intersects(&b) && a.start != b.end && a.end != b.start {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 /// The geometry made valid, or `None` when it has no repair.
 ///
 /// A valid geometry is returned unchanged; an invalid polygon or multipolygon is repaired with
@@ -115,7 +229,7 @@ pub fn envelope_polygon(geometry: &Geometry, expand: f64) -> Polygon {
 /// polygons change from call to call (and with them what Douglas–Peucker keeps downstream, e.g.
 /// LAKARE `02260A82E9560782` in the golden tile 14/2616/5742).
 pub fn make_valid(geometry: &Geometry) -> Option<Geometry> {
-    if geometry.is_valid() {
+    if is_valid(geometry) {
         return Some(geometry.clone());
     }
     let repaired = match geometry {
@@ -347,7 +461,7 @@ fn touching_points(lines: &MultiLineString, mask: &MultiPolygon) -> Vec<Point> {
 /// An invalid mask is refused rather than guessed at, and the chart-priority masking then keeps
 /// its previous include area.
 pub fn difference(a: &MultiPolygon, b: &MultiPolygon) -> Option<MultiPolygon> {
-    b.is_valid().then(|| a.difference(b))
+    multi_polygon_is_valid(b).then(|| a.difference(b))
 }
 
 /// The topological boundary (`OGR_G_Boundary`), or `None` for a `GeometryCollection`.

@@ -27,10 +27,9 @@ use std::collections::HashSet;
 use std::fmt;
 use std::sync::Arc;
 
-use geo::Validation;
 use geo_types::{Geometry, MultiPolygon};
 use njord_db::{ChartFeature as DbFeature, ChartInfo, Db};
-use njord_geo::geometry::{boundary, difference, intersection, is_empty, to_tile_pixels};
+use njord_geo::geometry::{boundary, difference, intersection, is_empty, is_valid, to_tile_pixels};
 use njord_geo::{TILE_SYSTEM, VectorTileEncoder, filter_props, find_base_map_scale};
 use njord_model::{ChartFeatureInfo, IndexMap, JsonObject};
 use njord_symbology::{ChartFeature, LayerFactory};
@@ -232,7 +231,7 @@ fn add_charts(
                 } else {
                     intersection(&geometry, &include)
                 };
-                if !clipped.is_valid() || is_empty(&clipped) {
+                if !is_valid(&clipped) || is_empty(&clipped) {
                     continue;
                 }
                 if info {
@@ -270,7 +269,7 @@ fn render_base_map(
         let Some(geometry) = feature.geometry else {
             continue;
         };
-        if geometry.is_valid() && !is_empty(&geometry) {
+        if is_valid(&geometry) && !is_empty(&geometry) {
             let pixels = to_tile_pixels(&geometry, t.x, t.y, t.z, &TILE_SYSTEM);
             encoder.add_feature(&feature.layer, &props, &pixels);
         }

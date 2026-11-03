@@ -58,7 +58,11 @@ const IMMUTABLE: &str = "public, max-age=31536000, immutable";
 
 /// `immutable` for a file Trunk named after its content hash, `no-cache` for any other.
 fn cache_control(name: &str) -> HeaderValue {
-    HeaderValue::from_static(if is_content_hashed(name) { IMMUTABLE } else { NO_CACHE })
+    HeaderValue::from_static(if is_content_hashed(name) {
+        IMMUTABLE
+    } else {
+        NO_CACHE
+    })
 }
 
 /// Whether `name` has Trunk's content hash: a stem ending in `-` and 16 hex digits, or that

@@ -25,7 +25,10 @@ fn annotated_colors(css: &str) -> Vec<(String, String, String)> {
             continue;
         };
         let token = comment.trim_end_matches("*/").trim();
-        let is_token = token.len() == 5 && token.bytes().all(|b| b.is_ascii_uppercase() || b.is_ascii_digit());
+        let is_token = token.len() == 5
+            && token
+                .bytes()
+                .all(|b| b.is_ascii_uppercase() || b.is_ascii_digit());
         let Some(hex) = value.rsplit('#').next().filter(|_| value.contains('#')) else {
             continue;
         };
@@ -47,7 +50,11 @@ fn theme_tokens_match_the_colour_library() {
         serde_json::from_value(colors["library"].clone()).unwrap();
 
     let annotated = annotated_colors(&css);
-    assert!(annotated.len() > 20, "found only {} annotated colours", annotated.len());
+    assert!(
+        annotated.len() > 20,
+        "found only {} annotated colours",
+        annotated.len()
+    );
     let mut modes: Vec<&str> = annotated.iter().map(|(m, _, _)| m.as_str()).collect();
     modes.dedup();
     assert_eq!(modes, ["DAY", "DUSK", "NIGHT"]);
@@ -55,7 +62,12 @@ fn theme_tokens_match_the_colour_library() {
     let mismatched: Vec<String> = annotated
         .iter()
         .filter(|(mode, token, hex)| library[mode].get(token) != Some(hex))
-        .map(|(mode, token, hex)| format!("{mode} {token}: app.css has {hex}, colors.json has {:?}", library[mode].get(token)))
+        .map(|(mode, token, hex)| {
+            format!(
+                "{mode} {token}: app.css has {hex}, colors.json has {:?}",
+                library[mode].get(token)
+            )
+        })
         .collect();
     assert!(mismatched.is_empty(), "{}", mismatched.join("\n"));
 }

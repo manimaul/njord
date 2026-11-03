@@ -238,7 +238,8 @@ where
             .and_then(|t| t.dyn_into::<web_sys::Node>().ok())
             .zip(root.get_untracked())
             .is_some_and(|(target, root)| {
-                root.unchecked_ref::<web_sys::Node>().contains(Some(&target))
+                root.unchecked_ref::<web_sys::Node>()
+                    .contains(Some(&target))
             });
         if !inside {
             expanded.set(false);

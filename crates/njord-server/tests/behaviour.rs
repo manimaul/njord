@@ -234,6 +234,8 @@ async fn mutating_verbs_are_401_without_a_valid_signature() {
         ("POST", "/v1/enc_url"),
         ("DELETE", "/v1/nuke"),
         ("GET", "/v1/regions/x.mbtiles"),
+        ("GET", "/v1/change_reports"),
+        ("GET", "/v1/change_reports/2026-10-31"),
     ] {
         assert_eq!(
             send(method, path, &[]).await.status(),
@@ -434,7 +436,8 @@ async fn write_routes_without_a_database() {
         state.status.read(),
         njord_server::ingest::IngestStatus::idle_json()
     );
-    // An upload lands in save/ as <name> with no .tmp left, and announces Extracting(0).
+    // An upload lands in save/ as <name> with its admin cause sidecar and no .tmp left, and
+    // announces Extracting(0).
     let body = b"PK\x05\x06".to_vec();
     let r = router(state.clone())
         .oneshot(
@@ -460,7 +463,11 @@ async fn write_routes_without_a_database() {
         .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
         .collect();
     names.sort();
-    assert_eq!(names, ["A.ZIP"]);
+    assert_eq!(names, ["A.ZIP", "A.ZIP.meta.json"]);
+    assert_eq!(
+        std::fs::read_to_string(state.save_dir.join("A.ZIP.meta.json")).unwrap(),
+        r#"{"cause":"admin"}"#
+    );
     let status: njord_model::WsMsg = serde_json::from_str(&state.status.read()).unwrap();
     assert_eq!(status, njord_model::WsMsg::Extracting { progress: 0.0 });
     // The status socket is a GET route like any other: another verb is 405.

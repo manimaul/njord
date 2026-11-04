@@ -3,8 +3,8 @@
   "decisions": [
     "DB-1"
   ],
-  "generator": "DbMigrationsTest",
-  "source": "DbMigrations.kt initializeSchema, schema version 3",
+  "generator": "DbMigrationsTest; njord-db tests/migrations.rs with NJORD_SCHEMA_DUMP=1",
+  "source": "DbMigrations.kt initializeSchema, schema version 3; change_events added by njord-db migration 4 (docs/change_reports.md)",
   "cases": [
     {
       "input": "meta_data",
@@ -222,6 +222,81 @@
         ],
         "constraints": [
           "region_export_state_pkey: PRIMARY KEY (region_name)"
+        ]
+      }
+    },
+    {
+      "input": "change_events",
+      "expected": {
+        "columns": [
+          {
+            "name": "attempted",
+            "type": "varchar",
+            "nullable": true
+          },
+          {
+            "name": "cause",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "day",
+            "type": "date",
+            "nullable": false
+          },
+          {
+            "name": "feature_count_change",
+            "type": "int8",
+            "nullable": false
+          },
+          {
+            "name": "id",
+            "type": "int8",
+            "nullable": false,
+            "default": "nextval('change_events_id_seq'::regclass)"
+          },
+          {
+            "name": "kind",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "message",
+            "type": "varchar",
+            "nullable": true
+          },
+          {
+            "name": "name",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "occurred_at",
+            "type": "timestamptz",
+            "nullable": false,
+            "default": "now()"
+          },
+          {
+            "name": "outcome",
+            "type": "varchar",
+            "nullable": false
+          },
+          {
+            "name": "zip_file",
+            "type": "varchar",
+            "nullable": true
+          }
+        ],
+        "indexes": [
+          "CREATE INDEX change_events_day_idx ON public.change_events USING btree (day DESC, id)",
+          "CREATE UNIQUE INDEX change_events_pkey ON public.change_events USING btree (id)"
+        ],
+        "constraints": [
+          "change_events_attempted_check: CHECK (((attempted)::text = ANY ((ARRAY['new'::character varying, 'update'::character varying, 'delete'::character varying, 'nuke'::character varying])::text[])))",
+          "change_events_cause_check: CHECK (((cause)::text = ANY ((ARRAY['admin'::character varying, 'noaa_enc_cron'::character varying])::text[])))",
+          "change_events_kind_check: CHECK (((kind)::text = ANY ((ARRAY['chart'::character varying, 'base_map'::character varying, 'all'::character varying])::text[])))",
+          "change_events_outcome_check: CHECK (((outcome)::text = ANY ((ARRAY['new'::character varying, 'update'::character varying, 'delete'::character varying, 'nuke'::character varying, 'error'::character varying])::text[])))",
+          "change_events_pkey: PRIMARY KEY (id)"
         ]
       }
     }

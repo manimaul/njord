@@ -1,5 +1,6 @@
 //! The pages, the shared widgets they are built from, and the [`App`] router.
 
+mod change_reports;
 mod chart_info;
 mod chart_view;
 mod components;

@@ -44,6 +44,7 @@ conformance/
 │   ├── sigs.py            admin signatures minted locally (HMAC-SHA256 over baseUrl‖date‖uuid)
 │   └── seed.py            ingests testdata/fixtures through POST /v1/enc_save; waits for region exports
 ├── test_api_01_about.py … test_api_12_errors.py    one module per P-API row
+├── test_api_13_change_reports.py    the change history routes (Rust only, `port_only`; docs/change_reports.md)
 ├── test_api_99_nuke.py    DELETE /v1/nuke, last because everything else needs the data; re-seeds
 └── golden/<group>/<case>.json
 ```
@@ -163,7 +164,8 @@ never as a false alarm on the exact routes.
   Runs only when `--base-url` is localhost, or with `--allow-mutating` (refused for njord.mxmariner.com).
   Always skipped in diff mode.
 - `signed` — needs an admin signature; skipped when no credentials are available.
-- `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9).
+- `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9, and
+  every test of `test_api_13_change_reports.py`, a route the Kotlin server never had).
 - `port_pending(reason)` — the reverse: a route not ported yet, **skipped** when the `--base-url`
   server is (or `--server-impl` says it is) the Rust port. Checked in `pytest_runtest_setup`,
   before fixtures. No test carries it since Phase 4 landed (2026-10-30); it stays for a future

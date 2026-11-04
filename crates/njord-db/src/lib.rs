@@ -7,6 +7,7 @@
 //! - [`features`]: the feature routes and the ingest feature insert ([`Db::install_chart`],
 //!   [`FeatureInstall`]).
 //! - [`base_features`]: the Natural Earth base map.
+//! - [`change_events`]: the change history the change reports read ([`NewChangeEvent`]).
 //! - [`geojson`]: the GeoJSON routes.
 //! - [`regions`]: what the region exporter reads, and its export state.
 //! - [`retry`]: the [`RetryPolicy`] for acquiring a connection.
@@ -26,6 +27,7 @@
 //! encoder are not here: they live in the server and hold no query of their own.
 
 pub mod base_features;
+pub mod change_events;
 pub mod charts;
 pub mod error;
 pub mod features;
@@ -39,6 +41,7 @@ use sqlx::PgPool;
 use sqlx::pool::PoolConnection;
 use sqlx::postgres::{PgPoolOptions, Postgres};
 
+pub use change_events::{NewChangeEvent, REPORT_PAGE_SIZE, record_change_event};
 pub use charts::{ChartFeature, ChartInfo};
 pub use error::Error;
 pub use features::{FeatureInstall, InstalledChart};
@@ -107,19 +110,27 @@ impl Db {
         retry::acquire(self.retry, || self.pool.begin()).await
     }
 
-    /// Empties `features`, `charts` and `base_features`, restarting their identities.
+    /// Empties `features`, `charts` and `base_features`, restarting their identities, and
+    /// returns how many feature and base feature rows there were.
     ///
-    /// `meta_data` is kept, so the schema version survives, and so is `region_export_state`.
+    /// `meta_data` is kept, so the schema version survives, and so are `region_export_state`
+    /// and `change_events`: the nuke is recorded there by its handler, never erased.
     ///
     /// # Errors
     ///
-    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when the
-    /// `TRUNCATE` fails.
-    pub async fn truncate_all(&self) -> Result<()> {
-        let mut conn = self.conn().await?;
+    /// [`Error::Connection`] when no connection could be acquired, [`Error::Sql`] when a
+    /// statement fails. Count and `TRUNCATE` are one transaction.
+    pub async fn truncate_all(&self) -> Result<i64> {
+        let mut tx = self.begin().await?;
+        let before: i64 = sqlx::query_scalar(
+            "SELECT (SELECT count(*) FROM features) + (SELECT count(*) FROM base_features);",
+        )
+        .fetch_one(&mut *tx)
+        .await?;
         sqlx::query("TRUNCATE TABLE features, charts, base_features RESTART IDENTITY CASCADE;")
-            .execute(&mut *conn)
+            .execute(&mut *tx)
             .await?;
-        Ok(())
+        tx.commit().await?;
+        Ok(before)
     }
 }

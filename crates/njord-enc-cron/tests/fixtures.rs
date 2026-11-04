@@ -376,6 +376,27 @@ fn bundle_case(c: &BundleCase, root: &Path) -> Value {
         .into_iter()
         .filter(|f| !f.starts_with("save/"))
         .collect();
+    // A published bundle has its cause sidecar beside it, and nothing else is in save/.
+    let mut in_save: Vec<String> = files_under(&temp)
+        .into_iter()
+        .filter(|f| f.starts_with("save/"))
+        .collect();
+    in_save.sort();
+    let expected_in_save: Vec<String> = match &published {
+        Some(p) => {
+            let name = p.file_name().unwrap().to_string_lossy();
+            let sidecar = temp.join("save").join(format!("{name}.meta.json"));
+            assert_eq!(
+                std::fs::read_to_string(&sidecar).unwrap_or_default(),
+                r#"{"cause":"noaa_enc_cron"}"#,
+                "{}",
+                sidecar.display()
+            );
+            vec![format!("save/{name}"), format!("save/{name}.meta.json")]
+        }
+        None => Vec::new(),
+    };
+    assert_eq!(in_save, expected_in_save, "{}", c.name);
     let entries: Vec<String> = match &published {
         Some(p) => {
             let mut zip = zip::ZipArchive::new(std::fs::File::open(p).unwrap()).unwrap();

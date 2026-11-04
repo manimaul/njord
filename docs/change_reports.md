@@ -1,6 +1,6 @@
 # Change Reports
 
-_Plan written 2026-10-31, revised 2026-11-04 with the open questions resolved._
+_Plan written 2026-10-31, revised 2026-11-04 with the open questions resolved, and implemented the same day; §11 lists where the plan and the code differ in name._
 
 ## 1. Goal
 
@@ -222,3 +222,27 @@ Resolved 2026-11-04:
 - **Nuke records a `nuke` event and preserves earlier events.** `truncate_all` leaves `change_events` alone.
 - **`POST /v1/chart` is recorded.** The chart has 0 features afterwards, so the change is `0` for a new chart and `−before` for a replaced one.
 - **Time follows `region_export_state.exported_at`**: `TIMESTAMPTZ` set by Postgres `now()`, reported as a UTC date.
+
+## 11. As built
+
+The implementation follows the plan above. Names that differ from the plan's sketches:
+
+- `njord-db`: the previous feature count comes from `Db::insert_chart_tracked` (`insert_chart`
+  keeps its signature and delegates to it); `Db::delete_chart(name, Option<ChangeCause>)`
+  returns the features deleted and records the `delete` event inside its own transaction;
+  `Db::chart_feature_count` and `Db::base_feature_count` give the `before` of a failure that
+  happened before anything changed. `NewChangeEvent` (`change_events.rs`) has constructors for
+  each case (`installed`, `install_failed`, `deleted`, `failed`, `nuked`), `REPORT_PAGE_SIZE` is
+  25, and the schema fixture is regenerated with `NJORD_SCHEMA_DUMP=1` (see
+  `tests/migrations.rs`).
+- `njord-model`: the sidecar's shape is `UploadMeta` (`{"cause": …}`), shared by the server and
+  `njord-enc-cron`; `ChangeKind::All` and `ChangeOutcome::Nuke` carry the nuke.
+- `njord-server`: the sidecar lives in `ingest/cause.rs`; the chart ingest threads an `Upload`
+  (cause plus zip name) through `install_cell`. `ingest/natural_earth.rs` records `new` when the
+  shapefile had no rows before and `update` otherwise, counting a replaced shapefile's rows as
+  its `before`.
+- `njord-web`: paging pushes `?page=N` through `Store::push_query`, because `push_route` ignores
+  a change that is only in the query string. The tab shows "Admin access required" until the
+  admin is logged in, like the installer.
+- Conformance: `test_api_13_change_reports.py` is `port_only`; `test_api_99_nuke.py` checks the
+  nuke row on the Rust server only.

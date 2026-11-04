@@ -10,6 +10,9 @@ use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use njord_model::ChartInsert;
 
+use njord_db::NewChangeEvent;
+use njord_model::{ChangeCause, ChangeKind, ChangeOutcome};
+
 use super::{Signed, query_param};
 use crate::regions::WORLD_REGION_NAME;
 use crate::state::AppState;
@@ -19,6 +22,9 @@ use crate::state::AppState;
 /// A chart of the same name is replaced with its features, in one transaction. 400 when the
 /// insert fails or the body is not a `ChartInsert` (with a text message,
 /// [`super::bad_request_text`]).
+///
+/// The change is recorded as an Admin `new` (change 0: the row has no features) or `update`
+/// (`−before`); a failed insert as an `error`.
 pub async fn insert(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -29,28 +35,75 @@ pub async fn insert(
             "Failed to convert request body to class io.madrona.njord.model.ChartInsert",
         );
     };
-    match state.db.insert_chart(&chart, true).await {
-        Ok(inserted) => Json(inserted).into_response(),
+    match state.db.insert_chart_tracked(&chart, true).await {
+        Ok((inserted, before)) => {
+            let event = NewChangeEvent::installed(
+                ChangeKind::Chart,
+                &inserted.name,
+                before,
+                0,
+                ChangeCause::Admin,
+            );
+            record(&state, &event).await;
+            Json(inserted).into_response()
+        }
         Err(e) => {
             tracing::error!("chart insert {}: {e}", chart.name);
+            let before = state
+                .db
+                .chart_feature_count(&chart.name)
+                .await
+                .unwrap_or_default();
+            let event = NewChangeEvent::install_failed(
+                ChangeKind::Chart,
+                &chart.name,
+                before,
+                before.unwrap_or(0),
+                ChangeCause::Admin,
+                &e.to_string(),
+            );
+            record(&state, &event).await;
             StatusCode::BAD_REQUEST.into_response()
         }
     }
 }
 
-/// `DELETE /v1/chart?name=`, signed: deletes a chart and everything that would keep serving it.
+/// Writes `event` to the change history; a failure is logged, never answered.
+async fn record(state: &AppState, event: &NewChangeEvent) {
+    if let Err(e) = state.db.record_change_event(event).await {
+        tracing::error!("change event {} {}: {e}", event.outcome, event.name);
+    }
+}
+
+/// The `cause` query parameter: `admin` when absent, `None` for an unknown value.
+fn cause_param(query: &[(String, String)]) -> Option<ChangeCause> {
+    match query_param(query, "cause") {
+        None => Some(ChangeCause::Admin),
+        Some(value) => value.parse().ok(),
+    }
+}
+
+/// `DELETE /v1/chart?name=&cause=`, signed: deletes a chart and everything that would keep
+/// serving it.
 ///
 /// The chart is named by its `DSID_DSNM`, the key `enc_cron` diffs. Its features go with it,
 /// then the tile cache and the export state of every non-`WORLD` region whose coverage it
 /// intersects (resolved before the delete, while the coverage still exists), and the export
 /// worker is woken. 202 when a chart was deleted, 204 when none had that name, 400 without
-/// `name`.
+/// `name` or with a `cause` that is not `admin` or `noaa_enc_cron`.
+///
+/// The delete is recorded in the change history with `cause` (`admin` when absent, which is
+/// what `njord-enc-cron` overrides); a database failure is recorded as an `error`, and a miss
+/// (204) is not recorded.
 pub async fn delete(
     _: Signed,
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,
 ) -> StatusCode {
     let Some(name) = query_param(&query, "name") else {
+        return StatusCode::BAD_REQUEST;
+    };
+    let Some(cause) = cause_param(&query) else {
         return StatusCode::BAD_REQUEST;
     };
     let regions: Vec<(String, String)> = state
@@ -67,8 +120,8 @@ pub async fn delete(
             Vec::new()
         }
     };
-    match state.db.delete_chart(name).await {
-        Ok(true) => {
+    match state.db.delete_chart(name, Some(cause)).await {
+        Ok(Some(_)) => {
             state.tile_cache.clear().await;
             for region in &containing {
                 if let Err(e) = state.db.clear_region_export_state(region).await {
@@ -80,9 +133,17 @@ pub async fn delete(
             }
             StatusCode::ACCEPTED
         }
-        Ok(false) => StatusCode::NO_CONTENT,
+        Ok(None) => StatusCode::NO_CONTENT,
         Err(e) => {
             tracing::error!("chart delete {name}: {e}");
+            let event = NewChangeEvent::failed(
+                ChangeKind::Chart,
+                name,
+                ChangeOutcome::Delete,
+                cause,
+                &e.to_string(),
+            );
+            record(&state, &event).await;
             StatusCode::BAD_REQUEST
         }
     }

@@ -5,9 +5,9 @@
 //! one) and the message the page shows.
 
 use njord_model::{
-    AboutJson, AdminResponse, AdminSignature, Chart, ChartCatalog, ColorLibrary, IconInfo,
-    IndexMap, LayerQueryResultPage, RegionManifestEntry, S57Attribute, S57ExpectedInput, S57Object,
-    Sprite, ThemeMode,
+    AboutJson, AdminResponse, AdminSignature, ChangeReport, ChangeReportPage, Chart, ChartCatalog,
+    ColorLibrary, IconInfo, IndexMap, LayerQueryResultPage, RegionManifestEntry, S57Attribute,
+    S57ExpectedInput, S57Object, Sprite, ThemeMode,
 };
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -290,6 +290,38 @@ pub async fn delete_chart(signature: &AdminResponse, name: &str) -> ApiResult<()
     delete(
         "chart",
         &[("name", name), ("signature", &signature.signature_encoded)],
+    )
+    .await
+}
+
+/// `GET /v1/change_reports?page=…`, signed: one page of the change history's days.
+///
+/// # Errors
+///
+/// As [`get`]; an expired signature is a 401.
+pub async fn change_report_page(
+    signature: &AdminResponse,
+    page: i32,
+) -> ApiResult<ChangeReportPage> {
+    get(
+        "change_reports",
+        &[
+            ("page", &page.to_string()),
+            ("signature", &signature.signature_encoded),
+        ],
+    )
+    .await
+}
+
+/// `GET /v1/change_reports/<date>`, signed: one day's change report.
+///
+/// # Errors
+///
+/// As [`get`]; a day with no events is a 404.
+pub async fn change_report(signature: &AdminResponse, date: &str) -> ApiResult<ChangeReport> {
+    get(
+        &format!("change_reports/{date}"),
+        &[("signature", &signature.signature_encoded)],
     )
     .await
 }

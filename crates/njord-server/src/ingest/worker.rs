@@ -7,6 +7,9 @@
 //! ([`super::natural_earth`]) when the zip holds a `.shp`. One zip per lock cycle; the lock is
 //! released by the ingest.
 //!
+//! The zip's `.meta.json` sidecar ([`super::cause`]) is renamed into the claim directory with it;
+//! a zip without one is still claimed.
+//!
 //! An upload does not abort an ingest in flight (`POST /v1/enc_save` only stores the zip), so a
 //! second zip waits here for the first to finish. After an ingest the worker re-checks `save/` at
 //! once rather than after the poll delay, and announces `Extracting(0)` before taking the lock,
@@ -92,8 +95,15 @@ impl IngestWorker {
         }
         let mut claimed: Option<PathBuf> = None;
         for zip in zips {
-            let dest = claim_dir.join(zip.file_name().unwrap_or_default());
+            let name = zip.file_name().unwrap_or_default();
+            let dest = claim_dir.join(name);
             if tokio::fs::rename(&zip, &dest).await.is_ok() {
+                let zip_file = name.to_string_lossy();
+                let _ = tokio::fs::rename(
+                    super::cause::sidecar_path(&state.save_dir, &zip_file),
+                    super::cause::sidecar_path(&claim_dir, &zip_file),
+                )
+                .await;
                 claimed = Some(dest);
                 break;
             }

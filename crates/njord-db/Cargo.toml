@@ -13,8 +13,10 @@ geojson.workspace = true
 # integration (and its sqlx version) is not needed.
 geozero = { version = "0.15", default-features = false, features = ["with-geo", "with-wkb"] }
 indexmap.workspace = true
+jiff.workspace = true
 njord-geo.workspace = true
 njord-model.workspace = true
+serde.workspace = true
 serde_json.workspace = true
 # TLS for the managed database (`sslmode=require`); aws-lc-rs is the rustls provider reqwest
 # already pulls into njord-server.

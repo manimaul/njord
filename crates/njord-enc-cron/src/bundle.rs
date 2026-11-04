@@ -5,11 +5,16 @@
 //! lock cycle and polls every 5 s, so shipping cells individually would mean one full lock /
 //! extract / GDAL open / insert / tile-cache-invalidate cycle per cell. Bundles stay small for the
 //! opposite reason: the ingest opens every `.000` in a bundle up front.
+//!
+//! A bundle is published with its `<bundle>.meta.json` sidecar ([`UploadMeta`], cause
+//! `noaa_enc_cron`), written into `save/` *before* the bundle is renamed in, so the worker never
+//! claims the bundle without it and the change report attributes every chart to the cron.
 
 use std::fs::File;
 use std::io::{BufReader, BufWriter};
 use std::path::{Path, PathBuf};
 
+use njord_model::{ChangeCause, UploadMeta};
 use zip::ZipArchive;
 use zip::write::SimpleFileOptions;
 
@@ -86,12 +91,30 @@ impl<'a, T: EncTransport> BundleBuilder<'a, T> {
         remove(&download);
 
         let published = self.config.save_dir().join(bundle_name);
+        let sidecar = self
+            .config
+            .save_dir()
+            .join(UploadMeta::file_name(bundle_name));
+        let meta = UploadMeta {
+            cause: ChangeCause::NoaaEncCron,
+        };
+        if let Err(e) = std::fs::write(&sidecar, serde_json::to_vec(&meta)?) {
+            log::error(format!(
+                "failed to write {} into {}: {e}",
+                sidecar.display(),
+                self.config.save_dir().display()
+            ));
+            remove(&bundle);
+            remove(&sidecar);
+            return Ok(None);
+        }
         if let Err(e) = std::fs::rename(&bundle, &published) {
             log::error(format!(
                 "failed to publish {bundle_name} into {}: {e}",
                 self.config.save_dir().display()
             ));
             remove(&bundle);
+            remove(&sidecar);
             return Ok(None);
         }
         log::info(format!(

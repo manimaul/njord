@@ -11,8 +11,9 @@ use geojson::{Bbox, Feature, Geometry};
 use leptos::prelude::*;
 use leptos::task::spawn_local;
 use njord_model::{
-    AdminResponse, ChartCatalog, ChartItem, ColorLibrary, Depth, EncUpload, IconInfo, IndexMap,
-    JsonObject, S57Attribute, S57ExpectedInput, S57Object, Sprite, Theme, ThemeMode, WsMsg,
+    AdminResponse, ChangeReport, ChangeReportPage, ChartCatalog, ChartItem, ColorLibrary, Depth,
+    EncUpload, IconInfo, IndexMap, JsonObject, S57Attribute, S57ExpectedInput, S57Object, Sprite,
+    Theme, ThemeMode, WsMsg,
 };
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsCast;
@@ -115,6 +116,15 @@ pub struct InstallState {
     pub info: Option<WsMsg>,
 }
 
+/// The Change Report tab: the day list page being shown and the report of the date being shown.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct ChangeReportState {
+    pub page_index: i32,
+    pub page: Async<ChangeReportPage>,
+    pub date: String,
+    pub report: Async<ChangeReport>,
+}
+
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct NavBarState {
     pub custom_colors: Async<Vec<String>>,
@@ -131,6 +141,7 @@ pub struct Store {
     pub catalog: RwSignal<CatalogState>,
     pub install: RwSignal<InstallState>,
     pub nav: RwSignal<NavBarState>,
+    pub change_reports: RwSignal<ChangeReportState>,
 }
 
 thread_local! {
@@ -209,6 +220,7 @@ impl Store {
             catalog: RwSignal::new(CatalogState::default()),
             install: RwSignal::new(InstallState::default()),
             nav: RwSignal::new(NavBarState::default()),
+            change_reports: RwSignal::new(ChangeReportState::default()),
         };
         STORE.with(|s| s.set(Some(store)));
         store.connect_history();
@@ -261,6 +273,17 @@ impl Store {
             return;
         }
         let routing = REGISTRY.from(path, QueryParams::new(query));
+        self.route.update(|s| {
+            s.current = routing;
+            s.can_go_back = true;
+            s.replace = false;
+        });
+    }
+
+    /// Navigates to `path?query`, pushing a history entry even when only the query changes
+    /// (the change report's paging).
+    pub fn push_query(self, path: &str, query: &str) {
+        let routing = REGISTRY.from(path, QueryParams::new(Some(query.to_owned())));
         self.route.update(|s| {
             s.current = routing;
             s.can_go_back = true;
@@ -620,6 +643,48 @@ impl Store {
                 let progress = ((i + 1) as f32 / total as f32 * 100.0) as i32;
                 self.catalog.update(|s| s.delete_progress = Some(progress));
             }
+        });
+    }
+
+    // --- Change reports ---
+
+    /// Loads day list page `page`, keeping the previous page on screen while it loads. Nothing
+    /// happens without a signature; the tab shows the login prompt then.
+    pub fn load_change_report_page(self, page: i32) {
+        let Some(signature) = self.signature() else {
+            return;
+        };
+        self.change_reports.update(|c| {
+            c.page_index = page;
+            c.page = Async::Loading(std::mem::take(&mut c.page).into_value());
+        });
+        spawn_local(async move {
+            let result = api::change_report_page(&signature, page).await;
+            self.change_reports.update(|c| {
+                if c.page_index == page {
+                    c.page = Async::from_result(result, None);
+                }
+            });
+        });
+    }
+
+    /// Loads the report of `date` (`YYYY-MM-DD`).
+    pub fn load_change_report(self, date: &str) {
+        let Some(signature) = self.signature() else {
+            return;
+        };
+        let date = date.to_owned();
+        self.change_reports.update(|c| {
+            c.date = date.clone();
+            c.report = Async::Loading(None);
+        });
+        spawn_local(async move {
+            let result = api::change_report(&signature, &date).await;
+            self.change_reports.update(|c| {
+                if c.date == date {
+                    c.report = Async::from_result(result, None);
+                }
+            });
         });
     }
 

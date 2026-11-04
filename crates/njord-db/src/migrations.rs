@@ -2,7 +2,7 @@
 //!
 //! [`Db::migrate`] provisions an empty database at [`CURRENT_VERSION`] or migrates an older one
 //! forward. A fresh database and a migrated version-1 database end with the same schema, which
-//! the fixture `db/schema.json` records.
+//! the fixture `db/schema.json` records. Version 4 added `change_events` (`docs/change_reports.md`).
 //!
 //! The schema version record is the `meta_data` row `key = 'version'` (text value): read as 0
 //! when the table or row is missing, and stamped after each migration and by provisioning. Other
@@ -27,7 +27,7 @@ use crate::{Db, Error, Result};
 pub const VERSION_KEY: &str = "version";
 
 /// The highest migration version: what provisioning stamps and [`Db::migrate`] waits for.
-pub const CURRENT_VERSION: i32 = 3;
+pub const CURRENT_VERSION: i32 = 4;
 
 /// Mutual exclusion between instances migrating one database.
 pub trait MigrationLock {
@@ -137,7 +137,28 @@ CREATE INDEX IF NOT EXISTS features_lnam_expr_idx ON features ((props->>'LNAM'))
 /// becomes `features.chart_name`.
 const MIGRATION_3: &str = "ALTER TABLE features ADD COLUMN IF NOT EXISTS chart_name VARCHAR NULL;";
 
-const MIGRATIONS: [Migration; 2] = [
+/// The change history (`docs/change_reports.md`). No foreign key to `charts`: a deleted chart's
+/// history outlives it. `day` is the UTC date of `occurred_at`, stored, so grouping never
+/// depends on the session time zone.
+const MIGRATION_4: &str = r#"
+CREATE TABLE IF NOT EXISTS change_events
+(
+    id                   BIGSERIAL PRIMARY KEY,
+    occurred_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+    day                  DATE        NOT NULL GENERATED ALWAYS AS ((occurred_at AT TIME ZONE 'UTC')::date) STORED,
+    kind                 VARCHAR     NOT NULL CHECK (kind IN ('chart', 'base_map', 'all')),
+    name                 VARCHAR     NOT NULL,
+    outcome              VARCHAR     NOT NULL CHECK (outcome IN ('new', 'update', 'delete', 'nuke', 'error')),
+    attempted            VARCHAR     NULL     CHECK (attempted IN ('new', 'update', 'delete', 'nuke')),
+    feature_count_change BIGINT      NOT NULL,
+    cause                VARCHAR     NOT NULL CHECK (cause IN ('admin', 'noaa_enc_cron')),
+    message              VARCHAR     NULL,
+    zip_file             VARCHAR     NULL
+);
+CREATE INDEX IF NOT EXISTS change_events_day_idx ON change_events (day DESC, id);
+"#;
+
+const MIGRATIONS: [Migration; 3] = [
     Migration {
         version: 2,
         sql: MIGRATION_2,
@@ -147,6 +168,11 @@ const MIGRATIONS: [Migration; 2] = [
         version: 3,
         sql: MIGRATION_3,
         action: Some(Action::MigrateFeaturesToChartName),
+    },
+    Migration {
+        version: 4,
+        sql: MIGRATION_4,
+        action: None,
     },
 ];
 
@@ -210,6 +236,22 @@ CREATE TABLE IF NOT EXISTS base_features
 );
 CREATE INDEX IF NOT EXISTS base_features_gist ON base_features USING GIST (geom);
 CREATE INDEX IF NOT EXISTS base_features_scale_idx ON base_features (scale);
+
+CREATE TABLE IF NOT EXISTS change_events
+(
+    id                   BIGSERIAL PRIMARY KEY,
+    occurred_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+    day                  DATE        NOT NULL GENERATED ALWAYS AS ((occurred_at AT TIME ZONE 'UTC')::date) STORED,
+    kind                 VARCHAR     NOT NULL CHECK (kind IN ('chart', 'base_map', 'all')),
+    name                 VARCHAR     NOT NULL,
+    outcome              VARCHAR     NOT NULL CHECK (outcome IN ('new', 'update', 'delete', 'nuke', 'error')),
+    attempted            VARCHAR     NULL     CHECK (attempted IN ('new', 'update', 'delete', 'nuke')),
+    feature_count_change BIGINT      NOT NULL,
+    cause                VARCHAR     NOT NULL CHECK (cause IN ('admin', 'noaa_enc_cron')),
+    message              VARCHAR     NULL,
+    zip_file             VARCHAR     NULL
+);
+CREATE INDEX IF NOT EXISTS change_events_day_idx ON change_events (day DESC, id);
 "#;
 
 /// The final swap of migration 3, one implicit transaction.

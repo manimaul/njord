@@ -2181,6 +2181,7 @@ dependencies = [
  "geojson",
  "geozero",
  "indexmap",
+ "jiff",
  "njord-geo",
  "njord-model",
  "njord-s57",

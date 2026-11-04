@@ -30,9 +30,11 @@
 //! # Write path
 //!
 //! Every mutating verb (chart and GeoJSON insert, chart, cache and nuke deletes, uploads, region
-//! re-render, the region archive download, the status socket) is behind the admin signature check
-//! ([`handlers::Signed`], [`signature`]): an empty 401 without a valid signature. `GET /v1/admin`
-//! mints signatures behind basic auth; `POST /v1/admin/verify` refreshes one.
+//! re-render, the region archive download, the status socket) and the change report routes
+//! ([`handlers::change_reports`]) are behind the admin signature check ([`handlers::Signed`],
+//! [`signature`]): an empty 401 without a valid signature. `GET /v1/admin` mints signatures
+//! behind basic auth; `POST /v1/admin/verify` refreshes one. Every change the write path makes
+//! is recorded in the change history (`docs/change_reports.md`).
 //!
 //! # Ingest and region export
 //!
@@ -71,8 +73,8 @@ pub use config::ChartsConfig;
 pub use state::AppState;
 
 use handlers::{
-    about, admin, api, cache, charts, content, enc_save, enc_url, feature, geojson, icon, nuke,
-    regions as region_routes, sector_svg, style, tile, tile_json, web, ws,
+    about, admin, api, cache, change_reports, charts, content, enc_save, enc_url, feature, geojson,
+    icon, nuke, regions as region_routes, sector_svg, style, tile, tile_json, web, ws,
 };
 
 /// Connections the server keeps to PostgreSQL.
@@ -174,6 +176,11 @@ pub fn router(state: Arc<AppState>) -> Router {
         )
         .route("/v1/chart_catalog", api(get(charts::chart_catalog)))
         .route("/v1/chart_editions", api(get(charts::chart_editions)))
+        .route("/v1/change_reports", api(get(change_reports::days)))
+        .route(
+            "/v1/change_reports/{date}",
+            api(get(change_reports::report)),
+        )
         .route(
             "/v1/geojson",
             api(get(geojson::geojson).post(geojson::insert)),

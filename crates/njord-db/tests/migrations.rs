@@ -1,9 +1,12 @@
 //! The schema contract.
 //!
 //! An empty database is provisioned at the current version and matches `db/schema.json`; a version-1 database (surrogate `charts.id`,
-//! `features.chart_id`, no `ingested_at`, no `region_export_state`, `lnam_refs` never written)
-//! migrates in order with its data kept and ends with the same schema; re-running and racing
-//! runners are no-ops.
+//! `features.chart_id`, no `ingested_at`, no `region_export_state`, no `change_events`,
+//! `lnam_refs` never written) migrates in order with its data kept and ends with the same
+//! schema; re-running and racing runners are no-ops.
+//!
+//! `NJORD_SCHEMA_DUMP=1` prints the fresh database's schema as the fixture's `cases`, to paste
+//! into `db/schema.json` after a schema change.
 
 mod common;
 
@@ -13,12 +16,13 @@ use njord_testdata::{Failures, cases, first_difference, strip_nulls};
 use serde_json::{Value, json};
 use sqlx::Row;
 
-const TABLES: [&str; 5] = [
+const TABLES: [&str; 6] = [
     "meta_data",
     "charts",
     "features",
     "base_features",
     "region_export_state",
+    "change_events",
 ];
 
 /// The columns (udt, nullability, default), `pg_indexes` definitions and
@@ -66,6 +70,16 @@ async fn schema_of(db: &Db, table: &str) -> Value {
 }
 
 async fn check_schema(db: &Db, label: &str, failures: &mut Failures) -> usize {
+    if std::env::var("NJORD_SCHEMA_DUMP").is_ok_and(|v| v == "1") {
+        let mut dump = Vec::new();
+        for table in TABLES {
+            dump.push(json!({ "input": table, "expected": schema_of(db, table).await }));
+        }
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&Value::Array(dump)).unwrap()
+        );
+    }
     let cases = cases("db/schema.json");
     assert_eq!(
         cases
@@ -93,12 +107,12 @@ async fn empty_database_is_provisioned_at_the_current_version() {
     );
     migrate(&db).await;
     assert_eq!(db.db_version().await.unwrap(), CURRENT_VERSION);
-    assert_eq!(CURRENT_VERSION, 3, "bump together with db/schema.json");
+    assert_eq!(CURRENT_VERSION, 4, "bump together with db/schema.json");
     let value: String = sqlx::query_scalar("SELECT value FROM meta_data WHERE key = 'version';")
         .fetch_one(db.pool())
         .await
         .unwrap();
-    assert_eq!(value, "3", "the schema version row other deployments read");
+    assert_eq!(value, "4", "the schema version row other deployments read");
 
     let mut failures = Failures::default();
     let checked = check_schema(&db, "fresh", &mut failures).await;

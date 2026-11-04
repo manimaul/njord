@@ -20,7 +20,10 @@ ENC_CRON_OPTS='{"chartEditionsUrl":"http://localhost:9000/v1/chart_editions","ch
 ```
 
 `chartTempData` must be the server's own `chartTempData`: bundles are renamed into its `save/` directory, where the
-ingest worker picks them up.
+ingest worker picks them up. Each bundle is published with a `<bundle>.meta.json` sidecar
+(`{"cause":"noaa_enc_cron"}`), written before the bundle is renamed in, so the server's change
+report ([docs/change_reports.md](../../docs/change_reports.md)) attributes every chart in it to the
+cron rather than to the admin.
 
 Every run also reports charts Njord holds that the catalog no longer lists - withdrawn cells, or
 cells ingested from somewhere other than NOAA:
@@ -37,8 +40,9 @@ The list is capped at 50 names per run.
 ## Deleting withdrawn charts
 
 With `deleteOrphans` (default true) and admin credentials configured, those charts are then
-removed via `DELETE /v1/chart?name=...`, which also drops the tile cache and marks any region
-archive containing them for re-export. Credentials come from the environment so a Kubernetes
+removed via `DELETE /v1/chart?name=...&cause=noaa_enc_cron`, which also drops the tile cache,
+marks any region archive containing them for re-export, and records the delete under the cron's
+name in the change report. Credentials come from the environment so a Kubernetes
 secret can supply them without a password inside the `ENC_CRON_OPTS` blob:
 
 ```bash

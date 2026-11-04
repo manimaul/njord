@@ -14,6 +14,7 @@
 //! - [`ws`]: ingest progress messages ([`WsMsg`]).
 //! - [`admin`], [`about`], [`region`] and [`s57`]: admin tokens, server metadata, the region
 //!   archive manifest and the S-57 object catalogue.
+//! - [`change_report`]: the history of chart and base map changes ([`ChangeReport`]).
 //! - [`instant`] and [`sector_svg`]: the timestamp wire format and the light sector icon, both
 //!   shared by the server and the web UI.
 //!
@@ -46,6 +47,7 @@
 
 pub mod about;
 pub mod admin;
+pub mod change_report;
 pub mod chart;
 pub mod colors;
 pub mod feature;
@@ -59,6 +61,10 @@ pub mod ws;
 
 pub use about::{AboutJson, TileJson};
 pub use admin::{AdminResponse, AdminSignature};
+pub use change_report::{
+    ChangeCause, ChangeCounts, ChangeItem, ChangeKind, ChangeOutcome, ChangeReport,
+    ChangeReportDay, ChangeReportPage, UploadMeta,
+};
 pub use chart::{
     Chart, ChartCatalog, ChartEditions, ChartFeatureInfo, ChartInsert, ChartItem, EncUpload,
     EncUrlRequest, TileCacheCounts,

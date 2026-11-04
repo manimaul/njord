@@ -42,6 +42,12 @@ pub trait EncTransport {
     ) -> Result<bool, Error>;
 }
 
+/// `DELETE /v1/chart?name=&cause=noaa_enc_cron&signature=`: the orphan delete, attributed to
+/// the cron.
+pub fn delete_chart_url(base_url: &str, name: &str, signature: &str) -> String {
+    format!("{base_url}/v1/chart?name={name}&cause=noaa_enc_cron&signature={signature}")
+}
+
 pub struct EncHttp<'a> {
     config: &'a EncCronConfig,
     client: reqwest::Client,
@@ -200,6 +206,7 @@ impl EncTransport for EncHttp<'_> {
     }
 
     /// The URL is assembled by hand because `signature` arrives already URL encoded.
+    /// `cause=noaa_enc_cron` attributes the delete to the cron in the change report.
     async fn delete_chart(
         &self,
         base_url: &str,
@@ -209,14 +216,25 @@ impl EncTransport for EncHttp<'_> {
         self.with_retry(&format!("delete chart {name}"), || async {
             let response = self
                 .client
-                .delete(format!(
-                    "{base_url}/v1/chart?name={name}&signature={signature}"
-                ))
+                .delete(delete_chart_url(base_url, name, signature))
                 .send()
                 .await?
                 .error_for_status()?;
             Ok(response.status() == StatusCode::ACCEPTED)
         })
         .await
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::delete_chart_url;
+
+    #[test]
+    fn delete_names_the_cron_as_the_cause() {
+        assert_eq!(
+            delete_chart_url("https://njord.test", "US5WA22M.000", "sig%3D"),
+            "https://njord.test/v1/chart?name=US5WA22M.000&cause=noaa_enc_cron&signature=sig%3D"
+        );
     }
 }

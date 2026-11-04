@@ -12,13 +12,13 @@ use crate::geometry::{from_wkb, to_wkb};
 use crate::{Db, Result};
 
 impl Db {
-    /// Removes one shapefile's features; whether any existed.
+    /// Removes one shapefile's features and returns how many there were.
     ///
     /// # Errors
     ///
     /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
     /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
-    pub async fn delete_base_features(&self, name: &str, scale: i32) -> Result<bool> {
+    pub async fn delete_base_features(&self, name: &str, scale: i32) -> Result<u64> {
         let mut conn = self.conn().await?;
         let deleted = sqlx::query("DELETE FROM base_features WHERE name = $1 AND scale = $2;")
             .bind(name)
@@ -26,7 +26,26 @@ impl Db {
             .execute(&mut *conn)
             .await?
             .rows_affected();
-        Ok(deleted > 0)
+        Ok(deleted)
+    }
+
+    /// The number of rows one shapefile (`name` at `scale`) has.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
+    pub async fn base_feature_count(&self, name: &str, scale: i32) -> Result<i64> {
+        let mut conn = self.conn().await?;
+        Ok(
+            sqlx::query_scalar(
+                "SELECT count(*) FROM base_features WHERE name = $1 AND scale = $2;",
+            )
+            .bind(name)
+            .bind(scale)
+            .fetch_one(&mut *conn)
+            .await?,
+        )
     }
 
     /// Inserts one base feature, geometry forced 2D in EPSG:4326, and returns the rows written.

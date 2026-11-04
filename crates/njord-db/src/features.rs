@@ -117,6 +117,18 @@ impl FeatureInstall {
         Ok(n)
     }
 
+    /// Records `event` in this transaction, so it commits or rolls back with the features.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Sql`] when the insert fails; the transaction is then aborted like a failed
+    /// [`insert`](Self::insert).
+    pub async fn record(&mut self, event: &crate::NewChangeEvent) -> Result<i64> {
+        crate::record_change_event(&mut self.tx, event)
+            .await
+            .inspect_err(|_| self.failed = true)
+    }
+
     /// Commits and returns the number of features installed: the count ingest reports.
     ///
     /// # Errors

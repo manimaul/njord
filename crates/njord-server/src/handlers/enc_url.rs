@@ -3,7 +3,8 @@
 //!
 //! A non-2xx response is never saved (`error_for_status`), and the completed temp file must
 //! start with the zip magic before it is renamed to `<name>.zip`; otherwise it is deleted and the
-//! failure logged, so an error page never reaches the ingest worker.
+//! failure logged, so an error page never reaches the ingest worker. The `admin` cause sidecar
+//! ([`crate::ingest::cause`]) is written before the rename.
 
 use std::sync::Arc;
 
@@ -13,10 +14,11 @@ use axum::extract::rejection::JsonRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use futures_util::StreamExt;
-use njord_model::{EncUpload, EncUrlRequest};
+use njord_model::{ChangeCause, EncUpload, EncUrlRequest};
 use tokio::io::AsyncWriteExt;
 
 use super::Signed;
+use crate::ingest::cause;
 use crate::state::AppState;
 
 /// The name a download is saved under: the URL's last path segment, without a query string,
@@ -105,6 +107,9 @@ async fn fetch(state: &AppState, url: &str, name: &str) -> Result<(), String> {
         if !looks_like_zip(&head) {
             return Err("response is not a zip archive".to_owned());
         }
+        cause::write_sidecar(&state.save_dir, name, ChangeCause::Admin)
+            .await
+            .map_err(|e| e.to_string())?;
         tokio::fs::rename(&tmp, state.save_dir.join(name))
             .await
             .map_err(|e| e.to_string())?;
@@ -114,6 +119,7 @@ async fn fetch(state: &AppState, url: &str, name: &str) -> Result<(), String> {
     let outcome = result.await;
     if outcome.is_err() {
         let _ = tokio::fs::remove_file(&tmp).await;
+        let _ = tokio::fs::remove_file(cause::sidecar_path(&state.save_dir, name)).await;
     }
     outcome
 }

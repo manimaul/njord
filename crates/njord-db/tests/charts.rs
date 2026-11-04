@@ -106,14 +106,23 @@ async fn delete_cascades_and_reports_whether_a_chart_existed() {
         .await
         .unwrap();
     add_feature(&db, "b.000", "BOYLAT", "L3", &[], "POINT(0 0)").await;
-    assert!(db.delete_chart("b.000").await.unwrap());
+    assert_eq!(
+        db.delete_chart("b.000", None).await.unwrap(),
+        Some(1),
+        "its one feature"
+    );
     assert!(db.find_chart("b.000").await.unwrap().is_none());
     assert_eq!(db.feature_count("b.000").await.unwrap(), 0);
     assert!(
-        !db.delete_chart("b.000").await.unwrap(),
+        db.delete_chart("b.000", None).await.unwrap().is_none(),
         "unknown name -> false"
     );
-    assert!(!db.delete_chart("never-existed.000").await.unwrap());
+    assert!(
+        db.delete_chart("never-existed.000", None)
+            .await
+            .unwrap()
+            .is_none()
+    );
     drop_database(db).await;
 }
 
@@ -496,18 +505,24 @@ async fn base_features_and_truncate() {
         db.delete_base_features("ne_coast.shp", 110_000_000)
             .await
             .unwrap()
+            > 0
     );
-    assert!(
-        !db.delete_base_features("ne_coast.shp", 110_000_000)
+    assert_eq!(
+        db.delete_base_features("ne_coast.shp", 110_000_000)
             .await
-            .unwrap()
+            .unwrap(),
+        0
     );
 
     db.insert_chart(&chart("t.000", 10000, Some(SQUARE)), true)
         .await
         .unwrap();
     add_feature(&db, "t.000", "BOYLAT", "L1", &[], "POINT(0 0)").await;
-    db.truncate_all().await.unwrap();
+    assert_eq!(
+        db.truncate_all().await.unwrap(),
+        2,
+        "the chart's feature and the 1:50m base feature"
+    );
     assert_eq!(db.list_charts(None).await.unwrap().total_chart_count, 0);
     assert!(
         db.find_base_features(50_000_000, &include)

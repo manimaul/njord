@@ -1,15 +1,18 @@
 //! Natural Earth base map ingest: a zip of shapefiles, installed as `base_features` rows.
 //!
 //! Each shapefile replaces the rows of its file name and scale. Progress, abort and clean-up
-//! follow [`super::chart`].
+//! follow [`super::chart`]. One change event is recorded per shapefile once it finishes (the
+//! inserts are not one transaction): `new` or `update` with the measured change, or `error`
+//! when it failed to open, was aborted, or any row failed to insert.
 
 use std::path::{Path, PathBuf};
 
-use njord_model::WsMsg;
+use njord_db::NewChangeEvent;
+use njord_model::{ChangeKind, WsMsg};
 use njord_s57::{Shapefile, normalize_layer_name, scale_from_filename};
 
 use super::Report;
-use super::chart::{file_name, unzip};
+use super::chart::{Upload, file_name, unzip};
 use crate::state::AppState;
 
 /// Ingests the Natural Earth zip `<claim_dir>/<zip_file>`, which the worker claimed while it held
@@ -58,6 +61,7 @@ async fn ingest_internal(
     zip_file: &str,
 ) -> Result<Report, String> {
     tracing::info!("ingesting Natural Earth upload {zip_file}");
+    let upload = Upload::read(claim_dir, zip_file);
     let files: Vec<PathBuf> = unzip(state, claim_dir, zip_file)
         .await?
         .into_iter()
@@ -97,27 +101,69 @@ async fn ingest_internal(
             report.abort();
             return Ok(report);
         }
-        match shp {
-            Some(shp) => process_shapefile(state, shp, &name, &mut report).await,
-            None => report.fail_chart(&name, "failed to open"),
-        }
+        let event = match shp {
+            Some(shp) => process_shapefile(state, shp, &name, &mut report, upload).await,
+            None => {
+                report.fail_chart(&name, "failed to open");
+                let scale = scale_from_filename(&name);
+                let before = state
+                    .db
+                    .base_feature_count(&name, scale)
+                    .await
+                    .ok()
+                    .filter(|&n| n > 0);
+                NewChangeEvent::install_failed(
+                    ChangeKind::BaseMap,
+                    &name,
+                    before,
+                    before.unwrap_or(0),
+                    upload.cause,
+                    "failed to open",
+                )
+            }
+        };
+        upload.record(state, event).await;
         report.completed_chart();
     }
     Ok(report)
 }
 
 /// Deletes the shapefile's previous rows, then inserts every layer's repaired
-/// features under its normalised layer name.
-async fn process_shapefile(state: &AppState, shp: Shapefile, name: &str, report: &mut Report) {
+/// features under its normalised layer name. Returns the shapefile's change event.
+async fn process_shapefile(
+    state: &AppState,
+    shp: Shapefile,
+    name: &str,
+    report: &mut Report,
+    upload: Upload<'_>,
+) -> NewChangeEvent {
     let scale = scale_from_filename(name);
-    if let Err(e) = state.db.delete_base_features(name, scale).await {
-        tracing::error!("{name}: delete: {e}");
-    }
+    let before = match state.db.delete_base_features(name, scale).await {
+        Ok(deleted) => (deleted > 0).then_some(deleted as i64),
+        Err(e) => {
+            tracing::error!("{name}: delete: {e}");
+            None
+        }
+    };
+    let mut after = 0i64;
+    let mut failed = 0i64;
+    let mut total = 0i64;
+    let event = |after: i64, failure: Option<String>| match failure {
+        None => NewChangeEvent::installed(ChangeKind::BaseMap, name, before, after, upload.cause),
+        Some(message) => NewChangeEvent::install_failed(
+            ChangeKind::BaseMap,
+            name,
+            before,
+            after,
+            upload.cause,
+            &message,
+        ),
+    };
     let mut shp = shp;
     for layer in shp.layer_names() {
         if !state.lock.acquired() {
             report.abort();
-            return;
+            return event(after, Some("aborted".to_owned()));
         }
         let layer_name = normalize_layer_name(&layer);
         let (returned, rows) = tokio::task::spawn_blocking(move || {
@@ -137,6 +183,7 @@ async fn process_shapefile(state: &AppState, shp: Shapefile, name: &str, report:
         .expect("reading a shapefile layer does not panic");
         shp = returned;
         let mut count = 0i64;
+        total += rows.len() as i64;
         for (props, wkb) in &rows {
             if !state.lock.acquired() {
                 report.abort();
@@ -148,14 +195,22 @@ async fn process_shapefile(state: &AppState, shp: Shapefile, name: &str, report:
                 .await
             {
                 Ok(n) => count += n as i64,
-                Err(e) => tracing::error!("{name} {layer_name}: {e}"),
+                Err(e) => {
+                    failed += 1;
+                    tracing::error!("{name} {layer_name}: {e}");
+                }
             }
         }
         tracing::info!("inserted {count} feature(s) for {name} -> {layer_name}");
         report.append_features(name, count);
+        after += count;
         state.status.write(&report.progress());
         if report.is_aborted() {
-            return;
+            return event(after, Some("aborted".to_owned()));
         }
     }
+    event(
+        after,
+        (failed > 0).then(|| format!("{failed} of {total} features failed to insert")),
+    )
 }

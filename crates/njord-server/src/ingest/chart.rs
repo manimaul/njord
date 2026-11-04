@@ -9,6 +9,11 @@
 //!   overwrite of an existing chart is one transaction in `njord-db`.
 //! - An ingest stops, rolling its chart back, when the lock stops naming this instance (the
 //!   operator's abort, `DELETE /v1/enc_save`).
+//! - Every cell's fate is recorded in the change history (`docs/change_reports.md`) with the
+//!   cause the zip's sidecar names ([`super::cause`]): a success inside the feature transaction,
+//!   so it commits with the features; a failure afterwards, with the change measured from what
+//!   the failure left (a chart row without features is `−before`). Cells an abort never reached
+//!   are not recorded.
 //!
 //! GDAL datasets are `Send` but not `Sync`, so a cell is read on the blocking pool one layer at a
 //! time and handed back; the inserts in between are async. Up to `chartIngestWorkers` cells are
@@ -18,12 +23,54 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
 use futures_util::StreamExt;
-use njord_model::{JsonObject, WsMsg};
+use njord_db::NewChangeEvent;
+use njord_model::{ChangeCause, ChangeKind, JsonObject, WsMsg};
 use njord_s57::{GdalCell, S57Reader};
 
 use super::Report;
+use super::cause;
 use super::zip::{self, ZipError};
 use crate::state::AppState;
+
+/// What every event of one upload shares: its cause and the zip it came from.
+#[derive(Clone, Copy)]
+pub(super) struct Upload<'a> {
+    pub cause: ChangeCause,
+    pub zip_file: &'a str,
+}
+
+impl Upload<'_> {
+    /// Reads the claimed zip's sidecar.
+    pub fn read<'a>(claim_dir: &Path, zip_file: &'a str) -> Upload<'a> {
+        Upload {
+            cause: cause::read_cause(claim_dir, zip_file),
+            zip_file,
+        }
+    }
+
+    /// Writes `event` to the change history on its own connection; a failure is logged.
+    pub async fn record(self, state: &AppState, event: NewChangeEvent) {
+        let event = event.from_zip(self.zip_file);
+        if let Err(e) = state.db.record_change_event(&event).await {
+            tracing::error!("{}: change event {}: {e}", event.name, event.outcome);
+        }
+    }
+
+    /// Records a failed chart install when the chart's `before` is not known yet: it is looked
+    /// up, and nothing has changed.
+    pub async fn record_failure(self, state: &AppState, name: &str, message: &str) {
+        let before = state.db.chart_feature_count(name).await.unwrap_or_default();
+        let event = NewChangeEvent::install_failed(
+            ChangeKind::Chart,
+            name,
+            before,
+            before.unwrap_or(0),
+            self.cause,
+            message,
+        );
+        self.record(state, event).await;
+    }
+}
 
 /// Ingests `<claim_dir>/<zip_file>`, which the worker claimed while it held the lock.
 ///
@@ -73,6 +120,7 @@ async fn ingest_internal(
     zip_file: &str,
 ) -> Result<Report, String> {
     tracing::info!("ingesting enc upload {zip_file}");
+    let upload = Upload::read(claim_dir, zip_file);
     let files = unzip(state, claim_dir, zip_file).await?;
     let cells: Vec<PathBuf> = files
         .into_iter()
@@ -114,8 +162,11 @@ async fn ingest_internal(
             let report = report.clone();
             async move {
                 match cell {
-                    Some(cell) => install_cell(state, cell, &name, &report).await,
-                    None => report.lock().unwrap().fail_chart(&name, "failed to open"),
+                    Some(cell) => install_cell(state, cell, &name, &report, upload).await,
+                    None => {
+                        report.lock().unwrap().fail_chart(&name, "failed to open");
+                        upload.record_failure(state, &name, "failed to open").await;
+                    }
                 }
             }
         })
@@ -171,8 +222,15 @@ pub(super) async fn unzip(
 }
 
 /// Installs one cell: its chart row (overwriting a chart of the same name), then every layer's
-/// features in one transaction. Failures are recorded on the report under the `.000` file name.
-async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mutex<Report>) {
+/// features in one transaction. Failures are recorded on the report under the `.000` file name,
+/// and every outcome in the change history.
+async fn install_cell(
+    state: &AppState,
+    cell: GdalCell,
+    name: &str,
+    report: &Mutex<Report>,
+    upload: Upload<'_>,
+) {
     tracing::info!("inserting chart {name}");
     let (cell, insert) = tokio::task::spawn_blocking(move || {
         let insert = cell.chart_insert();
@@ -184,15 +242,41 @@ async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mut
         Ok(insert) => insert,
         Err(e) => {
             report.lock().unwrap().fail_chart(name, &e.0);
+            upload.record_failure(state, name, &e.0).await;
             return;
         }
     };
-    let chart = match state.db.insert_chart(&insert, true).await {
-        Ok(chart) => chart,
+    let (chart, before) = match state.db.insert_chart_tracked(&insert, true).await {
+        Ok(inserted) => inserted,
         Err(e) => {
             tracing::error!("{name}: chart insert: {e}");
             report.lock().unwrap().fail_chart(name, "chart insert");
+            upload
+                .record_failure(state, &insert.name, &format!("chart insert: {e}"))
+                .await;
             return;
+        }
+    };
+    // From here the chart row is written and its old features are gone, so a failure leaves
+    // `after` at what the database holds (zero, unless something else wrote in between).
+    let chart_name = chart.name.clone();
+    let record_failed = |message: String| {
+        let chart_name = chart_name.clone();
+        async move {
+            let after = state
+                .db
+                .feature_count(&chart_name)
+                .await
+                .map_or(0, i64::from);
+            let event = NewChangeEvent::install_failed(
+                ChangeKind::Chart,
+                &chart_name,
+                before,
+                after,
+                upload.cause,
+                &message,
+            );
+            upload.record(state, event).await;
         }
     };
     let mut install = match state.db.begin_feature_install(&chart.name).await {
@@ -200,6 +284,7 @@ async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mut
         Err(e) => {
             tracing::error!("{name}: {e}");
             report.lock().unwrap().fail_chart(name, "chart insert");
+            record_failed(format!("chart insert: {e}")).await;
             return;
         }
     };
@@ -239,18 +324,46 @@ async fn install_cell(state: &AppState, cell: GdalCell, name: &str, report: &Mut
         if let Err(e) = install.rollback().await {
             tracing::warn!("{name}: rollback: {e}");
         }
-        if let Some(msg) = failed {
-            report.lock().unwrap().fail_chart(name, &msg);
-        }
-    } else {
-        let committed = install.commit().await;
-        let mut r = report.lock().unwrap();
-        match committed {
-            Ok(count) => r.commit_pending(&chart.name, count as i64),
-            Err(e) => {
-                r.drop_pending(&chart.name);
-                r.fail_chart(name, &e.to_string());
+        let message = match failed {
+            Some(msg) => {
+                report.lock().unwrap().fail_chart(name, &msg);
+                msg
             }
+            None => "aborted".to_owned(),
+        };
+        record_failed(message).await;
+    } else {
+        let event = NewChangeEvent::installed(
+            ChangeKind::Chart,
+            &chart.name,
+            before,
+            install.inserted() as i64,
+            upload.cause,
+        )
+        .from_zip(upload.zip_file);
+        let committed = match install.record(&event).await {
+            Ok(_) => install.commit().await,
+            Err(e) => {
+                let _ = install.rollback().await;
+                Err(e)
+            }
+        };
+        let failure = {
+            let mut r = report.lock().unwrap();
+            match committed {
+                Ok(count) => {
+                    r.commit_pending(&chart.name, count as i64);
+                    None
+                }
+                Err(e) => {
+                    r.drop_pending(&chart.name);
+                    r.fail_chart(name, &e.to_string());
+                    Some(e.to_string())
+                }
+            }
+        };
+        if let Some(message) = failure {
+            record_failed(message).await;
         }
     }
     let mut r = report.lock().unwrap();

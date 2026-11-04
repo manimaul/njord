@@ -8,6 +8,7 @@
 pub mod about;
 pub mod admin;
 pub mod cache;
+pub mod change_reports;
 pub mod charts;
 pub mod content;
 pub mod enc_save;

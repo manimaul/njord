@@ -1,5 +1,6 @@
 //! The control panel (`/control/<tab>`) and its tabs: the chart catalog, the chart installer,
-//! and the S-57 symbol, sprite and colour references.
+//! the change report ([`super::change_reports`]), and the S-57 symbol, sprite and colour
+//! references.
 
 use leptos::html;
 use leptos::prelude::*;
@@ -13,13 +14,13 @@ use crate::ui::components::{
     render_async,
 };
 
-struct TabData {
-    key: &'static str,
-    sub_path: Option<&'static str>,
-    title: &'static str,
+pub(super) struct TabData {
+    pub key: &'static str,
+    pub sub_path: Option<&'static str>,
+    pub title: &'static str,
 }
 
-const TABS: [TabData; 5] = [
+pub(super) const TABS: [TabData; 6] = [
     TabData {
         key: "charts_catalog",
         sub_path: None,
@@ -29,6 +30,11 @@ const TABS: [TabData; 5] = [
         key: "charts_installer",
         sub_path: None,
         title: "Chart Installer",
+    },
+    TabData {
+        key: "change_reports",
+        sub_path: None,
+        title: "Change Report",
     },
     TabData {
         key: "symbols",
@@ -49,7 +55,6 @@ const TABS: [TabData; 5] = [
 
 #[component]
 pub fn ControlPanel(tab: String, path: String) -> impl IntoView {
-    let _ = path;
     let s = store();
     let buttons = TABS
         .iter()
@@ -76,6 +81,9 @@ pub fn ControlPanel(tab: String, path: String) -> impl IntoView {
         let page = match t.key {
             "charts_catalog" => view! { <ChartCatalogTab/> }.into_any(),
             "charts_installer" => view! { <ChartInstaller/> }.into_any(),
+            "change_reports" => {
+                view! { <super::change_reports::ChangeReportsTab path=path.clone()/> }.into_any()
+            }
             "symbols" => view! { <Symbols/> }.into_any(),
             "sprites" => view! { <Sprites/> }.into_any(),
             _ => view! { <Colors/> }.into_any(),
@@ -599,5 +607,28 @@ fn Colors() -> impl IntoView {
                 })
             }}
         </div>
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::TABS;
+
+    #[test]
+    fn the_change_report_is_a_tab_with_no_default_sub_path() {
+        let keys: Vec<&str> = TABS.iter().map(|t| t.key).collect();
+        assert_eq!(
+            keys,
+            [
+                "charts_catalog",
+                "charts_installer",
+                "change_reports",
+                "symbols",
+                "sprites",
+                "colors"
+            ]
+        );
+        let tab = TABS.iter().find(|t| t.key == "change_reports").unwrap();
+        assert_eq!((tab.title, tab.sub_path), ("Change Report", None));
     }
 }

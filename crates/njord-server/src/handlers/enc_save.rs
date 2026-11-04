@@ -9,9 +9,10 @@ use axum::body::Bytes;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
-use njord_model::{EncUpload, WsMsg};
+use njord_model::{ChangeCause, EncUpload, WsMsg};
 
 use super::{Signed, query_param};
+use crate::ingest::cause;
 use crate::state::AppState;
 
 /// Whether `name` is a file name an upload may be saved under.
@@ -31,7 +32,8 @@ pub fn valid_upload_name(name: &str) -> bool {
 /// `POST /v1/enc_save?filename=`: stores the body as `<save>/<filename>` for the ingest worker.
 ///
 /// The body is written to `<filename>.tmp` and renamed, so the ingest worker never claims a
-/// partial upload. Answers `{"zipFile": filename}`.
+/// partial upload; the `admin` cause sidecar ([`crate::ingest::cause`]) is written before the
+/// rename. Answers `{"zipFile": filename}`.
 ///
 /// The upload does not clear the lock, so an ingest in flight continues and this zip waits its
 /// turn; `Extracting(0)` is announced only when nothing is running. A missing `filename` is
@@ -53,6 +55,7 @@ pub async fn upload(
     let result = async {
         tokio::fs::create_dir_all(&state.save_dir).await?;
         tokio::fs::write(&tmp, &body).await?;
+        cause::write_sidecar(&state.save_dir, name, ChangeCause::Admin).await?;
         if state.lock.is_free() {
             state
                 .status
@@ -68,6 +71,7 @@ pub async fn upload(
         Err(e) => {
             tracing::error!("enc_save {name}: {e}");
             let _ = tokio::fs::remove_file(&tmp).await;
+            let _ = tokio::fs::remove_file(cause::sidecar_path(&state.save_dir, name)).await;
             StatusCode::INTERNAL_SERVER_ERROR.into_response()
         }
     }
@@ -75,9 +79,9 @@ pub async fn upload(
 
 /// `DELETE /v1/enc_save`: the operator's reset.
 ///
-/// Clears the lock (aborting any ingest in flight, whoever holds it), empties `save/` and
-/// `ingest/`, writes `Idle`, answers 202. 200 when the lock could not be cleared, with nothing
-/// else changed (the status the existing clients expect).
+/// Clears the lock (aborting any ingest in flight, whoever holds it), empties `save/` (the
+/// cause sidecars with the zips) and `ingest/`, writes `Idle`, answers 202. 200 when the lock
+/// could not be cleared, with nothing else changed (the status the existing clients expect).
 pub async fn reset(_: Signed, State(state): State<Arc<AppState>>) -> StatusCode {
     if !state.lock.try_clear() {
         return StatusCode::OK;

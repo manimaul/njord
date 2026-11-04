@@ -149,18 +149,20 @@ fn with_assoc(feature: &mut ChartFeature, by_lnam: &HashMap<String, Vec<String>>
     }
 }
 
-/// Deletes the chart's features, then the chart; whether a chart row was deleted.
-async fn delete_chart(conn: &mut PgConnection, name: &str) -> Result<bool> {
-    sqlx::query("DELETE FROM features WHERE chart_name = $1;")
+/// Deletes the chart's features, then the chart: the number of features deleted when a chart
+/// row was deleted, `None` when none had that name.
+async fn delete_chart(conn: &mut PgConnection, name: &str) -> Result<Option<i64>> {
+    let features = sqlx::query("DELETE FROM features WHERE chart_name = $1;")
         .bind(name)
         .execute(&mut *conn)
-        .await?;
+        .await?
+        .rows_affected();
     let deleted = sqlx::query("DELETE FROM charts WHERE name = $1;")
         .bind(name)
         .execute(&mut *conn)
         .await?
         .rows_affected();
-    Ok(deleted > 0)
+    Ok((deleted > 0).then_some(features as i64))
 }
 
 impl Db {
@@ -395,10 +397,29 @@ impl Db {
     /// without `overwrite`), and [`Error::Json`](crate::Error::Json) or
     /// [`Error::Geometry`](crate::Error::Geometry) when the row does not encode or decode.
     pub async fn insert_chart(&self, insert: &ChartInsert, overwrite: bool) -> Result<Chart> {
+        self.insert_chart_tracked(insert, overwrite)
+            .await
+            .map(|(chart, _)| chart)
+    }
+
+    /// [`insert_chart`](Db::insert_chart), also returning the feature count of the chart it
+    /// replaced: `None` when no chart of that name existed, which is what decides whether the
+    /// change is recorded as `new` or `update` and gives its `before`.
+    ///
+    /// # Errors
+    ///
+    /// As [`insert_chart`](Db::insert_chart).
+    pub async fn insert_chart_tracked(
+        &self,
+        insert: &ChartInsert,
+        overwrite: bool,
+    ) -> Result<(Chart, Option<i64>)> {
         let mut tx = self.begin().await?;
-        if overwrite {
-            delete_chart(&mut tx, &insert.name).await?;
-        }
+        let before = if overwrite {
+            delete_chart(&mut tx, &insert.name).await?
+        } else {
+            None
+        };
         let covr = insert
             .covr
             .geometry
@@ -423,20 +444,30 @@ impl Db {
         .await?;
         let chart = chart_from_row(&row, Vec::new(), 0)?;
         tx.commit().await?;
-        Ok(chart)
+        Ok((chart, before))
     }
 
-    /// Deletes the chart named `name` (`DSID_DSNM`) and its features, in one transaction.
+    /// Deletes the chart named `name` (`DSID_DSNM`) and its features, in one transaction, and
+    /// with `record` writes the `delete` change event of `cause` in it.
     ///
-    /// Returns `false` when no chart had that name.
+    /// Returns the number of features deleted, or `None` when no chart had that name, in which
+    /// case nothing is recorded either.
     ///
     /// # Errors
     ///
     /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
     /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
-    pub async fn delete_chart(&self, name: &str) -> Result<bool> {
+    pub async fn delete_chart(
+        &self,
+        name: &str,
+        record: Option<njord_model::ChangeCause>,
+    ) -> Result<Option<i64>> {
         let mut tx = self.begin().await?;
         let deleted = delete_chart(&mut tx, name).await?;
+        if let (Some(before), Some(cause)) = (deleted, record) {
+            let event = crate::NewChangeEvent::deleted(name, before, cause);
+            crate::record_change_event(&mut tx, &event).await?;
+        }
         tx.commit().await?;
         Ok(deleted)
     }
@@ -450,6 +481,24 @@ impl Db {
     pub async fn feature_count(&self, chart_name: &str) -> Result<i32> {
         let mut conn = self.conn().await?;
         feature_count(&mut conn, chart_name).await
+    }
+
+    /// The feature count of the chart named `chart_name`, or `None` when no chart has that
+    /// name: the `before` of a change event when the change has not happened yet.
+    ///
+    /// # Errors
+    ///
+    /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
+    /// [`Error::Sql`](crate::Error::Sql) when a statement fails.
+    pub async fn chart_feature_count(&self, chart_name: &str) -> Result<Option<i64>> {
+        let mut conn = self.conn().await?;
+        Ok(sqlx::query_scalar(
+            "SELECT (SELECT count(*) FROM features WHERE chart_name = $1)
+             WHERE EXISTS (SELECT 1 FROM charts WHERE name = $1);",
+        )
+        .bind(chart_name)
+        .fetch_optional(&mut *conn)
+        .await?)
     }
 }
 

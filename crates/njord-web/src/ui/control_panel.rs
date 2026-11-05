@@ -281,14 +281,15 @@ pub fn format_hms(ms: i64) -> String {
 }
 
 /// The finished ingest: a summary (features and charts installed against what the archive
-/// held, and how long it took), the installed charts by name with their feature counts, and
-/// the cells that failed, if any.
+/// held, and how long it took) with the Reset button (`reset`) under it, then the installed
+/// charts by name with their feature counts, and the cells that failed, if any.
 fn completion_view(
     total_feature_count: i64,
     total_chart_count: i32,
     items: &[InsertItem],
     failed_charts: &[String],
     ms: i64,
+    reset: AnyView,
 ) -> AnyView {
     let mut items: Vec<&InsertItem> = items.iter().collect();
     items.sort_by(|a, b| a.chart_name.cmp(&b.chart_name));
@@ -323,6 +324,7 @@ fn completion_view(
                 <tr><th>"Time taken"</th><td>{format_hms(ms)}</td></tr>
             </tbody>
         </table>
+        <div class="mb-4">{reset}</div>
         <table class="nj-table nj-table-striped">
             <thead><tr><th>"Chart"</th><th>"Features"</th></tr></thead>
             <tbody>{rows}</tbody>
@@ -334,7 +336,23 @@ fn completion_view(
 
 fn install_progress(state: &InstallState) -> AnyView {
     let s = store();
-    let (status, working) = match &state.info {
+    let working = matches!(
+        state.info,
+        Some(WsMsg::Extracting { .. } | WsMsg::Info { .. })
+    );
+    // "Abort" while the ingest runs (confirmed in the modal), "Reset" once it is done.
+    let button = move || {
+        view! {
+            <button
+                class="nj-btn nj-btn-danger"
+                on:click=move |_| if working { modal_show() } else { s.reset_install() }
+            >
+                {if working { "Abort" } else { "Reset" }}
+            </button>
+        }
+        .into_any()
+    };
+    let (status, below) = match &state.info {
         Some(WsMsg::CompletionReport {
             total_feature_count,
             total_chart_count,
@@ -348,15 +366,16 @@ fn install_progress(state: &InstallState) -> AnyView {
                 items,
                 failed_charts,
                 *ms,
+                button(),
             ),
-            false,
+            None,
         ),
-        Some(msg @ WsMsg::Error { .. }) => (ws_msg_to_string(msg).into_any(), false),
+        Some(msg @ WsMsg::Error { .. }) => (ws_msg_to_string(msg).into_any(), Some(button())),
         Some(WsMsg::Extracting { progress }) => {
             let p = (*progress as f64 * 100.0) as i32;
             (
                 view! { <Progress title="Extracting chart files" progress=p/> }.into_any(),
-                true,
+                Some(button()),
             )
         }
         Some(WsMsg::Info {
@@ -371,10 +390,10 @@ fn install_progress(state: &InstallState) -> AnyView {
             );
             (
                 view! { <Progress title=title progress=p/> }.into_any(),
-                true,
+                Some(button()),
             )
         }
-        _ => (().into_any(), false),
+        _ => (().into_any(), Some(button())),
     };
     view! {
         {status}
@@ -391,13 +410,7 @@ fn install_progress(state: &InstallState) -> AnyView {
             </button>
             <button class="nj-btn nj-btn-sm nj-btn-success" on:click=|_| modal_hide()>"Cancel"</button>
         </Modal>
-        <br/>
-        <button
-            class="nj-btn nj-btn-danger"
-            on:click=move |_| if working { modal_show() } else { s.reset_install() }
-        >
-            {if working { "Abort" } else { "Reset" }}
-        </button>
+        {below.map(|b| view! { <br/>{b} })}
     }
     .into_any()
 }

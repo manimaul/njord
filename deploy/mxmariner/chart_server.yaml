@@ -392,3 +392,53 @@ spec:
         - name: njord-shared-data
           persistentVolumeClaim:
             claimName: njord-shared-data
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: oe-cert
+  namespace: mxmariner
+spec:
+  commonName: openenc.com
+  dnsNames:
+    - openenc.com
+    - www.openenc.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: openenc-cert
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openenc-ingress
+  namespace: mxmariner
+spec:
+  ingressClassName: haproxy
+  rules:
+    - host: openenc.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: njord-chart-svc
+                port:
+                  number: 80
+    - host: www.openenc.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: njord-chart-svc
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - openenc.com
+        - www.openenc.com
+      secretName: openenc-cert
+

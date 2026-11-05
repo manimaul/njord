@@ -8,24 +8,25 @@ Keep a durable history of every chart and world base map change, and show it in 
 
 - A new **Change Report** tab under `/control/change_reports` lists dates, 25 per page:
 
-  | Date | Actions | Errors |
-  |---|---|---|
-  | 2026-10-31 | 42 | 1 |
+  | Date (UTC) | Local time | Actions | Errors |
+  |---|---|---|---|
+  | 2026-10-31 | Oct 30, 2026, 5:00 PM PDT – Oct 31, 2026, 5:00 PM PDT | 42 | 1 |
 
-  **Actions** is the number of successful New + Update + Delete + Nuke changes that day. **Errors** is the number of attempted changes that failed.
+  **Local time** is the span the UTC day covers in the browser's time zone. **Actions** is the number of successful New + Update + Delete + Nuke changes that day. **Errors** is the number of attempted changes that failed.
 - Clicking a date opens the **Report** page (`/control/change_reports/2026-10-31`). It shows a count summary (New, Update, Delete, Nuke, Error), then a table of every chart or base map changed or errored that day:
 
-  | Outcome | Chart | Feature Count Change | Cause |
-  |---|---|---|---|
-  | Update | [US1EEZ1M.000](/chart/US1EEZ1M.000) | +312 | NOAA ENC Cron |
-  | New | ne_10m_ocean.shp (base map) | +1 | Admin |
-  | Error | US5WA22M.000 | 0 | Admin |
-  | Nuke | all charts and base maps | −1,204,118 | Admin |
+  | Outcome | Chart | Feature Count Change | Cause | Local time |
+  |---|---|---|---|---|
+  | Update | [US1EEZ1M.000](/chart/US1EEZ1M.000) | +312 | NOAA ENC Cron | Oct 30, 2026, 8:02 PM PDT |
+  | New | ne_10m_ocean.shp (base map) | +1 | Admin | Oct 31, 2026, 9:15 AM PDT |
+  | Error | US5WA22M.000 | 0 | Admin | Oct 31, 2026, 9:20 AM PDT |
+  | Nuke | all charts and base maps | −1,204,118 | Admin | Oct 31, 2026, 10:00 AM PDT |
 
   - **Outcome**: `New`, `Update`, `Delete`, `Nuke` or `Error`.
   - **Chart**: the chart name, linked to `/chart/<name>`. Base maps have no page, so they are shown unlinked with a "(base map)" label. A nuke row reads "all charts and base maps".
   - **Feature Count Change**: the signed change in that chart's or base map's stored feature count.
   - **Cause**: `Admin` or `NOAA ENC Cron`.
+  - **Local time**: `occurredAt` in the browser's time zone and locale (`Date.toLocaleString`), with the zone abbreviation.
 
 Hovering over or expanding an `Error` row shows the stored failure message.
 
@@ -186,7 +187,7 @@ Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v
   - **Date list:** an `nj-table nj-table-striped` table (as in `chart_table`) with columns Date | Actions | Errors. Each date is a `<Link>` to `/control/change_reports/<date>`. "Newer" and "Older" buttons step through the pages, and the current page is kept in the query string (`?page=2`), so the back button and bookmarks work.
   - **Report page:** a row of five count badges (New, Update, Delete, Nuke, Error), then the Outcome | Chart | Feature Count Change | Cause table. Chart names link to `/chart/<name>`; base maps and the nuke row are plain text. Feature counts are signed (`+312`, `−40`, `0`). Error rows are styled `table-danger`, and the message appears in a `title` tooltip and an expandable line. There is a "Back to Change Report" link.
 - `api.rs` gets `change_report_page(signature, page)` and `change_report(signature, date)`, typed through `njord-model` and passing the stored admin signature as `delete_chart` does. `store.rs` gets an `Async<ChangeReportPage>` keyed by page and an `Async<ChangeReport>` keyed by date. They load only when the tab is opened, like the other control-panel loads, and a 401 sends the user to the admin login as the other signed calls do.
-- Dates are UTC. Each date heading is labelled "(UTC)" so viewers in other time zones are not confused.
+- Days are UTC: that is how `change_events.day` groups them and how the URL names them, so each date is labelled "(UTC)". Beside it the browser shows the span that UTC day covers in its own time zone (`utc_day_bounds` in `jiff`, formatted by `Date.toLocaleString` with the zone abbreviation), and each change row shows its `occurredAt` the same way, so a viewer in another time zone can see that a 03:00 UTC cron run was the previous evening locally.
 
 ## 8. Tests
 

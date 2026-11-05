@@ -11,6 +11,7 @@ repository.workspace = true
 # test and clippy runs cover it; only `start` needs a browser.
 [dependencies]
 geojson.workspace = true
+jiff.workspace = true
 js-sys = "0.3"
 leptos = { version = "0.8", features = ["csr"] }
 njord-model.workspace = true

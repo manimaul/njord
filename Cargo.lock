@@ -2316,6 +2316,7 @@ name = "njord-web"
 version = "2.0.0"
 dependencies = [
  "geojson",
+ "jiff",
  "js-sys",
  "leptos",
  "njord-model",

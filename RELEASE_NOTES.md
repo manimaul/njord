@@ -17,7 +17,8 @@
   behind it, `GET /v1/change_reports?page=` and `GET /v1/change_reports/{date}`, require the
   admin signature. Uploads carry a `<zip>.meta.json` sidecar into `save/` naming their cause,
   which `njord-enc-cron` writes for its bundles; its orphan deletes send `cause=noaa_enc_cron`.
-  Days are UTC. See [docs/change_reports.md](docs/change_reports.md).
+  Days are UTC, and the browser shows beside each the span it covers in the viewer's own time
+  zone, and each change's local date and time. See [docs/change_reports.md](docs/change_reports.md).
 - **Rust.** The Kotlin/Native server and Kotlin/JS web UI are replaced by the Cargo workspace in
   `crates/` (`njord-server`, `njord-ingest`, `njord-enc-cron`, and the Leptos `njord-web`), and the
   Gradle build is gone. See [README.md](README.md) and [docs/RUST_PORT_PLAN.md](docs/RUST_PORT_PLAN.md).

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **Dev database is created by the compose file.** `chart_server_db/compose.yaml` now creates
+  `njord_rust` (with PostGIS) on its first start instead of the Kotlin-era `s57server`, and the
+  shipped `resources/config/application.json` points at it (`localhost:6432`, with the dev
+  password) and at `./crates/njord-web/dist`, so `cargo run -p njord-server -- ./crates/njord-server/resources`
+  works from the repository root with no `CHART_SERVER_OPTS`. An existing `chart_server_db/pb/`
+  was initialized with the old database: delete it to get the new one.
 - **Change Report.** Every chart and base map change is now kept in a durable history
   (`change_events`, schema version 4) and shown in the Control Panel's new **Change Report** tab:
   the days with changes, 25 per page, and per day every chart or base map that was added

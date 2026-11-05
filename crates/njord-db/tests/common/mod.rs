@@ -4,7 +4,7 @@
 //! `postgresql://admin:mysecretpassword@localhost:6432`); the role must be allowed to create
 //! databases. Every database the tests touch is named `njord_rust_test*` and is dropped and
 //! recreated (from a PostGIS template) by the test that owns it, so other databases on the same
-//! server (`s57server`, `njord_test`, `njord_conformance`) are never touched. Tests that run in
+//! server (the dev `njord_rust`) are never touched. Tests that run in
 //! parallel each own their database; the seeded ingest database is shared within its test
 //! binary and seeded once.
 

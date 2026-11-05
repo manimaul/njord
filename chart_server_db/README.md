@@ -1,16 +1,19 @@
 # Local Dev
-* url = `postgresql://localhost:6432/s57server`
+* url = `postgresql://admin:mysecretpassword@localhost:6432/njord_rust`
 * username = `admin`
 * password = `mysecretpassword`
-
 
 Rather than installing PostGIS on your development machine just use `podman-compose` to bring up the database running
 in a container with port `6432` exposed to your host network. There is no pgbouncer: the server pools
 connections itself with sqlx.
 ```shell
-podman-compose up
+podman-compose up -d
 ```
-or
+
+The first start (an empty `pb/`, the gitignored data directory) creates the `njord_rust` database with the PostGIS
+extension loaded; this is the database `crates/njord-server/resources/config/application.json` points at. The init
+runs only on an empty data directory, so to start over, stop the container and delete `pb/`. The `njord-db` and
+`njord-server` tests create and drop their own `njord_rust_*` databases on this server and never touch `njord_rust`.
 
 ## Connect Prod db to local dev
 ```shell

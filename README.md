@@ -68,19 +68,23 @@ Logging uses `RUST_LOG` (default `info`), e.g. `RUST_LOG=njord_server=debug`.
 ## Running
 
 ```bash
-# 1. Start the dev PostGIS (PostgreSQL on 6432; admin / mysecretpassword)
+# 1. Start the dev PostGIS (PostgreSQL on 6432; admin / mysecretpassword). The first start
+#    creates the njord_rust database with PostGIS loaded (see chart_server_db/README.md).
 podman machine start
 cd chart_server_db && podman-compose up -d && cd ..
 
-# 2. Create a database
-psql postgresql://admin:mysecretpassword@localhost:6432/postgres -c 'CREATE DATABASE njord_rust'
-psql postgresql://admin:mysecretpassword@localhost:6432/njord_rust -c 'CREATE EXTENSION postgis'
-
-# 3. Build the web UI
+# 2. Build the web UI
 (cd crates/njord-web && trunk build --release)
 
-# 4. Build and run the server
-cargo build --release -p njord-server
+# 3. Build and run the server
+cargo run --release -p njord-server -- ./crates/njord-server/resources
+```
+
+The shipped `application.json` already points at the dev database (`njord_rust` on `localhost:6432`), the web UI
+build (`./crates/njord-web/dist`, relative to the repository root) and `/tmp/njord`, so no override is needed when
+running from the repository root. `CHART_SERVER_OPTS` overrides any of it:
+
+```bash
 CHART_SERVER_OPTS='{
   "pgConnectionInfo": "postgresql://admin:mysecretpassword@localhost:6432/njord_rust",
   "webStaticContent": "./crates/njord-web/dist",
@@ -88,8 +92,10 @@ CHART_SERVER_OPTS='{
 }' ./target/release/njord-server ./crates/njord-server/resources
 ```
 
-The server listens on http://localhost:9000. For development, `cargo run -p njord-server -- ./crates/njord-server/resources`
-works the same way. `webStaticContent` can point at any directory with an `index.html` if only the API is needed.
+The server listens on http://localhost:9000. `webStaticContent` can point at any directory with an `index.html` if
+only the API is needed. A `FATAL: database "njord_rust" does not exist` in the container's log means `pb/` was
+initialized by an older compose file that created `s57server` instead: stop the container, delete
+`chart_server_db/pb/` and start it again.
 
 ### Web UI (`njord-web`)
 

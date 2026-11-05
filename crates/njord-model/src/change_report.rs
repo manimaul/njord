@@ -103,6 +103,9 @@ pub struct ChangeItem {
     pub message: Option<String>,
     #[serde(with = "crate::instant")]
     pub occurred_at: Timestamp,
+    /// Whether a chart of this `name` is installed now (always `false` for a base map or a
+    /// nuke), so a client links only to chart pages that exist.
+    pub installed: bool,
 }
 
 /// One day's report: the whole day's counts and one page of its events.
@@ -159,7 +162,7 @@ mod tests {
 
     #[test]
     fn report_round_trips_with_explicit_nulls() {
-        let json = r#"{"date":"2026-10-31","counts":{"new":1,"update":0,"delete":0,"nuke":0,"error":1},"items":[{"outcome":"new","attempted":null,"kind":"chart","name":"US5WA22M.000","featureCountChange":5158,"cause":"noaa_enc_cron","message":null,"occurredAt":"2026-10-31T12:00:00Z"},{"outcome":"error","attempted":"update","kind":"base_map","name":"ne_10m_ocean.shp","featureCountChange":-3,"cause":"admin","message":"aborted","occurredAt":"2026-10-31T12:00:01.500Z"}],"pageIndex":0,"pageSize":250,"totalItems":2}"#;
+        let json = r#"{"date":"2026-10-31","counts":{"new":1,"update":0,"delete":0,"nuke":0,"error":1},"items":[{"outcome":"new","attempted":null,"kind":"chart","name":"US5WA22M.000","featureCountChange":5158,"cause":"noaa_enc_cron","message":null,"occurredAt":"2026-10-31T12:00:00Z","installed":false},{"outcome":"error","attempted":"update","kind":"base_map","name":"ne_10m_ocean.shp","featureCountChange":-3,"cause":"admin","message":"aborted","occurredAt":"2026-10-31T12:00:01.500Z","installed":false}],"pageIndex":0,"pageSize":250,"totalItems":2}"#;
         let report: ChangeReport = serde_json::from_str(json).unwrap();
         assert_eq!(report.items[1].attempted, Some(ChangeOutcome::Update));
         assert_eq!(serde_json::to_string(&report).unwrap(), json);

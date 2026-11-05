@@ -74,7 +74,7 @@ podman machine start
 cd chart_server_db && podman-compose up -d && cd ..
 
 # 2. Build the web UI
-(cd crates/njord-web && trunk build --release)
+trunk --config crates/njord-web/Trunk.toml build --release
 
 # 3. Build and run the server
 cargo run --release -p njord-server -- ./crates/njord-server/resources

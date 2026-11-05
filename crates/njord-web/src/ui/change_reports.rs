@@ -307,11 +307,14 @@ fn item_row(item: &ChangeItem) -> AnyView {
         }
         (outcome, _) => outcome_name(outcome).to_owned(),
     };
+    // A chart links to its page only while it is installed: a deleted or never-installed chart
+    // has no page to link to.
     let name = match item.kind {
-        ChangeKind::Chart => {
+        ChangeKind::Chart if item.installed => {
             view! { <Link label=item.name.clone() path=format!("/chart/{}", item.name)/> }
                 .into_any()
         }
+        ChangeKind::Chart => item.name.clone().into_any(),
         ChangeKind::BaseMap => format!("{} (base map)", item.name).into_any(),
         ChangeKind::All => "all charts and base maps".into_any(),
     };

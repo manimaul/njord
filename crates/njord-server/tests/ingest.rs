@@ -19,7 +19,7 @@ use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
 use njord_db::Db;
 use njord_db::sqlx::{self, Row, postgres::PgPoolOptions};
-use njord_model::{AdminSignature, ChangeReport, ChangeReportPage, WsMsg};
+use njord_model::{AdminSignature, ChangeKind, ChangeReport, ChangeReportPage, WsMsg};
 use njord_server::AppState;
 use njord_server::ingest::IngestWorker;
 use njord_server::ingest::cause::sidecar_path;
@@ -514,6 +514,13 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     );
     assert_eq!(report.items.len(), 7);
     assert_eq!(report.items[0].name, "BROKEN.000", "errors first");
+    assert!(!report.items[0].installed, "no chart row for a failed cell");
+    assert!(
+        report.items[1..]
+            .iter()
+            .all(|i| i.installed == (i.kind == ChangeKind::Chart)),
+        "every other chart row is installed; a base map never is"
+    );
     assert_eq!(
         (report.page_index, report.page_size, report.total_items),
         (0, 250, 7)

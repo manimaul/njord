@@ -23,7 +23,7 @@ Keep a durable history of every chart and world base map change, and show it in 
   | Nuke | all charts and base maps | −1,204,118 | Admin | Oct 31, 2026, 10:00 AM PDT |
 
   - **Outcome**: `New`, `Update`, `Delete`, `Nuke` or `Error`.
-  - **Chart**: the chart name, linked to `/chart/<name>`. Base maps have no page, so they are shown unlinked with a "(base map)" label. A nuke row reads "all charts and base maps".
+  - **Chart**: the chart name, linked to `/chart/<name>` only while that chart is installed (`installed` on the item, from a join against `charts`); a deleted or never-installed chart is plain text, so the report never links to a page that 404s. Base maps have no page, so they are shown unlinked with a "(base map)" label. A nuke row reads "all charts and base maps".
   - **Feature Count Change**: the signed change in that chart's or base map's stored feature count.
   - **Cause**: `Admin` or `NOAA ENC Cron`.
   - **Local time**: `occurredAt` in the browser's time zone and locale (`Date.toLocaleString`), with the zone abbreviation.
@@ -110,7 +110,8 @@ struct ChangeReportDay  { date: String /* YYYY-MM-DD */, actions: i64, errors: i
 struct ChangeReportPage { page: Vec<ChangeReportDay>, page_index: i32, page_size: i32, total_days: i64 }
 struct ChangeCounts     { new: i64, update: i64, delete: i64, nuke: i64, error: i64 }
 struct ChangeItem       { outcome, attempted: Option<ChangeOutcome>, kind, name, feature_count_change: i64,
-                          cause, message: Option<String>, occurred_at: Timestamp }
+                          cause, message: Option<String>, occurred_at: Timestamp,
+                          installed: bool /* a chart of this name exists now */ }
 struct ChangeReport     { date: String, counts: ChangeCounts /* the whole day */, items: Vec<ChangeItem> /* one page */,
                           page_index: i32, page_size: i32, total_items: i64 }
 ```

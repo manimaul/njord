@@ -196,6 +196,7 @@ fn parse<T: std::str::FromStr>(row: &PgRow, index: usize, what: &str) -> Result<
 fn item(row: &PgRow) -> Result<ChangeItem> {
     let attempted: Option<String> = row.try_get(1)?;
     let micros: i64 = row.try_get(7)?;
+    let installed: bool = row.try_get(8)?;
     Ok(ChangeItem {
         outcome: parse(row, 0, "outcome")?,
         attempted: attempted
@@ -217,6 +218,7 @@ fn item(row: &PgRow) -> Result<ChangeItem> {
                 "change_events.occurred_at {micros}: {e}"
             )))
         })?,
+        installed,
     })
 }
 
@@ -283,7 +285,8 @@ impl Db {
     /// day has no events; a page past the end has the counts and no items.
     ///
     /// Errors come first, then the rest by name and id, so the order is total and offset paging
-    /// is stable. `day` must already be a valid date: the cast fails otherwise.
+    /// is stable. Each item says whether a chart of its name is installed now
+    /// ([`ChangeItem::installed`]). `day` must already be a valid date: the cast fails otherwise.
     ///
     /// # Errors
     ///
@@ -321,12 +324,16 @@ impl Db {
         if total_items == 0 {
             return Ok(None);
         }
+        // `installed` is whether a chart of that name exists now, so the UI links only to chart
+        // pages that exist: a deleted or never-installed chart's rows stay plain text.
         let rows = sqlx::query(
-            "SELECT outcome, attempted, kind, name, feature_count_change, cause, message,
-                    (extract(epoch FROM occurred_at) * 1000000)::bigint
-             FROM change_events
-             WHERE day = $1::date
-             ORDER BY (outcome <> 'error'), name, id
+            "SELECT e.outcome, e.attempted, e.kind, e.name, e.feature_count_change, e.cause,
+                    e.message, (extract(epoch FROM e.occurred_at) * 1000000)::bigint,
+                    (e.kind = 'chart' AND c.name IS NOT NULL)
+             FROM change_events e
+             LEFT JOIN charts c ON e.kind = 'chart' AND c.name = e.name
+             WHERE e.day = $1::date
+             ORDER BY (e.outcome <> 'error'), e.name, e.id
              LIMIT $2 OFFSET $3;",
         )
         .bind(day)

@@ -63,6 +63,7 @@ def test_upload_and_delete_are_recorded(client, signature):
     assert item["kind"] == "chart"
     assert item["cause"] == "admin", "an upload through the API is the admin's"
     assert item["attempted"] is None and item["message"] is None
+    assert item["installed"] is True
     assert item["occurredAt"].endswith("Z")
     assert isinstance(item["featureCountChange"], int)
     counts = report["counts"]
@@ -77,6 +78,7 @@ def test_upload_and_delete_are_recorded(client, signature):
     assert deletes, report["items"]
     assert deletes[-1]["cause"] == "noaa_enc_cron"
     assert deletes[-1]["featureCountChange"] < 0
+    assert deletes[-1]["installed"] is False, "the chart is gone, so nothing links to it"
 
     r = client.request("DELETE", f"/v1/chart?name={CHART}&cause=bogus", signature=signature)
     assert r.status_code == 400, "an unknown cause is refused, not counted as admin"

@@ -241,6 +241,7 @@ async fn mutations_return_the_counts_the_report_needs() {
     assert_eq!(report.items[0].outcome, ChangeOutcome::Delete);
     assert_eq!(report.items[0].feature_count_change, -1);
     assert_eq!(report.items[0].cause, ChangeCause::NoaaEncCron);
+    assert!(!report.items[0].installed, "a.000 is gone");
 
     let props = json!({ "scalerank": 1 }).as_object().unwrap().clone();
     let wkb = njord_db::geometry::to_wkb(&wkt_geometry("LINESTRING(-1 0, 1 0)")).unwrap();
@@ -263,6 +264,20 @@ async fn mutations_return_the_counts_the_report_needs() {
     db.record_change_event(&event("b.000", ChangeOutcome::New, 1))
         .await
         .unwrap();
+    let report = db
+        .change_report(&today.page[0].date, 0, REPORT_ITEM_PAGE_SIZE)
+        .await
+        .unwrap()
+        .unwrap();
+    let installed: Vec<(&str, bool)> = report
+        .items
+        .iter()
+        .map(|i| (i.name.as_str(), i.installed))
+        .collect();
+    assert!(
+        installed.contains(&("b.000", true)) && installed.contains(&("a.000", false)),
+        "installed follows the charts table, never the outcome: {installed:?}"
+    );
     assert_eq!(
         db.truncate_all().await.unwrap(),
         2,

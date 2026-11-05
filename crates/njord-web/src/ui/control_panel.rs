@@ -4,7 +4,7 @@
 
 use leptos::html;
 use leptos::prelude::*;
-use njord_model::{ChartCatalog, S57Object, WsMsg};
+use njord_model::{ChartCatalog, InsertItem, S57Object, WsMsg};
 
 use crate::display::ws_msg_to_string;
 use crate::state::Async;
@@ -269,12 +269,89 @@ fn ChartInstaller() -> impl IntoView {
     }
 }
 
+/// `ms` as `H:MM:SS` (`0:00:42`, `1:05:03`), whole seconds, for the completion summary.
+pub fn format_hms(ms: i64) -> String {
+    let seconds = ms.max(0) / 1000;
+    format!(
+        "{}:{:02}:{:02}",
+        seconds / 3600,
+        seconds / 60 % 60,
+        seconds % 60
+    )
+}
+
+/// The finished ingest: a summary (features and charts installed against what the archive
+/// held, and how long it took), the installed charts by name with their feature counts, and
+/// the cells that failed, if any.
+fn completion_view(
+    total_feature_count: i64,
+    total_chart_count: i32,
+    items: &[InsertItem],
+    failed_charts: &[String],
+    ms: i64,
+) -> AnyView {
+    let mut items: Vec<&InsertItem> = items.iter().collect();
+    items.sort_by(|a, b| a.chart_name.cmp(&b.chart_name));
+    let installed_features: i64 = items.iter().map(|i| i.feature_count).sum();
+    let rows = items
+        .iter()
+        .map(|item| {
+            view! {
+                <tr>
+                    <td>{item.chart_name.clone()}</td>
+                    <td>{item.feature_count}</td>
+                </tr>
+            }
+        })
+        .collect_view();
+    let failed = (!failed_charts.is_empty()).then(|| {
+        let rows = failed_charts
+            .iter()
+            .map(|f| view! { <li>{f.clone()}</li> })
+            .collect_view();
+        view! {
+            <h3 class="nj-warning">{format!("Failed: {}", failed_charts.len())}</h3>
+            <ul>{rows}</ul>
+        }
+    });
+    view! {
+        <h2>"Installation complete"</h2>
+        <table class="nj-table mb-4">
+            <tbody>
+                <tr><th>"Charts installed"</th><td>{format!("{} of {total_chart_count}", items.len())}</td></tr>
+                <tr><th>"Features installed"</th><td>{format!("{installed_features} of {total_feature_count}")}</td></tr>
+                <tr><th>"Time taken"</th><td>{format_hms(ms)}</td></tr>
+            </tbody>
+        </table>
+        <table class="nj-table nj-table-striped">
+            <thead><tr><th>"Chart"</th><th>"Features"</th></tr></thead>
+            <tbody>{rows}</tbody>
+        </table>
+        {failed}
+    }
+    .into_any()
+}
+
 fn install_progress(state: &InstallState) -> AnyView {
     let s = store();
     let (status, working) = match &state.info {
-        Some(msg @ (WsMsg::CompletionReport { .. } | WsMsg::Error { .. })) => {
-            (ws_msg_to_string(msg).into_any(), false)
-        }
+        Some(WsMsg::CompletionReport {
+            total_feature_count,
+            total_chart_count,
+            items,
+            failed_charts,
+            ms,
+        }) => (
+            completion_view(
+                *total_feature_count,
+                *total_chart_count,
+                items,
+                failed_charts,
+                *ms,
+            ),
+            false,
+        ),
+        Some(msg @ WsMsg::Error { .. }) => (ws_msg_to_string(msg).into_any(), false),
         Some(WsMsg::Extracting { progress }) => {
             let p = (*progress as f64 * 100.0) as i32;
             (
@@ -612,7 +689,17 @@ fn Colors() -> impl IntoView {
 
 #[cfg(test)]
 mod tests {
-    use super::TABS;
+    use super::{TABS, format_hms};
+
+    #[test]
+    fn durations_are_hours_minutes_seconds() {
+        assert_eq!(format_hms(0), "0:00:00");
+        assert_eq!(format_hms(812), "0:00:00");
+        assert_eq!(format_hms(42_999), "0:00:42");
+        assert_eq!(format_hms(3_903_000), "1:05:03");
+        assert_eq!(format_hms(90_000_000), "25:00:00");
+        assert_eq!(format_hms(-5), "0:00:00");
+    }
 
     #[test]
     fn the_change_report_is_a_tab_with_no_default_sub_path() {

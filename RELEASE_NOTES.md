@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Chart installer shows a result table.** When an ingest finishes, the installer tab shows a
+  summary (charts and features installed against what the archive held, and the time taken as
+  `H:MM:SS`), a table of the installed charts with their feature counts, and the cells that
+  failed, instead of the completion message as text.
 - **Ingest no longer holds every cell open.** The chart ingest used to open every `.000` cell in
   an upload to count its features and keep all of them open until each was installed, so its
   memory and open file descriptors grew with the archive: a 727-cell upload on a machine with a

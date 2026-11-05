@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Ingest no longer holds every cell open.** The chart ingest used to open every `.000` cell in
+  an upload to count its features and keep all of them open until each was installed, so its
+  memory and open file descriptors grew with the archive: a 727-cell upload on a machine with a
+  256-descriptor limit failed 270 charts with `Too many open files`, recorded only as
+  "failed to open". Cells are now opened, counted and closed, then reopened for their install,
+  so at most `chartIngestWorkers` are open at once, and a cell that will not open is recorded
+  with GDAL's actual error message.
 - **Dev database is created by the compose file.** `chart_server_db/compose.yaml` now creates
   `njord_rust` (with PostGIS) on its first start instead of the Kotlin-era `s57server`, and the
   shipped `resources/config/application.json` points at it (`localhost:6432`, with the dev

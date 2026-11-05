@@ -18,6 +18,13 @@
 //! GDAL datasets are `Send` but not `Sync`, so a cell is read on the blocking pool one layer at a
 //! time and handed back; the inserts in between are async. Up to `chartIngestWorkers` cells are
 //! installed at once.
+//!
+//! A cell is opened twice: once to count its features for the progress total, and again when its
+//! install runs. GDAL's S57 driver holds the whole cell's records in memory, and a file
+//! descriptor, for as long as the dataset is open, so keeping every counted cell open until its
+//! turn made the ingest's memory and open files scale with the archive (a 727-cell archive
+//! exhausted a 256-descriptor limit). Now at most `chartIngestWorkers` cells are open at once,
+//! at the cost of parsing each cell twice.
 
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -127,45 +134,53 @@ async fn ingest_internal(
         .filter(|f| f.to_string_lossy().ends_with(".000"))
         .collect();
 
+    // Each cell is opened, counted and closed again here; a cell that will not open is
+    // remembered with its error and recorded in the install pass below, in order with the rest.
     tracing::info!("counting features");
-    let mut opened = Vec::with_capacity(cells.len());
+    let mut counted: Vec<(String, PathBuf, Result<(), String>)> = Vec::with_capacity(cells.len());
     let mut total: u64 = 0;
     for path in cells {
         let name = file_name(&path);
+        let to_open = path.clone();
         let result = tokio::task::spawn_blocking(move || {
-            GdalCell::open(&path).map(|cell| {
-                let count = cell.total_feature_count();
-                (cell, count)
-            })
+            GdalCell::open(&to_open).map(|cell| cell.total_feature_count())
         })
         .await
         .map_err(|e| e.to_string())?;
-        match result {
-            Ok((cell, count)) => {
+        let opened = match result {
+            Ok(count) => {
                 total += count;
-                opened.push((name, Some(cell)));
+                Ok(())
             }
             Err(e) => {
                 tracing::error!("{name}: {e}");
-                opened.push((name, None));
+                Err(e.to_string())
             }
-        }
+        };
+        counted.push((name, path, opened));
     }
     tracing::info!("total feature count: {total}");
-    let report = Arc::new(Mutex::new(Report::new(total as i64, opened.len() as i32)));
+    let report = Arc::new(Mutex::new(Report::new(total as i64, counted.len() as i32)));
     state.status.write(&report.lock().unwrap().progress());
 
     tracing::info!("inserting data");
     let workers = state.config.chart_ingest_workers.max(1) as usize;
-    futures_util::stream::iter(opened)
-        .map(|(name, cell)| {
+    futures_util::stream::iter(counted)
+        .map(|(name, path, opened)| {
             let report = report.clone();
             async move {
-                match cell {
-                    Some(cell) => install_cell(state, cell, &name, &report, upload).await,
-                    None => {
-                        report.lock().unwrap().fail_chart(&name, "failed to open");
-                        upload.record_failure(state, &name, "failed to open").await;
+                let reopened = match opened {
+                    Ok(()) => tokio::task::spawn_blocking(move || GdalCell::open(&path))
+                        .await
+                        .expect("opening a cell does not panic")
+                        .map_err(|e| e.to_string()),
+                    Err(message) => Err(message),
+                };
+                match reopened {
+                    Ok(cell) => install_cell(state, cell, &name, &report, upload).await,
+                    Err(message) => {
+                        report.lock().unwrap().fail_chart(&name, &message);
+                        upload.record_failure(state, &name, &message).await;
                     }
                 }
             }

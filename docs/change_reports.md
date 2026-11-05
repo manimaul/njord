@@ -144,7 +144,7 @@ The UI turns these into display text ("NOAA ENC Cron", "New"…), so the wire va
 Record one event per shapefile, with kind `base_map` and name = shapefile name (for example `ne_10m_ocean.shp`):
 
 - `before` = the count returned by `delete_base_features`, `after` = the sum of inserted rows across the shapefile's layers.
-- The outcome is `error` when the file failed to open, when the ingest was aborted, or when any row insert failed. Row failures are only logged today. In that last case the message is `<failed> of <total> features failed to insert`, and the measured delta is still stored.
+- The outcome is `error` when the file failed to open (the message is GDAL's, e.g. `failed to open …/US1EEZ2M.000 with S57: Too many open files`), when the ingest was aborted, or when any row insert failed. Row failures are only logged today. In that last case the message is `<failed> of <total> features failed to insert`, and the measured delta is still stored.
 - Base map ingest is not transactional (rows are inserted one at a time), so each event is written after the shapefile finishes.
 
 ### 5.5 Chart row insert, deletes and nuke (`handlers/charts.rs`, `handlers/nuke.rs`)

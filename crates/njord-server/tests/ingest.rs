@@ -351,9 +351,13 @@ async fn worker_claims_and_ingests_through_the_production_path() {
             "new  chart US5ZZ02M.000",
         ]
     );
-    assert_eq!(
-        (recorded[0][4].as_str(), recorded[0][6].as_str()),
-        ("0", "failed to open")
+    assert_eq!(recorded[0][4], "0");
+    assert!(
+        recorded[0][6].starts_with("failed to open ")
+            && recorded[0][6].contains("BROKEN.000")
+            && recorded[0][6].contains("with S57: "),
+        "the recorded message is GDAL's, not a placeholder: {:?}",
+        recorded[0][6]
     );
     assert!(
         recorded.iter().all(|r| r[5] == "noaa_enc_cron"),

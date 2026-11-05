@@ -281,11 +281,14 @@ impl Db {
     }
 
     /// The report of one UTC `day` (`YYYY-MM-DD`): the whole day's counts and page `page` of
-    /// its events, `page_size` per page (`GET /v1/change_reports/{date}?page=`). `None` when the
-    /// day has no events; a page past the end has the counts and no items.
+    /// its events with one of `outcomes`, `page_size` per page
+    /// (`GET /v1/change_reports/{date}?page=&outcomes=`). `None` when the day has no events at
+    /// all; a page past the end, or an `outcomes` that matches nothing, has the counts and no
+    /// items. The counts always cover the whole day; `total_items` counts the events that match
+    /// `outcomes`, so paging follows the filter.
     ///
-    /// Errors come first, then the rest by name and id, so the order is total and offset paging
-    /// is stable. Each item says whether a chart of its name is installed now
+    /// Newest first (`occurred_at`, then `id` descending), so the order is total and offset
+    /// paging is stable. Each item says whether a chart of its name is installed now
     /// ([`ChangeItem::installed`]). `day` must already be a valid date: the cast fails otherwise.
     ///
     /// # Errors
@@ -298,6 +301,7 @@ impl Db {
         day: &str,
         page: i32,
         page_size: i32,
+        outcomes: &[ChangeOutcome],
     ) -> Result<Option<ChangeReport>> {
         let page = page.max(0);
         let page_size = page_size.max(1);
@@ -309,11 +313,16 @@ impl Db {
         .fetch_all(&mut *conn)
         .await?;
         let mut counts = ChangeCounts::default();
+        let mut day_items = 0i64;
         let mut total_items = 0i64;
         for row in &count_rows {
             let n: i64 = row.try_get(1)?;
-            total_items += n;
-            match parse::<ChangeOutcome>(row, 0, "outcome")? {
+            day_items += n;
+            let outcome = parse::<ChangeOutcome>(row, 0, "outcome")?;
+            if outcomes.contains(&outcome) {
+                total_items += n;
+            }
+            match outcome {
                 ChangeOutcome::New => counts.new += n,
                 ChangeOutcome::Update => counts.update += n,
                 ChangeOutcome::Delete => counts.delete += n,
@@ -321,24 +330,26 @@ impl Db {
                 ChangeOutcome::Error => counts.error += n,
             }
         }
-        if total_items == 0 {
+        if day_items == 0 {
             return Ok(None);
         }
         // `installed` is whether a chart of that name exists now, so the UI links only to chart
         // pages that exist: a deleted or never-installed chart's rows stay plain text.
+        let wanted: Vec<&str> = outcomes.iter().map(|o| o.as_str()).collect();
         let rows = sqlx::query(
             "SELECT e.outcome, e.attempted, e.kind, e.name, e.feature_count_change, e.cause,
                     e.message, (extract(epoch FROM e.occurred_at) * 1000000)::bigint,
                     (e.kind = 'chart' AND c.name IS NOT NULL)
              FROM change_events e
              LEFT JOIN charts c ON e.kind = 'chart' AND c.name = e.name
-             WHERE e.day = $1::date
-             ORDER BY (e.outcome <> 'error'), e.name, e.id
+             WHERE e.day = $1::date AND e.outcome = ANY($4::text[])
+             ORDER BY e.occurred_at DESC, e.id DESC
              LIMIT $2 OFFSET $3;",
         )
         .bind(day)
         .bind(i64::from(page_size))
         .bind(i64::from(page) * i64::from(page_size))
+        .bind(&wanted)
         .fetch_all(&mut *conn)
         .await?;
         let items = rows.iter().map(item).collect::<Result<Vec<_>>>()?;

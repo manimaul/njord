@@ -3,11 +3,14 @@
 //!
 //! The wire values of [`ChangeOutcome`], [`ChangeCause`] and [`ChangeKind`] are also what the
 //! `change_events` table stores, so they never change; the UI turns them into display text.
+//! The report route's `?outcomes=` filter lists them comma-separated
+//! ([`ChangeOutcome::parse_list`] / [`ChangeOutcome::join`]), so the server and the web UI
+//! agree on its form.
 
 use jiff::Timestamp;
 use serde::{Deserialize, Serialize};
 
-use crate::string_enum;
+use crate::{UnknownVariant, string_enum};
 
 string_enum! {
     /// What happened to a chart or base map, or `Nuke` for the whole server.
@@ -17,6 +20,39 @@ string_enum! {
         Delete = "delete",
         Nuke = "nuke",
         Error = "error",
+    }
+}
+
+impl ChangeOutcome {
+    /// The `?outcomes=` value of `GET /v1/change_reports/{date}`: the wire names of
+    /// `outcomes`, comma-separated, in their declaration order and without duplicates
+    /// (`"new,update,error"`). Empty for no outcomes.
+    pub fn join(outcomes: &[ChangeOutcome]) -> String {
+        Self::ALL
+            .iter()
+            .filter(|o| outcomes.contains(o))
+            .map(|o| o.as_str())
+            .collect::<Vec<_>>()
+            .join(",")
+    }
+
+    /// The outcomes a `?outcomes=` value names: comma-separated wire names, in declaration order
+    /// and without duplicates. An empty value is no outcomes; blank entries (`"new,,error"`) are
+    /// skipped.
+    ///
+    /// # Errors
+    ///
+    /// [`UnknownVariant`] for an entry that is not an outcome's wire name.
+    pub fn parse_list(value: &str) -> Result<Vec<ChangeOutcome>, UnknownVariant> {
+        let mut named = Vec::new();
+        for entry in value.split(',').map(str::trim).filter(|e| !e.is_empty()) {
+            named.push(entry.parse::<ChangeOutcome>()?);
+        }
+        Ok(Self::ALL
+            .iter()
+            .copied()
+            .filter(|o| named.contains(o))
+            .collect())
     }
 }
 
@@ -116,12 +152,13 @@ pub struct ChangeReport {
     pub date: String,
     /// Over the whole day, not the page.
     pub counts: ChangeCounts,
-    /// The page's events: errors first, then by name.
+    /// The page's events, newest first.
     pub items: Vec<ChangeItem>,
     /// Zero-based.
     pub page_index: i32,
     pub page_size: i32,
-    /// Events that day, over every page.
+    /// Events that day with one of the requested outcomes (every outcome unless the request
+    /// filtered), over every page.
     pub total_items: i64,
 }
 
@@ -146,6 +183,36 @@ mod tests {
             ChangeKind::BaseMap
         );
         assert!(serde_json::from_str::<ChangeOutcome>("\"nuked\"").is_err());
+    }
+
+    #[test]
+    fn outcome_lists() {
+        use ChangeOutcome::*;
+        assert_eq!(
+            ChangeOutcome::join(ChangeOutcome::ALL),
+            "new,update,delete,nuke,error"
+        );
+        assert_eq!(ChangeOutcome::join(&[Error, New, New]), "new,error");
+        assert_eq!(ChangeOutcome::join(&[]), "");
+        assert_eq!(
+            ChangeOutcome::parse_list("error, new,new"),
+            Ok(vec![New, Error])
+        );
+        assert_eq!(
+            ChangeOutcome::parse_list("new,update,delete,nuke,error"),
+            Ok(ChangeOutcome::ALL.to_vec())
+        );
+        assert_eq!(ChangeOutcome::parse_list(""), Ok(vec![]));
+        assert_eq!(ChangeOutcome::parse_list("new,,"), Ok(vec![New]));
+        assert_eq!(
+            ChangeOutcome::parse_list("new,nuked").unwrap_err().value,
+            "nuked"
+        );
+        assert_eq!(
+            ChangeOutcome::parse_list(&ChangeOutcome::join(&[Delete, Nuke])),
+            Ok(vec![Delete, Nuke]),
+            "round trip"
+        );
     }
 
     #[test]

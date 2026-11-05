@@ -8,6 +8,7 @@ mod common;
 
 use common::{drop_database, exec, migrated_db, wkt_geometry};
 use njord_db::{Db, NewChangeEvent, REPORT_ITEM_PAGE_SIZE, REPORT_PAGE_SIZE};
+use njord_model::ChangeOutcome::{Delete, Error, New, Nuke, Update};
 use njord_model::{ChangeCause, ChangeKind, ChangeOutcome, ChartInsert, IndexMap, JsonObject};
 use serde_json::json;
 
@@ -108,7 +109,7 @@ async fn days_aggregate_and_page_newest_first() {
     );
 
     let report = db
-        .change_report("2026-01-29", 0, REPORT_ITEM_PAGE_SIZE)
+        .change_report("2026-01-29", 0, REPORT_ITEM_PAGE_SIZE, ChangeOutcome::ALL)
         .await
         .unwrap()
         .unwrap();
@@ -127,18 +128,69 @@ async fn days_aggregate_and_page_newest_first() {
         (29, 2, 0, 0)
     );
     assert_eq!(report.items.len(), 31);
-    assert_eq!(
-        report.items[0].outcome,
-        ChangeOutcome::Error,
-        "errors first"
-    );
-    assert_eq!(report.items[0].attempted, Some(ChangeOutcome::New));
+    assert_eq!(report.items[0].outcome, Error, "newest first");
+    assert_eq!(report.items[0].name, "E1.000");
+    assert_eq!(report.items[0].attempted, Some(New));
     assert_eq!(report.items[0].message.as_deref(), Some("failed to open"));
     assert_eq!(report.items[0].cause, ChangeCause::NoaaEncCron);
-    assert_eq!(report.items[2].name, "C0.000");
     assert_eq!(
         report.items[0].occurred_at.to_string(),
-        "2026-01-29T11:00:00Z"
+        "2026-01-29T11:01:00Z"
+    );
+    assert_eq!(report.items[1].name, "E0.000");
+    assert_eq!(report.items[2].name, "C28.000");
+    assert_eq!(report.items[30].name, "C0.000", "oldest last");
+    assert!(
+        report
+            .items
+            .windows(2)
+            .all(|w| w[0].occurred_at > w[1].occurred_at),
+        "strictly newest first"
+    );
+
+    // The outcome filter: the whole day's counts either way, the items and their total only
+    // those asked for. An empty filter is a report with no items; a filter matching nothing
+    // that day is still the day's report, not `None`.
+    let errors = db
+        .change_report("2026-01-29", 0, REPORT_ITEM_PAGE_SIZE, &[Error])
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!((errors.total_items, errors.counts), (2, report.counts));
+    assert_eq!(
+        errors
+            .items
+            .iter()
+            .map(|i| i.name.as_str())
+            .collect::<Vec<_>>(),
+        ["E1.000", "E0.000"]
+    );
+    let updates = db
+        .change_report("2026-01-29", 2, 10, &[Update, Nuke])
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!((updates.total_items, updates.counts), (29, report.counts));
+    assert_eq!(updates.items.len(), 9, "the last page of 29 updates by 10");
+    assert!(updates.items.iter().all(|i| i.outcome == Update));
+    assert_eq!(updates.items[8].name, "C0.000");
+    let none = db
+        .change_report("2026-01-29", 0, 10, &[New, Delete])
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        (none.total_items, none.items.len(), none.counts),
+        (0, 0, report.counts)
+    );
+    let empty = db
+        .change_report("2026-01-29", 0, 10, &[])
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        (empty.total_items, empty.items.len(), empty.counts),
+        (0, 0, report.counts)
     );
 
     // Item paging: 31 items in pages of 10, the whole day's counts on every page, and a page
@@ -146,7 +198,7 @@ async fn days_aggregate_and_page_newest_first() {
     let mut paged = Vec::new();
     for page in 0..4 {
         let part = db
-            .change_report("2026-01-29", page, 10)
+            .change_report("2026-01-29", page, 10, ChangeOutcome::ALL)
             .await
             .unwrap()
             .unwrap();
@@ -164,14 +216,14 @@ async fn days_aggregate_and_page_newest_first() {
     }
     assert_eq!(paged, report.items, "the pages are the full list in order");
     let past = db
-        .change_report("2026-01-29", 4, 10)
+        .change_report("2026-01-29", 4, 10, ChangeOutcome::ALL)
         .await
         .unwrap()
         .unwrap();
     assert!(past.items.is_empty());
     assert_eq!((past.total_items, past.counts), (31, report.counts));
     let clamped = db
-        .change_report("2026-01-29", -1, 0)
+        .change_report("2026-01-29", -1, 0, ChangeOutcome::ALL)
         .await
         .unwrap()
         .unwrap();
@@ -182,13 +234,13 @@ async fn days_aggregate_and_page_newest_first() {
     );
 
     assert!(
-        db.change_report("2025-12-31", 0, REPORT_ITEM_PAGE_SIZE)
+        db.change_report("2025-12-31", 0, REPORT_ITEM_PAGE_SIZE, ChangeOutcome::ALL)
             .await
             .unwrap()
             .is_none()
     );
     assert!(
-        db.change_report("not-a-date", 0, REPORT_ITEM_PAGE_SIZE)
+        db.change_report("not-a-date", 0, REPORT_ITEM_PAGE_SIZE, ChangeOutcome::ALL)
             .await
             .is_err(),
         "the caller validates the date"
@@ -233,7 +285,12 @@ async fn mutations_return_the_counts_the_report_needs() {
         "one delete recorded, nothing for the miss"
     );
     let report = db
-        .change_report(&today.page[0].date, 0, REPORT_ITEM_PAGE_SIZE)
+        .change_report(
+            &today.page[0].date,
+            0,
+            REPORT_ITEM_PAGE_SIZE,
+            ChangeOutcome::ALL,
+        )
         .await
         .unwrap()
         .unwrap();
@@ -265,7 +322,12 @@ async fn mutations_return_the_counts_the_report_needs() {
         .await
         .unwrap();
     let report = db
-        .change_report(&today.page[0].date, 0, REPORT_ITEM_PAGE_SIZE)
+        .change_report(
+            &today.page[0].date,
+            0,
+            REPORT_ITEM_PAGE_SIZE,
+            ChangeOutcome::ALL,
+        )
         .await
         .unwrap()
         .unwrap();
@@ -344,7 +406,7 @@ async fn day_is_the_utc_date_whatever_the_session_time_zone() {
         [("2026-02-28".to_owned(), 2), ("2026-03-01".to_owned(), 1)]
     );
     let report = db
-        .change_report("2026-02-28", 0, REPORT_ITEM_PAGE_SIZE)
+        .change_report("2026-02-28", 0, REPORT_ITEM_PAGE_SIZE, ChangeOutcome::ALL)
         .await
         .unwrap()
         .unwrap();

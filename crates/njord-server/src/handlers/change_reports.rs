@@ -1,5 +1,5 @@
-//! `GET /v1/change_reports?page=` and `GET /v1/change_reports/{date}?page=`, signed: the
-//! change history by day (`docs/change_reports.md`).
+//! `GET /v1/change_reports?page=` and `GET /v1/change_reports/{date}?page=&outcomes=`, signed:
+//! the change history by day (`docs/change_reports.md`).
 //!
 //! Both are behind the admin signature, like the mutating routes: the report is operator data,
 //! and its error messages come from GDAL and sqlx.
@@ -11,6 +11,7 @@ use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use njord_db::{REPORT_ITEM_PAGE_SIZE, REPORT_PAGE_SIZE};
+use njord_model::ChangeOutcome;
 
 use super::{Signed, query_param};
 use crate::state::AppState;
@@ -44,15 +45,28 @@ pub async fn days(
     }
 }
 
+/// The outcomes `?outcomes=` of `query` asks for: every outcome when absent, else the
+/// comma-separated wire names it lists (an empty value is no outcomes). `None` (a 400) when it
+/// names anything that is not an outcome.
+fn outcomes_param(query: &[(String, String)]) -> Option<Vec<ChangeOutcome>> {
+    match query_param(query, "outcomes") {
+        None => Some(ChangeOutcome::ALL.to_vec()),
+        Some(value) => ChangeOutcome::parse_list(value).ok(),
+    }
+}
+
 /// Whether `date` is a calendar date written `YYYY-MM-DD`.
 pub fn valid_date(date: &str) -> bool {
     date.len() == 10 && date.parse::<jiff::civil::Date>().is_ok()
 }
 
-/// `GET /v1/change_reports/{date}?page=<n>`: the report of one UTC day, with page `page` of its
-/// events, [`REPORT_ITEM_PAGE_SIZE`] per page (zero-based, default 0; a page past the end has
-/// the counts and no items). 400 for anything but a `YYYY-MM-DD` date or for a `page` that is
-/// not a non-negative integer, 404 for a day with no events, 500 when the database fails.
+/// `GET /v1/change_reports/{date}?page=<n>&outcomes=<a,b>`: the report of one UTC day, with
+/// page `page` of its events, newest first, [`REPORT_ITEM_PAGE_SIZE`] per page (zero-based,
+/// default 0; a page past the end has the counts and no items). `outcomes` keeps only the
+/// events with one of the listed outcomes (`new,update,delete,nuke,error`; every outcome when
+/// absent); the counts still cover the whole day. 400 for anything but a `YYYY-MM-DD` date, for
+/// a `page` that is not a non-negative integer or for an `outcomes` naming anything else, 404
+/// for a day with no events, 500 when the database fails.
 pub async fn report(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -65,9 +79,12 @@ pub async fn report(
     let Some(page) = page_param(&query) else {
         return StatusCode::BAD_REQUEST.into_response();
     };
+    let Some(outcomes) = outcomes_param(&query) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
     match state
         .db
-        .change_report(&date, page, REPORT_ITEM_PAGE_SIZE)
+        .change_report(&date, page, REPORT_ITEM_PAGE_SIZE, &outcomes)
         .await
     {
         Ok(Some(report)) => Json(report).into_response(),
@@ -81,7 +98,9 @@ pub async fn report(
 
 #[cfg(test)]
 mod tests {
-    use super::{page_param, valid_date};
+    use njord_model::ChangeOutcome;
+
+    use super::{outcomes_param, page_param, valid_date};
 
     fn query(pairs: &[(&str, &str)]) -> Vec<(String, String)> {
         pairs
@@ -98,6 +117,21 @@ mod tests {
         assert_eq!(page_param(&query(&[("page", "-1")])), None);
         assert_eq!(page_param(&query(&[("page", "x")])), None);
         assert_eq!(page_param(&query(&[("page", "")])), None);
+    }
+
+    #[test]
+    fn outcomes() {
+        assert_eq!(
+            outcomes_param(&query(&[("page", "1")])),
+            Some(ChangeOutcome::ALL.to_vec())
+        );
+        assert_eq!(
+            outcomes_param(&query(&[("outcomes", "error,new")])),
+            Some(vec![ChangeOutcome::New, ChangeOutcome::Error])
+        );
+        assert_eq!(outcomes_param(&query(&[("outcomes", "")])), Some(vec![]));
+        assert_eq!(outcomes_param(&query(&[("outcomes", "new,nuked")])), None);
+        assert_eq!(outcomes_param(&query(&[("outcomes", "Error")])), None);
     }
 
     #[test]

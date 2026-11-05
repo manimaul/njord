@@ -11,9 +11,9 @@ use geojson::{Bbox, Feature, Geometry};
 use leptos::prelude::*;
 use leptos::task::spawn_local;
 use njord_model::{
-    AdminResponse, ChangeReport, ChangeReportPage, ChartCatalog, ChartItem, ColorLibrary, Depth,
-    EncUpload, IconInfo, IndexMap, JsonObject, S57Attribute, S57ExpectedInput, S57Object, Sprite,
-    Theme, ThemeMode, WsMsg,
+    AdminResponse, ChangeOutcome, ChangeReport, ChangeReportPage, ChartCatalog, ChartItem,
+    ColorLibrary, Depth, EncUpload, IconInfo, IndexMap, JsonObject, S57Attribute, S57ExpectedInput,
+    S57Object, Sprite, Theme, ThemeMode, WsMsg,
 };
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsCast;
@@ -124,6 +124,8 @@ pub struct ChangeReportState {
     pub page: Async<ChangeReportPage>,
     pub date: String,
     pub report_page_index: i32,
+    /// The outcomes the report was asked for (`ChangeOutcome::ALL` unless filtered).
+    pub report_outcomes: Vec<ChangeOutcome>,
     pub report: Async<ChangeReport>,
 }
 
@@ -670,17 +672,20 @@ impl Store {
         });
     }
 
-    /// Loads item page `page` of the report of `date` (`YYYY-MM-DD`), keeping the previous page
-    /// of the same date on screen while it loads.
-    pub fn load_change_report(self, date: &str, page: i32) {
+    /// Loads item page `page` of the report of `date` (`YYYY-MM-DD`), showing only the events
+    /// with one of `outcomes`, and keeping the previous page of the same date on screen while it
+    /// loads.
+    pub fn load_change_report(self, date: &str, page: i32, outcomes: &[ChangeOutcome]) {
         let Some(signature) = self.signature() else {
             return;
         };
         let date = date.to_owned();
+        let outcomes = outcomes.to_vec();
         self.change_reports.update(|c| {
             let same_date = c.date == date;
             c.date = date.clone();
             c.report_page_index = page;
+            c.report_outcomes = outcomes.clone();
             c.report = Async::Loading(if same_date {
                 std::mem::take(&mut c.report).into_value()
             } else {
@@ -688,9 +693,9 @@ impl Store {
             });
         });
         spawn_local(async move {
-            let result = api::change_report(&signature, &date, page).await;
+            let result = api::change_report(&signature, &date, page, &outcomes).await;
             self.change_reports.update(|c| {
-                if c.date == date && c.report_page_index == page {
+                if c.date == date && c.report_page_index == page && c.report_outcomes == outcomes {
                     c.report = Async::from_result(result, None);
                 }
             });

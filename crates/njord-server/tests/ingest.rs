@@ -19,7 +19,9 @@ use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
 use njord_db::Db;
 use njord_db::sqlx::{self, Row, postgres::PgPoolOptions};
-use njord_model::{AdminSignature, ChangeKind, ChangeReport, ChangeReportPage, WsMsg};
+use njord_model::{
+    AdminSignature, ChangeKind, ChangeOutcome, ChangeReport, ChangeReportPage, WsMsg,
+};
 use njord_server::AppState;
 use njord_server::ingest::IngestWorker;
 use njord_server::ingest::cause::sidecar_path;
@@ -517,17 +519,72 @@ async fn worker_claims_and_ingests_through_the_production_path() {
         (4, 2, 0, 0, 1)
     );
     assert_eq!(report.items.len(), 7);
-    assert_eq!(report.items[0].name, "BROKEN.000", "errors first");
-    assert!(!report.items[0].installed, "no chart row for a failed cell");
+    assert_eq!(
+        (report.items[0].name.as_str(), report.items[0].outcome),
+        ("ne_110m_coastline.shp", ChangeOutcome::Update),
+        "newest first: the last upload"
+    );
+    assert_eq!(
+        (report.items[6].name.as_str(), report.items[6].outcome),
+        ("US5WA22M.000", ChangeOutcome::New),
+        "oldest last: the first upload"
+    );
     assert!(
-        report.items[1..]
+        report
+            .items
+            .windows(2)
+            .all(|w| w[0].occurred_at >= w[1].occurred_at)
+    );
+    let broken = report
+        .items
+        .iter()
+        .find(|i| i.name == "BROKEN.000")
+        .expect("the failed cell");
+    assert_eq!(broken.outcome, ChangeOutcome::Error);
+    assert!(!broken.installed, "no chart row for a failed cell");
+    assert!(
+        report
+            .items
             .iter()
+            .filter(|i| i.name != "BROKEN.000")
             .all(|i| i.installed == (i.kind == ChangeKind::Chart)),
         "every other chart row is installed; a base map never is"
     );
     assert_eq!(
         (report.page_index, report.page_size, report.total_items),
         (0, 250, 7)
+    );
+    // The outcome filter keeps the day's counts and pages over the matching events alone; an
+    // empty filter is an empty page, an unknown outcome is 400.
+    let (status, body) = get(
+        &state,
+        &format!("/v1/change_reports/{today}?outcomes=error,delete&signature={sig}"),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    let errors: ChangeReport = serde_json::from_slice(&body).unwrap();
+    assert_eq!((errors.total_items, errors.counts), (1, report.counts));
+    assert_eq!(errors.items.len(), 1);
+    assert_eq!(errors.items[0].name, "BROKEN.000");
+    let (status, body) = get(
+        &state,
+        &format!("/v1/change_reports/{today}?outcomes=&signature={sig}"),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    let none: ChangeReport = serde_json::from_slice(&body).unwrap();
+    assert_eq!(
+        (none.total_items, none.items.len(), none.counts),
+        (0, 0, report.counts)
+    );
+    assert_eq!(
+        get(
+            &state,
+            &format!("/v1/change_reports/{today}?outcomes=new,nuked&signature={sig}")
+        )
+        .await
+        .0,
+        StatusCode::BAD_REQUEST
     );
     // Item pages: a page past the end keeps the day's counts and has no items; a bad page is 400.
     let (status, body) = get(

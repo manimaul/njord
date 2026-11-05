@@ -37,6 +37,7 @@ def test_malformed_date_and_page_are_400(client, signature):
     assert client.get("/v1/change_reports?page=-1", signature=signature).status_code == 400
     assert client.get("/v1/change_reports?page=x", signature=signature).status_code == 400
     assert client.get(f"/v1/change_reports/{_today()}?page=-1", signature=signature).status_code == 400
+    assert client.get(f"/v1/change_reports/{_today()}?outcomes=nuked", signature=signature).status_code == 400
 
 
 def test_day_without_events_is_404(client, signature):
@@ -83,8 +84,20 @@ def test_upload_and_delete_are_recorded(client, signature):
     r = client.request("DELETE", f"/v1/chart?name={CHART}&cause=bogus", signature=signature)
     assert r.status_code == 400, "an unknown cause is refused, not counted as admin"
 
-    # The errors come first, then the rest by name.
-    outcomes = [i["outcome"] == "error" for i in report["items"]]
-    assert outcomes == sorted(outcomes, reverse=True)
+    # Newest first.
+    occurred = [i["occurredAt"] for i in report["items"]]
+    assert occurred == sorted(occurred, reverse=True)
+
+    # `?outcomes=` keeps only those outcomes, with the whole day's counts; an unknown one is 400.
+    r = client.get(f"/v1/change_reports/{today}?outcomes=delete,nuke", signature=signature)
+    assert r.status_code == 200, (r.status_code, r.text)
+    filtered = r.json()
+    assert filtered["counts"] == report["counts"]
+    assert filtered["totalItems"] == counts["delete"] + counts["nuke"]
+    assert {i["outcome"] for i in filtered["items"]} <= {"delete", "nuke"}
+    assert any(i["name"] == CHART for i in filtered["items"])
+    r = client.get(f"/v1/change_reports/{today}?outcomes=", signature=signature)
+    assert r.status_code == 200 and r.json()["items"] == [] and r.json()["totalItems"] == 0
+    assert client.get(f"/v1/change_reports/{today}?outcomes=delete,bogus", signature=signature).status_code == 400
 
     seed.ensure_seeded(client, signature)

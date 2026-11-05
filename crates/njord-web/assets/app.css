@@ -256,6 +256,10 @@
     }
     .nj-btn-outline-secondary { border-color: var(--nj-muted); color: var(--nj-muted); }
     .nj-btn-outline-secondary:hover { background-color: var(--nj-muted); color: var(--nj-bg); }
+    /* A toggle (the change report's outcome filters): pressed is filled, unpressed is the
+       outline, and hovering changes neither. */
+    .nj-btn-outline-secondary[aria-pressed="true"] { background-color: var(--nj-muted); color: var(--nj-bg); }
+    .nj-btn-outline-secondary[aria-pressed="false"]:hover { background-color: transparent; color: var(--nj-muted); }
     .nj-btn-outline-success {
         border-color: var(--nj-success);
         color: color-mix(in srgb, var(--nj-success) 80%, var(--nj-fg));

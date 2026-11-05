@@ -1,12 +1,13 @@
 //! The Change Report tab (`/control/change_reports`): the days with chart or base map changes,
 //! 25 per page, and one day's report (`/control/change_reports/<date>`) listing its changes,
-//! 250 per page (`docs/change_reports.md`).
+//! newest first, 250 per page (`docs/change_reports.md`).
 //!
 //! Both routes are signed, so the tab asks for the admin login first. On both pages the page
-//! shown is the `?page=` query parameter, so the back button and bookmarks keep it. Days are UTC (that is
-//! how the server groups them and how the URL names them) and labelled so; beside each the
-//! browser shows the span that day covers in its own time zone, and each change shows the local
-//! date and time it occurred at.
+//! shown is the `?page=` query parameter, so the back button and bookmarks keep it; the report
+//! page keeps its outcome filter in `?outcomes=` the same way (absent when every outcome is
+//! shown, which is the default). Days are UTC (that is how the server groups them and how the
+//! URL names them) and labelled so; beside each the browser shows the span that day covers in
+//! its own time zone, and each change shows the local date and time it occurred at.
 
 use jiff::Timestamp;
 use jiff::civil::Date;
@@ -195,6 +196,56 @@ fn page_param() -> i32 {
     })
 }
 
+/// The outcomes a report page shows for its `?outcomes=` value: every outcome when the
+/// parameter is absent (the default), else the ones it names, in their fixed order, skipping
+/// anything that is not an outcome. An empty value is no outcomes.
+pub fn outcomes_from_param(value: Option<&str>) -> Vec<ChangeOutcome> {
+    let Some(value) = value else {
+        return ChangeOutcome::ALL.to_vec();
+    };
+    let named: Vec<ChangeOutcome> = value
+        .split(',')
+        .filter_map(|v| v.trim().parse().ok())
+        .collect();
+    ChangeOutcome::ALL
+        .iter()
+        .copied()
+        .filter(|o| named.contains(o))
+        .collect()
+}
+
+/// `?outcomes=` of the current URL, as [`outcomes_from_param`] reads it.
+fn outcomes_param() -> Vec<ChangeOutcome> {
+    store().route.with(|r| {
+        outcomes_from_param(
+            r.current
+                .params
+                .as_ref()
+                .and_then(|p| p.get("outcomes"))
+                .as_deref(),
+        )
+    })
+}
+
+/// The report page's query string for page `page` showing `outcomes`: `page=2`, with
+/// `&outcomes=new,error` only when not every outcome is shown.
+pub fn report_query(page: i32, outcomes: &[ChangeOutcome]) -> String {
+    if outcomes.len() == ChangeOutcome::ALL.len() {
+        format!("page={page}")
+    } else {
+        format!("page={page}&outcomes={}", ChangeOutcome::join(outcomes))
+    }
+}
+
+/// `outcomes` with `outcome` removed when it is there, else added.
+pub fn toggled(outcomes: &[ChangeOutcome], outcome: ChangeOutcome) -> Vec<ChangeOutcome> {
+    ChangeOutcome::ALL
+        .iter()
+        .copied()
+        .filter(|o| outcomes.contains(o) != (*o == outcome))
+        .collect()
+}
+
 #[component]
 fn DayList() -> impl IntoView {
     let s = store();
@@ -242,12 +293,23 @@ fn DayList() -> impl IntoView {
 fn DayReport(date: String) -> impl IntoView {
     let s = store();
     let page_index = Memo::new(move |_| page_param());
+    let outcomes = Memo::new(move |_| outcomes_param());
     // `StoredValue` so the closures below stay `Copy`.
     let date = StoredValue::new(date);
-    let load = move |page: i32| date.with_value(|d| s.load_change_report(d, page));
-    Effect::new(move || load(page_index.get()));
-    let go = move |page: i32| {
-        date.with_value(|d| s.push_query(&format!("{TAB_PATH}/{d}"), &format!("page={page}")))
+    let load = move |page: i32, outcomes: &[ChangeOutcome]| {
+        date.with_value(|d| s.load_change_report(d, page, outcomes))
+    };
+    Effect::new(move || load(page_index.get(), &outcomes.get()));
+    let push = move |query: String| {
+        date.with_value(|d| s.push_query(&format!("{TAB_PATH}/{d}"), &query));
+    };
+    let go = move |page: i32| push(report_query(page, &outcomes.get_untracked()));
+    // A filter change starts over at the first page: the pages are the filtered list's.
+    let toggle = move |outcome: ChangeOutcome| {
+        push(report_query(
+            0,
+            &toggled(&outcomes.get_untracked(), outcome),
+        ));
     };
     view! {
         <Link label="Back to Change Report" path=TAB_PATH/>
@@ -256,39 +318,65 @@ fn DayReport(date: String) -> impl IntoView {
         {move || {
             let state = s.change_reports.get();
             let index = page_index.get();
-            render_async(state.report, move || load(index), move |report| report_view(&report, go))
+            let shown = outcomes.get();
+            let load_shown = shown.clone();
+            render_async(
+                state.report,
+                move || load(index, &load_shown),
+                move |report| report_view(&report, &shown, go, toggle),
+            )
         }}
     }
 }
 
-fn report_view(report: &ChangeReport, go: impl Fn(i32) + Copy + 'static) -> AnyView {
-    let counts = [
-        ("New", report.counts.new),
-        ("Update", report.counts.update),
-        ("Delete", report.counts.delete),
-        ("Nuke", report.counts.nuke),
-        ("Error", report.counts.error),
+/// The report: the day's counts as filter toggles (pressed means that outcome's rows are
+/// shown), then the newest-first table of the rows with a shown outcome, paged.
+fn report_view(
+    report: &ChangeReport,
+    shown: &[ChangeOutcome],
+    go: impl Fn(i32) + Copy + 'static,
+    toggle: impl Fn(ChangeOutcome) + Copy + 'static,
+) -> AnyView {
+    let filters = [
+        (ChangeOutcome::New, report.counts.new),
+        (ChangeOutcome::Update, report.counts.update),
+        (ChangeOutcome::Delete, report.counts.delete),
+        (ChangeOutcome::Nuke, report.counts.nuke),
+        (ChangeOutcome::Error, report.counts.error),
     ]
     .into_iter()
-    .map(|(label, count)| {
+    .map(|(outcome, count)| {
+        let on = shown.contains(&outcome);
+        let name = outcome_name(outcome);
+        let title = if on {
+            format!("Hide {name} rows")
+        } else {
+            format!("Show {name} rows")
+        };
         view! {
-            <div class="nj-btn nj-btn-sm nj-btn-outline-secondary" style="pointer-events: none;">
-                {format!("{label}: {count}")}
-            </div>
+            <button
+                class="nj-btn nj-btn-sm nj-btn-outline-secondary"
+                aria-pressed=if on { "true" } else { "false" }
+                title=title
+                on:click=move |_| toggle(outcome)
+            >
+                {format!("{name}: {count}")}
+            </button>
         }
     })
     .collect_view();
     let rows = report.items.iter().map(item_row).collect_view();
+    let filtered = shown.len() != ChangeOutcome::ALL.len();
     let paged = report.total_items > i64::from(report.page_size);
-    let shown = rows_shown(
+    let rows_text = rows_shown(
         report.page_index,
         report.page_size,
         report.items.len(),
         report.total_items,
     );
     view! {
-        <div class="mb-4 flex flex-wrap gap-2">{counts}</div>
-        {paged.then(|| view! { <p>{shown}</p> })}
+        <div class="mb-4 flex flex-wrap gap-2">{filters}</div>
+        {(paged || filtered).then(|| view! { <p>{rows_text}</p> })}
         <table class="nj-table nj-table-striped">
             <thead>
                 <tr><th>"Outcome"</th><th>"Chart"</th><th>"Feature Count Change"</th><th>"Cause"</th><th>"Local time"</th></tr>
@@ -375,6 +463,32 @@ mod tests {
         assert_eq!(rows_shown(0, 250, 250, 612), "Rows 1\u{2013}250 of 612");
         assert_eq!(rows_shown(2, 250, 112, 612), "Rows 501\u{2013}612 of 612");
         assert_eq!(rows_shown(3, 250, 0, 612), "No rows on this page");
+    }
+
+    #[test]
+    fn outcome_filter_in_the_query() {
+        use ChangeOutcome::*;
+        assert_eq!(outcomes_from_param(None), ChangeOutcome::ALL.to_vec());
+        assert_eq!(outcomes_from_param(Some("error,new")), [New, Error]);
+        assert_eq!(outcomes_from_param(Some("new,bogus,,new")), [New]);
+        assert_eq!(outcomes_from_param(Some("")), []);
+        assert_eq!(report_query(2, ChangeOutcome::ALL), "page=2");
+        assert_eq!(report_query(0, &[New, Error]), "page=0&outcomes=new,error");
+        assert_eq!(report_query(0, &[]), "page=0&outcomes=");
+        assert_eq!(
+            toggled(ChangeOutcome::ALL, Nuke),
+            [New, Update, Delete, Error]
+        );
+        assert_eq!(toggled(&[New, Error], Update), [New, Update, Error]);
+        assert_eq!(toggled(&[New], New), []);
+        assert_eq!(
+            outcomes_from_param(Some(&ChangeOutcome::join(&toggled(
+                ChangeOutcome::ALL,
+                Delete
+            )))),
+            [New, Update, Nuke, Error],
+            "round trip through the URL"
+        );
     }
 
     #[test]

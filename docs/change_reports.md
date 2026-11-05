@@ -1,6 +1,6 @@
 # Change Reports
 
-_Plan written 2026-10-31, revised 2026-11-04 with the open questions resolved, and implemented the same day; §11 lists where the plan and the code differ in name._
+_Plan written 2026-10-31, revised 2026-11-04 with the open questions resolved, and implemented the same day; §11 lists where the plan and the code differ in name, and the newest-first order and outcome filter added afterwards._
 
 ## 1. Goal
 
@@ -13,7 +13,7 @@ Keep a durable history of every chart and world base map change, and show it in 
   | 2026-10-31 | Oct 30, 2026, 5:00 PM PDT – Oct 31, 2026, 5:00 PM PDT | 42 | 1 |
 
   **Local time** is the span the UTC day covers in the browser's time zone. **Actions** is the number of successful New + Update + Delete + Nuke changes that day. **Errors** is the number of attempted changes that failed.
-- Clicking a date opens the **Report** page (`/control/change_reports/2026-10-31`). It shows a count summary (New, Update, Delete, Nuke, Error), then a table of the charts and base maps changed or errored that day, 250 per page (the counts cover the whole day; "Previous" and "Next" step through the pages, and the page is kept in `?page=`):
+- Clicking a date opens the **Report** page (`/control/change_reports/2026-10-31`). It shows a count summary (New, Update, Delete, Nuke, Error), then a table of the charts and base maps changed or errored that day, newest first, 250 per page (the counts cover the whole day; "Previous" and "Next" step through the pages, and the page is kept in `?page=`). Each count is a toggle: all five are on to begin with, and turning one off hides that outcome's rows (the count still shows the whole day). The filter is kept in `?outcomes=` beside the page, and changing it returns to the first page:
 
   | Outcome | Chart | Feature Count Change | Cause | Local time |
   |---|---|---|---|---|
@@ -123,7 +123,7 @@ The UI turns these into display text ("NOAA ENC Cron", "New"…), so the wire va
 - `record_change_event(&mut PgConnection, &NewChangeEvent)` takes a connection, so an event can be written inside the transaction that made the change.
 - `change_report_days(page, page_size) -> ChangeReportPage`:
   `SELECT day, count(*) FILTER (WHERE outcome <> 'error'), count(*) FILTER (WHERE outcome = 'error') FROM change_events GROUP BY day ORDER BY day DESC LIMIT $1 OFFSET $2`, plus `count(DISTINCT day)`. Offset paging is fine here because there is at most one row per day.
-- `change_report(day, page, page_size) -> Option<ChangeReport>`: the whole day's counts (`GROUP BY outcome`, whose sum is `total_items`) and one page of items, ordered by `outcome` (error first), then `name`, then `id`, so the order is total and `LIMIT $2 OFFSET $3` paging is stable. `None` only when the day has no events; a page past the end has the counts and no items.
+- `change_report(day, page, page_size, outcomes) -> Option<ChangeReport>`: the whole day's counts (`GROUP BY outcome`) and one page of the items whose outcome is in `outcomes` (`WHERE outcome = ANY($4)`; `total_items` is the sum of those outcomes' counts), ordered by `occurred_at` then `id`, both descending, so the order is total and `LIMIT $2 OFFSET $3` paging is stable. `None` only when the day has no events at all; a page past the end, or a filter matching nothing, has the counts and no items.
 - `insert_chart` also returns the previous feature count (`SELECT count(*) FROM features WHERE chart_name = $1` inside the same transaction, before `delete_chart`), as `Option<i64>` (`None` = no chart existed). This tells the caller whether the outcome is New or Update and gives it `before`.
 - The private `delete_chart` returns the number of feature rows it deleted, so `Db::delete_chart` can report `−before`.
 - `delete_base_features` returns the number of rows deleted instead of `bool`.
@@ -171,7 +171,7 @@ Record one event per shapefile, with kind `base_map` and name = shapefile name (
 | Route | Answer |
 |---|---|
 | `GET /v1/change_reports?page=<n>&signature=` | `ChangeReportPage`, 25 per page (`page` defaults to 0) |
-| `GET /v1/change_reports/{date}?page=<n>&signature=` | `ChangeReport`, 250 items per page (`page` defaults to 0; a page past the end has the counts and no items); 400 for a malformed date or page, 404 for a day with no events |
+| `GET /v1/change_reports/{date}?page=<n>&outcomes=<a,b>&signature=` | `ChangeReport`, newest first, 250 items per page (`page` defaults to 0; a page past the end has the counts and no items). `outcomes` is a comma-separated subset of `new,update,delete,nuke,error` and keeps only those events (every outcome when absent; an empty value is none); the counts always cover the whole day. 400 for a malformed date or page or an unknown outcome, 404 for a day with no events |
 
 Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v1/nuke`: an empty 401 without a valid admin signature. The report is operator data, and the error messages come from GDAL and sqlx, so they may name files under `chartTempData`; keeping the routes behind the signature means those need no scrubbing.
 
@@ -187,8 +187,8 @@ Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v
 - New `ui/change_reports.rs`:
   - `ChangeReportsTab`: if the path is empty it shows the date list, otherwise the report page for that date.
   - **Date list:** an `nj-table nj-table-striped` table (as in `chart_table`) with columns Date | Actions | Errors. Each date is a `<Link>` to `/control/change_reports/<date>`. "Newer" and "Older" buttons step through the pages, and the current page is kept in the query string (`?page=2`), so the back button and bookmarks work.
-  - **Report page:** a row of five count badges (New, Update, Delete, Nuke, Error), then the Outcome | Chart | Feature Count Change | Cause table. Chart names link to `/chart/<name>`; base maps and the nuke row are plain text. Feature counts are signed (`+312`, `−40`, `0`). Error rows are styled `table-danger`, and the message appears in a `title` tooltip and an expandable line. There is a "Back to Change Report" link. When the day has more than 250 items, a "Rows a–b of n" line and "Previous" / "Next" buttons page through them, with the page in `?page=` as on the date list; the count badges always cover the whole day.
-- `api.rs` gets `change_report_page(signature, page)` and `change_report(signature, date)`, typed through `njord-model` and passing the stored admin signature as `delete_chart` does. `store.rs` gets an `Async<ChangeReportPage>` keyed by page and an `Async<ChangeReport>` keyed by date. They load only when the tab is opened, like the other control-panel loads, and a 401 sends the user to the admin login as the other signed calls do.
+  - **Report page:** a row of five count toggles (New, Update, Delete, Nuke, Error; `aria-pressed` buttons, all pressed by default), then the Outcome | Chart | Feature Count Change | Cause | Local time table, newest first. Unpressing a toggle hides that outcome's rows: the page is reloaded with `?outcomes=` naming the pressed ones (absent when all are), from page 0. Chart names link to `/chart/<name>`; base maps and the nuke row are plain text. Feature counts are signed (`+312`, `−40`, `0`). Error rows are styled `table-danger`, and the message appears in a `title` tooltip and an expandable line. There is a "Back to Change Report" link. When the day has more than 250 matching items, a "Rows a–b of n" line and "Previous" / "Next" buttons page through them, with the page in `?page=` as on the date list; the count toggles always cover the whole day.
+- `api.rs` gets `change_report_page(signature, page)` and `change_report(signature, date, page, outcomes)`, typed through `njord-model` and passing the stored admin signature as `delete_chart` does. `store.rs` gets an `Async<ChangeReportPage>` keyed by page and an `Async<ChangeReport>` keyed by date, page and outcomes. They load only when the tab is opened, like the other control-panel loads, and a 401 sends the user to the admin login as the other signed calls do.
 - Days are UTC: that is how `change_events.day` groups them and how the URL names them, so each date is labelled "(UTC)". Beside it the browser shows the span that UTC day covers in its own time zone (`utc_day_bounds` in `jiff`, formatted by `Date.toLocaleString` with the zone abbreviation), and each change row shows its `occurredAt` the same way, so a viewer in another time zone can see that a 03:00 UTC cron run was the previous evening locally.
 
 ## 8. Tests
@@ -245,7 +245,11 @@ The implementation follows the plan above. Names that differ from the plan's ske
   shapefile had no rows before and `update` otherwise, counting a replaced shapefile's rows as
   its `before`.
 - `njord-web`: paging pushes `?page=N` through `Store::push_query`, because `push_route` ignores
-  a change that is only in the query string. The tab shows "Admin access required" until the
-  admin is logged in, like the installer.
+  a change that is only in the query string; the outcome filter travels the same way
+  (`?outcomes=new,error`). The tab shows "Admin access required" until the admin is logged in,
+  like the installer.
+- Order and filter (added after the first version): the report was first ordered errors first,
+  then by name; it is now newest first, and `?outcomes=` filters it. `ChangeOutcome::join` /
+  `parse_list` in `njord-model` define the parameter's form for both the server and the web UI.
 - Conformance: `test_api_13_change_reports.py` is `port_only`; `test_api_99_nuke.py` checks the
   nuke row on the Rust server only.

@@ -5,9 +5,9 @@
 //! one) and the message the page shows.
 
 use njord_model::{
-    AboutJson, AdminResponse, AdminSignature, ChangeReport, ChangeReportPage, Chart, ChartCatalog,
-    ColorLibrary, IconInfo, IndexMap, LayerQueryResultPage, RegionManifestEntry, S57Attribute,
-    S57ExpectedInput, S57Object, Sprite, ThemeMode,
+    AboutJson, AdminResponse, AdminSignature, ChangeOutcome, ChangeReport, ChangeReportPage, Chart,
+    ChartCatalog, ColorLibrary, IconInfo, IndexMap, LayerQueryResultPage, RegionManifestEntry,
+    S57Attribute, S57ExpectedInput, S57Object, Sprite, ThemeMode,
 };
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -313,8 +313,9 @@ pub async fn change_report_page(
     .await
 }
 
-/// `GET /v1/change_reports/<date>?page=…`, signed: one day's change report, with page `page` of
-/// its events.
+/// `GET /v1/change_reports/<date>?page=…&outcomes=…`, signed: one day's change report, with
+/// page `page` of its events that have one of `outcomes`. `outcomes` is sent only when it is
+/// not every outcome, so the usual request stays as it was.
 ///
 /// # Errors
 ///
@@ -323,13 +324,14 @@ pub async fn change_report(
     signature: &AdminResponse,
     date: &str,
     page: i32,
+    outcomes: &[ChangeOutcome],
 ) -> ApiResult<ChangeReport> {
-    get(
-        &format!("change_reports/{date}"),
-        &[
-            ("page", &page.to_string()),
-            ("signature", &signature.signature_encoded),
-        ],
-    )
-    .await
+    let page = page.to_string();
+    let outcomes = ChangeOutcome::join(outcomes);
+    let mut params = vec![("page", page.as_str())];
+    if outcomes != ChangeOutcome::join(ChangeOutcome::ALL) {
+        params.push(("outcomes", outcomes.as_str()));
+    }
+    params.push(("signature", &signature.signature_encoded));
+    get(&format!("change_reports/{date}"), &params).await
 }

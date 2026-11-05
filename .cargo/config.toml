@@ -1,0 +1,3 @@
+# `cargo xtask <task>`: container image and deploy tasks (crates/xtask).
+[alias]
+xtask = "run -q -p njord-xtask --"

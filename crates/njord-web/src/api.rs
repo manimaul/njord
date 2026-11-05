@@ -313,15 +313,23 @@ pub async fn change_report_page(
     .await
 }
 
-/// `GET /v1/change_reports/<date>`, signed: one day's change report.
+/// `GET /v1/change_reports/<date>?page=…`, signed: one day's change report, with page `page` of
+/// its events.
 ///
 /// # Errors
 ///
 /// As [`get`]; a day with no events is a 404.
-pub async fn change_report(signature: &AdminResponse, date: &str) -> ApiResult<ChangeReport> {
+pub async fn change_report(
+    signature: &AdminResponse,
+    date: &str,
+    page: i32,
+) -> ApiResult<ChangeReport> {
     get(
         &format!("change_reports/{date}"),
-        &[("signature", &signature.signature_encoded)],
+        &[
+            ("page", &page.to_string()),
+            ("signature", &signature.signature_encoded),
+        ],
     )
     .await
 }

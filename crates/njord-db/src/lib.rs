@@ -41,7 +41,9 @@ use sqlx::PgPool;
 use sqlx::pool::PoolConnection;
 use sqlx::postgres::{PgPoolOptions, Postgres};
 
-pub use change_events::{NewChangeEvent, REPORT_PAGE_SIZE, record_change_event};
+pub use change_events::{
+    NewChangeEvent, REPORT_ITEM_PAGE_SIZE, REPORT_PAGE_SIZE, record_change_event,
+};
 pub use charts::{ChartFeature, ChartInfo};
 pub use error::Error;
 pub use features::{FeatureInstall, InstalledChart};

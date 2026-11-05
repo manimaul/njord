@@ -105,14 +105,21 @@ pub struct ChangeItem {
     pub occurred_at: Timestamp,
 }
 
-/// One day's report: the counts and every event of that day.
+/// One day's report: the whole day's counts and one page of its events.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeReport {
     /// `YYYY-MM-DD`, UTC.
     pub date: String,
+    /// Over the whole day, not the page.
     pub counts: ChangeCounts,
+    /// The page's events: errors first, then by name.
     pub items: Vec<ChangeItem>,
+    /// Zero-based.
+    pub page_index: i32,
+    pub page_size: i32,
+    /// Events that day, over every page.
+    pub total_items: i64,
 }
 
 #[cfg(test)]
@@ -152,7 +159,7 @@ mod tests {
 
     #[test]
     fn report_round_trips_with_explicit_nulls() {
-        let json = r#"{"date":"2026-10-31","counts":{"new":1,"update":0,"delete":0,"nuke":0,"error":1},"items":[{"outcome":"new","attempted":null,"kind":"chart","name":"US5WA22M.000","featureCountChange":5158,"cause":"noaa_enc_cron","message":null,"occurredAt":"2026-10-31T12:00:00Z"},{"outcome":"error","attempted":"update","kind":"base_map","name":"ne_10m_ocean.shp","featureCountChange":-3,"cause":"admin","message":"aborted","occurredAt":"2026-10-31T12:00:01.500Z"}]}"#;
+        let json = r#"{"date":"2026-10-31","counts":{"new":1,"update":0,"delete":0,"nuke":0,"error":1},"items":[{"outcome":"new","attempted":null,"kind":"chart","name":"US5WA22M.000","featureCountChange":5158,"cause":"noaa_enc_cron","message":null,"occurredAt":"2026-10-31T12:00:00Z"},{"outcome":"error","attempted":"update","kind":"base_map","name":"ne_10m_ocean.shp","featureCountChange":-3,"cause":"admin","message":"aborted","occurredAt":"2026-10-31T12:00:01.500Z"}],"pageIndex":0,"pageSize":250,"totalItems":2}"#;
         let report: ChangeReport = serde_json::from_str(json).unwrap();
         assert_eq!(report.items[1].attempted, Some(ChangeOutcome::Update));
         assert_eq!(serde_json::to_string(&report).unwrap(), json);

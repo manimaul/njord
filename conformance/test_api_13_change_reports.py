@@ -36,6 +36,7 @@ def test_malformed_date_and_page_are_400(client, signature):
     assert client.get("/v1/change_reports/yesterday", signature=signature).status_code == 400
     assert client.get("/v1/change_reports?page=-1", signature=signature).status_code == 400
     assert client.get("/v1/change_reports?page=x", signature=signature).status_code == 400
+    assert client.get(f"/v1/change_reports/{_today()}?page=-1", signature=signature).status_code == 400
 
 
 def test_day_without_events_is_404(client, signature):
@@ -54,6 +55,8 @@ def test_upload_and_delete_are_recorded(client, signature):
 
     report = _report(client, signature, today)
     assert report["date"] == today
+    assert report["pageIndex"] == 0 and report["pageSize"] == 250
+    assert len(report["items"]) <= 250
     mine = [i for i in report["items"] if i["name"] == CHART and i["outcome"] in ("new", "update")]
     assert mine, report["items"]
     item = mine[-1]
@@ -64,7 +67,8 @@ def test_upload_and_delete_are_recorded(client, signature):
     assert isinstance(item["featureCountChange"], int)
     counts = report["counts"]
     assert set(counts) == {"new", "update", "delete", "nuke", "error"}
-    assert sum(counts.values()) == len(report["items"])
+    assert sum(counts.values()) == report["totalItems"]
+    assert len(report["items"]) == min(report["totalItems"], 250)
 
     r = client.request("DELETE", f"/v1/chart?name={CHART}&cause=noaa_enc_cron", signature=signature)
     assert r.status_code == 202, r.text

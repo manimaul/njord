@@ -1,9 +1,9 @@
 //! The Change Report tab (`/control/change_reports`): the days with chart or base map changes,
-//! 25 per page, and one day's report (`/control/change_reports/<date>`) listing every change
-//! (`docs/change_reports.md`).
+//! 25 per page, and one day's report (`/control/change_reports/<date>`) listing its changes,
+//! 250 per page (`docs/change_reports.md`).
 //!
-//! Both routes are signed, so the tab asks for the admin login first. The day list's page is
-//! the `?page=` query parameter, so the back button and bookmarks keep it. Days are UTC (that is
+//! Both routes are signed, so the tab asks for the admin login first. On both pages the page
+//! shown is the `?page=` query parameter, so the back button and bookmarks keep it. Days are UTC (that is
 //! how the server groups them and how the URL names them) and labelled so; beside each the
 //! browser shows the span that day covers in its own time zone, and each change shows the local
 //! date and time it occurred at.
@@ -117,6 +117,51 @@ pub fn signed(change: i64) -> String {
     }
 }
 
+/// The row of paging controls under a table: `Page x of y` between a button for the previous
+/// page (`back`) and one for the next (`forward`), each disabled at its end of the range.
+fn pager(
+    page_index: i32,
+    page_size: i32,
+    total: i64,
+    back: &'static str,
+    forward: &'static str,
+    go: impl Fn(i32) + Copy + 'static,
+) -> AnyView {
+    let last_page = (total.max(1) - 1) / i64::from(page_size.max(1));
+    let has_back = page_index > 0;
+    let has_forward = i64::from(page_index) < last_page;
+    view! {
+        <div class="flex items-center gap-4">
+            <button
+                class="nj-btn nj-btn-sm nj-btn-outline-secondary"
+                disabled=!has_back
+                on:click=move |_| go(page_index - 1)
+            >
+                {back}
+            </button>
+            <span>{format!("Page {} of {}", page_index + 1, last_page + 1)}</span>
+            <button
+                class="nj-btn nj-btn-sm nj-btn-outline-secondary"
+                disabled=!has_forward
+                on:click=move |_| go(page_index + 1)
+            >
+                {forward}
+            </button>
+        </div>
+    }
+    .into_any()
+}
+
+/// `Rows a–b of n` for a page, or `No rows on this page` past the end.
+pub fn rows_shown(page_index: i32, page_size: i32, shown: usize, total: i64) -> String {
+    if shown == 0 {
+        return "No rows on this page".to_owned();
+    }
+    let first = i64::from(page_index.max(0)) * i64::from(page_size.max(1)) + 1;
+    let last = first + shown as i64 - 1;
+    format!("Rows {first}\u{2013}{last} of {total}")
+}
+
 #[component]
 pub fn ChangeReportsTab(path: String) -> impl IntoView {
     let s = store();
@@ -180,32 +225,12 @@ fn DayList() -> impl IntoView {
                         }
                     })
                     .collect_view();
-                let last_page = (page.total_days - 1) / i64::from(page.page_size.max(1));
-                let newer = page.page_index > 0;
-                let older = i64::from(page.page_index) < last_page;
-                let shown = page.page_index;
                 view! {
                     <table class="nj-table nj-table-striped">
                         <thead><tr><th>"Date (UTC)"</th><th>"Local time"</th><th>"Actions"</th><th>"Errors"</th></tr></thead>
                         <tbody>{rows}</tbody>
                     </table>
-                    <div class="flex items-center gap-4">
-                        <button
-                            class="nj-btn nj-btn-sm nj-btn-outline-secondary"
-                            disabled=!newer
-                            on:click=move |_| go(shown - 1)
-                        >
-                            "Newer"
-                        </button>
-                        <span>{format!("Page {} of {}", shown + 1, last_page + 1)}</span>
-                        <button
-                            class="nj-btn nj-btn-sm nj-btn-outline-secondary"
-                            disabled=!older
-                            on:click=move |_| go(shown + 1)
-                        >
-                            "Older"
-                        </button>
-                    </div>
+                    {pager(page.page_index, page.page_size, page.total_days, "Newer", "Older", go)}
                 }
                 .into_any()
             })
@@ -216,24 +241,27 @@ fn DayList() -> impl IntoView {
 #[component]
 fn DayReport(date: String) -> impl IntoView {
     let s = store();
-    let load = {
-        let date = date.clone();
-        move || s.load_change_report(&date)
+    let page_index = Memo::new(move |_| page_param());
+    // `StoredValue` so the closures below stay `Copy`.
+    let date = StoredValue::new(date);
+    let load = move |page: i32| date.with_value(|d| s.load_change_report(d, page));
+    Effect::new(move || load(page_index.get()));
+    let go = move |page: i32| {
+        date.with_value(|d| s.push_query(&format!("{TAB_PATH}/{d}"), &format!("page={page}")))
     };
-    load();
-    let span = local_span(&date);
     view! {
         <Link label="Back to Change Report" path=TAB_PATH/>
-        <h2>{format!("{date} (UTC)")}</h2>
-        <p>{format!("Local time: {span}")}</p>
+        <h2>{date.with_value(|d| format!("{d} (UTC)"))}</h2>
+        <p>{date.with_value(|d| format!("Local time: {}", local_span(d)))}</p>
         {move || {
             let state = s.change_reports.get();
-            render_async(state.report, load.clone(), |report| report_view(&report))
+            let index = page_index.get();
+            render_async(state.report, move || load(index), move |report| report_view(&report, go))
         }}
     }
 }
 
-fn report_view(report: &ChangeReport) -> AnyView {
+fn report_view(report: &ChangeReport, go: impl Fn(i32) + Copy + 'static) -> AnyView {
     let counts = [
         ("New", report.counts.new),
         ("Update", report.counts.update),
@@ -251,14 +279,23 @@ fn report_view(report: &ChangeReport) -> AnyView {
     })
     .collect_view();
     let rows = report.items.iter().map(item_row).collect_view();
+    let paged = report.total_items > i64::from(report.page_size);
+    let shown = rows_shown(
+        report.page_index,
+        report.page_size,
+        report.items.len(),
+        report.total_items,
+    );
     view! {
         <div class="mb-4 flex flex-wrap gap-2">{counts}</div>
+        {paged.then(|| view! { <p>{shown}</p> })}
         <table class="nj-table nj-table-striped">
             <thead>
                 <tr><th>"Outcome"</th><th>"Chart"</th><th>"Feature Count Change"</th><th>"Cause"</th><th>"Local time"</th></tr>
             </thead>
             <tbody>{rows}</tbody>
         </table>
+        {paged.then(|| pager(report.page_index, report.page_size, report.total_items, "Previous", "Next", go))}
     }
     .into_any()
 }
@@ -328,6 +365,13 @@ mod tests {
         assert_eq!(end, "2027-01-01T00:00:00Z".parse().unwrap());
         assert_eq!(utc_day_bounds("2026-13-01"), None);
         assert_eq!(utc_day_bounds("today"), None);
+    }
+
+    #[test]
+    fn rows_shown_text() {
+        assert_eq!(rows_shown(0, 250, 250, 612), "Rows 1\u{2013}250 of 612");
+        assert_eq!(rows_shown(2, 250, 112, 612), "Rows 501\u{2013}612 of 612");
+        assert_eq!(rows_shown(3, 250, 0, 612), "No rows on this page");
     }
 
     #[test]

@@ -10,12 +10,12 @@
   was initialized with the old database: delete it to get the new one.
 - **Change Report.** Every chart and base map change is now kept in a durable history
   (`change_events`, schema version 4) and shown in the Control Panel's new **Change Report** tab:
-  the days with changes, 25 per page, and per day every chart or base map that was added
+  the days with changes, 25 per page, and per day (250 rows per page) every chart or base map that was added
   (`New`), replaced (`Update`), removed (`Delete`) or failed (`Error`, with the message), with
   the signed change in its feature count and who caused it (`Admin` or `NOAA ENC Cron`).
   `DELETE /v1/nuke` records itself as a `Nuke` row and keeps the earlier history. The routes
-  behind it, `GET /v1/change_reports?page=` and `GET /v1/change_reports/{date}`, require the
-  admin signature. Uploads carry a `<zip>.meta.json` sidecar into `save/` naming their cause,
+  behind it, `GET /v1/change_reports?page=` and `GET /v1/change_reports/{date}?page=`, require
+  the admin signature. Uploads carry a `<zip>.meta.json` sidecar into `save/` naming their cause,
   which `njord-enc-cron` writes for its bundles; its orphan deletes send `cause=noaa_enc_cron`.
   Days are UTC, and the browser shows beside each the span it covers in the viewer's own time
   zone, and each change's local date and time. See [docs/change_reports.md](docs/change_reports.md).

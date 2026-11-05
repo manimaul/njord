@@ -116,12 +116,14 @@ pub struct InstallState {
     pub info: Option<WsMsg>,
 }
 
-/// The Change Report tab: the day list page being shown and the report of the date being shown.
+/// The Change Report tab: the day list page being shown, and the date and item page of the
+/// report being shown.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct ChangeReportState {
     pub page_index: i32,
     pub page: Async<ChangeReportPage>,
     pub date: String,
+    pub report_page_index: i32,
     pub report: Async<ChangeReport>,
 }
 
@@ -668,20 +670,27 @@ impl Store {
         });
     }
 
-    /// Loads the report of `date` (`YYYY-MM-DD`).
-    pub fn load_change_report(self, date: &str) {
+    /// Loads item page `page` of the report of `date` (`YYYY-MM-DD`), keeping the previous page
+    /// of the same date on screen while it loads.
+    pub fn load_change_report(self, date: &str, page: i32) {
         let Some(signature) = self.signature() else {
             return;
         };
         let date = date.to_owned();
         self.change_reports.update(|c| {
+            let same_date = c.date == date;
             c.date = date.clone();
-            c.report = Async::Loading(None);
+            c.report_page_index = page;
+            c.report = Async::Loading(if same_date {
+                std::mem::take(&mut c.report).into_value()
+            } else {
+                None
+            });
         });
         spawn_local(async move {
-            let result = api::change_report(&signature, &date).await;
+            let result = api::change_report(&signature, &date, page).await;
             self.change_reports.update(|c| {
-                if c.date == date {
+                if c.date == date && c.report_page_index == page {
                     c.report = Async::from_result(result, None);
                 }
             });

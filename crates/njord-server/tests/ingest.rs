@@ -515,6 +515,30 @@ async fn worker_claims_and_ingests_through_the_production_path() {
     assert_eq!(report.items.len(), 7);
     assert_eq!(report.items[0].name, "BROKEN.000", "errors first");
     assert_eq!(
+        (report.page_index, report.page_size, report.total_items),
+        (0, 250, 7)
+    );
+    // Item pages: a page past the end keeps the day's counts and has no items; a bad page is 400.
+    let (status, body) = get(
+        &state,
+        &format!("/v1/change_reports/{today}?page=1&signature={sig}"),
+    )
+    .await;
+    assert_eq!(status, StatusCode::OK);
+    let past: ChangeReport = serde_json::from_slice(&body).unwrap();
+    assert!(past.items.is_empty());
+    assert_eq!((past.page_index, past.total_items), (1, 7));
+    assert_eq!(past.counts, report.counts);
+    assert_eq!(
+        get(
+            &state,
+            &format!("/v1/change_reports/{today}?page=-1&signature={sig}")
+        )
+        .await
+        .0,
+        StatusCode::BAD_REQUEST
+    );
+    assert_eq!(
         get(
             &state,
             &format!("/v1/change_reports/2000-01-01?signature={sig}")

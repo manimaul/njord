@@ -23,6 +23,9 @@ use crate::{Db, Result};
 /// Days per page of [`Db::change_report_days`].
 pub const REPORT_PAGE_SIZE: i32 = 25;
 
+/// Events per page of [`Db::change_report`].
+pub const REPORT_ITEM_PAGE_SIZE: i32 = 250;
+
 /// A change event to record.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct NewChangeEvent {
@@ -275,47 +278,70 @@ impl Db {
         })
     }
 
-    /// The report of one UTC `day` (`YYYY-MM-DD`), or `None` when it has no events
-    /// (`GET /v1/change_reports/{date}`).
+    /// The report of one UTC `day` (`YYYY-MM-DD`): the whole day's counts and page `page` of
+    /// its events, `page_size` per page (`GET /v1/change_reports/{date}?page=`). `None` when the
+    /// day has no events; a page past the end has the counts and no items.
     ///
-    /// Errors come first, then the rest by name and id. `day` must already be a valid date:
-    /// the cast fails otherwise.
+    /// Errors come first, then the rest by name and id, so the order is total and offset paging
+    /// is stable. `day` must already be a valid date: the cast fails otherwise.
     ///
     /// # Errors
     ///
     /// [`Error::Connection`](crate::Error::Connection) when no connection could be acquired,
     /// [`Error::Sql`](crate::Error::Sql) when a statement fails (a malformed `day` included), and
     /// [`Error::Json`](crate::Error::Json) when a row holds a value outside the wire enums.
-    pub async fn change_report(&self, day: &str) -> Result<Option<ChangeReport>> {
+    pub async fn change_report(
+        &self,
+        day: &str,
+        page: i32,
+        page_size: i32,
+    ) -> Result<Option<ChangeReport>> {
+        let page = page.max(0);
+        let page_size = page_size.max(1);
         let mut conn = self.conn().await?;
+        let count_rows = sqlx::query(
+            "SELECT outcome, count(*) FROM change_events WHERE day = $1::date GROUP BY outcome;",
+        )
+        .bind(day)
+        .fetch_all(&mut *conn)
+        .await?;
+        let mut counts = ChangeCounts::default();
+        let mut total_items = 0i64;
+        for row in &count_rows {
+            let n: i64 = row.try_get(1)?;
+            total_items += n;
+            match parse::<ChangeOutcome>(row, 0, "outcome")? {
+                ChangeOutcome::New => counts.new += n,
+                ChangeOutcome::Update => counts.update += n,
+                ChangeOutcome::Delete => counts.delete += n,
+                ChangeOutcome::Nuke => counts.nuke += n,
+                ChangeOutcome::Error => counts.error += n,
+            }
+        }
+        if total_items == 0 {
+            return Ok(None);
+        }
         let rows = sqlx::query(
             "SELECT outcome, attempted, kind, name, feature_count_change, cause, message,
                     (extract(epoch FROM occurred_at) * 1000000)::bigint
              FROM change_events
              WHERE day = $1::date
-             ORDER BY (outcome <> 'error'), name, id;",
+             ORDER BY (outcome <> 'error'), name, id
+             LIMIT $2 OFFSET $3;",
         )
         .bind(day)
+        .bind(i64::from(page_size))
+        .bind(i64::from(page) * i64::from(page_size))
         .fetch_all(&mut *conn)
         .await?;
-        if rows.is_empty() {
-            return Ok(None);
-        }
         let items = rows.iter().map(item).collect::<Result<Vec<_>>>()?;
-        let mut counts = ChangeCounts::default();
-        for i in &items {
-            match i.outcome {
-                ChangeOutcome::New => counts.new += 1,
-                ChangeOutcome::Update => counts.update += 1,
-                ChangeOutcome::Delete => counts.delete += 1,
-                ChangeOutcome::Nuke => counts.nuke += 1,
-                ChangeOutcome::Error => counts.error += 1,
-            }
-        }
         Ok(Some(ChangeReport {
             date: day.to_owned(),
             counts,
             items,
+            page_index: page,
+            page_size,
+            total_items,
         }))
     }
 }

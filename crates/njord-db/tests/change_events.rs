@@ -7,7 +7,7 @@
 mod common;
 
 use common::{drop_database, exec, migrated_db, wkt_geometry};
-use njord_db::{Db, NewChangeEvent, REPORT_PAGE_SIZE};
+use njord_db::{Db, NewChangeEvent, REPORT_ITEM_PAGE_SIZE, REPORT_PAGE_SIZE};
 use njord_model::{ChangeCause, ChangeKind, ChangeOutcome, ChartInsert, IndexMap, JsonObject};
 use serde_json::json;
 
@@ -107,8 +107,16 @@ async fn days_aggregate_and_page_newest_first() {
         "page and size are clamped"
     );
 
-    let report = db.change_report("2026-01-29").await.unwrap().unwrap();
+    let report = db
+        .change_report("2026-01-29", 0, REPORT_ITEM_PAGE_SIZE)
+        .await
+        .unwrap()
+        .unwrap();
     assert_eq!(report.date, "2026-01-29");
+    assert_eq!(
+        (report.page_index, report.page_size, report.total_items),
+        (0, 250, 31)
+    );
     assert_eq!(
         (
             report.counts.update,
@@ -132,9 +140,57 @@ async fn days_aggregate_and_page_newest_first() {
         report.items[0].occurred_at.to_string(),
         "2026-01-29T11:00:00Z"
     );
-    assert!(db.change_report("2025-12-31").await.unwrap().is_none());
+
+    // Item paging: 31 items in pages of 10, the whole day's counts on every page, and a page
+    // past the end still answers (with no items) because the day exists.
+    let mut paged = Vec::new();
+    for page in 0..4 {
+        let part = db
+            .change_report("2026-01-29", page, 10)
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            (part.page_index, part.page_size, part.total_items),
+            (page, 10, 31)
+        );
+        assert_eq!(part.counts, report.counts, "page {page}");
+        assert_eq!(
+            part.items.len(),
+            if page < 3 { 10 } else { 1 },
+            "page {page}"
+        );
+        paged.extend(part.items);
+    }
+    assert_eq!(paged, report.items, "the pages are the full list in order");
+    let past = db
+        .change_report("2026-01-29", 4, 10)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(past.items.is_empty());
+    assert_eq!((past.total_items, past.counts), (31, report.counts));
+    let clamped = db
+        .change_report("2026-01-29", -1, 0)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        (clamped.page_index, clamped.page_size, clamped.items.len()),
+        (0, 1, 1),
+        "page and size are clamped"
+    );
+
     assert!(
-        db.change_report("not-a-date").await.is_err(),
+        db.change_report("2025-12-31", 0, REPORT_ITEM_PAGE_SIZE)
+            .await
+            .unwrap()
+            .is_none()
+    );
+    assert!(
+        db.change_report("not-a-date", 0, REPORT_ITEM_PAGE_SIZE)
+            .await
+            .is_err(),
         "the caller validates the date"
     );
     drop_database(db).await;
@@ -177,7 +233,7 @@ async fn mutations_return_the_counts_the_report_needs() {
         "one delete recorded, nothing for the miss"
     );
     let report = db
-        .change_report(&today.page[0].date)
+        .change_report(&today.page[0].date, 0, REPORT_ITEM_PAGE_SIZE)
         .await
         .unwrap()
         .unwrap();
@@ -272,7 +328,11 @@ async fn day_is_the_utc_date_whatever_the_session_time_zone() {
         days,
         [("2026-02-28".to_owned(), 2), ("2026-03-01".to_owned(), 1)]
     );
-    let report = db.change_report("2026-02-28").await.unwrap().unwrap();
+    let report = db
+        .change_report("2026-02-28", 0, REPORT_ITEM_PAGE_SIZE)
+        .await
+        .unwrap()
+        .unwrap();
     assert_eq!(report.items.len(), 2);
     drop_database(db).await;
 }

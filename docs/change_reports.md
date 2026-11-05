@@ -13,7 +13,7 @@ Keep a durable history of every chart and world base map change, and show it in 
   | 2026-10-31 | Oct 30, 2026, 5:00 PM PDT – Oct 31, 2026, 5:00 PM PDT | 42 | 1 |
 
   **Local time** is the span the UTC day covers in the browser's time zone. **Actions** is the number of successful New + Update + Delete + Nuke changes that day. **Errors** is the number of attempted changes that failed.
-- Clicking a date opens the **Report** page (`/control/change_reports/2026-10-31`). It shows a count summary (New, Update, Delete, Nuke, Error), then a table of every chart or base map changed or errored that day:
+- Clicking a date opens the **Report** page (`/control/change_reports/2026-10-31`). It shows a count summary (New, Update, Delete, Nuke, Error), then a table of the charts and base maps changed or errored that day, 250 per page (the counts cover the whole day; "Previous" and "Next" step through the pages, and the page is kept in `?page=`):
 
   | Outcome | Chart | Feature Count Change | Cause | Local time |
   |---|---|---|---|---|
@@ -111,7 +111,8 @@ struct ChangeReportPage { page: Vec<ChangeReportDay>, page_index: i32, page_size
 struct ChangeCounts     { new: i64, update: i64, delete: i64, nuke: i64, error: i64 }
 struct ChangeItem       { outcome, attempted: Option<ChangeOutcome>, kind, name, feature_count_change: i64,
                           cause, message: Option<String>, occurred_at: Timestamp }
-struct ChangeReport     { date: String, counts: ChangeCounts, items: Vec<ChangeItem> }
+struct ChangeReport     { date: String, counts: ChangeCounts /* the whole day */, items: Vec<ChangeItem> /* one page */,
+                          page_index: i32, page_size: i32, total_items: i64 }
 ```
 
 The UI turns these into display text ("NOAA ENC Cron", "New"…), so the wire values stay stable.
@@ -121,7 +122,7 @@ The UI turns these into display text ("NOAA ENC Cron", "New"…), so the wire va
 - `record_change_event(&mut PgConnection, &NewChangeEvent)` takes a connection, so an event can be written inside the transaction that made the change.
 - `change_report_days(page, page_size) -> ChangeReportPage`:
   `SELECT day, count(*) FILTER (WHERE outcome <> 'error'), count(*) FILTER (WHERE outcome = 'error') FROM change_events GROUP BY day ORDER BY day DESC LIMIT $1 OFFSET $2`, plus `count(DISTINCT day)`. Offset paging is fine here because there is at most one row per day.
-- `change_report(day) -> Option<ChangeReport>`: the counts and every item, ordered by `outcome` (error first), then `name`.
+- `change_report(day, page, page_size) -> Option<ChangeReport>`: the whole day's counts (`GROUP BY outcome`, whose sum is `total_items`) and one page of items, ordered by `outcome` (error first), then `name`, then `id`, so the order is total and `LIMIT $2 OFFSET $3` paging is stable. `None` only when the day has no events; a page past the end has the counts and no items.
 - `insert_chart` also returns the previous feature count (`SELECT count(*) FROM features WHERE chart_name = $1` inside the same transaction, before `delete_chart`), as `Option<i64>` (`None` = no chart existed). This tells the caller whether the outcome is New or Update and gives it `before`.
 - The private `delete_chart` returns the number of feature rows it deleted, so `Db::delete_chart` can report `−before`.
 - `delete_base_features` returns the number of rows deleted instead of `bool`.
@@ -169,7 +170,7 @@ Record one event per shapefile, with kind `base_map` and name = shapefile name (
 | Route | Answer |
 |---|---|
 | `GET /v1/change_reports?page=<n>&signature=` | `ChangeReportPage`, 25 per page (`page` defaults to 0) |
-| `GET /v1/change_reports/{date}?signature=` | `ChangeReport`; 400 for a malformed date, 404 for a day with no events |
+| `GET /v1/change_reports/{date}?page=<n>&signature=` | `ChangeReport`, 250 items per page (`page` defaults to 0; a page past the end has the counts and no items); 400 for a malformed date or page, 404 for a day with no events |
 
 Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v1/nuke`: an empty 401 without a valid admin signature. The report is operator data, and the error messages come from GDAL and sqlx, so they may name files under `chartTempData`; keeping the routes behind the signature means those need no scrubbing.
 
@@ -185,7 +186,7 @@ Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v
 - New `ui/change_reports.rs`:
   - `ChangeReportsTab`: if the path is empty it shows the date list, otherwise the report page for that date.
   - **Date list:** an `nj-table nj-table-striped` table (as in `chart_table`) with columns Date | Actions | Errors. Each date is a `<Link>` to `/control/change_reports/<date>`. "Newer" and "Older" buttons step through the pages, and the current page is kept in the query string (`?page=2`), so the back button and bookmarks work.
-  - **Report page:** a row of five count badges (New, Update, Delete, Nuke, Error), then the Outcome | Chart | Feature Count Change | Cause table. Chart names link to `/chart/<name>`; base maps and the nuke row are plain text. Feature counts are signed (`+312`, `−40`, `0`). Error rows are styled `table-danger`, and the message appears in a `title` tooltip and an expandable line. There is a "Back to Change Report" link.
+  - **Report page:** a row of five count badges (New, Update, Delete, Nuke, Error), then the Outcome | Chart | Feature Count Change | Cause table. Chart names link to `/chart/<name>`; base maps and the nuke row are plain text. Feature counts are signed (`+312`, `−40`, `0`). Error rows are styled `table-danger`, and the message appears in a `title` tooltip and an expandable line. There is a "Back to Change Report" link. When the day has more than 250 items, a "Rows a–b of n" line and "Previous" / "Next" buttons page through them, with the page in `?page=` as on the date list; the count badges always cover the whole day.
 - `api.rs` gets `change_report_page(signature, page)` and `change_report(signature, date)`, typed through `njord-model` and passing the stored admin signature as `delete_chart` does. `store.rs` gets an `Async<ChangeReportPage>` keyed by page and an `Async<ChangeReport>` keyed by date. They load only when the tab is opened, like the other control-panel loads, and a 401 sends the user to the admin login as the other signed calls do.
 - Days are UTC: that is how `change_events.day` groups them and how the URL names them, so each date is labelled "(UTC)". Beside it the browser shows the span that UTC day covers in its own time zone (`utc_day_bounds` in `jiff`, formatted by `Date.toLocaleString` with the zone abbreviation), and each change row shows its `occurredAt` the same way, so a viewer in another time zone can see that a 03:00 UTC cron run was the previous evening locally.
 
@@ -194,9 +195,9 @@ Both routes are **signed** (`handlers::Signed`), like `DELETE /v1/chart` and `/v
 | Layer | Test |
 |---|---|
 | `njord-model` | serde round trips and wire values for each enum (`noaa_enc_cron`, `base_map`, `nuke`) |
-| `njord-db` (`tests/change_events.rs`) | day aggregation and paging over 30 synthetic days; `insert_chart` returns `None`, then `Some(n)`; the `delete_chart` count; `truncate_all` returns the count and leaves `change_events` alone; an event written in a rolled-back `FeatureInstall` does not persist; `day` is the UTC date of `occurred_at` under a non-UTC session time zone |
+| `njord-db` (`tests/change_events.rs`) | day aggregation and paging over 30 synthetic days; a 31-item day paged by 10 (whole-day counts on every page, the pages concatenate to the full list, a page past the end is empty, page and size clamped); `insert_chart` returns `None`, then `Some(n)`; the `delete_chart` count; `truncate_all` returns the count and leaves `change_events` alone; an event written in a rolled-back `FeatureInstall` does not persist; `day` is the UTC date of `occurred_at` under a non-UTC session time zone |
 | `njord-server` ingest | Fixture `US5WA22M` installed → `new +n`. Same zip again → `update 0`. Signed delete → `delete −n`. `POST /v1/chart` of a new name → `new 0`; of an installed chart → `update −n`. A zip holding a corrupt `.000` → `error`, attempted `new`. Sidecar present, absent, and missing with an `enc_bundle-` name → the cause in each case. A Natural Earth fixture → a `base_map` event. Nuke → one `nuke` event with `−(all features)` and every earlier event still present |
-| `njord-server` routes | both routes 401 unsigned; signed `page` and `date` answers; 400 for a malformed date; 404 for an empty day |
+| `njord-server` routes | both routes 401 unsigned; signed `page` and `date` answers; 400 for a malformed date or page; 404 for an empty day; a report page past the end keeps the counts with no items |
 | `njord-enc-cron` | sidecar written before the zip; `cause=noaa_enc_cron` sent on delete |
 | `njord-web` | the control-panel tab list; parsing the sub-path into a date |
 | Conformance | new `conformance/test_api_13_change_reports.py`, marked `port_only` (no golden exists for it, so it checks the live server only): unsigned → 401; signed upload → page lists today with `actions ≥ 1` → report lists the chart with cause `admin`; delete → `delete` row; bad date → 400. `test_api_99_nuke.py` gains a check that the nuke row appears and the earlier rows survive |

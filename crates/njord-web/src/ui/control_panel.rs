@@ -1,6 +1,6 @@
 //! The control panel (`/control/<tab>`) and its tabs: the chart catalog, the chart installer,
-//! the change report ([`super::change_reports`]), and the S-57 symbol, sprite and colour
-//! references.
+//! the change report ([`super::change_reports`]), the S-57 symbol, sprite and colour
+//! references, and the API documentation ([`ApiDocs`]).
 
 use leptos::html;
 use leptos::prelude::*;
@@ -20,7 +20,7 @@ pub(super) struct TabData {
     pub title: &'static str,
 }
 
-pub(super) const TABS: [TabData; 6] = [
+pub(super) const TABS: [TabData; 7] = [
     TabData {
         key: "charts_catalog",
         sub_path: None,
@@ -50,6 +50,11 @@ pub(super) const TABS: [TabData; 6] = [
         key: "colors",
         sub_path: None,
         title: "Colors",
+    },
+    TabData {
+        key: "api",
+        sub_path: None,
+        title: "API",
     },
 ];
 
@@ -86,6 +91,7 @@ pub fn ControlPanel(tab: String, path: String) -> impl IntoView {
             }
             "symbols" => view! { <Symbols/> }.into_any(),
             "sprites" => view! { <Sprites/> }.into_any(),
+            "api" => view! { <ApiDocs/> }.into_any(),
             _ => view! { <Colors/> }.into_any(),
         };
         view! { <div class="mt-4">{page}</div> }
@@ -715,7 +721,7 @@ mod tests {
     }
 
     #[test]
-    fn the_change_report_is_a_tab_with_no_default_sub_path() {
+    fn the_change_report_and_api_are_tabs_with_no_default_sub_path() {
         let keys: Vec<&str> = TABS.iter().map(|t| t.key).collect();
         assert_eq!(
             keys,
@@ -725,10 +731,40 @@ mod tests {
                 "change_reports",
                 "symbols",
                 "sprites",
-                "colors"
+                "colors",
+                "api"
             ]
         );
         let tab = TABS.iter().find(|t| t.key == "change_reports").unwrap();
         assert_eq!((tab.title, tab.sub_path), ("Change Report", None));
+        let tab = TABS.iter().find(|t| t.key == "api").unwrap();
+        assert_eq!((tab.title, tab.sub_path), ("API", None));
+    }
+}
+
+// --- API documentation ---
+
+/// The server's Swagger UI (`/v1/api_docs/`, rendering `/v1/openapi.json`), in a frame so it
+/// keeps its own stylesheet and scripts out of this page.
+///
+/// The frame is same-origin: in production the server serves this app, and `trunk serve`
+/// proxies `/v1` to it. That is what lets the page inside follow the Theme picker: it watches
+/// `data-theme` on this document's `<html>` (store.rs) and maps dusk and night onto Swagger UI's
+/// dark mode with the site's colours (the server's `src/api_docs/`).
+#[component]
+fn ApiDocs() -> impl IntoView {
+    view! {
+        <p class="mb-3">
+            "The HTTP API, from the server's OpenAPI document. Signed routes take the admin signature: "
+            "Authorize with the "
+            <code>"signatureEncoded"</code>
+            " value "
+            <code>"GET /v1/admin"</code>
+            " returns. "
+            <a href="/v1/api_docs/" target="_blank" rel="noopener">"Open in its own tab"</a>
+            " · "
+            <a href="/v1/openapi.json" target="_blank" rel="noopener">"openapi.json"</a>
+        </p>
+        <iframe class="nj-api-frame" src="/v1/api_docs/" title="API documentation"></iframe>
     }
 }

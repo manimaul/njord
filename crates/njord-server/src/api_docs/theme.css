@@ -1,0 +1,43 @@
+/*
+ * The site's themes for Swagger UI. Day is Swagger UI's light look, untouched. Dusk and night use
+ * its dark mode (html.dark-mode, which index.html turns on), whose palette the server lifts into
+ * the custom properties below when it serves swagger-ui.css (src/openapi.rs, `themed_stylesheet`):
+ * each dark-mode colour becomes var(--nj-sw-<role>, <its own value>), so the stylesheet is
+ * unchanged until a block here sets the role. The values are njord-web's role tokens for the same
+ * mode (crates/njord-web/assets/app.css); keep them in step.
+ */
+
+html.dark-mode {
+    color-scheme: dark;
+}
+
+/* index.css paints the body #fafafa, which the dark mode never overrides */
+html.dark-mode body {
+    background: var(--nj-sw-bg);
+}
+
+/* Dusk: black water, slate text */
+:root[data-theme="dusk"] {
+    --nj-sw-bg: #000000;        /* --nj-bg: the page, inputs, selects, the scheme bar */
+    --nj-sw-surface: #0F1B21;   /* --nj-surface: model boxes, code blocks, the Authorize dialog */
+    --nj-sw-raised: #1D3246;    /* --nj-raised: the curl button, error panels, the version chip */
+    --nj-sw-deep: #000000;      /* inline code background; text on the bright method badges */
+    --nj-sw-border: #4C5B63;    /* --nj-border: rules, the copy button, the tab divider */
+    --nj-sw-fg: #8CA6B3;        /* --nj-fg */
+    --nj-sw-input-fg: #8CA6B3;  /* --nj-fg: text typed into parameters */
+    --nj-sw-muted: #6B7F89;     /* --nj-muted: icons, secondary buttons' edges, disabled text */
+    --nj-sw-link: #0077F3;      /* --nj-accent-text: links, focus rings, the Execute button */
+}
+
+/* Night: as dark as the night chart, text lifted to stay readable */
+:root[data-theme="night"] {
+    --nj-sw-bg: #000000;
+    --nj-sw-surface: #03070A;
+    --nj-sw-raised: #050E16;
+    --nj-sw-deep: #000000;
+    --nj-sw-border: #364147;
+    --nj-sw-fg: #6B7F89;
+    --nj-sw-input-fg: #6B7F89;
+    --nj-sw-muted: #58686F;
+    --nj-sw-link: #3E6DB4;
+}

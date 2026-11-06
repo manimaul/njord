@@ -38,6 +38,16 @@ pub fn file_name_for(url: &str) -> String {
 ///
 /// A body that is not an `EncUrlRequest` is a 400 with a text message
 /// ([`super::bad_request_text`]).
+#[utoipa::path(post, path = "/v1/enc_url", tag = "ingest", operation_id = "download_enc",
+    summary = "Download an ENC bundle from a URL for ingest",
+    description = "Starts downloading the zip at `url` into `save/` and answers at once with the name \
+it will be saved under: the URL's last path segment when it ends in `.zip`, else `chart_<epoch millis>.zip`.",
+    request_body = EncUrlRequest,
+    responses(
+        (status = 202, description = "The name the zip will be saved under", body = EncUpload),
+        (status = 400, description = "The body is not an `EncUrlRequest`", content_type = "text/plain", body = String),
+        (status = 401, description = "No valid admin signature")),
+    security(("admin_signature" = [])))]
 pub async fn download(
     _: Signed,
     State(state): State<Arc<AppState>>,

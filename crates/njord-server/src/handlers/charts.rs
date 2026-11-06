@@ -25,6 +25,16 @@ use crate::state::AppState;
 ///
 /// The change is recorded as an Admin `new` (change 0: the row has no features) or `update`
 /// (`−before`); a failed insert as an `error`.
+#[utoipa::path(post, path = "/v1/chart", tag = "charts", operation_id = "insert_chart",
+    summary = "Insert a chart row",
+    description = "A chart of the same name is replaced, with its features, in one transaction. The \
+change is recorded in the change history as `new` or `update` by `admin`.",
+    request_body = ChartInsert,
+    responses(
+        (status = 200, description = "The chart as stored", body = njord_model::Chart),
+        (status = 400, description = "The body is not a `ChartInsert` (text message), or the insert failed (empty)"),
+        (status = 401, description = "No valid admin signature")),
+    security(("admin_signature" = [])))]
 pub async fn insert(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -95,6 +105,20 @@ fn cause_param(query: &[(String, String)]) -> Option<ChangeCause> {
 /// The delete is recorded in the change history with `cause` (`admin` when absent, which is
 /// what `njord-enc-cron` overrides); a database failure is recorded as an `error`, and a miss
 /// (204) is not recorded.
+#[utoipa::path(delete, path = "/v1/chart", tag = "charts", operation_id = "delete_chart",
+    summary = "Delete a chart and everything that would keep serving it",
+    description = "Its features go with it, then the tile cache and the export state of every region \
+whose coverage it intersects, and the region export worker is woken. The delete is recorded in the \
+change history with `cause`.",
+    params(
+        ("name" = String, Query, example = "US5WA22M.000", description = "The chart's `DSID_DSNM`"),
+        ("cause" = Option<String>, Query, description = "`admin` (default) or `noaa_enc_cron`")),
+    responses(
+        (status = 202, description = "Deleted"),
+        (status = 204, description = "No chart had that name"),
+        (status = 400, description = "`name` missing, or `cause` unknown"),
+        (status = 401, description = "No valid admin signature")),
+    security(("admin_signature" = [])))]
 pub async fn delete(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -153,6 +177,12 @@ pub async fn delete(
 ///
 /// An empty 404 when `name` is missing or unknown, or the database fails: a query error is
 /// answered like a missing chart.
+#[utoipa::path(get, path = "/v1/chart", tag = "charts", operation_id = "chart",
+    summary = "One chart with its layers and feature count",
+    params(("name" = String, Query, example = "US5WA22M.000", description = "The chart's `DSID_DSNM`")),
+    responses(
+        (status = 200, description = "The chart", body = njord_model::Chart),
+        (status = 404, description = "`name` missing or unknown (also a database failure)")))]
 pub async fn chart(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,
@@ -172,6 +202,14 @@ pub async fn chart(
 
 /// `GET /v1/chart_catalog[?name=]`: one page of chart names from `name` (the previous page's
 /// `nextName`) on; an empty 500 when the database fails.
+#[utoipa::path(get, path = "/v1/chart_catalog", tag = "charts", operation_id = "chart_catalog",
+    summary = "One page of chart names",
+    description = "The catalog is paged by name: pass the previous page's `nextName` to get the next \
+page, until it is `null`.",
+    params(("name" = Option<String>, Query, description = "The name to start the page at (the previous page's `nextName`)")),
+    responses(
+        (status = 200, description = "The page", body = njord_model::ChartCatalog),
+        (status = 500, description = "Database failure")))]
 pub async fn chart_catalog(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,
@@ -187,6 +225,13 @@ pub async fn chart_catalog(
 
 /// `GET /v1/chart_editions`: every chart's `"<DSID_UPDN>:<updated>:<issued>"`, unpaginated (the
 /// `enc_cron` diff); an empty 500 when the database fails.
+#[utoipa::path(get, path = "/v1/chart_editions", tag = "charts", operation_id = "chart_editions",
+    summary = "Every chart's edition key",
+    description = "Unpaginated: every chart's `\"<DSID_UPDN>:<updated>:<issued>\"`, the key the NOAA \
+update job diffs against NOAA's catalog.",
+    responses(
+        (status = 200, description = "The editions", body = njord_model::ChartEditions),
+        (status = 500, description = "Database failure")))]
 pub async fn chart_editions(State(state): State<Arc<AppState>>) -> Response {
     match state.db.chart_editions().await {
         Ok(editions) => Json(editions).into_response(),

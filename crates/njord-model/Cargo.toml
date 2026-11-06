@@ -14,7 +14,13 @@ indexmap.workspace = true
 jiff.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+# `openapi` only: schemas for the server's OpenAPI document. Never enabled by njord-web.
+utoipa = { version = "6", optional = true, features = ["indexmap", "jiff_0_2"] }
 
 [dev-dependencies]
 base64 = "0.22"
 njord-testdata.workspace = true
+
+[features]
+# `utoipa::ToSchema` on every wire type (see the crate docs).
+openapi = ["dep:utoipa"]

@@ -8,11 +8,14 @@ use geojson::GeoJson;
 
 /// `GET /v1/feature/lnam/{lnam}`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct FeatureRecord {
     pub id: i64,
     pub layer: String,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub props: JsonObject,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub geom: GeoJson,
     #[serde(rename = "chart_name")]
     pub chart_name: String,
@@ -22,6 +25,7 @@ pub struct FeatureRecord {
 
 /// `GET /v1/feature/layer/{layer}?start_id=`: one page, resumed from `last_id`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct LayerQueryResultPage {
     pub last_id: i64,
@@ -29,12 +33,14 @@ pub struct LayerQueryResultPage {
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct LayerQueryResult {
     pub id: i64,
     pub lat: f64,
     pub lng: f64,
     pub zoom: f32,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub props: JsonObject,
     pub chart_name: String,
     pub geom_type: String,
@@ -42,9 +48,11 @@ pub struct LayerQueryResult {
 
 /// A feature inserted by `POST /v1/geojson?chart_name=&layer_name=`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct FeatureInsert {
     pub layer_name: String,
     pub chart: Chart,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub geo: GeoJson,
 }
 
@@ -52,6 +60,7 @@ pub struct FeatureInsert {
 ///
 /// `POST /v1/geojson` responds with `Pair<i32, FeatureInsert>`: the rows inserted, and the insert.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct Pair<A, B> {
     pub first: A,
     pub second: B,

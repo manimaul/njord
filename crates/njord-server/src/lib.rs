@@ -15,6 +15,9 @@
 //! 4. The routes ([`handlers`]), each answering an empty 405 for the verbs it does not implement
 //!    ([`handlers::api`]), then the web app for any path no route matches ([`handlers::web`]).
 //!
+//! The routes are also the OpenAPI document ([`openapi`]): `GET /v1/openapi.json`, rendered by
+//! Swagger UI at `/v1/api_docs/`.
+//!
 //! The external base URL that style and TileJSON URLs are built from comes from the forwarded
 //! headers ([`forwarded`]).
 //!
@@ -51,6 +54,7 @@ pub mod gd_png;
 pub mod handlers;
 pub mod ingest;
 pub mod lock;
+pub mod openapi;
 pub mod regions;
 pub mod signature;
 pub mod sprite_sheet;
@@ -63,11 +67,14 @@ use std::sync::Arc;
 use axum::Router;
 use axum::extract::DefaultBodyLimit;
 use axum::middleware;
-use axum::routing::{delete, get, post};
+use axum::routing::get;
 use njord_db::{AdvisoryLock, Db};
 use tower_http::catch_panic::CatchPanicLayer;
 use tower_http::trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer};
 use tracing::Level;
+use utoipa::OpenApi;
+use utoipa_axum::router::{OpenApiRouter, UtoipaMethodRouterExt};
+use utoipa_axum::routes;
 
 pub use config::ChartsConfig;
 pub use state::AppState;
@@ -155,53 +162,43 @@ pub async fn shutdown_signal() {
 ///
 /// `{x}` matches one path segment and `{*x}` the rest; `/v1/about` and `/v1/content` are routed
 /// on their own so the bare prefix answers too. A trailing slash matches no route.
+///
+/// Every route goes through [`routes!`], which registers it with axum and in the OpenAPI
+/// document at once, wrapped by [`api`] for the empty 405s. The two wildcard routes are mounted
+/// by hand ([`openapi`] explains). Swagger UI and the document itself are merged in after; they
+/// are plain axum routes, so they answer axum's 405 (with an `Allow` header) rather than
+/// [`api`]'s.
 pub fn router(state: Arc<AppState>) -> Router {
-    Router::new()
-        .route("/v1/about", api(get(about::root)))
-        .route("/v1/about/{*path}", api(get(about::about)))
-        .route("/v1/tile_json", api(get(tile_json::tile_json)))
-        .route("/v1/style/{depth}/{theme}", api(get(style::style)))
-        .route("/v1/icon/{name}", api(get(icon::icon)))
-        .route(
-            "/v1/sector_svg/{theme}/{sectr1}/{sectr2}/{color}",
-            api(get(sector_svg::sector_svg)),
-        )
-        .route("/v1/content", api(get(content::root)))
-        .route("/v1/content/{*content}", api(get(content::content)))
-        .route(
-            "/v1/chart",
-            api(get(charts::chart)
-                .post(charts::insert)
-                .delete(charts::delete)),
-        )
-        .route("/v1/chart_catalog", api(get(charts::chart_catalog)))
-        .route("/v1/chart_editions", api(get(charts::chart_editions)))
-        .route("/v1/change_reports", api(get(change_reports::days)))
-        .route(
-            "/v1/change_reports/{date}",
-            api(get(change_reports::report)),
-        )
-        .route(
-            "/v1/geojson",
-            api(get(geojson::geojson).post(geojson::insert)),
-        )
-        .route("/v1/tile/{z}/{x}/{y}", api(get(tile::tile)))
-        .route("/v1/cache", api(get(cache::cache).delete(cache::clear)))
-        .route("/v1/feature/{by}/{arg}", api(get(feature::feature)))
-        .route(
-            "/v1/regions",
-            api(get(region_routes::manifest).post(region_routes::rerender)),
-        )
-        .route("/v1/regions/{archive}", api(get(region_routes::archive)))
-        .route(
-            "/v1/enc_save",
-            api(post(enc_save::upload).delete(enc_save::reset)),
-        )
-        .route("/v1/enc_url", api(post(enc_url::download)))
-        .route("/v1/nuke", api(delete(nuke::nuke)))
-        .route("/v1/admin", api(get(admin::admin)))
-        .route("/v1/admin/verify", api(post(admin::verify)))
-        .route("/v1/ws/enc_process", api(get(ws::enc_process)))
+    let (router, document) =
+        OpenApiRouter::<Arc<AppState>>::with_openapi(openapi::ApiDoc::openapi())
+            .routes(routes!(about::root).map(api))
+            .route("/v1/about/{*path}", api(get(about::about)))
+            .routes(routes!(tile_json::tile_json).map(api))
+            .routes(routes!(style::style).map(api))
+            .routes(routes!(icon::icon).map(api))
+            .routes(routes!(sector_svg::sector_svg).map(api))
+            .routes(routes!(content::root).map(api))
+            .route("/v1/content/{*content}", api(get(content::content)))
+            .routes(routes!(charts::chart, charts::insert, charts::delete).map(api))
+            .routes(routes!(charts::chart_catalog).map(api))
+            .routes(routes!(charts::chart_editions).map(api))
+            .routes(routes!(change_reports::days).map(api))
+            .routes(routes!(change_reports::report).map(api))
+            .routes(routes!(geojson::geojson, geojson::insert).map(api))
+            .routes(routes!(tile::tile).map(api))
+            .routes(routes!(cache::cache, cache::clear).map(api))
+            .routes(routes!(feature::feature).map(api))
+            .routes(routes!(region_routes::manifest, region_routes::rerender).map(api))
+            .routes(routes!(region_routes::archive).map(api))
+            .routes(routes!(enc_save::upload, enc_save::reset).map(api))
+            .routes(routes!(enc_url::download).map(api))
+            .routes(routes!(nuke::nuke).map(api))
+            .routes(routes!(admin::admin).map(api))
+            .routes(routes!(admin::verify).map(api))
+            .routes(routes!(ws::enc_process).map(api))
+            .split_for_parts();
+    router
+        .merge(openapi::api_docs(document))
         .fallback(web::fallback)
         .with_state(state)
         // Uploads are whole ENC bundles, so the body size is not limited.

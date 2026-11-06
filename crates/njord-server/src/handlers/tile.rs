@@ -25,6 +25,22 @@ pub const MAX_ZOOM: i32 = 24;
 ///   cache; `info` never touches it.
 /// - A database failure is an empty 500 and nothing is cached, rather than a tile missing the
 ///   failed query's features.
+#[utoipa::path(get, path = "/v1/tile/{z}/{x}/{y}", tag = "tiles", operation_id = "tile",
+    summary = "One vector tile",
+    description = "The Mapbox Vector Tile of the chart and base map features in the tile, or with \
+`info=true` those features as JSON. Non-integer coordinates fall through to the web app.",
+    params(
+        ("z" = u32, Path, example = 14, description = "Zoom, 0 to 30"),
+        ("x" = u32, Path, example = 2619, description = "Column, 0 to 2^z - 1"),
+        ("y" = u32, Path, example = 5779, description = "Row (XYZ scheme), 0 to 2^z - 1"),
+        ("info" = Option<bool>, Query, description = "`true` for the tile's chart features as JSON instead of the tile")),
+    responses(
+        (status = 200, description = "The tile, or with `info=true` its features",
+            content(
+                (crate::openapi::Binary = "application/protobuf"),
+                (Vec<njord_model::ChartFeatureInfo> = "application/json"))),
+        (status = 400, description = "Coordinates out of range"),
+        (status = 500, description = "Database failure")))]
 pub async fn tile(
     State(state): State<Arc<AppState>>,
     Path((z, x, y)): Path<(String, String, String)>,

@@ -5,6 +5,10 @@
 //! [`jiff`] and the georust [`geojson`] crate (without its `geo-types` feature; conversions to
 //! `geo-types` belong in `njord-geo`).
 //!
+//! The `openapi` feature (off by default; `njord-server` turns it on) derives `utoipa::ToSchema`
+//! for every wire type, so the server's OpenAPI document is generated from these definitions.
+//! GeoJSON members are described as plain objects. The web UI never enables it.
+//!
 //! The types are grouped by API area:
 //! - [`chart`]: charts, the catalog, editions and uploads ([`Chart`], [`ChartCatalog`],
 //!   [`ChartEditions`]).
@@ -155,6 +159,25 @@ macro_rules! string_enum {
                 })
             }
         }
+
+        // The OpenAPI schema (`openapi` feature): a string enum of the wire names, written by
+        // hand like the serde impls above, since `ToSchema` cannot be derived without them.
+        // `ComposeSchema` is what the derive emits; `PartialSchema` follows from utoipa's blanket
+        // impl, and it is what lets the enum be a key or value of an `IndexMap` field.
+        #[cfg(feature = "openapi")]
+        impl utoipa::__dev::ComposeSchema for $name {
+            fn compose(
+                _: Vec<utoipa::openapi::RefOr<utoipa::openapi::schema::Schema>>,
+            ) -> utoipa::openapi::RefOr<utoipa::openapi::schema::Schema> {
+                utoipa::openapi::schema::Object::builder()
+                    .schema_type(utoipa::openapi::schema::Type::String)
+                    .enum_values(Some([$($wire),+]))
+                    .into()
+            }
+        }
+
+        #[cfg(feature = "openapi")]
+        impl utoipa::ToSchema for $name {}
     };
 }
 

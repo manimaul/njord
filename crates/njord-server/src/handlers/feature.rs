@@ -18,6 +18,17 @@ use crate::state::AppState;
 /// - `lnam/{lnam}`: the feature with that `LNAM`.
 ///
 /// Anything else, an unknown LNAM or a database failure is an empty 404.
+#[utoipa::path(get, path = "/v1/feature/{by}/{arg}", tag = "charts", operation_id = "feature",
+    summary = "Look a feature up by layer or by LNAM",
+    description = "`layer/{layer}`: the next page of the layer's feature positions after `start_id` \
+(an unknown layer is an empty page). `lnam/{lnam}`: the feature with that `LNAM`.",
+    params(
+        ("by" = String, Path, example = "layer", description = "`layer` or `lnam`"),
+        ("arg" = String, Path, example = "DEPARE", description = "The layer name, or the `LNAM`"),
+        ("start_id" = Option<i64>, Query, description = "For `layer`: the previous page's `lastId`; 0 when absent or invalid")),
+    responses(
+        (status = 200, description = "The page, or the feature", body = crate::openapi::FeatureLookup),
+        (status = 404, description = "`by` unknown, no such `LNAM`, or a database failure")))]
 pub async fn feature(
     State(state): State<Arc<AppState>>,
     Path((by, arg)): Path<(String, String)>,

@@ -22,6 +22,18 @@ use crate::state::AppState;
 pub const POLL: Duration = Duration::from_millis(500);
 
 /// Upgrades to the status socket; see the [module docs](self).
+#[utoipa::path(get, path = "/v1/ws/enc_process", tag = "ingest", operation_id = "enc_process",
+    summary = "The ingest status, as a WebSocket",
+    description = "Upgrades to a socket that sends the current status at once and then every change, \
+as JSON texts tagged by a `type` member: `io.madrona.njord.model.ws.WsMsg.Idle`, `.Extracting` \
+(`progress`), `.Info` (`feature`, `totalFeatures`, `chart`, `totalCharts`), `.CompletionReport` \
+(`totalFeatureCount`, `totalChartCount`, `items`, `failedCharts`, `ms`) and `.Error` (`isFatal`, \
+`message`). Without a valid signature the socket is upgraded and then closed without a message. \
+Swagger UI cannot open a WebSocket.",
+    responses(
+        (status = 101, description = "Switching to the WebSocket protocol"),
+        (status = 426, description = "Not a WebSocket upgrade request")),
+    security(("admin_signature" = [])))]
 pub async fn enc_process(
     ws: WebSocketUpgrade,
     State(state): State<Arc<AppState>>,

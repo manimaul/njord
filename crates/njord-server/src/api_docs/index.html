@@ -1,0 +1,59 @@
+<!-- Swagger UI's index.html (utoipa-swagger-ui's vendored copy), with the site's theme on top: see
+     src/openapi.rs. The scripts and stylesheets are the vendored ones, served next to this page. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Njord API</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+    <link rel="stylesheet" type="text/css" href="./theme.css" />
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <script>
+      // The page follows the site's Theme picker (day, dusk, night). Inside the Control Panel's
+      // frame it watches data-theme on the host page's <html> (njord-web's store.rs sets it); in a
+      // tab of its own it reads the picker's stored value (njord-web's storage.rs "Theme") and
+      // follows changes made in other tabs. Dusk and night turn on Swagger UI's own dark mode
+      // (html.dark-mode), whose palette theme.css maps to the site's colours per data-theme.
+      (function () {
+        var root = document.documentElement;
+        function apply(mode) {
+          root.dataset.theme = mode;
+          root.classList.toggle("dark-mode", mode !== "day");
+        }
+        function stored() {
+          try {
+            var theme = JSON.parse(localStorage.getItem("Theme"))[1];
+            return (typeof theme === "string" ? theme : theme.mode).toLowerCase();
+          } catch (e) {
+            return "day";
+          }
+        }
+        var host = null;
+        try {
+          if (window.parent !== window) host = window.parent.document.documentElement;
+        } catch (e) {
+          // a frame on another origin: fall back to the stored theme
+        }
+        if (host) {
+          var follow = function () { apply(host.dataset.theme || "day"); };
+          follow();
+          new MutationObserver(follow).observe(host, { attributes: true, attributeFilter: ["data-theme"] });
+        } else {
+          apply(stored());
+          window.addEventListener("storage", function (e) {
+            if (e.key === "Theme") apply(stored());
+          });
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+    <script src="./swagger-initializer.js" charset="UTF-8"> </script>
+  </body>
+</html>

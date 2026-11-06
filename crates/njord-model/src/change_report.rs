@@ -76,6 +76,7 @@ string_enum! {
 /// The sidecar an upload carries into `save/` (`<zip>.meta.json`), naming who sent it, so the
 /// ingest worker records the cause of every change the zip makes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct UploadMeta {
     pub cause: ChangeCause,
 }
@@ -89,6 +90,7 @@ impl UploadMeta {
 
 /// One day of the change report list: its successful changes and its failures.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeReportDay {
     /// `YYYY-MM-DD`, UTC.
@@ -101,6 +103,7 @@ pub struct ChangeReportDay {
 
 /// One page of the day list, newest first.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeReportPage {
     pub page: Vec<ChangeReportDay>,
@@ -113,6 +116,7 @@ pub struct ChangeReportPage {
 
 /// The per-outcome totals of one day.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeCounts {
     pub new: i64,
@@ -124,6 +128,7 @@ pub struct ChangeCounts {
 
 /// One change event.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeItem {
     pub outcome: ChangeOutcome,
@@ -146,6 +151,7 @@ pub struct ChangeItem {
 
 /// One day's report: the whole day's counts and one page of its events.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeReport {
     /// `YYYY-MM-DD`, UTC.

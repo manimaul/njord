@@ -15,6 +15,16 @@ use crate::state::AppState;
 /// The sprite is named by `name` without its extension (`BOYLAT13.png` and `BOYLAT13` are the same
 /// icon), case-insensitive, cut from the theme's `@2x` sheet (`theme` `day`, `dusk`, `night`,
 /// default and fallback `day`). An empty 404 for an unknown sprite.
+#[utoipa::path(get, path = "/v1/icon/{name}", tag = "style", operation_id = "icon",
+    summary = "One sprite as PNG",
+    description = "The sprite is cut from the theme's `@2x` sheet. The name is case-insensitive and \
+may carry its `.png` extension.",
+    params(
+        ("name" = String, Path, example = "BOYLAT13", description = "The sprite name, with or without `.png`"),
+        ("theme" = Option<String>, Query, description = "`day`, `dusk` or `night`; `day` when absent or unknown")),
+    responses(
+        (status = 200, description = "The sprite", content_type = "image/png", body = crate::openapi::Binary),
+        (status = 404, description = "Unknown sprite")))]
 pub async fn icon(
     State(state): State<Arc<AppState>>,
     Path(name): Path<String>,

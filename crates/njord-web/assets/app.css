@@ -675,6 +675,19 @@
         border-color: var(--nj-border) var(--nj-border) var(--nj-bg);
     }
 
+    /* ---------- the API tab's Swagger UI frame ---------- */
+    .nj-api-frame {
+        display: block;
+        width: 100%;
+        height: calc(100vh - 18rem);
+        min-height: 28rem;
+        border: 1px solid var(--nj-border);
+        border-radius: .375rem;
+        /* The page inside follows this document's data-theme (the server's api_docs/index.html),
+           so the frame shows the page colour while it loads. */
+        background: var(--nj-bg);
+    }
+
     /* ---------- tables ---------- */
     .nj-table {
         width: 100%;

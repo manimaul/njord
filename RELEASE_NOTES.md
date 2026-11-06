@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **API documentation.** The server publishes an OpenAPI 3.1 document at `GET /v1/openapi.json`
+  and Swagger UI at `/v1/api_docs/`, generated from the route handlers and the shared wire types,
+  with "Try it out" and an *Authorize* button that takes the admin signature. The Control Panel
+  has a new **API** tab showing it. The page has no Swagger top bar and follows the Theme
+  picker: day is Swagger UI's light look, dusk and night its dark mode in the site's colours.
 - **Chart installer shows a result table.** When an ingest finishes, the installer tab shows a
   summary (charts and features installed against what the archive held, and the time taken as
   `H:MM:SS`), a table of the installed charts with their feature counts, and the cells that

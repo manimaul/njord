@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 /// order and [`crate::instant`] formatting are part of the contract, because
 /// [`AdminResponse::signature_encoded`] is the base64 of this struct's JSON.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct AdminSignature {
     #[serde(with = "crate::instant")]
@@ -18,6 +19,7 @@ pub struct AdminSignature {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct AdminResponse {
     pub signature: AdminSignature,

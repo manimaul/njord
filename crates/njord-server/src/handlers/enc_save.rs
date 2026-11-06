@@ -38,6 +38,19 @@ pub fn valid_upload_name(name: &str) -> bool {
 /// The upload does not clear the lock, so an ingest in flight continues and this zip waits its
 /// turn; `Extracting(0)` is announced only when nothing is running. A missing `filename` is
 /// 400, as is a name [`valid_upload_name`] refuses.
+#[utoipa::path(post, path = "/v1/enc_save", tag = "ingest", operation_id = "upload_enc",
+    summary = "Upload an ENC bundle for ingest",
+    description = "Stores the body as `<filename>` in the ingest worker's `save/` directory, written \
+to a temporary name and renamed so the worker never claims a partial upload. An ingest in flight \
+continues and this zip waits its turn. The body size is not limited.",
+    params(("filename" = String, Query, example = "US5WA22M.zip",
+        description = "A bare file name ending in `.zip`: no path separators, not `.` or `..`")),
+    request_body(content = crate::openapi::Binary, content_type = "application/zip", description = "A zip of S-57 cells (`.000` and update files) or base map shapefiles"),
+    responses(
+        (status = 200, description = "The name the zip was saved under", body = EncUpload),
+        (status = 400, description = "`filename` missing or refused"),
+        (status = 401, description = "No valid admin signature")),
+    security(("admin_signature" = [])))]
 pub async fn upload(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -82,6 +95,15 @@ pub async fn upload(
 /// Clears the lock (aborting any ingest in flight, whoever holds it), empties `save/` (the
 /// cause sidecars with the zips) and `ingest/`, writes `Idle`, answers 202. 200 when the lock
 /// could not be cleared, with nothing else changed (the status the existing clients expect).
+#[utoipa::path(delete, path = "/v1/enc_save", tag = "ingest", operation_id = "reset_ingest",
+    summary = "Reset the ingest",
+    description = "Clears the ingest lock (aborting any ingest in flight), empties `save/` and \
+`ingest/`, and sets the status to `Idle`.",
+    responses(
+        (status = 202, description = "Reset"),
+        (status = 200, description = "The lock could not be cleared; nothing else changed"),
+        (status = 401, description = "No valid admin signature")),
+    security(("admin_signature" = [])))]
 pub async fn reset(_: Signed, State(state): State<Arc<AppState>>) -> StatusCode {
     if !state.lock.try_clear() {
         return StatusCode::OK;

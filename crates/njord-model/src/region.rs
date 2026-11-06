@@ -6,15 +6,18 @@ use serde::{Deserialize, Serialize};
 
 /// One configured region. The archive fields stay `null` until the region has been exported.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct RegionManifestEntry {
     pub name: String,
     pub description: String,
     /// WKT of the region polygon.
     pub coverage: String,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub coverage_geo: GeoJson,
     /// Always a `Point`.
     #[serde(default)]
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<Object>))]
     pub label_point: Option<Geometry>,
     pub archive: Option<String>,
     #[serde(default)]

@@ -108,6 +108,22 @@ cd crates/njord-web && trunk serve      # http://localhost:8080, /v1 proxied to 
 
 The ingest status WebSocket goes straight to :9000 when the page is on :8080.
 
+### API documentation
+
+The server describes its HTTP API as an OpenAPI 3.1 document at `/v1/openapi.json` and renders it
+with Swagger UI at `/v1/api_docs/`, which is also the Control Panel's **API** tab. Both are
+generated from the code: `#[utoipa::path]` on each handler in `crates/njord-server/src/handlers/`
+and `utoipa::ToSchema` on the wire types (`njord-model`'s `openapi` feature, which only the server
+enables). Every route is mounted through `utoipa_axum::routes!`, which refuses a handler without
+that attribute, and `crates/njord-server/tests/openapi.rs` pins the path list and checks the
+document's consistency. Signed routes take the admin signature: *Authorize* with the
+`signatureEncoded` value `GET /v1/admin` returns. Swagger UI is the vendored copy
+(`utoipa-swagger-ui`'s `vendored` feature), so the build needs no network, served through the
+server's own page (`crates/njord-server/src/api_docs/`): no top bar, and the site's day, dusk and
+night themes, by turning Swagger UI's dark mode on and mapping its palette onto the site's
+colours when `swagger-ui.css` is served (`openapi::themed_stylesheet`). The dusk and night values
+in `theme.css` duplicate `njord-web`'s `app.css` tokens; change both.
+
 ### NOAA update job (`njord-enc-cron`)
 
 See [`crates/njord-enc-cron/README.md`](crates/njord-enc-cron/README.md). It talks to the server only through

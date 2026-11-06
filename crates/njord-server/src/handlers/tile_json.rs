@@ -6,6 +6,10 @@ use njord_model::TileJson;
 use crate::forwarded::ExternalBaseUrl;
 
 /// TileJSON 2.2.0 whose single tile URL is under the request's external base URL.
+#[utoipa::path(get, path = "/v1/tile_json", tag = "style", operation_id = "tile_json",
+    summary = "TileJSON for the chart tile source",
+    description = "TileJSON 2.2.0 whose single tile URL is under the request's external base URL.",
+    responses((status = 200, description = "TileJSON", body = TileJson)))]
 pub async fn tile_json(ExternalBaseUrl(base): ExternalBaseUrl) -> Json<TileJson> {
     Json(TileJson {
         tiles: vec![format!("{base}/v1/tile/{{z}}/{{x}}/{{y}}")],

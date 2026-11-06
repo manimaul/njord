@@ -7,6 +7,7 @@ use geojson::{Bbox, Feature, Geometry};
 
 /// An ingested chart (`GET /v1/chart?name=`).
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct Chart {
     pub name: String,
@@ -16,10 +17,13 @@ pub struct Chart {
     pub updated: String,
     pub issued: String,
     pub zoom: i32,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub covr: Feature,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<Vec<f64>>))]
     pub bounds: Option<Bbox>,
     pub layers: Vec<String>,
     #[serde(rename = "dsid_props")]
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub dsid_props: JsonObject,
     #[serde(rename = "chart_txt")]
     pub chart_txt: IndexMap<String, String>,
@@ -28,6 +32,7 @@ pub struct Chart {
 
 /// Body of `POST /v1/chart`, and the chart row ingest writes.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct ChartInsert {
     pub name: String,
     pub scale: i32,
@@ -35,12 +40,15 @@ pub struct ChartInsert {
     pub updated: String,
     pub issued: String,
     pub zoom: i32,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub covr: Feature,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub dsid_props: JsonObject,
     pub chart_txt: IndexMap<String, String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct ChartItem {
     pub name: String,
 }
@@ -49,6 +57,7 @@ pub struct ChartItem {
 /// catalog is paged by `charts.name`, the primary key, so the cursor is lexicographic rather than
 /// monotonic. `None` once the last page has been served.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ChartCatalog {
     pub total_chart_count: i32,
@@ -65,20 +74,25 @@ pub struct ChartCatalog {
 /// deliberately not part of the key: GDAL overwrites it with the value from the last applied
 /// update file, which NOAA publishes as `0` for some cells.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct ChartEditions {
     pub editions: IndexMap<String, String>,
 }
 
 /// One feature of `GET /v1/tile/{z}/{x}/{y}?info=true`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct ChartFeatureInfo {
     pub layer: String,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
     pub props: JsonObject,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<Object>))]
     pub geom: Option<Geometry>,
 }
 
 /// `POST /v1/enc_save` / `POST /v1/enc_url` response: the zip saved for ingest.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct EncUpload {
     pub zip_file: String,
@@ -86,6 +100,7 @@ pub struct EncUpload {
 
 /// Body of `POST /v1/enc_url`.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct EncUrlRequest {
     pub url: String,
 }

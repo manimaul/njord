@@ -19,6 +19,19 @@ use crate::state::AppState;
 ///
 /// Bearings are parsed with Rust's `f64` grammar, so spellings such as `inf` are accepted and a
 /// `d`/`f` suffix or hexadecimal is refused; no client sends any of them.
+#[utoipa::path(get, path = "/v1/sector_svg/{theme}/{sectr1}/{sectr2}/{color}", tag = "style",
+    operation_id = "sector_svg",
+    summary = "A light sector arc as SVG",
+    description = "The arc between the two S-57 bearings (from seaward towards the light), drawn in \
+an S-52 color of the theme. Equal bearings draw a full circle.",
+    params(
+        ("theme" = String, Path, example = "day", description = "`day`, `dusk` or `night`; unknown falls back to `day`"),
+        ("sectr1" = f64, Path, example = 90.0, description = "The first bearing, in degrees"),
+        ("sectr2" = f64, Path, example = 180.0, description = "The second bearing, in degrees"),
+        ("color" = String, Path, example = "LITRD", description = "An S-52 color token (see `/v1/about/colors`)")),
+    responses(
+        (status = 200, description = "The icon", content_type = "image/svg+xml", body = String),
+        (status = 400, description = "A non-numeric bearing or an unknown color", content_type = "text/plain", body = String)))]
 pub async fn sector_svg(
     State(state): State<Arc<AppState>>,
     Path((theme, sectr1, sectr2, color)): Path<(String, String, String, String)>,

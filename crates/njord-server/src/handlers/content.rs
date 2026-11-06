@@ -11,6 +11,10 @@ use super::with_content_type;
 use crate::state::AppState;
 
 /// `/v1/content` itself, with no segments: an empty 404.
+#[utoipa::path(get, path = "/v1/content", tag = "content", operation_id = "content_root",
+    summary = "The content prefix itself",
+    description = "Always an empty 404: the files are under `/v1/content/{path}`.",
+    responses((status = 404, description = "Empty")))]
 pub async fn root() -> StatusCode {
     StatusCode::NOT_FOUND
 }
@@ -20,6 +24,16 @@ pub async fn root() -> StatusCode {
 /// Its content type comes from its extension ([`mime_type`]). An empty 404 for an unknown
 /// extension, a missing file, a path with an empty, `.` or `..` segment ([`resource_name`]), or one
 /// that resolves outside the resources directory through a symbolic link.
+#[utoipa::path(get, path = "/v1/content/{path}", tag = "content", operation_id = "content",
+    summary = "A static resource: a sprite sheet or glyph range",
+    description = "The file under the server's `www/` directory, with a content type from its \
+extension: `sprites/<theme>_simplified.json` and `.png` (also `@2x`), and \
+`fonts/<font stack>/<range>.pbf`. The style's `sprite` and `glyphs` URLs point here.",
+    params(("path" = String, Path, example = "sprites/day_simplified.json",
+        description = "The path under `www/`; a segment that is empty, `.` or `..` is refused")),
+    responses(
+        (status = 200, description = "The file", content_type = "application/octet-stream", body = crate::openapi::Binary),
+        (status = 404, description = "Unknown file or extension")))]
 pub async fn content(State(state): State<Arc<AppState>>, Path(content): Path<String>) -> Response {
     let segments: Vec<&str> = content.split('/').collect();
     let Some(content_type) = segments.last().and_then(|s| mime_type(s)) else {

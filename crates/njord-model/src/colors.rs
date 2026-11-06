@@ -35,6 +35,7 @@ impl ThemeMode {
 
 /// A named colour override set (`colors.json` `custom`), applied on top of a [`ThemeMode`].
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct CustomTheme {
     pub mode: ThemeMode,
     pub name: String,
@@ -92,12 +93,14 @@ pub type ColorLibrary = IndexMap<ThemeMode, IndexMap<Color, String>>;
 /// `resources/colors.json`. `GET /v1/about/colors` serves `library`, `/colors/custom` serves
 /// `custom`.
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct Colors {
     pub library: ColorLibrary,
     pub custom: IndexMap<String, ColorLibrary>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct ColorTuple {
     pub color: Color,
     pub hex: String,

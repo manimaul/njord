@@ -14,6 +14,15 @@ use njord_model::{ChangeCause, ChangeKind, ChangeOutcome};
 use super::Signed;
 use crate::state::AppState;
 
+#[utoipa::path(delete, path = "/v1/nuke", tag = "admin", operation_id = "nuke",
+    summary = "Remove every chart and base map",
+    description = "Truncates charts, features and base features, clears the tile cache and deletes \
+every region archive. The change history is kept, with the nuke recorded in it.",
+    responses(
+        (status = 204, description = "Done"),
+        (status = 401, description = "No valid admin signature"),
+        (status = 500, description = "The truncate failed")),
+    security(("admin_signature" = [])))]
 pub async fn nuke(_: Signed, State(state): State<Arc<AppState>>) -> StatusCode {
     let event = match state.db.truncate_all().await {
         Ok(before) => NewChangeEvent::nuked(before),

@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::IndexMap;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct S57Object {
     /// Unique code for the object.
     #[serde(rename = "Code")]
@@ -32,6 +33,7 @@ pub struct S57Object {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct S57Attribute {
     /// Unique code for the attribute.
     #[serde(rename = "Code")]
@@ -51,6 +53,7 @@ pub struct S57Attribute {
 
 /// One allowed value of an enumerated or list attribute.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct S57ExpectedInput {
     /// The [`S57Attribute::code`] this value belongs to.
     #[serde(rename = "Code")]
@@ -64,6 +67,7 @@ pub struct S57ExpectedInput {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct S57Symbol {
     #[serde(rename = "SY")]
     pub symbol: Option<String>,

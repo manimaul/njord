@@ -21,6 +21,15 @@ use crate::state::AppState;
 /// the exact challenge the conformance goldens record. Right credentials: a fresh `AdminResponse`
 /// for the request's external base URL, the token every mutating call then carries as
 /// `?signature=`.
+#[utoipa::path(get, path = "/v1/admin", tag = "admin", operation_id = "admin",
+    summary = "Mint an admin signature",
+    description = "With the configured admin credentials as HTTP basic auth: a fresh signature for \
+the request's external base URL. Its `signatureEncoded` is the `signature` query parameter every \
+signed route takes.",
+    responses(
+        (status = 200, description = "The signature", body = njord_model::AdminResponse),
+        (status = 401, description = "Missing or wrong credentials; `WWW-Authenticate: Basic realm=\"Admin\", charset=UTF-8`")),
+    security(("admin_basic" = [])))]
 pub async fn admin(
     State(state): State<Arc<AppState>>,
     ExternalBaseUrl(base_url): ExternalBaseUrl,
@@ -53,6 +62,15 @@ pub async fn admin(
 /// The body is an `AdminSignature`; when it verifies under the request's external base URL a
 /// fresh `AdminResponse` is minted, otherwise an empty 401. A body that is not an
 /// `AdminSignature` is a 400 with a text message ([`super::bad_request_text`]).
+#[utoipa::path(post, path = "/v1/admin/verify", tag = "admin", operation_id = "verify_admin",
+    summary = "Refresh an admin signature",
+    description = "When the body verifies under the request's external base URL, a fresh signature \
+is minted.",
+    request_body = AdminSignature,
+    responses(
+        (status = 200, description = "The new signature", body = njord_model::AdminResponse),
+        (status = 400, description = "The body is not an `AdminSignature`", content_type = "text/plain", body = String),
+        (status = 401, description = "The signature does not verify")))]
 pub async fn verify(
     State(state): State<Arc<AppState>>,
     ExternalBaseUrl(base_url): ExternalBaseUrl,

@@ -9,6 +9,7 @@ use crate::string_enum;
 /// The sheets are static files, so the optional stretch metadata is omitted when absent rather
 /// than written as `null`.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct IconInfo {
     pub width: i32,

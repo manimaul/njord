@@ -17,6 +17,19 @@ use crate::state::AppState;
 ///
 /// Answers a [`Pair`] of the rows inserted and the `FeatureInsert`. 400 when a parameter is
 /// missing, the chart is unknown or the body is not GeoJSON; 500 when nothing was inserted.
+#[utoipa::path(post, path = "/v1/geojson", tag = "charts", operation_id = "insert_geojson",
+    summary = "Insert GeoJSON features into a chart layer",
+    description = "Answers the number of rows inserted (`first`) and the insert (`second`).",
+    params(
+        ("chart_name" = String, Query, example = "US5WA22M.000", description = "An existing chart's `DSID_DSNM`"),
+        ("layer_name" = String, Query, example = "DEPARE", description = "The S-57 object class acronym")),
+    request_body(content = Object, content_type = "application/json", description = "A GeoJSON object"),
+    responses(
+        (status = 200, description = "Rows inserted and the insert", body = Pair<i32, FeatureInsert>),
+        (status = 400, description = "A parameter missing, the chart unknown, or the body not GeoJSON"),
+        (status = 401, description = "No valid admin signature"),
+        (status = 500, description = "Nothing was inserted")),
+    security(("admin_signature" = [])))]
 pub async fn insert(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -67,6 +80,16 @@ pub async fn insert(
 /// Each feature is `row_to_json` of `(id, layer, type, geometry, properties)`, so it carries the
 /// numeric row `id` and a `layer` member (golden `api_04_charts/geojson_existing_layer`, its
 /// `port` expectation).
+#[utoipa::path(get, path = "/v1/geojson", tag = "charts", operation_id = "geojson",
+    summary = "One layer of one chart as GeoJSON",
+    description = "A `FeatureCollection`, empty for an unknown chart or layer. Each feature carries \
+the numeric row `id` and a `layer` member.",
+    params(
+        ("chart_name" = String, Query, example = "US5WA22M.000", description = "The chart's `DSID_DSNM`"),
+        ("layer_name" = String, Query, example = "DEPARE", description = "The S-57 object class acronym")),
+    responses(
+        (status = 200, description = "The `FeatureCollection`", body = Object),
+        (status = 404, description = "A parameter missing, or a database failure")))]
 pub async fn geojson(
     State(state): State<Arc<AppState>>,
     Query(query): Query<Vec<(String, String)>>,

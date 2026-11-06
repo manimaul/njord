@@ -24,6 +24,19 @@ const UNKNOWN_STYLE_BODY: &str = "Serializer for class 'Any' is not found.\nPlea
 /// case-insensitive. `c` names a custom colour set from
 /// `colors.json`; an unknown one falls back to the plain theme. URLs inside are under the
 /// external base URL, and the sprite sheet is `<theme>_simplified`.
+#[utoipa::path(get, path = "/v1/style/{depth}/{theme}", tag = "style", operation_id = "style",
+    summary = "The MapLibre style for a depth unit and theme",
+    description = "Both path segments are case-insensitive. The URLs inside are under the request's \
+external base URL, and the sprite sheet is `<theme>_simplified`.",
+    params(
+        ("depth" = String, Path, example = "meters", description = "`meters`, `feet` or `fathoms`"),
+        ("theme" = String, Path, example = "day", description = "`day`, `dusk` or `night`"),
+        ("c" = Option<String>, Query,
+            description = "A custom color set from `colors.json` (see `/v1/about/colors/custom`); an unknown name falls back to the plain theme")),
+    responses(
+        (status = 200, description = "The style", body = njord_model::Style),
+        (status = 500, description = "Unknown depth or theme. A 404 is meant; existing clients expect this text",
+            content_type = "text/plain", body = String)))]
 pub async fn style(
     State(state): State<Arc<AppState>>,
     Path((depth, theme)): Path<(String, String)>,

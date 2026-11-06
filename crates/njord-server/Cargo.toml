@@ -32,7 +32,7 @@ mime_guess = "2.0.5"
 indexmap.workspace = true
 njord-db.workspace = true
 njord-geo.workspace = true
-njord-model.workspace = true
+njord-model = { workspace = true, features = ["openapi"] }
 # GDAL, for ingest (the only C dependency besides zlib); see njord-s57.
 njord-s57.workspace = true
 njord-symbology.workspace = true
@@ -53,6 +53,12 @@ flate2 = "1.1.10"
 uuid = { version = "1.29.0", features = ["v4"] }
 futures-util = { version = "0.3.34", default-features = false, features = ["std"] }
 reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream"] }
+# The OpenAPI document (`src/openapi.rs`): the schemas come from njord-model's `openapi` feature.
+# Swagger UI is the vendored copy, so the build needs no network (the container and the Debian
+# package build offline); `default-features = false` drops the download path's `url` dependency.
+utoipa = { version = "6", features = ["indexmap", "jiff_0_2"] }
+utoipa-axum = "0.3"
+utoipa-swagger-ui = { version = "10", default-features = false, features = ["axum", "vendored"] }
 
 [build-dependencies]
 jiff = { workspace = true, features = ["tz-system", "tzdb-zoneinfo"] }

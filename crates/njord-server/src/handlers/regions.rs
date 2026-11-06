@@ -19,6 +19,18 @@ use crate::state::AppState;
 /// and wakes the export worker; 202, the archive renders asynchronously. 400 (text) without
 /// `name`, 404 (text) for a region that is not configured, 500 when the state could not be
 /// cleared.
+#[utoipa::path(post, path = "/v1/regions", tag = "regions", operation_id = "rerender_region",
+    summary = "Re-render a region archive",
+    description = "Forgets the region's last export so it is stale again and wakes the export \
+worker; the archive renders asynchronously.",
+    params(("name" = String, Query, example = "US_WEST", description = "A configured region's name")),
+    responses(
+        (status = 202, description = "Queued"),
+        (status = 400, description = "`name` missing", content_type = "text/plain", body = String),
+        (status = 401, description = "No valid admin signature"),
+        (status = 404, description = "No such region", content_type = "text/plain", body = String),
+        (status = 500, description = "The export state could not be cleared")),
+    security(("admin_signature" = [])))]
 pub async fn rerender(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -45,6 +57,11 @@ pub async fn rerender(
 }
 
 /// The manifest: every configured region, rendered or not.
+#[utoipa::path(get, path = "/v1/regions", tag = "regions", operation_id = "regions",
+    summary = "The region manifest",
+    description = "Every configured region, rendered or not; the archive fields are `null` until \
+the region has been exported.",
+    responses((status = 200, description = "The manifest", body = Vec<RegionManifestEntry>)))]
 pub async fn manifest(State(state): State<Arc<AppState>>) -> Response {
     let state = state.clone();
     let entries: Vec<RegionManifestEntry> =
@@ -62,6 +79,21 @@ pub async fn manifest(State(state): State<Arc<AppState>>) -> Response {
 /// - `Range: bytes=…` ([`parse_range`]: `a-b`, `a-`, `-n`, several ranges merged into the one
 ///   range covering them all): 206 with `Content-Range: bytes a-b/size`. A range that cannot be
 ///   parsed or lies past the end: 416 with `Content-Range: bytes */size` and no body.
+#[utoipa::path(get, path = "/v1/regions/{archive}", tag = "regions", operation_id = "region_archive",
+    summary = "Download a region archive",
+    description = "The `.mbtiles` named in the manifest, as an attachment with `Accept-Ranges: bytes`. \
+A `Range` request is answered with a single part covering every range asked for.",
+    params(
+        ("archive" = String, Path, example = "US_WEST.mbtiles", description = "The manifest's `archive` value"),
+        ("Range" = Option<String>, Header, example = "bytes=0-1048575", description = "`bytes=a-b`, `bytes=a-` or `bytes=-n`; several ranges are merged into one")),
+    responses(
+        (status = 200, description = "The archive", content_type = "application/x-sqlite3", body = crate::openapi::Binary),
+        (status = 206, description = "The requested range, with `Content-Range`", content_type = "application/x-sqlite3", body = crate::openapi::Binary),
+        (status = 400, description = "The name contains `/` or `..`"),
+        (status = 401, description = "No valid admin signature"),
+        (status = 404, description = "No such archive"),
+        (status = 416, description = "The range does not parse or lies past the end; `Content-Range: bytes */size`")),
+    security(("admin_signature" = [])))]
 pub async fn archive(
     _: Signed,
     State(state): State<Arc<AppState>>,

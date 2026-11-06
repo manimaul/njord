@@ -12,6 +12,7 @@ use crate::IndexMap;
 use crate::string_enum;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct Style {
     #[serde(rename = "glyphs")]
     pub glyphs_url: String,
@@ -24,6 +25,7 @@ pub struct Style {
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct Layer {
     pub id: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -58,6 +60,7 @@ macro_rules! style_properties {
     ($(#[$meta:meta])* pub struct $name:ident { $( $(#[$fmeta:meta])* $field:ident : $ty:ty = $wire:literal ),+ $(,)? }) => {
         $(#[$meta])*
         #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+        #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
         pub struct $name {
             $(
                 $(#[$fmeta])*
@@ -128,6 +131,7 @@ style_properties! {
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 pub struct Source {
     #[serde(rename = "type", default)]
     pub kind: SourceType,
@@ -138,6 +142,7 @@ pub struct Source {
     pub promote_id: Option<String>,
     /// Inline data of a `geojson` source (no served style uses one yet).
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<Object>))]
     pub data: Option<GeoJson>,
 }
 

@@ -28,6 +28,16 @@ fn page_param(query: &[(String, String)]) -> Option<i32> {
 /// `GET /v1/change_reports?page=<n>`: one page of days, newest first, [`REPORT_PAGE_SIZE`] per
 /// page. `page` is zero-based and defaults to 0; a value that is not a non-negative integer is
 /// 400. 500 when the database fails.
+#[utoipa::path(get, path = "/v1/change_reports", tag = "change reports", operation_id = "change_report_days",
+    summary = "The days with changes, newest first",
+    description = "One page of days, 25 per page, each with its successful changes and its failures.",
+    params(("page" = Option<u32>, Query, description = "Zero-based page; 0 when absent")),
+    responses(
+        (status = 200, description = "The page", body = njord_model::ChangeReportPage),
+        (status = 400, description = "`page` is not a non-negative integer"),
+        (status = 401, description = "No valid admin signature"),
+        (status = 500, description = "Database failure")),
+    security(("admin_signature" = [])))]
 pub async fn days(
     _: Signed,
     State(state): State<Arc<AppState>>,
@@ -67,6 +77,22 @@ pub fn valid_date(date: &str) -> bool {
 /// absent); the counts still cover the whole day. 400 for anything but a `YYYY-MM-DD` date, for
 /// a `page` that is not a non-negative integer or for an `outcomes` naming anything else, 404
 /// for a day with no events, 500 when the database fails.
+#[utoipa::path(get, path = "/v1/change_reports/{date}", tag = "change reports", operation_id = "change_report",
+    summary = "One day's changes",
+    description = "The whole day's counts and one page of its events, 250 per page, newest first. \
+`outcomes` keeps only the listed outcomes; the counts still cover the whole day.",
+    params(
+        ("date" = String, Path, example = "2026-10-31", description = "A UTC calendar date, `YYYY-MM-DD`"),
+        ("page" = Option<u32>, Query, description = "Zero-based page; 0 when absent. A page past the end has the counts and no items"),
+        ("outcomes" = Option<String>, Query, example = "new,update,error",
+            description = "Comma-separated outcomes to keep: `new`, `update`, `delete`, `nuke`, `error`; all when absent")),
+    responses(
+        (status = 200, description = "The report", body = njord_model::ChangeReport),
+        (status = 400, description = "Not a `YYYY-MM-DD` date, `page` not a non-negative integer, or an unknown outcome"),
+        (status = 401, description = "No valid admin signature"),
+        (status = 404, description = "No events that day"),
+        (status = 500, description = "Database failure")),
+    security(("admin_signature" = [])))]
 pub async fn report(
     _: Signed,
     State(state): State<Arc<AppState>>,

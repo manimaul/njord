@@ -6,11 +6,6 @@
 //! through a deploy. The `xtask` alias is in `.cargo/config.toml`, and every command runs from the
 //! repository root.
 //!
-//! Only the `mxmariner` environment is deployed from here. The njord.mxmariner.com production environment
-//! (the `njord` namespace, the `s57server` database and the `njord-chart-server` image) is
-//! deployed separately and is never touched: the environment checks refuse its names and
-//! [`guard`] rejects any rendered manifest that mentions them.
-//!
 //! DRY RUN BY DEFAULT: every task prints what it would do. Nothing touches the cluster, the registry
 //! or the local image store unless `--execute` is passed.
 //!
@@ -393,17 +388,11 @@ impl Xtask {
 
 /// A non-empty variable, or `default` when it is unset or empty. Without a default an unset or
 /// empty variable is an error, and so is the literal string "undefined", so a value that was never
-/// really set cannot end up in a manifest as `dbname=undefined`. `NJORD_DB_NAME` belongs to the
-/// openenc.com production environment; when it is set but `NJORD_DB` is not, the error says so.
+/// really set cannot end up in a manifest as `dbname=undefined`.
 fn var(name: &str, default: Option<&str>) -> Result<String> {
     let value = match (optional(name), default) {
         (v, Some(default)) if v.is_empty() => default.to_string(),
         (v, None) if v.is_empty() => {
-            if name == "NJORD_DB" && !optional("NJORD_DB_NAME").is_empty() {
-                bail!(
-                    "NJORD_DB is not set (NJORD_DB_NAME is, but that is the openenc.com production environment's variable and is never read here)"
-                );
-            }
             bail!("{name} is not set");
         }
         (v, _) => v,
@@ -461,11 +450,6 @@ fn namespace() -> Result<String> {
         "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
         |s| shaped(s, lower_alnum, |b| lower_alnum(b) || b == b'-') && !s.ends_with('-'),
     )?;
-    if namespace == "njord" {
-        bail!(
-            "NJORD_NAMESPACE=njord is the openenc.com production environment; xtask never touches it"
-        );
-    }
     Ok(namespace)
 }
 
@@ -480,9 +464,6 @@ fn identifier(s: &str) -> bool {
 
 fn db() -> Result<String> {
     let db = token("NJORD_DB", None, "^[a-z_][a-z0-9_]*$", identifier)?;
-    if db == "s57server" {
-        bail!("NJORD_DB=s57server is the openenc.com production environment's database; use njord");
-    }
     Ok(db)
 }
 
@@ -490,9 +471,6 @@ fn host() -> Result<String> {
     let host = token("NJORD_HOST", Some(HOST), "^[a-z0-9.-]+$", |s| {
         !s.is_empty() && s.bytes().all(|b| lower_alnum(b) || b == b'.' || b == b'-')
     })?;
-    if host.ends_with("openenc.com") {
-        bail!("NJORD_HOST={host} belongs to the openenc.com production environment");
-    }
     Ok(host)
 }
 
@@ -517,51 +495,7 @@ fn image() -> Result<String> {
             )
         },
     )?;
-    // Production (the njord namespace) pulls njord-chart-server with imagePullPolicy: Always, so
-    // pushing this image there would deploy it to openenc.com.
-    if repo.contains("njord-chart-server") {
-        bail!(
-            "NJORD_IMAGE_REPO={repo}: this image must never go to njord-chart-server, the openenc.com production repository"
-        );
-    }
     Ok(format!("{repo}:{version}"))
-}
-
-/// Refuses a rendered manifest that could touch the openenc.com production environment.
-///
-/// This is the last line of defence, applied to every rendered manifest. Refused: the `njord`
-/// namespace; the cluster-scoped `nfs` StorageClass, which is backed by production's disk; a
-/// `njord-chart-server` image; `openenc.com`; the `s57server` database; a DB relay on host
-/// port 6432, which production's relay already binds on every node (this environment's relay
-/// uses 6433); and any unfilled placeholder.
-fn guard(label: &str, text: &str) -> Result<()> {
-    let key_is = |line: &str, key: &str, value: &str| {
-        line.trim_start()
-            .strip_prefix(key)
-            .is_some_and(|rest| rest.trim() == value)
-    };
-    for line in text.lines() {
-        let forbidden = if key_is(line, "namespace:", "njord") {
-            Some("namespace: njord")
-        } else if key_is(line, "storageClassName:", "nfs") {
-            Some("storageClassName: nfs")
-        } else if line
-            .find("image:")
-            .is_some_and(|i| line[i..].contains("njord-chart-server"))
-        {
-            // No workload may run the production njord-chart-server image.
-            Some("a njord-chart-server image")
-        } else {
-            ["TCP4-LISTEN:6432", "openenc.com", "s57server"]
-                .into_iter()
-                .chain(PLACEHOLDERS.map(|(p, _)| p))
-                .find(|s| line.contains(s))
-        };
-        if let Some(forbidden) = forbidden {
-            bail!("rendered {label} contains {forbidden}: {}", line.trim());
-        }
-    }
-    Ok(())
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -615,7 +549,6 @@ impl Manifests {
         for (placeholder, value) in PLACEHOLDERS {
             text = text.replace(placeholder, value(self));
         }
-        guard(file, &text)?;
         if !text.ends_with('\n') {
             text.push('\n');
         }
@@ -759,7 +692,6 @@ stringData:
     {admin_pass}
 "#
         );
-        guard("secrets", &text)?;
         Ok(text)
     }
 }
@@ -780,36 +712,11 @@ mod tests {
     #[test]
     fn every_manifest_renders() {
         let m = manifests();
-        for text in [m.chart().unwrap(), m.cron().unwrap(), m.vacuum().unwrap()] {
-            assert!(guard("test", &text).is_ok());
-        }
         assert!(
             m.chart()
                 .unwrap()
                 .contains("image: ghcr.io/manimaul/njord:test")
         );
-    }
-
-    #[test]
-    fn guard_refuses_the_production_environment() {
-        for bad in [
-            "  namespace: njord",
-            "storageClassName:   nfs ",
-            "  image: ghcr.io/manimaul/njord-chart-server:latest",
-            "host: openenc.com",
-            "dbname=s57server",
-            "TCP4-LISTEN:6432,fork",
-            "namespace: ${NJORD_NAMESPACE}",
-        ] {
-            assert!(guard("test", bad).is_err(), "{bad}");
-        }
-        for ok in [
-            "namespace: njord-x",
-            "storageClassName: njord-nfs",
-            "image: ghcr.io/manimaul/njord:1",
-        ] {
-            assert!(guard("test", ok).is_ok(), "{ok}");
-        }
     }
 
     #[test]

@@ -12,6 +12,7 @@ as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display s
 - [Design documentation](docs/DESIGN.md) (written for the Kotlin implementation)
 - [NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
 - [Rust port plan](docs/RUST_PORT_PLAN.md)
+- [Rust doc comment standards](docs/rustdoc_standards.md): every `///` and `//!` comment follows it
 - [Release notes](RELEASE_NOTES.md)
 
 Njord is a Cargo workspace (`crates/`): an axum server and a Leptos (WebAssembly) web UI that only meet at the HTTP

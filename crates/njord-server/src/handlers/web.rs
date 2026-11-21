@@ -6,7 +6,9 @@
 //! Trunk names every bundle it emits (css, js, wasm) after a hash of its content, and `index.html`
 //! links them by those names, so a bundle never changes under its name: those are cached as
 //! `immutable` for a year. Everything else, `index.html` above all, is `no-cache`, so a browser
-//! always fetches the current page after a deploy and with it the bundles that page names.
+//! always fetches the current page after a deploy and with it the bundles that page names. The
+//! two MapLibre GL modules, which Trunk copies under the names they are vendored with, carry the
+//! same kind of hash in those names (`njord-web`'s `vendor/README.md`).
 
 use std::sync::Arc;
 
@@ -87,7 +89,9 @@ mod tests {
         for name in [
             "app-321620b7fef5b174.css",
             "bootstrap.min-c6c6e17b5bb8f55f.css",
-            "maplibre-gl-92127e18af653986.js",
+            "maplibre-gl-77f0c2bbd548afb9.css",
+            "maplibre-gl-01590c9875ea5bb0.mjs",
+            "maplibre-gl-worker-c8564c4a4147326a.mjs",
             "njord-web-f15698c5a96f7e0d.js",
             "njord-web-77267ecbfbbc5842_bg.wasm",
         ] {

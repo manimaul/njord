@@ -16,7 +16,16 @@
         } catch (e) {}
     </script>
     <link data-trunk rel="css" href="vendor/maplibre-gl.css">
-    <script data-trunk src="vendor/maplibre-gl.js"></script>
+    <link data-trunk rel="copy-file" href="vendor/maplibre-gl-01590c9875ea5bb0.mjs">
+    <link data-trunk rel="copy-file" href="vendor/maplibre-gl-worker-c8564c4a4147326a.mjs">
+    <script type="module">
+        // MapLibre GL is ES modules only and defines no global; the app's bindings (maplibre.rs)
+        // use `maplibregl`. This runs before the app's own module script, which follows it.
+        // The file names carry their content hash (vendor/README.md), so the worker is named here.
+        import * as maplibregl from "/maplibre-gl-01590c9875ea5bb0.mjs";
+        maplibregl.setWorkerUrl("/maplibre-gl-worker-c8564c4a4147326a.mjs");
+        globalThis.maplibregl = maplibregl;
+    </script>
     <link data-trunk rel="copy-file" href="assets/njord.jpg">
     <link data-trunk rel="copy-file" href="assets/apache_2_badge.svg">
     <link data-trunk rel="copy-file" href="assets/github.svg">

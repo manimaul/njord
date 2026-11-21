@@ -393,6 +393,10 @@ impl Controller {
         );
         set("zoom", &state.location.zoom.into());
         set("attributionControl", &false.into());
+        // Overscale a tile past its source's maxzoom at every zoom level, so a chart query sees
+        // whole features. An absent key takes MapLibre's default of 4, which splits such tiles
+        // at all but the top four levels; only an explicit `undefined` turns that off.
+        set("zoomLevelsToOverscale", &JsValue::UNDEFINED);
         let map = Map::new(&options);
         map.add_control(&NavigationControl::new(), "top-right");
         self.add_scale_control(&map, state.depth);
@@ -546,13 +550,18 @@ impl Controller {
                 });
             },
         );
-        listen(&map, "styleimagemissing", None, move |event| {
-            if let Some(id) = get(&event, "id").as_string()
+        // MapLibre waits for the returned promise before it treats the image as missing.
+        let resolver = Closure::<dyn FnMut(JsValue) -> JsValue>::new(|id: JsValue| {
+            let mut pending = None;
+            if let Some(id) = id.as_string()
                 && id.starts_with("sector_")
             {
-                try_with(|c| c.add_sector_image(&id));
+                try_with(|c| pending = c.add_sector_image(&id));
             }
+            pending.map_or(JsValue::UNDEFINED, JsValue::from)
         });
+        map.set_missing_style_image_resolver(resolver.as_ref().unchecked_ref());
+        resolver.forget();
         listen(&map, "style.load", None, move |_| {
             spawn_local(load_regions());
         });
@@ -1189,16 +1198,20 @@ impl Controller {
 
     // --- Light sectors: `sector_<s1>_<s2>_<day>_<dusk>_<night>_<dayLine>_<duskLine>_<nightLine>_<r>` ---
 
-    fn add_sector_image(&self, name: &str) {
-        let Some(map) = self.map.clone() else {
-            return;
-        };
+    /// Rasterizes the light sector image named `name` in the current theme's colors and
+    /// registers it on the map under that name.
+    ///
+    /// The browser rasterizes an SVG only asynchronously, so the image is registered later. The
+    /// returned promise resolves once it is, or once the SVG has failed to load; it never
+    /// rejects. `None` when there is no map or `name` is not a sector image id.
+    fn add_sector_image(&self, name: &str) -> Option<js_sys::Promise> {
+        let map = self.map.clone()?;
         let parts: Vec<&str> = name.trim_start_matches("sector_").split('_').collect();
         if parts.len() < 9 {
-            return;
+            return None;
         }
         let (Ok(sectr1), Ok(sectr2)) = (parts[0].parse::<f64>(), parts[1].parse::<f64>()) else {
-            return;
+            return None;
         };
         let radius = parts[8].parse::<f64>().unwrap_or(80.0);
         let (fill, line) = match self.theme_mode {
@@ -1211,14 +1224,26 @@ impl Controller {
             "data:image/svg+xml;charset=utf-8,{}",
             js_sys::encode_uri_component(&svg)
         );
-        let Ok(img) = web_sys::HtmlImageElement::new_with_width_and_height(200, 200) else {
-            return;
-        };
-        let loaded = img.clone();
+        let img = web_sys::HtmlImageElement::new_with_width_and_height(200, 200).ok()?;
         let id = name.to_owned();
-        let on_load = Closure::once_into_js(move || map.add_image(&id, &loaded));
-        img.set_onload(Some(on_load.unchecked_ref()));
+        let promise = js_sys::Promise::new(&mut |resolve, _reject| {
+            let (map, id, loaded) = (map.clone(), id.clone(), img.clone());
+            let failed = resolve.clone();
+            let on_load = Closure::once_into_js(move || {
+                // Two tiles can ask for one id at once; the second image to load is not needed.
+                if !map.has_image(&id) {
+                    map.add_image(&id, &loaded);
+                }
+                let _ = resolve.call0(&JsValue::UNDEFINED);
+            });
+            img.set_onload(Some(on_load.unchecked_ref()));
+            let on_error = Closure::once_into_js(move || {
+                let _ = failed.call0(&JsValue::UNDEFINED);
+            });
+            img.set_onerror(Some(on_error.unchecked_ref()));
+        });
         img.set_src(&url);
+        Some(promise)
     }
 }
 

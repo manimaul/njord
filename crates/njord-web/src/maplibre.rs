@@ -1,6 +1,7 @@
 //! The MapLibre GL calls the UI makes.
 //!
-//! MapLibre is loaded from `vendor/` as the global `maplibregl`; option objects and GeoJSON are
+//! MapLibre is an ES module vendored under `vendor/`; a module script in `index.html` imports it
+//! and publishes it as the global `maplibregl` these bindings use. Option objects and GeoJSON are
 //! passed as JSON built with serde.
 
 use serde::Serialize;
@@ -56,6 +57,15 @@ extern "C" {
 
     #[wasm_bindgen(method, js_name = addImage)]
     pub fn add_image(this: &Map, id: &str, image: &JsValue);
+
+    /// Installs the function MapLibre calls with the id of an image the style names and does
+    /// not have. The function registers the image with [`Map::add_image`]; MapLibre waits for
+    /// the promise it returns, if any, and treats the image as missing if it is still absent.
+    #[wasm_bindgen(method, js_name = setMissingStyleImageResolver)]
+    pub fn set_missing_style_image_resolver(this: &Map, resolver: &js_sys::Function);
+
+    #[wasm_bindgen(method, js_name = hasImage)]
+    pub fn has_image(this: &Map, id: &str) -> bool;
 
     #[wasm_bindgen(method, js_name = removeImage)]
     pub fn remove_image(this: &Map, id: &str);

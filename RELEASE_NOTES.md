@@ -2,6 +2,40 @@
 
 ## Unreleased
 
+- **`cargo xtask` deploys to staging by default.** The xtask now knows two environments, chosen
+  with `--env staging|production` (default `staging`): namespace, host, database, role, relay
+  port and NFS StorageClass come from the environment, and `NJORD_NAMESPACE`, `NJORD_DB`,
+  `NJORD_HOST`, `NJORD_VERSION` and `NJORD_NFS_SIZE` are no longer read. Secrets are read from
+  `NJORD_STAGING_*` or `NJORD_PRODUCTION_*`, never the unprefixed names. Images are tagged
+  `<version>-<git hash>` and a tag is never pushed twice; `deploy` builds and releases to staging
+  only, the new `promote` gives production the image staging runs, and `apply` keeps the image an
+  environment already runs. Every rendered manifest is refused if it names another environment's
+  namespace, host, database, role, relay port or StorageClass. The staging environment itself is
+  not stood up yet: see `docs/STAGING_ENVIRONMENT_PLAN.md`.
+- **The Kubernetes manifests moved to `deploy/k8s/` and describe both environments.**
+  `deploy/mxmariner/` is now `deploy/k8s/`, and `openenc_mirror.yaml` is under
+  `deploy/k8s/production/`. Memory sizes, autoscaler replicas, `chartIngestWorkers` and the cron
+  schedules are per environment, and the new `staging.yaml` (`cargo xtask apply quota`) gives
+  staging a negative PriorityClass and a ResourceQuota. The next release to an environment also
+  changes its workloads: `njord-chart-dep` gets a readiness probe on `/v1/about/version`,
+  `njord-ingest-rs` becomes a `Recreate` Deployment (the xtask deletes the ReplicaSet it
+  replaces), images are pulled `IfNotPresent`, and `njord-walk-tiles` gets a memory request and
+  limit. A release now waits for both rollouts instead of deleting the ingest pod.
+  `db_setup.sql` takes the database, role and password as `psql` variables, revokes `CONNECT`
+  from `PUBLIC` and can set a connection limit.
+- **A killed ingest no longer blocks ingestion.** A process that was killed in the middle of an
+  ingest or a region export (out of memory, a lost node) left its id in the ingest lock, and
+  nothing was ingested again until the ingest was reset by hand. The workers now free such a lock
+  when they start, drop the interrupted upload and report it on the ingest status as an error
+  asking for it to be uploaded again. At most one process may run the workers on a
+  `chartTempData`: one `njord-ingest`, or one server with `enableIngestion`.
+- **The conformance suite's `--allow-mutating` guard covers production only.** It compared
+  `njord.mxmariner.com` as a substring, which also refused `staging-njord.mxmariner.com`. The
+  host is now compared whole, and the `openenc.com` mirror of production is refused too.
+- **The `VACUUM FULL` Job is gone.** `deploy/mxmariner/vacuum_job.yaml`, `cargo xtask apply vacuum`
+  and `render vacuum`, and the `njord-db-url` Secret that existed only for that Job are removed.
+  The Job was written for the one migration that rewrote every row of `features`; autovacuum
+  handles the nightly updates. An existing `njord-db-url` Secret can be deleted.
 - **API documentation.** The server publishes an OpenAPI 3.1 document at `GET /v1/openapi.json`
   and Swagger UI at `/v1/api_docs/`, generated from the route handlers and the shared wire types,
   with "Try it out" and an *Authorize* button that takes the admin signature. The Control Panel
@@ -39,7 +73,7 @@
   route). See [docs/change_reports.md](docs/change_reports.md).
 - **Rust.** The Kotlin/Native server and Kotlin/JS web UI are replaced by the Cargo workspace in
   `crates/` (`njord-server`, `njord-ingest`, `njord-enc-cron`, and the Leptos `njord-web`), and the
-  Gradle build is gone. See [README.md](README.md) and [docs/RUST_PORT_PLAN.md](docs/RUST_PORT_PLAN.md).
+  Gradle build is gone. See [README.md](README.md); the port plan, `docs/RUST_PORT_PLAN.md`, is in the git history.
   The HTTP API, PostGIS schema, style JSON, `.mbtiles` archives and on-disk layout are unchanged.
   Resource files moved to `crates/njord-server/resources` and `crates/njord-enc-cron/resources`.
   The container image is now `ghcr.io/manimaul/njord` (`Containerfile`, a multi-stage `rust:` build

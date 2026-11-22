@@ -11,13 +11,13 @@ as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display s
 
 - [Design documentation](docs/DESIGN.md) (written for the Kotlin implementation)
 - [NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
-- [Rust port plan](docs/RUST_PORT_PLAN.md)
+- [Staging environment plan](docs/STAGING_ENVIRONMENT_PLAN.md) (proposed, not built)
 - [Rust doc comment standards](docs/rustdoc_standards.md): every `///` and `//!` comment follows it
 - [Release notes](RELEASE_NOTES.md)
 
 Njord is a Cargo workspace (`crates/`): an axum server and a Leptos (WebAssembly) web UI that only meet at the HTTP
-API. It was ported from Kotlin/Native and Kotlin/JS ([plan](docs/RUST_PORT_PLAN.md)); the Kotlin code was removed in
-Phase 7 and remains in the git history (`master`).
+API. It was ported from Kotlin/Native and Kotlin/JS in October 2026; the Kotlin code, and the port plan it was removed
+under, remain in the git history (`master`).
 
 | Crate | Purpose |
 |---|---|
@@ -29,7 +29,7 @@ Phase 7 and remains in the git history (`master`).
 | `njord-server` | The axum HTTP server (`njord-server`: tiles, API, ingest and region export workers) and `njord-ingest` (the workers alone) |
 | `njord-enc-cron` | Nightly NOAA updater: diffs NOAA's catalog against `/v1/chart_editions`, bundles stale cells into `save/` |
 | `njord-web` | The web UI: Leptos (client-side, `wasm32`) built with Trunk; depends on `njord-model` only |
-| `xtask` (`njord-xtask`) | `cargo xtask <task>`: container image and Kubernetes deploy of the `mxmariner` environment (dry run unless `--execute`) |
+| `xtask` (`njord-xtask`) | `cargo xtask <task>`: container image and Kubernetes deploy of the staging and production environments (staging unless `--env production`; dry run unless `--execute`) |
 | `njord-testdata` | Locates the golden fixtures under `testdata/` for tests |
 
 ## Requirements
@@ -48,7 +48,7 @@ Phase 7 and remains in the git history (`master`).
 1. **`<resources dir>/config/application.json`**: the base configuration. The resources directory is the server's
    first argument, [`crates/njord-server/resources`](crates/njord-server/resources), so the file is
    [`crates/njord-server/resources/config/application.json`](crates/njord-server/resources/config/application.json).
-   The container image replaces it with [`deploy/mxmariner/application.json`](deploy/mxmariner/application.json).
+   The container image replaces it with [`deploy/k8s/application.json`](deploy/k8s/application.json).
 2. **`CHART_SERVER_OPTS`**: an environment variable holding a JSON object merged over `application.json`. The merge is
    shallow, so an override replaces a whole top-level key (`regionExports` is replaced, not extended).
 
@@ -60,7 +60,7 @@ Phase 7 and remains in the git history (`master`).
 | `webStaticContent` | Web UI build output, served for any path no route answers |
 | `adminUser`, `adminPass`, `adminKey`, `adminExpirationSeconds` | Admin login and signing key |
 | `shallowDepth`, `safetyDepth`, `deepDepth`, `debugTile` | Symbology |
-| `chartIngestWorkers`, `enableIngestion` | Ingest worker pool |
+| `chartIngestWorkers`, `enableIngestion` | Ingest worker pool. Enable ingestion in at most one process per `chartTempData` (or run one `njord-ingest` and none): a process that starts the workers frees an ingest lock left by one that was killed |
 | `useTileCache` | On-disk tile cache (default `true`; the shipped `application.json` turns it off) |
 | `enableRegionExport`, `regionExports` | Region `.mbtiles` archives to build after ingest (name, description, WKT coverage) |
 
@@ -133,20 +133,26 @@ See [`crates/njord-enc-cron/README.md`](crates/njord-enc-cron/README.md). It tal
 ### Ingest-only process (`njord-ingest`)
 
 `njord-ingest <resources dir>` runs the ingest and region export workers without the HTTP server, with the same
-configuration as `njord-server` (it ignores `enableIngestion`). The Kubernetes `njord-ingest-rs` pod runs it beside
+configuration as `njord-server` (it ignores `enableIngestion`). The Kubernetes `njord-ingest-rs` Deployment runs it beside
 `njord-chart-dep` pods that have `enableIngestion: false`.
+
+A process that is killed in the middle of an ingest or a region export leaves the ingest lock held. The workers free it
+when they next start, drop the interrupted upload and report it on the ingest status (upload it again); they do not
+retry it, since an upload that kills the process would kill it on every start. This is why only one process may run
+the workers on a `chartTempData`: a second one starting would abort the first one's work.
 
 ### Container
 
 ```bash
 cargo xtask build              # prints the podman command (every task is a dry run by default)
-cargo xtask --execute build    # builds ghcr.io/manimaul/njord:<version> from Containerfile
-cargo xtask help               # all tasks: secrets, nfs, build, push, apply, rollout, deploy, render, ...
+cargo xtask --execute build    # builds ghcr.io/manimaul/njord:<version>-<git hash> from Containerfile
+cargo xtask --execute deploy   # builds, pushes and releases to staging (the default environment)
+cargo xtask --env production --execute promote   # gives production the image staging runs
+cargo xtask help               # all tasks: secrets, nfs, build, push, apply, rollout, deploy, promote, render, ...
 ```
 
-See [`deploy/mxmariner/README.md`](deploy/mxmariner/README.md) for pushing and deploying. Never tag this image as
-`ghcr.io/manimaul/njord-chart-server`; that repository belongs to the Kotlin deployment of `openenc.com`, which runs
-from the `master` branch until the cutover (docs/RUST_PORT_PLAN.md §10.6).
+See [`deploy/k8s/README.md`](deploy/k8s/README.md) for the two environments, pushing and deploying. Never tag this image as
+`ghcr.io/manimaul/njord-chart-server`; that repository holds the images of the retired Kotlin server.
 
 ### Debian package
 
@@ -188,5 +194,5 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt     # Python 
 ```
 
 The suite seeds the server through the upload API and waits for the region exports, so the first run takes a few
-minutes. `--compare-url` diffs two live servers (e.g. `https://njord.mxmariner.com` against `https://njord.mxmariner.com`) instead of
-using the goldens.
+minutes. `--compare-url` diffs two live servers (e.g. `https://staging-njord.mxmariner.com` against
+`https://njord.mxmariner.com`) instead of using the goldens.

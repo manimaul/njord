@@ -34,7 +34,7 @@ def _host_architecture() -> str:
     machine = platform.machine()
     return {"x86_64": "amd64", "aarch64": "arm64"}.get(machine, machine)
 
-# Everything but GDAL and zlib is statically linked into the Rust binary (RUST_PORT_PLAN.md §4.3).
+# Everything but GDAL and zlib is statically linked into the Rust binary.
 # postgresql-postgis pulls in the PostgreSQL server and the PostGIS extension (the postgis package
 # alone only Recommends them); python3 runs db_setup.sh, adduser runs in preinst.
 DEPENDS = [

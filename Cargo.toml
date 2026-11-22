@@ -1,4 +1,4 @@
-# Njord workspace (docs/RUST_PORT_PLAN.md §3.1).
+# Njord workspace.
 [workspace]
 resolver = "2"
 members = ["crates/*"]

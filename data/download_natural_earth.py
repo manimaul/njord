@@ -1,7 +1,23 @@
 #!/usr/bin/env python3
 
+"""
+Download the Natural Earth physical vector zips the Njord base map is built from, into
+{output-dir}/ne/<scale>/, and repair the ones the server cannot ingest as shipped (see REPAIR).
+
+A zip that is already there is not downloaded again. The repair needs GDAL's ogr2ogr on the PATH;
+the script exits with status 1 when a repair fails, so upload_natural_earth.py does not go on to
+upload the unrepaired zip.
+"""
+
 import argparse
+import os
+import shlex
+import shutil
+import subprocess
+import sys
+import tempfile
 import urllib.request
+import zipfile
 from pathlib import Path
 
 BASE_URL = "https://naciscdn.org/naturalearth/{scale}/physical/{name}.zip"
@@ -38,6 +54,82 @@ FILES = {
     ],
 }
 
+# Shapefiles whose geometry is repaired here, before upload, because the server cannot do it.
+#
+# ne_10m_ocean is one polygon of about 447,000 vertices with a self-intersecting ring. The Njord
+# ingest repairs an invalid geometry itself (GDAL MakeValid), which for this polygon takes about
+# 1.1 GiB of memory: more than the ingest pod's limit, so the pod is killed mid-ingest. A valid
+# polygon is ingested as it is, in about 130 MiB.
+REPAIR = {"ne_10m_ocean"}
+
+# The parts of a shapefile. In a repaired zip these come from ogr2ogr; everything else in the
+# original zip (the README and VERSION files) is carried over.
+SHAPEFILE_PARTS = {".shp", ".shx", ".dbf", ".prj", ".cpg", ".sbn", ".sbx", ".qix"}
+
+
+def repaired_marker(name):
+    """The zip member that marks {name}.zip as repaired, so it is repaired only once."""
+    return f"{name}.REPAIRED.txt"
+
+
+def is_repaired(zip_path, name):
+    with zipfile.ZipFile(zip_path) as archive:
+        return repaired_marker(name) in archive.namelist()
+
+
+def repair(zip_path, name):
+    """Replace {name}.shp in zip_path with ogr2ogr's valid copy of it, keeping the zip's name.
+
+    The zip is replaced only once the new one is complete. Raises when ogr2ogr is missing or
+    fails, with zip_path untouched.
+    """
+    if shutil.which("ogr2ogr") is None:
+        raise RuntimeError("ogr2ogr (GDAL) is not on the PATH")
+    command = ["ogr2ogr", "-f", "ESRI Shapefile", f"repaired/{name}.shp", f"{name}.shp",
+               "-makevalid", "-nlt", "MULTIPOLYGON"]
+    with tempfile.TemporaryDirectory() as tmp:
+        original = Path(tmp)
+        repaired = original / "repaired"
+        with zipfile.ZipFile(zip_path) as archive:
+            archive.extractall(original)
+        repaired.mkdir()
+        result = subprocess.run(command, cwd=original, capture_output=True, text=True)
+        if result.returncode != 0 or not (repaired / f"{name}.shp").exists():
+            raise RuntimeError(f"ogr2ogr failed: {result.stderr.strip() or result.returncode}")
+        marker = (
+            f"{name}.shp in this zip is not the file Natural Earth ships. Its geometry was made\n"
+            f"valid by data/download_natural_earth.py of the Njord repository with:\n\n"
+            f"  {shlex.join(command)}\n"
+        )
+        kept = [p for p in sorted(original.iterdir())
+                if p.is_file() and p.suffix.lower() not in SHAPEFILE_PARTS]
+        new_zip = zip_path.with_name(zip_path.name + ".tmp")
+        try:
+            with zipfile.ZipFile(new_zip, "w", zipfile.ZIP_DEFLATED) as archive:
+                for part in sorted(repaired.iterdir()) + kept:
+                    archive.write(part, part.name)
+                archive.writestr(repaired_marker(name), marker)
+            os.replace(new_zip, zip_path)
+        finally:
+            new_zip.unlink(missing_ok=True)
+
+
+def ensure_repaired(zip_path, name):
+    """Repair zip_path unless it already is. Returns False when the repair failed."""
+    if is_repaired(zip_path, name):
+        print(f"  {name}.zip is already repaired.")
+        return True
+    print(f"  Repairing {name}.shp (ogr2ogr -makevalid) ...")
+    try:
+        repair(zip_path, name)
+    except Exception as e:
+        print(f"  REPAIR FAILED: {e}")
+        print(f"  {zip_path} is the original and must not be uploaded: it kills the ingest.")
+        return False
+    print(f"  Done — {zip_path.stat().st_size / 1_048_576:.1f} MB")
+    return True
+
+
 def reporthook(count, block_size, total_size):
     downloaded = count * block_size
     if total_size > 0:
@@ -54,6 +146,7 @@ def main():
     args = parser.parse_args()
 
     base = Path(args.output_dir)
+    repairs_failed = False
 
     for scale in args.scales:
         out = base / "ne" / scale
@@ -65,15 +158,21 @@ def main():
             dest = out / f"{name}.zip"
             if dest.exists():
                 print(f"  {name}.zip already exists, skipping.")
-                continue
-            print(f"  Downloading {name}.zip ...")
-            try:
-                urllib.request.urlretrieve(url, dest, reporthook)
-                print(f"\n  Done — {dest.stat().st_size / 1_048_576:.1f} MB")
-            except Exception as e:
-                print(f"\n  FAILED: {e}")
-                if dest.exists():
-                    dest.unlink()
+            else:
+                print(f"  Downloading {name}.zip ...")
+                try:
+                    urllib.request.urlretrieve(url, dest, reporthook)
+                    print(f"\n  Done — {dest.stat().st_size / 1_048_576:.1f} MB")
+                except Exception as e:
+                    print(f"\n  FAILED: {e}")
+                    if dest.exists():
+                        dest.unlink()
+                    continue
+            if name in REPAIR and not ensure_repaired(dest, name):
+                repairs_failed = True
+
+    if repairs_failed:
+        sys.exit(1)
 
 # python3 download_natural_earth.py --output-dir ./data
 # python3 download_natural_earth.py --output-dir ./data --scales 50m 110m

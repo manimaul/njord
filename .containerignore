@@ -6,4 +6,4 @@
 !crates
 crates/**/target
 crates/njord-web/dist
-!deploy/mxmariner/application.json
+!deploy/k8s/application.json

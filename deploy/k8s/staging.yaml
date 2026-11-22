@@ -1,0 +1,35 @@
+---
+# What keeps staging from taking memory production needs. Staging only: production has no
+# PriorityClass and no quota. Rendered by `cargo xtask render quota` and applied by
+# `cargo xtask --execute apply quota`, which a new environment needs before its first pod: a pod
+# that names a PriorityClass that does not exist is refused.
+#
+# Every pod of the environment names this PriorityClass. Everything else on the cluster runs at
+# priority 0, so when a node runs short of memory the kubelet evicts staging's pods first, and
+# when a pod cannot be scheduled it is staging's that stays Pending. preemptionPolicy Never: a
+# staging pod waits for room and never removes another pod to make it. A PriorityClass is
+# cluster-scoped.
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: ${NJORD_PRIORITY_CLASS}
+value: -100
+preemptionPolicy: Never
+globalDefault: false
+description: Njord staging. Below every other workload, and never preempts.
+---
+# A ceiling on what the namespace can reserve and use, whatever a manifest asks for. Steady state
+# requests about 0.9Gi: chart 128Mi, ingest 512Mi, NFS provisioner 192Mi, three relays at 16Mi.
+# The nightly jobs add 320Mi of requests and 1.2Gi of limits while they run.
+#
+# A quota on memory makes both values mandatory: a pod in this namespace that leaves out its
+# memory request or limit is refused.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: njord-memory
+  namespace: ${NJORD_NAMESPACE}
+spec:
+  hard:
+    requests.memory: 1536Mi
+    limits.memory: 3Gi

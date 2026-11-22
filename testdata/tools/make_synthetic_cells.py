@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the two synthetic S-57 cells under testdata/fixtures/synthetic/.
 
-Groundwork item for RUST_PORT_PHASE0_CHECKLIST.md §1: two tiny cells with overlapping
+Two tiny cells with overlapping
 coverage at different compilation scales, so TE-1 / P-TE-5 can prove chart priority masking
 (the larger-scale cell wins inside the overlap, the smaller-scale cell still shows outside it).
 

@@ -1,8 +1,7 @@
 # HTTP conformance suite
 
 Black-box tests of the Njord HTTP/WebSocket API, written once in Python so they are independent
-of both the Kotlin server and the Rust port ([RUST_PORT_PLAN.md §5.5](../docs/RUST_PORT_PLAN.md#55-http-conformance-suite-conformance),
-checklist [§3.5](../docs/RUST_PORT_PHASE0_CHECKLIST.md)). Nothing here imports from `server/`,
+of both the Kotlin server and the Rust port. Nothing here imports from `server/`,
 `shared/` or `crates/`; the only Njord-specific inputs are the fixture cells under
 `testdata/fixtures/` (uploaded through the API) and, when present, the P-SY-7 style fixtures and
 the P-TE-5 tile list under `testdata/`.
@@ -19,14 +18,14 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt              
 
 | Mode | Selected by | What happens |
 |---|---|---|
-| **record** | `--record` | Every spec is fetched from `--base-url` (a **Kotlin** server) and written to `golden/<group>/<case>.json`. `port_only` tests are skipped. The Kotlin code is gone from this branch (Phase 7), so the goldens are frozen; re-recording needs a Kotlin server built from `master`. |
+| **record** | `--record` | Every spec is fetched from `--base-url` (a **Kotlin** server) and written to `golden/<group>/<case>.json`. `port_only` tests are skipped. The Kotlin code is gone from this branch, so the goldens are frozen; re-recording needs a Kotlin server built from `master`. |
 | **verify** | default | Every spec is fetched and compared with its golden. Fails on any difference, naming the JSON pointer. |
 | **diff** | `--compare-url` | Every spec is fetched from both servers and the two masked responses are compared with each other; goldens are not touched. Read-only: mutating tests are skipped, because the two servers may share a database. When a Kotlin `--base-url` is diffed against a Rust `--compare-url` (both auto-detected), a spec's `port` block is applied to the Kotlin response first, so a decided divergence (D4, D8) is not reported as a difference. |
 
 Options: `--golden-dir` (default `conformance/golden`), `--compare auto|exact|shape` (see below),
 `--admin-user/--admin-pass/--admin-key` (default `admin`/`admin`/`changeme` from
 `config/application.json` for a localhost target, `$NJORD_ADMIN_USER`/`$NJORD_ADMIN_PASS`/
-`$NJORD_ADMIN_KEY` otherwise), `--allow-mutating` (never accepted for njord.mxmariner.com),
+`$NJORD_ADMIN_KEY` otherwise), `--allow-mutating` (refused for production: njord.mxmariner.com and its openenc.com mirror),
 `--server-impl auto|kotlin|rust`, `--trust-forwarded`, `--skip-seed`.
 
 ## Layout
@@ -154,21 +153,21 @@ routes by shape, because production holds the whole NOAA catalog; a local server
 three fixture cells compares everything exactly. `--compare exact|shape` overrides the automatic
 choice. `volatile` specs (counts, archive bytes, the SPA page) are always compared by shape.
 
-Diff mode (`njord.mxmariner.com` vs `njord.mxmariner.com` in §10.5 of the plan) applies the same rule
+Diff mode (for example staging against production) applies the same rule
 between the two live catalogs, so catalog drift shows up as a per-route failure of the data routes,
 never as a false alarm on the exact routes.
 
 ## Markers
 
 - `mutating` — changes server state (ingest, chart/geojson POST, cache DELETE, regions POST, nuke).
-  Runs only when `--base-url` is localhost, or with `--allow-mutating` (refused for njord.mxmariner.com).
+  Runs only when `--base-url` is localhost, or with `--allow-mutating` (refused for production's hosts; against staging it empties staging).
   Always skipped in diff mode.
 - `signed` — needs an admin signature; skipped when no credentials are available.
 - `port_only` — passes only on the Rust port (D2 traversal filename, D6 upload during ingest, D9, and
   every test of `test_api_13_change_reports.py`, a route the Kotlin server never had).
 - `port_pending(reason)` — the reverse: a route not ported yet, **skipped** when the `--base-url`
   server is (or `--server-impl` says it is) the Rust port. Checked in `pytest_runtest_setup`,
-  before fixtures. No test carries it since Phase 4 landed (2026-10-30); it stays for a future
+  before fixtures. No test carries it since the write path was ported (2026-10-30); it stays for a future
   route that the Kotlin server grows first.
 - `local_only` — `X-Forwarded-*` reflection, which a production proxy overrides (`--trust-forwarded`).
 

@@ -1,6 +1,6 @@
 # Vendored JavaScript
 
-The web UI keeps MapLibre GL as JavaScript (RUST_PORT_PLAN.md §7). It is vendored here, unmodified,
+The web UI keeps MapLibre GL as JavaScript. It is vendored here, unmodified,
 so a build needs no npm and the UI works without internet access (the deb package runs on boats).
 
 | File | Package | Version |

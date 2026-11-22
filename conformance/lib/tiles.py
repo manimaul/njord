@@ -1,6 +1,6 @@
 """MVT decoding and canonicalisation for tile comparisons.
 
-Tiles are compared *decoded* (RUST_PORT_PLAN.md §5.5): two correct encoders may order layers,
+Tiles are compared *decoded*: two correct encoders may order layers,
 keys and values differently, and feature ids are an encoder artefact (an autoincrement in the
 Kotlin encoder). The raw bytes' sha256 and size are recorded for information only.
 

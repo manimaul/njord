@@ -1,5 +1,4 @@
 ---
-# mxmariner environment (docs/RUST_PORT_PLAN.md §10), copied from k8s_deploy/ with the §10.3 edits.
 # Rendered and applied by `cargo xtask --execute apply cron`.
 #
 # Nightly NOAA ENC update.
@@ -19,9 +18,9 @@ metadata:
   name: njord-enc-download
   namespace: ${NJORD_NAMESPACE}
 spec:
-  # 02:00 PT, two hours after the njord namespace's run, so the two environments do not fetch
-  # the same NOAA catalog and cells in the same minute (§10.2 item 6).
-  schedule: "0 2 * * *"
+  # An hour before this environment's njord-walk-tiles. Staging's jobs run after production's,
+  # so the two environments do not load the shared database server at the same time.
+  schedule: "${NJORD_ENC_SCHEDULE}"
   timeZone: "America/Los_Angeles"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
@@ -34,12 +33,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          priorityClassName: ${NJORD_PRIORITY_CLASS}
           imagePullSecrets:
             - name: ghreg
           containers:
             - name: enc-download
               image: ${NJORD_IMAGE}
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               securityContext:
                 runAsUser: 0
               command:
@@ -52,9 +52,7 @@ spec:
                 # Authorizes DELETE /v1/chart for cells NOAA has withdrawn. Without both, the job
                 # still reports orphans but deletes nothing. Set deleteOrphans:false in the
                 # ConfigMap to switch the behaviour off entirely while leaving credentials in place.
-                # Created by `cargo xtask secrets` (njord-admin-basic), or by hand:
-                # kubectl -n ${NJORD_NAMESPACE} create secret generic njord-admin-basic \
-                #   --from-literal=admin_user="${NJORD_ADMIN_USER}" --from-literal=admin_pass="${NJORD_ADMIN_PASS}"
+                # The njord-admin-basic secret is created by `cargo xtask secrets`.
                 - name: ENC_CRON_ADMIN_USER
                   valueFrom:
                     secretKeyRef:

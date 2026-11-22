@@ -1,4 +1,4 @@
-"""Njord HTTP conformance suite (RUST_PORT_PLAN.md §5.5).
+"""Njord HTTP conformance suite.
 
     pytest conformance --base-url=$URL --record              # against the Kotlin server: rewrites golden/
     pytest conformance --base-url=$URL                       # verify against golden/
@@ -23,6 +23,11 @@ from lib.engine import Checker, Target  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 LOCAL_ADMIN = ("admin", "admin", "changeme")  # crates/njord-server/resources/config/application.json
+# The hosts that serve production: its own, and the openenc.com mirror of the same server
+# (deploy/k8s/production/openenc_mirror.yaml). The mutating tests ingest, delete and call the nuke
+# route, so --allow-mutating is refused for these. The host is compared whole: staging's,
+# staging-njord.mxmariner.com, contains production's and is not production.
+PRODUCTION_HOSTS = frozenset({"njord.mxmariner.com", "openenc.com", "www.openenc.com"})
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -36,7 +41,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     g.addoption("--admin-user", default=None, help="basic-auth user for GET /v1/admin (default: admin locally, $NJORD_ADMIN_USER otherwise)")
     g.addoption("--admin-pass", default=None, help="basic-auth password (default: admin locally, $NJORD_ADMIN_PASS otherwise)")
     g.addoption("--admin-key", default=None, help="server adminKey, lets the suite mint signatures for expiry tests (default: changeme locally)")
-    g.addoption("--allow-mutating", action="store_true", help="run mutating tests against a non-local server (never njord.mxmariner.com)")
+    g.addoption("--allow-mutating", action="store_true", help="run mutating tests against a non-local server (refused for production)")
     g.addoption("--server-impl", default="auto", choices=("auto", "kotlin", "rust"), help="skip port_only tests on kotlin")
     g.addoption("--trust-forwarded", action="store_true", help="run X-Forwarded-* tests against a non-local server")
     g.addoption("--skip-seed", action="store_true", help="do not ingest the fixture cells even if missing")
@@ -66,8 +71,8 @@ class Config:
         # Diff mode compares two live servers that may share a database, so a mutation on one shows
         # up as a difference on the other: diff mode is read-only by design.
         self.allow_mutating = (local or opt("--allow-mutating")) and self.mode != "diff"
-        if "njord.mxmariner.com" in client.host and opt("--allow-mutating"):
-            raise pytest.UsageError("refusing --allow-mutating against njord.mxmariner.com")
+        if client.host.rstrip(".") in PRODUCTION_HOSTS and opt("--allow-mutating"):
+            raise pytest.UsageError(f"refusing --allow-mutating against production ({client.host})")
 
 
 @pytest.fixture(scope="session")
@@ -153,7 +158,7 @@ def server_impl(pytestconfig: pytest.Config) -> str:
 
 def pytest_runtest_setup(item: pytest.Item) -> None:
     """
-    `port_pending(reason)`: the route is not ported yet (RUST_PORT_PLAN.md phases), so the test is
+    `port_pending(reason)`: the route is not ported yet, so the test is
     skipped when the `--base-url` server is the Rust port. Checked here, before any fixture is set
     up, so a module fixture that waits for the missing feature (the region export worker) never runs.
     """
@@ -250,7 +255,7 @@ def pytest_report_header(config: pytest.Config) -> list[str]:
 def _markers(request: pytest.FixtureRequest, config: Config) -> None:
     item = request.node
     if item.get_closest_marker("mutating") and not config.allow_mutating:
-        pytest.skip("mutating test; target is not local (use --allow-mutating, never against njord.mxmariner.com)")
+        pytest.skip("mutating test; target is not local (use --allow-mutating, which production refuses)")
     if item.get_closest_marker("port_only"):
         if config.mode == "record":
             pytest.skip("port_only: not recorded against the Kotlin server")

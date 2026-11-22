@@ -1,3 +1,7 @@
+---
+# Production only: openenc.com and www.openenc.com serve production's njord-chart-svc. Not rendered
+# by `cargo xtask`, and never applied to staging; apply it by hand:
+#   kubectl apply -f deploy/k8s/production/openenc_mirror.yaml
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:

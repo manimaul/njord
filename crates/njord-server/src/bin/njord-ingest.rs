@@ -12,6 +12,10 @@
 //! SIGTERM. `enableIngestion` is not consulted; `enableRegionExport` still is. It runs as the
 //! `njord-ingest-rs` pod beside server pods that have `enableIngestion: false`. Logging follows
 //! `RUST_LOG` (default `info`).
+//!
+//! Run one per `chartTempData`, and no server with `enableIngestion` beside it: on start it frees
+//! the ingest lock if a stopped process left it held, which would abort the work of a second
+//! process that was still running.
 
 use std::path::PathBuf;
 use std::process::ExitCode;

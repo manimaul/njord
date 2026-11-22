@@ -1,7 +1,7 @@
 # Catalog-driven NOAA ENC updates (`enc_cron`)
 
-> **Kotlin-era document.** It describes the Kotlin/Native implementation, which was removed in
-> Phase 7 of the [Rust port](RUST_PORT_PLAN.md); its file paths refer to the `master` branch. The
+> **Kotlin-era document.** It describes the Kotlin/Native implementation, which was removed when
+> Njord was ported to Rust; its file paths refer to the `master` branch. The
 > behaviour still holds; for the Rust crates see the [README](../README.md).
 
 ## Context
@@ -17,7 +17,7 @@ command: [curl, --fail, --silent, --show-error, --location, --create-dirs,
 
 Problems with it:
 
-1. **It only sees a one-day window.** Anything published while the cron, the ingest ReplicaSet, or
+1. **It only sees a one-day window.** Anything published while the cron, the ingest pod, or
    the cluster was down is never picked up. There is no reconciliation path back to "what does
    NOAA actually have that we don't".
 3. **It writes straight into `save/`.** `ChartIngestWorker` polls that directory every 5 s and

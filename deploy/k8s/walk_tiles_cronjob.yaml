@@ -1,6 +1,6 @@
 ---
-# mxmariner environment (docs/RUST_PORT_PLAN.md §10), copied from k8s_deploy/ with the §10.3 edits.
-# Rendered and applied by `cargo xtask --execute apply cron`.
+# Warms the tile cache for zoom 0-6 after the nightly NOAA update. Rendered and applied by
+# `cargo xtask --execute apply cron`.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -86,8 +86,8 @@ metadata:
   name: njord-walk-tiles
   namespace: ${NJORD_NAMESPACE}
 spec:
-  # 03:00 PT, after this namespace's 02:00 njord-enc-download (§10.2 item 6).
-  schedule: "0 3 * * *"
+  # An hour after this environment's njord-enc-download.
+  schedule: "${NJORD_WALK_SCHEDULE}"
   timeZone: "America/Los_Angeles"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
@@ -100,6 +100,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          priorityClassName: ${NJORD_PRIORITY_CLASS}
           containers:
             - name: walk-tiles
               image: python:3.12-slim
@@ -114,6 +115,15 @@ spec:
                 - "6"
                 - --concurrency
                 - "4"
+              # Explicit in every environment, because staging's ResourceQuota (staging.yaml)
+              # refuses a pod that leaves its memory request or limit out.
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
               volumeMounts:
                 - name: walk-tiles-script
                   mountPath: /scripts

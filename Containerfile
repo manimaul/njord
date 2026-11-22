@@ -1,9 +1,7 @@
-# Rust Njord chart server image: ghcr.io/manimaul/njord (docs/RUST_PORT_PLAN.md §10).
+# Njord chart server image: ghcr.io/manimaul/njord.
 #
-# NEVER tag or push this image as ghcr.io/manimaul/njord-chart-server. That repository belongs to
-# the Kotlin environment in the `njord` namespace, which pulls it with imagePullPolicy: Always, so a
-# Rust build pushed there would be picked up by the old environment on its next pod start
-# (§10.2 item 1). `cargo xtask` refuses to build or push under that name.
+# ghcr.io/manimaul/njord-chart-server holds the images of the retired Kotlin server. This image is
+# never tagged or pushed under that name.
 #
 # Build it with the xtask, which also passes the git build metadata:
 #
@@ -23,8 +21,8 @@ FROM ${RUST_IMAGE} AS builder
 # amd64 build failed running it (exit 127, no /lib/ld-linux-aarch64.so.1).
 ARG TARGETARCH
 
-# libgdal-dev: GDAL is linked only by the njord-s57 crate, which njord-server links for ingest
-# (Phase 4). The pinned georust gdal commit ships prebuilt bindings for Debian's GDAL 3.10, so no
+# libgdal-dev: GDAL is linked only by the njord-s57 crate, which njord-server links for ingest.
+# The pinned georust gdal commit ships prebuilt bindings for Debian's GDAL 3.10, so no
 # libclang / bindgen is needed.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdal-dev \
@@ -71,13 +69,13 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry,sharing=locked \
 
 FROM ${RUNTIME_IMAGE}
 
-# Compare the Kotlin image (the Containerfile on master, replaced in Phase 7), which also needed
-# libpq5, libzip5, libssl3t64, libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust (§4.3).
-#   ca-certificates  TLS roots for outbound HTTPS (NOAA downloads from Phase 5, any rustls/openssl
-#                    client that uses the system store).
-#   libgdal36        Runtime GDAL 3.10 for njord-s57, linked by njord-server since ingestion moved
-#                    into this binary (Phase 4; check with `ldd /opt/njord/njord-server`). Drop it
-#                    only if a separate ingest image is built instead (§4.3, last sentence).
+# The Kotlin image (the Containerfile on master) also needed libpq5, libzip5, libssl3t64,
+# libcurl4t64, libgd3 and libexpat1: all of those are now statically linked Rust.
+#   ca-certificates  TLS roots for outbound HTTPS (njord-enc-cron's NOAA downloads, any
+#                    rustls/openssl client that uses the system store).
+#   libgdal36        Runtime GDAL 3.10 for njord-s57, which njord-server and njord-ingest link
+#                    for ingest (check with `ldd /opt/njord/njord-server`). Drop it only if a
+#                    separate ingest image is built instead.
 #                    SQLite (region archives) is the bundled rusqlite build, not a package.
 #   zlib1g           libz-sys links the system zlib when the builder has it (it does), so the
 #                    binary needs libz.so.1. Already in debian slim; listed so it is not lost.
@@ -92,7 +90,7 @@ COPY --from=builder /out/njord-server /out/njord-ingest /out/njord-enc-cron /opt
 # Same layout as the Kotlin image, so the njord-config ConfigMap (mounted over
 # resources/config/application.json) and webStaticContent=/opt/njord/resources/www keep working.
 COPY crates/njord-server/resources /opt/njord/resources
-COPY deploy/mxmariner/application.json /opt/njord/resources/config/application.json
+COPY deploy/k8s/application.json /opt/njord/resources/config/application.json
 # The Leptos UI, merged over resources/www, which already holds fonts/ and sprites/.
 COPY --from=builder /out/www /opt/njord/resources/www
 # njord-enc-cron's resources dir; the njord-enc-cron-config ConfigMap is mounted over

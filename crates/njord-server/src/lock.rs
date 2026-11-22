@@ -1,4 +1,4 @@
-//! The ingest/export lock shared between replicas through the data volume.
+//! The ingest/export lock that every process on a data volume shares.
 //!
 //! The semantics are pinned by `testdata/concurrency/lock_semantics.json`, and the file protocol is
 //! the one existing data volumes already use: `<chartTempData>/lock` holds the owner's uuid as text
@@ -6,6 +6,11 @@
 //! beside it and renames that over the lock; clearing renames an empty file over it. Anyone may
 //! clear: clearing is the operator's abort (`DELETE /v1/enc_save`), and there is no liveness
 //! information on shared storage that would make ownership meaningful.
+//!
+//! For the same reason the lock of a process that was killed stays held. The workers free it
+//! when they next start ([`crate::ingest::recover`]), which is why only one process may run them
+//! on a data volume. Servers with ingestion off share the file too: they read it for the upload
+//! status and clear it for the operator's reset.
 //!
 //! There is no check-then-rename window: after the rename the acquirer waits
 //! [`DistributedLock::SETTLE`] and re-reads, and holds the lock only if the file still names it.

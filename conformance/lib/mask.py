@@ -2,8 +2,7 @@
 
 Masks are JSON pointers (RFC 6901) with one extension: a `*` segment matches every index of a
 list or every key of an object. The empty pointer `""` masks the whole body. Every golden file
-carries its own mask list, so a new volatile field is a visible decision, not a silent skip
-(RUST_PORT_PLAN.md §5.5).
+carries its own mask list, so a new volatile field is a visible decision, not a silent skip.
 """
 
 from __future__ import annotations

@@ -1,11 +1,11 @@
 # testdata
 
-Golden fixtures for the Rust port ([RUST_PORT_PLAN.md §5](../docs/RUST_PORT_PLAN.md#5-tests-to-write-before-the-port),
-[Phase 0 checklist](../docs/RUST_PORT_PHASE0_CHECKLIST.md)). Every expected value in here is
-was produced by the **Kotlin** implementation, which has since been removed (Phase 7); the
-fixtures stay as the Rust crates' regression tests. Fixture IDs (`P-SY-1`, `P-TE-5`, …) are
-defined in §5 of the plan. `generator` headers name the Kotlin test that wrote each file; that code
-is in the git history (`master`).
+Golden fixtures recorded for the port from Kotlin to Rust. Every expected value in here was
+produced by the **Kotlin** implementation, which has since been removed; the fixtures stay as the
+Rust crates' regression tests. Fixture IDs (`P-SY-1`, `P-TE-5`, …) name the fixture groups in the
+layout table below. `generator` headers name the Kotlin test that wrote each file; that code,
+and the port plan that defined each ID in full (`docs/RUST_PORT_PLAN.md` §5), are in the git
+history (`master`).
 
 The Rust helper crate `njord-testdata` reads this directory, or `$NJORD_TESTDATA`.
 
@@ -23,7 +23,7 @@ The Rust helper crate `njord-testdata` reads this directory, or `$NJORD_TESTDATA
 | `security/` | P-SEC-3 | `paths.json` |
 | `concurrency/` | P-CC-1, P-CC-3 | `lock_semantics.json` (D6 decision table), `cadence.json` |
 | `enc_cron/` | P-EC-1 … P-EC-5 | `catalog_sample.xml` + `parsed.json`, `selection.json`, `bundle_layout.json`, `config.json`, `delete_orphans.json` |
-| `frontend/` | §3.10 | `routes.json` — `NjordRoute` patterns and `RouteMatcher` behaviour, mirrored from the former `shared_fe` `RouteFixtureTest` |
+| `frontend/` | — | `routes.json` — `NjordRoute` patterns and `RouteMatcher` behaviour, mirrored from the former `shared_fe` `RouteFixtureTest` |
 | `fixtures/` | inputs | `US5WA22M/` (real NOAA cell with `.001`–`.004` updates and `.TXT` sidecars), `synthetic/` (two generated cells, see its README), `ne_110_extract/` (Natural Earth 110m coastline shapefile) |
 | `tools/` | — | `make_synthetic_cells.py`, `trim_catalog.py` (input generators, need GDAL Python bindings) |
 
@@ -61,12 +61,12 @@ that only pass on the port are tagged `port_only` and skipped against a Kotlin s
 **Binary fixtures** (MVT tiles, protobuf) are `<name>.bin` plus a `<name>.json` sidecar holding
 the same header, `bin` (file name), `bytes` (count) and `decoded`, a readable view of the bytes.
 The bytes are Kotlin's; the Rust tests compare the decoded view, because two correct MVT encoders
-may legally order tags differently (§5.2, P-TE-2). A binary fixture whose Kotlin bytes are an
+may legally order tags differently (P-TE-2). A binary fixture whose Kotlin bytes are an
 accepted defect also carries `"port": { "decision": "D13", "decoded": <view> }`; the Rust tests
 compare against `port.decoded` for it.
 
-**Every fixture file carries a header naming the decision it pins** (§8, "Fixtures freeze bugs
-as behavior"). JSON files carry it as the top-level `pins` / `decisions` / `generator` /
+**Every fixture file carries a header naming the decision it pins**, because a fixture freezes
+a bug as behavior unless the bug was decided on first. JSON files carry it as the top-level `pins` / `decisions` / `generator` /
 `source` fields; XML and SQL files carry it as a leading comment; opaque inputs such as the S-57
 cells carry a `README.md` sidecar in their directory. `decisions` lists the defect decisions
 (`D1`–`D9`) and audit IDs (`SY-3`, `TE-1`, …) the expected values depend on, so a fixture whose

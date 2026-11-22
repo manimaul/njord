@@ -44,8 +44,10 @@
 //! Uploads land in `<chartTempData>/save`; [`spawn_workers`] starts the ingest worker
 //! ([`ingest::IngestWorker`]) that claims and ingests them and the region export worker
 //! ([`regions::RegionWorker`]) that renders stale region `.mbtiles` archives, both coordinated
-//! across replicas by the lock file ([`lock`]). They are started by the binaries, not by
-//! [`router`], so tests drive the routes without them.
+//! by the lock file ([`lock`]), which every server on the data volume reads. They are started by
+//! the binaries, not by [`router`], so tests drive the routes without them. At most one process
+//! may run the workers on a data volume: on start they free a lock that a stopped process left
+//! held ([`ingest::recover`]).
 
 pub mod config;
 pub mod cors;
@@ -110,7 +112,8 @@ pub async fn migrate(db: &Db) -> Result<i32, njord_db::Error> {
     db.migrate(&lock).await
 }
 
-/// Starts the background workers when `enableIngestion` is set.
+/// Starts the background workers when `enableIngestion` is set, as [`spawn_ingest_workers`]
+/// does, with the same rule of one process per data volume.
 ///
 /// These are the ingest worker, and the region export worker unless `enableRegionExport` is off.
 /// The handles are the tasks; dropping them does not stop the workers.
@@ -125,7 +128,14 @@ pub fn spawn_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> 
 /// Starts the background workers whatever `enableIngestion` says, for the `njord-ingest` binary.
 ///
 /// These are the ingest worker, and the region export worker unless `enableRegionExport` is off.
+///
+/// First it frees a lock that names another process and drops that process's unfinished ingest
+/// ([`ingest::recover_interrupted`]): a process killed mid-ingest leaves the lock held, and
+/// nothing would be ingested until an operator reset it. That is only right when no other
+/// process runs the workers on the same `chartTempData`, which the caller must ensure. A second
+/// process started beside a working one would abort its work.
 pub fn spawn_ingest_workers(state: &Arc<AppState>) -> Vec<tokio::task::JoinHandle<()>> {
+    ingest::recover_interrupted(&state.lock, &state.status, &state.ingest_dir);
     let mut handles = Vec::new();
     handles.push(tokio::spawn(ingest::IngestWorker::new(state.clone()).run()));
     if state.config.enable_region_export {

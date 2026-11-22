@@ -1,14 +1,14 @@
 # Frontend screenshot checklist
 
-_Phase 0 §3.10 ([RUST_PORT_PLAN.md §7](RUST_PORT_PLAN.md#7-frontend-leptos)): the practical safety net
-for the Leptos rewrite is a page-by-page visual comparison against the Compose HTML app. Take the
-screenshots from the Kotlin web app before Phase 6 starts and again from the Leptos app at the end
-of it, same server, same data, same browser window size._
+_Written for the port of the web UI from Kotlin/JS to Leptos, which is complete: the practical
+safety net for that rewrite was a page-by-page visual comparison against the Compose HTML app,
+with screenshots taken from the Kotlin web app before the rewrite and from the Leptos app after
+it, same server, same data, same browser window size._
 
 Routes are those of `shared_fe/src/commonMain/kotlin/io/madrona/njord/routing/NjordRoute.kt`; the
 control panel tabs are the `tabKey`s in `shared_fe/src/jsMain/kotlin/io/madrona/njord/ui/ControlPanel.js.kt`.
 The route list and query-parameter behaviour are pinned separately by `RouteMatcherTest` and the
-`frontend` fixture (checklist §3.10).
+`frontend` fixture (`testdata/frontend/routes.json`).
 
 ## Setup
 

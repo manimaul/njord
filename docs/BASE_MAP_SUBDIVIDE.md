@@ -1,6 +1,6 @@
 # Faster base map tiles: subdivided Natural Earth polygons
 
-_Written 2026-10-31. A follow-up to the Rust port ([RUST_PORT_PLAN.md §11](RUST_PORT_PLAN.md#11-follow-ups-after-the-port)); not part of it._
+_Written 2026-10-31. A follow-up to the port from Kotlin to Rust; not part of it._
 
 ## Problem
 
@@ -123,9 +123,9 @@ most of them. Not yet compared: the decoded tiles themselves.
 
 ## Why after the port
 
-- **The schema is frozen during the port** (RUST_PORT_PLAN.md §8): while a Kotlin ingest can
-  still write `base_features`, it would leave `base_feature_parts` stale. After Phase 7 only the
-  Rust ingest writes it.
+- **The schema was frozen during the port**: while a Kotlin ingest could still write
+  `base_features`, it would have left `base_feature_parts` stale. Now only the Rust ingest
+  writes it.
 - **The goldens are unaffected.** The test databases hold only the Natural Earth 1:110m
   coastline extract (lines, used below zoom 3), so P-TE-5, the conformance tiles and the region
   archives do not change. Check that again when the change is made.

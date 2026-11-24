@@ -1,7 +1,9 @@
 # Support for license-encumbered cartography
 
 Status: a plan. Nothing here is built. The code references were audited against the Rust
-workspace (`crates/`) on 2026-11-23.
+workspace (`crates/`) on 2026-11-24. Every chart in staging and in production is a NOAA chart,
+which is unrestricted, and no restricted chart is ingested in either until all three stages
+below are deployed.
 
 ## Context
 
@@ -28,8 +30,11 @@ A chart's coverage outline and its metadata stay public on both paths.
 
 ## Order of work
 
-The three stages are independent releases. The first must be deployed before any licensed cell is
-ingested.
+The three stages are separate releases. Staging and production hold only NOAA charts today, all
+unrestricted, and no restricted cell is ingested in either until all three stages are deployed
+there. So no release has to protect data that is already present, and between releases every
+chart is still public. Until the first restricted cell, the restricted paths run only in the
+tests ([Verification](#verification)).
 
 1. **Restriction, refusal and admin access.** The `restrictedProducers` configuration, the
    `charts.restricted` column, every route that returns feature data refusing restricted charts
@@ -37,13 +42,82 @@ ingested.
    ([Configuration](#1-configuration) to
    [The coverage outline's color](#8-the-coverage-outlines-color), without the token half of
    [Request access](#6-request-access)). No token exists yet, so the admin is the only one who
-   sees a restricted chart online.
-2. **Encrypted archives.** The `restricted` flag on a region, the export's two chart sets, the
-   sealed blobs and `producerCodes` ([Offline region archives](#offline-region-archives)).
-   Requires stage 1.
-3. **Region tokens.** JWT verification as a second source of what a request may see, and the
-   CORS change that lets a browser send the token ([Request access](#6-request-access),
-   [Clients](#9-clients)). Requires stage 1. Offline archives do not need it.
+   sees a restricted chart online. Every region archive is public: the export leaves restricted
+   charts out of each archive's tiles and catalog, and a region flagged `restricted` fails
+   startup ([Stage 1: every archive is public](#stage-1-every-archive-is-public)).
+2. **Encrypted archives.** A region's `restricted` flag taking effect, the licensed region's
+   chart set, the sealed blobs and `producerCodes`
+   ([Offline region archives](#offline-region-archives)). Requires stage 1.
+3. **Region tokens.** JWT verification as a second source of what a request may see
+   ([Request access](#6-request-access), [Clients](#9-clients)). Njord's CORS rules do not
+   change: a browser client on another origin sends its token through a proxy on its own origin.
+   Requires stage 1. Offline archives do not need it.
+
+### What each release changes for the charts there today
+
+Every chart is unrestricted and `restrictedProducers` is empty, so each release is a no-op for
+the data, apart from the API changes listed here.
+
+| Release | What changes in staging and production |
+| --- | --- |
+| Stage 1 | Migration 5 adds `charts.restricted`, false for every chart. The startup reconcile changes no row, so no tile cache is cleared and no region is re-exported. `GET /v1/chart?name=` reports `restricted: false`. A page of `GET /v1/feature/layer/{layer}` gains its totals, with `totalRestricted` 0. A `PLY` outline gains `restricted: false` and keeps its color. An unsigned `GET /v1/geojson` is now a 401: the one change that is not an added field |
+| Stage 2 | Every region stays public and its archive keeps today's layout. `GET /v1/regions` gains `restricted: false` on every region, and `producerCodes`: `null` until a region is next exported, then `[550]` for a chart region and `[]` for `WORLD`, which draws no chart. A file in the region directory whose name is not `<region>_<timestamp>.mbtiles` is no longer listed or pruned as an archive |
+| Stage 3 | Every tile response gains `Vary: Authorization`. Nothing else changes: no token exists until the issuer holds one of `chartAccessJwtSecrets` |
+
+A tile cached before stage 1 has no `restricted` property on its `PLY` outlines. The style draws
+a missing value as it draws `false`, so the cache need not be cleared for the release.
+
+MX Mariner's apps, backend and web are unaffected by all three. They call neither `/v1/geojson`
+nor `/v1/feature`, and their parsers of `/v1/regions` and `/v1/chart` ignore unknown keys.
+
+### The first restricted cell
+
+A restricted cell is ingested only when all of this is true in the environment it goes to,
+staging first:
+
+1. All three stages are deployed.
+2. `restrictedProducers` holds the cell's producer code, and every `njord-server` and
+   `njord-ingest` process was started with it.
+3. A new region is defined to hold the producer's charts offline, flagged `restricted`
+   ([Which charts and which regions](#which-charts-and-which-regions)), and `regionKeyMaster` is
+   set for the process that exports and held by the key issuer. No region defined today is
+   flagged, and none is changed.
+4. `chartAccessJwtSecrets` holds a secret the key issuer mints with.
+
+The first two protect the data. Without the third the chart is in no archive, and without the
+fourth only the admin sees it online; neither exposes it.
+
+### Rollback
+
+`Db::migrate` accepts a schema newer than the one a binary knows, so an image from before stage 1
+starts on a version 5 database, ignores `charts.restricted` and serves every chart's features to
+anyone.
+
+- **Before the first restricted cell is ingested**, that is harmless: every chart is public, and
+  the older image serves what it always served.
+- **After it, rolling back below stage 1 is not supported.** A defect is fixed by a new release,
+  never by deploying an older image.
+
+### Open before stage 1 ships
+
+One decision waits on a measurement: whether every page of `GET /v1/feature/layer/{layer}`
+carries the layer's two totals, or the first page alone. Stage 1 starts by timing the totals
+query on the largest layer in production, because the second outcome makes two fields of
+`LayerQueryResultPage` optional on the wire
+([Routes that return feature data](#5-routes-that-return-feature-data)).
+
+### Work outside njord
+
+Njord's three stages need this from MX Mariner. Its offline half (the decryptor, the key
+endpoint, the apps' key storage) is in `encryption.md` §12.
+
+- **The key issuer checks its product-to-region mapping against the manifest's `restricted`**
+  ([Interface with the key issuer](#interface-with-the-key-issuer)).
+- **The key issuer mints tokens with one of `chartAccessJwtSecrets`**, and replaces a secret in
+  the order given there.
+- **MX Mariner's web app needs a proxy on its own origin** before it can show a licensed chart
+  online. It reads `njord.mxmariner.com` directly today, and njord allows no cross-origin
+  `Authorization` ([Clients](#9-clients)). The native apps need none.
 
 ## What the code does today
 
@@ -113,9 +187,14 @@ These are the facts the plan builds on.
 - **The admin sees everything.** A request with a valid admin signature may see every restricted
   chart, on every route that returns feature data. The admin already ingests the source cells
   and downloads the archives.
-- **The raw feature routes are admin only.** `GET /v1/geojson` and `GET /v1/feature` require an
-  admin signature for every chart, public or restricted. They return source features unclipped
-  and unstyled, and no viewing path needs them.
+- **`GET /v1/geojson` is admin only.** It requires an admin signature for every chart, public or
+  restricted. It returns a chart's source features unclipped and unstyled, and no viewing path
+  needs it.
+- **`GET /v1/feature` is public, without the restricted charts.** It requires no signature. The
+  features of restricted charts are left out of its responses unless the request carries a valid
+  admin signature. A page of a layer also reports, to every request, how many of the layer's
+  features are in unrestricted charts and how many are in restricted ones. A feature count is
+  chart metadata, which is public: `GET /v1/chart?name=` already reports each chart's.
 - **A tile request without a signature or a valid token is not rejected.** It is served the
   public tile. Anonymous browsing must keep working on the tile route.
 - **Offline export has no request to authorize.** Each region definition carries a boolean saying
@@ -137,10 +216,10 @@ users, purchases or expiry.
 
 | What | How | Used for |
 | --- | --- | --- |
-| The region manifest | `GET /v1/regions`, public | Each region's newest archive: its file name, size, SHA-256, creation time and `producerCodes` |
+| The region manifest | `GET /v1/regions`, public | Each region, whether it is licensed (`restricted`), and its newest archive: the file name, size, SHA-256, creation time and `producerCodes` |
 | A region archive | `GET /v1/regions/{archive}`, with an admin signature from `GET /v1/admin` | The issuer relays the archive to purchasers byte for byte |
 | `regionKeyMaster` | A secret both hold | Each derives an archive's key from its file name, so no key ever crosses the boundary ([Keys](#keys)) |
-| `chartAccessJwtSecret` | A secret both hold | The issuer mints online tokens, and njord verifies them |
+| `chartAccessJwtSecrets` | Secrets both hold | The issuer mints online tokens with one, and njord verifies a token against each |
 
 Njord has no route that returns a key, mints, refreshes or inspects a token, or records a sale.
 
@@ -148,6 +227,29 @@ Njord has no route that returns a key, mints, refreshes or inspects a token, or 
 archive file names and in a token. The issuer maps what it sells to region names; njord maps
 region names to coverage and producers. Producer codes cross the boundary only in the manifest's
 `producerCodes`, which the issuer uses to calculate licensing usage.
+
+**The manifest says which regions are licensed.** Each entry carries `restricted`, the region's
+`regionExports[].restricted`. The issuer keeps its own mapping from products to regions, and
+checks it against this field: a region it sells that njord exports as public has a plain archive
+and no key to give, and a region njord encrypts that the issuer treats as public has an archive
+nobody can open. Neither can be seen from the archives' names.
+
+**Replacing a secret.**
+
+- **`chartAccessJwtSecrets` is a list**, and a token is valid when it verifies against any
+  entry. To replace a secret: add the new one to njord's list, have the issuer mint with it, and
+  remove the old one from njord's list. A token minted with the old secret stops working when
+  that secret is removed, and its holder sees public tiles until the client next asks the issuer
+  for a token (at its next start or sign-in). Removing the old secret after the latest `exp` the
+  issuer minted with it disturbs nobody. After a leak it is removed at once.
+- **`regionKeyMaster` is not rotated.** Every archive key is derived from it, by njord and by the
+  issuer, so there is no moment at which one side can change it alone. After a leak, njord and
+  the issuer are given a new master together, and every licensed region is re-exported
+  (`POST /v1/regions?name=`), which seals its new archive under the new master. The issuer keeps
+  the old master only until each licensed region's listed archive is one exported after the
+  change. The archives already downloaded stay readable by anyone who holds the old master;
+  nothing njord does can change that. The `v1` in the key derivation's `info` string
+  ([Keys](#keys)) is where a master generation would go if rotation is ever built.
 
 **One purchase, two deliveries.** MX Mariner sells one subscription per licensed region. The
 purchase earns the region's archive key, for offline use, and a place for the region in the
@@ -158,9 +260,9 @@ the token.
 
 ### The online token
 
-The issuer mints HS256 JWTs with `chartAccessJwtSecret`, and njord verifies them locally. It
-mints one when it has verified a user's subscriptions: after a purchase, and when the user's
-client starts or signs in.
+The issuer mints HS256 JWTs with one of `chartAccessJwtSecrets`, and njord verifies them
+locally. It mints one when it has verified a user's subscriptions: after a purchase, and when
+the user's client starts or signs in.
 
 **The payload**, for a user who holds two licensed regions bought at different times:
 
@@ -228,20 +330,29 @@ has a default, so an existing `application.json` keeps loading.
 | `restrictedProducers` | array of integers | `[]` | The IHO producer codes (`DSID_AGEN`) whose charts are restricted |
 | `regionExports[].restricted` | boolean | `false` | Whether the region includes restricted charts, which makes it a licensed region |
 | `regionKeyMaster` | string, base64 of 32 bytes | absent | The master secret region archive keys are derived from ([Offline region archives](#offline-region-archives)) |
-| `chartAccessJwtSecret` | string | absent | The HS256 secret shared with the key issuer, for online tokens |
+| `chartAccessJwtSecrets` | array of strings | `[]` | The HS256 secrets shared with the key issuer, for online tokens. A token is valid when it verifies against any of them; more than one only while a secret is being replaced |
 | `chartAccessJwtIssuer` | string | absent | The expected `iss` claim; not checked when absent |
 
-- The two secrets are delivered like `adminKey`, through the secret `cargo xtask secrets` writes.
-  Neither may appear in the `application.json` that is checked in.
-- `ChartsConfig` derives `Debug`. The two secrets need a field type whose `Debug` does not print
-  the value.
+- `regionKeyMaster` and `chartAccessJwtSecrets` are delivered like `adminKey`, through the secret
+  `cargo xtask secrets` writes. Neither may appear in the `application.json` that is checked in.
+  `cargo xtask secrets` writes a fixed set of keys today (`crates/xtask/src/main.rs` reads
+  `ADMIN_KEY` and its siblings and masks them in a dry run), so each of the two is added there,
+  optional and masked the same way, in the stage that introduces it.
+- `ChartsConfig` derives `Debug`. Both need a field type whose `Debug` does not print the value.
 - `njord-ingest` runs the export worker with the same configuration, so `regionKeyMaster` must
-  reach whichever process exports.
-- With `chartAccessJwtSecret` absent, no token is ever valid, and only a request with an admin
+  reach whichever process exports. From stage 2, a process that runs the export worker fails to
+  start when a region is flagged `restricted` and `regionKeyMaster` is absent or not 32 bytes
+  ([Keys](#keys)).
+- With `chartAccessJwtSecrets` empty, no token is ever valid, and only a request with an admin
   signature may see a restricted chart. That is stage 1.
+- `regionExports[].restricted` is read from stage 1 on, but a stage 1 build cannot encrypt. With
+  the flag true on any region, `njord-server` and `njord-ingest` fail to start
+  ([Stage 1: every archive is public](#stage-1-every-archive-is-public)).
 - `restrictedProducers` must be set **before** a cell from one of those producers is ingested.
   Archives and cached tiles made earlier hold the cell's data in the clear until they are replaced
-  (see [Reconciling at startup](#reconciling-at-startup)).
+  (see [Reconciling at startup](#reconciling-at-startup)). It is empty in staging and production
+  today and stays empty until all three stages are deployed
+  ([The first restricted cell](#the-first-restricted-cell)).
 
 ### 2. Schema: `charts.restricted`
 
@@ -268,6 +379,18 @@ restricted = COALESCE((dsid_props->>'DSID_AGEN')::int = ANY($n), false)
 A chart with no `DSID_AGEN` is public. `Db` is given the list when it is built, so no call site
 passes it and no writer can forget it. `ChartInsert` does not change.
 
+**A `DSID_AGEN` that is not an integer is an error, never a public chart.** The cast to `int`
+fails for a string such as `"NOAA"` and for a number such as `550.5`, and the statement fails
+with it:
+
+- The insert fails and the chart is not written, as for any failed insert. Ingest writes
+  `DSID_AGEN` as a JSON integer, so only a hand-made `POST /v1/chart` body can do this.
+- A row like that can then exist only if it was written before stage 1. None is expected: every
+  chart in staging and production was ingested from a NOAA cell. The startup reconcile reads
+  every row, so it would find one, and the process would not start
+  ([Reconciling at startup](#reconciling-at-startup)).
+- So `Db::find_chart_info`, which makes the same cast for every tile, never meets one.
+
 #### Reconciling at startup
 
 After `migrate`, each process sets the column for every chart from the configured list:
@@ -289,6 +412,19 @@ The statement is idempotent, so replicas starting together are harmless. It is a
 a procedure: between the restart and the end of the re-export, the manifest still lists an
 archive made under the old list.
 
+**In the planned rollout it never changes a row.** The stage 1 deploy runs it with an empty list
+against rows that migration 5 just set to false. Adding a producer's code later, before any of
+its cells is ingested, matches no chart either. It changes a row only when the list is changed
+after cells from the producer are already there, which
+[The first restricted cell](#the-first-restricted-cell) rules out.
+
+**A failed reconcile is fatal.** `njord-server` and `njord-ingest` run it right after `migrate`
+and treat its error as they treat a failed migration: the process logs it and exits before it
+serves a request or starts a worker. A process that cannot establish which charts are restricted
+must not serve any. The causes are a database failure and a chart whose `DSID_AGEN` is not an
+integer ([Schema](#2-schema-chartsrestricted)); the fix for the second is to correct or delete
+that chart's row.
+
 ### 3. Models
 
 `crates/njord-model/src/chart.rs` and `region.rs` (the contract with the web UI and other
@@ -300,8 +436,12 @@ clients), and `crates/njord-db/src/charts.rs`:
 - `njord_model::Chart` gains `restricted: bool` (`CHART_COLUMNS` and `chart_from_row`), so
   `GET /v1/chart?name=` tells a client the chart needs a license. Its producer is already there,
   in `dsid_props`.
-- `njord_model::RegionManifestEntry` gains `producer_codes`
-  ([Offline region archives](#offline-region-archives)).
+- `njord_model::LayerQueryResultPage` gains `total_unrestricted: i64` and `total_restricted: i64`
+  (`totalUnrestricted` and `totalRestricted` on the wire): the number of the layer's features in
+  unrestricted charts and in restricted charts
+  ([Routes that return feature data](#5-routes-that-return-feature-data)).
+- `njord_model::RegionManifestEntry` gains `restricted: bool`, the region's configured flag, and
+  `producer_codes` ([Offline region archives](#offline-region-archives)). Both arrive in stage 2.
 
 `njord-model` must still build for `wasm32-unknown-unknown`.
 
@@ -315,7 +455,7 @@ codes whose charts may be drawn:
 | --- | --- |
 | `tile` | What the request may see in this tile ([Request access](#6-request-access)): every restricted producer for the admin and, in stage 3, for a token with a region the tile lies in; otherwise empty |
 | `info` | The same set as `tile` for that request |
-| `archive_tile` | Every code in `restrictedProducers` for a licensed region; empty for a public one |
+| `archive_tile` | Every code in `restrictedProducers` for a licensed region; empty for a public one. In stage 1 every region is public, so it is always empty |
 
 - `eligible` becomes `0 ≤ chart.zoom ≤ z` **and** the chart is public or its `producer` is in
   `allowed_producers`. It is called in both `chart_inputs` (which features are fetched) and
@@ -340,23 +480,87 @@ not see them. This is the complete list, from the router in `crates/njord-server
 | `GET /v1/tile/{z}/{x}/{y}` | `handlers/tile.rs` | The vector tile | `allowed_producers` from the request ([The tile encoder](#4-the-tile-encoder)) |
 | `GET /v1/tile/{z}/{x}/{y}?info=true` | `handlers/tile.rs` | The tile's chart features as GeoJSON | The same set as the tile |
 | `GET /v1/geojson?chart_name=&layer_name=` | `handlers/geojson.rs`, `Db::geojson_layer` | Every feature of one layer of one chart | Signed: the handler takes `Signed` |
-| `GET /v1/feature/layer/{layer}` | `handlers/feature.rs`, `Db::find_layer_positions_page` | Position and full props of a layer's features, across all charts | Signed: the handler takes `Signed` |
-| `GET /v1/feature/lnam/{lnam}` | `handlers/feature.rs`, `Db::find_feature` | Geometry and props of one feature | Signed: the same handler |
+| `GET /v1/feature/layer/{layer}` | `handlers/feature.rs`, `Db::find_layer_positions_page` | Position and full props of a layer's features, across all charts | Restricted charts' features are left out unless the request has an admin signature; the page gains the layer's two totals |
+| `GET /v1/feature/lnam/{lnam}` | `handlers/feature.rs`, `Db::find_feature` | Geometry and props of one feature | A restricted chart's feature is not found unless the request has an admin signature |
 
-**`/v1/geojson` and `/v1/feature` become admin routes.** They take the `Signed` extractor, as
-`POST /v1/geojson` and the change reports already do:
+**`/v1/geojson` becomes an admin route.** It takes the `Signed` extractor, as `POST /v1/geojson`
+and the change reports already do:
 
 - A request without a valid admin signature gets an empty 401, for a public chart as for a
   restricted one. The signature check runs before anything else, so it also comes before the
-  routes' existing 404s.
-- A signed request gets what the routes return today, restricted charts included. Their queries
-  need no restriction filter.
-- A token never opens them. Only the tile route reads a token.
-- Each route's `#[utoipa::path]` gains `security(("admin_signature" = []))` and the 401 response.
-- The web UI's layer browser (`crates/njord-web/src/ui/layer.rs`, through
-  `api::features_by_layer`) is the one caller. It must send the stored signature, as
-  `api::change_report_page` does, and ask the user to sign in when there is none. The web UI
-  does not call `/v1/geojson`.
+  route's existing 404.
+- A signed request gets what the route returns today, restricted charts included.
+  `Db::geojson_layer` needs no restriction filter.
+- A token never opens it.
+- Its `#[utoipa::path]` gains `security(("admin_signature" = []))` and the 401 response.
+- The web UI does not call it.
+
+**`/v1/feature` stays public and leaves the restricted charts out.** The handler takes
+`ChartAccess` ([Request access](#6-request-access)) and passes `is_admin()` to both queries as
+`include_restricted`:
+
+- Without a valid admin signature, both queries add `AND NOT charts.restricted`. With one, they
+  run as they do today.
+- A missing, malformed or expired signature is not a 401. The route is public, so the request is
+  answered as an anonymous one, as on the tile route.
+- A token never opens the restricted charts here: `is_admin()` is false for
+  `ChartAccess::Regions`. Only the tile route reads a token's regions.
+- A response made for the admin carries `Cache-Control: private`, as a tile made for the admin
+  does.
+- The `#[utoipa::path]` gains the optional `signature` parameter
+  (`security((), ("admin_signature" = []))`) and the two new fields. It gains no 401.
+
+`layer/{layer}` (`Db::find_layer_positions_page(layer, start_id, include_restricted)`):
+
+- The page is the next 5 features after `start_id` that the request may see. `last_id` is still
+  the largest id served, so paging passes over the restricted charts' rows with no change to the
+  client.
+- The page gains the layer's two totals:
+
+  ```json
+  { "lastId": 48213, "items": [ … ], "totalUnrestricted": 812, "totalRestricted": 96 }
+  ```
+
+- `totalUnrestricted` is the number of the layer's features in unrestricted charts, and
+  `totalRestricted` the number in restricted charts. Both count the whole layer, not what is left
+  after `start_id`, so they are the same on every page.
+- Both are the same for every request, signed or not. `totalRestricted` is how an anonymous
+  client learns that features were left out. A signed request pages through
+  `totalUnrestricted + totalRestricted` features, an anonymous one through `totalUnrestricted`.
+- They come from one aggregate beside the page query, over the rows `features_layer_id_idx`
+  finds for the layer:
+
+  ```sql
+  SELECT count(*) FILTER (WHERE NOT charts.restricted),
+         count(*) FILTER (WHERE charts.restricted)
+  FROM features JOIN charts ON features.chart_name = charts.name
+  WHERE features.layer = $1;
+  ```
+
+- An unknown layer is still an empty page, with both totals 0.
+- **Whether every page carries the totals is decided by a measurement, before the wire type
+  ships.** The aggregate reads every row of the layer for each 5 features served: the index finds
+  the rows, but the join needs `chart_name`, a heap fetch per row. Stage 1 starts by timing it
+  on the largest layer in production, which holds every NOAA chart. If the time is acceptable,
+  the totals are on every page, as written here. If not, they are on the first page only
+  (`start_id` 0) and the two fields are optional on the wire, absent from later pages. The
+  layer browser reads them from the first page either way.
+- A TOPMAR's `_PTFM` and `_ASOC` are still computed from every chart's features
+  (`associated_layer_names`). They name layers, never a feature.
+
+`lnam/{lnam}` (`Db::find_feature(lnam, include_restricted)`):
+
+- The query joins `charts`. When several charts carry the `LNAM`, the lowest id among the charts
+  the request may see wins.
+- An `LNAM` that only restricted charts carry is, to an unsigned request, the same empty 404 as
+  an unknown one.
+- `FeatureRecord` does not change. The totals are the layer page's alone.
+
+The web UI's layer browser (`crates/njord-web/src/ui/layer.rs`, through
+`api::features_by_layer`) is the web UI's one caller, and it keeps working without a sign-in.
+When a signature is stored it sends it, as `api::change_report_page` does, so the admin's list
+includes the restricted charts. It shows both totals, and when `totalRestricted` is not 0 and
+there is no signature, it says that many features are in restricted charts and need a sign-in.
 
 **Routes that need no change**, and why:
 
@@ -376,7 +580,8 @@ in the same change.
 ### 6. Request access
 
 A new module, `crates/njord-server/src/chart_access.rs`, answers one question for the tile route:
-which restricted producers may this request see in this tile?
+which restricted producers may this request see in this tile? For `/v1/feature` it answers a
+narrower one: is this request the admin's?
 
 ```rust
 /// What a request may see of the restricted charts.
@@ -391,13 +596,22 @@ pub enum ChartAccess {
 impl ChartAccess {
     /// The restricted producers whose charts the request may see in tile `t`.
     pub fn producers_in(&self, state: &AppState, t: TileXyz) -> BTreeSet<i32>;
+
+    /// Whether the request carries a valid admin signature.
+    pub fn is_admin(&self) -> bool;
 }
 ```
 
+The tile route's `#[utoipa::path]` documents both: the optional `signature` parameter in stage 1
+(`security((), ("admin_signature" = []))`), and in stage 3 an optional bearer token, as a second
+security scheme in `crates/njord-server/src/openapi.rs`. It gains no 401.
+
 `ChartAccess` is an extractor like `Signed`, except that it cannot fail: its `FromRequestParts`
 has `Rejection = Infallible`. `handlers/tile.rs` takes it and passes `producers_in` for the
-requested tile to `tile_encoder::tile` and `tile_encoder::info`. The access comes from the first
-of two sources that applies.
+requested tile to `tile_encoder::tile` and `tile_encoder::info`. `handlers/feature.rs` takes it
+and reads `is_admin()` alone
+([Routes that return feature data](#5-routes-that-return-feature-data)). The access comes from
+the first of two sources that applies.
 
 **The admin signature (stage 1).**
 
@@ -412,11 +626,11 @@ of two sources that applies.
 **The token (stage 3).**
 
 - **Verification.** Read `Authorization: Bearer <jwt>`, split the compact form on `.`,
-  base64url-decode the three parts, recompute HMAC-SHA256 over `header.payload` with
-  `chartAccessJwtSecret`, and compare with `subtle::ConstantTimeEq`. `signature::hmac` is the
-  primitive and `signature::Verifier::verify` is the model for the comparison. The header's
-  `alg` must be `HS256`. `exp` must be in the future, and `iss` must equal
-  `chartAccessJwtIssuer` when that is configured.
+  base64url-decode the three parts, recompute HMAC-SHA256 over `header.payload` with each entry
+  of `chartAccessJwtSecrets` in turn, and compare with `subtle::ConstantTimeEq`. The token is
+  valid when one matches. `signature::hmac` is the primitive and `signature::Verifier::verify`
+  is the model for the comparison. The header's `alg` must be `HS256`. `exp` must be in the
+  future, and `iss` must equal `chartAccessJwtIssuer` when that is configured.
 - **Claims.** `regions`, an array of `{ "name", "exp" }`. `sub` is informational.
 - **Which regions are kept.** An entry is kept when its own `exp` is in the future and its
   `name` is a `regionExports` entry whose `restricted` is true. Every other entry is dropped:
@@ -431,13 +645,24 @@ of two sources that applies.
   grant nothing.
 - A missing header, a malformed or expired token, a bad signature and an unconfigured secret all
   yield no regions. Malformed input must never be a 500.
-- **CORS.** `ALLOW_HEADERS` in `cors.rs` gains `Authorization`, or a browser on another origin
-  cannot send the token. The conformance goldens pin the exact preflight header values, so the
-  specs for those cases get a `port` expectation.
+- **CORS does not change.** `cors.rs` keeps refusing a preflight that asks for `Authorization`,
+  so a browser on another origin cannot send a token to njord directly. That is deliberate. A
+  request with `Authorization` is never a simple request, and a browser caches a preflight per
+  URL, so allowing it would cost one `OPTIONS` round trip for every distinct tile. A browser
+  client on another origin instead reaches njord through a reverse proxy on its own origin
+  ([Clients](#9-clients)), where no preflight is sent.
 
-**Response headers (stage 1).** A tile response has no `Cache-Control` today. A response made
-with a non-empty set carries `Cache-Control: private` and `Vary: Authorization`, so a cache
-between njord and the client never serves it to another request.
+**Response headers.** A tile response has no `Cache-Control` and no `Vary` today. Both rules
+cover every response of the tile route, the `info=true` JSON as well as the tile.
+
+- **Stage 1.** A response made with a non-empty set carries `Cache-Control: private`, so a cache
+  between njord and the client never stores it. The admin's signature is part of the URL, so no
+  cache can confuse the admin's tile with the public one.
+- **Stage 3.** Every tile response carries `Vary: Authorization`, whatever the request may see.
+  A token is a header, so the public tile and a token holder's tile have the same URL. Without
+  `Vary` on the public response, a cache that holds it may serve it to a request that carries a
+  token, and a purchaser sees public tiles. A browser client's proxy is such a cache if it
+  caches at all.
 
 ### 7. The tile cache
 
@@ -483,19 +708,39 @@ line_color: Some(json!([
 The color follows the chart's flag, never the viewer's access. The style goldens for the `PLY`
 layer change with it.
 
+The layer keeps its zoom range, 0 to 9. A chart's outline is an overview aid, for a restricted
+chart as for any other. At zoom 10 and above no outline is drawn, so nothing on the map marks a
+restricted chart there: an unlicensed viewer sees the smaller-scale public chart or the base
+map. `GET /v1/chart?name=` and the manifest are how a client learns a chart or a region needs a
+license.
+
 ### 9. Clients
 
 - **Njord's web UI** (`crates/njord-web`) has one kind of sign-in, the admin's, and sends no
-  token. To an anonymous visitor it shows a restricted chart as an outline in `CHRED`, and its
-  chart page can show `restricted` from `GET /v1/chart?name=`.
-- **The web UI signed in as admin** holds an admin signature. Its layer browser sends it
+  token. To an anonymous visitor it shows a restricted chart as an outline in `CHRED` below
+  zoom 10, where every chart's outline is drawn, and its chart page can show `restricted` from
+  `GET /v1/chart?name=`. Its layer browser lists the features of the unrestricted charts and
+  says how many more are in restricted charts.
+- **The web UI signed in as admin** holds an admin signature. Its layer browser sends it, and
+  then lists the restricted charts' features too
   ([Routes that return feature data](#5-routes-that-return-feature-data)). To show the admin
   the restricted charts on the map, it adds the `signature` query parameter to tile requests
   with maplibre-gl-js's `transformRequest` map option; `Controller` in
   `crates/njord-web/src/controller.rs` builds the options object where it goes.
-- **A client that holds a token** attaches it to tile requests as an `Authorization` header,
-  through the same `transformRequest` option in a browser, and through the HTTP hooks of the
-  MapLibre native SDKs.
+- **A client that holds a token** attaches it to tile requests as an `Authorization` header:
+  through the HTTP hooks of the MapLibre native SDKs, and in a browser through the same
+  `transformRequest` option.
+- **A browser client on another origin goes through a proxy on its own origin.** Njord allows no
+  cross-origin `Authorization` ([Request access](#6-request-access)), so the client's own site
+  forwards its style, TileJSON and tile requests to njord. The proxy is part of that client's
+  deployment, not of njord. It must:
+  - forward the `Authorization` header;
+  - pass the forwarded host and scheme, so the style and the TileJSON njord builds name the
+    proxy's origin (`Origin::of` in `crates/njord-server/src/forwarded.rs` reads them);
+  - not cache a tile across users: honor `Cache-Control: private` and `Vary: Authorization`.
+
+  MX Mariner's web app (`mxmariner.com/app`) reads `njord.mxmariner.com` directly today and
+  needs such a proxy before it can show a licensed chart online. Its native apps do not.
 - **MX Mariner's apps** read licensed charts from encrypted region archives when offline, and
   send the token when they load njord's online style and tiles (`encryption.md` §14).
 
@@ -516,6 +761,22 @@ named.
 - **Public region.** An entry whose `restricted` is false. It is exported exactly as today and
   holds no restricted chart.
 - `WORLD` is the base map alone and is always public.
+
+**Today's regions stay public, and a licensed region is a new one.** The deployed regions
+(`WORLD` and `REGION_01` to `REGION_09`, in `deploy/k8s/chart_server.yaml`) are all public and
+are not changed. A licensed region is a new `regionExports` entry with its own name and
+coverage.
+
+- **It may overlap a public region.** Each archive is exported on its own. Where the two
+  overlap, the licensed region's tiles hold the public charts too, and the public region's hold
+  no restricted chart. Which tile a client shows when it has both installed is the client's rule
+  (`encryption.md` §8).
+- **It is listed as soon as it is configured**, with `null` archive fields until its first
+  export.
+- **Its first export does not wait for a restricted cell.** A region is exported when any chart
+  intersects it, so a licensed region drawn over waters the NOAA charts cover is exported, and
+  encrypted, with public charts alone. Ingesting the first restricted cell in it re-exports it.
+  The issuer should not sell a region before that export.
 
 ### What a tile and the catalog hold
 
@@ -538,19 +799,73 @@ only the charts of the region.
   re-render the region with `POST /v1/regions?name=`. Forgetting to is safe in both directions:
   the old archive is either still encrypted or holds no restricted chart.
 
+### Stage 1: every archive is public
+
+Stage 1 ships the public column of that table, so that the release is correct on its own: a
+build that knows restricted charts never writes one into an archive. No environment holds a
+restricted chart at that point, so only the tests exercise it.
+
+- `archive_tile` always gets the empty set, so no archive tile draws a restricted chart.
+- `Db::find_charts_in_region`, `Db::region_needs_rebuild` and `Db::regions_containing_chart` get
+  their clause in stage 1, with the flag false for every region. No archive's `charts` catalog,
+  `chart_tiles` edges or candidate tiles then come from a restricted chart, and ingesting or
+  deleting one re-exports nothing.
+- A region whose `restricted` is true fails startup, in `njord-server` and in `njord-ingest`,
+  with an error that names the region. A stage 1 build cannot encrypt, and the two alternatives
+  are both wrong: exporting the region in the clear would leak any restricted chart in it, and
+  exporting it as public silently ignores the configuration.
+- The refusal is at startup and not in the export, because the export worker retries a stale
+  region at once: `export_next` takes the first stale region, and after a failed render
+  `RegionWorker::run` loops with no wait. A region whose export always fails would spin the
+  worker and keep every region configured after it from exporting.
+- This plan turns its own two always-failing exports into startup checks (this one, and stage
+  2's missing `regionKeyMaster`). It does not fix the worker: any other export that fails every
+  time, such as a region whose coverage PostGIS cannot parse, still spins it. A wait after a
+  failed render, or moving on to the next stale region, would fix the general case, and is
+  separate work.
+- Stage 2 passes each region's own flag, and replaces this refusal with one for a flagged region
+  that has no usable `regionKeyMaster` ([Keys](#keys)).
+
+### Region names and archive files
+
+`Regions::archives_for_region` (`crates/njord-server/src/regions/mod.rs`) decides which files are
+a region's archives, for the manifest and for pruning. Today it takes every file whose name
+starts with the region's name and ends in `.mbtiles`, so a region `REGION_04` also claims the
+archives of a region `REGION_04_X`: its manifest entry can name the other region's archive, and
+its prune deletes them. The deployed names do not collide, but new regions are about to be
+named, and a public region claiming a licensed region's archive is the worst case.
+
+- Stage 2 changes the match to the exact form the export writes: `<region>_<stamp>.mbtiles`,
+  where `<stamp>` parses as `yyyy-MM-ddTHH-mm-ss`. `Regions::archive_timestamp` returns `None`
+  for a name that lacks the `<region>_` prefix, instead of parsing the whole name.
+- Any region name is then safe beside any other. The plan sets no naming rule.
+- A file with an unparsable stamp is no longer a region's archive: it is not listed and not
+  pruned. Today it sorts last and is pruned as the oldest.
+- `testdata/regions/timestamps.json` pins the old behavior on purpose ("the WA/WA_SOUND prefix
+  overlap is pinned as is", "unparsable stems last"), as recorded from the Kotlin server. Those
+  cases change with the code, as a decided divergence.
+
 ### Keys
 
 - **Master secret.** `regionKeyMaster`, 32 random bytes, shared with the key issuer (MX Mariner's
-  document calls it `REGION_KEY_MASTER`). It is not `chartAccessJwtSecret`. Njord stores no
-  per-archive key and has no route that returns one.
+  document calls it `REGION_KEY_MASTER`). It is not one of `chartAccessJwtSecrets`. Njord stores
+  no per-archive key and has no route that returns one.
 - **Archive key.** `HKDF-SHA256(ikm = master, salt = none, info = "mxmariner/tile-key/v1/" +
   archive file name)`, 32 bytes. The archive file name is the final name,
   `<region>_<yyyy-MM-ddTHH-mm-ss>.mbtiles`, not the `.tmp` name the export writes to. Names are
   timestamped and never reused, so every export gets a new key and the issuer derives the same
   key independently.
 - **Key id.** The first 4 bytes of `SHA-256(archive file name)`. Public; it only selects a key.
-- Exporting a licensed region with `regionKeyMaster` absent, or not 32 bytes, fails the export
-  and installs no archive. It never falls back to writing plain tiles.
+- **A licensed region without a usable master fails startup.** With any region flagged
+  `restricted` and `regionKeyMaster` absent or not 32 bytes, a process that runs the export
+  worker does not start, and the error names the region. That is `njord-ingest`, and
+  `njord-server` with `enableIngestion`, in both cases unless `enableRegionExport` is off. A
+  process that runs no export worker needs no master and starts without one.
+- The check is at startup for the reason stage 1's is
+  ([Stage 1: every archive is public](#stage-1-every-archive-is-public)): an export that fails
+  every time spins the export worker and keeps the regions after it from exporting.
+- The export checks again and fails rather than write a plain tile. It never falls back to
+  writing plain tiles.
 
 ### Blob format
 
@@ -584,22 +899,37 @@ are absent. `CATALOG_SCHEMA_VERSION` is one constant today and becomes a value c
 archive. `testdata/regions/metadata.json`, `schema.sql` and `archive.json` keep pinning the public
 layout.
 
-### Producer codes in the manifest
+### The manifest: `restricted` and `producerCodes`
 
-`GET /v1/regions` reports, for each region's newest archive, the IHO producer codes within it:
+`GET /v1/regions` reports whether each region is licensed and, for its newest archive, the IHO
+producer codes within it:
 
 ```json
-{ "name": "…", "archive": "…", "archiveSha256": "…", "producerCodes": [550] }
+{ "name": "…", "restricted": false, "archive": "…", "archiveSha256": "…", "producerCodes": [550] }
 ```
+
+- **`restricted`** is the region's `regionExports[].restricted`, read from the configuration on
+  every call. It is present before the region's first export. It describes the configuration,
+  not the listed archive: after the flag is changed and until the region is re-exported, the
+  listed archive was made under the old value
+  ([What a tile and the catalog hold](#what-a-tile-and-the-catalog-hold)). The archive's own
+  `njord:encryption` metadata row is what says a given file is encrypted.
+
+`producerCodes`:
 
 - **What it holds.** The `DSID_AGEN` of every chart that contributed a feature to a tile of the
   archive, public producers included, sorted ascending, without duplicates.
 - **Why from the tiles.** A tile draws charts from beyond the region, so the region's catalog
-  undercounts. `archive_tile` reports which charts contributed a feature to each tile it
-  renders, and the export collects their producer codes.
+  undercounts. `add_charts` knows which charts it drew a feature for, and `archive_tile` returns
+  their producer codes beside the tile's bytes (today it returns the bytes alone). The export
+  collects them over every tile it renders.
 - **Where it is kept.** The manifest is rebuilt from the archive directory on every call, so the
   set is written beside the archive as `<archive>.producers` (a JSON array), as the checksum is
   written to `<archive>.sha256`. `Regions::prune_old_archives` deletes it with the archive.
+- **When it is written.** Before the archive's `.tmp` file is renamed into place, under the final
+  archive name. `Regions::manifest` lists an archive as soon as the renamed file exists, so the
+  archive must never exist without its sidecar. A failed export removes the sidecar with the
+  `.tmp` file.
 - **Before the first export**, and for an archive with no sidecar, `producerCodes` is `null`, like
   the other archive fields.
 - The seller calculates licensing usage from it.
@@ -637,8 +967,54 @@ routes above that refuse restricted charts.
 ## Verification
 
 Tests run with `cargo test --workspace`; the `njord-db` and `njord-server` suites need the dev
-PostGIS (`chart_server_db/`). A restricted chart in a test is a fixture chart whose `DSID_AGEN`
-is put in `restrictedProducers`: the fixtures are NOAA cells with `DSID_AGEN` 550.
+PostGIS (`chart_server_db/`).
+
+Staging and production hold no restricted chart while the stages are built, so nothing deployed
+exercises a restricted path. The suites below are the only check of those paths until the first
+restricted cell is ingested in staging. What a deploy can confirm is the opposite: that the
+unrestricted charts are served as before
+([What each release changes](#what-each-release-changes-for-the-charts-there-today)).
+
+**The restricted chart in a test is synthetic.** Every fixture is a NOAA cell with `DSID_AGEN`
+550, so restricting 550 would leave no public chart to compare with.
+
+- The public chart is a fixture cell, with `DSID_AGEN` 550.
+- The restricted chart is written by the test through `Db`, with a `DSID_AGEN` no fixture
+  carries (9999 here) and a handful of features in layers the fixture cell also has. Its coverage
+  lies inside the fixture cell's and its scale is larger, so in a tile they share it is drawn
+  over the fixture cell and claims its area.
+- `restrictedProducers` is `[9999]`: the `Db` under test is built with that list.
+- **These suites own their database.** `charts.restricted` is a column, so a restricted chart in
+  the shared `njord_rust_server_test` database would change the tiles, catalogs and counts every
+  other `njord-server` test pins. The access suites seed a database of their own once per test
+  binary and build their state on it with `state_with`. The `njord-db` tests already create one
+  database per test (`migrated_db`).
+- A test of the startup reconcile changes the list between two `Db` values on a database no
+  other test uses.
+
+**Real restricted cells are tested locally and never committed.** Njord is open source, and a
+licensed S-57 cell cannot be in the repository. The synthetic chart above is the check that is
+committed and runs everywhere. Real cells add what it cannot cover: the synthetic chart is
+written through `Db`, so it never passes through `njord-s57` and ingest.
+
+- `NJORD_RESTRICTED_CELLS` names a directory of restricted S-57 cells on the developer's machine.
+  The suites that need it report that they were skipped and pass when it is unset.
+- The directory must be outside the repository. A suite refuses a path inside it, so no
+  `git add` can pick the cells up.
+- Nothing derived from the cells is committed: no golden, no tile or archive, and no chart name,
+  coordinate or attribute value in test code, fixtures or documents. The assertions are
+  structural (a count is zero or not, a layer is present or absent, a blob opens or does not),
+  and each suite reads the cells' `DSID_AGEN` and builds `restrictedProducers` from it rather
+  than naming a producer code.
+- Each suite ingests into a database and a `chartTempData` of its own and removes both when it
+  ends, pass or fail, so no decoded licensed data stays in the dev PostGIS or under `target/`.
+- What these suites check: ingest reads the cell's `DSID_AGEN` as an integer and writes the chart
+  `restricted`; an anonymous tile over the cell holds its outline and none of its features, and
+  the admin's holds them; a licensed region over the cell exports encrypted with the cell in its
+  catalog, and the manifest's `producerCodes` includes its producer; a public region over the
+  same waters holds none of it.
+- The conformance suite never runs against these cells. The first deployed check is the first
+  restricted cell in staging ([The first restricted cell](#the-first-restricted-cell)).
 
 **Stage 1**
 
@@ -648,29 +1024,58 @@ is put in `restrictedProducers`: the fixtures are NOAA cells with `DSID_AGEN` 55
   the list and public otherwise, through ingest and through `POST /v1/chart`; a chart with no
   `DSID_AGEN` is public; the startup reconcile flips rows when the list changes and reports that
   it did.
+- A chart whose `DSID_AGEN` is a string or a fraction is not written by `POST /v1/chart`. With
+  such a row put in the table directly, the reconcile returns an error, and both binaries exit
+  on it without serving.
+- `crates/njord-server/tests/export.rs`: with a restricted chart inside a region, the region's
+  archive holds it in no tile, `charts` row or `chart_tiles` row, and the public chart beneath it
+  is drawn where it would have been. Ingesting or deleting the restricted chart does not mark
+  the region stale.
+- A configuration with `regionExports[].restricted` true fails startup with an error naming the
+  region, and nothing is exported.
 - `crates/njord-server/tests/tiles.rs`: with a restricted chart in the tile, an anonymous tile
   holds its `PLY` outline with `restricted = true`, none of its features, and the smaller-scale
   public chart or base map where it would have been drawn. `info=true` lists none of its
   features.
-- `GET /v1/geojson`, `GET /v1/feature/layer/{layer}` and `GET /v1/feature/lnam/{lnam}` answer an
-  empty 401 without a valid admin signature, for a public chart and for a restricted one. With
-  one they answer as they do today, restricted charts included.
+- `GET /v1/geojson` answers an empty 401 without a valid admin signature, for a public chart and
+  for a restricted one. With one it answers as it does today, restricted charts included.
+- `GET /v1/feature/layer/{layer}`, for a layer with features in a public chart and in a
+  restricted one: an unsigned request pages through the public chart's features alone, and a
+  signed one through both charts'. Every page of both reports the same `totalUnrestricted` and
+  `totalRestricted`, which are each chart's count of that layer. An expired or malformed
+  signature gets the unsigned pages, not a 401. An unknown layer is an empty page with both
+  totals 0.
+- `GET /v1/feature/lnam/{lnam}` for a restricted chart's feature is an empty 404 unsigned and
+  the feature when signed. For an `LNAM` that a public and a restricted chart both carry, an
+  unsigned request gets the public chart's feature.
+- A signed `/v1/feature` response carries `Cache-Control: private`, and an unsigned one does
+  not.
+- `crates/njord-db/tests/charts.rs`: `find_layer_positions_page` and `find_feature` with
+  `include_restricted` false and true, and the two totals.
 - A tile requested with a valid admin signature holds the restricted chart's features and
-  carries `Cache-Control: private` and `Vary: Authorization`; `info=true` lists them. The same
-  tile with an expired or malformed signature is the public tile, not a 401.
+  carries `Cache-Control: private`; `info=true` lists them, with the same header. The same tile
+  with an expired or malformed signature is the public tile, not a 401.
 - The same `z/x/y` requested with an admin signature and anonymously produces two cache files,
   `tiles/auth/<codes>/{z}/{x}/{y}.mvt` and `tiles/{z}/{x}/{y}.mvt`, and neither is served for the
   other. `GET /v1/cache` counts the public one only, and `DELETE /v1/cache` removes both.
-- The web UI's layer browser loads when signed in and asks for a sign-in otherwise.
+- The web UI's layer browser loads without a sign-in, shows both totals, and says that the
+  restricted charts' features need a sign-in when there are any. Signed in, it lists them.
 - `GET /v1/chart?name=` reports `restricted` for both kinds of chart.
 - The `PLY` style layer draws `CHRED` for `restricted = true` and `CURSR` otherwise, in every
   theme.
 - `crates/njord-server/tests/openapi.rs`: the path list is unchanged, and the new fields appear
   in the schemas.
 - The conformance goldens (`conformance/`) were recorded from the retired Kotlin server and are
-  frozen. `Chart` gaining `restricted`, the `PLY` style, the `PLY` tile property and the 401 from
-  the unsigned `/v1/geojson` and `/v1/feature` specs (`test_api_04_charts.py`,
-  `test_api_07_auth.py`) are decided divergences, each recorded as a spec's `port` expectation.
+  frozen. `Chart` gaining `restricted`, the layer page gaining its two totals
+  (`feature_layer_BOYLAT`, `feature_layer_TOPMAR`, `feature_layer_unknown`), the `PLY` style, the
+  `PLY` tile property and the 401 from the unsigned `GET /v1/geojson` specs
+  (`test_api_04_charts.py`, `test_api_07_auth.py`) are decided divergences, each recorded as a
+  spec's `port` expectation. The unsigned `/v1/feature` specs keep their recorded status.
+- `crates/njord-model/tests/golden.rs` round-trips those frozen bodies through the wire types,
+  and a type with a new field no longer round-trips to the recorded JSON. The test adds the
+  port's fields (`restricted`, `totalUnrestricted`, `totalRestricted`, and in stage 2 the
+  manifest's `restricted` and `producerCodes`) to the recorded body first, as `unmask` already
+  substitutes masked values.
 
 **Stage 2**
 
@@ -683,8 +1088,21 @@ is put in `restrictedProducers`: the fixtures are NOAA cells with `DSID_AGEN` 55
   blobs in `tiles`. Each opens with the key derived from `regionKeyMaster` and the archive file
   name, gunzips to the tile `archive_tile` renders, and fails with another archive's key.
 - The shared test vectors seal and open.
-- Exporting a licensed region without `regionKeyMaster` fails and leaves no archive and no
-  `.tmp` file.
+- With a region flagged `restricted` and `regionKeyMaster` absent or not 32 bytes, a process
+  that runs the export worker fails to start with an error naming the region, and a
+  `njord-server` with `enableIngestion` off starts. `export_region` called directly in that
+  state fails and leaves no archive, no `.producers` sidecar and no `.tmp` file.
+- An archive's `.producers` sidecar exists before the archive does: an export stopped before
+  the rename leaves neither once it has cleaned up.
+- The manifest reports `restricted` true for a licensed region and false for a public one,
+  before and after the first export.
+- A region does not claim another's archives: with regions `A` and `A_B` both exported, each
+  manifest entry names its own archive, and exporting `A` past `MAX_ARCHIVES` prunes none of
+  `A_B`'s. A file named `A_notastamp.mbtiles` is neither listed nor pruned.
+- The manifest goldens and `testdata/regions/manifest.json` gain `restricted` and
+  `producerCodes`, and `testdata/regions/timestamps.json` loses its prefix-overlap and
+  unparsable-stem cases: decided divergences from the recorded Kotlin behavior, handled as
+  stage 1's are.
 - `crates/njord-server/tests/regions.rs`: the manifest reports `producerCodes` for an exported
   region, including the producer of a chart that lies within a tile's bounds but outside the
   region's coverage; it is `null` before the first export; pruning an archive removes its
@@ -697,6 +1115,8 @@ is put in `restrictedProducers`: the fixtures are NOAA cells with `DSID_AGEN` 55
 - Unit tests for the token: valid, expired, tampered, signed with another secret, `alg` other
   than `HS256`, wrong `iss`, malformed in every part, and no secret configured. Each failure
   yields no regions and never an error response.
+- With two secrets configured, a token signed with either is valid. With the first removed, a
+  token signed with it yields no regions.
 - A token entry is dropped when its region is unknown, is not licensed, or has an `exp` in the
   past, and the rest of the token still counts.
 - With a token for one licensed region: a tile inside its coverage holds the restricted charts'
@@ -707,10 +1127,235 @@ is put in `restrictedProducers`: the fixtures are NOAA cells with `DSID_AGEN` 55
 - A low-zoom tile that intersects the region draws restricted charts beyond the region's
   polygon, as the region's archive tile at that coordinate does.
 - A licensed region whose coverage does not parse fails startup.
-- A request with a token gets `Cache-Control: private` and `Vary: Authorization` on a tile in
-  its region; the same tile requested anonymously gets the public tile.
+- A request with a token gets `Cache-Control: private` on a tile in its region; the same tile
+  requested anonymously gets the public tile with no `Cache-Control`. Both responses, and every
+  other tile response, carry `Vary: Authorization`.
+- A cross-origin preflight asking for `Authorization` is still an empty 403.
+- A request that carries forwarded host and scheme headers gets a style and a TileJSON whose
+  URLs name that origin, and a tile request with a token made that way is served as the same
+  request made directly.
 - A tile in a token's region is served from the cache file the admin's request wrote.
 - `info=true` lists the features of exactly the charts the tile draws for the same request.
-- `GET /v1/geojson` and `GET /v1/feature` answer 401 to a request with a valid token and no
-  admin signature.
-- A cross-origin preflight asking for `Authorization` is allowed.
+- With a valid token and no admin signature, `GET /v1/geojson` answers 401, and
+  `GET /v1/feature` answers as it does for an anonymous request, restricted charts left out.
+
+## Implementation checklist
+
+Each stage is one release: built, tested, deployed to staging, checked there, then promoted to
+production. A box is ticked when its change is merged with its tests. The section named in
+parentheses is where this document specifies the item.
+
+### Stage 1: restriction, refusal and admin access
+
+**Before any code**
+
+- [ ] Time the `/v1/feature` totals query on the largest layer in production. Choose totals on
+      every page or on the first page only, and write the choice into
+      [Routes that return feature data](#5-routes-that-return-feature-data) and
+      [Open before stage 1 ships](#open-before-stage-1-ships).
+
+**Configuration and startup** ([1. Configuration](#1-configuration))
+
+- [ ] `restrictedProducers` on `ChartsConfig`, default `[]`.
+- [ ] `regionExports[].restricted` on `RegionExportConfig`, default `false`.
+- [ ] Startup fails, naming the region, when any region is flagged `restricted`, in
+      `njord-server` and `njord-ingest`
+      ([Stage 1: every archive is public](#stage-1-every-archive-is-public)).
+
+**Database** ([2. Schema](#2-schema-chartsrestricted), [3. Models](#3-models))
+
+- [ ] Migration 5, the same column in `INITIAL_SCHEMA`, and `CURRENT_VERSION` 5.
+- [ ] `Db` holds the restricted producer list, set where the server builds it (`connect`).
+- [ ] The `INSERT INTO charts` statement derives `restricted`; a non-integer `DSID_AGEN` fails
+      the insert.
+- [ ] The startup reconcile: run after `migrate` in both binaries, fatal on error. When it
+      changes a row it clears the tile cache and every region's export state except `WORLD`,
+      and wakes the export worker.
+- [ ] `ChartInfo` gains `restricted` and `producer`, selected by `Db::find_chart_info`.
+- [ ] `Db::find_layer_positions_page` and `Db::find_feature` take `include_restricted`; the page
+      query returns the two totals.
+- [ ] `Db::find_charts_in_region`, `Db::region_needs_rebuild` and `Db::regions_containing_chart`
+      take the region's flag, which every stage 1 caller passes as false.
+
+**Wire types** ([3. Models](#3-models))
+
+- [ ] `Chart.restricted`, written through `CHART_COLUMNS` and `chart_from_row`.
+- [ ] `LayerQueryResultPage` totals, in the form the measurement chose.
+- [ ] `cargo check -p njord-model --target wasm32-unknown-unknown` passes.
+
+**Tiles** ([4. The tile encoder](#4-the-tile-encoder), [6. Request access](#6-request-access),
+[7. The tile cache](#7-the-tile-cache))
+
+- [ ] `chart_access.rs`: the `ChartAccess` extractor with its admin half, `producers_in` and
+      `is_admin`. An anonymous request is `Regions` with no region.
+- [ ] `allowed_producers` threaded through `tile`, `info`, `archive_tile`, `chart_inputs` and
+      `add_charts`; `eligible` tests it in both places.
+- [ ] Each `PLY` outline carries `restricted`.
+- [ ] `archive_tile` always gets the empty set.
+- [ ] The tile handler takes `ChartAccess` and sets `Cache-Control: private` on a tile or an
+      `info=true` response made with a non-empty set.
+- [ ] `TileCache::get` and `put` take the producer set; a non-empty set is stored under
+      `tiles/auth/<codes>/`.
+- [ ] The tile route's `#[utoipa::path]` documents the optional `signature`.
+
+**Feature routes** ([5. Routes that return feature data](#5-routes-that-return-feature-data))
+
+- [ ] `GET /v1/geojson` takes `Signed`, with `security` and the 401 in its `#[utoipa::path]`.
+- [ ] `GET /v1/feature` takes `ChartAccess`, passes `is_admin()` to both queries, and sets
+      `Cache-Control: private` for the admin. Its `#[utoipa::path]` gains the optional
+      `signature` and the new fields.
+
+**Style** ([8. The coverage outline's color](#8-the-coverage-outlines-color))
+
+- [ ] The `PLY` layer's `line_color` is the `case` expression; the style goldens are updated.
+
+**Web UI** ([9. Clients](#9-clients))
+
+- [ ] The layer browser sends the stored signature, shows both totals, and says when restricted
+      charts' features need a sign-in.
+- [ ] The map adds `signature` to tile requests through `transformRequest` when signed in.
+- [ ] The chart page shows `restricted`.
+- [ ] `cargo clippy -p njord-web --target wasm32-unknown-unknown -- -D warnings` passes.
+
+**Tests** ([Verification](#verification))
+
+- [ ] The access suites' fixture: a database of their own, a fixture cell, and the synthetic
+      chart with producer 9999.
+- [ ] Every stage 1 case in [Verification](#verification).
+- [ ] The local suites behind `NJORD_RESTRICTED_CELLS` for ingest and tiles, refusing a path
+      inside the repository and removing their database and `chartTempData`.
+- [ ] `port` expectations for the conformance divergences, and the model golden test adding the
+      port's fields before its round trip.
+- [ ] `cargo test --workspace`, `cargo clippy --workspace --all-targets -- -D warnings` and the
+      conformance suite pass.
+
+**Release**
+
+- [ ] `restrictedProducers` and `regionExports[].restricted` in the configuration table of
+      `README.md` and `CLAUDE.md`; the release in `RELEASE_NOTES.md`, with the unsigned
+      `GET /v1/geojson` 401 called out.
+- [ ] Deployed to staging. The stage 1 row of
+      [What each release changes](#what-each-release-changes-for-the-charts-there-today) holds,
+      and `--compare-url` against production shows only those differences.
+- [ ] Promoted to production.
+
+### Stage 2: encrypted archives
+
+**Configuration and startup** ([1. Configuration](#1-configuration), [Keys](#keys))
+
+- [ ] The `chacha20poly1305` and `hkdf` crates.
+- [ ] `regionKeyMaster` on `ChartsConfig`, in a type whose `Debug` does not print it.
+- [ ] `cargo xtask secrets` delivers `regionKeyMaster`, optional and masked in a dry run.
+- [ ] Stage 1's startup refusal is removed. A process that runs the export worker fails to
+      start, naming the region, when a region is flagged `restricted` without a 32-byte master.
+
+**Archive files** ([Region names and archive files](#region-names-and-archive-files))
+
+- [ ] `Regions::archives_for_region` matches `<region>_<stamp>.mbtiles` exactly, and
+      `Regions::archive_timestamp` is `None` without the `<region>_` prefix.
+- [ ] `testdata/regions/timestamps.json` loses its prefix-overlap and unparsable-stem cases.
+
+**Export** ([Offline region archives](#offline-region-archives))
+
+- [ ] Each region's flag reaches `Db::find_charts_in_region`, `Db::region_needs_rebuild`,
+      `Db::regions_containing_chart` and `archive_tile`.
+- [ ] `archive_tile` returns the producer codes of the charts it drew, beside the bytes.
+- [ ] The archive key and key id are derived from `regionKeyMaster` and the final archive name.
+- [ ] A licensed region's tiles are sealed as `MXT1` blobs. The export fails rather than write a
+      plain one.
+- [ ] A licensed region's metadata: `njord:schema_version` 2, `njord:encryption` and
+      `njord:key_id`. A public region's is unchanged.
+- [ ] `<archive>.producers` is written before the rename, removed when the export fails, and
+      pruned with its archive.
+- [ ] The blob test vectors are checked in under `testdata/regions/`.
+
+**Manifest** ([The manifest](#the-manifest-restricted-and-producercodes))
+
+- [ ] `RegionManifestEntry` gains `restricted` and `producerCodes`; `Regions::manifest` fills
+      them; `njord-model` still builds for `wasm32-unknown-unknown`.
+
+**Tests** ([Verification](#verification))
+
+- [ ] Every stage 2 case in [Verification](#verification).
+- [ ] The local `NJORD_RESTRICTED_CELLS` suite for a licensed and a public region over a real
+      cell.
+- [ ] The manifest goldens and `testdata/regions/manifest.json` updated; `cargo test --workspace`,
+      both clippy runs and the conformance suite pass.
+
+**Release**
+
+- [ ] `regionKeyMaster` in the configuration tables and in `deploy/k8s/README.md`; the release in
+      `RELEASE_NOTES.md`.
+- [ ] The test vectors handed to MX Mariner for its two decryptors.
+- [ ] Deployed to staging. The stage 2 row of
+      [What each release changes](#what-each-release-changes-for-the-charts-there-today) holds:
+      a re-exported region reports `producerCodes` `[550]` and its archive still installs in the
+      app.
+- [ ] Promoted to production.
+
+### Stage 3: region tokens
+
+**Configuration and startup** ([1. Configuration](#1-configuration))
+
+- [ ] `chartAccessJwtSecrets` (in a type whose `Debug` does not print it) and
+      `chartAccessJwtIssuer` on `ChartsConfig`.
+- [ ] `cargo xtask secrets` delivers `chartAccessJwtSecrets`, optional and masked in a dry run.
+- [ ] The licensed regions' coverage is parsed at startup and kept in `AppState`; one that does
+      not parse fails startup.
+
+**Request access** ([6. Request access](#6-request-access))
+
+- [ ] Token verification against every configured secret: `alg`, `exp`, `iss`, and no 500 for
+      any malformed input.
+- [ ] `ChartAccess::Regions` holds the kept regions; `producers_in` intersects the tile's
+      envelope with their coverage.
+- [ ] Every response of the tile route carries `Vary: Authorization`.
+- [ ] `cors.rs` is unchanged, and a test pins the 403 for a preflight asking for
+      `Authorization`.
+- [ ] The tile route's `#[utoipa::path]` documents the optional bearer token.
+
+**Tests** ([Verification](#verification))
+
+- [ ] Every stage 3 case in [Verification](#verification), the forwarded-origin case among
+      them.
+- [ ] `cargo test --workspace`, both clippy runs and the conformance suite pass.
+
+**Release**
+
+- [ ] `chartAccessJwtSecrets` and `chartAccessJwtIssuer` in the configuration tables and in
+      `deploy/k8s/README.md`; the release in `RELEASE_NOTES.md`.
+- [ ] Deployed to staging. The stage 3 row of
+      [What each release changes](#what-each-release-changes-for-the-charts-there-today) holds.
+- [ ] Promoted to production.
+
+### The first restricted cell
+
+In staging first, then the same in production
+([The first restricted cell](#the-first-restricted-cell)).
+
+- [ ] All three stages are deployed in the environment.
+- [ ] `restrictedProducers` holds the producer's code, and every `njord-server` and
+      `njord-ingest` process has restarted with it.
+- [ ] The new licensed region is in `regionExports` with `restricted: true`, and
+      `regionKeyMaster` is set for the exporting process and held by the key issuer.
+- [ ] `chartAccessJwtSecrets` holds a secret the key issuer mints with.
+- [ ] The cell is ingested.
+- [ ] `GET /v1/chart?name=` reports it `restricted`.
+- [ ] An anonymous tile over it holds its outline and none of its features, and
+      `GET /v1/feature` leaves its features out and counts them in `totalRestricted`.
+- [ ] The admin's tile holds its features.
+- [ ] The licensed region is re-exported: the manifest reports `restricted: true` and the
+      producer in `producerCodes`, and the archive declares `njord:schema_version` 2.
+- [ ] The public regions over the same waters hold none of it.
+- [ ] A token for the region shows the chart online, and a token for no region does not.
+
+### Outside njord
+
+MX Mariner's work, which the first restricted cell also waits for
+([Work outside njord](#work-outside-njord), `encryption.md` §12).
+
+- [ ] The key issuer holds `regionKeyMaster`, derives archive keys, and checks its
+      product-to-region mapping against the manifest's `restricted`.
+- [ ] The key issuer mints tokens with one of `chartAccessJwtSecrets`.
+- [ ] The apps open `MXT1` archives with the shared test vectors passing.
+- [ ] `mxmariner.com/app` reaches njord through a proxy on its own origin.

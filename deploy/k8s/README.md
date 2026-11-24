@@ -18,15 +18,23 @@ Njord runs as two environments on one Kubernetes cluster, deployed with `cargo x
 | `chartIngestWorkers` | 1 | 3 |
 | `njord-enc-download` / `njord-walk-tiles` (Pacific time) | 04:00 / 05:00 | 02:00 / 03:00 |
 | PriorityClass | `njord-staging` (negative, never preempts) | the default, 0 |
-| ResourceQuota | memory: 1536Mi of requests, 3Gi of limits | none |
+| ResourceQuota | memory: 2Gi of requests, 4Gi of limits | none |
 
 Both environments share the cluster's three nodes and one managed PostgreSQL server. The sizes
 make staging lose every contest with production for memory, and the schedules keep the two
 environments' nightly jobs apart on the database server. Each value is a field of `Environment`
 in [`crates/xtask/src/main.rs`](../../crates/xtask/src/main.rs).
 
-> **Staging is not stood up yet.** [docs/STAGING_ENVIRONMENT_PLAN.md](../../docs/STAGING_ENVIRONMENT_PLAN.md)
-> is the plan and tracks what is done. Until its step 3, only production exists.
+Both environments are running. [docs/STAGING_ENVIRONMENT_PLAN.md](../../docs/STAGING_ENVIRONMENT_PLAN.md)
+records how staging was built and why it is shaped this way.
+
+**Staging's charts are static and partial.** Its CronJobs are not kept installed, so nothing
+fetches the cells it lacks or updates the ones it holds: it has fewer charts than production,
+and a region it has no charts for is listed by `/v1/regions` without an archive. The schedules
+above are what its CronJobs run on when `apply cron` installs them for a reseed; the job has no
+notion of a partial catalog and fetches every missing cell, so delete them afterwards
+(`kubectl -n mxstaging delete cronjob njord-enc-download njord-walk-tiles`) to keep staging
+partial. A check against staging uses a region and a chart it holds.
 
 An image is built once, runs in staging, and that same image is promoted to production:
 `deploy` builds and releases to staging, `promote` gives production the image staging runs, and no
@@ -149,8 +157,8 @@ build and is never pushed again with different contents, which is what makes it 
 environments to pull from one repository, and why the pull policy is `IfNotPresent`. `promote`
 refuses a `-dirty-` image.
 
-Production still runs the bare tag `2.0.0`, pushed before tags carried a hash. Nothing pushes
-that tag any more, and the first `promote` replaces it.
+The registry still holds the bare tag `2.0.0`, pushed before tags carried a hash and run by
+production until its first `promote` (2026-11-23). Nothing pushes that tag any more.
 
 ## Bootstrap of an environment
 
@@ -230,12 +238,6 @@ cd conformance
 
 ## Notes
 
-- **Production until its first `promote`** still runs what was applied before these manifests
-  changed: no readiness probe, `imagePullPolicy: Always`, and `njord-ingest-rs` as a bare
-  ReplicaSet. The first `promote` (or `apply chart`) deletes that ReplicaSet before it applies
-  the Deployment of the same name, because a Deployment does not adopt it and two ingest pods
-  would run. Until then `--env production cycle-ingest` finds no Deployment; delete the pod
-  instead (`kubectl -n mxmariner delete pods -l app=njord-ingest`).
 - PostgreSQL grants `CONNECT` to `PUBLIC` on every database. `db_setup.sql` revokes it for a new
   database; production's `njord` was created before it did, so every role on the managed server
   can still connect to it. As the `njord` role: `REVOKE CONNECT ON DATABASE njord FROM PUBLIC;`

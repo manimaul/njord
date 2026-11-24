@@ -37,10 +37,6 @@ const INGEST_DEPLOYMENT: &str = "deployment/njord-ingest-rs";
 const ENC_CRONJOB: &str = "cronjob/njord-enc-download";
 const MANIFEST_DIR: &str = "deploy/k8s";
 
-/// The ReplicaSet the ingest ran as before it became [`INGEST_DEPLOYMENT`]. A ReplicaSet that a
-/// Deployment owns is never named this: its name ends in a hash of the pod template.
-const BARE_INGEST: &str = "replicaset/njord-ingest-rs";
-
 /// The memory request and limit `nfs` gives an NFS provisioner. Explicit because staging's
 /// ResourceQuota refuses a pod without them. The provisioner uses about 145Mi.
 const NFS_MEMORY: (&str, &str) = ("192Mi", "384Mi");
@@ -766,7 +762,6 @@ impl Xtask {
     fn apply_chart(&self, manifests: &Manifests) -> Result<()> {
         let text = manifests.chart()?;
         self.before_change()?;
-        self.retire_bare_ingest()?;
         self.kubectl_apply("chart_server.yaml", &text, &text)
     }
 
@@ -778,32 +773,6 @@ impl Xtask {
             &text,
             &text,
         )
-    }
-
-    /// Deletes the ReplicaSet the ingest ran as before `chart_server.yaml` made it a Deployment,
-    /// and waits until its pod is gone. Does nothing in an environment that has none.
-    ///
-    /// The new Deployment does not adopt that ReplicaSet, so applying the chart beside it would
-    /// leave two ingest pods running, each reserving the ingest's memory. Reads the cluster, in a
-    /// dry run too.
-    fn retire_bare_ingest(&self) -> Result<()> {
-        self.kube_preflight()?;
-        let sh = &self.sh;
-        let namespace = self.env.namespace;
-        let found = cmd!(
-            sh,
-            "kubectl --namespace {namespace} get {BARE_INGEST} --ignore-not-found -o name"
-        )
-        .quiet()
-        .read()
-        .with_context(|| format!("looking for {BARE_INGEST} in {namespace}"))?;
-        if found.is_empty() {
-            return Ok(());
-        }
-        self.run(cmd!(
-            sh,
-            "kubectl --namespace {namespace} delete {BARE_INGEST} --cascade=foreground"
-        ))
     }
 
     /// Replaces the pods of `deployment` with new ones from its current template. This is what

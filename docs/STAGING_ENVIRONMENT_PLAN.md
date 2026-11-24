@@ -1,7 +1,10 @@
 # Staging environment plan
 
-Status: **in progress**. Steps 0, 1 and 2 are done (2026-11-22); nothing has been applied to the
-cluster yet, and staging does not exist.
+Status: **done**. Staging was bootstrapped on 2026-11-22 and production moved onto the
+build-once, promote flow on 2026-11-23; both run `ghcr.io/manimaul/njord:2.0.0-e6f932f9`. Staging
+is left static, with fewer charts than production (D2). This document is the record of how the
+environment was built; [`deploy/k8s/README.md`](../deploy/k8s/README.md) is the reference for
+running it.
 
 ## Goal
 
@@ -16,6 +19,9 @@ A second, complete Njord environment that every change reaches before production
 
 The rule the plan is built around: **an image is built once, runs in staging, and that same image
 is promoted to production.** Production never gets a build that staging has not run.
+
+Complete means every component, not every chart: staging does not always hold as many charts as
+production, and some of its regions are empty (D2).
 
 ## Where things stand
 
@@ -64,9 +70,10 @@ The managed cluster runs **PostgreSQL 17.11 with PostGIS 3.6.4**.
 
 - `njord` is almost entirely the `features` table: 9183 MB (5361 MB of heap, the rest indexes)
   for 7.45 million rows from 7266 charts.
-- **What staging needs:** about 9.3 GB once seeded, and about 18.5 GB while a migration rewrites
-  `features` (the old and new copies exist together). Production needs the same transient 9 GB
-  for the same migration.
+- **What staging needs, at most:** about 9.3 GB with the full catalog, and about 18.5 GB while a
+  migration rewrites `features` (the old and new copies exist together). Production needs the
+  same transient 9 GB for the same migration. Staging often holds fewer charts (D2) and then
+  needs less; the figures here are the ceiling the disk is sized for.
 - **The plan's usable disk is 58 GB** (read from Cloud Manager; SQL cannot see it, and the
   `LINODE_TOKEN` in the shell is rejected by the Linode API). That is enough for a full catalog in
   both databases:
@@ -158,26 +165,43 @@ Three guards limit what staging can do to production's database:
 Staging is its own environment with its own data. Nothing is copied from production, and nothing
 in staging reads production's database or shared volume.
 
-Staging's `njord-enc-download` job seeds it from NOAA's catalog and keeps it current, with the
+Staging's `njord-enc-download` job seeds it from NOAA's catalog, with the
 same `njord-enc-cron-config` as production, and staging's ingest builds its own tile cache and
 region archives. What follows from that:
 
-- **The first seed is a cold seed** of the full catalog (about 7.2k cells) through an ingest
-  capped at one worker and 512Mi. This is the load that took a node down on 2026-11-04, now under
-  a limit the node can spare. How long it takes with one worker is not measured. The job stops
-  when `maxQueuedBundles` (50) bundles are waiting in `save/`; each later run, by hand or the
-  nightly one, fetches what is still missing, so the seed converges without supervision.
-- **A schema migration is rehearsed on staging's data**, which is the same kind and, once seeded,
-  the same scale as production's, though not the same rows. Migrations run at server startup and
-  only go forward, so this rehearsal is the only test of one.
+- **Staging does not always hold what production holds.** Its chart count can be well below
+  production's, and some regions can hold no charts at all: a seed that has not converged, a
+  reseed after a destructive test, or, as now, a staging left static on purpose: the job is not
+  run nightly there, because it has no notion of a partial catalog and would fetch every cell
+  staging lacks. Its charts therefore also fall behind NOAA's editions. On 2026-11-23 staging
+  held 1245 charts against production's 7266, and four of the nine regions (01, 02, 08, 09) were
+  empty. Nothing in this plan or in a release may assume the two match.
+- **An empty region is listed without an archive.** `GET /v1/regions` returns every region in
+  `regionExports` in both environments, but the export skips a region no chart intersects, so its
+  `archive`, `archiveSize` and `archiveSha256` are null. A region with some of its charts has a
+  smaller archive than production's. A check against
+  staging (a download, a tile, a chart's record) uses a region and a chart staging holds, and a
+  client pointed at staging must take a region without an archive as normal.
+- **The first seed is a cold seed** aimed at the full catalog (about 7.2k cells) through an
+  ingest capped at one worker and 512Mi. This is the load that took a node down on 2026-11-04,
+  now under a limit the node can spare. How long it takes with one worker is not measured. The
+  job stops when `maxQueuedBundles` (50) bundles are waiting in `save/`; each later run, by hand
+  or the nightly one, fetches what is still missing, so the seed converges without supervision.
+- **A schema migration is rehearsed on staging's data**, which is the same kind as production's
+  but not the same rows, and the same scale only when staging holds the full catalog. A
+  rehearsal on a partial staging proves the migration runs; it does not show how long it takes
+  or how much disk it needs in production. Compare the chart counts before reading it as either.
+  Migrations run at server startup and only go forward, so this rehearsal is the only test of
+  one.
 - **The diff-mode conformance run** (`--base-url` staging, `--compare-url` production) compares
-  two servers that ingested the same NOAA catalog independently. It is a review aid, not a gate:
-  a difference can come from the code or from one side having ingested a newer cell.
+  two servers that ingested from the same NOAA catalog independently. It is a review aid, not a
+  gate: a difference can come from the code, from one side having ingested a newer cell, or from
+  a chart or region staging does not hold.
 - **A destructive test costs a reseed.** There is no shortcut back to a full dataset: after the
   nuke route or the mutating conformance suite, staging is empty until the seed converges again.
-- **Disk:** the managed plan holds a second database of production's size, with room for a
-  migration that rewrites `features` (see [Database](#database)). Staging takes the full catalog,
-  with no `scaleFilter`.
+- **Disk does not limit staging's catalog:** the managed plan holds a second database of
+  production's size, with room for a migration that rewrites `features` (see
+  [Database](#database)), and the job runs with no `scaleFilter`.
 
 ### D3. Capacity
 
@@ -219,7 +243,8 @@ have a placeholder for everything that differs:
 | `openenc_mirror.yaml` | applied by hand | never |
 
 `regionExports`, the depths and every other `njord-config` key are identical in both, so staging
-builds the same region archives the shipped mobile apps download.
+defines the same regions the shipped mobile apps download and builds their archives the same way,
+from the charts it holds. A region staging has no charts for has no archive (D2).
 
 Staging keeps its own relay DaemonSet instead of dialing production's `njord-db-relay` Service.
 It costs three 16Mi pods, and in exchange neither namespace depends on the other.
@@ -279,10 +304,10 @@ Two changes to the workloads make a rollout mean something, and staging is where
 first:
 
 - `njord-chart-dep` has a readiness probe on `/v1/about/version`. Without one, `rollout status`
-  succeeds on a server that never started serving and the ingress routes to it. Production runs
-  without it until its first `promote`.
+  succeeds on a server that never started serving and the ingress routes to it. Production has
+  had it since its first `promote` (2026-11-23).
 - `njord-ingest-rs` is a Deployment with the `Recreate` strategy, so a new image replaces its pod
-  and the old pod is gone before the new one is scheduled. Production runs it as a bare
+  and the old pod is gone before the new one is scheduled. Production ran it as a bare
   ReplicaSet, which does not replace its pod when the image changes, until its first `promote`.
 
 ### Capacity and blast radius
@@ -295,25 +320,29 @@ Staging must lose every contest with production for memory.
 - **Limits below what a node can spare.** The ingest's request equals its limit (512Mi, one
   worker), so the scheduler reserves what the pod may use and the kernel kills the container, not
   the node, if it grows. If it is OOM-killed, the fix is still fewer workers before a higher limit.
-- **ResourceQuota in `mxstaging`**: `requests.memory` 1.5Gi, `limits.memory` 3Gi as a starting
-  point. Steady state requests are about 0.9Gi (chart 128Mi, ingest 512Mi, NFS provisioner 192Mi,
-  three relays at 16Mi) and limits about 1.5Gi. The two nightly jobs add 320Mi of requests and
-  1.2Gi of limits while they run. A quota on memory makes resources mandatory on every pod, so
-  `njord-walk-tiles` and the NFS provisioner have explicit values. The limits leave no room for
-  a second chart pod while both nightly jobs run: a rollout started then waits for a job to
-  finish.
+- **ResourceQuota in `mxstaging`**: `requests.memory` 2Gi, `limits.memory` 4Gi. It began at
+  1.5Gi and 3Gi and was raised when mxmariner.com's staging pod (256Mi requested, 512Mi limit,
+  deployed from the parent repository) joined the namespace. njord's own steady state requests
+  are about 0.9Gi (chart 128Mi, ingest 512Mi, NFS provisioner 192Mi, three relays at 16Mi) and
+  limits about 1.5Gi. The two nightly jobs add 320Mi of requests and 1.2Gi of limits while they
+  run. A quota on memory makes resources mandatory on every pod, so `njord-walk-tiles` and the
+  NFS provisioner have explicit values. With the web pod and both nightly jobs running the
+  limits reach about 3.2Gi, which leaves room for the second chart pod of a rollout.
 - **Honest requests where usage is hidden** (D3). Four changes, all outside this repository, make
   the scheduler see `stgp6` and `s9zzd` as they are:
 
   | Pod | Memory request | Where it is set |
   |---|---|---|
-  | `kps-grafana` | 128Mi → 640Mi | `kps` Helm values |
+  | `kps-grafana` | 128Mi → 640Mi for the pod: 480Mi for `grafana`, whose limit is 512Mi, and 80Mi for each of its two sidecars | `kps` Helm values |
   | `prometheus-kps-prometheus-0` | 400Mi → 768Mi | `kps` Helm values |
   | `emharbor/tsdbmysql` | none → 512Mi | its Deployment |
   | `mxmariner-web-dep` | none → 256Mi | the parent repository's `backend/k8s.yaml` |
 
   After them `stgp6` shows about 1.4Gi free by requests instead of 2.7Gi, and the staging ingest
-  goes to a node that has the memory. Each change restarts the pod it touches.
+  goes to a node that has the memory. Each change restarts the pod it touches. All four are
+  applied (the last three on 2026-11-23, before production's first `promote`). The `kps` values
+  are `monitor/kube-prometheus-stack.values.yaml` in the `k8s_setup` repository; `tsdbmysql`'s
+  request was set with `kubectl set resources`, and no manifest for it was found to update.
 
 If a node is lost, as on 2026-11-04, the remaining two cannot hold everything. With the
 PriorityClass, staging is what stays Pending.
@@ -385,12 +414,16 @@ first `promote` (step 5).
 Found while doing it, and handled in step 5: a Deployment does not adopt the bare
 `njord-ingest-rs` ReplicaSet production runs today, because that ReplicaSet has no labels of its
 own, so applying the new chart beside it would run two ingest pods. `apply chart` and a release
-therefore delete the bare ReplicaSet first, when one exists.
+therefore deleted the bare ReplicaSet first, until production's first `promote` removed the last
+one and step 5 removed that code.
 
 ### 3. Bootstrap `mxstaging`
 
-- [ ] First, the four memory requests from [Capacity](#capacity-and-blast-radius) (D3). Check with
+- [x] First, the four memory requests from [Capacity](#capacity-and-blast-radius) (D3). Check with
       `kubectl describe node` that `stgp6` no longer shows the most memory free by requests.
+      Staging was bootstrapped with one of the four applied; the other three followed on
+      2026-11-23. Requested memory is then 2440Mi on `5spwr`, 2232Mi on `s9zzd` and 2394Mi on
+      `stgp6`.
 
 Every command is a dry run first, then `--execute`. `--env staging` is the default and is omitted.
 
@@ -427,7 +460,10 @@ sets both by default. If the certificate stays pending, look for a quota refusal
 
 ### 4. Data
 
-Staging seeds itself from NOAA (D2).
+Staging seeds itself from NOAA (D2), and is then left static (decided 2026-11-23): its CronJobs
+are not kept installed, so nothing fetches the cells it lacks or updates the ones it holds. The
+commands below are how it was seeded and how it is reseeded; `kubectl -n mxstaging delete cronjob
+njord-enc-download njord-walk-tiles` afterwards stops the nightly run from filling it.
 
 ```shell
 cargo xtask --execute apply cron   # njord-enc-download 04:00 PT, njord-walk-tiles 05:00 PT
@@ -435,47 +471,82 @@ cargo xtask --execute seed         # one njord-enc-download Job now, instead of 
 kubectl -n mxstaging logs -f deploy/njord-ingest-rs
 ```
 
-- [ ] Watch the first hours: the ingest pod's memory against its 512Mi limit, its restart count,
+- [x] Watch the first hours: the ingest pod's memory against its 512Mi limit, its restart count,
       and `kubectl top nodes`. An OOM kill here is the limit doing its job; the response is the
       a smaller `bundleSizeCells`, not a higher limit.
-- [ ] Record how long the seed takes to converge. It is the cost of every later reseed.
-- [ ] Acceptance: `GET /v1/chart_editions` on staging lists about as many charts as production's;
-      `GET /v1/regions` lists every region archive; a `njord-enc-download` run on a converged
-      staging fetches only what NOAA changed that day.
-- [ ] Review one diff-mode run, to learn what the two environments differ in before any code does:
+- [x] Record how long the seed takes to converge. It is the cost of every later reseed.
+- [x] Acceptance: `GET /v1/chart_editions` on staging lists the charts the seed has ingested,
+      which need not be production's count. 2026-11-23: 1245 charts, against production's 7266;
+      `save/` and `ingest/` are empty, so nothing is waiting.
+- [x] Acceptance: `GET /v1/regions` lists every region, with an archive for each region staging
+      holds charts in and none for an empty one (D2). 2026-11-23: all ten regions listed; `WORLD`
+      and regions 03 to 07 have an archive, regions 01, 02, 08 and 09 none. The archives on the
+      shared volume are the ones listed, and `REGION_07`'s SHA-256 matches its `archiveSha256`.
+- [x] Review one diff-mode run, to learn what the two environments differ in before any code does.
+      Charts and regions staging does not hold are expected differences:
       `pytest conformance --base-url=https://staging-njord.mxmariner.com --compare-url=https://njord.mxmariner.com`
+      2026-11-23, staging on `2.0.0-e6f932f9` against production on `2.0.0` (`44dfc867`, six
+      commits behind): 196 passed, 42 skipped, no difference reported. The catalogs differ, so
+      the data routes were compared by shape, on charts staging holds (`US1EEZ1M`, `US3WA1DF`),
+      not value for value. The run had no admin credentials: the signed routes are among the
+      skipped tests, with the mutating ones and the `X-Forwarded-*` ones.
 
 ### 5. Move production onto the new flow
 
-- [ ] Export the `NJORD_PRODUCTION_*` variables; remove the unprefixed ones from the shell profile.
-- [ ] `cargo xtask --env production promote` (dry run, review, then `--execute`). This is
+- [x] Export the `NJORD_PRODUCTION_*` variables; remove the unprefixed ones from the shell profile.
+      `promote` reads none of them; only `--env production secrets` does. Done 2026-11-23 in
+      `~/.env`, which the shell exports: the six `NJORD_PRODUCTION_*` variables hold the values
+      production's `njord-db-upstream` and `admin-secret-json` hold, and `--env production
+      secrets` renders from them. `NJORD_NAMESPACE`, `NJORD_DB`, `NJORD_DB_USER`,
+      `NJORD_DB_PASS` and `NJORD_ADMIN_KEY` are gone. Four unprefixed variables stay, with
+      production's values, because other tools read them: `NJORD_ADMIN_USER` and
+      `NJORD_ADMIN_PASS` (the parent repository's backend and `refreshWorldBasemap`, and the
+      conformance suite) and `NJORD_DB_HOST` and `NJORD_DB_PORT` (regatta's
+      `database/db_actions.py`). The xtask reads none of them.
+- [x] `cargo xtask --env production promote` (dry run, review, then `--execute`). This is
       production's first immutable tag, and the first rollout gated by a readiness probe. It
       deletes the bare `njord-ingest-rs` ReplicaSet and creates the Deployment of the same name,
       so production has no ingest pod for the seconds in between; run it outside the 02:00 PT
       NOAA job.
-- [ ] Afterwards, remove `retire_bare_ingest` and `BARE_INGEST` from `crates/xtask/src/main.rs`,
+  - [x] Dry run and review, 2026-11-23. It promotes `2.0.0-e6f932f9`, the image staging runs
+        and serves. `kubectl -n mxmariner diff` of the manifests it would apply shows only the
+        intended changes: the image and `imagePullPolicy: IfNotPresent` on `njord-chart-dep` and
+        `njord-enc-download`, the readiness probe, the new `njord-ingest-rs` Deployment, and
+        `njord-walk-tiles`' resources. `44dfc867..e6f932f9` changes no migration; the server
+        change is the ingest's stale-lock recovery. Production's `save/` and `ingest/` were
+        empty, so no ingest was in flight.
+  - [x] Before `--execute`: D3's three missing memory requests, so that the scheduler does not
+        put the rescheduled ingest pod (1Gi, request = limit) and chart pod on `stgp6`, which
+        showed the most memory free by requests while using 3011Mi of 3821Mi.
+  - [x] `--execute` and `verify`, 2026-11-23 at 22:09 PT. Both rollouts completed with no
+        restarts, and the new chart and ingest pods are on `5spwr`, where the old ones ran.
+- [x] Afterwards, remove `retire_bare_ingest` and `BARE_INGEST` from `crates/xtask/src/main.rs`,
       and the "Production until its first `promote`" note from `deploy/k8s/README.md`: no
       environment has a bare ReplicaSet any more.
-- [ ] Acceptance: production reports the same `gitHash` as staging, and both namespaces run the
-      same image tag.
+- [x] Acceptance: production reports the same `gitHash` as staging, and both namespaces run the
+      same image tag. 2026-11-23: both serve `e6f932f9` and run
+      `ghcr.io/manimaul/njord:2.0.0-e6f932f9`, as does production's `njord-enc-download`.
 
 ### 6. Documentation
 
 - [x] Rewrite the deploy README for two environments (done in step 1; moved to `deploy/k8s/` and
       given staging's `db_setup.sql` invocation in step 2).
-- [ ] Remove "staging is not stood up yet" from `deploy/k8s/README.md`, `README.md` and this
-      document's status line, once step 3 is done.
+- [x] Remove "staging is not stood up yet" from `deploy/k8s/README.md`, `README.md` and this
+      document's status line, once step 3 is done. `RELEASE_NOTES.md` said the same and is
+      corrected too; `deploy/k8s/README.md` now also says that staging's charts are static and
+      partial.
 - [x] `README.md`: the `xtask` row and the Container section.
 - [x] `README.md`: the conformance example, which compared production with itself.
 - [x] `crates/xtask/src/main.rs` module doc and `--help` text, to `docs/rustdoc_standards.md`.
 - [x] `RELEASE_NOTES.md`.
 - [x] The header comments of the manifests, which described the Kotlin copy and the port plan
       (done when the port plan documents were removed).
-- [ ] In the parent repository, `docs/explorations_ideas/explore_backend_staging.md` names the
-      host `njord-staging.mxmariner.com`; it should say `staging-njord.mxmariner.com`.
-- [ ] In the parent repository, `docs/runbook/release_web.md` and
-      `docs/explorations_implemented/backend_db.md` cite `njord/deploy/mxmariner/`; it is
-      `njord/deploy/k8s/` once the parent's submodule pointer moves past the rename.
+- [x] In the parent repository, `docs/explorations_ideas/explore_backend_staging.md` named the
+      host `njord-staging.mxmariner.com`. The file is gone: mxmariner.com's staging is built, and
+      its design, `docs/explorations_implemented/web_staging.md`, names
+      `staging-njord.mxmariner.com`.
+- [x] In the parent repository, `docs/runbook/release_web.md` and
+      `docs/explorations_implemented/backend_db.md` cite `njord/deploy/k8s/`.
 
 ## The release flow afterwards
 
@@ -489,8 +560,11 @@ cargo xtask --env production --execute verify
 ```
 
 For a build with a schema migration, deploy it to a fully seeded staging, so the migration runs
-against a database of production's scale, and let staging's nightly NOAA job, ingest and region
-export run on the new schema before promoting. Rolling production back is
+against a database of production's scale, and let a NOAA job, ingest and region export run on
+the new schema before promoting. Staging is static and not fully seeded by default (D2), so that
+means `apply cron` and `seed` by hand (step 4):
+compare `GET /v1/chart_editions` on both first, and seed staging to production's count when the
+migration's duration or disk use matters. Rolling production back is
 `promote --tag <previous tag>`; it does not undo a migration, which is why the rehearsal matters.
 
 ## Risks
@@ -504,13 +578,15 @@ export run on the new schema before promoting. Rolling production back is
 | The managed plan's disk fills with a second database of production's size | 58 GB usable against about 37 GB in the worst measured case, both tables rewritten and neither reclaimed |
 | A destructive test leaves staging empty while a release is waiting | The reseed time is recorded in step 4; run destructive tests when no release is pending |
 | A second `hostNetwork` listener on 6433 crash-loops the relay | Port 6434 from the environment; isolation check on the rendered manifest |
-| Staging drifts from production and stops predicting it | One set of manifests and one `njord-config`; the same nightly NOAA job on both |
+| Staging drifts from production and stops predicting it | One set of manifests and one `njord-config`. The charts are allowed to differ and staging's are static (D2); the code and configuration are not |
+| A check passes on staging because the region or chart it needs is not there, or a migration rehearsed on a partial staging is slower or larger in production | Checks name a region staging holds; before a migration, compare the chart counts and seed staging to production's (the release flow) |
 
 ## Out of scope
 
 - A staging environment for mxmariner.com's backend and web app (`staging.mxmariner.com`), and a
-  debug build of the mobile apps that points at staging. Both follow from this one; see
-  `docs/explorations_ideas/explore_backend_staging.md` in the parent repository.
+  debug build of the mobile apps that points at staging. Both follow from this one. The first is
+  built: it runs in `mxstaging` beside this one, which is why the quota here counts its pod
+  (`docs/explorations_implemented/web_staging.md` in the parent repository). The second is not.
 - CI. Deploys stay manual through `cargo xtask`.
 - Leftovers of the retired `njord` namespace: the empty `s57server` database, two `Released` volumes (`pvc-59f48cea1a294fd3`, 10Gi,
   still billed, and `pvc-dbe695c6-…`) and the orphaned `nfs` StorageClass.

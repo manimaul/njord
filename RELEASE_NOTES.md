@@ -10,17 +10,18 @@
   `<version>-<git hash>` and a tag is never pushed twice; `deploy` builds and releases to staging
   only, the new `promote` gives production the image staging runs, and `apply` keeps the image an
   environment already runs. Every rendered manifest is refused if it names another environment's
-  namespace, host, database, role, relay port or StorageClass. The staging environment itself is
-  not stood up yet: see `docs/STAGING_ENVIRONMENT_PLAN.md`.
+  namespace, host, database, role, relay port or StorageClass. Staging runs at
+  `staging-njord.mxmariner.com`; `deploy/k8s/README.md` describes both environments and
+  `docs/STAGING_ENVIRONMENT_PLAN.md` how staging was built.
 - **The Kubernetes manifests moved to `deploy/k8s/` and describe both environments.**
   `deploy/mxmariner/` is now `deploy/k8s/`, and `openenc_mirror.yaml` is under
   `deploy/k8s/production/`. Memory sizes, autoscaler replicas, `chartIngestWorkers` and the cron
   schedules are per environment, and the new `staging.yaml` (`cargo xtask apply quota`) gives
   staging a negative PriorityClass and a ResourceQuota. The next release to an environment also
   changes its workloads: `njord-chart-dep` gets a readiness probe on `/v1/about/version`,
-  `njord-ingest-rs` becomes a `Recreate` Deployment (the xtask deletes the ReplicaSet it
-  replaces), images are pulled `IfNotPresent`, and `njord-walk-tiles` gets a memory request and
-  limit. A release now waits for both rollouts instead of deleting the ingest pod.
+  `njord-ingest-rs` becomes a `Recreate` Deployment, images are pulled `IfNotPresent`, and
+  `njord-walk-tiles` gets a memory request and limit. Production took these with its first
+  `promote`, which also replaced the ReplicaSet its ingest ran as. A release now waits for both rollouts instead of deleting the ingest pod.
   `db_setup.sql` takes the database, role and password as `psql` variables, revokes `CONNECT`
   from `PUBLIC` and can set a connection limit.
 - **A killed ingest no longer blocks ingestion.** A process that was killed in the middle of an

@@ -11,7 +11,7 @@ as MVT (Mapbox Vector Tiles). It does **not** strictly follow IHO S-52 display s
 
 - [Design documentation](docs/DESIGN.md) (written for the Kotlin implementation)
 - [NOAA ENC update cron](docs/NOAA_ENC_UPDATE_CRON.md)
-- [Staging environment plan](docs/STAGING_ENVIRONMENT_PLAN.md) (proposed, not built)
+- [Staging environment plan](docs/STAGING_ENVIRONMENT_PLAN.md): how the staging environment was built, and why it is shaped as it is
 - [Rust doc comment standards](docs/rustdoc_standards.md): every `///` and `//!` comment follows it
 - [Release notes](RELEASE_NOTES.md)
 
